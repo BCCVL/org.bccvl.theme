@@ -6,8 +6,8 @@ version = '1.0.dev0'
 setup(name='org.bccvl.theme',
       version=version,
       description="BCCVL Diazo Theme",
-      long_description=open("README.rst").read() + "\n" +
-                       open("CHANGELOG.rst")).read(),
+      long_description=(open("README.rst").read() + "\n" +
+                        open("CHANGELOG.rst").read()),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
