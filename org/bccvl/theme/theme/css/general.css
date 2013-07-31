@@ -1,0 +1,238 @@
+
+body {
+    padding-top: 60px; /* pad enough to show the fixed navbar */
+}
+@media (max-width: 980px) { body {
+    padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
+}   }
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+/* main navbar ----------------------------------------------------------- */
+
+.navbar {
+    background: #cfd; /* doesn't work, come back later in Less */
+}
+
+.navbar a.brand {
+    color: #094;
+    padding-left: 15px;
+    padding-right: 35px;
+}
+
+.navbar a img {
+    opacity: 0.66;
+    width: 35px;
+    height: 35px;
+    float: left;
+    margin: -9px 10px -9px -9px;
+}
+
+.navbar .pull-right {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+@media (max-width: 980px) { .navbar .pull-right {
+        float: none;
+        text-align: right;
+}   }
+
+
+/* breadcrumbs trail ----------------------------------------------------- */
+
+.bccvl-breadcrumb ul.breadcrumb {
+    margin: 1em 0 3em;
+}
+
+.bccvl-breadcrumb ul.breadcrumb li.separator {
+    margin: 0 15px;
+    opacity: 0.33;
+}
+
+
+/* button bar ------------------------------------------------------------ */
+
+.bccvl-buttonbar {
+    padding-bottom: 1em;
+}
+
+
+/* preview window -------------------------------------------------------- */
+
+.bccvl-preview-pane {
+    min-height: 300px;
+}
+.bccvl-preview-pane .empty {
+    text-align: center;
+    font-weight: 900;
+    font-size: 600%;
+    opacity: 0.1;
+    line-height: 300px;
+    color: rgba(100,100,100, 0.5);
+    text-shadow: 0 2px 0 white, 0 -0.005em 0 rgba(0,0,0, 0.5);
+}
+
+
+/* wizard+tabs interface ------------------------------------------------- */
+
+.bccvl-wizardtabs {
+    position: relative;
+}
+
+.bccvl-wizardtabs-navbtns {
+    position: absolute;
+    height: 0;
+    left: 0;
+    right: 0;
+}
+.bccvl-wizardtabs-navbtns button {
+    width: 9em;
+    margin: 7px 0 0;
+}
+.bccvl-wizardtabs-navbtns button.bccvl-wizardtabs-prev { float: left;  }
+.bccvl-wizardtabs-navbtns button.bccvl-wizardtabs-next { float: right; }
+
+.bccvl-wizardtabs ul.nav {
+    padding: 5px 11em 0;
+}
+
+/* experiment form ------------------------------------------------------- */
+
+input.bccvl-expname {
+    font-size: 28px; /* double normal, fix in Less */
+    line-height: 50px;
+    height: 50px;
+}
+
+textarea.bccvl-expdesc {
+    margin-top: 1em;
+}
+
+/* ---
+this doesn't work because Twitter Bootstrap doesn't properly
+set the styles on the toggle link (if you click it, it gets the
+collapse class applied, but if you click a different one, it
+gets collapsed but doesn't get the .collapsed style applied.)
+
+Update: this bug is fixed in Bootstrap 3.0, so for now let's
+show the disclosure triangles, file a bug that they're wrong
+sometimes, and upgrade when bootstrap 3 is out.
+--- */
+.bccvl-algoconfig .accordion-toggle:before {
+    content: '\25bc';
+    color: #ccc;
+    float: left;
+    width: 1.5em;
+}
+
+.bccvl-algoconfig .accordion-toggle.collapsed:before {
+    content: '\25b6';
+}
+
+.bccvl-expstatus {
+    /*font-size: 150%;*/
+    text-align: center;
+    padding: 2em 0;
+}
+.bccvl-expstatus p {
+    margin-bottom: 0.66em;
+}
+.bccvl-expstatus button {
+    margin-top: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+.bccvl-expstatus .close {
+    right: 13px;
+    top: -20px;
+}
+
+/* the experiment-is-finished alert box should be smaller.. */
+.bccvl-expstatus.alert-success {
+    padding: 0.5em;
+}
+.bccvl-expstatus.alert-success p {
+    margin-bottom: 0;
+}
+
+.bccvl-dropdownlabel {
+    padding: 0.5em;
+    color: #999;
+}
+
+/* tables ---------------------------------------------------------------- */
+
+td.bccvl-searchform {
+    /*text-align: right;*/
+}
+
+.bccvl-table-choose {
+    text-align: left;
+}
+
+td.bccvl-table-controls {
+    text-align: right;
+}
+td.bccvl-table-controls a {
+    float: right;
+    border-radius: 1px;
+    padding: 3px 6px;
+}
+td.bccvl-table-controls a:hover {
+    box-shadow: 0 0 1px 1px #ccc;
+}
+
+.bccvl-table-label h1 {
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+    margin: 0;
+}
+.bccvl-table-label h1 small {
+    font-size: 90%;
+}
+
+.bccvl-table-label p {
+    padding: 0;
+    margin: 0;
+    font-size: 80%;
+}
+
+.bccvl-table-empty p {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-family: serif;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    font-size: 125%;
+    opacity: 0.33;
+    color: #666;
+    /*text-shadow: 0 1px 0 white, 0 -1px 0 black;*/
+}
+
+/* footer ---------------------------------------------------------------- */
+
+footer {
+    opacity: 0.33;
+    box-shadow: inset 0 9px 9px -9px #094;
+    box-shadow: inset 0 75px 75px -75px #bbb;
+    margin-top: 4em;
+    border-top: 1px solid #aaa;
+    color: #094;
+    text-align: center;
+    padding-bottom: 2em;
+}
+footer > div {
+    padding-top: 1em;
+    margin-bottom: 0;
+}
+
+
+
+
+
+

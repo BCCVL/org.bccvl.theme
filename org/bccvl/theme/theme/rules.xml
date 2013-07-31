@@ -8,5 +8,5 @@
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
 
-    <theme href="theme.html" />
+    <theme href="html/new-experiment-sdm.html" if-path="++add++org.bccvl.content.experiment" />
 </rules>

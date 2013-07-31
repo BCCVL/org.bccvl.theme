@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="575"
+   height="575"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9943 custom"
+   sodipodi:docname="bcc_logo_composed.svg"
+   inkscape:export-filename="/Users/pvrdwb/griffith/bccvl_layout/images/bcc_logo_tiny.png"
+   inkscape:export-xdpi="5.478261"
+   inkscape:export-ydpi="5.478261">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="211.18643"
+     inkscape:cy="204.5"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-left="50"
+     fit-margin-right="50"
+     fit-margin-bottom="50"
+     fit-margin-top="50"
+     inkscape:window-width="1492"
+     inkscape:window-height="1065"
+     inkscape:window-x="206"
+     inkscape:window-y="44"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-93.999999,-161.86218)">
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       d="M 212 57.5 C 142.96441 57.5 87 113.46441 87 182.5 C 87 186.29378 87.169329 190.04196 87.5 193.75 L 87.5 395 L 87.5 401 L 87.625 401 C 90.754505 467.25052 145.47497 520 212.5 520 C 257.31796 520 296.6237 496.4063 318.6875 460.96875 C 340.63033 496.96356 380.26052 521 425.5 521 C 444.44908 521 462.40753 516.79578 478.5 509.25 L 478.5 465.625 C 463.7902 476.84114 445.42601 483.5 425.5 483.5 C 377.17509 483.5 338 444.32491 338 396 C 338 347.84285 376.90652 308.77069 425 308.5 C 425.16755 308.5 425.33261 308.50066 425.5 308.5 C 445.42601 308.5 463.7902 315.15886 478.5 326.375 L 478.5 252.75 C 463.70879 264.19422 445.14874 271 425 271 C 376.67509 271 337.5 231.82491 337.5 183.5 C 337.5 135.17509 376.67509 96 425 96 C 445.14874 96 463.70879 102.80578 478.5 114.25 L 478.5 70.5 C 462.27856 62.804646 444.14776 58.5 425 58.5 C 380.18204 58.5 340.8763 82.093704 318.8125 117.53125 C 296.86967 81.536438 257.23948 57.5 212 57.5 z M 212 95 C 260.32491 95 299.5 134.17509 299.5 182.5 C 299.5 230.15546 261.39985 268.90405 214 269.96875 L 214 307.53125 C 261.6296 308.33575 300 347.17852 300 395 C 300 443.32491 260.82491 482.5 212.5 482.5 C 164.17509 482.5 125 443.32491 125 395 C 125 394.49831 125.02284 393.99968 125.03125 393.5 L 125 393.5 L 125 305.75 C 124.83233 305.91439 124.66675 306.08468 124.5 306.25 L 124.5 271.78125 C 124.66893 271.94685 124.83013 272.11661 125 272.28125 L 125 192 C 124.66274 188.87794 124.5 185.7117 124.5 182.5 C 124.5 134.17509 163.67509 95 212 95 z M 318.1875 248.46875 C 328.45452 265.31067 342.60156 279.53853 359.375 289.90625 C 343.15362 300.03864 329.42194 313.79408 319.3125 330.03125 C 309.04548 313.18933 294.89844 298.96147 278.125 288.59375 C 294.34638 278.46136 308.07806 264.70592 318.1875 248.46875 z "
+       transform="translate(93.999999,161.86218)"
+       id="path2989" />
+  </g>
+</svg>
