@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
-    <notheme if="$host" = '127.0.0.1'" />
+    <notheme if="$host='127.0.0.1'" />
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
 
