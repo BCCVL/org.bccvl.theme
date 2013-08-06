@@ -12,7 +12,7 @@
 
     <!-- for now, add some of the plone content ************************** -->
     <after css:theme-children="head" css:content="head link" />
-    
+
     <!-- inject manifest js config ************************** -->
     <after css:theme-children="head">
         <script type="text/javascript">
