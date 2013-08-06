@@ -13,16 +13,14 @@
     <!-- for now, add some of the plone content ************************** -->
     <after css:theme-children="head" css:content="head link" />
 
-    <!-- inject manifest js config ************************** -->
-    <after css:theme-children="head">
-        <script type="text/javascript">
-            window.bccvlConfig = {
-                visualiser: {
-                    baseUrl: "<xsl:value-of select="$visualiser_base_url" />",
-                },
-            };
-        </script>
+    <!-- inject manifest js config              ************************** -->
+    <after css:theme-children="#js-config">
+        window.bccvlConfig ||= {};
+        window.bccvlConfig.visualiser = {
+            baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
+        };
     </after>
+
 
     <after css:theme="nav">
         <div id="visual-portal-wrapper" style="margin:30px; padding-left:30px; border:10px solid #fcc; -webkit-transform:rotate(1deg);">
