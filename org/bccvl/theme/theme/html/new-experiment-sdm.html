@@ -754,10 +754,13 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				</div><!-- end of status page -->
 
 			</div>
-			<div style="border: 2px red solid; padding: 3em;" class="row-fluid">
+
+			<div class="row-fluid"><div style="background: #ffd; border: 3px yellow solid; padding: 2em; margin: 1em 0" class="span12">
+				<p>..debug stuff..</p>
 				<input type="submit" />
 				<button id="visualiser_debug">Visualise!</button>
-			</div>
+			</div></div>
+
 		</form>
 		</section>
 
@@ -779,7 +782,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 	<!-- debug -->
 	<script src="js/bccvl-form-catcher.js"></script>
-	
+
 
 	<script>
 		$(function(){
@@ -792,7 +795,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 			// hook up visualiser
 			initVisualiser();
-			
+
 
 			// randomly hide all but 1 of the statuses
 			// TODO: this goes away when integrated with actual experiments
