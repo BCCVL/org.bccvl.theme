@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>BCCVL Dashboard</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/general.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="lib/html5shiv/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+
+		<!-- button for narrow screen menu -->
+		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+
+		<!-- project title -->
+		<a class="brand" href="#"><img src="images/bcc_logo_2_small.png">BCC Virtual Lab</a>
+
+		<!-- container for content that will hide under menu when screen is narrow -->
+		<div class="nav-collapse collapse">
+
+			<!-- user menu -->
+			<div class="btn-group pull-right">
+				<a class="btn btn dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="icon-user"></i>Usey M<sup>c</sup>User <i class="caret"></i>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="#"><i class="icon-info-sign"></i> My details</a></li>
+					<li><a href="#"><i class="icon-eye-open"></i> Admin access</a></li>
+					<li class="divider"></li>
+					<li><a href="#"><i class="icon-eject"></i> Log out</a></li>
+				</ul>
+			</div>
+
+			<!-- search field -->
+			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+				<input type="text" name="siteSearchQuery" class="search-query" placeholder="Search">
+			</form>
+
+			<!-- main menu items -->
+			<ul class="nav">
+				<li class="active"><a href="#">Dashboard</a></li>
+				<li               ><a href="#">Data</a></li>
+				<li               ><a href="#">Experiments</a></li>
+				<li               ><a href="#">Published Outputs</a></li>
+			</ul>
+
+		</div><!--/.nav-collapse -->
+
+	</div></div></nav><!-- end of nav wrapper -->
+
+
+<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- container for main content -->
+	<div class="container-fluid bccvl-main">
+
+
+<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div class="bccvl-breadcrumb row-fluid">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<li><a href="#" class="icon-home"></a></li>
+					<li class="separator icon-chevron-right"> </li>
+					<li><a href="#"><i class=""></i> Dashboard</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+<!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-experimentlist">
+
+
+			<div class="row-fluid">
+
+				<!-- list of available experiments -->
+				<div class="span6">
+					<table class="table table-hover">
+						<thead>
+							<tr><th colspan="3">
+								My Experiments
+							</th></tr>
+							<tr><td class="bccvl-searchform" colspan="3">
+
+								<div id="searchClimate" class="bccvl-search-form form-inline">
+									<input name="searchClimate_query" type="text" class="span12" placeholder="filter experiments..">
+								</div>
+							</td></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="">
+									26 Aug 2013
+								</td>
+								<td class="bccvl-table-label">
+									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
+									<p>using: annual mean temp, rainfall wettest qtr</p>
+								</td>
+								<td class="bccvl-table-controls">
+									<a href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+
+		</section>
+
+	</div><!-- end of main content container -->
+
+<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<footer>
+		<div class="container-fluid">
+			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+		</div>
+	</footer>
+
+<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<script src="lib/jquery/jquery-2.0.3.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.js"></script>
+	<script src="js/bccvl-wizard-tabs.js"></script>
+
+	<!-- debug -->
+	<script src="js/bccvl-form-catcher.js"></script>
+
+	<script>
+		$(function(){
+
+			// debug: install form catcher
+			installBCCVLFormCatcher();
+
+			// hook up the wizard buttons
+			makeBCCVLWizardButtons();
+
+			// randomly hide all but 1 of the statuses
+			// TODO: this goes away when integrated with actual experiments
+			var $statuses = $('.bccvl-expstatus').parent();
+			var $luckystatus = $statuses[ Math.floor(Math.random() * $statuses.length) ];
+			$.each( $statuses, function(index, status) {
+				var $status = $(status);
+				if (! $status.is($luckystatus)) {
+					$status.remove();
+				}
+			});
+		});
+	</script>
+
+</body>
+</html>
