@@ -34,7 +34,14 @@
     <rules if-path="++add++org.bccvl.content.experiment">
         <theme href="html/new-experiment-sdm.html" />
 
-        <!-- asdf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </rules>
+
+    <!-- EXPERIMENT DASHBOARD ======================================= -->
+    <rules if-path="experiments">
+        <theme href="html/experiment-dashboard.html" />
+
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>
 
 </rules>
