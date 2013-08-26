@@ -1,18 +1,23 @@
 
-// JS code to catch a form sumission and display the fields.
+// JS code to initialise the visualiser
 
-window.initVisualiser = function() {
+window.bccvl || (window.bccvl = {});
 
-    // find the visualiser debug button
-    var $visualiserDebugButton = $('#visualiser_debug');
-    var visualiserBaseUrl = undefined;
+window.bccvl.visualiser = {
 
-    try {
-        visualiserBaseUrl = window.bccvlConfig.visualiser.baseUrl;
-        console.log("Determined visualiser baseUrl: " + visualiserBaseUrl);
-    } catch (err) {
-        console.error("Failed to determine visualiser base url");
-        throw err;
+    init: function() {
+        var visualiserBaseUrl = undefined;
+
+        try {
+            visualiserBaseUrl = window.bccvlConfig.visualiser.baseUrl;
+            console.log("Determined visualiser baseUrl: " + visualiserBaseUrl);
+        } catch (err) {
+            // swallow the exception (i.e. don't re-throw)
+            console.error("Failed to determine visualiser base url");
+        }
+
+        // find the visualiser debug button
+        var $visualiserDebugButton = $('#visualiser_debug');
     }
 
-}
+};

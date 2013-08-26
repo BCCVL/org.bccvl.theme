@@ -15,8 +15,9 @@
 
     <!-- inject manifest js config              ************************** -->
     <after css:theme-children="#js-config">
-        window.bccvlConfig ||= {};
-        window.bccvlConfig.visualiser = {
+        window.bccvl || (window.bccvl = {});
+        window.bccvl.config || (window.bccvl.config = {});
+        window.bccvl.config.visualiser = {
             baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
         };
     </after>
