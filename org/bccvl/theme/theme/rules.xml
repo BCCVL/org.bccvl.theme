@@ -9,9 +9,9 @@
     <notheme if="$ajax_load" />
 
 
-    <!-- UNIVERSAL RULES -->
+    <!-- UNIVERSAL RULES ============================================ -->
 
-    <!-- for now, add some of the plone content ************************** -->
+    <!-- for now, add some of the plone content ~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="head" css:content="head link" />
 
     <after css:theme="nav">
@@ -21,7 +21,7 @@
         </div>
     </after>
 
-    <!-- inject manifest js config              ************************** -->
+    <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
         window.bccvl.config || (window.bccvl.config = {});
@@ -30,12 +30,11 @@
         };
     </after>
 
-
-    <!-- ADD EXPERIMENT RULES -->
-
-    <!-- inject rules specific to ++add++org.bccvl.content.experiment ****** -->
+    <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="++add++org.bccvl.content.experiment">
         <theme href="html/new-experiment-sdm.html" />
+
+        <!-- asdf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>
 
 </rules>
