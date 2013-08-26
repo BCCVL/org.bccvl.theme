@@ -790,14 +790,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 			// debug: install form catcher
 			installBCCVLFormCatcher();
 
-			// hook up the wizard buttons
-			makeBCCVLWizardButtons();
-
-			// hook up visualiser
-			initVisualiser();
-
-
-			// randomly hide all but 1 of the statuses
+			// debug: randomly hide all but 1 of the statuses
 			// TODO: this goes away when integrated with actual experiments
 			var $statuses = $('.bccvl-expstatus').parent();
 			var $luckystatus = $statuses[ Math.floor(Math.random() * $statuses.length) ];
@@ -808,6 +801,12 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				}
 			});
 
+
+			// hook up the wizard buttons
+			makeBCCVLWizardButtons();
+
+			// hook up visualiser
+			initVisualiser();
 
 		});
 	</script>

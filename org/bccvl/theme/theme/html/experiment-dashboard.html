@@ -89,9 +89,8 @@
 								My Experiments
 							</th></tr>
 							<tr><td class="bccvl-searchform" colspan="3">
-
 								<div id="searchClimate" class="bccvl-search-form form-inline">
-									<input name="searchClimate_query" type="text" class="span12" placeholder="filter experiments..">
+									<input name="searchClimate_query" type="text" class="span12" placeholder="filter experiments.." disabled="disabled">
 								</div>
 							</td></tr>
 						</thead>
@@ -100,18 +99,92 @@
 								<td class="">
 									26 Aug 2013
 								</td>
-								<td class="bccvl-table-label">
+								<td class="bccvl-table-label"><label for="expID1234">
 									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
 									<p>using: annual mean temp, rainfall wettest qtr</p>
-								</td>
+								</label></td>
 								<td class="bccvl-table-controls">
-									<a href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+									<a id="expID1234" href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
 
 						</tbody>
 					</table>
 				</div>
+
+
+				<!-- list of available data -->
+				<div class="span6">
+					<table class="table table-hover">
+						<thead>
+							<tr><th colspan="3">
+								My Datasets
+							</th></tr>
+							<tr><td class="bccvl-searchform" colspan="3">
+								<div id="searchClimate" class="bccvl-search-form form-inline">
+									<input name="searchClimate_query" type="text" class="span12" placeholder="filter datasets.." disabled="disabled">
+								</div>
+							</td></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="bccvl-table-choose">
+									<input type="radio" name="occurrenceInput" id="koalaID" value="koalaID">
+								</td>
+								<td class="bccvl-table-label"><label for="koalaID">
+									<h1>Species name (e.g. Koala)</h1>
+									<p>provenance (e.g. provided by BCCVL)</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a id="expID1234" href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="bccvl-table-choose">
+									<input type="radio" name="occurrenceInput" id="toadID" value="toadID">
+								</td>
+								<td class="bccvl-table-label"><label for="toadID">
+									<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
+									<p>imported from ALA, 8 July 2013</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a id="expID1234" href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="bccvl-table-choose">
+									<input type="radio" name="occurrenceInput" id="shmoadID" value="shmoadID">
+								</td>
+								<td class="bccvl-table-label"><label for="shmoadID">
+									<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
+									<p>imported from ALA, 9 July 2013</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a id="expID1234" href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td class="bccvl-table-choose">
+									<input type="radio" name="occurrenceInput" id="dogID" value="dogID">
+								</td>
+								<td class="bccvl-table-label"><label for="dogID">
+									<h1>Dog</h1>
+									<p>imported from ALA, 10 July 2013</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a id="expID1234" href="#"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+
+
+
+
+
 
 			</div>
 
