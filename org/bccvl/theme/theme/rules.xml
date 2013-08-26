@@ -8,10 +8,18 @@
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
 
-    <theme href="html/new-experiment-sdm.html" if-path="++add++org.bccvl.content.experiment" />
+
+    <!-- UNIVERSAL RULES -->
 
     <!-- for now, add some of the plone content ************************** -->
     <after css:theme-children="head" css:content="head link" />
+
+    <after css:theme="nav">
+        <div id="visual-portal-wrapper" style="margin:30px; padding-left:30px; border:10px solid #fcc; -webkit-transform:rotate(1deg);">
+            <xsl:copy-of css:select="#portal-top" />
+            <div style="clear: both"></div>
+        </div>
+    </after>
 
     <!-- inject manifest js config              ************************** -->
     <after css:theme-children="#js-config">
@@ -23,12 +31,11 @@
     </after>
 
 
-    <after css:theme="nav">
-        <div id="visual-portal-wrapper" style="margin:30px; padding-left:30px; border:10px solid #fcc; -webkit-transform:rotate(1deg);">
-            <xsl:copy-of css:select="#portal-top" />
-            <div style="clear: both"></div>
-        </div>
-    </after>
+    <!-- ADD EXPERIMENT RULES -->
 
+    <!-- inject rules specific to ++add++org.bccvl.content.experiment ****** -->
+    <rules if-path="++add++org.bccvl.content.experiment">
+        <theme href="html/new-experiment-sdm.html" />
+    </rules>
 
 </rules>
