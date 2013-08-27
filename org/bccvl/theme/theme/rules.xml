@@ -8,6 +8,8 @@
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
 
+    <!-- <notheme if="'true'='true'" /> -->
+
 
     <!-- UNIVERSAL RULES ============================================ -->
 
@@ -30,18 +32,30 @@
         };
     </after>
 
+    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <merge attributes="href" css:theme="a.bccvllinks-home"        content="//a[@id='portal-logo']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiments" content="//li[@id='portaltab-experiments']/a" />
+
     <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++org.bccvl.content.experiment">
+    <rules if-path="++add++org.bccvl.content.experiment/">
         <theme href="html/new-experiment-sdm.html" />
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>
 
     <!-- EXPERIMENT DASHBOARD ======================================= -->
-    <rules if-path="experiments">
+    <rules if-path="experiments/">
         <theme href="html/experiment-dashboard.html" />
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </rules>
+
+    <!-- EXPERIMENT RESULTS ========================================= -->
+    <rules if-path="view/">
+        <theme href="html/experiment-results.html" />
+
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
     </rules>
 
 </rules>
