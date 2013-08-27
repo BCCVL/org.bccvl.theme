@@ -32,9 +32,32 @@
         };
     </after>
 
-    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <merge attributes="href" css:theme="a.bccvllinks-home"        content="//a[@id='portal-logo']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiments" content="//li[@id='portaltab-experiments']/a" />
+    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    This section replaces the href attribute of the theme links with
+    the actual content links.
+
+    We use css-selectors to look up the anchors (links) in the theme.
+    Specifically, we're using css classes to classify where an anchor should
+    link to link.
+
+    We use XPATH to lookup the desired anchor in Plone's content page.
+
+    We use Diazo's merge function to merge href attribute in the content with
+    the href attribute in the template. For this reason, the href attribute
+    in the template should always be undefined, i.e. no href attribute should
+    be defined.
+
+    -->
+
+    <merge attributes="href" css:theme="a.bccvllinks-home"          content="//li[@id='portaltab-index_html']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-news"          content="//li[@id='portaltab-news']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-events"        content="//li[@id='portaltab-events']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-users"         content="//li[@id='portaltab-Members']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-datasets"      content="//li[@id='portaltab-datasets']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-functions"     content="//li[@id='portaltab-functions']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-knowledgebase" content="//li[@id='portaltab-knowledgebase']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiments"   content="//li[@id='portaltab-experiments']/a" />
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="++add++org.bccvl.content.experiment/">
