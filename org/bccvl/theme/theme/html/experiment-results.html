@@ -22,21 +22,21 @@
 		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
 		<!-- project title -->
-		<a class="brand" href=""><img src="images/bcc_logo_2_small.png">BCC Virtual Lab</a>
+		<a class="brand"><img src="images/bcc_logo_2_small.png">BCC Virtual Lab</a>
 
 		<!-- container for content that will hide under menu when screen is narrow -->
 		<div class="nav-collapse collapse">
 
 			<!-- user menu -->
 			<div class="btn-group pull-right">
-				<a class="btn btn dropdown-toggle" data-toggle="dropdown" href="">
+				<a class="btn btn dropdown-toggle" data-toggle="dropdown">
 					<i class="icon-user"></i>Usey M<sup>c</sup>User <i class="caret"></i>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href=""><i class="icon-info-sign"></i> My details</a></li>
-					<li><a href=""><i class="icon-eye-open"></i> Admin access</a></li>
+					<li><a><i class="icon-info-sign"></i> My details</a></li>
+					<li><a><i class="icon-eye-open"></i> Admin access</a></li>
 					<li class="divider"></li>
-					<li><a href=""><i class="icon-eject"></i> Log out</a></li>
+					<li><a><i class="icon-eject"></i> Log out</a></li>
 				</ul>
 			</div>
 
@@ -47,10 +47,10 @@
 
 			<!-- main menu items -->
 			<ul class="nav">
-				<li><a href="">Dashboard</a></li>
-				<li><a href="">Data</a></li>
-				<li class="active"><a href="">Experiments</a></li>
-				<li><a href="">Published Outputs</a></li>
+				<li><a>Dashboard</a></li>
+				<li><a>Data</a></li>
+				<li class="active"><a>Experiments</a></li>
+				<li><a>Published Outputs</a></li>
 			</ul>
 
 		</div><!--/.nav-collapse -->
@@ -67,11 +67,11 @@
 		<div class="bccvl-breadcrumb row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb">
-					<li><a href="" class="icon-home"></a></li>
+					<li><a  class="icon-home"></a></li>
 					<li class="separator icon-chevron-right"> </li>
-					<li><a href=""> Experiments</a></li>
+					<li><a> Experiments</a></li>
 					<li class="separator icon-chevron-right"> </li>
-					<li><a href=""> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
+					<li><a> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
 				</ul>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 			-->
 			<div class="row-fluid">
 				<!-- show the current status -->
-				<div class="span12 bccvl-expstatus alert alert-block alert-info">
+				<div class="span12 broken bccvl-expstatus alert alert-block alert-info">
 					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
 					<p class="lead">this Experiment has <strong>not been started</strong>.</p>
 					<button class="broken btn btn-primary btn-large">start Experiment</button>
@@ -99,16 +99,17 @@
 
 			<div class="row-fluid">
 				<!-- show the current status -->
-				<div class="span12 bccvl-expstatus alert alert-block">
+				<div class="span12 broken bccvl-expstatus alert alert-block">
 					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
 					<p class="lead">this Experiment is <strong>running</strong>.</p>
 					<button class="broken btn btn-warning">abandon Experiment</button>
+
 				</div>
 			</div>
 
 			<div class="row-fluid">
 				<!-- show the current status -->
-				<div class="span12 bccvl-expstatus alert alert-block alert-error">
+				<div class="span12 broken bccvl-expstatus alert alert-block alert-error">
 					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
 					<p class="lead">this Experiment stopped with an <strong>error</strong>.</p>
 					<p>
@@ -121,7 +122,7 @@
 
 			<div class="row-fluid">
 				<!-- show the current status -->
-				<div class="span12 bccvl-expstatus alert alert-success">
+				<div class="span12 broken bccvl-expstatus alert alert-success">
 					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
 					<p>
 						this Experiment is <strong>complete</strong>. The results are available below.
@@ -129,7 +130,6 @@
 				</div>
 
 				<div class="row-fluid bccvl-buttonbar">
-					<!-- dunno where to put these, leave them here for now -->
 					<div class="span3">
 						<div class="btn-group btn-block">
 							<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown" href="">
@@ -146,7 +146,6 @@
 					<div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
 					<div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
 				</div>
-
 
 			</div>
 
