@@ -16,13 +16,6 @@
     <!-- for now, add some of the plone content ~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="head" css:content="head link" />
 
-    <after css:theme="nav">
-        <div id="visual-portal-wrapper" style="margin:30px; padding-left:30px; border:10px solid #fcc; -webkit-transform:rotate(1deg);">
-            <xsl:copy-of css:select="#portal-top" />
-            <div style="clear: both"></div>
-        </div>
-    </after>
-
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
@@ -50,14 +43,29 @@
 
     -->
 
-    <merge attributes="href" css:theme="a.bccvllinks-home"          content="//li[@id='portaltab-index_html']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-news"          content="//li[@id='portaltab-news']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-events"        content="//li[@id='portaltab-events']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-users"         content="//li[@id='portaltab-Members']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-datasets"      content="//li[@id='portaltab-datasets']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-functions"     content="//li[@id='portaltab-functions']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-knowledgebase" content="//li[@id='portaltab-knowledgebase']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiments"   content="//li[@id='portaltab-experiments']/a" />
+    <!-- portaltab (high level grouping) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <merge attributes="href" css:theme="a.bccvllinks-home"              content="//li[@id='portaltab-index_html']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-news"              content="//li[@id='portaltab-news']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-events"            content="//li[@id='portaltab-events']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-users"             content="//li[@id='portaltab-Members']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-datasets"          content="//li[@id='portaltab-datasets']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-functions"         content="//li[@id='portaltab-functions']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />
+
+    <!-- contentview (content level grouping) ~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- experiment -->
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-view"   content="//li[@id='contentview-view']/a" />
+
+    <!--
+        Link to create a new experiment:
+        //a[@id="org-bccvl-content-experiment"]
+
+        Note: This link is NOT available when viewing a specific experiment.
+    -->
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-experiment']" />
+
+    <!-- miscellaneous ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="++add++org.bccvl.content.experiment/">
