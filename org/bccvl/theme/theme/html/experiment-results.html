@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>BCCVL layout</title>
+	<title>BCCVL Experiment Results</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -22,35 +22,35 @@
 		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
 		<!-- project title -->
-		<a class="brand" href="#"><img src="images/bcc_logo_2_small.png">BCC Virtual Lab</a>
+		<a class="brand" href=""><img src="images/bcc_logo_2_small.png">BCC Virtual Lab</a>
 
 		<!-- container for content that will hide under menu when screen is narrow -->
 		<div class="nav-collapse collapse">
 
 			<!-- user menu -->
 			<div class="btn-group pull-right">
-				<a class="btn btn dropdown-toggle" data-toggle="dropdown" href="#">
+				<a class="btn btn dropdown-toggle" data-toggle="dropdown" href="">
 					<i class="icon-user"></i>Usey M<sup>c</sup>User <i class="caret"></i>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="#"><i class="icon-info-sign"></i> My details</a></li>
-					<li><a href="#"><i class="icon-eye-open"></i> Admin access</a></li>
+					<li><a href=""><i class="icon-info-sign"></i> My details</a></li>
+					<li><a href=""><i class="icon-eye-open"></i> Admin access</a></li>
 					<li class="divider"></li>
-					<li><a href="#"><i class="icon-eject"></i> Log out</a></li>
+					<li><a href=""><i class="icon-eject"></i> Log out</a></li>
 				</ul>
 			</div>
 
 			<!-- search field -->
 			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-				<input type="text" name="siteSearchQuery" class="search-query" placeholder="Search">
+				<input type="text" name="siteSearchQuery" class="search-query broken" placeholder="Search">
 			</form>
 
 			<!-- main menu items -->
 			<ul class="nav">
-				<li><a href="#">Dashboard</a></li>
-				<li><a href="#">Data</a></li>
-				<li class="active"><a href="#">Experiments</a></li>
-				<li><a href="#">Published Outputs</a></li>
+				<li><a href="">Dashboard</a></li>
+				<li><a href="">Data</a></li>
+				<li class="active"><a href="">Experiments</a></li>
+				<li><a href="">Published Outputs</a></li>
 			</ul>
 
 		</div><!--/.nav-collapse -->
@@ -67,692 +67,150 @@
 		<div class="bccvl-breadcrumb row-fluid">
 			<div class="span12">
 				<ul class="breadcrumb">
-					<li><a href="#" class="icon-home"></a></li>
+					<li><a href="" class="icon-home"></a></li>
 					<li class="separator icon-chevron-right"> </li>
-					<li><a href="#"> Experiments</a></li>
+					<li><a href=""> Experiments</a></li>
 					<li class="separator icon-chevron-right"> </li>
-					<li><a href="#"> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
+					<li><a href=""> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
 				</ul>
 			</div>
 		</div>
 
 
-<!-- experiment header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- hmm actually not sure if we really need the tabs on the mockups -->
+<!-- experiment results ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+		<section class="bccvl-experimentresults">
 
-<!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-		<section class="bccvl-experimentdetails tabbable">
-		<form id="experimentSetup" method="" autocomplete="on" action="" enctype="text/plain">
-
-			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
-
-			<!-- tabs -->
-			<div class="bccvl-wizardtabs">
-				<div class="bccvl-wizardtabs-navbtns">
-					<button class="btn bccvl-wizardtabs-prev"><i class="icon-chevron-left"></i>previous</button>
-					<button class="btn bccvl-wizardtabs-next">next<i class="icon-chevron-right"></i></button>
+			<!--
+			four states:
+			- not started yet
+			- started/queued, not finished
+			- started/queued, but died with an error
+			- finished
+			-->
+			<div class="row-fluid">
+				<!-- show the current status -->
+				<div class="span12 bccvl-expstatus alert alert-block alert-info">
+					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
+					<p class="lead">this Experiment has <strong>not been started</strong>.</p>
+					<button class="broken btn btn-primary btn-large">start Experiment</button>
 				</div>
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#tab-config" data-toggle="tab">Configuration</a></li>
-					<li><a href="#tab-occur" data-toggle="tab">Occurrences</a></li>
-					<li><a href="#tab-absent" data-toggle="tab">Absences</a></li>
-					<li><a href="#tab-enviro" data-toggle="tab">Environment</a></li>
-					<li><a href="#tab-climate" data-toggle="tab">Climate</a></li>
-					<li><a href="#tab-results" data-toggle="tab">Status</a></li>
-				</ul>
 			</div>
 
-			<!-- the contents of the wizard tab panes -->
-			<div class="tab-content">
+			<div class="row-fluid">
+				<!-- show the current status -->
+				<div class="span12 bccvl-expstatus alert alert-block">
+					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
+					<p class="lead">this Experiment is <strong>running</strong>.</p>
+					<button class="broken btn btn-warning">abandon Experiment</button>
+				</div>
+			</div>
 
-				<!-- page: config  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane active" id="tab-config">
+			<div class="row-fluid">
+				<!-- show the current status -->
+				<div class="span12 bccvl-expstatus alert alert-block alert-error">
+					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
+					<p class="lead">this Experiment stopped with an <strong>error</strong>.</p>
+					<p>
+						See the error details in the results section below.  If the error is unlikely to recur,
+						you can re-attempt the experiment.
+					</p>
+					<button class="broken btn btn-danger">start Experiment again</button>
+				</div>
+			</div>
 
-					<!-- experiment title, algo -->
-						<div class="row-fluid">
-
-						<div class="span4">
-
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Species Distribution Model Production Algorithms
-									</th></tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="sdmAlgorithm" id="bioclim" value="bioclim"></td>
-										<td class="bccvl-table-label"><label for="bioclim">
-											<h1>Bioclim <small>Bioclimatic Envelope Model</small></h1>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-info-sign" title="more information"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="sdmAlgorithm" id="brt" value="brt"></td>
-										<td class="bccvl-table-label"><label for="brt">
-											<h1>BRT <small>Boosted Regression Trees</small></h1>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-info-sign" title="more information"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<div class="span8">
-							<input type="text" name="expName" class="bccvl-expname input-block-level" placeholder="name for this experiment">
-							<textarea name="expDecription" class="input-block-level bccvl-expdesc" rows="6" placeholder="description of experiment"></textarea>
-						</div>
-					</div>
-
-					<!-- config for algorithm -->
-					<div class="row-fluid">
-						<div class="bccvl-algoconfig span12" id="algoConfig">
-
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#algoConfig" href="#bioclimConfig">
-										configuration for <strong>bioclim</strong>
-									</a>
-								</div>
-								<div id="bioclimConfig" class="accordion-body collapse in">
-									<div class="accordion-inner bccvl-algo-config">
-										no configuration is required for the bioclim algorithm.
-									</div>
-								</div>
-							</div>
-
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#someOtherAlgo">
-										configuration for <strong>BRT</strong>
-									</a>
-								</div>
-								<div id="someOtherAlgo" class="accordion-body collapse">
-									<div class="accordion-inner bccvl-algo-config">
-
-										<fieldset class="form-horizontal">
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tree-complexity">tree complexity</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtTreeComplexity" id="cfg-brt-tree-complexity" value="1">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-learning-rate">learning rate</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtLearningRate" id="cfg-brt-learning-rate" value="0.01">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-bag-fraction">bag fraction</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtBagFraction" id="cfg-brt-bag-fraction" value="0.75">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-var-monotone">var monotone</label>
-												<div class="controls">
-													<label>
-														<input type="radio" name="cfgBrtVarMonotone" id="cfg-brt-var-monotone-minusone" value="-1">
-														-1
-													</label>
-													<label>
-														<input type="radio" name="cfgBrtVarMonotone" id="cfg-brt-var-monotone-plusone" value="1">
-														+1
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-n-folds">n folds</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtNFolds" id="cfg-brt-n-folds" value="10">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-prev-stratify">prev stratify</label>
-												<div class="controls">
-													<label>
-														<input type="checkbox" name="cfgBrtPrevStratify" id="cfg-brt-prev-stratify" checked="checked">
-														stratify the folds?
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-family">family</label>
-												<div class="controls">
-														<select name="cfgBrtFamily" id="cfg-brt-family">
-															<option value="bernoulli">bernoulli (binomial)</option>
-															<option value="poisson">poisson</option>
-															<option value="laplace">laplace</option>
-															<option value="gaussian">gaussian</option>
-														</select>
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-n-trees">trees added each cycle</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtNTrees" id="cfg-brt-n-trees" value="50">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-max-trees">max trees</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtMaxTrees" id="cfg-brt-max-trees" value="1000">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tolerance-method">tolerance method</label>
-												<div class="controls">
-														<select name="cfgBrtToleranceMethod" id="cfg-brt-tolerance-method">
-															<option value="auto">auto</option>
-															<option value="fixed">fixed</option>
-														</select>
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tolerance-value">tolerance value</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtToleranceValue" id="cfg-brt-tolerance-value" value="0.001">
-												</div>
-											</div>
-
-										</fieldset>
-
-
-<!--
-xxx  offset = NULL
-xxx  # fold.vector = NULL	a fold vector to be read in for cross validation with offsets
-0-z  # tree.complexity = 1	sets the complexity of individual trees
-+ve < ~0.1  # learning.rate = 0.01	sets the weight applied to individual trees
-0-1  # bag.fraction = 0.75	sets the proportion of observations used in selecting variables
-xxx  # site.weights = rep(1, nrow(data))	allows varying weighting for sites
-1,-1 # var.monotone = rep(0, length(gbm.x))	restricts responses to individual predictors to monotone
-1-z  # n.folds = 10	number of folds
-t/f  # prev.stratify = TRUE	prevalence stratify the folds - only for presence/absence data
-seln # family = "bernoulli"	family - bernoulli (=binomial), poisson, laplace or gaussian
-1-z  # n.trees = 50	number of initial trees to fit
-xxx  # step.size = n.trees	numbers of trees to add at each cycle
-1-z  # max.trees = 10000	max number of trees to fit before stopping
-seln # tolerance.method = "auto"	method to use in deciding to stop - "fixed" or "auto"
-+ve < 1 # tolerance = 0.001	tolerance value to use - if method == fixed is absolute,
-        # if auto is multiplier * total mean deviance
-
-t/f  # keep.data = FALSE	Logical. keep raw data in final model
-t/f  # plot.main = TRUE	Logical. plot hold-out deviance curve
-t/f  # plot.folds = FALSE	Logical. plot the individual folds as well
-t/f  # verbose = TRUE	Logical. control amount of screen reporting
-t/f  # silent = FALSE	Logical. to allow running with no output for simplifying model)
-
-t/f  # keep.fold.models = FALSE 	Logical. keep the fold models from cross valiation
-t/f  # keep.fold.vector = FALSE	Logical. allows the vector defining fold membership to be kept
-t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observations from cross-validation
--->
-									</div>
-								</div>
-							</div><!-- end of accordion group for single algo -->
-						</div>
-					</div>
+			<div class="row-fluid">
+				<!-- show the current status -->
+				<div class="span12 bccvl-expstatus alert alert-success">
+					<a class="close fine" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
+					<p>
+						this Experiment is <strong>complete</strong>. The results are available below.
+					</p>
 				</div>
 
-				<!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-occur">
-					<div class="row-fluid">
-
-						<!-- list of available data -->
-						<div class="span4">
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Species Occurrence Datasets
-									</th></tr>
-									<tr><td class="bccvl-searchform" colspan="3">
-										<div id="searchOccurrence" class="bccvl-search-form form-inline">
-											<input name="searchOccurrence_query" type="text" class="span8" placeholder="find more species..">
-											<select name="searchOccurrence_source" class="span4">
-												<option value="ala">at ALA</option>
-												<option value="umm">count 'em yerself</option>
-											</select>
-										</div>
-									</td></tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="koalaID" value="koalaID">
-										</td>
-										<td class="bccvl-table-label"><label for="koalaID">
-											<h1>Species name (e.g. Koala)</h1>
-											<p>provenance (e.g. provided by BCCVL)</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="toadID" value="toadID">
-										</td>
-										<td class="bccvl-table-label"><label for="toadID">
-											<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
-											<p>imported from ALA, 8 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="shmoadID" value="shmoadID">
-										</td>
-										<td class="bccvl-table-label"><label for="shmoadID">
-											<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
-											<p>imported from ALA, 9 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="dogID" value="dogID">
-										</td>
-										<td class="bccvl-table-label"><label for="dogID">
-											<h1>Dog</h1>
-											<p>imported from ALA, 10 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
+				<div class="row-fluid bccvl-buttonbar">
+					<!-- dunno where to put these, leave them here for now -->
+					<div class="span3">
+						<div class="btn-group btn-block">
+							<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown" href="">
+								<strong>delete</strong> this Experiment
+							</a>
+							<ul class="dropdown-menu">
+								<li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
+								<li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
+								<li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
+							</ul>
 						</div>
 					</div>
-				</div>
-
-				<!-- page: species absences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-absent">
-					<div class="row-fluid">
-
-						<!-- list of available data -->
-						<div class="span4">
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Species Absence Datasets
-									</th></tr>
-									<tr><td class="bccvl-searchform" colspan="3">
-										<div id="searchAbsence" class="bccvl-search-form form-inline">
-											<input name="searchAbsence_query" type="text" class="span8" placeholder="find more species..">
-											<select name="searchAbsence_source" class="span4">
-												<option value="ala">at ALA</option>
-											</select>
-										</div>
-									</td></tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="koalaID" value="koalaID">
-										</td>
-										<td class="bccvl-table-label"><label for="koalaID">
-											<h1>Species name (e.g. Koala)</h1>
-											<p>provenance (e.g. provided by BCCVL)</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="toadID" value="toadID">
-										</td>
-										<td class="bccvl-table-label"><label for="toadID">
-											<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
-											<p>imported from ALA, 8 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="shmoadID" value="shmoadID">
-										</td>
-										<td class="bccvl-table-label"><label for="shmoadID">
-											<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
-											<p>imported from ALA, 9 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="dogID" value="dogID">
-										</td>
-										<td class="bccvl-table-label"><label for="dogID">
-											<h1>Dog</h1>
-											<p>imported from ALA, 10 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- page: environmental layers  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-enviro">
-					<div class="row-fluid">
-
-						<!-- list of available data -->
-						<div class="span4">
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Environmental Datasets
-									</th></tr>
-									<tr><td class="bccvl-searchform" colspan="3">
-										<div id="searchEnvironmental" class="bccvl-search-form form-inline">
-											<input name="searchEnvironmental_query" type="text" class="span8" placeholder="find more environmental data..">
-											<select name="searchEnvironmental_source" class="span4">
-												<option value="tern">at TERN</option>
-											</select>
-										</div>
-									</td></tr>
-									<tr><td colspan="3">
-										<p><i>Coming: selectors for resolution, coverage etc</i></p>
-									</td></tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td colspan="3" class="bccvl-table-empty">
-											<p>nothing to show</p>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<!-- page: climate layers ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-climate">
-					<div class="row-fluid">
-
-						<!-- list of available data -->
-						<div class="span4">
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Climate Datasets
-									</th></tr>
-									<tr><td class="bccvl-searchform" colspan="3">
-
-										<div id="searchClimate" class="bccvl-search-form form-inline">
-											<input name="searchClimate_query" type="text" class="span8" placeholder="find more climate data..">
-											<select name="searchClimate_source" class="span4">
-												<option value="worldclim">from WorldClim</option>
-											</select>
-										</div>
-									</td></tr>
-									<tr><td colspan="3">
-										<p><i>Coming: selectors for resolution, coverage etc</i></p>
-									</td></tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim1" value="bioclim1"></td>
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>annual mean temperature <small>0.5&deg; (5km) resolution</small></h1><p>bioclim1 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim2" value="bioclim2"></td>
-										<td class="bccvl-table-label"><label for="bioclim2">
-											<h1>mean diurnal range <small>0.5&deg; (5km) resolution</small></h1><p>bioclim2 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim3" value="bioclim3"></td>
-										<td class="bccvl-table-label"><label for="bioclim3">
-											<h1>bioclim3 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim3 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim4" value="bioclim4"></td>
-										<td class="bccvl-table-label"><label for="bioclim4">
-											<h1>bioclim4 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim4 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim5" value="bioclim5"></td>
-										<td class="bccvl-table-label"><label for="bioclim5">
-											<h1>bioclim5 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim5 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td class="bccvl-table-choose"><input type="checkbox" name="climateInput" id="bioclim6" value="bioclim6"></td>
-										<td class="bccvl-table-label"><label for="bioclim6">
-											<h1>bioclim6 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim6 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
-						</div>
-					</div>
+					<div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
+					<div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
+					<div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
 				</div>
 
 
-				<!-- page: status  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-results">
-					<!--
-					four states:
-					- not started yet
-					- started/queued, not finished
-					- started/queued, but died with an error
-					- finished
-					-->
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-block alert-info">
-							<a href="#" class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p class="lead">this Experiment has <strong>not been started</strong>.</p>
-							<button class="btn btn-primary btn-large">start Experiment</button>
-						</div>
+			</div>
+
+			<div class="row-fluid">
+				<!-- list of (potential) results -->
+				<div class="span4">
+
+					<table class="table table-hover">
+						<thead>
+							<tr><th colspan="3">
+								Experiment Results
+							</th></tr>
+						</thead>
+						<tbody>
+							<tr class="">
+								<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
+									<h1>distribution model <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
+									<p>using annual mean temperature, bioclim3 and bioclim5</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
+									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
+								</td>
+							</tr>
+							<tr class="">
+								<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
+									<h1>current projection <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
+									<p>using annual mean temperature, bioclim3 and bioclim5</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
+									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
+								</td>
+							</tr>
+							<tr class="">
+								<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
+									<h1>terms of use <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
+									<p>terms of use for these results</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
+									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
+								</td>
+							</tr>
+							<tr class="">
+								<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
+									<h1>attributions <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
+									<p>attributions for these results</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
+									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- preview area -->
+				<div class="span8">
+					<div class="bccvl-preview-pane well">
+						<p class="empty">visualisation</p>
 					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-block">
-							<a href="#" class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p class="lead">this Experiment is <strong>running</strong>.</p>
-							<button class="btn btn-warning">abandon Experiment</button>
-						</div>
-					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-block alert-error">
-							<a href="#" class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p class="lead">this Experiment stopped with an <strong>error</strong>.</p>
-							<p>
-								See the error details in the results section below.  If the error is unlikely to recur,
-								you can re-attempt the experiment.
-							</p>
-							<button class="btn btn-danger">start Experiment again</button>
-						</div>
-					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-success">
-							<a href="#" class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p>
-								this Experiment is <strong>complete</strong>. The results are available below.
-							</p>
-						</div>
-
-						<div class="row-fluid bccvl-buttonbar">
-							<!-- dunno where to put these, leave them here for now -->
-							<div class="span3">
-								<div class="btn-group btn-block">
-									<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown" href="#">
-										<strong>delete</strong> this Experiment
-									</a>
-									<ul class="dropdown-menu">
-										<li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
-										<li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-										<li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="span3"><button class="btn btn-block"><strong>discard</strong> these results</button></div>
-							<div class="span3"><button class="btn btn-block"><strong>download</strong> these results</button></div>
-							<div class="span3"><button class="btn btn-block"><strong>copy</strong> this Experiment</button></div>
-						</div>
-
-
-					</div>
-
-					<div class="row-fluid">
-						<!-- list of (potential) results -->
-						<div class="span4">
-
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Experiment Results
-									</th></tr>
-								</thead>
-								<tbody>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>distribution model <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>current projection <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>terms of use <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>terms of use for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>attributions <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>attributions for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href="#"><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href="#"><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
-						</div>
-
-				</div><!-- end of status page -->
-
+				</div>
 			</div>
 
 			<div class="row-fluid"><div style="background: #ffd; border: 3px yellow solid; padding: 2em; margin: 1em 0" class="span12">
@@ -761,7 +219,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				<button id="visualiser_debug">Visualise!</button>
 			</div></div>
 
-		</form>
 		</section>
 
 	</div><!-- end of main content container -->
@@ -790,15 +247,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 			// debug: install form catcher
 			installBCCVLFormCatcher();
 
-			// hook up the wizard buttons
-			makeBCCVLWizardButtons();
-
-			// hook up visualiser
-			initVisualiser();
-
-
-			// randomly hide all but 1 of the statuses
-			// TODO: this goes away when integrated with actual experiments
+			// debug: randomly hide all but 1 of the statuses
 			var $statuses = $('.bccvl-expstatus').parent();
 			var $luckystatus = $statuses[ Math.floor(Math.random() * $statuses.length) ];
 			$.each( $statuses, function(index, status) {
@@ -808,6 +257,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				}
 			});
 
+			// init the visualiser
+			bccvl.visualiser.init();
 
 		});
 	</script>
