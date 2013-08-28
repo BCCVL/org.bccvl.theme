@@ -43,6 +43,5 @@
             </xsl:for-each>
         </after>
 
-        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>
 </rules>

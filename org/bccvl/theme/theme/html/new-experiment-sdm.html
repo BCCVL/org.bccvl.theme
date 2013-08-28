@@ -783,12 +783,17 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<!-- debug -->
 	<script src="js/bccvl-form-catcher.js"></script>
 
-
-	<script>
+	<script class="non-plone">
 		$(function(){
 
 			// debug: install form catcher
 			installBCCVLFormCatcher();
+
+		});
+	</script>
+
+	<script>
+		$(function(){
 
 			// debug: randomly hide all but 1 of the statuses
 			var $statuses = $('.bccvl-expstatus').parent();
