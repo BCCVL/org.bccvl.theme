@@ -7,7 +7,8 @@
     <rules if-path="++add++org.bccvl.content.experiment/">
         <theme href="html/new-experiment-sdm.html" />
 
-        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <copy attributes="method action enctype" css:theme="form#experimentSetup" css:content="#form" />
+
     </rules>
 
 </rules>
