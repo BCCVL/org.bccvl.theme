@@ -1,0 +1,48 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- EXPERIMENT LIST ============================================ -->
+    <rules if-path="experiments/">
+        <theme href="html/experiment-list.html" />
+
+        <!--
+        Get the list of experiments
+
+        Path to ul that contains the list of experiments:
+
+        div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul
+
+        The experiment anchor within the ul:
+
+        div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a
+
+        <a href="https://192.168.100.100/_debug/bccvl/experiments/my-exp" class="state-private navTreeFolderish contenttype-org-bccvl-content-experiment" title="this is my">
+            <span>My exp</span>
+        </a>
+
+        The anchor has the Experiment description as its 'title'.
+        The anchor has the Experiment name as a span inside the a.
+        -->
+        <after css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
+            <xsl:for-each css:select="div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a">
+                <tr>
+                    <td class="broken">28 Aug 2013</td>
+                    <td class="bccvl-table-label">
+                        <h1><xsl:copy-of select="string(@title)" /></h1>
+                        <p><xsl:copy-of select="span/text()" /></p>
+                    </td>
+                    <td class="bccvl-table-controls">
+                        <xsl:element name="a">
+                            <xsl:attribute name="href"><xsl:value-of select="string(@href)" /></xsl:attribute>
+                            <i class="icon-chevron-right"></i>
+                        </xsl:element>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </after>
+
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </rules>
+</rules>

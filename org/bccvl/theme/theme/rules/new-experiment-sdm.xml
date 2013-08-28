@@ -1,0 +1,13 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- NEW SDM EXPERIMENT ========================================= -->
+    <rules if-path="++add++org.bccvl.content.experiment/">
+        <theme href="html/new-experiment-sdm.html" />
+
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </rules>
+
+</rules>
