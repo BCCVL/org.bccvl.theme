@@ -14,6 +14,7 @@ a:not([href]),
     box-shadow: inset 0 0 20px 3px #fdd, 0 0 5px 3px #fdd ! important;
 }
 
+
 a[href=""].fine,
 a[href="#"].fine,
 a:not([href]).fine {

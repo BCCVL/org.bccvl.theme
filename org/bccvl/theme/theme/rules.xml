@@ -25,8 +25,8 @@
         };
     </after>
 
-    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--
     This section replaces the href attribute of the theme links with
     the actual content links.
 
@@ -40,10 +40,9 @@
     the href attribute in the template. For this reason, the href attribute
     in the template should always be undefined, i.e. no href attribute should
     be defined.
-
     -->
 
-    <!-- portaltab (high level grouping) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- portaltab (high level grouping) -->
     <merge attributes="href" css:theme="a.bccvllinks-home"              content="//li[@id='portaltab-index_html']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-news"              content="//li[@id='portaltab-news']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-events"            content="//li[@id='portaltab-events']/a" />
@@ -53,7 +52,7 @@
     <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />
 
-    <!-- contentview (content level grouping) ~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- contentview (content level grouping) -->
     <!-- experiment -->
     <merge attributes="href" css:theme="a.bccvllinks-experiment-view"   content="//li[@id='contentview-view']/a" />
 
@@ -65,7 +64,7 @@
     -->
     <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-experiment']" />
 
-    <!-- miscellaneous ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- miscellaneous -->
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="++add++org.bccvl.content.experiment/">
@@ -74,9 +73,9 @@
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>
 
-    <!-- EXPERIMENT DASHBOARD ======================================= -->
+    <!-- EXPERIMENT LIST ============================================ -->
     <rules if-path="experiments/">
-        <theme href="html/experiment-dashboard.html" />
+        <theme href="html/experiment-list.html" />
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </rules>

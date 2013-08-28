@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>BCCVL Dashboard</title>
+	<title>BCCVL Experiment List</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -68,8 +68,8 @@
 			<div class="span12">
 				<ul class="breadcrumb">
 					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"> </li>
-					<li><a><i class=""></i> Dashboard</a></li>
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-experiments">Experiments</a></li>
 				</ul>
 			</div>
 		</div>
@@ -81,9 +81,14 @@
 
 			<div class="row-fluid">
 
+				<!-- some controls -->
+				<div class="span3">
+					<a class="btn btn-primary btn-large btn-block bccvllinks-experiment-new">new Experiment</a>
+				</div>
+
 				<!-- list of available experiments -->
-				<div class="span5 offset1">
-					<table class="table table-hover">
+				<div class="span9">
+					<table class="table table-hover bccvl-experimenttable">
 						<thead>
 							<tr><th colspan="3">
 								My Experiments
@@ -95,74 +100,31 @@
 							</td></tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td class="">
+							<tr class="broken">
+								<td>
 									26 Aug 2013
 								</td>
-								<td class="bccvl-table-label"><label for="expID1234">
+								<td class="bccvl-table-label">
 									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
 									<p>using: annual mean temp, rainfall wettest qtr</p>
-								</label></td>
+								</td>
 								<td class="bccvl-table-controls">
 									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr class="broken">
+								<td>
+									28 Aug 2013
+								</td>
+								<td class="bccvl-table-label">
+									<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>
+									<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>
+								</td>
+								<td class="bccvl-table-controls">
+									<a id="expID3456"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
 
-						</tbody>
-					</table>
-				</div>
-
-
-				<!-- list of available data -->
-				<div class="span4 offset1 broken">
-					<table class="table table-hover">
-						<thead>
-							<tr><th colspan="3">
-								My Datasets
-							</th></tr>
-							<tr><td class="bccvl-searchform" colspan="3">
-								<div id="searchClimate" class="bccvl-search-form form-inline">
-									<input name="searchClimate_query" type="text" class="span12" placeholder="filter datasets.." disabled="disabled">
-								</div>
-							</td></tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="bccvl-table-label"><label for="koalaID">
-									<h1>Species name (e.g. Koala)</h1>
-									<p>provenance (e.g. provided by BCCVL)</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td class="bccvl-table-label"><label for="toadID">
-									<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
-									<p>imported from ALA, 8 July 2013</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td class="bccvl-table-label"><label for="shmoadID">
-									<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
-									<p>imported from ALA, 9 July 2013</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td class="bccvl-table-label"><label for="dogID">
-									<h1>Dog</h1>
-									<p>imported from ALA, 10 July 2013</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
