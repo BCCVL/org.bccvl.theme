@@ -13,9 +13,6 @@
 
     <!-- UNIVERSAL RULES ============================================ -->
 
-    <!-- for now, add some of the plone content ~~~~~~~~~~~~~~~~~~~~~ -->
-    <after css:theme-children="head" css:content="head link" />
-
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
@@ -65,6 +62,43 @@
     <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-experiment']" />
 
     <!-- miscellaneous -->
+
+    <!--
+        Get the list of experiments
+
+        Path to ul that contains the list of experiments:
+
+            div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul
+
+        The experiment anchor within the ul:
+
+            div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a
+
+            <a href="https://192.168.100.100/_debug/bccvl/experiments/my-exp" class="state-private navTreeFolderish contenttype-org-bccvl-content-experiment" title="this is my">
+                <span>My exp</span>
+            </a>
+
+        The anchor has the Experiment description as its 'title'.
+        The anchor has the Experiment name as a span inside the a.
+    -->
+    <after css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
+        <xsl:for-each css:select="div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a">
+            <tr>
+                <td class="broken">28 Aug 2013</td>
+                <td class="bccvl-table-label">
+                    <h1><xsl:copy-of select="string(@title)" /></h1>
+                    <p><xsl:copy-of select="span/text()" /></p>
+                </td>
+                <td class="bccvl-table-controls">
+                    <xsl:element name="a">
+                        <xsl:attribute name="href"><xsl:value-of select="string(@href)" /></xsl:attribute>
+                        <i class="icon-chevron-right"></i>
+                    </xsl:element>
+                </td>
+            </tr>
+        </xsl:for-each>
+    </after>
+
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="++add++org.bccvl.content.experiment/">
