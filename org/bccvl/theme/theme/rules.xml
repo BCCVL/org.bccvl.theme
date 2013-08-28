@@ -4,6 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xi="http://www.w3.org/2001/XInclude">
 
+    <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xi:include href="rules/experiment-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
@@ -13,10 +14,8 @@
     <notheme if="$host='127.0.0.1'" />
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
-
     <!-- <notheme if="'true'='true'" /> -->
 
-    <!-- UNIVERSAL RULES ============================================ -->
 
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="#js-config">
@@ -26,6 +25,7 @@
             baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
         };
     </after>
+
 
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!--
