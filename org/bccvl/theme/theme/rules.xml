@@ -115,7 +115,7 @@
     </rules>
 
     <!-- EXPERIMENT RESULTS ========================================= -->
-    <rules if-path="view/">
+    <rules css:if-content="#bccvl-experiment-view">
         <theme href="html/experiment-results.html" />
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
