@@ -17,6 +17,9 @@
     <!-- <notheme if="'true'='true'" /> -->
 
 
+    <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <drop css:theme=".non-plone" />
+
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <after css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
@@ -43,8 +46,6 @@
     in the template should always be undefined, i.e. no href attribute should
     be defined.
     -->
-
-    <drop css:theme=".non-plone" />
 
     <!-- portaltab (high level grouping) -->
     <merge attributes="href" css:theme="a.bccvllinks-home"              content="//li[@id='portaltab-index_html']/a" />
