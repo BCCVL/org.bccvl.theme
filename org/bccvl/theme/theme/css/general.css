@@ -7,15 +7,17 @@ body {
 }   }
 
 
+/* broken things (not yet implemented) */
 a[href=""],
 a[href="#"],
 a:not([href]),
 .broken
 {
-    box-shadow: inset 0 0 20px 3px #fdd, 0 0 5px 3px #fdd ! important;
+    box-shadow: inset 0 0 20px 3px #fee, 0 0 5px 3px #fee ! important;
 }
 
 
+/* not broken after all */
 a[href=""].fine,
 a[href="#"].fine,
 a:not([href]).fine {
@@ -23,12 +25,11 @@ a:not([href]).fine {
 }
 
 
-/*
-think this isn't required..
-.sidebar-nav {
-    padding: 9px 0;
+/* sample data (to demonstrate how content will show up) */
+.sampledata td,
+.sampledata {
+    background-image: url(../images/sample-data-bg.png);
 }
-*/
 
 /* main navbar ----------------------------------------------------------- */
 
