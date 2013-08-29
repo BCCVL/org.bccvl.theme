@@ -25,7 +25,7 @@
         The anchor has the Experiment description as its 'title'.
         The anchor has the Experiment name as a span inside the a.
         -->
-        <after css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
+        <before css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
             <xsl:for-each css:select="div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a">
                 <tr>
                     <td class="broken">28 Aug 2013</td>
@@ -41,7 +41,7 @@
                     </td>
                 </tr>
             </xsl:for-each>
-        </after>
+        </before>
 
     </rules>
 </rules>
