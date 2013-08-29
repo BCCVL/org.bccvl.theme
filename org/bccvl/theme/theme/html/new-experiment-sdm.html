@@ -101,7 +101,7 @@
 					<!-- li><a href="#tab-absent" data-toggle="tab">Absences</a></li -->
 					<li><a href="#tab-enviro" data-toggle="tab">Environment</a></li>
 					<!-- <li><a href="#tab-climate" data-toggle="tab">Climate</a></li> -->
-					<li><a href="#tab-results" data-toggle="tab">Status</a></li>
+					<li><a href="#tab-status" data-toggle="tab">Status</a></li>
 				</ul>
 			</div>
 
@@ -504,7 +504,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				<div class="tab-pane" id="tab-enviro">
 					<div class="row-fluid">
 						<p class="span12 bccvl-tab-description">
-							Select the environmental variables.
+							Select the climate and other environmental variables.
 						</p>
 					</div>
 
@@ -618,144 +618,20 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 
 				<!-- page: status  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-				<div class="tab-pane" id="tab-results">
+				<div class="tab-pane" id="tab-status">
 					<div class="row-fluid">
 						<p class="span12 bccvl-tab-description">
-							Fill out more things.
+							Start your experiment running.
 						</p>
 					</div>
 
-					<!--
-					four states:
-					- not started yet
-					- started/queued, not finished
-					- started/queued, but died with an error
-					- finished
-					-->
 					<div class="row-fluid">
 						<!-- show the current status -->
 						<div class="span12 bccvl-expstatus alert alert-block alert-info">
-							<a  class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
 							<p class="lead">this Experiment has <strong>not been started</strong>.</p>
-							<button class="btn btn-primary btn-large">start Experiment</button>
+							<a class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</a>
 						</div>
 					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-block">
-							<a  class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p class="lead">this Experiment is <strong>running</strong>.</p>
-							<button class="btn btn-warning">abandon Experiment</button>
-						</div>
-					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-block alert-error">
-							<a  class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p class="lead">this Experiment stopped with an <strong>error</strong>.</p>
-							<p>
-								See the error details in the results section below.  If the error is unlikely to recur,
-								you can re-attempt the experiment.
-							</p>
-							<button class="btn btn-danger">start Experiment again</button>
-						</div>
-					</div>
-
-					<div class="row-fluid">
-						<!-- show the current status -->
-						<div class="span12 bccvl-expstatus alert alert-success">
-							<a  class="close" data-dismiss="alert">&times;</a><!-- this is temporary to demo all the status alert boxes. -->
-							<p>
-								this Experiment is <strong>complete</strong>. The results are available below.
-							</p>
-						</div>
-
-						<div class="row-fluid bccvl-buttonbar">
-							<!-- dunno where to put these, leave them here for now -->
-							<div class="span3">
-								<div class="btn-group btn-block">
-									<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
-										<strong>delete</strong> this Experiment
-									</a>
-									<ul class="dropdown-menu">
-										<li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
-										<li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-										<li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="span3"><button class="btn btn-block"><strong>discard</strong> these results</button></div>
-							<div class="span3"><button class="btn btn-block"><strong>download</strong> these results</button></div>
-							<div class="span3"><button class="btn btn-block"><strong>copy</strong> this Experiment</button></div>
-						</div>
-
-
-					</div>
-
-					<div class="row-fluid">
-						<!-- list of (potential) results -->
-						<div class="span4">
-
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Experiment Results
-									</th></tr>
-								</thead>
-								<tbody>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>distribution model <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>current projection <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>terms of use <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>terms of use for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="">
-										<td colspan="2" class="bccvl-table-label"><label for="bioclim1">
-											<h1>attributions <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>attributions for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
-							</div>
-						</div>
-
 				</div><!-- end of status page -->
 
 			</div>
