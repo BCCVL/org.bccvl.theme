@@ -7,7 +7,60 @@
     <rules if-path="++add++org.bccvl.content.experiment/">
         <theme href="html/new-experiment-sdm.html" />
 
-        <copy attributes="method action enctype" css:theme="form#experimentSetup" css:content="#form" />
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype" css:theme="form#experimentSetup" css:content="#form" />
+
+        <!-- hook in title field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+
+        <!-- hook in description field -->
+        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+
+        <!-- hook in the algorithm list -->
+
+        <!--
+            We are converting a select to a checkbox,
+            so we need to give the checkbox the select's name,
+            not the option's name.
+        -->
+        <after css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
+            <xsl:for-each select="//select[@id='form-widgets-functions']/option">
+                <tr>
+                    <td class="bccvl-table-choose">
+                        <xsl:element name="input">
+                            <xsl:attribute name="type">checkbox</xsl:attribute>
+                            <xsl:attribute name="name">
+                                <xsl:value-of select="string(../@name)" />
+                            </xsl:attribute>
+                            <xsl:if test="@selected">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                            <xsl:attribute name="id">
+                                <xsl:value-of select="@id" />
+                            </xsl:attribute>
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="@value" />
+                            </xsl:attribute>
+                        </xsl:element>
+                    </td>
+                    <td class="bccvl-table-label">
+                        <xsl:element name="label">
+                            <xsl:attribute name="for">
+                                <xsl:value-of select="@id" />
+                            </xsl:attribute>
+                            <h1><xsl:copy-of select="text()" /> <small class="broken">Algorithm Description</small></h1>
+                        </xsl:element>
+                    </td>
+                    <td class="bccvl-table-controls">
+                        <a><i class="icon-info-sign" title="more information"></i></a>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </after>
+
+        <!-- Add any error information into the page -->
+        <!-- Attach data-error to any error'd field -->
 
     </rules>
 
