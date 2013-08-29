@@ -10,6 +10,9 @@
         <!-- hook in the new experiment form's attributes -->
         <copy attributes="name action enctype" css:theme="form#experimentSetup" css:content="#form" />
 
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#experimentSetup input[type=submit]"  css:content="#form-buttons-save" />
+
         <!-- hook in title field -->
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
 
@@ -56,6 +59,52 @@
                         <a><i class="icon-info-sign" title="more information"></i></a>
                     </td>
                 </tr>
+            </xsl:for-each>
+        </before>
+
+        <!-- hook in the environmental data list -->
+
+        <!--
+            We are converting a select to a checkbox input,
+            so we need to give the radio button the select's name,
+            not the option's name.
+
+        -->
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
+            <xsl:for-each select="//select[@id='form-widgets-environmental_dataset']/option">
+                <xsl:if test="@value!='--NOVALUE--'">
+                    <tr>
+                        <td class="bccvl-table-choose">
+                            <xsl:element name="input">
+                                <xsl:attribute name="type">checkbox</xsl:attribute>
+                                <xsl:attribute name="name">
+                                    <xsl:value-of select="string(../@name)" />
+                                </xsl:attribute>
+                                <xsl:if test="@selected">
+                                    <xsl:attribute name="checked">checked</xsl:attribute>
+                                </xsl:if>
+                                <xsl:attribute name="id">
+                                    <xsl:value-of select="@id" />
+                                </xsl:attribute>
+                                <xsl:attribute name="value">
+                                    <xsl:value-of select="@value" />
+                                </xsl:attribute>
+                            </xsl:element>
+                        </td>
+                        <td class="bccvl-table-label">
+                            <xsl:element name="label">
+                                <xsl:attribute name="for">
+                                    <xsl:value-of select="@id" />
+                                </xsl:attribute>
+                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance description</p>
+                            </xsl:element>
+                        </td>
+                        <td class="bccvl-table-controls">
+                            <a><i class="broken icon-eye-open" title="preview this dataset"></i></a>
+                            <a><i class="broken icon-cog" title="uh, dunno"></i></a>
+                        </td>
+                    </tr>
+                </xsl:if>
             </xsl:for-each>
         </before>
 
