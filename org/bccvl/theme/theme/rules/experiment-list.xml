@@ -10,32 +10,30 @@
         <!--
         Get the list of experiments
 
-        Path to ul that contains the list of experiments:
+        The experiments are listed inside #content-core as a definiton list.
 
-        div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul
+        The dt contains the experiment title, its link, and its last modified time.
 
-        The experiment anchor within the ul:
+        The associated dl contains the experiment description.
 
-        div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a
-
-        <a href="https://192.168.100.100/_debug/bccvl/experiments/my-exp" class="state-private navTreeFolderish contenttype-org-bccvl-content-experiment" title="this is my">
-            <span>My exp</span>
-        </a>
-
-        The anchor has the Experiment description as its 'title'.
-        The anchor has the Experiment name as a span inside the a.
+        The date isn't easily captured, it is part of a string, with a great deal
+        of excess whitespace, and the leading text "— last modified". We use
+        normalize-space to clear out the excess leading and trailing spaces.
+        We then use the substring command to skip the first 17 characters.
         -->
         <before css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
-            <xsl:for-each css:select="div.portletWrapper > dl.portletNavigationTree > dd.portletItem > ul > li > a">
+            <xsl:for-each css:select="#content-core dt">
                 <tr>
-                    <td class="broken">28 Aug 2013</td>
+                    <td class="">
+                        <xsl:copy-of select="substring(normalize-space(span[2]/text()[2]),17,21)" />
+                    </td>
                     <td class="bccvl-table-label">
-                        <h1><xsl:copy-of select="string(@title)" /></h1>
-                        <p><xsl:copy-of select="span/text()" /></p>
+                        <h1><xsl:copy-of select="span/a/text()" /></h1>
+                        <p><xsl:copy-of select="./following-sibling::dd[1]/span/text()" /></p>
                     </td>
                     <td class="bccvl-table-controls">
                         <xsl:element name="a">
-                            <xsl:attribute name="href"><xsl:value-of select="string(@href)" /></xsl:attribute>
+                            <xsl:attribute name="href"><xsl:value-of select="string(span/a/@href)" /></xsl:attribute>
                             <i class="icon-chevron-right"></i>
                         </xsl:element>
                     </td>
