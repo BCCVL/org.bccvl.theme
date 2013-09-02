@@ -31,6 +31,15 @@ a:not([href]).fine {
     background-image: url(../images/sample-data-bg.png);
 }
 
+.debug > div {
+    background: #ffd;
+    padding: 2em;
+    margin: 3em 0 1em;
+    opacity: 0.1;
+    transition: 1s;
+}
+.debug > div:hover { opacity: 1.0; }
+
 /* main navbar ----------------------------------------------------------- */
 
 .navbar {

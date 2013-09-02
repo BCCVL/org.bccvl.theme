@@ -100,7 +100,7 @@
 							</td></tr>
 						</thead>
 						<tbody>
-							<tr class="broken">
+							<tr class="sampledata">
 								<td>
 									26 Aug 2013
 								</td>
@@ -112,7 +112,7 @@
 									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
-							<tr class="broken">
+							<tr class="sampledata">
 								<td>
 									28 Aug 2013
 								</td>
@@ -159,16 +159,6 @@
 			// hook up the wizard buttons
 			makeBCCVLWizardButtons();
 
-			// randomly hide all but 1 of the statuses
-			// TODO: this goes away when integrated with actual experiments
-			var $statuses = $('.bccvl-expstatus').parent();
-			var $luckystatus = $statuses[ Math.floor(Math.random() * $statuses.length) ];
-			$.each( $statuses, function(index, status) {
-				var $status = $(status);
-				if (! $status.is($luckystatus)) {
-					$status.remove();
-				}
-			});
 		});
 	</script>
 
