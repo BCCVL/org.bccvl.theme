@@ -119,7 +119,7 @@
 
 					<div class="row-fluid">
 						<div class="span12">
-							<input type="text" name="expName" class="bccvl-expname input-block-level" placeholder="name for this experiment">
+							<input type="text" name="expName" class="bccvl-expname input-block-level" required="required" placeholder="name for this experiment">
 							<textarea name="expDescription" class="input-block-level bccvl-expdesc" rows="6" placeholder="description of experiment"></textarea>
 						</div>
 					</div>
@@ -628,7 +628,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 					<div class="row-fluid">
 						<!-- show the current status -->
 						<div class="span12 bccvl-expstatus alert alert-block alert-info">
-							<input type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start" value="start Experiment" />
+							<button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
 						</div>
 					</div>
 				</div><!-- end of status page -->
@@ -661,9 +661,22 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<script src="js/bccvl-wizard-tabs.js"></script>
 	<script src="js/bccvl-visualiser.js"></script>
 
-	<!-- debug -->
-	<script src="js/bccvl-form-catcher.js"></script>
+	<!--
+	validation polyfill: validation is standard HTML5, this polyfill will
+	make it work on non-current browsers.
+ 	-->
+	<script src="lib/js-webshim/minified/extras/modernizr-custom.js"></script>
+	<script src="lib/js-webshim/minified/polyfiller.js"></script>
 
+	<script>
+	    // load and implement all unsupported features
+	    $.webshims.polyfill();
+	    //$.webshims.polyfill('geolocation json-storage'); // specific polyfills
+	</script>
+
+
+	<!-- debug: form catcher to show fields being submitted -->
+	<script class="non-plone" src="js/bccvl-form-catcher.js"></script>
 	<script class="non-plone">
 		$(function(){
 			// debug: install form catcher
@@ -671,6 +684,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 		});
 	</script>
 
+
+	<!-- acutally do the things.. -->
 	<script>
 		$(function(){
 
@@ -682,6 +697,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 		});
 	</script>
+
 
 </body>
 </html>
