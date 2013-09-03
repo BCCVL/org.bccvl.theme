@@ -54,10 +54,8 @@ a:not([href]).fine {
 
 .navbar a img {
     opacity: 0.66;
-    width: 35px;
-    height: 35px;
     float: left;
-    margin: -9px 10px -9px -9px;
+    margin: -5px 6px -9px;
 }
 
 .navbar .pull-right {
