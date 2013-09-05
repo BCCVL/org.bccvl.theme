@@ -265,6 +265,13 @@ td.bccvl-table-controls a:hover {
     /*text-shadow: 0 1px 0 white, 0 -1px 0 black;*/
 }
 
+td.bccvl-full-list {
+    font-weight: bold;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: right;
+}
+
 /* footer ---------------------------------------------------------------- */
 
 footer {
