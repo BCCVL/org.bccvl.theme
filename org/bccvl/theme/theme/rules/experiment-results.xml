@@ -13,6 +13,41 @@
             css:content-children="#breadcrumbs-current"
         />
 
+        <!-- update the job status -->
+
+        <!--
+            known possible statuses: Pending, Active, Performing Callbacks, Completed.
+            template supported statuses: Active, Completed we'll use the template for
+            all unknown statuses
+        -->
+
+        <!-- Use the template for all non-understood statuses -->
+        <replace
+            css:theme-children=".bccvl-status-template p.lead strong"
+            content="//span[@id='form-widgets-IJobStatus-status']"
+        />
+
+        <!-- If not complete, then drop the complete status (and template) -->
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'">
+            <drop css:theme=".bccvl-status-template" />
+        </rules>
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() != 'Completed'">
+            <drop css:theme=".bccvl-status-complete" />
+        </rules>
+
+        <!-- If not running, then drop the running status (and template) -->
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Active'">
+            <drop css:theme=".bccvl-status-template" />
+        </rules>
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() != 'Active'">
+            <drop css:theme=".bccvl-status-running" />
+        </rules>
+
+        <!-- Always drop the error and not started statuses for now -->
+        <drop css:theme=".bccvl-status-error" />
+        <drop css:theme=".bccvl-status-notstarted" />
+
+
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     </rules>
