@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>BCCVL Experiment List</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/general.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="lib/html5shiv/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+
+		<!-- button for narrow screen menu -->
+		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+
+		<!-- project title -->
+		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_final.png" alt="BCC Virtual Lab"></a>
+
+		<!-- container for content that will hide under menu when screen is narrow -->
+		<div class="nav-collapse collapse">
+
+			<!-- user menu -->
+			<div class="btn-group pull-right">
+				<a class="btn btn dropdown-toggle" data-toggle="dropdown">
+					<i class="icon-user"></i>Usey M<sup>c</sup>User <i class="caret"></i>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a><i class="icon-info-sign"></i> My details</a></li>
+					<li><a><i class="icon-eye-open"></i> Admin access</a></li>
+					<li class="divider"></li>
+					<li><a><i class="icon-eject"></i> Log out</a></li>
+				</ul>
+			</div>
+
+			<!-- search field -->
+			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+				<input type="text" name="siteSearchQuery" class="search-query broken" placeholder="Search">
+			</form>
+
+			<!-- main menu items -->
+			<ul class="nav">
+				<li class="active"><a class="bccvllinks-dashboard">Dashboard</a></li>
+				<li               ><a>Data</a></li>
+				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
+				<li               ><a>Published Outputs</a></li>
+			</ul>
+
+		</div><!--/.nav-collapse -->
+
+	</div></div></nav><!-- end of nav wrapper -->
+
+
+<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- container for main content -->
+	<div class="container-fluid bccvl-main">
+
+
+<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div class="bccvl-breadcrumb row-fluid">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<li><a class="bccvllinks-home icon-home"></a></li>
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-dashboard">Dashboard</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+<!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-dashboardlists">
+
+			<div class="row-fluid">
+
+				<!-- gap -->
+				<div class="span1">
+				</div>
+
+				<!-- experiments -->
+				<div class="span5">
+					<table class="table table-hover bccvl-experimenttable">
+						<thead>
+							<tr><th colspan="3">
+								My Recent Experiments
+							</th></tr>
+						</thead>
+						<tbody>
+							<tr class="sampledata">
+								<td>
+									28 Aug 2013
+								</td>
+								<td class="bccvl-table-label">
+									<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>
+									<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>
+								</td>
+								<td class="bccvl-table-controls">
+									<a id="expID3456"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr class="sampledata">
+								<td>
+									26 Aug 2013
+								</td>
+								<td class="bccvl-table-label">
+									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
+									<p>using: annual mean temp, rainfall wettest qtr</p>
+								</td>
+								<td class="bccvl-table-controls">
+									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr><td colspan="3" class="bccvl-full-list">
+								<a class="bccvllinks-experiments">all my experiments <i class="icon-chevron-right"></i></a>
+							</td></tr>
+						</tfoot>
+					</table>
+				</div>
+
+				<!-- gap -->
+				<div class="span1">
+				</div>
+
+				<!-- data -->
+				<div class="span4">
+
+					<table class="table table-hover bccvl-occurrencestable">
+						<thead>
+							<tr><th colspan="2">
+								My Recent Datasets
+							</th></tr>
+						</thead>
+						<tbody>
+							<tr class="sampledata">
+								<td class="bccvl-table-label"><label for="koalaID">
+									<h1>Species name (e.g. Koala)</h1>
+									<p>provenance (e.g. provided by BCCVL)</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr class="sampledata">
+								<td class="bccvl-table-label"><label for="toadID">
+									<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
+									<p>imported from ALA, 8 July 2013</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+							<tr class="sampledata">
+								<td class="bccvl-table-label"><label for="shmoadID">
+									<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
+									<p>imported from ALA, 9 July 2013</p>
+								</label></td>
+								<td class="bccvl-table-controls">
+									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr><td colspan="2" class="bccvl-full-list">
+								<a class="bccvllinks-datasets">all my datasets <i class="icon-chevron-right"></i></a>
+							</td></tr>
+						</tfoot>
+					</table>
+
+				</div>
+
+				<!-- gap -->
+				<div class="span1">
+				</div>
+
+			</div>
+
+		</section>
+
+	</div><!-- end of main content container -->
+
+<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<footer>
+		<div class="container-fluid">
+			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+		</div>
+	</footer>
+
+<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<script src="lib/jquery/jquery-2.0.3.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.js"></script>
+	<script src="js/bccvl-wizard-tabs.js"></script>
+
+	<!-- debug -->
+	<script src="js/bccvl-form-catcher.js"></script>
+
+	<script>
+		$(function(){
+
+			// debug: install form catcher
+			installBCCVLFormCatcher();
+
+			// hook up the wizard buttons
+			makeBCCVLWizardButtons();
+
+		});
+	</script>
+
+</body>
+</html>
