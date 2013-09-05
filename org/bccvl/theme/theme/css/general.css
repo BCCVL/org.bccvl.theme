@@ -106,7 +106,6 @@ a:not([href]).fine {
 
 .bccvl-preview-pane .bccvl-viz {
     border: none;
-    border: 1px solid red;
     position: absolute;
     width: 98%;
     height: 98%;

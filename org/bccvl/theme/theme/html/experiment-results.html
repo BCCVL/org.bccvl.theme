@@ -278,7 +278,7 @@
 				var dataId = aUrl + '/../@@download/file/' + name;
 				console.log('data id: ', dataId);
 
-				$link.closest('tr.draggable').find('td').last().append('<a>viz</a>').click(function() {
+				$link.closest('tr.draggable').find('td').last().append('<a class="icon-eye-open"> </a>').click(function() {
 					window.bccvl.visualiser.visualise(dataId);
 				});
 			});
