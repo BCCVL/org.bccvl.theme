@@ -212,6 +212,8 @@
 				<!-- preview area -->
 				<div class="span8">
 					<div class="bccvl-preview-pane well">
+						<iframe class="bccvl-viz" name="viz">
+						</iframe>
 						<p class="empty">visualisation</p>
 					</div>
 				</div>
@@ -253,6 +255,14 @@
 
 			// init the visualiser
 			bccvl.visualiser.init();
+
+			// -----------------------------------------------------------
+			// TEMPORARY code to handle the results table we're dragging
+			// in from plone
+
+			// delete all td.draggable (they're the drag points from the
+			// old plone table rows)
+			$('td.draggable').remove();
 
 		});
 	</script>
