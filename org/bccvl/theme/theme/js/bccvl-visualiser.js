@@ -17,7 +17,7 @@ window.bccvl.visualiser = {
         // find the visualiser debug button
         var $visualiserDebugButton = $('#visualiser_debug');
 
-    }
+    },
 
     visualise: function(dataId) {
         frame = $('iframe.bccvl-viz');
