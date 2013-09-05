@@ -7,11 +7,11 @@ window.bccvl.visualiser = {
 
     init: function() {
         try {
-            this.visualiserBaseUrl = window.bccvlConfig.visualiser.baseUrl;
+            this.visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
             console.log("Determined visualiser baseUrl: " + this.visualiserBaseUrl);
         } catch (err) {
             // swallow the exception (i.e. don't re-throw)
-            console.error("Failed to determine visualiser base url");
+            console.error(["Failed to determine visualiser base url", err]);
         }
 
         // find the visualiser debug button
