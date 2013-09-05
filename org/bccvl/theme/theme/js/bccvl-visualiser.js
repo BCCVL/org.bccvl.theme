@@ -20,8 +20,9 @@ window.bccvl.visualiser = {
     },
 
     visualise: function(dataId) {
+        console.log('viz got: ', dataId);
         frame = $('iframe.bccvl-viz');
-        frame.attr(src, this.visualiserBaseUrl + 'api/raster/1/data_url_map?data_url=https://192.168.100.100/_debug/bccvl/experiments/asdf/result/current.tif/@@download/file/current.tif');
+        frame.attr(src, this.visualiserBaseUrl + 'api/raster/1/data_url_map?data_url=' + dataId);
     }
 
 };

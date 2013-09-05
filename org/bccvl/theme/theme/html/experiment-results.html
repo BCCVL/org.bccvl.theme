@@ -268,6 +268,20 @@
 			// the old plone table rows)
 			$('td.notDraggable').remove();
 
+			// add a viz link to each row
+			var $links = $('tr.draggable a');
+			$.each($links, function(index, $link) {
+				var aUrl = $link.attr('href');
+				console.log('a url:', aUrl);
+				var name = $.trim($link.text());
+				var dataId = aUrl + '../@@download/file/' + name;
+				console.log('data id: ', dataId);
+
+				$link.closest('tr.draggable').find('td').last().append('<a>viz</a>').click(function() {
+					window.bccvl.visualiser.visualise(dataId);
+				});
+			});
+
 		});
 	</script>
 
