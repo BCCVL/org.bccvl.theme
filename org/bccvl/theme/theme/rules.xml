@@ -51,6 +51,7 @@
 
     <!-- portaltab (high level grouping) -->
     <merge attributes="href" css:theme="a.bccvllinks-home"              content="//li[@id='portaltab-index_html']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-dashboard"         content="//li[@id='portaltab-index_html']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-news"              content="//li[@id='portaltab-news']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-events"            content="//li[@id='portaltab-events']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-users"             content="//li[@id='portaltab-Members']/a" />

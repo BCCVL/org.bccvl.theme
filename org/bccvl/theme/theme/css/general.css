@@ -266,6 +266,7 @@ td.bccvl-table-controls a:hover {
 }
 
 td.bccvl-full-list {
+    font-weight: bold;
     padding-top: 1em;
     padding-bottom: 1em;
     text-align: right;
