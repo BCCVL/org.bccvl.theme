@@ -129,20 +129,20 @@ a:not([href]).fine {
 
 .bccvl-tab-description {
     line-height: 1.1;
-    padding: 0.3em 0 0.7em;
+    padding: 0 0 0.4em;
     font-size: 150%;
     text-align: center;
     color: #094;
-
     opacity: 0.5;
-    font-style: italic;
+    -moz-transition: opacity 2s;
+    -webkit-transition: opacity 2s;
+    -o-transition: opacity 2s;
+    transition: opacity 2s;
+    transition-delay: 1s;
+}
 
-    background: #094;
-    color: transparent;
-    text-shadow: 0px 0.05em 0.05em rgba(255,255,255,0.5);
-      -webkit-background-clip: text;
-         -moz-background-clip: text;
-              background-clip: text;
+.bccvl-tab-description.bccvl-read {
+    opacity: 0;
 }
 
 /* experiment form ------------------------------------------------------- */
