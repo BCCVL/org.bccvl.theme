@@ -270,7 +270,8 @@
 
 			// add a viz link to each row
 			var $links = $('tr.draggable a');
-			$.each($links, function(index, $link) {
+			$.each($links, function(index, link) {
+				var $link = $(link);
 				var aUrl = $link.attr('href');
 				console.log('a url:', aUrl);
 				var name = $.trim($link.text());
