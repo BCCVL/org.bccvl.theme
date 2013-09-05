@@ -53,8 +53,8 @@
             Only do this if the experiment is in the completed state.
         -->
         <after
-            css:theme=".bccvl-experimentresults table"
-            css:content="#listing-table tbody tr"
+            css:theme-children=".bccvl-experimentresults table tbody"
+            css:content-children="#listing-table tbody"
             if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'"
             href="result/folder_contents"
         />
