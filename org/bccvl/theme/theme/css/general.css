@@ -134,10 +134,10 @@ a:not([href]).fine {
     text-align: center;
     color: #094;
     opacity: 0.5;
-    -moz-transition: opacity 2s;
-    -webkit-transition: opacity 2s;
-    -o-transition: opacity 2s;
-    transition: opacity 2s;
+    -moz-transition: opacity 3s;
+    -webkit-transition: opacity 3s;
+    -o-transition: opacity 3s;
+    transition: opacity 3s;
     transition-delay: 1s;
 }
 
