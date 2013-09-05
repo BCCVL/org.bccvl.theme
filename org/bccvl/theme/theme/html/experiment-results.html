@@ -278,7 +278,7 @@
 				var dataId = aUrl + '/../@@download/file/' + name;
 				console.log('data id: ', dataId);
 
-				$link.closest('tr.draggable').find('td').last().append('<button class="icon-eye-open"></button>').click(function() {
+				$link.closest('tr.draggable').find('td').last().addClass('bccvl-table-controls').append('<button><i class="icon-eye-open"></i></button>').click(function() {
 					window.bccvl.visualiser.visualise(dataId);
 				});
 			});
