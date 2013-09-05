@@ -102,6 +102,11 @@ a:not([href]).fine {
     line-height: 300px;
     color: rgba(100,100,100, 0.5);
     text-shadow: 0 2px 0 white, 0 -0.005em 0 rgba(0,0,0, 0.5);
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: 0;
 }
 
 .bccvl-preview-pane .bccvl-viz {
