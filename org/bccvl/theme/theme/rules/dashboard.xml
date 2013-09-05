@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="/">
+    <rules css:if-content="#portaltab-index_html.selected">
         <theme href="html/dashboard.html" />
 
         <!--
