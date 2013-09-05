@@ -7,6 +7,12 @@
     <rules css:if-content="#bccvl-experiment-view">
         <theme href="html/experiment-results.html" />
 
+        <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
+        <replace
+            css:theme-children=".bccvl-breadcrumb .bccvllinks-experiment-view"
+            css:content-children="#breadcrumbs-current"
+        />
+
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     </rules>
