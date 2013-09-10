@@ -52,7 +52,7 @@
             TEMP: Get the experiment results from the results folder for this experiment.
             Only do this if the experiment is in the completed state.
         -->
-        <after
+        <before
             css:theme-children=".bccvl-experimentresults table tbody"
             css:content-children="#listing-table tbody"
             if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'"
