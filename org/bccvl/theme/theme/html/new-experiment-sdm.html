@@ -519,8 +519,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 									</th></tr>
 									<tr><td class="bccvl-searchform" colspan="3">
 										<div id="searchEnvironmental" class="bccvl-search-form form-inline">
-											<input name="searchEnvironmental_query" type="text" class="span8" placeholder="find environmental layers..">
-											<select name="searchEnvironmental_source" class="span4">
+											<input name="searchEnvironmental_query" type="text" class="broken span8" placeholder="find environmental layers..">
+											<select name="searchEnvironmental_source" class="broken span4">
 												<option value="local">in this list</option>
 												<option value="worldclim">from worldclim.org</option>
 												<option value="tern">from TERN</option>
@@ -661,6 +661,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<script src="js/bccvl-wizard-tabs.js"></script>
 	<script src="js/bccvl-fadeaway.js"></script>
 	<script src="js/bccvl-visualiser.js"></script>
+	<script src="js/bccvl-search.js"></script>
 
 	<!--
 	validation polyfill: validation is standard HTML5, this polyfill will
@@ -699,6 +700,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 			// init the visualiser
 			bccvl.visualiser.init();
 
+			// init the search interfaces
+			bccvl.search.init();
 		});
 	</script>
 
