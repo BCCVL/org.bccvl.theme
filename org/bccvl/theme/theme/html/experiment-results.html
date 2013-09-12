@@ -272,11 +272,7 @@
 			var $links = $('tr.draggable a');
 			$.each($links, function(index, link) {
 				var $link = $(link);
-				var aUrl = $link.attr('href');
-				console.log('a url:', aUrl);
-				var name = $.trim($link.text());
-				var dataId = aUrl + '/../@@download/file/' + name;
-				console.log('data id: ', dataId);
+				var dataId = $link.attr('href') + '/../@@download/file/' + $.trim($link.text());
 
 				$link.closest('tr.draggable').find('td').last().addClass('bccvl-table-controls').append('<button><i class="icon-eye-open"></i></button>').click(function() {
 					window.bccvl.visualiser.visualise(dataId);

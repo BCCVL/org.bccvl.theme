@@ -342,6 +342,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 												<option value="ala">at ALA</option>
 												<option value="umm">count 'em yerself</option>
 											</select>
+											<div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
 										</div>
 									</td></tr>
 								</thead>
@@ -405,7 +406,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 						<!-- preview area -->
 						<div class="span8">
 							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
+								<iframe class="bccvl-viz" name="viz">
+								</iframe>
 							</div>
 						</div>
 					</div>
@@ -610,7 +612,8 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 						<!-- preview area -->
 						<div class="span8">
 							<div class="bccvl-preview-pane well">
-								<p class="empty">visualisation</p>
+								<iframe class="bccvl-viz" name="viz">
+								</iframe>
 							</div>
 						</div>
 					</div>
@@ -640,6 +643,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 				<p>..debug stuff..</p>
 				<input type="submit" />
 				<button id="visualiser_debug">Visualise!</button>
+				<button id="hide_placeholders">hide unimplemented features and sample data</button>
 			</div></div>
 
 		</form>
@@ -702,6 +706,17 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 			// init the search interfaces
 			bccvl.search.init();
+
+			// debug: hide the sample data, unconnected buttons, etc
+			$('#hide_placeholders').click( function(e) {
+				$('head').append('<style>' +
+					'a[href=""], a[href="#"], a:not([href]), .broken, .sampledata td, .sampledata { visibility: hidden; }' +
+					'a[href=""].fine, a[href="#"].fine, a:not([href]).fine,' +
+					'.typeahead.dropdown-menu a[href="#"], .typeahead.dropdown-menu a:not([href]) { visibility: visible; }' +
+				'</style>');
+				e.preventDefault();
+				return false;
+			});
 		});
 	</script>
 

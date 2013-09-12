@@ -20,7 +20,10 @@ a:not([href]),
 /* not broken after all */
 a[href=""].fine,
 a[href="#"].fine,
-a:not([href]).fine {
+a:not([href]).fine,
+.typeahead.dropdown-menu a[href="#"],
+.typeahead.dropdown-menu a:not([href])
+{
     box-shadow: none ! important;
 }
 
@@ -111,11 +114,8 @@ a:not([href]).fine {
 
 .bccvl-preview-pane .bccvl-viz {
     border: none;
-    position: absolute;
     width: 100%;
-    height: 500px;
-    left: 0;
-    top: 0;
+    height: 100%;
 }
 
 /* wizard+tabs interface ------------------------------------------------- */
@@ -223,12 +223,44 @@ sometimes, and upgrade when bootstrap 3 is out.
     color: #999;
 }
 
-/* tables ---------------------------------------------------------------- */
+/* inline search sections ------------------------------------------------ */
 
-
-td.bccvl-searchform {
-    /*text-align: right;*/
+.bccvl-searchform-results {
+    background: #eee;
+    margin: 10px 0;
+    overflow: scroll;
+    min-height: 10px;
+    padding: 10px 0;
 }
+
+ul.bccvl-search-results {
+    margin: 0;
+    padding: 0;
+}
+
+.bccvl-searchform-results li {
+    display: block;
+    clear: both;
+}
+
+.bccvl-searchform-results .bccvl-thumb {
+    float: left;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+.bccvl-searchform-results .bccvl-thumb img {
+    display: block;
+    position: absolute;
+    left: 20px;
+    margin-left: -50%;
+    height: 100%;
+}
+
+/* tables ---------------------------------------------------------------- */
 
 .bccvl-table-choose {
     text-align: left;
