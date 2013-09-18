@@ -11,7 +11,7 @@ window.bccvl.visualiser = {
             console.log("Determined visualiser baseUrl: " + this.visualiserBaseUrl);
         } catch (err) {
             // swallow the exception (i.e. don't re-throw)
-            console.error(["Failed to determine visualiser base url", err]);
+            console.warn(["Failed to determine visualiser base url", err]);
         }
 
         // find the visualiser debug button

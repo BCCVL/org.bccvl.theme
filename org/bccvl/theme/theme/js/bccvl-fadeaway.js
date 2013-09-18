@@ -28,9 +28,9 @@ window.makeBCCVLFadeaway = function() {
         $tabfields = $($tab.find('input').add( $tab.find('textarea') ).add( $tab.find('select') ));
 
         // now attach to their focus events
-        $tabfields.blur( function() {
-            $fade.removeClass('bccvl-read');
-        });
+//        $tabfields.blur( function() {
+//            $fade.removeClass('bccvl-read');
+//        });
         // now attach to their focus events
         $tabfields.focus( function() {
             setTimeout( function() {
