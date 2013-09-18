@@ -65,13 +65,16 @@
     <!-- experiment -->
     <merge attributes="href" css:theme="a.bccvllinks-experiment-view"   content="//li[@id='contentview-view']/a" />
 
-    <!--
-        Link to create a new experiment:
-        //a[@id="org-bccvl-content-experiment"]
-
-        Note: This link is NOT available when viewing a specific experiment.
+    <!--    Link to create a new experiment:
+            //a[@id="org-bccvl-content-experiment"]
+            Note: This link is NOT available when viewing a specific experiment.
     -->
     <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-experiment']" />
+
+    <!--    Link to upload a new dataset (which currently just means a file:
+            //a#file
+    -->
+    <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='file']" />
 
     <!-- miscellaneous -->
 
