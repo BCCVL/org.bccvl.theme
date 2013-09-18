@@ -6,6 +6,7 @@
 
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xi:include href="rules/experiment-list.xml" />
+    <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/dashboard.xml" />
