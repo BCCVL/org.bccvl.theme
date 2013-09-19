@@ -159,7 +159,7 @@ window.bccvl.search = {
                             // now get the actions sorted.
                             if (item.guid) {
                                 result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
-                                result.actions.import = item.guid;
+                                result.actions.alaimport = item.guid;
                             }
                             list.push(result);
                         });
@@ -273,7 +273,6 @@ window.bccvl.search = {
                         // either the search provider will have a parseSearchData function,
                         // which extracts the result objects from the returned data.
                         if (provider.search.parseSearchData) {
-                            console.log(provider.search.parseSearchData(data));
                             // if this provider has a parseSearchData function, call it
                             window.bccvl.search.displayResults(provider.search.parseSearchData(data), $resultsField);
                         } else {
@@ -293,8 +292,6 @@ window.bccvl.search = {
         var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
         var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
 
-        console.log($vizFrame);
-
         // loop through the result objects adding them to the table
         $.each(results, function(index, item) {
             var $info = $('<td class="bccvl-table-label"></td>');
@@ -306,18 +303,41 @@ window.bccvl.search = {
             $info.append('<h1>' + item.title + '</h1>');
             $info.append('<p>' + item.description + '</p>');
 
-            $.each(item.actions, function(action, url) {
+            $.each(item.actions, function(action, actionParam) {
                 // handle known actions..
                 switch (action) {
-                    case 'viz':
-                        $actions.append('<a class="fine"><i class="icon-eye-open"></i></a>').click(function(e) {
-                            $vizFrame.attr('src', url);
+                    // - - - - - - - - - - - - - - - - - - - - - - - -
+                    case 'viz': // visualise
+                        var vizParam = actionParam;
+                        $('<a class="fine"><i class="icon-eye-open"></i></a>').click(function(e) {
+                            $vizFrame.attr('src', vizParam);
                             e.preventDefault();
                             return false;
-                        });
+                        }).appendTo($actions);
                         break;
+                    // - - - - - - - - - - - - - - - - - - - - - - - -
+                    case 'alaimport': // import from ala
+                        var alaParam = actionParam;
+                        $('<a class="fine"><i class="icon-download-alt"></i></a>').click(function(e) {
+                            $.xmlrpc({
+                                url: 'http://192.168.100.102:6543/data_mover', // TODO: look this up in the manifest config
+                                methodName: 'pullOccurrenceFromALA',
+                                params: [alaParam],
+                                success: function(response, status, jqXHR) {
+                                     console.log('it worked, apparently: ', status);
+                                },
+                                error: function(jqXHR, status, error) {
+                                     console.log('it failed!!: ', status, ' the error was: ', error);
+                                },
+                            });
+                            e.preventDefault();
+                            return false;
+                        }).appendTo($actions);
+                        break;
+                    // - - - - - - - - - - - - - - - - - - - - - - - -
                     default:
-                        $actions.append('<a href="' + url + '">' + action + '</a>');
+                        $actions.append('<a href="' + actionParam + '">' + action + '</a>');
+                    // - - - - - - - - - - - - - - - - - - - - - - - -
                 }
             });
 
@@ -325,8 +345,7 @@ window.bccvl.search = {
         });
 
         // finally, add the dom fragment to the page dom.
-        $(domElement).empty();
-        $(domElement).append($elem);
+        $(domElement).empty().addClass('bccvl-search-active').append($elem);
     }
     // --------------------------------------------------------------
     // --------------------------------------------------------------

@@ -25,6 +25,24 @@ window.makeBCCVLWizardButtons = function() {
         var $firstTab = $tabs.find('li:first');
         var $lastTab = $tabs.find('li:last');
 
+        // wizard tabs will go into browser history when clicked
+        // ...but only if the browser supports it
+        if (window.history && window.history.pushState) {
+            $tabs.find('a[data-toggle="tab"]').click( function() {
+                window.history.pushState(null, null, $(this).attr('href'));
+            });
+        }
+
+        // act on the URL hash if someone arrives with one
+        window.addEventListener('popstate', function() {
+            var activeTab = $('[href=' + location.hash + ']');
+            if (activeTab.length > 0) {
+                activeTab.tab('show');
+            } else {
+                $firstTab.find('a[data-toggle="tab"]').tab('show');
+            }
+        });
+
         // identify the prev and next buttons
         var $prevButtons = $wiz.find('.bccvl-wizardtabs-prev');
         var $nextButtons = $wiz.find('.bccvl-wizardtabs-next');
