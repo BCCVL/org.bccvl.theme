@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>BCCVL Upload Dataset</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="lib/bootstrap-fileupload/bootstrap-fileupload.min.css" rel="stylesheet">
+	<link href="css/general.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="lib/html5shiv/html5shiv.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+
+<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+
+		<!-- button for narrow screen menu -->
+		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+
+		<!-- project title -->
+		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_final.png" alt="BCC Virtual Lab"></a>
+
+		<!-- container for content that will hide under menu when screen is narrow -->
+		<div class="nav-collapse collapse">
+
+			<!-- user menu -->
+			<div class="btn-group pull-right">
+				<a class="btn btn dropdown-toggle" data-toggle="dropdown">
+					<i class="icon-user"></i>Usey M<sup>c</sup>User <i class="caret"></i>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a><i class="icon-info-sign"></i> My details</a></li>
+					<li><a><i class="icon-eye-open"></i> Admin access</a></li>
+					<li class="divider"></li>
+					<li><a><i class="icon-eject"></i> Log out</a></li>
+				</ul>
+			</div>
+
+			<!-- search field -->
+			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+				<input type="text" name="siteSearchQuery" class="search-query broken" placeholder="Search">
+			</form>
+
+			<!-- main menu items -->
+			<ul class="nav">
+				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
+				<li class="active"><a class="bccvllinks-datasets">Data</a></li>
+				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
+				<li               ><a>Published Outputs</a></li>
+			</ul>
+
+		</div><!--/.nav-collapse -->
+
+	</div></div></nav><!-- end of nav wrapper -->
+
+
+<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- container for main content -->
+	<div class="container-fluid bccvl-main">
+
+
+<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div class="bccvl-breadcrumb row-fluid">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<li><a class="bccvllinks-home icon-home"></a></li>
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-datasets">Datasets</a></li>
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-dataset-upload">Upload a Dataset</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+<!-- file upload form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-datasetupload row-fluid"><div class="span10 offset1">
+
+			<form class="form-horizontal" id="experimentSetup" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+				<div class="control-group">
+					<label class="control-label">Data file</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							<span class="btn btn-file"><span class="fileupload-new">Select file to upload</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+							<span class="fileupload-preview"></span>
+							<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Dataset type</label>
+					<div class="controls">
+						<select class="broken">
+							<option>Occurrences</option>
+							<option>Absences</option>
+							<option>Environmental layer</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Dataset title</label>
+					<div class="controls">
+						<input type="text" name="form.widgets.title" class="input-block-level" placeholder="title of dataset">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Dataset description</label>
+					<div class="controls">
+						<textarea name="form.widgets.description" class="input-block-level" rows="6" placeholder="description of dataset"></textarea>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<button name="form.buttons.save" class="btn btn-primary btn-large" value="Save" type="submit">upload Dataset</button>
+						<button name="form.buttons.cancel" class="btn btn-link" value="Cancel" type="submit">cancel upload</button>
+					</div>
+				</div>
+
+			</form>
+		</div></section>
+
+	</div><!-- end of main content container -->
+
+<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<footer>
+		<div class="container-fluid">
+			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+		</div>
+	</footer>
+
+<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<script src="lib/jquery/jquery-2.0.3.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.js"></script>
+	<script src="lib/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+	<script src="js/bccvl-wizard-tabs.js"></script>
+
+	<!-- debug -->
+	<script src="js/bccvl-form-catcher.js"></script>
+
+	<script>
+		$(function(){
+
+			// debug: install form catcher
+			installBCCVLFormCatcher();
+
+			// hook up the wizard buttons
+			makeBCCVLWizardButtons();
+
+		});
+	</script>
+
+</body>
+</html>
