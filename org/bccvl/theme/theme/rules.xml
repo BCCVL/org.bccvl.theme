@@ -5,6 +5,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/experiment-list.xml" />
     <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
