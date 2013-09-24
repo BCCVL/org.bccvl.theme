@@ -13,6 +13,9 @@
         <!-- hook in the submit (save) button -->
         <copy attributes="name value" css:theme="form#uploadDataset button[type=submit]" css:content="#form-buttons-save" />
 
+        <!-- hook in file field -->
+        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetFile']" css:content="#form-widgets-file-input" />
+
         <!-- hook in title and description fields -->
         <copy attributes="name value" css:theme="form#uploadDataset [name='datasetTitle']" css:content="#form-widgets-title" />
         <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-description" />
