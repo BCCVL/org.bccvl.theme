@@ -151,8 +151,6 @@
                                 <xsl:attribute name="title">preview this dataset</xsl:attribute>
                                 <xsl:attribute name="data-viz-id"><xsl:value-of select="@value" /></xsl:attribute>
                             </xsl:element></a>
-
-                                <i class="icon-eye-open" title="preview this dataset" ></i>
                             <a><i class="broken icon-cog" title="uh, dunno"></i></a>
                         </td>
                     </tr>
