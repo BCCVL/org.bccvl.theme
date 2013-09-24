@@ -28,7 +28,11 @@ window.bccvl.visualiser = {
 
             // attach some click behaviour to the thing
             $occur.click(function() {
-                console.log(id);
+
+                console.log("here's where I'd look up " + id + " in the OCCURRENCES_MAP that Matthew has given us.");
+
+                e.preventDefault();
+                return false;
             });
         });
     },
