@@ -1,7 +1,8 @@
 
 // JS code to make BCCVL dimension equations work.
 //
-// A dimension chooser is a tag with the class .bccvl-dimension-selection
+// A dimension chooser is a tag with the class .bccvl-dimension-selection.
+// TODO: better docs
 
 window.makeBCCVLDimensionEquations = function() {
 

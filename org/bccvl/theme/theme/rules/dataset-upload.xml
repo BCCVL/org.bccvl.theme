@@ -7,5 +7,16 @@
     <rules if-path="datasets/++add++File">
         <theme href="html/dataset-upload.html" />
 
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype" css:theme="form#uploadDataset" css:content="#form" />
+
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#uploadDataset button[type=submit]" css:content="#form-buttons-save" />
+
+        <!-- hook in title and description fields -->
+        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetTitle']" css:content="#form-widgets-title" />
+        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-description" />
+        <replace theme-children="//textarea[@name='datasetDescription']" content="//textarea[@id='form-widgets-description']/text()" />
+
     </rules>
 </rules>
