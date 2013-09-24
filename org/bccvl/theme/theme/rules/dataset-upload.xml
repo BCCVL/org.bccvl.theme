@@ -8,7 +8,7 @@
         <theme href="html/dataset-upload.html" />
 
         <!-- hook in the new experiment form's attributes -->
-        <copy attributes="name action enctype" css:theme="form#uploadDataset" css:content="#form" />
+        <copy attributes="name action method enctype" css:theme="form#uploadDataset" css:content="#form" />
 
         <!-- hook in the submit (save) button -->
         <copy attributes="name value" css:theme="form#uploadDataset button[type=submit]" css:content="#form-buttons-save" />
