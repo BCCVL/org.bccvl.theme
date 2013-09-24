@@ -675,7 +675,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<!--
 	validation polyfill: validation is standard HTML5, this polyfill will
 	make it work on non-current browsers.
- 	-->
+
 	<script src="lib/js-webshim/minified/extras/modernizr-custom.js"></script>
 	<script src="lib/js-webshim/minified/polyfiller.js"></script>
 
@@ -684,6 +684,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	    $.webshims.polyfill();
 	    //$.webshims.polyfill('geolocation json-storage'); // specific polyfills
 	</script>
+ 	-->
 
 
 	<!-- debug: form catcher to show fields being submitted -->
@@ -711,9 +712,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 			// init the visualiser
 			bccvl.visualiser.init();
-
-			// DEBUG
-			$('.bccvl-occurrencestable tbody tr').clone().appendTo('.bccvl-occurrencestable tbody');
 
 			// init the stretcher for the viz window
 			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
