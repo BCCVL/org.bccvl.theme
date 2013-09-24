@@ -226,6 +226,15 @@ sometimes, and upgrade when bootstrap 3 is out.
     color: #999;
 }
 
+.bccvl-dimension-equation {
+    font-size: 175%;
+    text-align: center;
+}
+.bccvl-dimension-equation .bccvl-dimension-value {
+    font-weight: bold;
+}
+
+
 /* inline search sections ------------------------------------------------ */
 
 .bccvl-searchform-results {
