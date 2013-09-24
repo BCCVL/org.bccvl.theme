@@ -5,7 +5,15 @@
 
     <!-- EXPERIMENT LIST ============================================ -->
     <rules if-path="datasets/++add++File">
+
         <theme href="html/dataset-upload.html" />
+
+        <!--
+            don't theme the page unless the expected file input on it. This is required
+            because the plone form posts back to the same URL, and we don't want to mess
+            that up.
+        -->
+        <notheme css:if-not-content="#form-widgets-file-input" />
 
         <!-- hook in the new experiment form's attributes -->
         <copy attributes="name action method enctype" css:theme="form#uploadDataset" css:content="#form" />
