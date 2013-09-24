@@ -12,8 +12,8 @@
 
 window.makeBCCVLFadeaway = function() {
 
-    // find all the wizard tab sets..
-    fadeables = $('.bccvl-tab-description');
+    // find all the fadable things..
+    var fadeables = $('.bccvl-tab-description');
 
     $.each(fadeables, function(fadeableIndex, fadeable) {
 
@@ -25,12 +25,8 @@ window.makeBCCVLFadeaway = function() {
 
         // attach an event to every form element in $tab
         // first, find the form elements.
-        $tabfields = $($tab.find('input').add( $tab.find('textarea') ).add( $tab.find('select') ));
+        var $tabfields = $($tab.find('input, textarea, select'));
 
-        // now attach to their focus events
-//        $tabfields.blur( function() {
-//            $fade.removeClass('bccvl-read');
-//        });
         // now attach to their focus events
         $tabfields.focus( function() {
             setTimeout( function() {
@@ -38,6 +34,16 @@ window.makeBCCVLFadeaway = function() {
             }, 100)
         });
 
+        var togglefields = $($tab.find('input[type="radio"], input[type="checkbox"]'));
+
+        // now attach to their change events
+        $tabfields.change( function() {
+            setTimeout( function() {
+                $fade.addClass('bccvl-read');
+            }, 100)
+        });
+
+        $fade.hover(function() { $fade.removeClass('bccvl-read'); }, function() { $fade.addClass('bccvl-read'); });
 
     });
 }
