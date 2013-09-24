@@ -20,6 +20,7 @@
     <!-- don't theme the page unless the user is logged in -->
     <notheme css:if-content="#anon-personalbar" />
     <!-- <notheme if="'true'='true'" /> -->
+    <notheme if-path="@@manage-job-queue" />
 
 
     <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
