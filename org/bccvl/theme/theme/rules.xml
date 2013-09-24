@@ -19,8 +19,12 @@
     <notheme if="$ajax_load" />
     <!-- don't theme the page unless the user is logged in -->
     <notheme css:if-content="#anon-personalbar" />
+
     <!-- <notheme if="'true'='true'" /> -->
+
+    <!-- don't theme special pages -->
     <notheme if-path="@@manage-job-queue" />
+    <notheme if-path="@@overview-controlpanel" />
 
 
     <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
