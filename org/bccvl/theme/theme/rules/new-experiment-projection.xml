@@ -3,8 +3,8 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++projexp/">
+    <!-- NEW PROJECTION EXPERIMENT ================================== -->
+    <rules if-path="placeholder.html/">
         <theme href="html/new-experiment-projection.html" />
 
         <!-- fully faked up experiment interface for now. -->
