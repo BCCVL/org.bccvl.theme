@@ -23,8 +23,9 @@
     <!-- <notheme if="'true'='true'" /> -->
 
     <!-- don't theme special pages -->
-    <notheme if-path="@@manage-job-queue" />
-    <notheme if-path="@@overview-controlpanel" />
+    <notheme if-path="@@manage-job-queue/" />
+    <notheme if-path="@@overview-controlpanel/" />
+    <notheme if-path="prefs_install_products_form/" />
 
 
     <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
