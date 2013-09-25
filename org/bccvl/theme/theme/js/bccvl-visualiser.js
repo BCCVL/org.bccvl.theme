@@ -29,7 +29,7 @@ window.bccvl.visualiser = {
             // attach some click behaviour to the thing
             $occur.click(function(evt) {
                 console.log("here's where I'd look up " + id + " in the OCCURRENCES_MAP that Matthew has given us.");
-                bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id], { apiType: 'point'});
+                bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, { apiType: 'point'});
                 evt.preventDefault();
                 return false;
             });
@@ -49,7 +49,12 @@ window.bccvl.visualiser = {
         console.log('viz got: ', dataId);
 
         frame = $('iframe.bccvl-viz');
-        frame.attr('src', this.visualiserBaseUrl + 'api/' + opts.apiType + '/' + opts.apiVersion + '/' + opts.vizType + '?data_url=' + dataId);
+        frame.attr('src', this.visualiserBaseUrl +
+            'api/' + encodeURIComponent(opts.apiType) +
+            '/' + encodeURIComponent(opts.apiVersion) +
+            '/' + encodeURIComponent(opts.vizType) +
+            '?data_url=' + encodeURIComponent(dataId)
+        );
     }
 
 };
