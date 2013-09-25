@@ -40,6 +40,10 @@
         };
     </after>
 
+    <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
+
+
 
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!--
