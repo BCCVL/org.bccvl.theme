@@ -28,11 +28,8 @@ window.bccvl.visualiser = {
 
             // attach some click behaviour to the thing
             $occur.click(function(evt) {
-
                 console.log("here's where I'd look up " + id + " in the OCCURRENCES_MAP that Matthew has given us.");
-
-                bccvl.visualiser.visualise(window.bccvl.lookups.occurrenceMap[id]);
-
+                bccvl.visualiser.visualise(window.bccvl.lookups.occurrenceMap[id], { apiType: 'point'});
                 evt.preventDefault();
                 return false;
             });
