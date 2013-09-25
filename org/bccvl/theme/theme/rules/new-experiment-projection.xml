@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW PROJECTION EXPERIMENT ================================== -->
-    <rules if-path="placeholder.html/">
+    <rules if-path="++theme++org.bccvl.theme/html/placeholder.html/">
         <theme href="html/new-experiment-projection.html" />
 
         <!-- fully faked up experiment interface for now. -->
