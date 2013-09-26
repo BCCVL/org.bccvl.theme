@@ -81,7 +81,7 @@ window.bccvl.search = {
         ala: {
             autocomplete: {
                 autoUrl: function(autocompleteString) {
-                    return ('http://bie.ala.org.au/ws/search/auto.json?idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                    return ('//bie.ala.org.au/ws/search/auto.json?idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -128,7 +128,7 @@ window.bccvl.search = {
             },
             search: {
                 searchUrl: function(searchString) {
-                    return ('http://bie.ala.org.au/ws/search.json?fq=idxtype:TAXON&q=' + encodeURIComponent(searchString));
+                    return ('//bie.ala.org.au/ws/search.json?fq=idxtype:TAXON&q=' + encodeURIComponent(searchString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseSearchData: function(rawData) {
