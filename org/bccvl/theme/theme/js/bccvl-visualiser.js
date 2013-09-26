@@ -14,8 +14,6 @@ window.bccvl.visualiser = {
             console.warn(["Failed to determine visualiser base url", err]);
         }
 
-        // find the visualiser debug button
-        var $visualiserDebugButton = $('#visualiser_debug');
 
         var $vizOccurs = $('.bccvl-occurrence-viz');
 
@@ -32,6 +30,22 @@ window.bccvl.visualiser = {
                 return false;
             });
         });
+
+        var $vizRasters = $('.bccvl-raster-viz');
+        $.each($vizRasters, function(vIndex, raster) {
+            // each raster should have a data-viz-id.. bail if it doesn't
+            var $raster = $(raster);
+            var id = $raster.attr('data-viz-id');
+            if (!id) return;
+
+            // attach some click behaviour to the thing
+            $raster.click(function(evt) {
+                bccvl.visualiser.visualise(id, $raster, { apiType: 'raster'});
+                evt.preventDefault();
+                return false;
+            });
+        });
+
     },
 
     visualise: function(dataId, vizElement, options) {
