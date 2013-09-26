@@ -61,7 +61,6 @@
         <before
             css:theme-children=".bccvl-experimentresults table tbody"
             css:content-children="#bccvl-experiment-results li"
-            if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'"
         >
             <tr><td>result: <xsl:value-of select="a" /></td></tr>
         </before>
