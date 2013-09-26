@@ -47,17 +47,17 @@
         <drop css:theme=".bccvl-status-error" />
         <drop css:theme=".bccvl-status-notstarted" />
 
-        <!-- 
+        <!--
             NOTE: This is temporary.
             TEMP: Get the experiment results from the results folder for this experiment.
             Only do this if the experiment is in the completed state.
-        -->
         <before
             css:theme-children=".bccvl-experimentresults table tbody"
             css:content-children="#listing-table tbody"
             if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'"
             href="result/folder_contents"
         />
+        -->
 
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

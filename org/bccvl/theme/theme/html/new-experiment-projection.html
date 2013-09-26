@@ -450,20 +450,6 @@
 	<script src="js/bccvl-search.js"></script>
 	<script src="js/bccvl-stretch.js"></script>
 
-	<!--
-	validation polyfill: validation is standard HTML5, this polyfill will
-	make it work on non-current browsers.
- 	-->
-	<script src="lib/js-webshim/minified/extras/modernizr-custom.js"></script>
-	<script src="lib/js-webshim/minified/polyfiller.js"></script>
-
-	<script>
-	    // load and implement all unsupported features
-	    $.webshims.polyfill();
-	    //$.webshims.polyfill('geolocation json-storage'); // specific polyfills
-	</script>
-
-
 	<!-- debug: form catcher to show fields being submitted -->
 	<script class="non-plone" src="js/bccvl-form-catcher.js"></script>
 	<script class="non-plone">
@@ -493,9 +479,6 @@
 			// init the visualiser
 			bccvl.visualiser.init();
 
-			// DEBUG
-			$('.bccvl-occurrencestable tbody tr').clone().appendTo('.bccvl-occurrencestable tbody');
-
 			// init the stretcher for the viz window
 			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
 
@@ -507,7 +490,7 @@
 			var properTab = $('.nav.nav-tabs .active a');
 			$('.nav.nav-tabs a:first').tab('show');
 			$('.nav.nav-tabs a:last').tab('show');
-			properTab.tab('show');
+			setTimeout(function() { properTab.tab('show'); }, 0); // might fix Firefox bug staying on the last tab
 
 			// debug: hide the sample data, unconnected buttons, etc
 			$('#hide_placeholders').click( function(e) {
