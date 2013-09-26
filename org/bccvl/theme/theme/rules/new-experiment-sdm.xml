@@ -101,7 +101,7 @@
                         </td>
                         <td class="bccvl-table-controls">
                             <a><i class="broken icon-eye-open" title="preview this dataset"></i></a>
-                            <a><i class="broken icon-cog" title="uh, dunno"></i></a>
+                            <!-- <a><i class="broken icon-cog" title="uh, dunno"></i></a> -->
                         </td>
                     </tr>
                 </xsl:if>
@@ -152,7 +152,7 @@
                                 <xsl:attribute name="data-viz-id"><xsl:value-of select="@value" /></xsl:attribute>
                                 <i class="icon-eye-open"></i>
                             </xsl:element>
-                            <a><i class="broken icon-cog" title="uh, dunno"></i></a>
+                            <!-- <a><i class="broken icon-cog" title="uh, dunno"></i></a> -->
                         </td>
                     </tr>
                 </xsl:if>
