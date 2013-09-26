@@ -80,7 +80,6 @@
                         <xsl:element name="a">
                             <xsl:attribute name="class">fine bccvl-occurrence-viz</xsl:attribute>
                             <xsl:attribute name="title">preview this dataset</xsl:attribute>
-                            ++widget++form.widgets.file/@@download/model.object.Rascii
                             <xsl:attribute name="data-viz-id"><xsl:value-of select="@value" />++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" /></xsl:attribute>
                             <i class="icon-eye-open"></i>
                         </xsl:element>
