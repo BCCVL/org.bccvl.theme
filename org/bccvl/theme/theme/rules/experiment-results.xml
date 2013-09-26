@@ -58,19 +58,8 @@
             href="result/folder_contents"
         />
         -->
-        <before
-            css:theme-children=".bccvl-experimentresults table tbody"
-        >
+        <before css:theme-children=".bccvl-experimentresults table tbody">
             <xsl:for-each select="//*[@id='bccvl-experiment-results']//li//a">
-
-
-                                <td class="bccvl-table-controls">
-                                    <a href="/_debug/bccvl/++theme++org.bccvl.theme/"><i class="icon-eye-open" title="preview this dataset"></i></a>
-                                    <a href="/_debug/bccvl/++theme++org.bccvl.theme/"><i class="icon-cog" title="uh, dunno"></i></a>
-                                </td>
-                            </tr>
-
-
                 <tr>
                     <td colpan="2" class="bccvl-table-label">
                         <h1><xsl:copy-of select="text()" /></h1>
@@ -85,7 +74,6 @@
                         </xsl:element>
                     </td>
                 </tr>
-                <tr><td>result: <xsl:value-of select="@href" /></td></tr>
             </xsl:for-each>
         </before>
 
