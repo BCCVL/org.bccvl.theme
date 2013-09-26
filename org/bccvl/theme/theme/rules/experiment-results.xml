@@ -61,7 +61,7 @@
         <before
             css:theme-children=".bccvl-experimentresults table tbody"
         >
-            <xsl:for-each select="//[@id='bccvl-experiment-results']/li/a">
+            <xsl:for-each select="//div[@id='bccvl-experiment-results']/li/a">
                 <tr><td>result: <xsl:value-of select="@href" /></td></tr>
             </xsl:for-each>
         </before>
