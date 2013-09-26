@@ -255,28 +255,28 @@
 			// init the visualiser
 			bccvl.visualiser.init();
 
-			// -----------------------------------------------------------
-			// TEMPORARY code to handle the results table we're dragging
-			// in from plone
+			// // -----------------------------------------------------------
+			// // TEMPORARY code to handle the results table we're dragging
+			// // in from plone
 
-			// delete all td.draggable (they're the drag points from the
-			// old plone table rows)
-			$('td.draggable').remove();
+			// // delete all td.draggable (they're the drag points from the
+			// // old plone table rows)
+			// $('td.draggable').remove();
 
-			// delete all td.notDraggable (they're the checkbox column in
-			// the old plone table rows)
-			$('td.notDraggable').remove();
+			// // delete all td.notDraggable (they're the checkbox column in
+			// // the old plone table rows)
+			// $('td.notDraggable').remove();
 
-			// add a viz link to each row
-			var $links = $('tr.draggable a');
-			$.each($links, function(index, link) {
-				var $link = $(link);
-				var dataId = $link.attr('href') + '/../@@download/file/' + $.trim($link.text());
+			// // add a viz link to each row
+			// var $links = $('tr.draggable a');
+			// $.each($links, function(index, link) {
+			// 	var $link = $(link);
+			// 	var dataId = $link.attr('href') + '/../@@download/file/' + $.trim($link.text());
 
-				$link.closest('tr.draggable').find('td').last().addClass('bccvl-table-controls').append('<button><i class="icon-eye-open"></i></button>').click(function() {
-					window.bccvl.visualiser.visualise(dataId);
-				});
-			});
+			// 	$link.closest('tr.draggable').find('td').last().addClass('bccvl-table-controls').append('<button><i class="icon-eye-open"></i></button>').click(function() {
+			// 		window.bccvl.visualiser.visualise(dataId);
+			// 	});
+			// });
 
 		});
 	</script>
