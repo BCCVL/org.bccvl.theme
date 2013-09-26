@@ -44,7 +44,7 @@ window.bccvl.visualiser = {
 
             // attach some click behaviour to the thing
             $raster.click(function(evt) {
-                bccvl.visualiser.visualise(id, $raster, { apiType: 'raster'});
+                bccvl.visualiser.visualise(window.location.host + id, $raster, { apiType: 'raster'});
                 evt.preventDefault();
                 return false;
             });
@@ -68,7 +68,6 @@ window.bccvl.visualiser = {
             // if the vizElement isn't an iframe, find the closest iframe
             $vizFrame = $(vizElement).closest('.tab-pane, body').find('iframe.bccvl-viz'); // TODO: don't assume tabs
         }
-        console.log('found ' + $vizFrame.length + "viz frames.");
 
         $vizFrame.attr('src', this.visualiserBaseUrl +
             'api/' + encodeURIComponent(opts.apiType) +
