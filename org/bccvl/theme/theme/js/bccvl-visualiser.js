@@ -18,7 +18,6 @@ window.bccvl.visualiser = {
         var $visualiserDebugButton = $('#visualiser_debug');
 
         var $vizOccurs = $('.bccvl-occurrence-viz');
-        console.log($vizOccurs);
 
         $.each($vizOccurs, function(vIndex, occur) {
             // each occur should have a data-viz-id.. bail if it doesn't
@@ -28,28 +27,31 @@ window.bccvl.visualiser = {
 
             // attach some click behaviour to the thing
             $occur.click(function(evt) {
-                console.log("here's where I'd look up " + id + " in the OCCURRENCES_MAP that Matthew has given us.");
-                bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, { apiType: 'point'});
+                bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, $occur, { apiType: 'point'});
                 evt.preventDefault();
                 return false;
             });
         });
     },
 
-    visualise: function(dataId, options) {
-        var opts = {    apiType: 'autodetect',
-                        apiVersion: '1',
-                        vizType: 'data_url_map'
+    visualise: function(dataId, vizElement, options) {
+        var opts = {
+            apiType: 'autodetect',
+            apiVersion: '1',
+            vizType: 'data_url_map',
         };
         // merge in the caller's options
         if (options) {
             for (var opt in options) { opts[opt] = options[opt]; }
         }
 
-        console.log('viz got: ', dataId);
+        var $vizFrame = $(vizElement);
+        if (! $vizFrame.is('iframe')) {
+            // if the vizElement isn't an iframe, find the closest iframe
+            $vizFrame = $(vizElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
+        }
 
-        frame = $('iframe.bccvl-viz');
-        frame.attr('src', this.visualiserBaseUrl +
+        $vizFrame.attr('src', this.visualiserBaseUrl +
             'api/' + encodeURIComponent(opts.apiType) +
             '/' + encodeURIComponent(opts.apiVersion) +
             '/' + encodeURIComponent(opts.vizType) +
