@@ -60,9 +60,10 @@
         -->
         <before
             css:theme-children=".bccvl-experimentresults table tbody"
-            css:content-children="#bccvl-experiment-results li"
         >
-            <tr><td>result: <xsl:value-of select="a" /></td></tr>
+            <xsl:for-each select="//[@id='bccvl-experimnent-results'].li.a">
+                <tr><td>result: <xsl:value-of select="@href" /></td></tr>
+            </xsl:for-each>
         </before>
 
 
