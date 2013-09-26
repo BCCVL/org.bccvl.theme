@@ -87,7 +87,7 @@
     <!--    Link to upload a new dataset (which currently just means a file:
             //a#file
     -->
-    <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='file']" />
+    <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='org-bccvl-content-dataset']" />
 
     <!-- miscellaneous -->
 

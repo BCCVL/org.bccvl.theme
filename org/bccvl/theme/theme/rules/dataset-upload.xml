@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets/++add++File">
+    <rules if-path="datasets/++add++org.bccvl.content.dataset">
 
         <theme href="html/dataset-upload.html" />
 
@@ -25,8 +25,8 @@
         <copy attributes="name value" css:theme="form#uploadDataset [name='datasetFile']" css:content="#form-widgets-file-input" />
 
         <!-- hook in title and description fields -->
-        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetTitle']" css:content="#form-widgets-title" />
-        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-description" />
+        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetTitle']" css:content="#form-widgets-IDublinCore-title" />
+        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-IDublinCore-description" />
         <replace theme-children="//textarea[@name='datasetDescription']" content="//textarea[@id='form-widgets-description']/text()" />
 
         <!-- who knows, maybe this is the missing required field. -->
