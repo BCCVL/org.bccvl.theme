@@ -23,6 +23,8 @@ window.bccvl.visualiser = {
             var id = $occur.attr('data-viz-id');
             if (!id) return;
 
+            $occur.addClass('fine');
+
             // attach some click behaviour to the thing
             $occur.click(function(evt) {
                 bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, $occur, { apiType: 'point'});
@@ -37,6 +39,8 @@ window.bccvl.visualiser = {
             var $raster = $(raster);
             var id = $raster.attr('data-viz-id');
             if (!id) return;
+
+            $raster.addClass('fine');
 
             // attach some click behaviour to the thing
             $raster.click(function(evt) {
@@ -62,7 +66,7 @@ window.bccvl.visualiser = {
         var $vizFrame = $(vizElement);
         if (! $vizFrame.is('iframe')) {
             // if the vizElement isn't an iframe, find the closest iframe
-            $vizFrame = $(vizElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
+            $vizFrame = $(vizElement).closest('.tab-pane body').find('iframe.bccvl-viz'); // TODO: don't assume tabs
         }
 
         $vizFrame.attr('src', this.visualiserBaseUrl +
