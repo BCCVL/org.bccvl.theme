@@ -68,6 +68,7 @@ window.bccvl.visualiser = {
             // if the vizElement isn't an iframe, find the closest iframe
             $vizFrame = $(vizElement).closest('.tab-pane body').find('iframe.bccvl-viz'); // TODO: don't assume tabs
         }
+        console.log('found ' + $vizFrame.length + "viz frames.");
 
         $vizFrame.attr('src', this.visualiserBaseUrl +
             'api/' + encodeURIComponent(opts.apiType) +
