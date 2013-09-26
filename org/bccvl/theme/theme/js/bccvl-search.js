@@ -320,7 +320,7 @@ window.bccvl.search = {
                         var alaParam = actionParam;
                         $('<a class="fine"><i class="icon-download-alt"></i></a>').click(function(e) {
                             $.xmlrpc({
-                                url: 'http://192.168.100.102:6543/data_mover', // TODO: look this up in the manifest config
+                                url: '/_data_mover/data_mover', // TODO: look this up in the manifest config
                                 methodName: 'pullOccurrenceFromALA',
                                 params: [alaParam],
                                 success: function(response, status, jqXHR) {
