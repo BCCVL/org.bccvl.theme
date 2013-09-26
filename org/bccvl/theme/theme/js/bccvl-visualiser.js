@@ -44,7 +44,7 @@ window.bccvl.visualiser = {
 
             // attach some click behaviour to the thing
             $raster.click(function(evt) {
-                bccvl.visualiser.visualise(window.location.host + id, $raster, { apiType: 'raster'});
+                bccvl.visualiser.visualise(window.location.protocol + window.location.host + id, $raster, { apiType: 'raster'});
                 evt.preventDefault();
                 return false;
             });
