@@ -36,6 +36,9 @@
     <after css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
         window.bccvl.config || (window.bccvl.config = {});
+        window.bccvl.config.data_mover = {
+            baseUrl: '<xsl:value-of select="$portal_base_url" />/dv',
+        };
         window.bccvl.config.visualiser = {
             baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
         };
