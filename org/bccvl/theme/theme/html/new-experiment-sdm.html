@@ -45,6 +45,12 @@
 				<input type="text" name="siteSearchQuery" class="search-query broken" placeholder="Search">
 			</form>
 
+			<!-- debug -->
+			<button id="untheme" class="pull-right"
+				style="font-size: 66%; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
+				onclick="window.location.href = window.location.href.split('#',1)[0] + '#diazo.off=1';"
+			>untheme</button>
+
 			<!-- main menu items -->
 			<ul class="nav">
 				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
@@ -537,16 +543,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 									</td></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata">
-										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim1" value="bioclim1"></td>
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>annual mean temperature <small>0.5&deg; (5km) resolution</small></h1><p>bioclim1 from WorldClim.org</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
 									<tr class="sampledata">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim1" value="bioclim1"></td>
 										<td class="bccvl-table-label"><label for="bioclim1">
