@@ -18,6 +18,10 @@ class BCCVLThemeLayer(PloneSandboxLayer):
 
     defaultBases = (BCCVL_FIXTURE, )
 
+    def setUpZope(self, app, configurationContext):
+        import org.bccvl.theme
+        self.loadZCML('configure.zcml', package=org.bccvl.theme)
+
     def setUpPloneSite(self, portal):
         # setup theme for test layer
         self.applyProfile(portal, 'org.bccvl.theme:default')
@@ -36,8 +40,19 @@ BCCVL_THEME_FUNCTIONAL_TESTING = FunctionalTesting(
     name="BCCVLThemeFixture:Functional")
 
 
-BCCVL_THEME_ASYNC_FIXTURE = BCCVLThemeLayer(bases=(BCCVL_ASYNC_FIXTURE, ),
-                                            name='BCCVLThemeAsyncLayer')
+class BCCVLAsyncThemeLayer(PloneSandboxLayer):
+
+    defaultBases = (BCCVL_ASYNC_FIXTURE, )
+
+    def setUpZope(self, app, configurationContext):
+        import org.bccvl.theme
+        self.loadZCML('configure.zcml', package=org.bccvl.theme)
+
+    def setUpPloneSite(self, portal):
+        # setup theme for test layer
+        self.applyProfile(portal, 'org.bccvl.theme:default')
+
+BCCVL_THEME_ASYNC_FIXTURE = BCCVLAsyncThemeLayer()
 
 BCCVL_THEME_ASYNC_FUNCTIONAL_TESTING = BCCVLAsyncFunctionalTesting(
     bases=(BCCVL_THEME_ASYNC_FIXTURE,
