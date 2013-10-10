@@ -611,15 +611,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 					</div>
 				</div><!-- end of status page -->
 
-
 			</div>
-
-			<div class="row-fluid debug"><div class="span12">
-				<p>..debug stuff..</p>
-				<input type="submit" />
-				<button id="visualiser_debug">Visualise!</button>
-				<button id="hide_placeholders">hide unimplemented features and sample data</button>
-			</div></div>
 
 		</form>
 		</section>
@@ -685,16 +677,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 			$('.nav.nav-tabs a:last').tab('show');
 			properTab.tab('show');
 
-			// debug: hide the sample data, unconnected buttons, etc
-			$('#hide_placeholders').click( function(e) {
-				$('head').append('<style>' +
-					'a[href=""], a[href="#"], a:not([href]), .broken, .sampledata td, .sampledata { visibility: hidden; }' +
-					'a[href=""].fine, a[href="#"].fine, a:not([href]).fine,' +
-					'.typeahead.dropdown-menu a[href="#"], .typeahead.dropdown-menu a:not([href]) { visibility: visible; }' +
-				'</style>');
-				e.preventDefault();
-				return false;
-			});
 		});
 	</script>
 
