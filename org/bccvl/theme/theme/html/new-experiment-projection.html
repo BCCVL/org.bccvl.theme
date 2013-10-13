@@ -47,9 +47,15 @@
 
 			<!-- debug -->
 			<button id="untheme" class="pull-right"
-				style="font-size: 66%; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
-				onclick="window.location.href = window.location.href.split('?',1)[0] + '?diazo.off=1';"
-			>untheme</button>
+				style="font-size: 66%; margin: 0 0.3em; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
+				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
+			>no theme</button>
+			<button id="hide_placeholders" class="pull-right"
+				style="font-size: 66%; margin: 0 0.3em; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
+				onclick="
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('visibility', 'hidden');
+				"
+			>no placeholders</button>
 
 			<!-- main menu items -->
 			<ul class="nav">
@@ -425,13 +431,6 @@
 
 			</div>
 
-			<div class="row-fluid debug"><div class="span12">
-				<p>..debug stuff..</p>
-				<input type="submit" />
-				<button id="visualiser_debug">Visualise!</button>
-				<button id="hide_placeholders">hide unimplemented features and sample data</button>
-			</div></div>
-
 		</form>
 		</section>
 
@@ -498,16 +497,6 @@
 			$('.nav.nav-tabs a:last').tab('show');
 			setTimeout(function() { properTab.tab('show'); }, 0); // might fix Firefox bug staying on the last tab
 
-			// debug: hide the sample data, unconnected buttons, etc
-			$('#hide_placeholders').click( function(e) {
-				$('head').append('<style>' +
-					'a[href=""], a[href="#"], a:not([href]), .broken, .sampledata td, .sampledata { visibility: hidden; }' +
-					'a[href=""].fine, a[href="#"].fine, a:not([href]).fine,' +
-					'.typeahead.dropdown-menu a[href="#"], .typeahead.dropdown-menu a:not([href]) { visibility: visible; }' +
-				'</style>');
-				e.preventDefault();
-				return false;
-			});
 		});
 	</script>
 
