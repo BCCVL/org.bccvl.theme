@@ -76,6 +76,8 @@ window.bccvl || (window.bccvl = {});
 
 window.bccvl.search = {
     // --------------------------------------------------------------
+    // -- providers -------------------------------------------------
+    // --------------------------------------------------------------
     providers: {
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         ala: {
@@ -171,6 +173,8 @@ window.bccvl.search = {
         }
     },
     // --------------------------------------------------------------
+    // --------------------------------------------------------------
+    // --------------------------------------------------------------
     init: function() {
         window.bccvl.search.enableForms();
     },
@@ -254,36 +258,32 @@ window.bccvl.search = {
             }
         });
 
-        // acutally search when they press enter - - - - - - - - - - -
+        // acutally search when they enter something - - - - - - - - - - -
 
-        $inputField.keyup( function(event) {
-            if (event.keyCode === 13) { // keycode 13 is the enter key
+        $inputField.change( function(event) {
 
-                var provider = window.bccvl.search.providers[$sourceField.val()];
-                if (!provider) return;
-                if (!provider.search) return;
-                if (!provider.search.searchUrl) return;
-                var searchUrl = provider.search.searchUrl($inputField.val());
+            var provider = window.bccvl.search.providers[$sourceField.val()];
+            if (!provider) return;
+            if (!provider.search) return;
+            if (!provider.search.searchUrl) return;
+            var searchUrl = provider.search.searchUrl($inputField.val());
 
-                $.ajax({
-                    // xhrFields: { withCredentials: true }, // not using CORS
-                    dataType: 'jsonp',                       // ..using JSONP instead
-                    url: searchUrl,
-                    success: function(data) {
-                        // either the search provider will have a parseSearchData function,
-                        // which extracts the result objects from the returned data.
-                        if (provider.search.parseSearchData) {
-                            // if this provider has a parseSearchData function, call it
-                            window.bccvl.search.displayResults(provider.search.parseSearchData(data), $resultsField);
-                        } else {
-                            // otherwise assume the data is already good
-                            window.bccvl.search.displayResults(data, $resultsField);
-                        }
+            $.ajax({
+                // xhrFields: { withCredentials: true }, // not using CORS
+                dataType: 'jsonp',                       // ..using JSONP instead
+                url: searchUrl,
+                success: function(data) {
+                    // either the search provider will have a parseSearchData function,
+                    // which extracts the result objects from the returned data.
+                    if (provider.search.parseSearchData) {
+                        // if this provider has a parseSearchData function, call it
+                        window.bccvl.search.displayResults(provider.search.parseSearchData(data), $resultsField);
+                    } else {
+                        // otherwise assume the data is already good
+                        window.bccvl.search.displayResults(data, $resultsField);
                     }
-                });
-
-                event.preventDefault();
-            }
+                }
+            });
         });
     },
     // --------------------------------------------------------------

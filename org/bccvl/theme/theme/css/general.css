@@ -95,7 +95,7 @@ a:not([href]).fine,
 
 .bccvl-preview-pane {
     height: 500px;
-    min-height: 250px;
+    min-height: 100px;
     position: relative;
 }
 

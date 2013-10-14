@@ -61,10 +61,10 @@
 // Here is a folly complete options object:
 //
 //     options = {
-//         topPad:    60,  // top padding of 60px
-//         bottomPad: 10,  // bottom padding of 10px
-//         parent:    <selector | DOMELement | jQ $elem>
-//                         // use this element as the 'parent'
+//         topPad:    60,         // top padding of 60px
+//         bottomPad: 10,         // bottom padding of 10px
+//         parent:    < selector | DOMELement | jQ $elem >
+//                                // use this element as the 'parent'
 //     }
 //
 //
@@ -111,23 +111,45 @@ window.bccvl.stretch = {
         $(window).scroll(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
         $(window).resize(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
 
-        $stretcher.css('box-sizing', 'border-box');
-        $stretcher.css('position', 'relative');
+        $stretcher.css('position', 'relative');     // so we can set the 'top' directly
+        $stretcher.css('box-sizing', 'border-box'); // so the padding won't affect the height
+        $stretcher.css('margin-top', '0');          // so the margin won't affect the height
+        $stretcher.css('margin-bottom', '0');       // so the margin won't affect the height
+
         window.bccvl.stretch._stretch($stretcher, $parent, opts);
+
+        // secret re-stretch events
+        // if the stretcher includes an iframe, re-stretch whenever the iframe loads new content:
+        $stretcher.find('iframe').load(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+
+        // if the stretcher is inside a twitter bootstrap tab, re-stretch whenever the tab is loaded:
+        var $tab = $stretcher.closest('.tab-pane');
+        if ($tab.length > 0) {
+            var tabId = $tab.attr('id');
+            if (tabId) {
+                $('[href="#' + tabId + '"]').on('shown', function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+            }
+        }
+        $stretcher.find('iframe').load(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+
     },
     // --------------------------------------------------------------
     _stretch: function($stretcher, $parent, opts) {
 
         var $window = $(window);
 
-        // parentTopPos: pixels above the top of the viewport.  +ve: above the window, -ve: showing on screen
-        var parentTopPos = $window.scrollTop() - $parent.offset().top;
+        // parentTopPos: pixels above the top of the viewport.
+        // includes adjustment for top padding.
+        // +ve: above the window, -ve: showing on screen
+        var parentTopPos = $window.scrollTop() - $parent.offset().top + opts.topPad;
 
-        // parentBottomPos: pixels above the bottom of the viewport.  +ve: below the window, -ve: showing on screen
-        var parentBottomPos = $parent.innerHeight() - $window.height() - parentTopPos;
+        // parentBottomPos: pixels above the bottom of the viewport.
+        // includes adjustment for bottom padding.
+        // +ve: below the window, -ve: showing on screen
+        var parentBottomPos = $parent.innerHeight() - $window.height() - parentTopPos + opts.topPad + opts.bottomPad;
 
-        var top = opts.topPad;
-        var height = $parent.innerHeight() - opts.topPad - opts.bottomPad - opts.startTop;
+        var top = opts.startTop;
+        var height = $parent.innerHeight() - opts.startTop;
 
         if (parentTopPos > 0) {
             top += parentTopPos;
