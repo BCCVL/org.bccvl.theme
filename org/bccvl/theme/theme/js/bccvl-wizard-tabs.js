@@ -35,11 +35,11 @@ window.makeBCCVLWizardButtons = function() {
 
         // act on the URL hash if someone arrives with one
         window.addEventListener('popstate', function() {
-            var activeTab = $('[href=' + location.hash + ']');
-            if (activeTab.length > 0) {
-                activeTab.tab('show');
+            var $activeTab = $('a[href=' + location.hash + ']');
+            if ($activeTab.length > 0) {
+                $activeTab.first().tab('show');
             } else {
-                $firstTab.find('a[data-toggle="tab"]').tab('show');
+                $firstTab.find('a[data-toggle="tab"]').first().tab('show');
             }
         });
 
