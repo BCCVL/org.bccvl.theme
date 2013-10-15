@@ -62,6 +62,12 @@
             </xsl:for-each>
         </before>
 
+
+        <!-- hook in the algorithm config for BRT -->
+        <replace css:theme-children="#brtConfig .bccvl-algo-config" css:content="#formfield-form-widgets-parameters_brt" />
+
+
+
         <!-- hook in the environmental data list -->
 
         <!--
