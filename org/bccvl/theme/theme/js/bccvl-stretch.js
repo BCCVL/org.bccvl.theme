@@ -11,7 +11,7 @@
 //     enabled -- actually it maintains the same offset from the
 //     parent's top or bottom as it had originally).
 //
-// - The scretcher stays within the visible viewport
+// - The stretcher stays within the visible viewport
 //     If the document has scrolled so that the top of the parent is
 //     off the top of the screen, the top of the stretcher will be at
 //     the top of the screen (not above it).  You can set an amount
@@ -23,15 +23,15 @@
 //
 // Required setup
 //
-// This will set your stretcher's display property to 'absolute'.
+// This will set your stretcher's display property to 'relative'.
 // Make sure this doesn't destroy your page layout.  You can test
 // this separate from the javascript by adding a style to your
-// stretcher tag: style="position: absolute".
+// stretcher tag: style="position: relative".
 //
 // To use: automatic discovery and invocation
 //
 // Give your stretcher DOM element the class 'bccvl-stretcher' and a
-// css property of 'position: absolute'.  You probably also want to
+// css property of 'position: relative'.  You probably also want to
 // add 'position: relative' to its parent element.
 // Now include this JS file and call window.bccvl.stretch.init() to
 // activate the stretcher behaviour.

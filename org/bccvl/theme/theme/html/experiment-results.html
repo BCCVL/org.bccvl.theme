@@ -166,7 +166,7 @@
 
 			</div>
 
-			<div class="row-fluid">
+			<div class="row-fluid bccvl-stretch-parent">
 				<!-- list of (potential) results -->
 				<div class="span4">
 
@@ -223,7 +223,7 @@
 
 				<!-- preview area -->
 				<div class="span8">
-					<div class="bccvl-preview-pane well">
+					<div class="bccvl-preview-pane well bccvl-stretcher">
 						<iframe class="bccvl-viz" name="viz">
 						</iframe>
 					</div>
@@ -247,6 +247,7 @@
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<script src="js/bccvl-wizard-tabs.js"></script>
 	<script src="js/bccvl-visualiser.js"></script>
+	<script src="js/bccvl-stretch.js"></script>
 
 	<!-- debug -->
 	<script src="js/bccvl-form-catcher.js"></script>
@@ -261,28 +262,8 @@
 			// init the visualiser
 			bccvl.visualiser.init();
 
-			// // -----------------------------------------------------------
-			// // TEMPORARY code to handle the results table we're dragging
-			// // in from plone
-
-			// // delete all td.draggable (they're the drag points from the
-			// // old plone table rows)
-			// $('td.draggable').remove();
-
-			// // delete all td.notDraggable (they're the checkbox column in
-			// // the old plone table rows)
-			// $('td.notDraggable').remove();
-
-			// // add a viz link to each row
-			// var $links = $('tr.draggable a');
-			// $.each($links, function(index, link) {
-			// 	var $link = $(link);
-			// 	var dataId = $link.attr('href') + '/../@@download/file/' + $.trim($link.text());
-
-			// 	$link.closest('tr.draggable').find('td').last().addClass('bccvl-table-controls').append('<button><i class="icon-eye-open"></i></button>').click(function() {
-			// 		window.bccvl.visualiser.visualise(dataId);
-			// 	});
-			// });
+			// init the stretcher for the viz window
+			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
 
 		});
 	</script>
