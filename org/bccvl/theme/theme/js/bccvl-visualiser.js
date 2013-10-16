@@ -37,7 +37,11 @@ window.bccvl.visualiser = {
             'r': {
                 apiType:   'r',
                 resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
-            }
+            },
+            'auto': {
+                apiType:   'auto_detect',
+                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+            },
         }
 
 
