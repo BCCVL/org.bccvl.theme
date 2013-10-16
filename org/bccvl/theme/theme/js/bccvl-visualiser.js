@@ -32,15 +32,15 @@ window.bccvl.visualiser = {
             },
             'raster': {
                 apiType:   'raster',
-                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+                resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
             },
             'r': {
                 apiType:   'r',
-                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+                resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
             },
             'auto': {
                 apiType:   'auto_detect',
-                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+                resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
             },
         }
 
