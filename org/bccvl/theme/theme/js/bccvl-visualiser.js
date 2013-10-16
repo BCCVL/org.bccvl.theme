@@ -14,49 +14,118 @@ window.bccvl.visualiser = {
             console.warn(["Failed to determine visualiser base url", err]);
         }
 
+        // This goes looking for viz buttons, and attaches a click event.
+        // The buttons (or links or whatever) should look like this:
+        // <button class=".bccvl-occurrence-viz" data-viz-id="someId">
 
-        var $vizOccurs = $('.bccvl-occurrence-viz');
+        // here's a list of all the viz-able things.   We'll loop through this later.
+        // each item looks like this:
+        //     'itemType': {                         # viz buttons should use a class name of '.bccvl-{itemType}-viz'
+        //         apiType: 'vizApiName',            # [reqd] the API type the visualiser should use.
+        //         resolveId: function(rawId) {...}  # [optional] function to re-map the ID from the DOM element to
+        //                                           # the id that should be given to the vizualiser.
+        //     }
+        visualisableTypes = {
+            'occurrence': {
+                apiType:   'point',
+                resolveId: function(rawId) { return window.bccvl.lookups.occurrencesMap[rawId].file; }
+            },
+            'raster': {
+                apiType:   'raster',
+                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+            },
+            'r': {
+                apiType:   'r',
+                resolveId: function(rawId) { window.location.protocol + '//' + window.location.host + rawId; }
+            }
+        }
 
-        $.each($vizOccurs, function(vIndex, occur) {
-            // each occur should have a data-viz-id.. bail if it doesn't
-            var $occur = $(occur);
-            var id = $occur.attr('data-viz-id');
-            if (!id) return;
 
-            $occur.addClass('fine');
+        $.each(visualisableTypes, function(name, vizType) {
+            var $vizInvokers = $('.bccvl-' + name + '-viz');
 
-            // attach some click behaviour to the thing
-            $occur.click(function(evt) {
-                bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, $occur, { apiType: 'point'});
-                evt.preventDefault();
-                return false;
+            $.each($vizInvokers, function(vIndex, invoker) {
+                // each invoker should have a data-viz-id.. bail if it doesn't
+                var $invoker = $(invoker);
+                var id = $invoker.attr('data-viz-id');
+                if (!id) return;
+
+                if (vizType.resolveId) {
+                    id = vizType.resolveId(id);
+                }
+
+                $invoker.addClass('fine');
+
+                // attach some click behaviour to the thing
+                $invoker.click(function(evt) {
+                    bccvl.visualiser.visualise(id, $invoker, { apiType: vizType.apiType });
+                    evt.preventDefault();
+                    return false;
+                });
             });
         });
 
-        var $vizRasters = $('.bccvl-raster-viz');
-        $.each($vizRasters, function(vIndex, raster) {
-            // each raster should have a data-viz-id.. bail if it doesn't
-            var $raster = $(raster);
-            var id = $raster.attr('data-viz-id');
-            if (!id) return;
 
-            $raster.addClass('fine');
 
-            // attach some click behaviour to the thing
-            $raster.click(function(evt) {
-                bccvl.visualiser.visualise(window.location.protocol + '//' + window.location.host + id, $raster, { apiType: 'raster'});
-                evt.preventDefault();
-                return false;
-            });
-        });
+
+        // var $vizOccurs = $('.bccvl-occurrence-viz');
+        // $.each($vizOccurs, function(vIndex, occur) {
+        //     // each occur should have a data-viz-id.. bail if it doesn't
+        //     var $occur = $(occur);
+        //     var id = $occur.attr('data-viz-id');
+        //     if (!id) return;
+
+        //     $occur.addClass('fine');
+
+        //     // attach some click behaviour to the thing
+        //     $occur.click(function(evt) {
+        //         bccvl.visualiser.visualise(window.bccvl.lookups.occurrencesMap[id].file, $occur, { apiType: 'point' });
+        //         evt.preventDefault();
+        //         return false;
+        //     });
+        // });
+
+        // var $vizRasters = $('.bccvl-raster-viz');
+        // $.each($vizRasters, function(vIndex, raster) {
+        //     // each raster should have a data-viz-id.. bail if it doesn't
+        //     var $raster = $(raster);
+        //     var id = $raster.attr('data-viz-id');
+        //     if (!id) return;
+
+        //     $raster.addClass('fine');
+
+        //     // attach some click behaviour to the thing
+        //     $raster.click(function(evt) {
+        //         bccvl.visualiser.visualise(window.location.protocol + '//' + window.location.host + id, $raster, { apiType: 'raster' });
+        //         evt.preventDefault();
+        //         return false;
+        //     });
+        // });
+
+        // var $vizR = $('.bccvl-r-viz');
+        // $.each($vizR, function(vIndex, rfile) {
+        //     // each file should have a data-viz-id.. bail if it doesn't
+        //     var $rfile = $(rfile);
+        //     var id = $rfile.attr('data-viz-id');
+        //     if (!id) return;
+
+        //     $rfile.addClass('fine');
+
+        //     // attach some click behaviour to the thing
+        //     $rfile.click(function(evt) {
+        //         bccvl.visualiser.visualise(window.location.protocol + '//' + window.location.host + id, $rfile, { apiType: 'r' });
+        //         evt.preventDefault();
+        //         return false;
+        //     });
+        // });
 
     },
 
     visualise: function(dataId, vizElement, options) {
         var opts = {
-            apiType: 'autodetect',
+            apiType: 'auto_detect',
             apiVersion: '1',
-            vizType: 'data_url_map',
+            vizType: 'default',
         };
         // merge in the caller's options
         if (options) {
