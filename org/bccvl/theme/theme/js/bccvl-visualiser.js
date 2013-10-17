@@ -32,6 +32,11 @@ window.bccvl.visualiser = {
                 resolveId: function(rawId) { return window.bccvl.lookups.occurrencesMap[rawId].file; }
             },
             // - - - - - - - - - - - - - - - - - - - - -
+            'absence': {
+                apiType:   'point',
+                resolveId: function(rawId) { return window.bccvl.lookups.occurrencesMap[rawId].file; }
+            },
+            // - - - - - - - - - - - - - - - - - - - - -
             'raster': {
                 apiType:   'raster',
                 resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
