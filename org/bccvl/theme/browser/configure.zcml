@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    i18n_domain="org.bccvl.site"
+    >
+    
+    <z3c:widgetTemplate
+         mode="input"
+         widget="z3c.form.interfaces.ITextWidget"
+         field="zope.schema.interfaces.IInt"
+         template="number_input.pt"
+    />
+    <!--layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"-->
+    
+</configure>
