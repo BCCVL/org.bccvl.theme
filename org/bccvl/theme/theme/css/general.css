@@ -127,6 +127,10 @@ a:not([href]).fine,
     position: relative;
 }
 
+.bccvl-wizardtabs, .bccvl-wizardtabs ~ .tab-content {
+    opacity: 0.01; /* the wizard tab system will re-opacify the tabs */
+}
+
 .bccvl-wizardtabs-navbtns {
     position: absolute;
     height: 0;

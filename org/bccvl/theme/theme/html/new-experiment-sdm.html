@@ -11,6 +11,11 @@
 	<!--[if lt IE 9]>
 		<script src="lib/html5shiv/html5shiv.js"></script>
 	<![endif]-->
+
+	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+	<script src="lib/require/require.js"></script>
+	<script>require(['js/common'], function (common) { require(['js/new-experiment-sdm']); } );</script>
+
 </head>
 
 <body>
@@ -107,7 +112,7 @@
 					<button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
 				</div>
 				<ul class="nav nav-tabs">
-					<li><a href="#tab-meta" data-toggle="tab">Description</a></li>
+					<li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
 					<li><a href="#tab-config" data-toggle="tab">Configuration</a></li>
 					<li><a href="#tab-occur" data-toggle="tab">Occurrences</a></li>
 					<li><a href="#tab-absent" data-toggle="tab">Absences</a></li>
@@ -436,7 +441,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 						</p>
 					</div>
 
-					<div class="row-fluid bccvl-stretch-parent" style="position: relative;">
+					<div class="row-fluid bccvl-stretch-parent">
 
 						<!-- list of available data -->
 						<div class="span4">
@@ -496,7 +501,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 						</p>
 					</div>
 
-					<div class="row-fluid">
+					<div class="row-fluid bccvl-stretch-parent">
 
 						<!-- list of available data -->
 						<div class="span4">
@@ -592,6 +597,7 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 								</iframe>
 							</div>
 						</div>
+
 					</div>
 				</div>
 
@@ -630,10 +636,11 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<script id="js-config"></script>
 	<script id="bccvl-lookups"></script>
 
+
 	<script src="lib/jquery/jquery-2.0.3.js"></script>
 	<script src="lib/jquery-xmlrpc/jquery.xmlrpc.js"></script>
 	<script src="lib/bootstrap/js/bootstrap.js"></script>
-	<script src="js/bccvl-wizard-tabs.js"></script>
+	<!-- script src="js/bccvl-wizard-tabs.js"></script -->
 	<script src="js/bccvl-fadeaway.js"></script>
 	<script src="js/bccvl-visualiser.js"></script>
 	<script src="js/bccvl-search.js"></script>
@@ -653,9 +660,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 	<script>
 		$(function(){
 
-			// hook up the wizard buttons
-			makeBCCVLWizardButtons();
-
 			// set up the fadeaway instructions
 			makeBCCVLFadeaway();
 
@@ -667,17 +671,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 
 			// init the stretcher for the viz window
 			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
-
-			// debug: re-hide tabs.  Need to do this so that the offsetParent() call in the
-			// stretcher finds the proper parent -- offsetParent() doesn't work if the parent
-			// is hidden when it's being detected.  So I've classed ALL the tabs as active,
-			// so none of them are hidden when the page is loaded.  This clicking around gets
-			// the tab visiblity sorted out again.
-			var properTab = $('.nav.nav-tabs .active a');
-			$('.nav.nav-tabs a:first').tab('show');
-			$('.nav.nav-tabs a:last').tab('show');
-//			console.log( $('<div>').append(properTab.first().clone()).html() );
-			properTab.tab('show');
 
 		});
 	</script>
