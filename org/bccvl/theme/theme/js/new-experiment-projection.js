@@ -1,15 +1,21 @@
-
 //
-// main JS for the new sdm experiment page.
+// main JS for the new projection experiment page.
 //
-define( function(require) {
+define(
+    ['jquery', 'js/bccvl-wizard-tabs'],
+    function($, wiztabs) {
+    // ==============================================================
 
-    // call require() to pull in all the dependencies
-    var     $ = require('jquery');
+        // call require() to pull in all the dependencies
+        var $ = require('jquery');
 
-    // do the work
-    $(function() {
-        console.log('require.js working.');
-    });
+        // do the work
+        $(function() {
 
-});
+            // hook up the wizard buttons
+            wiztabs.init();
+
+        });
+    // ==============================================================
+    }
+);

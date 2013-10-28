@@ -5,7 +5,7 @@
 define( function(require) {
 
     // call require() to pull in all the dependencies
-    var     $ = require('jquery');
+    var $ = require('jquery');
 
     // do the work
     $(function() {
