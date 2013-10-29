@@ -17,10 +17,14 @@
 	<script src="lib/require/require.js"></script>
 	<script>
 		// require is a bit annoying to kick off when it's running in a plone/diazo page.
-		// The path to the scripts are munged to have the plone ++theme++theme.name bit
-		// in front of the path within the theme.
-		// So, we need to have that URL prefix, and tell require to start there.
-		require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/new-experiment-sdm']); } );
+		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+		// set that as a prefix in the requirejs config, but to initially get to that
+		// config file, it needs to have the prefix added there too.
+		if (window.location.hostname == 'localhost') {
+			require(['../js/common.js'], function (common) { require(['js/new-experiment-sdm']); } );
+		} else {
+			require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/new-experiment-sdm']); } );
+		}
 	</script>
 
 </head>

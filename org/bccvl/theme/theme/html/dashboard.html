@@ -15,8 +15,13 @@
 
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
 	<script src="lib/require/require.js"></script>
-	<script>require(['js/common'], function (common) { require(['js/dashboard']); } );</script>
-
+	<script>
+		// require is a bit annoying to kick off when it's running in a plone/diazo page.
+		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+		// set that as a prefix in the requirejs config, but to initially get to that
+		// config file, it needs to have the prefix added there too.
+		require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dashboard']); } );
+	</script>
 </head>
 
 <body>
