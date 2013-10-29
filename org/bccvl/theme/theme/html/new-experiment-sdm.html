@@ -15,7 +15,13 @@
 
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
 	<script src="lib/require/require.js"></script>
-	<script>require(['../js/common'], function (common) { require(['js/new-experiment-sdm']); } );</script>
+	<script>
+		// require is a bit annoying to kick off when it's running in a plone/diazo page.
+		// The path to the scripts are munged to have the plone ++theme++theme.name bit
+		// in front of the path within the theme.
+		// So, we need to have that URL prefix, and tell require to start there.
+		require(['/++theme++org.bccvl.theme/js/common'], function (common) { require(['js/new-experiment-sdm']); } );
+	</script>
 
 </head>
 
