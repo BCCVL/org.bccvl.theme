@@ -7,9 +7,6 @@ define(
     function($, wiztabs) {
     // ==============================================================
 
-        // call require() to pull in all the dependencies
-        var $ = require('jquery');
-
         // do the work
         $(function() {
 

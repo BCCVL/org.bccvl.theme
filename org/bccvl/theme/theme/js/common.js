@@ -12,6 +12,6 @@ requirejs.config({
     baseUrl: (local ? 'lib' : '/++theme++org.bccvl.theme/lib'),          // load modules from the lib folder
     paths: {
         'js':       (local ? '../js' : '/++theme++org.bccvl.theme/js'),  // bccvl stuff, which starts with js/, is in the js folder
-        'jquery':   'lib/jquery/jquery-2.0.3.js'                         // Ima say 'jquery', u say jquery-x.y.z.js, dawg
+        'jquery':   'jquery/jquery-2.0.3'                                // Ima say 'jquery', u say jquery-x.y.z.js, dawg
     }
 });
