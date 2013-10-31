@@ -1,15 +1,14 @@
 
 //
-// main JS for the new sdm experiment page.
+// main JS for the experiment results page.
 //
-define( function(require) {
-
-    // call require() to pull in all the dependencies
-    var $ = require('jquery');
-
-    // do the work
-    $(function() {
-        console.log('require.js working.');
-    });
-
-});
+define(     ['jquery', 'js/bccvl-stretch', 'bootstrap'],
+    function( $,        stretch) {
+    // ==============================================================
+        $(function() {
+            // nothing to do so far.
+            stretch.init({ topPad: 60, bottomPad: 10 });
+        });
+    // ==============================================================
+    }
+);

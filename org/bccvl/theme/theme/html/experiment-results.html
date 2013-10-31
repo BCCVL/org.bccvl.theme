@@ -13,6 +13,7 @@
 		<script src="lib/html5shiv/html5shiv.js"></script>
 	<![endif]-->
 
+	<script id="js-config"></script>
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
 	<script src="lib/require/require.js"></script>
 	<script>
@@ -20,7 +21,11 @@
 		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
-		require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/experiment-results']); } );
+		if (window.location.hostname == 'localhost') {
+			require(['../js/common.js'], function (common) { require(['js/experiment-results']); } );
+		} else {
+			require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/experiment-results']); } );
+		}
 	</script>
 
 </head>
@@ -254,31 +259,5 @@
 	</footer>
 
 <!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<script id="js-config"></script>
-	<script src="lib/jquery/jquery-2.0.3.js"></script>
-	<script src="lib/bootstrap/js/bootstrap.js"></script>
-	<script src="js/bccvl-wizard-tabs.js"></script>
-	<script src="js/bccvl-visualiser.js"></script>
-	<script src="js/bccvl-stretch.js"></script>
-
-	<!-- debug -->
-	<script src="js/bccvl-form-catcher.js"></script>
-
-
-	<script>
-		$(function(){
-
-			// debug: install form catcher
-			installBCCVLFormCatcher();
-
-			// init the visualiser
-			bccvl.visualiser.init();
-
-			// init the stretcher for the viz window
-			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
-
-		});
-	</script>
-
 </body>
 </html>

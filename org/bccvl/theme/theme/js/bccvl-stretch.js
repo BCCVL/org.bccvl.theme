@@ -33,7 +33,7 @@
 // Give your stretcher DOM element the class 'bccvl-stretcher' and a
 // css property of 'position: relative'.  You probably also want to
 // add 'position: relative' to its parent element.
-// Now include this JS file and call window.bccvl.stretch.init() to
+// Now include this JS file and call bccvl_stretch.init() to
 // activate the stretcher behaviour.
 //
 // The code will locate the positioning parent of the stretcher (the
@@ -43,14 +43,14 @@
 //
 // To use: explicit invocation
 //
-// Call window.bccvl.stretch.enableStretcher(stretcherElement), and
+// Call bccvl_stretch.enableStretcher(stretcherElement), and
 // pass in the element you want to have stretcher bahaviour.
 //
 // Options
 //
 // Both forms of invocation can take an options data object. E.g:
 //
-//     bccvl.stretch.init({ topPad: 60 });
+//     bccvl_stretch.init({ topPad: 60 });
 //
 // That example will set the top padding to 60px -- the top of the
 // stretcher will always be at least 60px away from the top edge
@@ -68,105 +68,110 @@
 //     }
 //
 //
-window.bccvl || (window.bccvl = {});
 
-window.bccvl.stretch = {
-    // --------------------------------------------------------------
-    defaultOptions: {
-        topPad: 5,
-        bottomPad: 5
-    },
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    init: function(options) {
-        window.bccvl.stretch.enableStretchers(options);
-    },
-    // --------------------------------------------------------------
-    enableStretchers: function(options) {
-        // call enableStretcher() on each stretcher in the dom
-        var $stretchers = $('.bccvl-stretcher');
-        $.each($stretchers, function(index, stretcher) { window.bccvl.stretch.enableStretcher(stretcher, options); });
-    },
-    // --------------------------------------------------------------
-    enableStretcher: function(stretcherElem, options) {
+define(     ['jquery', 'bootstrap'],
+    function( $) {
 
-        // merge together the default and user options
-        var opts = {};
-        for (var opt in window.bccvl.stretch.defaultOptions) {
-            opts[opt] = window.bccvl.stretch.defaultOptions[opt];
-        }
-        for (var opt in options) {
-            opts[opt] = options[opt];
-        }
 
-        // grab the stretcher we're working on, and its parents
-        var $stretcher = $(stretcherElem);
-        var $parent = $stretcher.offsetParent();
+        var bccvl_stretch = {
 
-        opts.startTop = $stretcher.position().top;
+            // --------------------------------------------------------------
+            defaultOptions: {
+                topPad: 5,
+                bottomPad: 5
+            },
+            // --------------------------------------------------------------
+            // --------------------------------------------------------------
+            init: function(options) {
+                bccvl_stretch.enableStretchers(options);
+            },
+            // --------------------------------------------------------------
+            enableStretchers: function(options) {
+                // call enableStretcher() on each stretcher in the dom
+                var $stretchers = $('.bccvl-stretcher');
+                $.each($stretchers, function(index, stretcher) { bccvl_stretch.enableStretcher(stretcher, options); });
+            },
+            // --------------------------------------------------------------
+            enableStretcher: function(stretcherElem, options) {
 
-        // okay we've got the stretcher and its parent.  Now react to
-        // window scrolling and resizing by resetting the stretcher's
-        // positioning.
-        $(window).scroll(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
-        $(window).resize(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+                // merge together the default and user options
+                var opts = {};
+                for (var opt in bccvl_stretch.defaultOptions) {
+                    opts[opt] = bccvl_stretch.defaultOptions[opt];
+                }
+                for (var opt in options) {
+                    opts[opt] = options[opt];
+                }
 
-        $stretcher.css('position', 'relative');     // so we can set the 'top' directly
-        $stretcher.css('box-sizing', 'border-box'); // so the padding won't affect the height
-        $stretcher.css('margin-top', '0');          // so the margin won't affect the height
-        $stretcher.css('margin-bottom', '0');       // so the margin won't affect the height
+                // grab the stretcher we're working on, and its parents
+                var $stretcher = $(stretcherElem);
+                var $parent = $stretcher.offsetParent();
 
-        window.bccvl.stretch._stretch($stretcher, $parent, opts);
+                opts.startTop = $stretcher.position().top;
 
-        // secret re-stretch events
-        // if the stretcher includes an iframe, re-stretch whenever the iframe loads new content:
-        $stretcher.find('iframe').load(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+                // okay we've got the stretcher and its parent.  Now react to
+                // window scrolling and resizing by resetting the stretcher's
+                // positioning.
+                $(window).scroll(function() { bccvl_stretch._stretch($stretcher, $parent, opts); });
+                $(window).resize(function() { bccvl_stretch._stretch($stretcher, $parent, opts); });
 
-        // if the stretcher is inside a twitter bootstrap tab, re-stretch whenever the tab is loaded:
-        var $tab = $stretcher.closest('.tab-pane');
-        if ($tab.length > 0) {
-            var tabId = $tab.attr('id');
-            if (tabId) {
-                $('[href="#' + tabId + '"]').on('shown', function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
+                $stretcher.css('position', 'relative');     // so we can set the 'top' directly
+                $stretcher.css('box-sizing', 'border-box'); // so the padding won't affect the height
+                $stretcher.css('margin-top', '0');          // so the margin won't affect the height
+                $stretcher.css('margin-bottom', '0');       // so the margin won't affect the height
+
+                bccvl_stretch._stretch($stretcher, $parent, opts);
+
+                // secret re-stretch events
+                // if the stretcher includes an iframe, re-stretch whenever the iframe loads new content:
+                $stretcher.find('iframe').load(function() { bccvl_stretch._stretch($stretcher, $parent, opts); });
+
+                // if the stretcher is inside a twitter bootstrap tab, re-stretch whenever the tab is loaded:
+                var $tab = $stretcher.closest('.tab-pane');
+                if ($tab.length > 0) {
+                    var tabId = $tab.attr('id');
+                    if (tabId) {
+                        $('[href="#' + tabId + '"]').on('shown', function() { bccvl_stretch._stretch($stretcher, $parent, opts); });
+                    }
+                }
+                $stretcher.find('iframe').load(function() { bccvl_stretch._stretch($stretcher, $parent, opts); });
+
+            },
+            // --------------------------------------------------------------
+            _stretch: function($stretcher, $parent, opts) {
+
+                var $window = $(window);
+
+                // parentTopPos: pixels above the top of the viewport.
+                // includes adjustment for top padding.
+                // +ve: above the window, -ve: showing on screen
+                var parentTopPos = $window.scrollTop() - $parent.offset().top + opts.topPad;
+
+                // parentBottomPos: pixels above the bottom of the viewport.
+                // includes adjustment for bottom padding.
+                // +ve: below the window, -ve: showing on screen
+                var parentBottomPos = $parent.innerHeight() - $window.height() - parentTopPos + opts.topPad + opts.bottomPad;
+
+                var top = opts.startTop;
+                var height = $parent.innerHeight() - opts.startTop;
+
+                if (parentTopPos > 0) {
+                    top += parentTopPos;
+                    height -= parentTopPos;
+                }
+
+                if (parentBottomPos > 0) {
+                    height -= parentBottomPos;
+                }
+
+                $stretcher.css('height', height + 'px');
+                $stretcher.css('top', top + 'px');
             }
-        }
-        $stretcher.find('iframe').load(function() { window.bccvl.stretch._stretch($stretcher, $parent, opts); });
-
-    },
-    // --------------------------------------------------------------
-    _stretch: function($stretcher, $parent, opts) {
-
-        var $window = $(window);
-
-        // parentTopPos: pixels above the top of the viewport.
-        // includes adjustment for top padding.
-        // +ve: above the window, -ve: showing on screen
-        var parentTopPos = $window.scrollTop() - $parent.offset().top + opts.topPad;
-
-        // parentBottomPos: pixels above the bottom of the viewport.
-        // includes adjustment for bottom padding.
-        // +ve: below the window, -ve: showing on screen
-        var parentBottomPos = $parent.innerHeight() - $window.height() - parentTopPos + opts.topPad + opts.bottomPad;
-
-        var top = opts.startTop;
-        var height = $parent.innerHeight() - opts.startTop;
-
-        if (parentTopPos > 0) {
-            top += parentTopPos;
-            height -= parentTopPos;
-        }
-
-        if (parentBottomPos > 0) {
-            height -= parentBottomPos;
-        }
-
-        $stretcher.css('height', height + 'px');
-        $stretcher.css('top', top + 'px');
+            // --------------------------------------------------------------
+        };
+        return bccvl_stretch;
     }
-    // --------------------------------------------------------------
-};
-
-
+);
 
 
 

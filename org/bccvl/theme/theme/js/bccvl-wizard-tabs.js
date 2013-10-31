@@ -5,9 +5,8 @@
 // idea is that the tabs are different pages in a 'wizard'
 // style interface).
 
-define(
-    ['jquery'],
-    function($) {
+define(     ['jquery', 'bootstrap'],
+    function( $) {
         // ==========================================================
 
         // wizard tabs only need an init function...

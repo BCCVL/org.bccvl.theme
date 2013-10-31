@@ -21,7 +21,11 @@
 		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
-		require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dataset-upload']); } );
+		if (window.location.hostname == 'localhost') {
+			require(['../js/common.js'], function (common) { require(['js/dataset-upload']); } );
+		} else {
+			require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dataset-upload']); } );
+		}
 	</script>
 
 </head>
@@ -210,27 +214,5 @@
 			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
 		</div>
 	</footer>
-
-<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<script src="lib/jquery/jquery-2.0.3.js"></script>
-	<script src="lib/bootstrap/js/bootstrap.js"></script>
-	<script src="lib/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
-	<script src="js/bccvl-wizard-tabs.js"></script>
-
-	<!-- debug -->
-	<script src="js/bccvl-form-catcher.js"></script>
-
-	<script>
-		$(function(){
-
-			// // debug: install form catcher
-			// installBCCVLFormCatcher();
-
-			// // hook up the wizard buttons
-			// makeBCCVLWizardButtons();
-
-		});
-	</script>
-
 </body>
 </html>

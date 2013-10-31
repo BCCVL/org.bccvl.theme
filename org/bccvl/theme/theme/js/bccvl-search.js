@@ -71,285 +71,289 @@
 //      }
 // }
 
+define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
+    function( $      ) {
 
-window.bccvl || (window.bccvl = {});
 
-window.bccvl.search = {
-    // --------------------------------------------------------------
-    // -- providers -------------------------------------------------
-    // --------------------------------------------------------------
-    providers: {
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        ala: {
-            autocomplete: {
-                autoUrl: function(autocompleteString) {
-                    return ('http://bie.ala.org.au/ws/search/auto.json?idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
-                },
-                // - - - - - - - - - - - - - - - - - - - - - - - - -
-                parseAutoData: function(rawData) {
-                    var list = [];
-                    if (rawData.autoCompleteList) {
-                        $.each(rawData.autoCompleteList, function(index, item) {
-                            // each item in the autoCompleteList is a taxon.  so it
-                            // only needs to show up once in the suggestion list.
-                            var name = ' (' + item.rankString + ')';
-                            name = name + ' <i>' + item.name + '</i>';
-                            if (item.commonName) {
-                                // the commonName string, a comma-separated list of what ALA
-                                // think are common names, is sometimes long.  Often that's
-                                // because of rediculous 'common names' that have sentences
-                                // in them, for example:
-                                // http://bie.ala.org.au/species/Macropus+fuliginosus#tab_names
-                                //
-                                // To de-emphasise the stupider common names, this code
-                                // sorts the common names by length, then re-combines
-                                // them shortest first.  That will pull short, probably
-                                // more useful names to the start, and push the sentence
-                                // length names to the far end.
-                                var sortedNameString = item.commonName.split(/,\s*/).sort( function(a, b) {
-                                    return a.length - b.length;
-                                }).join(', ');
+        var bccvl_search = {
+            // --------------------------------------------------------------
+            // -- providers -------------------------------------------------
+            // --------------------------------------------------------------
+            providers: {
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                ala: {
+                    autocomplete: {
+                        autoUrl: function(autocompleteString) {
+                            return ('http://bie.ala.org.au/ws/search/auto.json?idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        parseAutoData: function(rawData) {
+                            var list = [];
+                            if (rawData.autoCompleteList) {
+                                $.each(rawData.autoCompleteList, function(index, item) {
+                                    // each item in the autoCompleteList is a taxon.  so it
+                                    // only needs to show up once in the suggestion list.
+                                    var name = ' (' + item.rankString + ')';
+                                    name = name + ' <i>' + item.name + '</i>';
+                                    if (item.commonName) {
+                                        // the commonName string, a comma-separated list of what ALA
+                                        // think are common names, is sometimes long.  Often that's
+                                        // because of rediculous 'common names' that have sentences
+                                        // in them, for example:
+                                        // http://bie.ala.org.au/species/Macropus+fuliginosus#tab_names
+                                        //
+                                        // To de-emphasise the stupider common names, this code
+                                        // sorts the common names by length, then re-combines
+                                        // them shortest first.  That will pull short, probably
+                                        // more useful names to the start, and push the sentence
+                                        // length names to the far end.
+                                        var sortedNameString = item.commonName.split(/,\s*/).sort( function(a, b) {
+                                            return a.length - b.length;
+                                        }).join(', ');
 
-                                if (sortedNameString.length > 100) {
-                                    name = name + ' ' + sortedNameString.substring(0,99) + '...';
+                                        if (sortedNameString.length > 100) {
+                                            name = name + ' ' + sortedNameString.substring(0,99) + '...';
+                                        } else {
+                                            name = name + ' ' + sortedNameString
+                                        }
+                                    }
+                                    list.push(name);
+                                });
+                            }
+                            return list;
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        cleanAutoItem: function(selectedItem) {
+                            // the string will always have <i>sciname</i> at the start, so..
+                            return selectedItem.split(/<\/?i>/)[1];
+                        }
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                    },
+                    search: {
+                        searchUrl: function(searchString) {
+                            return ('http://bie.ala.org.au/ws/search.json?fq=idxtype:TAXON&q=' + encodeURIComponent(searchString));
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        parseSearchData: function(rawData) {
+                            var list = [];
+                            if (rawData.searchResults && rawData.searchResults.results) {
+                                $.each(rawData.searchResults.results, function(index, item) {
+                                    // build the proper data object
+                                    result = { title: "", description: "", actions: {} };
+                                    result.title = item.name;
+
+                                    if (item.commonNameSingle) {
+                                        result.title = item.commonNameSingle + ' <i class="taxonomy">' + result.title + '</i>';
+                                    }
+                                    if (item.rank) {
+                                        result.description += ' (' + item.rank + ')';
+                                    }
+                                    if (item.occCount) {
+                                        result.description += ' ' + item.occCount + ' occurrences from ALA';
+                                    }
+                                    // the thumbnail at ALA is often just an arbitrary crop of the
+                                    // small image, so prefer the small image to use as our thumbnail.
+                                    if (item.smallImageUrl) {
+                                        result.thumbUrl = item.smallImageUrl;
+                                    } else if (item.thumbnailUrl) {
+                                        result.thumbUrl = item.thumbnailUrl;
+                                    }
+
+                                    // now get the actions sorted.
+                                    if (item.guid) {
+                                        result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
+                                        result.actions.alaimport = item.guid;
+                                    }
+                                    list.push(result);
+                                });
+                            }
+                            return list;
+                        },
+                    }
+                    // - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                }
+            },
+            // --------------------------------------------------------------
+            // --------------------------------------------------------------
+            // --------------------------------------------------------------
+            init: function() {
+                bccvl_search.enableForms();
+            },
+            // --------------------------------------------------------------
+            enableForms: function() {
+
+                // call enableForm() on each form in the dom
+                var $searchForms = $('.bccvl-search-form');
+                $.each($searchForms, function(index, form) { bccvl_search.enableForm(form); });
+            },
+            // --------------------------------------------------------------
+            enableForm: function(formElement) {
+
+                // locate all the dom elements we need - - - - - - -
+
+                var $form = $(formElement);
+
+                // find the id of the parent element
+                formid = $form.attr('id');
+                if (!formid) {
+                    console.log('BCCVL-Search: found a .bccvl-search-form but it lacks an id attribute.');
+                    return; // bail out of this form if it has no ID
+                }
+
+                // we can find the input and source select by concatenating the
+                // id of the parent div with "_query" and "_source".
+                var $inputField = $form.find('[name="' + formid + '_query"]').first();
+                var $sourceField = $form.find('[name="' + formid + '_source"]').first();
+                var $resultsField = $('#' + formid + '_results').first();
+
+                // bail if we didn't get the right elements
+                if ($inputField.length === 0) {
+                    console.warn('BCCVL-Search: found a .bccvl-search-form with id "' + formid + '" but it did not contain a name={id}_query field.');
+                    return;
+                }
+                if ($sourceField.length === 0) {
+                    console.warn('BCCVL-Search: found a .bccvl-search-form with id "' + formid + '" but it did not contain a name={id}_source field.');
+                    return;
+                }
+
+                // switch on all the magic autocomplete behaviour - - - - - - -
+
+                $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
+
+                // switch on twitter bootstrap autocomplete
+                $inputField.typeahead({
+
+                    items: 12,
+
+                    source: function(queryStr, process) {
+                        var provider = bccvl_search.providers[$sourceField.val()];
+                        if (!provider) return;
+                        if (!provider.autocomplete) return;
+                        if (!provider.autocomplete.autoUrl) return;
+                        var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
+
+                        $.ajax({
+                            // xhrFields: { withCredentials: true }, // not using CORS
+                            dataType: 'jsonp',                       // ..using JSONP instead
+                            url: autocompleteUrl,
+                            success: function(data) {
+                                // either the search provider will have a parseAutoData function,
+                                // which extracts the possible matches from the returned data.
+                                if (provider.autocomplete.parseAutoData) {
+                                    // if this provider has a parseAutoData function, call it
+                                    process(provider.autocomplete.parseAutoData(data));
                                 } else {
-                                    name = name + ' ' + sortedNameString
+                                    // otherwise assume the data is already good
+                                    process(data);
                                 }
                             }
-                            list.push(name);
                         });
-                    }
-                    return list;
-                },
-                // - - - - - - - - - - - - - - - - - - - - - - - - -
-                cleanAutoItem: function(selectedItem) {
-                    // the string will always have <i>sciname</i> at the start, so..
-                    return selectedItem.split(/<\/?i>/)[1];
-                }
-                // - - - - - - - - - - - - - - - - - - - - - - - - -
-            },
-            search: {
-                searchUrl: function(searchString) {
-                    return ('http://bie.ala.org.au/ws/search.json?fq=idxtype:TAXON&q=' + encodeURIComponent(searchString));
-                },
-                // - - - - - - - - - - - - - - - - - - - - - - - - -
-                parseSearchData: function(rawData) {
-                    var list = [];
-                    if (rawData.searchResults && rawData.searchResults.results) {
-                        $.each(rawData.searchResults.results, function(index, item) {
-                            // build the proper data object
-                            result = { title: "", description: "", actions: {} };
-                            result.title = item.name;
-
-                            if (item.commonNameSingle) {
-                                result.title = item.commonNameSingle + ' <i class="taxonomy">' + result.title + '</i>';
-                            }
-                            if (item.rank) {
-                                result.description += ' (' + item.rank + ')';
-                            }
-                            if (item.occCount) {
-                                result.description += ' ' + item.occCount + ' occurrences from ALA';
-                            }
-                            // the thumbnail at ALA is often just an arbitrary crop of the
-                            // small image, so prefer the small image to use as our thumbnail.
-                            if (item.smallImageUrl) {
-                                result.thumbUrl = item.smallImageUrl;
-                            } else if (item.thumbnailUrl) {
-                                result.thumbUrl = item.thumbnailUrl;
-                            }
-
-                            // now get the actions sorted.
-                            if (item.guid) {
-                                result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
-                                result.actions.alaimport = item.guid;
-                            }
-                            list.push(result);
-                        });
-                    }
-                    return list;
-                },
-            }
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        }
-    },
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    init: function() {
-        window.bccvl.search.enableForms();
-    },
-    // --------------------------------------------------------------
-    enableForms: function() {
-
-        // call enableForm() on each form in the dom
-        var $searchForms = $('.bccvl-search-form');
-        $.each($searchForms, function(index, form) { window.bccvl.search.enableForm(form); });
-    },
-    // --------------------------------------------------------------
-    enableForm: function(formElement) {
-
-        // locate all the dom elements we need - - - - - - -
-
-        var $form = $(formElement);
-
-        // find the id of the parent element
-        formid = $form.attr('id');
-        if (!formid) {
-            console.log('BCCVL-Search: found a .bccvl-search-form but it lacks an id attribute.');
-            return; // bail out of this form if it has no ID
-        }
-
-        // we can find the input and source select by concatenating the
-        // id of the parent div with "_query" and "_source".
-        var $inputField = $form.find('[name="' + formid + '_query"]').first();
-        var $sourceField = $form.find('[name="' + formid + '_source"]').first();
-        var $resultsField = $('#' + formid + '_results').first();
-
-        // bail if we didn't get the right elements
-        if ($inputField.length === 0) {
-            console.warn('BCCVL-Search: found a .bccvl-search-form with id "' + formid + '" but it did not contain a name={id}_query field.');
-            return;
-        }
-        if ($sourceField.length === 0) {
-            console.warn('BCCVL-Search: found a .bccvl-search-form with id "' + formid + '" but it did not contain a name={id}_source field.');
-            return;
-        }
-
-        // switch on all the magic autocomplete behaviour - - - - - - -
-
-        $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
-
-        // switch on twitter bootstrap autocomplete
-        $inputField.typeahead({
-
-            items: 12,
-
-            source: function(queryStr, process) {
-                var provider = window.bccvl.search.providers[$sourceField.val()];
-                if (!provider) return;
-                if (!provider.autocomplete) return;
-                if (!provider.autocomplete.autoUrl) return;
-                var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
-
-                $.ajax({
-                    // xhrFields: { withCredentials: true }, // not using CORS
-                    dataType: 'jsonp',                       // ..using JSONP instead
-                    url: autocompleteUrl,
-                    success: function(data) {
-                        // either the search provider will have a parseAutoData function,
-                        // which extracts the possible matches from the returned data.
-                        if (provider.autocomplete.parseAutoData) {
-                            // if this provider has a parseAutoData function, call it
-                            process(provider.autocomplete.parseAutoData(data));
-                        } else {
-                            // otherwise assume the data is already good
-                            process(data);
-                        }
+                    },
+                    updater: function(selectedItem) {
+                        // returns the value to put into the text box
+                        var provider = bccvl_search.providers[$sourceField.val()];
+                        if (!provider) return selectedItem;
+                        if (!provider.autocomplete) return selectedItem;
+                        if (!provider.autocomplete.cleanAutoItem) return selectedItem;
+                        return provider.autocomplete.cleanAutoItem(selectedItem);
                     }
                 });
+
+                // acutally search when they enter something - - - - - - - - - - -
+
+                $inputField.change( function(event) {
+
+                    var provider = bccvl_search.providers[$sourceField.val()];
+                    if (!provider) return;
+                    if (!provider.search) return;
+                    if (!provider.search.searchUrl) return;
+                    var searchUrl = provider.search.searchUrl($inputField.val());
+
+                    $.ajax({
+                        // xhrFields: { withCredentials: true }, // not using CORS
+                        dataType: 'jsonp',                       // ..using JSONP instead
+                        url: searchUrl,
+                        success: function(data) {
+                            // either the search provider will have a parseSearchData function,
+                            // which extracts the result objects from the returned data.
+                            if (provider.search.parseSearchData) {
+                                // if this provider has a parseSearchData function, call it
+                                bccvl_search.displayResults(provider.search.parseSearchData(data), $resultsField);
+                            } else {
+                                // otherwise assume the data is already good
+                                bccvl_search.displayResults(data, $resultsField);
+                            }
+                        }
+                    });
+                });
             },
-            updater: function(selectedItem) {
-                // returns the value to put into the text box
-                var provider = window.bccvl.search.providers[$sourceField.val()];
-                if (!provider) return selectedItem;
-                if (!provider.autocomplete) return selectedItem;
-                if (!provider.autocomplete.cleanAutoItem) return selectedItem;
-                return provider.autocomplete.cleanAutoItem(selectedItem);
-            }
-        });
+            // --------------------------------------------------------------
+            displayResults: function(results, domElement) {
+                // get a table dom fragment ready to put search results into
+                var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
+                var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
 
-        // acutally search when they enter something - - - - - - - - - - -
+                // loop through the result objects adding them to the table
+                $.each(results, function(index, item) {
+                    var $info = $('<td class="bccvl-table-label"></td>');
+                    var $actions = $('<td class="bccvl-table-controls"></td>');
 
-        $inputField.change( function(event) {
-
-            var provider = window.bccvl.search.providers[$sourceField.val()];
-            if (!provider) return;
-            if (!provider.search) return;
-            if (!provider.search.searchUrl) return;
-            var searchUrl = provider.search.searchUrl($inputField.val());
-
-            $.ajax({
-                // xhrFields: { withCredentials: true }, // not using CORS
-                dataType: 'jsonp',                       // ..using JSONP instead
-                url: searchUrl,
-                success: function(data) {
-                    // either the search provider will have a parseSearchData function,
-                    // which extracts the result objects from the returned data.
-                    if (provider.search.parseSearchData) {
-                        // if this provider has a parseSearchData function, call it
-                        window.bccvl.search.displayResults(provider.search.parseSearchData(data), $resultsField);
-                    } else {
-                        // otherwise assume the data is already good
-                        window.bccvl.search.displayResults(data, $resultsField);
+                    if (item.thumbUrl) {
+                        $info.append('<div class="bccvl-thumb"><img src="' + item.thumbUrl + '" /></div>');
                     }
-                }
-            });
-        });
-    },
-    // --------------------------------------------------------------
-    displayResults: function(results, domElement) {
-        // get a table dom fragment ready to put search results into
-        var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
-        var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
+                    $info.append('<h1>' + item.title + '</h1>');
+                    $info.append('<p>' + item.description + '</p>');
 
-        // loop through the result objects adding them to the table
-        $.each(results, function(index, item) {
-            var $info = $('<td class="bccvl-table-label"></td>');
-            var $actions = $('<td class="bccvl-table-controls"></td>');
+                    $.each(item.actions, function(action, actionParam) {
+                        // handle known actions..
+                        switch (action) {
+                            // - - - - - - - - - - - - - - - - - - - - - - - -
+                            case 'viz': // visualise
+                                var vizParam = actionParam;
+                                $('<a class="fine"><i class="icon-eye-open"></i></a>').click(function(e) {
+                                    $vizFrame.attr('src', vizParam);
+                                    e.preventDefault();
+                                    return false;
+                                }).appendTo($actions);
+                                break;
+                            // - - - - - - - - - - - - - - - - - - - - - - - -
+                            case 'alaimport': // import from ala
+                                var alaParam = actionParam;
+                                $('<a class="fine"><i class="icon-download-alt"></i></a>').click(function(e) {
+                                    $.xmlrpc({
+                                        url: window.bccvl.config.data_mover.baseUrl,
+                                        methodName: 'pullOccurrenceFromALA',
+                                        params: [alaParam],
+                                        success: function(response, status, jqXHR) {
+                                             console.log('it worked, apparently: ', status);
+                                        },
+                                        error: function(jqXHR, status, error) {
+                                             console.log('it failed!!: ', status, ' the error was: ', error);
+                                        },
+                                    });
+                                    e.preventDefault();
+                                    return false;
+                                }).appendTo($actions);
+                                break;
+                            // - - - - - - - - - - - - - - - - - - - - - - - -
+                            default:
+                                $actions.append('<a href="' + actionParam + '">' + action + '</a>');
+                            // - - - - - - - - - - - - - - - - - - - - - - - -
+                        }
+                    });
 
-            if (item.thumbUrl) {
-                $info.append('<div class="bccvl-thumb"><img src="' + item.thumbUrl + '" /></div>');
+                    $elem.append( $('<tr></tr>').append($info).append($actions) );
+                });
+
+                // finally, add the dom fragment to the page dom.
+                $(domElement).empty().addClass('bccvl-search-active').append($elem);
             }
-            $info.append('<h1>' + item.title + '</h1>');
-            $info.append('<p>' + item.description + '</p>');
-
-            $.each(item.actions, function(action, actionParam) {
-                // handle known actions..
-                switch (action) {
-                    // - - - - - - - - - - - - - - - - - - - - - - - -
-                    case 'viz': // visualise
-                        var vizParam = actionParam;
-                        $('<a class="fine"><i class="icon-eye-open"></i></a>').click(function(e) {
-                            $vizFrame.attr('src', vizParam);
-                            e.preventDefault();
-                            return false;
-                        }).appendTo($actions);
-                        break;
-                    // - - - - - - - - - - - - - - - - - - - - - - - -
-                    case 'alaimport': // import from ala
-                        var alaParam = actionParam;
-                        $('<a class="fine"><i class="icon-download-alt"></i></a>').click(function(e) {
-                            $.xmlrpc({
-                                url: window.bccvl.config.data_mover.baseUrl,
-                                methodName: 'pullOccurrenceFromALA',
-                                params: [alaParam],
-                                success: function(response, status, jqXHR) {
-                                     console.log('it worked, apparently: ', status);
-                                },
-                                error: function(jqXHR, status, error) {
-                                     console.log('it failed!!: ', status, ' the error was: ', error);
-                                },
-                            });
-                            e.preventDefault();
-                            return false;
-                        }).appendTo($actions);
-                        break;
-                    // - - - - - - - - - - - - - - - - - - - - - - - -
-                    default:
-                        $actions.append('<a href="' + actionParam + '">' + action + '</a>');
-                    // - - - - - - - - - - - - - - - - - - - - - - - -
-                }
-            });
-
-            $elem.append( $('<tr></tr>').append($info).append($actions) );
-        });
-
-        // finally, add the dom fragment to the page dom.
-        $(domElement).empty().addClass('bccvl-search-active').append($elem);
+            // --------------------------------------------------------------
+            // --------------------------------------------------------------
+        }
+        return bccvl_search;
     }
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-};
+);
 
 
 

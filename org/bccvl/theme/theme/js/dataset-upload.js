@@ -1,15 +1,14 @@
 
 //
-// main JS for the new sdm experiment page.
+// main JS for the dataset upload page.
 //
-define( function(require) {
-
-    // call require() to pull in all the dependencies
-    var $ = require('jquery');
-
-    // do the work
-    $(function() {
-        console.log('require.js working.');
-    });
-
-});
+define(     ['jquery', 'bootstrap'],
+    function( $) {
+    // ==============================================================
+        $(function() {
+            // nothing to do so far.
+            console.log('page behaviour loaded.')
+        });
+    // ==============================================================
+    }
+);

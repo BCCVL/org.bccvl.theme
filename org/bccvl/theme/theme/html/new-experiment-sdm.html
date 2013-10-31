@@ -13,6 +13,9 @@
 		<script src="lib/html5shiv/html5shiv.js"></script>
 	<![endif]-->
 
+	<script id="js-config"></script>
+	<script id="bccvl-lookups"></script>
+
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
 	<script src="lib/require/require.js"></script>
 	<script>
@@ -642,50 +645,6 @@ t/f  # keep.fold.fit = FALSE	Logical. allows the predicted values for observatio
 			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
 		</div>
 	</footer>
-
-<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<script id="js-config"></script>
-	<script id="bccvl-lookups"></script>
-
-
-	<script src="lib/jquery/jquery-2.0.3.js"></script>
-	<script src="lib/jquery-xmlrpc/jquery.xmlrpc.js"></script>
-	<script src="lib/bootstrap/js/bootstrap.js"></script>
-	<!-- script src="js/bccvl-wizard-tabs.js"></script -->
-	<script src="js/bccvl-fadeaway.js"></script>
-	<script src="js/bccvl-visualiser.js"></script>
-	<script src="js/bccvl-search.js"></script>
-	<script src="js/bccvl-stretch.js"></script>
-
-	<!-- debug: form catcher to show fields being submitted -->
-	<script class="non-plone" src="js/bccvl-form-catcher.js"></script>
-	<script class="non-plone">
-		$(function(){
-			// debug: install form catcher
-			installBCCVLFormCatcher();
-		});
-	</script>
-
-
-	<!-- acutally do the things.. -->
-	<script>
-		$(function(){
-
-			// set up the fadeaway instructions
-			makeBCCVLFadeaway();
-
-			// init the search interfaces
-			bccvl.search.init();
-
-			// init the visualiser
-			bccvl.visualiser.init();
-
-			// init the stretcher for the viz window
-			bccvl.stretch.init({ topPad: 60, bottomPad: 10 });
-
-		});
-	</script>
-
 
 </body>
 </html>
