@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    >
+
+    <!-- Replace IntegerDataConverter with a custom one that doesn't use locale-dependent
+        formatting, as this adds a separator between thousands etc, which the HTML5 
+        number type input won't render --> 
+    <adapter
+        factory=".converter.RemoveSeparatorIntDataConverter"
+    />
+
+</configure>
