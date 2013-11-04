@@ -22,7 +22,7 @@
 		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
-		if (window.location.hostname == 'localhost') {
+		if (window.location.host == 'localhost:9292') {
 			require(['../js/common.js'], function (common) { require(['js/new-experiment-projection']); } );
 		} else {
 			require(['/++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/new-experiment-projection']); } );
