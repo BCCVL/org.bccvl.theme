@@ -2,12 +2,14 @@
 //
 // main JS for the experiment results page.
 //
-define(     ['jquery', 'js/bccvl-stretch', 'bootstrap'],
-    function( $,        stretch) {
+define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
+    function( $,        stretch          ,  viz ) {
     // ==============================================================
         $(function() {
-            // nothing to do so far.
+
             stretch.init({ topPad: 60, bottomPad: 10 });
+            viz.init();
+
         });
     // ==============================================================
     }
