@@ -59,8 +59,8 @@
         <!-- loop through the algorithm list again, this time poking the config blocks into the config block accordion -->
         <after css:theme-children="#algoConfig">
 
-<!--
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
+<!--
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#brtConfig">
@@ -75,8 +75,8 @@
                         </div>
                     </div>
                 </div>
-            </xsl:for-each>
 -->
+            </xsl:for-each>
 
         </after>
 
