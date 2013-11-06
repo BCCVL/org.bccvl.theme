@@ -61,20 +61,22 @@
 
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
                 <div class="accordion-group">
-<!--
                     <div class="accordion-heading">
+<!--
                         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#brtConfig">
                             <xsl:value-of select="@name" />
                         </a>
+-->
                     </div>
                     <div id="brtConfig" class="accordion-body collapse">
+<!--
                         <div class="accordion-inner bccvl-algo-config">
                             <fieldset class="form-horizontal">
                                 ...
                             </fiedset>
                         </div>
-                    </div>
 -->
+                    </div>
                 </div>
             </xsl:for-each>
 
