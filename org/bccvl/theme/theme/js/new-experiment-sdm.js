@@ -10,19 +10,13 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // hook up stretchers
             stretch.init({ topPad: 60, bottomPad: 10 });
 
-            viz.init();
+            viz.init();         // init the visualiser
+            fadeaway.init();    // init the fadeaway instructions
+            dimensions.init();  // init the dimension chooser thingy
+            wiztabs.init();     // hook up the wizard buttons
+            search.init();      // hook up the search fields
 
-            // init the fadeaway instructions
-            fadeaway.init();
 
-            // init the dimension chooser thingy
-            dimensions.init();
-
-            // hook up the wizard buttons
-            wiztabs.init();
-
-            // hook up the search fields
-            search.init();
 
         });
     // ==============================================================

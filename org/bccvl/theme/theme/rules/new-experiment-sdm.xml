@@ -21,12 +21,6 @@
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
         <!-- hook in the algorithm list -->
-
-        <!--
-            We are converting a select to a checkbox,
-            so we need to give the checkbox the select's name,
-            not the option's name.
-        -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
                 <tr>
@@ -62,19 +56,33 @@
             </xsl:for-each>
         </before>
 
+        <!-- loop through the algorithm list again, this time poking the config blocks into the config block accordion -->
+        <after css:theme-children="#algoConfig">
 
-        <!-- hook in the algorithm config for BRT -->
-        <replace css:theme-children="#brtConfig .bccvl-algo-config" css:content="#formfield-form-widgets-parameters_brt" />
+            <xsl:for-each select="//input[@name='form.widgets.functions:list']">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#brtConfig">
+                            <xsl:value-of select="@name" />
+                        </a>
+                    </div>
+                    <div id="brtConfig" class="accordion-body collapse">
+                        <div class="accordion-inner bccvl-algo-config">
+                            <fieldset class="form-horizontal">
+                                ...
+                            </fiedset>
+                        </div>
+                    </div>
+                </div>
+            </xsl:for-each>
 
-
+        </after>
 
         <!-- hook in the environmental data list -->
-
         <!--
             We are converting a select to a checkbox input,
             so we need to give the radio button the select's name,
             not the option's name.
-
         -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
             <xsl:for-each select="//select[@id='form-widgets-environmental_dataset']/option">
