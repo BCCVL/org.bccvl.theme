@@ -67,7 +67,7 @@
                             <xsl:attribute name="data-toggle">collapse</xsl:attribute>
                             <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
                             <xsl:attribute name="href">#accordion_body_<xsl:value-of select="@id" /></xsl:attribute>
-                            <xsl:value-of select="string(../label/span/text())" /> configuration parameters
+                            <b><xsl:value-of select="string(../label/span/text())" /></b> configuration parameters
                         </xsl:element>
                     </div>
 
@@ -76,7 +76,7 @@
                         <xsl:attribute name="id">accordion_body_<xsl:value-of select="@id" /></xsl:attribute>
 
                         <div class="accordion-inner bccvl-algo-config">
-                            <fieldset class="form-horizontal">
+                            <fieldset class="xxform-horizontal">
                                 <xsl:value-of select="position()" />
                                 <xsl:copy-of select="//div[@class='object-widget']" />
                             </fieldset>
