@@ -57,9 +57,9 @@
         </before>
 
         <!-- loop through the algorithm list again, this time poking the config blocks into the config block accordion -->
-<!--
         <after css:theme-children="#algoConfig">
 
+<!--
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
                 <div class="accordion-group">
                     <div class="accordion-heading">
@@ -76,9 +76,9 @@
                     </div>
                 </div>
             </xsl:for-each>
+-->
 
         </after>
--->
 
         <!-- hook in the environmental data list -->
         <!--
