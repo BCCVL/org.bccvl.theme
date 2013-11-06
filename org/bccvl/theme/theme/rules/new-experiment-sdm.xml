@@ -60,6 +60,7 @@
         <after css:theme-children="#algoConfig">
 
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
+                asdf
 <!--
                 <div class="accordion-group">
                     <div class="accordion-heading">
