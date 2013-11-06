@@ -60,9 +60,8 @@
         <after css:theme-children="#algoConfig">
 
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
-                asdf
-<!--
                 <div class="accordion-group">
+<!--
                     <div class="accordion-heading">
                         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#brtConfig">
                             <xsl:value-of select="@name" />
@@ -75,8 +74,8 @@
                             </fiedset>
                         </div>
                     </div>
-                </div>
 -->
+                </div>
             </xsl:for-each>
 
         </after>
