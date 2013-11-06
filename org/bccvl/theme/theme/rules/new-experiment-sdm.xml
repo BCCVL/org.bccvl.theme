@@ -78,7 +78,7 @@
                         <div class="accordion-inner bccvl-algo-config">
                             <fieldset class="form-horizontal">
                                 <xsl:value-of select="position()" />
-                                <xsl:value-of select="//[@class='object-widget']" />
+                                <xsl:value-of select="//div[@class='object-widget']" />
                             </fieldset>
                         </div>
                     </xsl:element>
