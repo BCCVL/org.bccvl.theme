@@ -66,7 +66,7 @@
                             <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
                             <xsl:attribute name="data-toggle">collapse</xsl:attribute>
                             <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
-                            <xsl:attribute name="href">accordion_body_<xsl:value-of select="@id" /></xsl:attribute>
+                            <xsl:attribute name="href">#accordion_body_<xsl:value-of select="@id" /></xsl:attribute>
 
                             <xsl:value-of select="@name" />
                         </xsl:element>
