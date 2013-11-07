@@ -19,7 +19,8 @@ requirejs.config({
     },
     shim: {
         'bootstrap':            ['jquery'],
-        'bootstrap-fileupload': { deps: ['jquery', 'bootstrap'], exports: 'jQuery.fn.fileupload' },
+//        'bootstrap-fileupload': { deps: ['jquery', 'bootstrap'], exports: 'jQuery.fn.fileupload' },
+        'bootstrap-fileupload': ['jquery', 'bootstrap'],
         'jquery-xmlrpc':        ['jquery']
     }
 });
