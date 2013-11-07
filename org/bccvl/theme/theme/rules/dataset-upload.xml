@@ -39,11 +39,15 @@
         <!-- add some currently-unused form fields -->
         <after css:theme-children="form#uploadDataset">
             <!-- data genre - currently always 'Species Occurrence' -->
+            <select id="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre" name="form.widgets.http___namespaces_bccvl_org_au_prop_datagenre:list" class="select-widget rdfurichoicefield-field" size="1">
+                <option id="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre-3" value="http://namespaces.bccvl.org.au/vocab#DataGenreSO">Species Occurrence</option>
+            </select>
+            <!--
             <input type="hidden"
-                id="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre"
-                name="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre:list"
+                id=   "form-widgets-http___namespaces_bccvl_org_au_prop_datagenre"
+                name= "form-widgets-http___namespaces_bccvl_org_au_prop_datagenre:list"
                 value="http://namespaces.bccvl.org.au/vocab#DataGenreSO"
-            />
+            /> -->
             <input name="form.widgets.http___namespaces_bccvl_org_au_prop_datagenre-empty-marker" type="hidden" value="1" />
         </after>
 
