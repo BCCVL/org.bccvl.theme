@@ -29,8 +29,7 @@
         <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-IDublinCore-description" />
         <replace theme-children="//textarea[@name='datasetDescription']" content="//textarea[@id='form-widgets-description']/text()" />
 
-        <!-- who knows, maybe this is the missing required field. -->
-        <after css:theme-children="form#uploadDataset" content="//textarea[@id='form-widgets-IOwnership-creators']" />
+
 
     </rules>
 </rules>

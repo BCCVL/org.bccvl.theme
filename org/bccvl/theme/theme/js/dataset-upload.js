@@ -6,7 +6,10 @@ define(     ['jquery', 'bootstrap', 'bootstrap-fileupload'],
     function( $ ) {
     // ==============================================================
         $(function() {
+
+            // gets the file upload handling working
             $('.fileupload').fileupload();
+
         });
     // ==============================================================
     }
