@@ -24,10 +24,8 @@
         <!-- hook in file field -->
         <copy attributes="name value" css:theme="form#uploadDataset [name='datasetFile']" css:content="#form-widgets-file-input" />
 
-        <!-- hook in dataset type dropdown
-        (currently assuming species occurrence genre, so this is just a copy of the "species layer" dropdown)
-        -->
-        <!-- just use the presence option -->
+        <!-- hook in dataset type dropdown -->
+        <!-- for now we're just allowing the 'presence' option -->
         <replace css:theme-children="form#uploadDataset [name='datasetType']" css:content="[value='http://namespaces.bccvl.org.au/vocab#SpeciesLayerP']" />
         <copy attributes="name" css:theme="form#uploadDataset [name='datasetType']" css:content="#form-widgets-http___namespaces_bccvl_org_au_prop_specieslayer" />
 
@@ -46,7 +44,7 @@
                 name="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre:list"
                 value="http://namespaces.bccvl.org.au/vocab#DataGenreSO"
             />
-
+            <input name="form.widgets.http___namespaces_bccvl_org_au_prop_datagenre-empty-marker" type="hidden" value="1" />
         </after>
 
 
