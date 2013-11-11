@@ -48,6 +48,9 @@
     <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
 
 
+    <!-- push plone "portalMessage" content into the theme -->
+    <replace css:theme-children=".bccvl-flashmessages" css:content=".portalMessage" />
+
 
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!--
