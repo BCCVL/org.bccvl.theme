@@ -40,11 +40,11 @@
 
         <!-- If there's no job status, drop everything -->
         <!--
-        <rules if-content="not(//span[@id='form-widgets-IJobStatus-status']/string(.))">
+        -->
+        <rules if-content="not(string(//span[@id='form-widgets-IJobStatus-status']))">
             <drop css:theme=".bccvl-status-running" />
             <drop css:theme=".bccvl-status-complete" />
         </rules>
-        -->
 
         <rules if-content="string(//span[@id='form-widgets-IJobStatus-status'])">
             <drop css:theme=".bccvl-status-error" />
