@@ -118,11 +118,17 @@
 			four states:
 			- not started yet
 			- started/queued, not finished
-			- started/queued, but died with an error
 			- finished
+			- some kind of error state (ideally just started-but-errored-out, but also system level errors)
 			-->
+
+			<div class="row-fluid bccvl-status-template">
+				<div class="span12 bccvl-expstatus alert alert-block">
+					<p class="lead">this Experiment is <strong class="bccvl-status"></strong></p>
+				</div>
+			</div>
+
 			<div class="row-fluid bccvl-status-notstarted">
-				<!-- show the current status -->
 				<div class="span12 bccvl-expstatus alert alert-block alert-info">
 					<p class="lead">this Experiment has <strong>not been started</strong></p>
 					<a class="broken bccvllinks-experiment-start btn btn-primary btn-large">start Experiment</a>
@@ -130,16 +136,13 @@
 			</div>
 
 			<div class="row-fluid bccvl-status-running">
-				<!-- show the current status -->
 				<div class="span12 bccvl-expstatus alert alert-block">
 					<p class="lead">this Experiment is <strong>running</strong></p>
 					<a class="broken bccvllinks-experiment-stop btn btn-warning">abandon Experiment</a>
-
 				</div>
 			</div>
 
 			<div class="row-fluid bccvl-status-error">
-				<!-- show the current status -->
 				<div class="span12 bccvl-expstatus alert alert-block alert-error">
 					<p class="lead">this Experiment stopped with an <strong>error</strong></p>
 					<!--
@@ -153,7 +156,6 @@
 			</div>
 
 			<div class="row-fluid bccvl-status-complete">
-				<!-- show the current status -->
 				<div class="span12 bccvl-expstatus alert alert-success">
 					<p>
 						This Experiment is <strong>complete</strong>. The results are available below.

@@ -21,36 +21,42 @@
             all unknown statuses
         -->
 
-        <!-- Use the template for all non-understood statuses -->
-        <replace
-            css:theme-children=".bccvl-status-template p.lead strong"
-            content="//span[@id='form-widgets-IJobStatus-status']"
-        />
-
-
-        <!-- If not complete, then drop the complete status -->
-        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() != 'Completed'">
-            <drop css:theme=".bccvl-status-complete" />
-        </rules>
-
-        <!-- If not running, then drop the running status -->
-        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() != 'Active'">
-            <drop css:theme=".bccvl-status-running" />
-        </rules>
-
-        <!-- If there's no job status, drop everything -->
-        <!--
-        -->
-        <rules if-content="not(string(//span[@id='form-widgets-IJobStatus-status']))">
-            <drop css:theme=".bccvl-status-running" />
-            <drop css:theme=".bccvl-status-complete" />
-        </rules>
+        <!-- Always drop the not-started status -->
+        <drop css:theme=".bccvl-status-notstarted" />
 
         <rules if-content="string(//span[@id='form-widgets-IJobStatus-status'])">
             <drop css:theme=".bccvl-status-error" />
+            <!-- Use the template for all non-understood statuses -->
+            <replace
+                css:theme-children=".bccvl-status-template .bccvl-status"
+                content="//span[@id='form-widgets-IJobStatus-status']"
+            />
         </rules>
-        <!-- Always drop the not started status ?? -->
-        <drop css:theme=".bccvl-status-notstarted" />
+
+        <!-- If complete, drop the template -->
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'">
+            <drop css:theme=".bccvl-status-template" />
+        </rules>
+        <!-- if NOT complete, drop the complete -->
+        <rules if-not-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'">
+            <drop css:theme=".bccvl-status-complete" />
+        </rules>
+
+        <!-- If running, drop the template -->
+        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Active'">
+            <drop css:theme=".bccvl-status-template" />
+        </rules>
+        <!-- If not running, then drop the running status -->
+        <rules if-not-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Active'">
+            <drop css:theme=".bccvl-status-running" />
+        </rules>
+
+        <!-- If there's no job status at all, drop everything except the error (null content won't have triggered the dropping of the other statuses) -->
+        <rules if-content="not(string(//span[@id='form-widgets-IJobStatus-status']))">
+            <drop css:theme=".bccvl-status-running" />
+            <drop css:theme=".bccvl-status-complete" />
+            <drop css:theme=".bccvl-status-template" />
+        </rules>
 
         <!--
             NOTE: This is temporary.
