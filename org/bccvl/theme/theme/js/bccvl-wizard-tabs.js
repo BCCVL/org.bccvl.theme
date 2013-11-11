@@ -93,7 +93,6 @@ define(     ['jquery', 'bootstrap'],
                         $default.tab('show');
                         $default[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
                         $default[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
-                        rememberTab($default);
                     }
                 }
 
@@ -106,6 +105,7 @@ define(     ['jquery', 'bootstrap'],
 
                 // call the right-tab-picking function
                 pickTab($defaultTab);
+                rememberTab($defaultTab);
 
                 // also pick the right tab when the back button is pressed
                 window.addEventListener('popstate', pickTab);
