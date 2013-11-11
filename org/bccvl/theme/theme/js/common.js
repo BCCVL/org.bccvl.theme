@@ -6,7 +6,7 @@
 // except for 'js' ones, which are in a sibling
 // directory.
 
-var local = (window.location.host == 'localhost:9292');
+var local = (window.location.port == '9292');
 
 requirejs.config({
     baseUrl: (local ? 'lib' : '/++theme++org.bccvl.theme/lib'),          // load modules from the lib folder

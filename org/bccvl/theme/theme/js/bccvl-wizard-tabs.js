@@ -65,13 +65,19 @@ define(     ['jquery', 'bootstrap'],
                     e.preventDefault();
                 });
 
-                // the normal Bootstrap strategy of having tabs hidden via CSS stops JS code
-                // from finding the positioning-parent of elements, which makes certain types
-                // of fanciness difficult, e.g. offsetParent().  We're VERY fancy, so that
-                // needs fixing.
+                // the normal Bootstrap strategy of having tabs start hidden via CSS stops JS
+                // code from finding the positioning-parent of elements, which makes certain
+                // types of fanciness difficult, e.g. offsetParent().  We're VERY fancy, so
+                // that needs fixing.
                 // The fix is to have all tab panes start showing (by having them all marked
                 // as "active"), and once they're rendered, click around a bit to re-establish
                 // their natural hidden states.
+
+                var rememberTab = function(tabLink) {
+                    if (window.history && window.history.pushState) {
+                        window.history.pushState(null, null, $(tabLink).attr('href'));
+                    }
+                }
 
                 // define a function to pick the "right" tab
                 var pickTab = function($default) {
@@ -81,8 +87,13 @@ define(     ['jquery', 'bootstrap'],
                     var $urlTab = $('a[href=' + location.hash + ']');
                     if ($urlTab.length > 0) {
                         $urlTab.tab('show');
+                        $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
+                        $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
                     } else if ($default.length > 0) {
                         $default.tab('show');
+                        $default[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
+                        $default[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
+                        rememberTab($default);
                     }
                 }
 
@@ -100,11 +111,9 @@ define(     ['jquery', 'bootstrap'],
                 window.addEventListener('popstate', pickTab);
 
                 // put tabs into browser history when clicked (if the browser supports it)
-                if (window.history && window.history.pushState) {
-                    $tabs.find('a[data-toggle="tab"]').click( function() {
-                        window.history.pushState(null, null, $(this).attr('href'));
-                    });
-                }
+                $tabs.find('a[data-toggle="tab"]').click( function() {
+                    rememberTab(this);
+                });
             });
 
             $.each(wizards, function(wizardIndex, wizard) {
