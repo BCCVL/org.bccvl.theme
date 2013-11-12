@@ -47,10 +47,15 @@
     <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
 
-
     <!-- push plone "portalMessage" content into the theme -->
-    <replace css:theme-children=".bccvl-flashmessages" css:content=".portalMessage" />
-
+    <replace css:theme-children=".bccvl-flashmessages">
+        <xsl:for-each select="//dl[@class='portalMessage error']">
+            <dl class="bccvl-flashmessage bccvl-flashmessage-error">
+                <dt class="label label-important"><xsl:value-of select="./dt" /></dt>
+                <xsl-copy select="./dd" />
+            </dl>
+        </xsl:for-each>
+    </replace>
 
     <!-- hook up the user management menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

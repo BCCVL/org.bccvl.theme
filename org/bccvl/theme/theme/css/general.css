@@ -166,10 +166,19 @@ a:not([href]).fine,
     opacity: 0;
 }
 
-/* stretch parent -------------------------------------------------------- */
+/* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
 .bccvl-stretch-parent { position: relative; }
+
+
+/* flash messages -------------------------------------------------------- */
+
+.bccvl-flashmessages .bccvl-flashmessage {
+    display: block;
+    padding: 0.5em 1em;
+    margin: 0 0 1em;
+}
 
 /* experiment form ------------------------------------------------------- */
 
