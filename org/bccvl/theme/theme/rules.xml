@@ -44,12 +44,19 @@
         };
     </after>
 
-    <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
 
 
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages" css:content=".portalMessage" />
+
+
+    <!-- hook up the user management menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- user name -->
+    <replace css:theme-children=".bccvl-username" css:content="#user-name" />
+    <!-- (other user handling is in the link section below) -->
 
 
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -79,6 +86,9 @@
     <merge attributes="href" css:theme="a.bccvllinks-functions"         content="//li[@id='portaltab-functions']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />
+
+    <!-- user management: logout -->
+    <merge attributes="href" css:theme="a.bccvllinks-logoutuser"        content="//li[@id='personaltools-logout']/a" />
 
     <!-- contentview (content level grouping) -->
     <!-- experiment -->
