@@ -52,7 +52,7 @@
         <xsl:for-each select="//dl[@class='portalMessage error']">
             <dl class="bccvl-flashmessage bccvl-flashmessage-error">
                 <dt class="label label-important"><xsl:value-of select="./dt" /></dt>
-                <xsl-copy select="./dd" />
+                <xsl:copy-of select="./dd" />
             </dl>
         </xsl:for-each>
     </replace>

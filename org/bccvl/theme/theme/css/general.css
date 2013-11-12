@@ -176,8 +176,8 @@ a:not([href]).fine,
 
 .bccvl-flashmessages .bccvl-flashmessage {
     display: block;
-    padding: 0.5em 1em;
-    margin: 0 0 1em;
+    padding: 0.5em 0;
+    margin: 0 0 1.5em;
 }
 
 /* experiment form ------------------------------------------------------- */
