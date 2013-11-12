@@ -177,7 +177,7 @@ a:not([href]).fine,
 .bccvl-flashmessage {
     display: block;
     padding: 0.5em 0;
-    margin: 0 0 1.5em;
+    margin: 0 0 2em;
 }
 
 .bccvl-flashmessage dt, .bccvl-flashmessage dd {
