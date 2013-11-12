@@ -55,7 +55,7 @@
     <!-- hook up the user management menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     <!-- user name -->
-    <replace css:theme-children=".bccvl-username" css:content="#user-name" />
+    <replace css:theme-children=".bccvl-username" css:content-children="#user-name" />
     <!-- (other user handling is in the link section below) -->
 
 
