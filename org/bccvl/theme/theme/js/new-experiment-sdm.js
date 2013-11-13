@@ -16,7 +16,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             wiztabs.init();     // hook up the wizard buttons
             search.init();      // hook up the search fields
 
-
+            // kick off parsley form validation on all the forms..
+            $('form').parsley();
 
         });
     // ==============================================================
