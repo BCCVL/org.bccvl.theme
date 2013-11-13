@@ -50,7 +50,7 @@
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
         <xsl:for-each select="//dl[@class='portalMessage error']">
-            <dl class="bccvl-flashmessage bccvl-flashmessage-error">
+            <dl class="bccvl-flashmessage bccvl-flashmessage-error alert alert-block alert-error">
                 <dt class="label label-important"><xsl:value-of select="./dt" /></dt>
                 <xsl:copy-of select="./dd" />
             </dl>
