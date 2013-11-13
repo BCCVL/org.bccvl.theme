@@ -116,7 +116,7 @@
 <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<section class="bccvl-experimentdetails tabbable">
-		<form id="experimentSetup" method="" autocomplete="on" action="" enctype="text/plain">
+		<form id="experimentSetup" method=""  novalidate data-validate="parsley" autocomplete="on" action="" enctype="text/plain">
 
 			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
@@ -151,8 +151,8 @@
 
 					<div class="row-fluid">
 						<div class="span12">
-							<input type="text" name="expName" class="bccvl-expname input-block-level" placeholder="name for this experiment">
-							<textarea name="expDescription" class="input-block-level bccvl-expdesc" rows="6" placeholder="description of experiment"></textarea>
+							<input type="text" name="expName" class="bccvl-expname input-block-level" required="required" placeholder="name for this experiment">
+							<textarea name="expDescription" class="input-block-level bccvl-expdesc" data-required="true" rows="6" placeholder="description of experiment"></textarea>
 						</div>
 					</div>
 				</div>

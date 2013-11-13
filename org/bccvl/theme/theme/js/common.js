@@ -15,9 +15,11 @@ requirejs.config({
         'jquery':               'jquery/jquery-2.0.3',                               // Ima say 'jquery', u say jquery-x.y.z.js, dawg
         'jquery-xmlrpc':        'jquery-xmlrpc/jquery.xmlrpc.min',
         'bootstrap':            'bootstrap/js/bootstrap.min',
-        'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min'
+        'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',
+        'parsley':              'parsley/parsley.min'
     },
     shim: {
+        'parsley':              ['jquery'],
         'bootstrap':            ['jquery'],
         'bootstrap-fileupload': ['jquery', 'bootstrap'],
         'jquery-xmlrpc':        ['jquery']
