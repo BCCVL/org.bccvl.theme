@@ -17,7 +17,17 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             search.init();      // hook up the search fields
 
             // kick off parsley form validation on all the forms..
-            $('form').parsley();
+            $('form').parsley({
+                successClass: 'success',
+                errorClass: 'error',
+                errors: {
+                    classHandler: function(el) {
+                        return $(el).closest('.control-group');
+                    },
+                    errorsWrapper: '<span class=\"help-inline\"></span>',
+                    errorElem: '<span></span>'
+                }
+            });
 
         });
     // ==============================================================
