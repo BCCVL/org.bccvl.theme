@@ -21,9 +21,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 successClass: 'success',    // use these two Bootstrap classes for the error
                 errorClass: 'error',        // and no-error states, and it'll look pretty.
                 errors: {
-                    classHandler: function(el) { return $(el).closest('.control-group'); },
+                    // this error handling and elements make parsley errors Bookstrap friendly
+                    classHandler:  function(el) { return $(el).closest('.control-group'); },
                     errorsWrapper: '<span class=\"help-inline\"></span>',
-                    errorElem: '<span></span>'
+                    errorElem:     '<span></span>'
                 }
             });
 
