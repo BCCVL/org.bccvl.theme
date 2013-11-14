@@ -28,7 +28,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 },
                 listeners: {
                     onFormSubmit: function() {
-                        return ($('form.bccvl-parsleyvalidate').parsley('validate'));
+//                        return ($('form.bccvl-parsleyvalidate').parsley('validate'));
                     }
                 }
             });
