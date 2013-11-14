@@ -25,6 +25,11 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     classHandler:  function(el) { return $(el).closest('.control-group'); },
                     errorsWrapper: '<span class=\"help-inline\"></span>',
                     errorElem:     '<span></span>'
+                },
+                listeners: {
+                    onFormSubmit: function(isFormValid, event, ParsleyForm) {
+                        console.log('submitting..', isFormValid, event, ParsleyForm);
+                    }
                 }
             });
 
