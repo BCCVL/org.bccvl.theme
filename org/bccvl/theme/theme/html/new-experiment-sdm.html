@@ -153,13 +153,13 @@
 						<div class="span12">
 							<div class="control-group">
 								<input type="text" name="expName" class="bccvl-expname input-block-level"
-									required="required" data-trigger="change keyup"
+									data-notblank="true" data-trigger="change keyup"
 									placeholder="name for this experiment"
 								>
 							</div>
 							<div class="control-group">
 								<textarea name="expDescription" class="input-block-level bccvl-expdesc"
-									data-required="true" data-trigger="change keyup"
+									data-notblank="true" data-trigger="change keyup"
 									rows="6"
 									placeholder="description of experiment"
 								></textarea>
@@ -180,7 +180,7 @@
 					<!-- experiment algo -->
 					<div class="row-fluid">
 
-						<div class="span4">
+						<div class="span4"><div class="control-group">
 
 							<table class="table table-hover bccvl-algorithmtable">
 								<thead>
@@ -209,7 +209,8 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+
+						</div></div>
 
 						<div class="bccvl-algoconfig span8" id="algoConfig">
 <!--
@@ -452,7 +453,7 @@
 								</thead>
 
 								<tbody>
-									<tr>
+									<tr class="sampledata">
 										<td class="bccvl-table-choose sampledata">
 											<input type="radio" name="absenceInput" id="bccvlRandom" value="bccvlRandom">
 										</td>
