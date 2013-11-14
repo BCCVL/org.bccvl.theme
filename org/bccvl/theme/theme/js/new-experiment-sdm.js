@@ -27,9 +27,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     errorElem:     '<span></span>'
                 },
                 listeners: {
-                    onFormSubmit: function(isFormValid, event, parsleyForm) {
-                        console.log('submitting..', isFormValid, event, parsleyForm);
-                        return (!!parsleyForm.parsley('validate'));
+                    onFormSubmit: function() {
+                        return ($('form.bccvl-parsleyvalidate').parsley('validate'));
                     }
                 }
             });
