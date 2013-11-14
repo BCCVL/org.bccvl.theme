@@ -13,12 +13,26 @@ define(     ['jquery', 'bootstrap'],
         return { init: function() {
 
             // find all the wizard tab sets..
-            wizards = $('.bccvl-wizardtabs');
+            var wizards = $('.bccvl-wizardtabs');
 
+            // the normal Bootstrap strategy of having tabs start hidden via CSS stops JS
+            // code from finding the positioning-parents of elements, which makes certain
+            // types of fanciness difficult, e.g. anything that uses offsetParent().  We're
+            // VERY fancy, so that needs fixing.
+            // The fix is to have all tab panes start showing (by having them all marked
+            // as "active"), and once they're rendered, click around a bit to re-establish
+            // their natural hidden states.
+
+            //
+            // start by making all the tabs fade away..
+            //
             $.each(wizards, function(wizardIndex, wizard) {
                 $(wizard).parent().find('.tab-content').add(wizard).css('opacity', '0.01');
             });
 
+            //
+            // now actually do the work for each wizard tab set..
+            //
             $.each(wizards, function(wizardIndex, wizard) {
 
                 // get some jQuery objects together..
@@ -31,6 +45,8 @@ define(     ['jquery', 'bootstrap'],
                 var $firstTab = $tabs.find('li:first');
                 var $lastTab = $tabs.find('li:last');
 
+                // handle prev/next buttons - - - - - - - - - - - - -
+
                 // identify the prev and next buttons
                 var $prevButtons = $wiz.find('.bccvl-wizardtabs-prev');
                 var $nextButtons = $wiz.find('.bccvl-wizardtabs-next');
@@ -41,8 +57,7 @@ define(     ['jquery', 'bootstrap'],
                     $prevButtons.prop('disabled', $currentTab.is($firstTab));
                     $nextButtons.prop('disabled', $currentTab.is($lastTab));
                 })
-
-                // invoke the disable-button code right now..
+                // then invoke the disable-button code right now, so it starts in the correct state
                 $tabs.find('a[data-toggle="tab"]').trigger('shown');
 
                 // hook up the prev buttons
@@ -65,13 +80,25 @@ define(     ['jquery', 'bootstrap'],
                     e.preventDefault();
                 });
 
-                // the normal Bootstrap strategy of having tabs start hidden via CSS stops JS
-                // code from finding the positioning-parent of elements, which makes certain
-                // types of fanciness difficult, e.g. offsetParent().  We're VERY fancy, so
-                // that needs fixing.
-                // The fix is to have all tab panes start showing (by having them all marked
-                // as "active"), and once they're rendered, click around a bit to re-establish
-                // their natural hidden states.
+                // handle form elem focus - - - - - - - - - - - - - -
+                // things like form validation might switch focus
+                // to a form element that's on a hidden tab.  We
+                // should listen to every element's focus event and
+                // make sure its tab is visible.
+                $tabs.find('a[data-toggle="tab"]').each(function(tabIndex, tabLink) {
+                    var $tabLink = $(tabLink);
+                    var $tabPanel = $($tabLink.attr('href'));
+                    var $focussables = $($tabPanel.find('input, textarea, select, button'));
+                    $focussables.focus( function(evt) {
+                        // when focussed, check that this element's tab is active
+                        if (! $tabPanel.hasClass('active')) {
+                            // if the panel isn't marked active, then activate this tab
+                            $tabLink.tab('show');
+                        }
+                    });
+                });
+
+                // handle tab history - - - - - - - - - - - - - - - -
 
                 var rememberTab = function(tabLink) {
                     if (window.history && window.history.pushState) {
@@ -92,7 +119,7 @@ define(     ['jquery', 'bootstrap'],
                     } else if ($default.length > 0) {
                         $default.tab('show');
                         $default[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
-                        $default[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
+                        $default[0].blur();  // then remove the ugly focus rectangle *rolls eyes again*
                     }
                 }
 
@@ -116,6 +143,9 @@ define(     ['jquery', 'bootstrap'],
                 });
             });
 
+            //
+            // finally, fade the tab contents in.
+            //
             $.each(wizards, function(wizardIndex, wizard) {
                 var contents = $(wizard).parent().find('.tab-content').add(wizard);
                 contents.css('transition', 'opacity 0.5s');
