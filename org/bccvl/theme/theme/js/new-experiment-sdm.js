@@ -17,7 +17,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             search.init();      // hook up the search fields
 
             // kick off parsley form validation on all the forms..
-            $('form').parsley({
+            $('form.bccvl-parsleyvalidate').parsley({
                 successClass: 'success',    // use these two Bootstrap classes for the error
                 errorClass: 'error',        // and no-error states, and it'll look pretty.
                 errors: {
@@ -29,7 +29,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 listeners: {
                     onFormSubmit: function(isFormValid, event, parsleyForm) {
                         console.log('submitting..', isFormValid, event, ParsleyForm);
-                        return parsleyForm.parsley('validate');
+                        return (!!parsleyForm.parsley('validate'));
                     }
                 }
             });
