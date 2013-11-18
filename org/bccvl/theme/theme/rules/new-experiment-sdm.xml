@@ -56,11 +56,12 @@
             </xsl:for-each>
         </before>
 
-        <!-- loop through the algorithm list again, this time poking the config blocks into the config block accordion -->
+        <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
         <replace css:theme-children="#algoConfig">
 
-            <xsl:for-each select="//input[@name='form.widgets.functions:list']">
+            <!-- <xsl:for-each select="//input[@name='form.widgets.functions:list']"> -->
+            <xsl:for-each select="//[starts-with(@id,'formfield-form-widgets-parameters_']">
 
                 <div class="accordion-group">
                     <div class="accordion-heading">
@@ -68,19 +69,18 @@
                             <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
                             <xsl:attribute name="data-toggle">collapse</xsl:attribute>
                             <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
-                            <xsl:attribute name="href">#accordion_body_<xsl:value-of select="@value" /></xsl:attribute>
-                            <b><xsl:value-of select="string(../label/span/text())" /></b> configuration parameters
+                            <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
+                            <xsl:value-of select="string(./label/text())" />
                         </xsl:element>
                     </div>
 
                     <xsl:element name="div">
                         <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
-                        <xsl:attribute name="id">accordion_body_<xsl:value-of select="@value" /></xsl:attribute>
+                        <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
 
                         <div class="accordion-inner bccvl-algo-config">
                             <fieldset class="form-horizontal">
-                                <xsl:value-of select="{@value}" />
-                                <xsl:copy-of select="//div[@id='formfield-form-widgets-parameters_{@value}']" />
+                                <xsl:copy-of select="." />
                             </fieldset>
                         </div>
                     </xsl:element>
