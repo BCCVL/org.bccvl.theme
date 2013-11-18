@@ -116,7 +116,7 @@
 <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<section class="bccvl-experimentdetails tabbable">
-		<form id="experimentSetup" method="" autocomplete="on" action="" enctype="text/plain">
+		<form class="bccvl-parsleyvalidate" id="experimentSetup" method=""  novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
 			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
@@ -151,8 +151,20 @@
 
 					<div class="row-fluid">
 						<div class="span12">
-							<input type="text" name="expName" class="bccvl-expname input-block-level" placeholder="name for this experiment">
-							<textarea name="expDescription" class="input-block-level bccvl-expdesc" rows="6" placeholder="description of experiment"></textarea>
+							<div class="control-group">
+								<input type="text" name="expName" class="bccvl-expname input-block-level"
+									data-notblank="true" data-trigger="change keyup"
+									placeholder="name for this experiment"
+								>
+							</div>
+							<div class="control-group">
+								<textarea name="expDescription" class="input-block-level bccvl-expdesc"
+									data-notblank="true" data-trigger="change keyup"
+									rows="6"
+									placeholder="description of experiment"
+								></textarea>
+							</div>
+							<button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
 						</div>
 					</div>
 				</div>
@@ -169,7 +181,7 @@
 					<!-- experiment algo -->
 					<div class="row-fluid">
 
-						<div class="span4">
+						<div class="span4"><div class="control-group">
 
 							<table class="table table-hover bccvl-algorithmtable">
 								<thead>
@@ -198,7 +210,8 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+
+						</div></div>
 
 						<div class="bccvl-algoconfig span8" id="algoConfig">
 <!--
@@ -441,7 +454,7 @@
 								</thead>
 
 								<tbody>
-									<tr>
+									<tr class="sampledata">
 										<td class="bccvl-table-choose sampledata">
 											<input type="radio" name="absenceInput" id="bccvlRandom" value="bccvlRandom">
 										</td>

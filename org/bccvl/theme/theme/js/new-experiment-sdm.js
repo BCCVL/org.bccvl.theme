@@ -2,8 +2,8 @@
 //
 // main JS for the new sdm experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-search', 'bootstrap'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway          ,  dimensions,                    search) {
+define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-search', 'parsley', 'bootstrap'],
+    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway          ,  dimensions                  ,  search          , parsley  ) {
     // ==============================================================
         $(function() {
 
@@ -16,7 +16,22 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             wiztabs.init();     // hook up the wizard buttons
             search.init();      // hook up the search fields
 
-
+            // kick off parsley form validation on all the forms..
+            $('form.bccvl-parsleyvalidate').parsley({
+                successClass: 'success',    // use these two Bootstrap classes for the error
+                errorClass: 'error',        // and no-error states, and it'll look pretty.
+                errors: {
+                    // this error handling and elements make parsley errors Bookstrap friendly
+                    classHandler:  function(el) { return $(el).closest('.control-group'); },
+                    errorsWrapper: '<span class=\"help-inline\"></span>',
+                    errorElem:     '<span></span>'
+                },
+                listeners: {
+                    onFormSubmit: function() {
+//                        return ($('form.bccvl-parsleyvalidate').parsley('validate'));
+                    }
+                }
+            });
 
         });
     // ==============================================================

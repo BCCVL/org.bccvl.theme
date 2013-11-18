@@ -325,10 +325,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                         methodName: 'pullOccurrenceFromALA',
                                         params: [alaParam],
                                         success: function(response, status, jqXHR) {
-                                             console.log('it worked, apparently: ', status);
+                                            console.log('XMLRPC call to download ALA occurrences succeeded: ', status);
                                         },
                                         error: function(jqXHR, status, error) {
-                                             console.log('it failed!!: ', status, ' the error was: ', error);
+                                            console.log('XMLRPC call to download ALA occurrences failed with status: "', status, '"; the error was: ', error);
+                                            alert('There was a problem downloading your ALA data.');
                                         },
                                     });
                                     e.preventDefault();
