@@ -61,31 +61,33 @@
         <replace css:theme-children="#algoConfig">
 
             <!-- <xsl:for-each select="//input[@name='form.widgets.functions:list']"> -->
-            <xsl:for-each select="//[starts-with(@id,'formfield-form-widgets-parameters_')]">
+            <xsl:for-each select="//div">
+                <xsl:if test="starts-with(@id,'formfield-form-widgets-parameters_')">
 
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <xsl:element name="a">
-                            <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
-                            <xsl:attribute name="data-toggle">collapse</xsl:attribute>
-                            <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
-                            <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
-                            <xsl:value-of select="string(./label/text())" />
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <xsl:element name="a">
+                                <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
+                                <xsl:attribute name="data-toggle">collapse</xsl:attribute>
+                                <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
+                                <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
+                                <xsl:value-of select="string(./label/text())" />
+                            </xsl:element>
+                        </div>
+
+                        <xsl:element name="div">
+                            <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
+                            <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
+
+                            <div class="accordion-inner bccvl-algo-config">
+                                <fieldset class="form-horizontal">
+                                    <xsl:copy-of select="." />
+                                </fieldset>
+                            </div>
                         </xsl:element>
                     </div>
 
-                    <xsl:element name="div">
-                        <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
-                        <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@id,'formfield-form-widgets-parameters_')" /></xsl:attribute>
-
-                        <div class="accordion-inner bccvl-algo-config">
-                            <fieldset class="form-horizontal">
-                                <xsl:copy-of select="." />
-                            </fieldset>
-                        </div>
-                    </xsl:element>
-                </div>
-
+                </xsl:if>
             </xsl:for-each>
 
         </replace>
