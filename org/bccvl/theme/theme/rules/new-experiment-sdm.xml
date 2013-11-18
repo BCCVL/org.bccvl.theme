@@ -79,6 +79,7 @@
 
                         <div class="accordion-inner bccvl-algo-config">
                             <fieldset class="form-horizontal">
+                                <xsl:value-of select="{@value}" />
                                 <xsl:copy-of select="//div[@id='formfield-form-widgets-parameters_{@value}']" />
                             </fieldset>
                         </div>
