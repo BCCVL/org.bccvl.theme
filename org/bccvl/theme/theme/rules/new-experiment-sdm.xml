@@ -60,8 +60,15 @@
 
         <replace css:theme-children="#algoConfig">
 
+            <xsl:variable name="prefix">form.widgets.parameters_</xsl:variable><!--
+            this is the string that prefixes the algo name in the data-fieldname attribute of the config wrapper div.
+            By which I mean, the raw unthemed Plone page will have a div like this:
+                <div data-fieldname="form.widgets.parameters_algoname">...</div>
+            ... holding all the config fields for the algo called 'algoname'.
+            -->
+
             <xsl:for-each select="//div">
-                <xsl:if test="starts-with(@data-fieldname,'formfield-form-widgets-parameters_')">
+                <xsl:if test="starts-with(@data-fieldname,$prefix)">
 
                     <div class="accordion-group">
                         <div class="accordion-heading">
@@ -69,14 +76,14 @@
                                 <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
                                 <xsl:attribute name="data-toggle">collapse</xsl:attribute>
                                 <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
-                                <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@data-fieldname,'formfield-form-widgets-parameters_')" /></xsl:attribute>
+                                <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
                                 <xsl:value-of select="string(./label/text())" />
                             </xsl:element>
                         </div>
 
                         <xsl:element name="div">
                             <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
-                            <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@data-fieldname,'formfield-form-widgets-parameters_')" /></xsl:attribute>
+                            <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
 
                             <div class="accordion-inner bccvl-algo-config">
                                 <fieldset class="form-horizontal">
