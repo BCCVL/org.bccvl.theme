@@ -61,7 +61,7 @@
         <replace css:theme-children="#algoConfig">
 
             <!-- <xsl:for-each select="//input[@name='form.widgets.functions:list']"> -->
-            <xsl:for-each select="//[starts-with(@id,'formfield-form-widgets-parameters_']">
+            <xsl:for-each select="//[starts-with(@id,'formfield-form-widgets-parameters_')]">
 
                 <div class="accordion-group">
                     <div class="accordion-heading">
