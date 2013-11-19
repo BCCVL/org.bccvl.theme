@@ -179,8 +179,10 @@ a:not([href]).fine,
  * that applies to 'error' radio buttons.
  */
 .control-group.error input[type="radio"],
-.control-group.error input[type="checkbox"]
-{ border: 1px solid red; }
+.control-group.error input[type="checkbox"] {
+    outline: 1px solid red;
+    border-radius: 2px;
+}
 
 
 /* flash messages -------------------------------------------------------- */
