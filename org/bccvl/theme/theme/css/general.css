@@ -240,12 +240,13 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     text-align: right;
     float: left;
     width: 50%;
-    padding: 0.5em 1em 0 0;
+    padding: 0.25em 1em 0 0;
 }
 .bccvl-algoconfig .object-widget-field label .formHelp {
     display: block;
     clear: both;
     font-size: 90%;
+    line-height: 1.1;
 }
 /* ::.. end of the plone-imported config stuff */
 
