@@ -24,7 +24,14 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 errors: {
                     // this error handling and elements make parsley errors Bookstrap friendly
                     classHandler:  function(el) { return $(el).closest('.control-group'); },
-                    container:     function(el) { return $(el).closest('.control-group'); },
+                    container:     function(el) {
+                        var $controlGroup = $(el).closest('.control-group');
+                        var $tableHeader = $controlGroup.find('th');
+                        // if the element is in a table, use the table header.
+                        if ($tableHeader.length > 0) return $tableHeader;
+                        // otherwise just use the surrounding control group.
+                        return $controlGroup;
+                    },
                     errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
                     errorElem:     '<span></span>'
                 },
