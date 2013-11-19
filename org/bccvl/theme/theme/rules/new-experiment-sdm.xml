@@ -65,7 +65,8 @@
             this is the string that prefixes the algo name in the data-fieldname attribute of the config wrapper div.
             By which I mean, the raw unthemed Plone page will have a div like this:
                 <div data-fieldname="form.widgets.parameters_algoname">...</div>
-            ... holding all the config fields for the algo called 'algoname'.
+            ..holding all the config fields for the algo called 'algoname'.  This var saves me from typing that long
+            string every time it occurs in the next bit of code.
             -->
 
             <xsl:for-each select="//div">

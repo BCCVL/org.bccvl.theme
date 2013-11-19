@@ -16,7 +16,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             wiztabs.init();     // hook up the wizard buttons
             search.init();      // hook up the search fields
 
-            // kick off parsley form validation on all the forms..
+            // kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley({
                 focus:        'none',       // don't switch focus to errors (we do that manually below)
                 successClass: 'success',    // use these two Bootstrap classes for the error
@@ -24,6 +24,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 errors: {
                     // this error handling and elements make parsley errors Bookstrap friendly
                     classHandler:  function(el) { return $(el).closest('.control-group'); },
+                    container:     function(el) { return $(el).closest('.control-group'); },
                     errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
                     errorElem:     '<span></span>'
                 },
