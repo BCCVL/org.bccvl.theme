@@ -217,7 +217,7 @@ gets collapsed but doesn't get the .collapsed style applied.)
 
 Update: this bug is fixed in Bootstrap 3.0, so for now let's
 show the disclosure triangles, file a bug that they're wrong
-sometimes, and upgrade when bootstrap 3 is out.
+sometimes, and TODO: upgrade when bootstrap 3 is out.
 --- */
 .bccvl-algoconfig .accordion-toggle:before {
     content: '\25bc';
@@ -231,10 +231,10 @@ sometimes, and upgrade when bootstrap 3 is out.
 }
 
 /* ..:: the config form elements from plone */
-/* todo: this is a five minute slap up, come back and fix this styling, it's fucking awful */
+/* TODO: this is a five minute slap up, come back and fix this styling, it's fucking awful */
 .bccvl-algoconfig .object-widget-field {
     clear: both;
-    padding: 0.25em 0;
+    padding: 0.5em 0;
 }
 .bccvl-algoconfig .object-widget-field label {
     text-align: right;
@@ -243,6 +243,7 @@ sometimes, and upgrade when bootstrap 3 is out.
     padding-right: 1em;
 }
 .bccvl-algoconfig .object-widget-field label .formHelp {
+    display: block;
     clear: both;
     font-size: 90%;
 }
@@ -266,7 +267,7 @@ sometimes, and upgrade when bootstrap 3 is out.
     top: -20px;
 }
 
-/* the experiment-is-finished alert box should be smaller.. */
+/* makes the experiment-is-finished alert box smaller.. */
 .bccvl-expstatus.alert-success {
     padding: 0.5em;
 }
