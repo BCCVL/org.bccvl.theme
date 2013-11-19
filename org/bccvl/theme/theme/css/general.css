@@ -172,6 +172,15 @@ a:not([href]).fine,
 .bccvl-stretch-parent { position: relative; }
 
 
+/* form validation ------------------------------------------------------- */
+
+/*
+ * Bootstrap already has a bunch of useful form styles, but there's nothing
+ * that applies to 'error' radio buttons.
+ */
+.control-group.error input[type="radio"] { border: 1px solid red; }
+
+
 /* flash messages -------------------------------------------------------- */
 
 .bccvl-flashmessage {
