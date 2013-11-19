@@ -80,24 +80,6 @@ define(     ['jquery', 'bootstrap'],
                     e.preventDefault();
                 });
 
-                // handle form elem focus - - - - - - - - - - - - - -
-                // things like form validation might switch focus
-                // to a form element that's on a hidden tab.  We
-                // should listen to every element's focus event and
-                // make sure its tab is visible.
-                $tabs.find('a[data-toggle="tab"]').each(function(tabIndex, tabLink) {
-                    var $tabLink = $(tabLink);
-                    var $tabPanel = $($tabLink.attr('href'));
-                    var $focussables = $($tabPanel.find('input, textarea, select, button'));
-                    $focussables.focus( function(evt) {
-                        // when focussed, check that this element's tab is active
-                        if (! $tabPanel.hasClass('active')) {
-                            // if the panel isn't marked active, then activate this tab
-                            $tabLink.tab('show');
-                        }
-                    });
-                });
-
                 // handle tab history - - - - - - - - - - - - - - - -
 
                 var rememberTab = function(tabLink) {

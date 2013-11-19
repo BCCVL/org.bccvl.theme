@@ -18,21 +18,42 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // kick off parsley form validation on all the forms..
             $('form.bccvl-parsleyvalidate').parsley({
+                focus:        'none',       // don't switch focus to errors (we do that manually below)
                 successClass: 'success',    // use these two Bootstrap classes for the error
-                errorClass: 'error',        // and no-error states, and it'll look pretty.
+                errorClass:   'error',      // and no-error states, and it'll look pretty.
                 errors: {
                     // this error handling and elements make parsley errors Bookstrap friendly
                     classHandler:  function(el) { return $(el).closest('.control-group'); },
-                    errorsWrapper: '<span class=\"help-inline\"></span>',
+                    errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
                     errorElem:     '<span></span>'
                 },
                 listeners: {
-                    onFormSubmit: function() {
-//                        return ($('form.bccvl-parsleyvalidate').parsley('validate'));
+                    onFormSubmit: function(isFormValid, evt) {
+                        // this listener is named wrong, it's actually run when the form
+                        // is validated, which happens before a submit and also whenever
+                        // you call form.parsley('validate').
+                        if (! isFormValid) {
+                            // if the form isn't valid, then there's at least one error
+                            // showing somewhere.  But if it's on another tab, parsley
+                            // won't be able to focus that field.  So, here we're gonna
+                            // find the first error indicator in the document, switch to
+                            // its tab, then focus its field.
+                            var $firstError = $('.control-group.error').first();  // first error
+                            var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
+                            if ($tabPane.length > 0) {
+                                // tab itself that belongs to the tab pane we're interested in
+                                var $tabLink = $('a[data-toggle="tab"][href="#' + $tabPane.attr('id') + '"]');
+                                if (! $tabPane.hasClass('active')) {
+                                    // if that tab isn't already showing, show it
+                                    $tabLink.tab('show');
+                                }
+                            }
+                            // whether we had to flick the tab or not, focus the field
+                            $firstError.find('input, select, textarea').focus();
+                        }
                     }
                 }
             });
-
         });
     // ==============================================================
     }
