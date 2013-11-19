@@ -178,7 +178,9 @@ a:not([href]).fine,
  * Bootstrap already has a bunch of useful form styles, but there's nothing
  * that applies to 'error' radio buttons.
  */
-.control-group.error input[type="radio"] { border: 1px solid red; }
+.control-group.error input[type="radio"],
+.control-group.error input[type="checkbox"]
+{ border: 1px solid red; }
 
 
 /* flash messages -------------------------------------------------------- */
