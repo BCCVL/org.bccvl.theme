@@ -181,7 +181,6 @@ a:not([href]).fine,
 .control-group.error input[type="radio"],
 .control-group.error input[type="checkbox"] {
     outline: 1px solid red;
-    border-radius: 2px;
 }
 
 
@@ -230,6 +229,24 @@ sometimes, and upgrade when bootstrap 3 is out.
 .bccvl-algoconfig .accordion-toggle.collapsed:before {
     content: '\25b6';
 }
+
+/* ..:: the config form elements from plone */
+/* todo: this is a five minute slap up, come back and fix this styling, it's fucking awful */
+.bccvl-algoconfig .object-widget-field {
+    clear: both;
+    padding: 0.25em 0;
+}
+.bccvl-algoconfig .object-widget-field label {
+    text-align: right;
+    float: left;
+    width: 50%;
+    padding-right: 1em;
+}
+.bccvl-algoconfig .object-widget-field label .formHelp {
+    clear: both;
+    font-size: 90%;
+}
+/* ::.. end of the plone-imported config stuff */
 
 .bccvl-expstatus {
     /*font-size: 150%;*/
