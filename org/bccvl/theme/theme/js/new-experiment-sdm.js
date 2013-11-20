@@ -70,7 +70,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         // this listener is named wrong, it's actually run when the form
                         // is validated, which happens before a submit and also whenever
                         // you call form.parsley('validate').
-                        if () {
+                        if (isFormValid) {
                             // if the form isn't valid, then there's at least one error
                             // showing somewhere.  But if it's on another tab, parsley
                             // won't be able to focus that field.  So, here we're gonna
