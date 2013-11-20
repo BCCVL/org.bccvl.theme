@@ -245,7 +245,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     padding: 0.25em 2% 0 0;
 }
 /* hide the initial label "configuration for Blah Blah" which isn't needed */
-.bccvl-algoconfig > fieldset > div > label { display: none; }
+.bccvl-algo-config > fieldset > div > label { display: none; }
 /* hide the empty "required" indicator span */
 .bccvl-algoconfig .object-widget-field label .required { display: none; }
 .bccvl-algoconfig .object-widget-field label .formHelp {
