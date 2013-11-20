@@ -74,7 +74,7 @@
 
                     <xsl:element name="div">
                         <xsl:attribute name="class">accordion-group</xsl:attribute>
-                        <xsl:attribute name="data-algo"><xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
+                        <xsl:attribute name="data-function"><xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
                         <div class="accordion-heading">
                             <xsl:element name="a">
                                 <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>

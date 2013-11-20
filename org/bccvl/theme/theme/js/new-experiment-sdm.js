@@ -24,8 +24,21 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $algoCheckboxes = $('input[name="form.widgets.functions:list"]');
             $.each(algoCheckboxes, function(index, checkbox) {
                 var $checkbox = $(checkbox);
+                // when the checkbox changes, update the config block's visibility
                 $checkbox.change( function(evt) {
-//                    var $configBlock = $()
+                    var $algoCheckbox = $(evt.target);
+                    // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
+                    var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
+                    if ($configBlock.length > 0) {
+                        // if there is a config block..
+                        if ($algoCheckbox.prop('checked')) {
+                            $configBlock.show();
+                        } else {
+                            $configBlock.hide();
+                        }
+                    } else {
+                        console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
+                    }
                 });
             });
 
