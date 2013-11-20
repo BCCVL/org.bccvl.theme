@@ -32,14 +32,16 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     if ($configBlock.length > 0) {
                         // if there is a config block..
                         if ($algoCheckbox.prop('checked')) {
-                            $configBlock.show();
+                            $configBlock.show(333);
                         } else {
-                            $configBlock.hide();
+                            $configBlock.hide(333);
                         }
                     } else {
                         console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
                     }
                 });
+                // finally, invoke the change handler to get the inital visibility sorted out.
+                $checkbox.change();
             });
 
             // -- form validation -----------------------------------
