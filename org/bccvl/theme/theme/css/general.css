@@ -244,15 +244,27 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     width: 47%;
     padding: 0.25em 2% 0 0;
 }
-.bccvl-algoconfig > fieldset > div > label {
-    /* this targets the initial label "configuration for Blah Blah" which isn't needed */
-    display: none;
-}
+/* hide the initial label "configuration for Blah Blah" which isn't needed */
+.bccvl-algoconfig > fieldset > div > label { display: none; }
+/* hide the empty "required" indicator span */
+.bccvl-algoconfig .object-widget-field label .required { display: none; }
 .bccvl-algoconfig .object-widget-field label .formHelp {
     display: block;
     clear: both;
     font-size: 90%;
     line-height: 1.1;
+}
+/* the label for checkboxes, coming after the checkbox itself */
+.bccvl-algoconfig .object-widget-field span.option label {
+    display: inline;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    text-shadow: none;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: inherit;
 }
 .bccvl-algoconfig .object-widget-field select[size='1'] {
     /* Bootstrap sets the height of selects to 30px then
