@@ -22,7 +22,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // selected.
 
             var $algoCheckboxes = $('input[name="form.widgets.functions:list"]');
-            $.each(algoCheckboxes, function(index, checkbox) {
+            $.each($algoCheckboxes, function(index, checkbox) {
                 var $checkbox = $(checkbox);
                 // when the checkbox changes, update the config block's visibility
                 $checkbox.change( function(evt) {
