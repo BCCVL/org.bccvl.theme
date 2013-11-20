@@ -172,6 +172,18 @@ a:not([href]).fine,
 .bccvl-stretch-parent { position: relative; }
 
 
+/* form validation ------------------------------------------------------- */
+
+/*
+ * Bootstrap already has a bunch of useful form styles, but there's nothing
+ * that applies to 'error' radio buttons.
+ */
+.control-group.error input[type="radio"],
+.control-group.error input[type="checkbox"] {
+    outline: 1px solid red;
+}
+
+
 /* flash messages -------------------------------------------------------- */
 
 .bccvl-flashmessage {
@@ -205,7 +217,7 @@ gets collapsed but doesn't get the .collapsed style applied.)
 
 Update: this bug is fixed in Bootstrap 3.0, so for now let's
 show the disclosure triangles, file a bug that they're wrong
-sometimes, and upgrade when bootstrap 3 is out.
+sometimes, and TODO: upgrade when bootstrap 3 is out.
 --- */
 .bccvl-algoconfig .accordion-toggle:before {
     content: '\25bc';
@@ -217,6 +229,55 @@ sometimes, and upgrade when bootstrap 3 is out.
 .bccvl-algoconfig .accordion-toggle.collapsed:before {
     content: '\25b6';
 }
+
+/* :: the config form elements from plone ::::::::::::::::: */
+/* TODO: this is a five minute slap up, come back and fix
+   this styling, it's fucking awful */
+
+.bccvl-algoconfig .object-widget-field {
+    clear: both;
+    padding: 0.66em 0;
+}
+.bccvl-algoconfig .object-widget-field > label {
+    text-align: right;
+    float: left;
+    width: 47%;
+    padding: 0.25em 2% 0 0;
+}
+/* hide the initial label "configuration for Blah Blah" which isn't needed */
+.bccvl-algo-config > fieldset > div > label { display: none; }
+/* hide the empty "required" indicator span */
+.bccvl-algoconfig .object-widget-field label .required { display: none; }
+.bccvl-algoconfig .object-widget-field label .formHelp {
+    display: block;
+    clear: both;
+    font-size: 90%;
+    line-height: 1.1;
+    padding-top: 0.25em;
+}
+/* the label for checkboxes, coming after the checkbox itself */
+.bccvl-algoconfig .object-widget-field span.option label {
+    display: inline;
+}
+.bccvl-algoconfig .object-widget-field span.option label .label {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    text-shadow: none;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: inherit;
+}
+.bccvl-algoconfig .object-widget-field select[size='1'] {
+    /* Bootstrap sets the height of selects to 30px then
+    back to auto for multi-selects.  Plone specifies
+    size=1, but bootstrap assumes the size attribute always
+    implies a multiselect.  So, reset the height. */
+    height: 30px;
+}
+
+/* :: end of the plone-imported config stuff :::::::::::::: */
 
 .bccvl-expstatus {
     /*font-size: 150%;*/
@@ -236,7 +297,7 @@ sometimes, and upgrade when bootstrap 3 is out.
     top: -20px;
 }
 
-/* the experiment-is-finished alert box should be smaller.. */
+/* makes the experiment-is-finished alert box smaller.. */
 .bccvl-expstatus.alert-success {
     padding: 0.5em;
 }

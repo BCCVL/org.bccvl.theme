@@ -26,6 +26,7 @@
                 <tr>
                     <td class="bccvl-table-choose">
                         <xsl:element name="input">
+                            <xsl:attribute name="data-mincheck">1</xsl:attribute>
                             <xsl:attribute name="type">checkbox</xsl:attribute>
                             <xsl:attribute name="name">
                                 <xsl:value-of select="@name" />
@@ -46,7 +47,7 @@
                             <xsl:attribute name="for">
                                 <xsl:value-of select="@id" />
                             </xsl:attribute>
-                            <h1><xsl:copy-of select="string(../label/span/text())" /> <small class="broken">Algorithm Description</small></h1>
+                            <h1><xsl:copy-of select="string(../label/span/text())" /></h1>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-controls">
@@ -64,13 +65,16 @@
             this is the string that prefixes the algo name in the data-fieldname attribute of the config wrapper div.
             By which I mean, the raw unthemed Plone page will have a div like this:
                 <div data-fieldname="form.widgets.parameters_algoname">...</div>
-            ... holding all the config fields for the algo called 'algoname'.
+            ..holding all the config fields for the algo called 'algoname'.  This var saves me from typing that long
+            string every time it occurs in the next bit of code.
             -->
 
             <xsl:for-each select="//div">
                 <xsl:if test="starts-with(@data-fieldname,$prefix)">
 
-                    <div class="accordion-group">
+                    <xsl:element name="div">
+                        <xsl:attribute name="class">accordion-group</xsl:attribute>
+                        <xsl:attribute name="data-function"><xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
                         <div class="accordion-heading">
                             <xsl:element name="a">
                                 <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
@@ -91,7 +95,7 @@
                                 </fieldset>
                             </div>
                         </xsl:element>
-                    </div>
+                    </xsl:element>
 
                 </xsl:if>
             </xsl:for-each>

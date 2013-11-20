@@ -65,6 +65,10 @@
 			</form>
 
 			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
 			<button id="untheme" class="pull-right"
 				style="font-size: 66%; margin: 0 0.3em; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
 				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
@@ -75,6 +79,11 @@
 					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('visibility', 'hidden');
 				"
 			>no placeholders</button>
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
 
 			<!-- main menu items -->
 			<ul class="nav">
@@ -116,7 +125,7 @@
 <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<section class="bccvl-experimentdetails tabbable">
-		<form class="bccvl-parsleyvalidate" id="experimentSetup" method=""  novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
+		<form class="bccvl-parsleyvalidate" id="experimentSetup" method="" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
 			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
@@ -153,7 +162,7 @@
 						<div class="span12">
 							<div class="control-group">
 								<input type="text" name="expName" class="bccvl-expname input-block-level"
-									data-notblank="true" data-trigger="change keyup"
+									required="required" data-notblank="true" data-trigger="change keyup"
 									placeholder="name for this experiment"
 								>
 							</div>
@@ -164,7 +173,6 @@
 									placeholder="description of experiment"
 								></textarea>
 							</div>
-							<button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
 						</div>
 					</div>
 				</div>
@@ -224,109 +232,6 @@
 								<div id="bioclimConfig" class="accordion-body collapse in">
 									<div class="accordion-inner bccvl-algo-config">
 										no configuration is required for the bioclim algorithm.
-									</div>
-								</div>
-							</div>
-
-							<div class="accordion-group">
-								<div class="accordion-heading">
-									<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#algoConfig" href="#brtConfig">
-										configuration for <strong>BRT</strong>
-									</a>
-								</div>
-								<div id="brtConfig" class="accordion-body collapse">
-									<div class="accordion-inner bccvl-algo-config">
-
-										<fieldset class="form-horizontal">
--->
-<!--
- 											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tree-complexity">tree complexity</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtTreeComplexity" id="cfg-brt-tree-complexity" value="1">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-learning-rate">learning rate</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtLearningRate" id="cfg-brt-learning-rate" value="0.01">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-bag-fraction">bag fraction</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtBagFraction" id="cfg-brt-bag-fraction" value="0.75">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-var-monotone">var monotone</label>
-												<div class="controls">
-													<label>
-														<input type="radio" name="cfgBrtVarMonotone" id="cfg-brt-var-monotone-minusone" value="-1">
-														-1
-													</label>
-													<label>
-														<input type="radio" name="cfgBrtVarMonotone" id="cfg-brt-var-monotone-plusone" value="1">
-														+1
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-n-folds">n folds</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtNFolds" id="cfg-brt-n-folds" value="10">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-prev-stratify">prev stratify</label>
-												<div class="controls">
-													<label>
-														<input type="checkbox" name="cfgBrtPrevStratify" id="cfg-brt-prev-stratify" checked="checked">
-														stratify the folds?
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-family">family</label>
-												<div class="controls">
-														<select name="cfgBrtFamily" id="cfg-brt-family">
-															<option value="bernoulli">bernoulli (binomial)</option>
-															<option value="poisson">poisson</option>
-															<option value="laplace">laplace</option>
-															<option value="gaussian">gaussian</option>
-														</select>
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-n-trees">trees added each cycle</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtNTrees" id="cfg-brt-n-trees" value="50">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-max-trees">max trees</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtMaxTrees" id="cfg-brt-max-trees" value="1000">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tolerance-method">tolerance method</label>
-												<div class="controls">
-														<select name="cfgBrtToleranceMethod" id="cfg-brt-tolerance-method">
-															<option value="auto">auto</option>
-															<option value="fixed">fixed</option>
-														</select>
-													</label>
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="cfg-brt-tolerance-value">tolerance value</label>
-												<div class="controls">
-													<input type="text" name="cfgBrtToleranceValue" id="cfg-brt-tolerance-value" value="0.001">
-												</div>
-											</div>
-										</fieldset>
 									</div>
 								</div>
 							</div>
