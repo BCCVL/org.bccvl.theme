@@ -88,6 +88,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             }
                             // whether we had to flick the tab or not, focus the field
                             $firstError.find('input, select, textarea').first().focus();
+                            return false;
+                        } else {
+                            return true;
                         }
                     }
                 }
