@@ -257,6 +257,8 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
 /* the label for checkboxes, coming after the checkbox itself */
 .bccvl-algoconfig .object-widget-field span.option label {
     display: inline;
+}
+.bccvl-algoconfig .object-widget-field span.option label {
     font-size: inherit;
     font-weight: inherit;
     line-height: inherit;
