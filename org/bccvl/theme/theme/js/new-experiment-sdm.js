@@ -70,7 +70,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         // this listener is named wrong, it's actually run when the form
                         // is validated, which happens before a submit and also whenever
                         // you call form.parsley('validate').
-                        if (! isFormValid) {
+                        if () {
                             // if the form isn't valid, then there's at least one error
                             // showing somewhere.  But if it's on another tab, parsley
                             // won't be able to focus that field.  So, here we're gonna
@@ -78,6 +78,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             // its tab, then focus its field.
                             console.log('invalid form -- finding bad field.')
                             var $firstError = $('.control-group.error').first();  // first error
+                            console.log($firstError);
                             var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
                             if ($tabPane.length > 0) {
                                 // tab itself that belongs to the tab pane we're interested in
