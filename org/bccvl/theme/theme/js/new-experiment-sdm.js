@@ -16,6 +16,21 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             wiztabs.init();     // hook up the wizard buttons
             search.init();      // hook up the search fields
 
+            // -- hook up algo config -------------------------------
+            // algorithm configuration blocks should be hidden and
+            // revealed depending on whether the algorithm is
+            // selected.
+
+            var $algoCheckboxes = $('input[name="form.widgets.functions:list"]');
+            $.each(algoCheckboxes, function(index, checkbox) {
+                var $checkbox = $(checkbox);
+                $checkbox.change( function(evt) {
+//                    var $configBlock = $()
+                });
+            });
+
+            // -- form validation -----------------------------------
+
             // kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley({
                 focus:        'none',       // don't switch focus to errors (we do that manually below)
