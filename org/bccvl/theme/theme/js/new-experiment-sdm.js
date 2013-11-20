@@ -76,9 +76,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             // won't be able to focus that field.  So, here we're gonna
                             // find the first error indicator in the document, switch to
                             // its tab, then focus its field.
-                            console.log('invalid form -- finding bad field.');
+                            console.log('invalid form');
                             var $firstError = $('.control-group.error').first();  // first error
-                            console.log($firstError);
                             var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
                             if ($tabPane.length > 0) {
                                 // tab itself that belongs to the tab pane we're interested in
