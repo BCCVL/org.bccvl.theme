@@ -230,17 +230,18 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     content: '\25b6';
 }
 
-/* ..:: the config form elements from plone */
-/* TODO: this is a five minute slap up, come back and fix this styling, it's fucking awful */
+/* :: the config form elements from plone ::::::::::::::::: */
+/* TODO: this is a five minute slap up, come back and fix
+   this styling, it's fucking awful */
 .bccvl-algoconfig .object-widget-field {
     clear: both;
     padding: 0.5em 0;
 }
-.bccvl-algoconfig .object-widget-field label {
+.bccvl-algoconfig .object-widget-field > label {
     text-align: right;
     float: left;
-    width: 50%;
-    padding: 0.25em 1em 0 0;
+    width: 47%;
+    padding: 0.25em 2% 0 0;
 }
 .bccvl-algoconfig .object-widget-field label .formHelp {
     display: block;
@@ -248,7 +249,12 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     font-size: 90%;
     line-height: 1.1;
 }
-/* ::.. end of the plone-imported config stuff */
+.bccvl-algoconfig .object-widget-field select[size="1"] {
+    /* plone specifies size=1, but bootstrap assumes that
+    if size is specified at all, it's a multiselect. */
+    height: 30px;
+}
+/* :: end of the plone-imported config stuff :::::::::::::: */
 
 .bccvl-expstatus {
     /*font-size: 150%;*/
