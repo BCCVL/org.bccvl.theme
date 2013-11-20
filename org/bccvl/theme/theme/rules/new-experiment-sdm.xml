@@ -8,7 +8,7 @@
         <theme href="html/new-experiment-sdm.html" />
 
         <!-- hook in the new experiment form's attributes -->
-        <copy attributes="name action enctype" css:theme="form#experimentSetup" css:content="#form" />
+        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
 
         <!-- hook in the submit (save) button -->
         <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
