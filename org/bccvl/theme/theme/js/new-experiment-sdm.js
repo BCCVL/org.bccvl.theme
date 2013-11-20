@@ -32,9 +32,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     if ($configBlock.length > 0) {
                         // if there is a config block..
                         if ($algoCheckbox.prop('checked')) {
-                            $configBlock.show(333);
+                            $configBlock.show(250);
                         } else {
-                            $configBlock.hide(333);
+                            $configBlock.hide(250);
                         }
                     } else {
                         console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
