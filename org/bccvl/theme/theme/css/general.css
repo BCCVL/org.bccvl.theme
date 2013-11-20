@@ -236,7 +236,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
 
 .bccvl-algoconfig .object-widget-field {
     clear: both;
-    padding: 0.5em 0;
+    padding: 0.66em 0;
 }
 .bccvl-algoconfig .object-widget-field > label {
     text-align: right;
@@ -253,6 +253,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     clear: both;
     font-size: 90%;
     line-height: 1.1;
+    padding-top: 0.25em;
 }
 /* the label for checkboxes, coming after the checkbox itself */
 .bccvl-algoconfig .object-widget-field span.option label {
