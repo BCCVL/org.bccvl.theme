@@ -46,25 +46,22 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // -- form validation -----------------------------------
 
-            // kick off parsley form validation on the forms..
+            // since we're pulling config blocks wholesale from plone, which sucks but is
+            // quick to get working, we have to work around a bunch of plone's document
+            // strutures and classes.  The easiest way to make validation errors show up
+            // is to give plone's ".object-widget-field" things an additional class of
+            // ".control-group".
+            $('form.bccvl-parsleyvalidate .object-widget-field').addClass('control-group');
+
+            // right, so now kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley({
                 focus:        'none',       // don't switch focus to errors (we do that manually below)
                 successClass: 'success',    // use these two Bootstrap classes for the error
                 errorClass:   'error',      // and no-error states, and it'll look pretty.
                 errors: {
                     // this error handling and elements make parsley errors Bookstrap friendly
-                    classHandler: function(el) {
-                        var $widgetField = $(el).closest('.object-widget-field');
-                        // if it's inside an object-widget-field, it's a plone config thingy..
-                        if ($widgetField.length > 0) return $widgetField;
-
-                        return $(el).closest('.control-group');
-                    },
+                    classHandler: function(el) { return $(el).closest('.control-group'); },
                     container: function(el) {
-                        var $widgetField = $(el).closest('.object-widget-field');
-                        // if it's inside an object-widget-field, it's a plone config thingy..
-                        if ($widgetField.length > 0) return $widgetField;
-
                         var $controlGroup = $(el).closest('.control-group');
                         var $tableHeader = $controlGroup.find('th');
                         // if the element is in a table, use the table header..
