@@ -276,9 +276,11 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     implies a multiselect.  So, reset the height. */
     height: 30px;
 }
-.bccvl-algoconfig .object-widget-field .help-inline {
-    /* inside object-widget-fields the inline help actually needs to be less inline. */
-    display: block;
+.bccvl-algoconfig .object-widget-field .help-inline:before {
+    /* inside object-widget-fields the inline help actually needs to
+    be less inline, but parsley writes an inline style attribute forcing
+    it to be display: inline. */
+    content: '\000A';
 }
 /* :: end of the plone-imported config stuff ::::::::::::::::::::::::::::: */
 
