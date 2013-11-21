@@ -270,11 +270,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                     var searchUrl = provider.search.searchUrl($inputField.val());
 
                     $.ajax({
-                        // xhrFields: { withCredentials: true }, // not using CORS
+                        // xhrFields: { withCredentials: true }, // not using CORS (ALA said they were working on it)
                         dataType: 'jsonp',                       // ..using JSONP instead
                         url: searchUrl,
                         success: function(data) {
-                            // either the search provider will have a parseSearchData function,
+                            // maybe the search provider will have a parseSearchData function,
                             // which extracts the result objects from the returned data.
                             if (provider.search.parseSearchData) {
                                 // if this provider has a parseSearchData function, call it
@@ -282,6 +282,14 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             } else {
                                 // otherwise assume the data is already good
                                 bccvl_search.displayResults(data, $resultsField);
+                            }
+                        },
+                        timeout: 1000,
+                        error: function(xhr, status, msg) {
+                            if (status === 'timeout') {
+                                alert('There was no response to your search query.');
+                            } else {
+                                alert('There was a problem doing your search.');
                             }
                         }
                     });
