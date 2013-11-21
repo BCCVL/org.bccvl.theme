@@ -284,12 +284,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 bccvl_search.displayResults(data, $resultsField);
                             }
                         },
-                        timeout: 1000,
+                        timeout: 5000,
                         error: function(xhr, status, msg) {
                             if (status === 'timeout') {
                                 alert('There was no response to your search query.');
                             } else {
-                                alert('There was a problem doing your search.');
+                                alert('There was a problem that stopped your query from getting results.');
                             }
                         }
                     });
