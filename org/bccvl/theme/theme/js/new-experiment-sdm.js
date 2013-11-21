@@ -55,11 +55,14 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     // this error handling and elements make parsley errors Bookstrap friendly
                     classHandler:  function(el) { return $(el).closest('.control-group'); },
                     container:     function(el) {
+                        var $widgetField = $(el).closest('.object-widget-field');
                         var $controlGroup = $(el).closest('.control-group');
                         var $tableHeader = $controlGroup.find('th');
-                        // if the element is in a table, use the table header.
+                        // if the element is in a table, use the table header..
                         if ($tableHeader.length > 0) return $tableHeader;
-                        // otherwise just use the surrounding control group.
+                        // if it's inside an object-widget-field, it's a plone config thingy..
+                        if ($widgetField.length > 0) return $widgetField;
+                        // otherwise use the controlGroup
                         return $controlGroup;
                     },
                     errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
