@@ -280,6 +280,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     /* inside object-widget-fields the inline help actually needs to
     be less inline, but parsley writes an inline style attribute forcing
     it to be display: inline. */
+    content: '';
     display: block;
 }
 /* :: end of the plone-imported config stuff ::::::::::::::::::::::::::::: */
