@@ -83,8 +83,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             // won't be able to focus that field.  So, here we're gonna
                             // find the first error indicator in the document, switch to
                             // its tab, then focus its field.
-                            console.log('invalid form');
                             var $firstError = $('.control-group.error').first();  // first error
+
+                            // show the tab holding the first error
                             var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
                             if ($tabPane.length > 0) {
                                 // tab itself that belongs to the tab pane we're interested in
@@ -94,11 +95,20 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                     $tabLink.tab('show');
                                 }
                             }
+
+                            // open the config accordion holding the first error
+                            var $accordionPane = $firstError.closest('.accordion-group');
+                            if ($accordionPane.length > 0) {
+                                if (! $accordionPane.hasClass('in')) {
+                                    // if that pane isn't already showing, show it
+                                    $accordionPane.collapse('show');
+                                }
+                            }
+
                             // whether we had to flick the tab or not, focus the field
                             $firstError.find('input, select, textarea').first().focus();
                             return false;
                         } else {
-                            console.log('form is good -- submitting.')
                             return true;
                         }
                     }
