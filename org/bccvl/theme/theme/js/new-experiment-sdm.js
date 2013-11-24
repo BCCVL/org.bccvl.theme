@@ -98,6 +98,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                             // open the config accordion holding the first error
                             var $accordionPane = $firstError.closest('.accordion-group');
+
+                            console.log('first errors accord pane is', $accordionPane);
+
                             if ($accordionPane.length > 0) {
                                 if (! $accordionPane.hasClass('in')) {
                                     // if that pane isn't already showing, show it
