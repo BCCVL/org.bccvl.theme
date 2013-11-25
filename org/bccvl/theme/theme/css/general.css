@@ -345,6 +345,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
 }
 
 .bccvl-searchform-results .bccvl-thumb {
+    text-align: center;
     float: left;
     position: relative;
     width: 40px;
@@ -354,11 +355,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     overflow: hidden;
 }
 .bccvl-searchform-results .bccvl-thumb img {
-/*    display: block;
-    position: absolute;
-    left: 20px;
-    margin-left: -50%;
-*/    height: 100%;
+    height: 100%;
 }
 
 /* tables ---------------------------------------------------------------- */
