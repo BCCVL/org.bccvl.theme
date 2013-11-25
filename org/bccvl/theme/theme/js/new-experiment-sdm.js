@@ -102,10 +102,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             console.log('first errors accord pane is', $accordionPane);
 
                             if ($accordionPane.length > 0) {
-                                if (! $accordionPane.hasClass('in')) {
-                                    // if that pane isn't already showing, show it
-                                    $accordionPane.collapse('show');
-                                }
+                                // if that pane isn't already showing, show it
+                                $accordionPane.collapse('show');
                             }
 
                             // whether we had to flick the tab or not, focus the field
