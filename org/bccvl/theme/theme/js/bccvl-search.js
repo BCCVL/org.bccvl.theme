@@ -84,7 +84,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 ala: {
                     autocomplete: {
                         autoUrl: function(autocompleteString) {
-                            return ('http://bie.ala.org.au/ws/search/auto.json?idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                            // geoOnly=true  -> only return items that have some geographically mapped records attached
+                            // idxType=TAXON -> only items that are actually living things (not collection records, or people, or whatever)
+                            return ('http://bie.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseAutoData: function(rawData) {
@@ -131,7 +133,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                     },
                     search: {
                         searchUrl: function(searchString) {
-                            return ('http://bie.ala.org.au/ws/search.json?fq=idxtype:TAXON&q=' + encodeURIComponent(searchString));
+                            // rank:species  -> only return items that are species (not genus, subspecies etc)
+                            return ('http://bie.ala.org.au/ws/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseSearchData: function(rawData) {
@@ -164,7 +167,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                         result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
                                         result.actions.alaimport = item.guid;
                                     }
-                                    list.push(result);
+
+                                    // actually we only want results that have occurrences..
+                                    if (item.occCount && item.occCount > 0) {
+                                        list.push(result);
+                                    }
                                 });
                             }
                             return list;
