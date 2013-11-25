@@ -97,7 +97,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             }
 
                             // open the config accordion holding the first error
-                            var $accordionPane = $firstError.closest('.accordion-group');
+                            var $accordionPane = $firstError.closest('.accordion-group').find('.accordion-body');
 
                             console.log('first errors accord pane is', $accordionPane);
 
