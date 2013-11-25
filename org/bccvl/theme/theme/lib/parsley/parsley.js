@@ -1165,7 +1165,7 @@
       for ( var item = 0; item < this.items.length; item++ ) {
         if ( 'undefined' !== typeof this.items[ item ] && false === this.items[ item ].validate() ) {
           valid = false;
-          console.log(this.items[item]);
+//          console.log(this.items[item]);
 
           if ( !this.focusedField && 'first' === this.options.focus || 'last' === this.options.focus ) {
             this.focusedField = this.items[ item ].$element;
