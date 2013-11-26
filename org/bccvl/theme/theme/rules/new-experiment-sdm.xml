@@ -54,7 +54,7 @@
                                      and add the @value which is the algo's plone name. The
                                      knowledgebase can use the algo name as a tag on docs
                                      that are relevant to this algo. -->
-                                <xsl:value-of select="//form[@id='livesearch0']@action" />?Subject%3Alist=<xsl:value-of select="@value" />
+                                <xsl:value-of select="//form[@id='searchGadget_form']/@action" />?Subject%3Alist=<xsl:value-of select="@value" />
                             </xsl:attribute>
                             <i class="icon-info-sign" title="more information"></i>
                         </xsl:element>
