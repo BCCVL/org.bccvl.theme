@@ -32,6 +32,7 @@ a:not([href]).fine,
 .sampledata td,
 .sampledata {
     background-image: url(../images/sample-data-bg.png);
+    opacity: 0.66;
 }
 
 .debug > div {
