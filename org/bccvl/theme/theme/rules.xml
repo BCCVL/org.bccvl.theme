@@ -64,6 +64,12 @@
     <!-- (other user handling is in the link section below) -->
 
 
+    <!-- hook up the search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <copy attributes="action" css:theme="form#siteSearch" css:content="#livesearch0" />
+    <copy attributes="name" css:theme="form#siteSearch input[name=siteSearchQuery]" css:content="#searchGadget" />
+
+
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!--
     This section replaces the href attribute of the theme links with
