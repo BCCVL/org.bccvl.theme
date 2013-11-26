@@ -66,7 +66,8 @@
 
     <!-- hook up the search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-    <copy attributes="action" css:theme="form#siteSearch" css:content="#livesearch0" />
+    <!-- yes, it really is 'searchGadget_form', plone replaces the id with javascript when an unthemed page is displayed -->
+    <copy attributes="action method" css:theme="form#siteSearch" css:content="#searchGadget_form" />
     <copy attributes="name" css:theme="form#siteSearch input[name=siteSearchQuery]" css:content="#searchGadget" />
 
 
