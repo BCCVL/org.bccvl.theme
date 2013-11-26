@@ -48,7 +48,7 @@
                     </td>
                     <td class="bccvl-table-controls">
                         <xsl:element name="a">
-                            <xsl:attribute name="href">@@search?Subject%3Alist=<xsl:value-of select="@value" /></xsl:attribute>
+                            <xsl:attribute name="href">/@@search?Subject%3Alist=<xsl:value-of select="@value" /></xsl:attribute>
                             <i class="icon-info-sign" title="more information"></i>
                         </xsl:element>
                     </td>
