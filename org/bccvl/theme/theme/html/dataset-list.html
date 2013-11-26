@@ -64,16 +64,23 @@
 			</form>
 
 			<!-- debug -->
-			<button id="untheme" class="pull-right"
-				style="font-size: 66%; margin: 0 0.3em; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<button id="untheme" class="bccvl-devbutton pull-right"
 				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
 			>no theme</button>
-			<button id="hide_placeholders" class="pull-right"
-				style="font-size: 66%; margin: 0 0.3em; padding: 0 0.7em; border: none; background: rgba(100,100,100,0.1); opacity: 0.5"
+			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('visibility', 'hidden');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
 				"
 			>no placeholders</button>
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
 
 			<!-- main menu items -->
 			<ul class="nav">

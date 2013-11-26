@@ -14,6 +14,7 @@ a:not([href]),
 .broken
 {
     box-shadow: inset 0 0 20px 3px #fee, 0 0 5px 3px #fee ! important;
+    opacity: 0.66 ! important;
 }
 
 
@@ -25,6 +26,7 @@ a:not([href]).fine,
 .typeahead.dropdown-menu a:not([href])
 {
     box-shadow: none ! important;
+    opacity: 1 ! important;
 }
 
 
@@ -43,6 +45,17 @@ a:not([href]).fine,
     transition: 1s;
 }
 .debug > div:hover { opacity: 1.0; }
+
+.bccvl-devbutton {
+    font-size: 66%;
+    margin: 0 0.3em;
+    padding: 0 0.7em;
+    border: none;
+    background: rgba(100,100,100,0.1);
+    opacity: 0.33;
+}
+.bccvl-devbutton:hover { opacity: 1; }
+
 
 /* main navbar ----------------------------------------------------------- */
 
