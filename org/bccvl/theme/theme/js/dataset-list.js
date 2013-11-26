@@ -2,12 +2,13 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery', 'bootstrap'],
-    function( $) {
+define(     ['jquery', 'js/bccvl-search', 'bootstrap'],
+    function( $      ,  search          ) {
     // ==============================================================
         $(function() {
-            // nothing to do so far.
-            console.log('page behaviour loaded.')
+
+            search.init();
+
         });
     // ==============================================================
     }
