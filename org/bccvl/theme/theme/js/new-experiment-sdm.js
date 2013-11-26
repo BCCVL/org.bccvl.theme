@@ -73,10 +73,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     errorElem:     '<span></span>'
                 },
                 listeners: {
-                    onFormSubmit: function(isFormValid, evt) {
-                        // this listener is named wrong, it's actually run when the form
-                        // is validated, which happens before a submit and also whenever
-                        // you call form.parsley('validate').
+                    onFormValidate: function(isFormValid, evt) {
                         if (! isFormValid) {
                             // if the form isn't valid, then there's at least one error
                             // showing somewhere.  But if it's on another tab, parsley
