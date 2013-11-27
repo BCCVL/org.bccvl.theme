@@ -138,7 +138,7 @@
                                 <xsl:attribute name="for">
                                     <xsl:value-of select="@id" />
                                 </xsl:attribute>
-                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance description</p>
+                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance and description</p>
                             </xsl:element>
                         </td>
                         <td class="bccvl-table-controls">
@@ -176,7 +176,7 @@
                         <td class="bccvl-table-label">
                             <xsl:element name="label">
                                 <xsl:attribute name="for"><xsl:value-of select="@id" /></xsl:attribute>
-                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance description</p>
+                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance and description</p>
                             </xsl:element>
                         </td>
                         <td class="bccvl-table-controls">
@@ -221,7 +221,7 @@
                                 <xsl:attribute name="for">
                                     <xsl:value-of select="@id" />
                                 </xsl:attribute>
-                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance description</p>
+                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance and description</p>
                             </xsl:element>
                         </td>
                         <td class="bccvl-table-controls">
