@@ -2,6 +2,19 @@
 // stretch a DOM object vertically to fill the screen, but keep
 // within the vertical constraints of its 'parent'.
 //
+// E.g.:
+// <div class="bccvl-stretch-parent">
+//     <div class="leftcolumn">
+//         <p>This div will be the one defining the height of the parent.</p>
+//         <p>Imagine your leftcolumn and rightcolumn classes position the
+//            two divs alongside each other.</p>
+//     </div>
+//     <div class="rightcolumn bccvl-stretcher">
+//         This div will be stretched vertically to match the div alongside it.
+//     </div>
+// </div>
+
+//
 // This means:
 //
 // - The stretcher stays within the parent
