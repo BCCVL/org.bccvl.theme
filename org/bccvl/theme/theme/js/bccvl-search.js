@@ -306,7 +306,14 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             displayResults: function(results, domElement) {
                 // get a table dom fragment ready to put search results into
                 var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
-                var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz'); // TODO: don't assume tabs
+                var $tab = $(domElement).closest('.tab-pane');
+                if ($tab.length > 0) {
+                    // if we're in a tab, find a viz frame on our tab
+                    var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz');
+                } else {
+                    // if we're not in a tab, just get the first viz frame on the page
+                    var $vizFrame = $('iframe.bccvl-viz').first();
+                }
 
                 // loop through the result objects adding them to the table
                 $.each(results, function(index, item) {
