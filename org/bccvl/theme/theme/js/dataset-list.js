@@ -8,7 +8,7 @@ define(     ['jquery', 'js/bccvl-search', 'js/bccvl-stretch', 'bootstrap'],
         $(function() {
 
             search.init();
-            stretch.init();
+            stretch.init({ topPad: 60, bottomPad: 10 });
 
         });
     // ==============================================================
