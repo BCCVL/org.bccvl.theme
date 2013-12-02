@@ -201,7 +201,7 @@
         -->
 
         <!-- old version -->
-        <after css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
             <xsl:for-each select="//select[@id='form-widgets-environmental_dataset']/option">
                 <xsl:if test="@value!='--NOVALUE--'">
                     <tr>
@@ -233,7 +233,7 @@
                     </tr>
                 </xsl:if>
             </xsl:for-each>
-        </after>
+        </before>
 
     </rules>
 
