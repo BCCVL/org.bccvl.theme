@@ -36,6 +36,22 @@
                     </div>
                 </xsl:when>
 
+                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New')">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>queued</strong></p>
+                        </div>
+                    </div>
+                </xsl:when>
+
+                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued')">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>queued</strong></p>
+                        </div>
+                    </div>
+                </xsl:when>
+
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Retrieving')">
                     <div class="row-fluid bccvl-status-block bccvl-status-running">
                         <div class="span12 bccvl-expstatus alert alert-block">
