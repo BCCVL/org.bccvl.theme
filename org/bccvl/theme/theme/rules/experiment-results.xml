@@ -154,7 +154,7 @@
             </xsl:for-each>
             -->
             <xsl:for-each select="//*[@class='bccvl-experiment-result-set']">
-                <tr><th class="info" colspan="3"><xsl:value-of select="h3/a/text()" /></th></tr>
+                <tr class="info"><th colspan="3"><xsl:value-of select="h3/a/text()" /></th></tr>
                 <xsl:for-each select="ul//li//a">
                     <tr>
                         <td colpan="2" class="bccvl-table-label">
