@@ -22,54 +22,114 @@
             all unknown statuses
         -->
 
-        <!-- Always drop the not-started status -->
-        <drop css:theme=".bccvl-status-notstarted" />
+        <!-- new plan: chuck everything and build a status block -->
+        <drop css:theme=".bccvl-status-block" />
+        <xsl:choose>
 
-        <rules if-content="string(//span[@id='form-widgets-IJobStatus-status'])">
-            <drop css:theme=".bccvl-status-error" />
-            <!-- Use the template for all non-understood statuses -->
-            <replace
-                css:theme-children=".bccvl-status-template .bccvl-status"
-                content="//span[@id='form-widgets-IJobStatus-status']"
-            />
-        </rules>
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-error">
+                        <div class="span12 bccvl-expstatus alert alert-block alert-error">
+                            <p class="lead">this Experiment stopped with an <strong>error</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
 
-        <!-- If complete, drop the template -->
-        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'">
-            <drop css:theme=".bccvl-status-template" />
-        </rules>
-        <!-- if NOT complete, drop the complete -->
-        <rules if-not-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'">
-            <drop css:theme=".bccvl-status-complete" />
-        </rules>
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Retrieving')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>retrieving data</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
 
-        <!-- If running, drop the template -->
-        <rules if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Active'">
-            <drop css:theme=".bccvl-status-template" />
-        </rules>
-        <!-- If not running, then drop the running status -->
-        <rules if-not-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Active'">
-            <drop css:theme=".bccvl-status-running" />
-        </rules>
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Transfering')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>transferring data</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
 
-        <!-- If there's no job status at all, drop everything except the error (null content won't have triggered the dropping of the other statuses) -->
-        <rules if-content="not(string(//span[@id='form-widgets-IJobStatus-status']))">
-            <drop css:theme=".bccvl-status-running" />
-            <drop css:theme=".bccvl-status-complete" />
-            <drop css:theme=".bccvl-status-template" />
-        </rules>
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Transferring')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>transferring data</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
 
-        <!--
-            NOTE: This is temporary.
-            TEMP: Get the experiment results from the results folder for this experiment.
-            Only do this if the experiment is in the completed state.
-        <before
-            css:theme-children=".bccvl-experimentresults table tbody"
-            css:content-children="#listing-table tbody"
-            if-content="//span[@id='form-widgets-IJobStatus-status']/text() = 'Completed'"
-            href="result/folder_contents"
-        />
-        -->
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Running')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>running</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
+
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Cleanup')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment is <strong>performing cleanup</strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:when>
+
+            <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Completed')">
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-complete">
+                        <div class="span12 bccvl-expstatus alert alert-success">
+                            <p>
+                                This Experiment is <strong>complete</strong>. The results are available below.
+                            </p>
+                        </div>
+
+                        <div class="row-fluid bccvl-buttonbar">
+                            <div class="span3">
+                                <div class="btn-group btn-block">
+                                    <a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
+                                        <strong>delete</strong> this Experiment
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
+                                        <li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
+                                        <li><a class="sampledata"><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
+                            <div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
+                            <div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
+                        </div>
+
+                    </div>
+                </before>
+            </xsl:when>
+
+            <xsl:otherwise>
+                <before css:theme-children=".bccvl-experiment-results">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                        <div class="span12 bccvl-expstatus alert alert-block">
+                            <p class="lead">this Experiment's reported status is <strong><xsl:value-of select="//span[@id='form-widgets-IJobStatus-status']/text()" /></strong></p>
+                        </div>
+                    </div>
+                </before>
+            </xsl:otherwise>
+
+        </xsl:choose>
+
+        <!-- get the results -->
         <before css:theme-children=".bccvl-experimentresults table tbody">
             <xsl:for-each select="//*[@id='bccvl-experiment-results']//li//a">
                 <tr>

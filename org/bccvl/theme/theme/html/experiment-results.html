@@ -130,27 +130,27 @@
 			- some kind of error state (ideally just started-but-errored-out, but also system level errors)
 			-->
 
-			<div class="row-fluid bccvl-status-template">
+			<div class="row-fluid bccvl-status-block bccvl-status-template">
 				<div class="span12 bccvl-expstatus alert alert-block">
 					<p class="lead">this Experiment is <strong class="bccvl-status"></strong></p>
 				</div>
 			</div>
 
-			<div class="row-fluid bccvl-status-notstarted">
+			<div class="row-fluid bccvl-status-block bccvl-status-notstarted">
 				<div class="span12 bccvl-expstatus alert alert-block alert-info">
 					<p class="lead">this Experiment has <strong>not been started</strong></p>
 					<a class="broken bccvllinks-experiment-start btn btn-primary btn-large">start Experiment</a>
 				</div>
 			</div>
 
-			<div class="row-fluid bccvl-status-running">
+			<div class="row-fluid bccvl-status-block bccvl-status-running">
 				<div class="span12 bccvl-expstatus alert alert-block">
 					<p class="lead">this Experiment is <strong>running</strong></p>
 					<a class="broken bccvllinks-experiment-stop btn btn-warning">abandon Experiment</a>
 				</div>
 			</div>
 
-			<div class="row-fluid bccvl-status-error">
+			<div class="row-fluid bccvl-status-block bccvl-status-error">
 				<div class="span12 bccvl-expstatus alert alert-block alert-error">
 					<p class="lead">this Experiment stopped with an <strong>error</strong></p>
 					<!--
@@ -163,7 +163,7 @@
  				</div>
 			</div>
 
-			<div class="row-fluid bccvl-status-complete">
+			<div class="row-fluid bccvl-status-block bccvl-status-complete">
 				<div class="span12 bccvl-expstatus alert alert-success">
 					<p>
 						This Experiment is <strong>complete</strong>. The results are available below.
