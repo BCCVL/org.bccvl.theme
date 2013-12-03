@@ -9,10 +9,14 @@ define(     ['jquery'],
             init: function() {
                 try {
                     this.visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-                    console.log("Determined visualiser baseUrl: " + this.visualiserBaseUrl);
+                    if (console && console.log) {
+                        console.log("Determined visualiser baseUrl: " + this.visualiserBaseUrl);
+                    }
                 } catch (err) {
                     // swallow the exception (i.e. don't re-throw)
-                    console.warn(["Failed to determine visualiser base url", err]);
+                    if (console && console.warn) {
+                        console.warn(["Failed to determine visualiser base url", err]);
+                    }
                 }
 
                 // This goes looking for viz buttons, and attaches a click event.
