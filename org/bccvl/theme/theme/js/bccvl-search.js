@@ -78,6 +78,10 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
         var bccvl_search = {
             // --------------------------------------------------------------
             // -- providers -------------------------------------------------
+            // --
+            // -- this providers config is how search providers are added.
+            // -- The ALA provider supplies autocomplete and search examples,
+            // -- if you follow those it will probably work as expected.
             // --------------------------------------------------------------
             providers: {
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
