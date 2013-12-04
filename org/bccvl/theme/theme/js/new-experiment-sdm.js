@@ -46,6 +46,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // -- form validation -----------------------------------
 
+            // TODO: most of this is pretty general, it should be in a
+            // bccvl-form-validate.js file or something.
+
             // since we're pulling config blocks wholesale from plone, which sucks but is
             // quick to get working, we have to work around a bunch of plone's document
             // strutures and classes.  The easiest way to make validation errors show up

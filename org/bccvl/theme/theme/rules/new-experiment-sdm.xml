@@ -199,7 +199,6 @@
             so we need to give the radio button the select's name,
             not the option's name.
         -->
-
         <!-- old version -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
             <xsl:for-each select="//select[@id='form-widgets-environmental_dataset']/option">
@@ -234,6 +233,30 @@
                 </xsl:if>
             </xsl:for-each>
         </before>
+
+
+        <!-- new version -->
+        <after css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
+            <xsl:for-each select="//select[@id='form-widgets-environmental_dataset']/option">
+                <xsl:if test="@value!='--NOVALUE--'">
+                    <tr>
+                        <td class="bccvl-table-choose">
+                            <a><i class="broken icon-plus" title="preview this dataset"></i></a>
+                        </td>
+                        <td class="bccvl-table-label">
+                            <xsl:element name="label">
+                                <xsl:attribute name="for">
+                                    <xsl:value-of select="@id" />
+                                </xsl:attribute>
+                            </xsl:element>
+                        </td>
+                        <td class="bccvl-table-controls">
+                        </td>
+                    </tr>
+                </xsl:if>
+            </xsl:for-each>
+        </after>
+
 
     </rules>
 
