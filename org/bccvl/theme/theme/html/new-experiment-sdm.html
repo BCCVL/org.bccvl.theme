@@ -163,7 +163,8 @@
 								<input type="text" name="expName" class="bccvl-expname input-block-level"
 									required="required" data-notblank="true" data-trigger="change keyup"
 									pattern="^[^_].*"
-									parsley-error-message="Please supply a descriptive name for this experiment."
+									parsley-regex-message="Don't start your experiment name with an underscore."
+									parsley-required-message="Please supply a descriptive name for this experiment."
 									placeholder="name for this experiment"
 								>
 							</div>
