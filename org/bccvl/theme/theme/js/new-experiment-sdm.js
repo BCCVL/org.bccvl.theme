@@ -118,9 +118,19 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // -- layer selection -----------------------------------
 
-            // attach fold-open behaviour to the layer groups
+            // so first we have to ajax-fetch the possible layer-supplying datasets.
+            // They're at /dm/getVocabulary?name=environmental_datasets_source
 
-            // on form submission, collect the dataset/layer info
+            var $envTable = $('table.bccvl-environmentaldatatable');
+            var $envBody = $envTable.find('tbody');
+
+            var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
+            dataTypeReq.done( function(msg) {
+                console.log(msg);
+            });
+            dataTypeReq.fail( function(jqxhr, status) {
+                console.warn(status);
+            });
 
         });
     // ==============================================================
