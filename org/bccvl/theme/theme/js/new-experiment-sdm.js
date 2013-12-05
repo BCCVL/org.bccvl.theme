@@ -115,6 +115,13 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     }
                 }
             });
+
+            // -- layer selection -----------------------------------
+
+            // attach fold-open behaviour to the layer groups
+
+            // on form submission, collect the dataset/layer info
+
         });
     // ==============================================================
     }

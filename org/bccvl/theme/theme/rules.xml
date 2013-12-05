@@ -13,13 +13,17 @@
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
 
-
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
+
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
+
     <!-- don't theme the page unless the user is logged in -->
     <notheme css:if-content="#anon-personalbar" />
+
+    <!-- don't theme if there is an error -->
+    <notheme css:if-content="body.template-default_error_message" />
 
     <!-- <notheme if="'true'='true'" /> -->
 
@@ -27,7 +31,6 @@
     <notheme if-path="@@manage-job-queue/" />
     <notheme if-path="@@overview-controlpanel/" />
     <notheme if-path="prefs_install_products_form/" />
-
 
     <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
