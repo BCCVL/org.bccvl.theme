@@ -129,7 +129,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             dataTypeReq.done( function(list) {
                 // we have the data, make it into table rows
                 $.each(list, function(index) {
-                    console.log(list[index]);
+                    var dataset = list[index];
+                    envBody.append('<tr><td></td><td colspan="2">' + dataset.title + '</td></tr>');
                 });
             });
             dataTypeReq.fail( function(jqxhr, status) {
