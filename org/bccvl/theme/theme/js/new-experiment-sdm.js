@@ -130,7 +130,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // we have the data, make it into table rows
                 $.each(list, function(index) {
                     var dataset = list[index];
-                    $envBody.append('<tr class="info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
+                    $envBody.append('<tr data-envgroupid="' + dataset.token + '" class="bccvl-envgroup info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
                 });
             });
             dataTypeReq.fail( function(jqxhr, status) {
