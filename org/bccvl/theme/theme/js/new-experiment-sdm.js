@@ -124,12 +124,17 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
+            // this is how you do jQuery ajax now.. it's all Promises and stuff.  We're living in the ~F~U~T~U~R~E~
             var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
-            dataTypeReq.done( function(msg) {
-                console.log(msg);
+            dataTypeReq.done( function(list) {
+                // we have the data, make it into table rows
+                $.each(list, function(dataset) {
+                    console.log(dataset);
+                });
             });
             dataTypeReq.fail( function(jqxhr, status) {
-                console.warn(status);
+                // we couldn't fetch the dataset list.  This is catastrophic.
+                alert('Could not fetch list of environmental datasets.  Please reload page to try again.');
             });
 
         });
