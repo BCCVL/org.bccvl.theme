@@ -159,7 +159,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     $envBody.append('<tr data-envgroupid="' + dataset.token + '" class="bccvl-envgroup info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
                     //if they click inside this row, toggle it.
                     $envBody.find('[data-envgroupid=' + dataset.token + ']').click(function() {
-
+                        toggleEngGroup(dataset.token);
                     });
                 });
             });
