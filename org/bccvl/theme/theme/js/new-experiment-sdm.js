@@ -124,13 +124,43 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
+            var toggleEnvGroup = function(token) {
+                // find the group header
+                var $header = $('[data-envgroupid=' + token + ']');
+                if ($header.length > 0) {
+                    if ($header.hasClass('bccvl-open')) {
+                        // it was open, so close it
+                        $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
+                        $header.removeClass('bccvl-open');
+                        $header.parent().find('tr[data-envparent=' + token + ']').remove();
+                    } else {
+                        // it's not open, so open it
+                        $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
+                        $header.addClass('bccvl-open');
+
+                        var layerReq = $.ajax({ url: '' });
+                        layerReq.done( function(list) {
+                            console.log('got em!', list);
+                        });
+                        layerReq.fail( function(jqxhr, status) {
+                            console.log('failed to get layers for ' + token, status);
+                        });
+                    }
+                }
+            }
+
             // this is how you do jQuery ajax now.. it's all Promises and stuff.  We're living in the ~F~U~T~U~R~E~
             var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
+
             dataTypeReq.done( function(list) {
                 // we have the data, make it into table rows
                 $.each(list, function(index) {
                     var dataset = list[index];
                     $envBody.append('<tr data-envgroupid="' + dataset.token + '" class="bccvl-envgroup info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
+                    //if they click inside this row, toggle it.
+                    $envBody.find('[data-envgroupid=' + dataset.token + ']').click(function() {
+
+                    });
                 });
             });
             dataTypeReq.fail( function(jqxhr, status) {
