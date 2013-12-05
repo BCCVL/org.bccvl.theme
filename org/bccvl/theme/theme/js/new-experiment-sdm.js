@@ -128,8 +128,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
             dataTypeReq.done( function(list) {
                 // we have the data, make it into table rows
-                $.each(list, function(dataset) {
-                    console.log(dataset);
+                $.each(list, function(index) {
+                    console.log(list[index]);
                 });
             });
             dataTypeReq.fail( function(jqxhr, status) {
