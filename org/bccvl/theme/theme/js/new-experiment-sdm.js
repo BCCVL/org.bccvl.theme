@@ -152,10 +152,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $secretFields.appendTo($form);
 
                 // now loop through each checked checkbox, make the hidden fields for each
-                $('input[name="bccvl-envlayer-selection"]').filter( function() {
+                var $selectedLayers = $('input[name="bccvl-envlayer-selection"]').filter( function() {
                     // filter out the non-checked checkboxes
                     return $(this).prop('checked');
-                }).each( function(index, field) {
+                });
+
+                $selectedLayers.each( function(index, field) {
                     // now we're just each-ing through the layer checkboxes that are checked
                     var $field = $(field);
                     $secretFields.append(
@@ -167,6 +169,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         '</select>'
                     );
                 });
+                $secretFields.append('<input type="hidden" name="form.widgets.environmental_layers.count" value="' + $selectedLayers.length + '" />');
             }
 
             // make a function to render a layer row.
