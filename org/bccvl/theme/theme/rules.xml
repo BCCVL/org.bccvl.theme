@@ -110,10 +110,12 @@
     <merge attributes="href" css:theme="a.bccvllinks-experiment-view"   content="//li[@id='contentview-view']/a" />
 
     <!--    Link to create a new experiment:
-            //a[@id="org-bccvl-content-experiment"]
+            //a[@id="org-bccvl-content-sdmexperiment"]
             Note: This link is NOT available when viewing a specific experiment.
     -->
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-experiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-sdmexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"    
+                             content="//a[@id='org-bccvl-content-projectionexperiment']" />
 
     <!--    Link to upload a new dataset (which currently just means a file:
             //a#file

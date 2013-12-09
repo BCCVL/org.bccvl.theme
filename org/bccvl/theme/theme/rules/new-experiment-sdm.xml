@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++org.bccvl.content.experiment/">
+    <rules if-path="++add++org.bccvl.content.sdmexperiment/">
         <theme href="html/new-experiment-sdm.html" />
 
         <!-- hook in the new experiment form's attributes -->

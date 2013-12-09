@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW PROJECTION EXPERIMENT ================================== -->
-    <rules if-path="accessibility-info/">
+    <rules if-path="++add++org.bccvl.content.projectionexperiment/">
         <theme href="html/new-experiment-projection.html" />
 
         <!-- fully faked up experiment interface for now. -->
