@@ -146,7 +146,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 html += '<tr data-envparent="' + parentId + '">';
                     html += '<td></td>'; // checkbox for selecting the layer
                     html += '<td>' + layerName(layerId, layerInfo) + '</td>'; // name the layer
-
                     // viz button to viz the layer (and whatever other actions eventually go here)
                     html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="preview this dataset"></i></a></td>';
                 html += '</tr>';
