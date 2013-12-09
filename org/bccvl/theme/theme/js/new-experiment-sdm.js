@@ -138,6 +138,25 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // make a function to handle selection/deselection of a layer.
             var layerUpdate = function(parentId, layerId, checkBox) {
+                var $checkBox = $(checkBox);
+
+                // for now scrap all the fields and rebuild every time
+                // TODO: do a more graceful update, rather than a burn down and rebuild
+
+                // find the form
+                var $form = $envTable.closest('form');
+                // find the hidden field holder, delete it, and re-make it
+                var $secretFields = $form.find('.bccvl-secretlayerselections');
+                $secretFields.remove();
+                $secretFields = $('<div class="hidden bccvl-secretlayerselections"></div>');
+                $secretFields.appendTo($form);
+
+                // now loop through each checked checkbox, make the hidden fields for each
+                $.each( $('input[name="bccvl-envlayer-selection"]'), function(field) {
+                    var $field = $(field);
+                    console.log($field);
+                });
+
                 console.log('updated!', parentId, layerId, checkBox);
             }
 
@@ -150,8 +169,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 html += '<tr data-envparent="' + parentId + '">';
                     // checkbox for selecting the layer
-                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection" value="' + layerId + '" /></td>';
-                    html += '<td>' + layerName(layerId, layerInfo) + '</td>'; // name the layer
+                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection"  id="layer-' + parentId + '-' + layerId + '" value="' + layerId + '" /></td>';
+                    html += '<td><label for="layer-' + parentId + '-' + layerId + '">' + layerName(layerId, layerInfo) + '</label></td>'; // name the layer
                     // viz button to viz the layer (and whatever other actions eventually go here)
                     html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';
                 html += '</tr>';
