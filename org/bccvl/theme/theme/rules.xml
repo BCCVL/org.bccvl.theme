@@ -114,7 +114,7 @@
             Note: This link is NOT available when viewing a specific experiment.
     -->
     <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-sdmexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"    
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"
                              content="//a[@id='org-bccvl-content-projectionexperiment']" />
 
     <!--    Link to upload a new dataset (which currently just means a file:

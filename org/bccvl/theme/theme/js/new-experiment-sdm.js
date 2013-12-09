@@ -156,12 +156,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // here's where we hook up the viz
                 var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
                 $vizButton.click(function(evt) {
-                    bccvl_visualiser.visualise(parentId, $vizButton); // the parentId (datasetId) isn't enough, TODO: talk to Robert about it
+                    viz.visualise(parentId, $vizButton); // the parentId (datasetId) isn't enough, TODO: talk to Robert about it
                     evt.preventDefault();
-                    return false;
                 });
-
-
 
                 return $html;
             }
