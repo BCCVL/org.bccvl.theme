@@ -124,6 +124,28 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
+            // make a function to render a layer row.   Best to do this here outside of any loops.
+            var renderLayerRow = function(layerId, layerInfo) {
+                var html = '';
+                // TODO: this should be a template in the HTML.  Gotta get it working today so
+                // it's not, but trust that Daniel is very embarrassed at doing this and should
+                // be mocked next time you see him.
+
+                // currently the layerInfo is just it's filename.  we'll extract a hopefully
+                // human-recognisable name from that.
+                // Let's get the substring from the last '/' to the last '.'
+                var lastSlash = layerInfo.lastIndexOf('/');
+                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length + 1);
+                var layerName = layerInfo.substring(lastSlash + 1, lastDot - 1); // bug here: fails on 0-length strings
+
+                html += '<tr>';
+                    html += '<td></td>';
+                    html += '<td>' + layerName + '</td>';
+                    html += '<td></td>';
+                html += '</tr>';
+                return $(html);
+            }
+
             var toggleEnvGroup = function(token) {
                 // find the group header
                 var $header = $('[data-envgroupid=' + token + ']');
@@ -142,6 +164,14 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
                         layerReq.done( function(list) {
                             console.log('got em!', list.layers);
+                            if (list.layers) {
+                                // render each layer
+                                $.each(list.layers, function(layerId) {
+                                    renderLayerRow(layerId, list.layers[layerId]);
+                                });
+                            } else {
+                                alert('There are no layers in selected dataset.');
+                            }
                         });
                         layerReq.fail( function(jqxhr, status) {
                             console.log('failed to get layers for ' + token, status);
