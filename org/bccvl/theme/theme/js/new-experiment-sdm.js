@@ -135,8 +135,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // human-recognisable name from that.
                 // Let's get the substring from the last '/' to the last '.'
                 var lastSlash = layerInfo.lastIndexOf('/');
-                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length + 1);
-                var layerName = layerInfo.substring(lastSlash + 1, lastDot - 1); // bug here: fails on 0-length strings
+                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
+                var layerName = layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
 
                 html += '<tr>';
                     html += '<td></td>';
