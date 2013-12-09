@@ -138,7 +138,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
                 var layerName = layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
 
-                html += '<tr data-envparent="' + + '">';
+                html += '<tr data-envparent="' + parentId + '">';
                     html += '<td></td>';
                     html += '<td>' + layerName + '</td>';
                     html += '<td></td>';
