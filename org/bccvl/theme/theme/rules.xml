@@ -25,6 +25,7 @@
     <!-- don't theme if there is an error -->
     <notheme css:if-content="body.template-default_error_message" />
 
+    <notheme css:if-content=".portalMessage.error" />
     <!-- <notheme if="'true'='true'" /> -->
 
     <!-- don't theme special pages -->
