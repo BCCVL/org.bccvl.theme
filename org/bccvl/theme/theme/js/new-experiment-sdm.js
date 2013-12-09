@@ -156,7 +156,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     var $field = $(field);
                     if ($field.prop('checked')) {
                         $secretFields.append(
-                            'asdf'
+                            '<select name="form.widgets.environmental_layers.key.' + index + ':list">' +
+                            '<option value="' + field.attr('value') + '" selected="selected"></option>' +
+                            '</select>' +
+                            '<select name="form.widgets.environmental_layers.' + index + ':list">' +
+                            '<option value="' + field.closest('tr[data-envparent]').attr('data-envparent') + '" selected="selected"></option>' +
+                            '</select>'
                         );
                     }
                 });
