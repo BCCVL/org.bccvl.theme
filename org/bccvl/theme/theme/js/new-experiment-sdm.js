@@ -175,13 +175,13 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 // render each layer
                                 $.each(list.layers, function(layerId) {
                                     var name = layerName(layerId, list.layers[layerId]);
-                                    console.log(name);
                                     layerNames.push(name);
                                     layers[name] = renderLayerRow(token, layerId, list.layers[layerId]);
                                 });
                                 // now sort the names and add them in order
                                 layerNames.sort();
                                 console.log(layerNames);
+                                console.log(layers);
                                 $.each(layerNames, function(name) {
                                     $header.after(layers[name]);
                                 });
