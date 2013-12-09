@@ -165,7 +165,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     evt.preventDefault();
                 });
 
-                var $layerSelect = $html.find('input[name="bccvl-layer-selection"]');
+                var $layerSelect = $html.find('input[name="bccvl-envlayer-selection"]');
                 $layerSelect.change(function(evt) {
                     layerUpdate(parentId, layerId, $layerSelect);
                 });
