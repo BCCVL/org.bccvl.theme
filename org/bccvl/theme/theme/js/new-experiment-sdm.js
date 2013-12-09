@@ -152,18 +152,20 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $secretFields.appendTo($form);
 
                 // now loop through each checked checkbox, make the hidden fields for each
-                $('input[name="bccvl-envlayer-selection"]').each( function(index, field) {
+                $('input[name="bccvl-envlayer-selection"]').filter( function() {
+                    // filter out the non-checked checkboxes
+                    return $(this).prop('checked');
+                }).each( function(index, field) {
+                    // now we're just each-ing through the layer checkboxes that are checked
                     var $field = $(field);
-                    if ($field.prop('checked')) {
-                        $secretFields.append(
-                            '<select name="form.widgets.environmental_layers.key.' + index + ':list">' +
-                            '<option value="' + $field.attr('value') + '" selected="selected"></option>' +
-                            '</select>' +
-                            '<select name="form.widgets.environmental_layers.' + index + ':list">' +
-                            '<option value="' + $field.closest('tr[data-envparent]').attr('data-envparent') + '" selected="selected"></option>' +
-                            '</select>'
-                        );
-                    }
+                    $secretFields.append(
+                        '<select name="form.widgets.environmental_layers.key.' + index + ':list">' +
+                        '<option value="' + $field.attr('value') + '" selected="selected"></option>' +
+                        '</select>' +
+                        '<select name="form.widgets.environmental_layers.' + index + ':list">' +
+                        '<option value="' + $field.closest('tr[data-envparent]').attr('data-envparent') + '" selected="selected"></option>' +
+                        '</select>'
+                    );
                 });
             }
 
