@@ -180,10 +180,11 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 });
                                 // now sort the names and add them in order
                                 layerNames.sort();
-                                $.each(layerNames, function(index) {
+                                // gotta be reverse order, coz we add each successive one in right after the $header
+                                for(var index = layers.length; index > 0; index--) {
                                     console.log(layerNames[index], layers[layerNames[index]]);
                                     $header.after(layers[layerNames[index]]);
-                                });
+                                }
                             } else {
                                 alert('There are no layers in selected dataset.');
                             }
