@@ -136,6 +136,11 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
             }
 
+            // make a function to handle selection/deselection of a layer.
+            var layerUpdate = function(parentId, layerId, checkBox) {
+                console.log('updated!', parentId, layerId, checkBox);
+            }
+
             // make a function to render a layer row.
             var renderLayerRow = function(parentId, layerId, layerInfo) {
                 var html = '';
@@ -144,19 +149,25 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // be mocked next time you see him.
 
                 html += '<tr data-envparent="' + parentId + '">';
-                    html += '<td></td>'; // checkbox for selecting the layer
+                    // checkbox for selecting the layer
+                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection" value="' + layerId + '" /></td>';
                     html += '<td>' + layerName(layerId, layerInfo) + '</td>'; // name the layer
                     // viz button to viz the layer (and whatever other actions eventually go here)
-                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="preview this dataset"></i></a></td>';
+                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';
                 html += '</tr>';
                 var $html = $(html);
-                // now attach the behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
 
+                // now attach some behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
                 // here's where we hook up the viz
                 var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
                 $vizButton.click(function(evt) {
                     viz.visualise(parentId, $vizButton); // the parentId (datasetId) isn't enough, TODO: talk to Robert about it
                     evt.preventDefault();
+                });
+
+                var $layerSelect = $html.find('input[name="bccvl-layer-selection"]');
+                $layerSelect.change(function(evt) {
+                    layerUpdate(parentId, layerId, $layerSelect);
                 });
 
                 return $html;

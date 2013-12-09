@@ -64,6 +64,13 @@ define(     ['jquery'],
                     var $vizInvokers = $('.bccvl-' + name + '-viz');
 
                     $.each($vizInvokers, function(vIndex, invoker) {
+                        // ideally this stuf would be in a separate, publically
+                        // accessible function so you can en-vizualise an invoker
+                        // by manually calling that function on a single item.
+                        //
+                        // This loop would just be calling that function on the
+                        // invokers in the initial page.
+
                         // each invoker should have a data-viz-id.. bail if it doesn't
                         var $invoker = $(invoker);
                         var id = $invoker.attr('data-viz-id');
@@ -79,7 +86,6 @@ define(     ['jquery'],
                         $invoker.click(function(evt) {
                             bccvl_visualiser.visualise(id, $invoker, { apiType: vizType.apiType });
                             evt.preventDefault();
-                            return false;
                         });
                     });
                 });
