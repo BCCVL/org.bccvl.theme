@@ -118,13 +118,15 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // -- layer selection -----------------------------------
 
-            // so first we have to ajax-fetch the possible layer-supplying datasets.
-            // They're at /dm/getVocabulary?name=environmental_datasets_source
+            // this part was written in a hurry, my apologies for what lies within.
 
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
-            // make a function to work out a layer name.   Best to do this here outside of any loops.
+            // here's some convenience functions we'll refer to below.  defining them
+            // here saves us creating functions inside loops, which is Bad.
+
+            // make a function to work out a layer name.
             var layerName = function(layerId, layerInfo) {
                 // currently the layerInfo is just it's filename.  we'll extract a hopefully
                 // human-recognisable name from that.
@@ -134,7 +136,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
             }
 
-            // make a function to render a layer row.   Best to do this here outside of any loops.
+            // make a function to render a layer row.
             var renderLayerRow = function(parentId, layerId, layerInfo) {
                 var html = '';
                 // TODO: this should be a template in the HTML.  Gotta get it working today so
@@ -142,13 +144,29 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // be mocked next time you see him.
 
                 html += '<tr data-envparent="' + parentId + '">';
-                    html += '<td></td>';
-                    html += '<td>' + layerName(layerId, layerInfo) + '</td>';
-                    html += '<td></td>';
+                    html += '<td></td>'; // checkbox for selecting the layer
+                    html += '<td>' + layerName(layerId, layerInfo) + '</td>'; // name the layer
+
+                    // viz button to viz the layer (and whatever other actions eventually go here)
+                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="preview this dataset"></i></a></td>';
                 html += '</tr>';
-                return $(html);
+                var $html = $(html);
+                // now attach the behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
+
+                // here's where we hook up the viz
+                var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
+                $vizButton.click(function(evt) {
+                    bccvl_visualiser.visualise(parentId, $vizButton); // the parentId (datasetId) isn't enough, TODO: talk to Robert about it
+                    evt.preventDefault();
+                    return false;
+                });
+
+
+
+                return $html;
             }
 
+            // make a function that toggles between showing and hiding a dataset's layers
             var toggleEnvGroup = function(token) {
                 // find the group header
                 var $header = $('[data-envgroupid=' + token + ']');
@@ -195,6 +213,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     }
                 }
             }
+
+            // Now to the real work.
+            // First we have to ajax-fetch the possible layer-supplying datasets. They're
+            // at /dm/getVocabulary?name=environmental_datasets_source
 
             // this is how you do jQuery ajax now.. it's all Promises and stuff.  We're living in the ~F~U~T~U~R~E~
             var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
