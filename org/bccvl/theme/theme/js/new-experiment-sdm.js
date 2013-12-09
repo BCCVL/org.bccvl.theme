@@ -125,7 +125,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $envBody = $envTable.find('tbody');
 
             // make a function to render a layer row.   Best to do this here outside of any loops.
-            var renderLayerRow = function(layerId, layerInfo) {
+            var renderLayerRow = function(parentId, layerId, layerInfo) {
                 var html = '';
                 // TODO: this should be a template in the HTML.  Gotta get it working today so
                 // it's not, but trust that Daniel is very embarrassed at doing this and should
@@ -138,7 +138,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
                 var layerName = layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
 
-                html += '<tr>';
+                html += '<tr data-envparent="' + + '">';
                     html += '<td></td>';
                     html += '<td>' + layerName + '</td>';
                     html += '<td></td>';
@@ -154,6 +154,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         // it was open, so close it
                         $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
                         $header.removeClass('bccvl-open');
+                        // delete all the layer rows (yes this is terrible, we should hide them)
                         $header.parent().find('tr[data-envparent=' + token + ']').remove();
                     } else {
                         // it's not open, so open it
@@ -167,7 +168,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             if (list.layers) {
                                 // render each layer
                                 $.each(list.layers, function(layerId) {
-                                    $header.after(renderLayerRow(layerId, list.layers[layerId]));
+                                    $header.after(renderLayerRow(token, layerId, list.layers[layerId]));
                                 });
                             } else {
                                 alert('There are no layers in selected dataset.');
