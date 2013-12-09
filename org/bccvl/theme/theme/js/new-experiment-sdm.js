@@ -37,7 +37,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             $configBlock.hide(250);
                         }
                     } else {
-                        console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
+                        if (console && console.log) {
+                            console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
+                        }
                     }
                 });
                 // finally, invoke the change handler to get the inital visibility sorted out.
@@ -99,8 +101,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             // open the config accordion holding the first error
                             var $accordionPane = $firstError.closest('.accordion-group').find('.accordion-body');
 
-                            console.log('first errors accord pane is', $accordionPane);
-
                             if ($accordionPane.length > 0) {
                                 // if that pane isn't already showing, show it
                                 $accordionPane.collapse('show');
@@ -158,8 +158,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         console.log($field);
                     }
                 });
-
-                console.log('updated!', parentId, layerId, checkBox);
             }
 
             // make a function to render a layer row.
@@ -219,7 +217,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             // fetch metadata for this dataset, to see what env layers it holds
                             var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
                             layerReq.done( function(list) {
-                                console.log('got em!', list.layers);
                                 if (list.layers) {
                                     // collect layers by name (for sorting them)
                                     var layerNames = [];
@@ -234,7 +231,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                     layerNames.sort();
                                     // gotta be reverse order, coz we add each successive one in right after the $header
                                     for(var index = layerNames.length - 1; index >= 0; index--) {
-                                        console.log(layerNames[index], layers[layerNames[index]]);
                                         $header.after(layers[layerNames[index]]);
                                     }
                                 } else {
@@ -242,7 +238,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 }
                             });
                             layerReq.fail( function(jqxhr, status) {
-                                console.log('failed to get layers for ' + token, status);
+                                alert('Failed to get layers contained in selected dataset; status was "' + status + '", whatever that means.');
                             });
                         }
                     }
