@@ -182,7 +182,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 // now sort the names and add them in order
                                 layerNames.sort();
                                 $.each(layerNames, function(name) {
-                                    $header.insertAfter(layers[name]);
+                                    $header.after(layers[name]);
                                 });
                             } else {
                                 alert('There are no layers in selected dataset.');
