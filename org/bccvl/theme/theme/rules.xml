@@ -26,6 +26,7 @@
     <notheme css:if-content="body.template-default_error_message" />
 
     <!-- <notheme if="'true'='true'" /> -->
+    <notheme if="'true'='true'" />
 
     <!-- don't theme special pages -->
     <notheme if-path="@@manage-job-queue/" />

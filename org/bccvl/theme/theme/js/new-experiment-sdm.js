@@ -152,10 +152,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $secretFields.appendTo($form);
 
                 // now loop through each checked checkbox, make the hidden fields for each
-                $('input[name="bccvl-envlayer-selection"]').each(function(index, field) {
+                $('input[name="bccvl-envlayer-selection"]').each( function(index, field) {
                     var $field = $(field);
                     if ($field.prop('checked')) {
-                        console.log($field);
+                        $secretFields.append(
+                            'asdf'
+                        );
                     }
                 });
             }
