@@ -124,6 +124,16 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
+            // make a function to work out a layer name.   Best to do this here outside of any loops.
+            var layerName = function(layerId, layerInfo) {
+                // currently the layerInfo is just it's filename.  we'll extract a hopefully
+                // human-recognisable name from that.
+                // Let's get the substring from the last '/' to the last '.'
+                var lastSlash = layerInfo.lastIndexOf('/');
+                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
+                return layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
+            }
+
             // make a function to render a layer row.   Best to do this here outside of any loops.
             var renderLayerRow = function(parentId, layerId, layerInfo) {
                 var html = '';
@@ -131,16 +141,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // it's not, but trust that Daniel is very embarrassed at doing this and should
                 // be mocked next time you see him.
 
-                // currently the layerInfo is just it's filename.  we'll extract a hopefully
-                // human-recognisable name from that.
-                // Let's get the substring from the last '/' to the last '.'
-                var lastSlash = layerInfo.lastIndexOf('/');
-                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
-                var layerName = layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
-
                 html += '<tr data-envparent="' + parentId + '">';
                     html += '<td></td>';
-                    html += '<td>' + layerName + '</td>';
+                    html += '<td>' + layerName(layerId, layerInfo) + '</td>';
                     html += '<td></td>';
                 html += '</tr>';
                 return $(html);
@@ -166,9 +169,18 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         layerReq.done( function(list) {
                             console.log('got em!', list.layers);
                             if (list.layers) {
+                                // collect layers by name (for sorting them)
+                                var layerNames = [];
+                                var layers = {};
                                 // render each layer
                                 $.each(list.layers, function(layerId) {
-                                    $header.after(renderLayerRow(token, layerId, list.layers[layerId]));
+                                    var name = layerName(layerId, list.layers[layerId]);
+                                    layerNames.append(name);
+                                    layers[name] = renderLayerRow(token, layerId, list.layers[layerId]);
+                                });
+                                // now sort the names and add them in order
+                                $.each(layerNames.sort(), function(name) {
+                                    $html.insertAfter(layers[name]);
                                 });
                             } else {
                                 alert('There are no layers in selected dataset.');
