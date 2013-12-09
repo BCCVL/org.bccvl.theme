@@ -138,9 +138,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
                         $header.addClass('bccvl-open');
 
-                        var layerReq = $.ajax({ url: '' });
+                        // fetch metadata for this dataset, to see what env layers it holds
+                        var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
                         layerReq.done( function(list) {
-                            console.log('got em!', list);
+                            console.log('got em!', list.layers);
                         });
                         layerReq.fail( function(jqxhr, status) {
                             console.log('failed to get layers for ' + token, status);
