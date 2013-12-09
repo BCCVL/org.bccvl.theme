@@ -167,7 +167,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             if (list.layers) {
                                 // render each layer
                                 $.each(list.layers, function(layerId) {
-                                    renderLayerRow(layerId, list.layers[layerId]);
+                                    $header.after(renderLayerRow(layerId, list.layers[layerId]));
                                 });
                             } else {
                                 alert('There are no layers in selected dataset.');
