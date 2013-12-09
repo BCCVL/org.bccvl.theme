@@ -182,41 +182,48 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         // it was open, so close it
                         $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
                         $header.removeClass('bccvl-open');
-                        // delete all the layer rows (yes this is terrible, we should hide them)
-                        $header.parent().find('tr[data-envparent=' + token + ']').remove();
+                        // hide all the layer rows
+                        $header.parent().find('tr[data-envparent=' + token + ']').addClass('hidden');
                     } else {
                         // it's not open, so open it
                         $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
                         $header.addClass('bccvl-open');
 
-                        // fetch metadata for this dataset, to see what env layers it holds
-                        var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
-                        layerReq.done( function(list) {
-                            console.log('got em!', list.layers);
-                            if (list.layers) {
-                                // collect layers by name (for sorting them)
-                                var layerNames = [];
-                                var layers = {};
-                                // render each layer
-                                $.each(list.layers, function(layerId) {
-                                    var name = layerName(layerId, list.layers[layerId]);
-                                    layerNames.push(name);
-                                    layers[name] = renderLayerRow(token, layerId, list.layers[layerId]);
-                                });
-                                // now sort the names and add them in order
-                                layerNames.sort();
-                                // gotta be reverse order, coz we add each successive one in right after the $header
-                                for(var index = layerNames.length - 1; index >= 0; index--) {
-                                    console.log(layerNames[index], layers[layerNames[index]]);
-                                    $header.after(layers[layerNames[index]]);
+                        // got any child rows?
+                        var $layerRows = $header.parent().find('tr[data-envparent=' + token + ']');
+                        if ($layerRows.length > 0) {
+                            // already fetched the layers. just show them
+                            $layerRows.removeClass('hidden');
+                        } else {
+                            // fetch metadata for this dataset, to see what env layers it holds
+                            var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
+                            layerReq.done( function(list) {
+                                console.log('got em!', list.layers);
+                                if (list.layers) {
+                                    // collect layers by name (for sorting them)
+                                    var layerNames = [];
+                                    var layers = {};
+                                    // render each layer
+                                    $.each(list.layers, function(layerId) {
+                                        var name = layerName(layerId, list.layers[layerId]);
+                                        layerNames.push(name);
+                                        layers[name] = renderLayerRow(token, layerId, list.layers[layerId]);
+                                    });
+                                    // now sort the names and add them in order
+                                    layerNames.sort();
+                                    // gotta be reverse order, coz we add each successive one in right after the $header
+                                    for(var index = layerNames.length - 1; index >= 0; index--) {
+                                        console.log(layerNames[index], layers[layerNames[index]]);
+                                        $header.after(layers[layerNames[index]]);
+                                    }
+                                } else {
+                                    alert('There are no layers in selected dataset.');
                                 }
-                            } else {
-                                alert('There are no layers in selected dataset.');
-                            }
-                        });
-                        layerReq.fail( function(jqxhr, status) {
-                            console.log('failed to get layers for ' + token, status);
-                        });
+                            });
+                            layerReq.fail( function(jqxhr, status) {
+                                console.log('failed to get layers for ' + token, status);
+                            });
+                        }
                     }
                 }
             }
