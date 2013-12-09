@@ -181,7 +181,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 // now sort the names and add them in order
                                 layerNames.sort();
                                 // gotta be reverse order, coz we add each successive one in right after the $header
-                                for(var index = layers.length; index > 0; index--) {
+                                for(var index = layerNames.length; index > 0; index--) {
                                     console.log(layerNames[index], layers[layerNames[index]]);
                                     $header.after(layers[layerNames[index]]);
                                 }
