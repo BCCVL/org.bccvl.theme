@@ -27,4 +27,11 @@ requirejs.config({
     }
 });
 
+// not part of require, just annoying enough to solve everywhere
+if (!window.console) {
+    window.console = {
+        log: (function() {}),
+        warn: (function() {})
+    };
+}
 
