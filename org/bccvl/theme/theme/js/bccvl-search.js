@@ -90,7 +90,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         autoUrl: function(autocompleteString) {
                             // geoOnly=true  -> only return items that have some geographically mapped records attached
                             // idxType=TAXON -> only items that are actually living things (not collection records, or people, or whatever)
-                            return ('http://bie.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                            return ('/ala/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseAutoData: function(rawData) {
@@ -138,7 +138,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                     search: {
                         searchUrl: function(searchString) {
                             // rank:species  -> only return items that are species (not genus, subspecies etc)
-                            return ('http://bie.ala.org.au/ws/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
+                            return ('/ala/ws/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseSearchData: function(rawData) {
