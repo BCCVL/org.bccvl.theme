@@ -227,7 +227,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             $layerRows.removeClass('hidden');
                         } else {
                             // fetch metadata for this dataset, to see what env layers it holds
-                            var layerReq = $.ajax({ url: '/dm/getMetadata?datasetid=' + token });
+                            var layerReq = $.ajax({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
                             layerReq.done( function(list) {
                                 if (list.layers) {
                                     // collect layers by name (for sorting them)
@@ -262,7 +262,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // at /dm/getVocabulary?name=environmental_datasets_source
 
             // this is how you do jQuery ajax now.. it's all Promises and stuff.  We're living in the ~F~U~T~U~R~E~
-            var dataTypeReq = $.ajax({ url: '/dm/getVocabulary?name=environmental_datasets_source' });
+            var dataTypeReq = $.ajax({ url: portal_url + '/dm/getVocabulary?name=environmental_datasets_source' });
 
             dataTypeReq.done( function(list) {
                 // we have the data, make it into table rows

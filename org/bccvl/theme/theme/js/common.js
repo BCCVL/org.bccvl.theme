@@ -9,7 +9,7 @@
 var local = (window.location.port == '9292');
 
 requirejs.config({
-    baseUrl: (local ? 'lib' : '++theme++org.bccvl.theme/lib'),          // load modules from the lib folder
+    baseUrl: (local ? 'lib' : portal_url + '/++theme++org.bccvl.theme/lib'),          // load modules from the lib folder
     paths: {
         'js':                   (local ? '../js' : '++theme++org.bccvl.theme/js'),  // bccvl stuff, which starts with js/, is in the js folder
         'jquery':               'jquery/jquery-2.0.3',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
