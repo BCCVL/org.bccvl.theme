@@ -126,16 +126,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // here's some convenience functions we'll refer to below.  defining them
             // here saves us creating functions inside loops, which is Bad.
 
-            // make a function to work out a layer name.
-            var layerName = function(layerId, layerInfo) {
-                // currently the layerInfo is just it's filename.  we'll extract a hopefully
-                // human-recognisable name from that.
-                // Let's get the substring from the last '/' to the last '.'
-                var lastSlash = layerInfo.lastIndexOf('/');
-                var lastDot = Math.min(layerInfo.lastIndexOf('.'), layerInfo.length);
-                return layerInfo.substring(lastSlash + 1, lastDot); // bug here: might fail on 0-length strings?
-            }
-
             // make a function to handle selection/deselection of a layer.
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
@@ -173,7 +163,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             }
 
             // make a function to render a layer row.
-            var renderLayerRow = function(parentId, layerId, layerInfo) {
+            var renderLayerRow = function(parentId, layerId, friendlyNames) {
                 var html = '';
                 // TODO: this should be a template in the HTML.  Gotta get it working today so
                 // it's not, but trust that Daniel is very embarrassed at doing this and should
@@ -182,7 +172,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 html += '<tr data-envparent="' + parentId + '">';
                     // checkbox for selecting the layer
                     html += '<td><input type="checkbox" name="bccvl-envlayer-selection"  id="layer-' + parentId + '-' + layerId + '" value="' + layerId + '" /></td>';
-                    html += '<td><label for="layer-' + parentId + '-' + layerId + '">' + layerName(layerId, layerInfo) + '</label></td>'; // name the layer
+                    html += '<td><label for="layer-' + parentId + '-' + layerId + '">' + friendlyNames[layerId] + '</label></td>'; // name the layer
                     // viz button to viz the layer (and whatever other actions eventually go here)
                     html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';
                 html += '</tr>';
@@ -205,7 +195,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             }
 
             // make a function that toggles between showing and hiding a dataset's layers
-            var toggleEnvGroup = function(token) {
+            var toggleEnvGroup = function(token, friendlyNames) {
                 // find the group header
                 var $header = $('[data-envgroupid=' + token + ']');
                 if ($header.length > 0) {
@@ -235,9 +225,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                     var layers = {};
                                     // render each layer
                                     $.each(list.layers, function(layerId) {
-                                        var name = layerName(layerId, list.layers[layerId]);
+                                        var name = friendlyNames[layerId];
                                         layerNames.push(name);
-                                        layers[name] = renderLayerRow(token, layerId, list.layers[layerId]);
+                                        layers[name] = renderLayerRow(token, layerId, friendlyNames);
                                     });
                                     // now sort the names and add them in order
                                     layerNames.sort();
@@ -258,27 +248,42 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             }
 
             // Now to the real work.
-            // First we have to ajax-fetch the possible layer-supplying datasets. They're
-            // at /dm/getVocabulary?name=environmental_datasets_source
+            // First we get friendly names for the environment layer data sources. They're at /dm/getVocabulary?name=envirolayer_source
+            var friendlyNamesReq = $.ajax({ url: portal_url + '/dm/getVocabulary?name=envirolayer_source' });
 
-            // this is how you do jQuery ajax now.. it's all Promises and stuff.  We're living in the ~F~U~T~U~R~E~
-            var dataTypeReq = $.ajax({ url: portal_url + '/dm/getVocabulary?name=environmental_datasets_source' });
+            
+            friendlyNamesReq.done( function(list) {
+                var friendlyNames = {};
+                $.each(list, function(index, value) {
+                    friendlyNames[value.token] = value.title
+                });
 
-            dataTypeReq.done( function(list) {
-                // we have the data, make it into table rows
-                $.each(list, function(index) {
-                    var dataset = list[index];
-                    $envBody.append('<tr data-envgroupid="' + dataset.token + '" class="bccvl-envgroup info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
-                    //if they click inside this row, toggle it.
-                    $envBody.find('[data-envgroupid=' + dataset.token + ']').click(function() {
-                        toggleEnvGroup(dataset.token);
+                // Next we have to ajax-fetch the possible layer-supplying datasets. They're at /dm/getVocabulary?name=environmental_datasets_source
+                var dataTypeReq = $.ajax({ url: portal_url + '/dm/getVocabulary?name=environmental_datasets_source' });
+
+                dataTypeReq.done( function(list) {
+                    // we have the data, make it into table rows
+                    $.each(list, function(index) {
+                        var dataset = list[index];
+                        $envBody.append('<tr data-envgroupid="' + dataset.token + '" class="bccvl-envgroup info"><td><i class="icon-plus"></i></td><td colspan="2">' + dataset.title + '</td></tr>');
+                        //if they click inside this row, toggle it.
+                        $envBody.find('[data-envgroupid=' + dataset.token + ']').click(function() {
+                            toggleEnvGroup(dataset.token, friendlyNames);
+                        });
                     });
                 });
+                dataTypeReq.fail( function(jqxhr, status) {
+                    // we couldn't fetch the dataset list.  This is catastrophic.
+                    alert('Could not fetch list of environmental datasets.  Please reload page to try again.');
+                });
             });
-            dataTypeReq.fail( function(jqxhr, status) {
-                // we couldn't fetch the dataset list.  This is catastrophic.
-                alert('Could not fetch list of environmental datasets.  Please reload page to try again.');
+            friendlyNamesReq.fail( function(jqxhr, status) {
+                // we couldn't fetch the friendly names for the environment layer data sources.
+                alert('Could not fetch friendly names of environmental datasets. Please reload page to try again.')
             });
+
+
+            
 
         });
     // ==============================================================
