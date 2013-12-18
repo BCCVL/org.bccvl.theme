@@ -6,40 +6,10 @@
     <!-- EXPERIMENT LIST ============================================ -->
     <rules if-path="experiments/">
         <theme href="html/experiment-list.html" />
-
-        <!--
-        Get the list of experiments
-
-        The experiments are listed inside #content-core as a definiton list.
-
-        The dt contains the experiment title, its link, and its last modified time.
-
-        The associated dl contains the experiment description.
-
-        The date isn't easily captured, it is part of a string, with a great deal
-        of excess whitespace, and the leading text "— last modified". We use
-        normalize-space to clear out the excess leading and trailing spaces.
-        We then use the substring command to skip the first 17 characters.
-        -->
-        <before css:theme-children="section.bccvl-experimentlist table.bccvl-experimenttable > tbody">
-            <xsl:for-each css:select="#content-core dt">
-                <tr>
-                    <td class="">
-                        <xsl:copy-of select="substring(normalize-space(span[2]/text()[2]),17,21)" />
-                    </td>
-                    <td class="bccvl-table-label">
-                        <h1><xsl:copy-of select="span/a/text()" /></h1>
-                        <p><xsl:copy-of select="./following-sibling::dd[1]/span/text()" /></p>
-                    </td>
-                    <td class="bccvl-table-controls">
-                        <xsl:element name="a">
-                            <xsl:attribute name="href"><xsl:value-of select="string(span/a/@href)" /></xsl:attribute>
-                            <i class="icon-chevron-right"></i>
-                        </xsl:element>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </before>
-
+        <replace
+            css:theme-children="div#experiment-list" 
+            css:content-children="div#experiment-list" 
+        />
     </rules>
+    
 </rules>

@@ -423,6 +423,29 @@ td.bccvl-table-controls a:hover {
     /*text-shadow: 0 1px 0 white, 0 -1px 0 black;*/
 }
 
+.bccvl-experimenttable th span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    margin-top: 5px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("++theme++org.bccvl.theme/lib/bootstrap/img/glyphicons-halflings.png");
+    background-position: 14px 14px;
+    background-repeat: no-repeat;
+}
+.bccvl-experimenttable th.headerSortUp span {
+    background-position: -288px -120px;
+}
+.bccvl-experimenttable th.headerSortDown span {
+    background-position: -313px -119px;
+}
+
+.bccvl-experimenttable tr.headers {
+    background-color: #f5f5f5;
+}
+
 td.bccvl-full-list {
     font-weight: bold;
     padding-top: 1em;
@@ -430,6 +453,9 @@ td.bccvl-full-list {
     text-align: right;
 }
 
+.bccvl-experiment-summary {
+    line-height: 15px;
+}
 /* footer ---------------------------------------------------------------- */
 
 footer {

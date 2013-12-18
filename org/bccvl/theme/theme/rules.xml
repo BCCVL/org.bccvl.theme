@@ -5,13 +5,15 @@
     xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <xi:include href="rules/dashboard.xml" />
+    <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/experiment-list.xml" />
-    <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
+    <xi:include href="rules/dashboard.xml" />
+
+    <theme href="html/homepage.html" if="$is_anonymous" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
@@ -20,7 +22,7 @@
     <notheme if="$ajax_load" />
 
     <!-- don't theme the page unless the user is logged in -->
-    <notheme css:if-content="#anon-personalbar" />
+    <!--<notheme css:if-content="#anon-personalbar" />-->
 
     <!-- don't theme if there is an error -->
     <notheme css:if-content="body.template-default_error_message" />
@@ -32,7 +34,7 @@
     <notheme if-path="@@overview-controlpanel/" />
     <notheme if-path="prefs_install_products_form/" />
 
-    <!-- drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+     <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
 
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -125,5 +127,5 @@
     <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='org-bccvl-content-dataset']" />
 
     <!-- miscellaneous -->
-
+   
 </rules>

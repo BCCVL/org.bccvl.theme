@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="utf-8">
-	<title>BCCVL Experiment List</title>
+	<title>BCCVL Dashboard</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -24,12 +24,11 @@
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
 		if (window.location.port == '9292') {
-			require(['../js/common.js'], function (common) { require(['js/experiment-list']); } );
+			require(['../js/common.js'], function (common) { require(['js/dashboard']); } );
 		} else {
-			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/experiment-list']); } );
+			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dashboard']); } );
 		}
 	</script>
-
 </head>
 
 <body>
@@ -52,8 +51,8 @@
 					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
 				</a>
 				<ul class="dropdown-menu">
-                    <li><a class="bccvllinks-userdetails"><i class="icon-info-sign"></i> My details</a></li>
-                    <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+					<li><a class="bccvllinks-userdetails"><i class="icon-info-sign"></i> My details</a></li>
+					<li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
 					<li class="divider"></li>
 					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
 				</ul>
@@ -85,9 +84,9 @@
 
 			<!-- main menu items -->
 			<ul class="nav">
-				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
-				<li               ><a class="bccvllinks-datasets">Data</a></li>
-				<li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
+				<li class="active"><a class="bccvllinks-dashboard">Dashboard</a></li>
+				<!--<li               ><a class="bccvllinks-datasets">Data</a></li>-->
+				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
 				<!-- <li               ><a>Published Outputs</a></li> -->
 				<li               ><a class="bccvllinks-knowledgebase">Knowledgebase</a></li>
 			</ul>
@@ -101,83 +100,30 @@
 	<!-- container for main content -->
 	<div class="container-fluid bccvl-main">
 
-
-<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="bccvl-breadcrumb row-fluid">
-			<div class="span12">
-				<ul class="breadcrumb">
-					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-experiments">Experiments</a></li>
-				</ul>
-			</div>
-		</div>
-
-
-<!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-experimentlist">
-
-
-			<div class="row-fluid">
-
-				<!-- list of available experiments -->
-				<div class="span9">
-                    <h1>My Experiments</h1>
-                    <div id="experiment-list">
-                        You have no experiments.
-                    </div>
-					<!--<table class="table table-hover bccvl-experimenttable">-->
-						<!--<thead>-->
-							<!--<tr><th colspan="3">-->
-								<!--My Experiments-->
-							<!--</th></tr>-->
-                            <!--<tr class="headers">-->
-                                <!--<th class="header headerSortUp">Date<span /></th>-->
-                                <!--<th>Experiment<span /></th>-->
-                                <!--<th>Type<span /></th>-->
-                                <!--<th />-->
-                            <!--</tr>-->
-						<!--</thead>-->
-						<!--<tbody>-->
-							<!--<tr class="sampledata">-->
-								<!--<td>-->
-									<!--26 Aug 2013-->
-								<!--</td>-->
-								<!--<td class="bccvl-table-label">-->
-									<!--<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>-->
-									<!--<p>using: annual mean temp, rainfall wettest qtr</p>-->
-								<!--</td>-->
-								<!--<td class="bccvl-table-controls">-->
-									<!--<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>-->
-								<!--</td>-->
-							<!--</tr>-->
-							<!--<tr class="sampledata">-->
-								<!--<td>-->
-									<!--28 Aug 2013-->
-								<!--</td>-->
-								<!--<td class="bccvl-table-label">-->
-									<!--<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>-->
-									<!--<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>-->
-								<!--</td>-->
-								<!--<td class="bccvl-table-controls">-->
-									<!--<a id="expID3456"><i class="icon-chevron-right" title="view status &amp; results"></i></a>-->
-								<!--</td>-->
-							<!--</tr>-->
-
-						<!--</tbody>-->
-					<!--</table>-->
-				</div>
-
-				<!-- some controls -->
-				<div class="span3">
-					<a class="btn btn-primary btn-block btn-large bccvllinks-experiment-new">new SDM Experiment</a>
-					<a class="btn btn-primary btn-block btn-large bccvllinks-experiment-proj-new">new Projection Experiment</a>
-				</div>
-
-			</div>
-
-		</section>
-
+        
+    <h2>What is the Biodiversity and Climate Change Virtual Lab?</h2>
+    <p>
+        The Biodiversity & Climate Change Virtual Laboratory (BCCVL) will provide an innovative, 
+        efficient, robust portfolio of integrated tools, data collections and access portals for modelling 
+        the potential responses of Australia’s biodiversity to climate change through an easy-to-use, 
+        web-based platform with advanced visualizations.
+    </p>
+    <p>
+        The BCCVL will transform biodiversity and climate change research by:
+       
+        <ol>
+            <li>
+                enabling existing research questions to be investigated far more efficiently and effectively, and
+            </li>
+            <li>
+                providing the means for Australian researchers to address new important questions.
+                Quantitative modelling is one of our most transparent and science-based tools for the 
+                prediction of how, for example, species ranges will shift as a result of climate change, and the
+                information generated is needed to inform adaptation management strategies for species and
+                ecosystems.
+            </li>
+        </ol>
+    </p>
 	</div><!-- end of main content container -->
 
 <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -186,5 +132,6 @@
 			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
 		</div>
 	</footer>
+
 </body>
 </html>

@@ -17,13 +17,15 @@ requirejs.config({
         'bootstrap':            'bootstrap/js/bootstrap.min',
         'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',
 //        'parsley':              'parsley/parsley.min'
-        'parsley':              'parsley/parsley'
+        'parsley':              'parsley/parsley',
+        'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter'
     },
     shim: {
         'parsley':              ['jquery'],
         'bootstrap':            ['jquery'],
         'bootstrap-fileupload': ['jquery', 'bootstrap'],
-        'jquery-xmlrpc':        ['jquery']
+        'jquery-xmlrpc':        ['jquery'],
+        'jquery-tablesorter':   ['jquery']
     }
 });
 
