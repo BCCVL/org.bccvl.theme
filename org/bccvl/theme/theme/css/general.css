@@ -472,6 +472,9 @@ footer > div {
     padding-top: 1em;
     margin-bottom: 0;
 }
+footer.navbar {
+    background-color: transparent;
+}
 
 
 

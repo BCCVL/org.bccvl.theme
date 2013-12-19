@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="utf-8">
 	<title>BCCVL Dashboard</title>
@@ -46,7 +46,7 @@
 		<div class="nav-collapse collapse">
 
 			<!-- user menu -->
-			<div class="btn-group pull-right">
+			<div id="user-menu" class="btn-group pull-right">
 				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
 					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
 				</a>
@@ -85,7 +85,7 @@
 			<!-- main menu items -->
 			<ul class="nav">
 				<li class="active"><a class="bccvllinks-dashboard">Dashboard</a></li>
-				<li               ><a class="bccvllinks-datasets">Data</a></li>
+				<!--<li               ><a class="bccvllinks-datasets">Data</a></li>-->
 				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
 				<!-- <li               ><a>Published Outputs</a></li> -->
 				<li               ><a class="bccvllinks-knowledgebase">Knowledgebase</a></li>
@@ -100,129 +100,14 @@
 	<!-- container for main content -->
 	<div class="container-fluid bccvl-main">
 
-
-<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="bccvl-breadcrumb row-fluid">
-			<div class="span12">
-				<ul class="breadcrumb">
-					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-dashboard">Dashboard</a></li>
-				</ul>
-			</div>
-		</div>
-
-
-<!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-dashboardlists">
-
-			<div class="row-fluid">
-
-				<!-- gap -->
-				<div class="span1">
-				</div>
-
-				<!-- experiments -->
-				<div class="span5">
-					<table class="table table-hover bccvl-experimenttable">
-						<thead>
-							<tr><th colspan="3">
-								My Recent Experiments
-							</th></tr>
-						</thead>
-						<tbody>
-							<tr class="sampledata">
-								<td>
-									28 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>
-									<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a id="expID3456"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr class="sampledata">
-								<td>
-									26 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
-									<p>using: annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a id="expID1234"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr><td colspan="3" class="bccvl-full-list">
-								<a class="bccvllinks-experiments">all my experiments <i class="icon-chevron-right"></i></a>
-							</td></tr>
-						</tfoot>
-					</table>
-				</div>
-
-				<!-- gap -->
-				<div class="span1">
-				</div>
-
-				<!-- data -->
-				<div class="span4">
-
-					<table class="table table-hover bccvl-occurrencestable">
-						<thead>
-							<tr><th colspan="2">
-								My Recent Datasets
-							</th></tr>
-						</thead>
-						<tbody>
-							<tr class="sampledata">
-								<td class="bccvl-table-label"><label for="koalaID">
-									<h1>Species name (e.g. Koala)</h1>
-									<p>provenance (e.g. provided by BCCVL)</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr class="sampledata">
-								<td class="bccvl-table-label"><label for="toadID">
-									<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
-									<p>imported from ALA, 8 July 2013</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-							<tr class="sampledata">
-								<td class="bccvl-table-label"><label for="shmoadID">
-									<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
-									<p>imported from ALA, 9 July 2013</p>
-								</label></td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr><td colspan="2" class="bccvl-full-list">
-								<a class="bccvllinks-datasets">all my datasets <i class="icon-chevron-right"></i></a>
-							</td></tr>
-						</tfoot>
-					</table>
-
-				</div>
-
-				<!-- gap -->
-				<div class="span1">
-				</div>
-
-			</div>
-
-		</section>
-
+        <div class="row">
+            <div class="span6">
+                <div id="aaf-login" />
+            </div>    
+            <div class="span6">
+                <div id="site-login" />
+            </div>
+        </div>
 	</div><!-- end of main content container -->
 
 <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

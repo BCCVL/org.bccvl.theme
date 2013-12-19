@@ -46,7 +46,7 @@
 		<div class="nav-collapse collapse">
 
 			<!-- user menu -->
-			<div class="btn-group pull-right">
+			<div id="user-menu" class="btn-group pull-right">
 				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
 					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
 				</a>
@@ -63,11 +63,6 @@
 				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
 			</form>
 
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
 			<button id="untheme" class="bccvl-devbutton pull-right"
 				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
 			>no theme</button>
@@ -76,11 +71,6 @@
 					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
 				"
 			>no placeholders</button>
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
 
 			<!-- main menu items -->
 			<ul class="nav">
@@ -99,35 +89,47 @@
 <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- container for main content -->
 	<div class="container-fluid bccvl-main">
-
+    <p></p>
+    <div class="span10 offset1">
+        <div class="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Demonstration Site Only</strong> - 
+            This site is for the purposes of demonstration and is not
+            indicative of the final sate of the developed software
+            product. It is not ready for science at this stage. If you 
+            have any feedback or questions 
+            <a href="http://bccvl.org.au/get-involved/">let us know</a>.
+        </div>
         
-    <h2>What is the Biodiversity and Climate Change Virtual Lab?</h2>
-    <p>
-        The Biodiversity & Climate Change Virtual Laboratory (BCCVL) will provide an innovative, 
-        efficient, robust portfolio of integrated tools, data collections and access portals for modelling 
-        the potential responses of Australia’s biodiversity to climate change through an easy-to-use, 
-        web-based platform with advanced visualizations.
-    </p>
-    <p>
-        The BCCVL will transform biodiversity and climate change research by:
-       
-        <ol>
-            <li>
-                enabling existing research questions to be investigated far more efficiently and effectively, and
-            </li>
-            <li>
-                providing the means for Australian researchers to address new important questions.
-                Quantitative modelling is one of our most transparent and science-based tools for the 
-                prediction of how, for example, species ranges will shift as a result of climate change, and the
-                information generated is needed to inform adaptation management strategies for species and
-                ecosystems.
-            </li>
-        </ol>
-    </p>
+        <h2>What is the Biodiversity and Climate Change Virtual Lab?</h2>
+        <div class="span8" style="">
+            The Biodiversity & Climate Change Virtual Laboratory (BCCVL) will provide an innovative, 
+            efficient, robust portfolio of integrated tools, data collections and access portals for modelling 
+            the potential responses of Australia’s biodiversity to climate change through an easy-to-use, 
+            web-based platform with advanced visualizations.
+            <p></p>
+            The BCCVL will transform biodiversity and climate change research by:
+            <p></p>
+            <ol>
+                <li>
+                    enabling existing research questions to be investigated far more efficiently and effectively, and
+                    <p></p>
+                </li>
+                <li>
+                    providing the means for Australian researchers to address new important questions.
+                    Quantitative modelling is one of our most transparent and science-based tools for the 
+                    prediction of how, for example, species ranges will shift as a result of climate change, and the
+                    information generated is needed to inform adaptation management strategies for species and
+                    ecosystems.
+                </li>
+            </ol>
+        </div>
+    </div>
+        
 	</div><!-- end of main content container -->
 
 <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<footer>
+	<footer class="navbar navbar-fixed-bottom">
 		<div class="container-fluid">
 			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
 		</div>
