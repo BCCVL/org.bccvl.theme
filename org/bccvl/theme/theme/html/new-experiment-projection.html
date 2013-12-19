@@ -14,6 +14,7 @@
 	<![endif]-->
 
 	<script id="js-config"></script>
+	<script id="bccvl-lookups"></script>
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
@@ -117,11 +118,15 @@
 			</div>
 		</div>
 
+<!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-flashmessages">
+		</section>
+
 
 <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<section class="bccvl-experimentdetails tabbable">
-		<form id="experimentSetup" method="" autocomplete="on" action="" enctype="text/plain">
+		<form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
 			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
@@ -153,8 +158,22 @@
 
 					<div class="row-fluid">
 						<div class="span12">
-							<input type="text" name="expName" class="bccvl-expname input-block-level" required="required" placeholder="name for this experiment">
-							<textarea name="expDescription" class="input-block-level bccvl-expdesc" rows="6" placeholder="description of experiment"></textarea>
+							<div class="control-group">
+								<input type="text" name="expName" class="bccvl-expname input-block-level"
+									required="required" data-notblank="true" data-trigger="change keyup"
+									pattern="^[^_].*"
+									parsley-regex-message="Don't start your experiment name with an underscore."
+									parsley-required-message="Please supply a descriptive name for this experiment."
+									placeholder="name for this experiment"
+								/>
+							</div>
+							<div class="control-group">
+								<textarea name="expDescription" class="input-block-level bccvl-expdesc"
+									data-notblank="true" data-trigger="change keyup"
+									rows="6"
+									placeholder="description of experiment"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -168,12 +187,12 @@
 						</p>
 					</div>
 
-					<!-- experiment algo -->
+					<!-- species distribution models -->
 					<div class="row-fluid">
 
-						<div class="span4">
+						<div class="span4"><div class="control-group">
 
-							<table class="table table-hover bccvl-algorithmtable">
+							<table class="table table-hover bccvl-sdmtable">
 								<thead>
 									<tr><th colspan="3">
 										Species Distribution Models
@@ -206,7 +225,8 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+
+						</div></div>
 
 						<!-- preview area -->
 						<div class="span8">
@@ -233,11 +253,11 @@
 
 					<div class="row-fluid">
 						<p class="span12 bccvl-dimension-equation">
-							<span class="bccvl-dimension-value" data-dimension-name="projYear">0</span> years
+							<span class="bccvl-dimension-value" data-dimension-name="form.widgets.years">0</span> years
 							&times;
-							<span class="bccvl-dimension-value" data-dimension-name="projScenario">0</span> scenarios
+							<span class="bccvl-dimension-value" data-dimension-name="form.widgets.emission_scenarios">0</span> scenarios
 							&times;
-							<span class="bccvl-dimension-value" data-dimension-name="projGcm">0</span> models
+							<span class="bccvl-dimension-value" data-dimension-name="form.widgets.climate_models">0</span> models
 							=
 							<span class="bccvl-dimension-value" data-dimension-name="projProduct">0</span> projections
 						</p>
@@ -245,18 +265,16 @@
 
 					<div class="row-fluid bccvl-dimensions">
 
-						<div class="span4 bccvl-dimension">
-							<table class="table table-condensed table-hover">
+						<div class="span4 bccvl-dimension"><div class="control-group">
+
+							<!-- years table -->
+							<table class="table table-condensed table-hover bccvl-yearstable">
 								<thead>
 									<tr><th colspan="2">
 										Years
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="warning"><td colspan="2">
-										<p><small>Some projection points are not covered by every variables.</small></p>
-									</td></tr>
-
 									<tr class="sampledata">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear1990" value="1990">
@@ -315,20 +333,19 @@
 									</tr>
 								</tbody>
 							</table>
-						</div>
+						</div></div>
 
 
-						<div class="span4 bccvl-dimension">
-							<table class="table table-condensed table-hover">
+						<div class="span4 bccvl-dimension"><div class="control-group">
+
+							<!-- emission scenarios table -->
+							<table class="table table-condensed table-hover bccvl-emissionscenariostable">
 								<thead>
 									<tr><th colspan="2">
 										Emission Scenarios
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="success"><td colspan="2">
-										<p><small>All projection points are covered by all variables.</small></p>
-									</td></tr>
 
 									<tr class="sampledata">
 										<td class="bccvl-table-choose">
@@ -397,19 +414,18 @@
 
 								</tbody>
 							</table>
-						</div>
+						</div></div>
 
-						<div class="span4 bccvl-dimension">
-							<table class="table table-condensed table-hover">
+						<div class="span4 bccvl-dimension"><div class="control-group">
+
+							<!-- climate models table -->
+							<table class="table table-condensed table-hover bccvl-climatemodelstable">
 								<thead>
 									<tr><th colspan="2">
 										Climate Models
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="warning"><td colspan="2">
-										<p><small><b>Soil Type</b> does not address this dimension so will be assumed to stay constant.</small></p>
-									</td></tr>
 
 									<tr class="sampledata">
 										<td class="bccvl-table-choose">
@@ -435,7 +451,7 @@
 
 								</tbody>
 							</table>
-						</div>
+						</div></div>
 
 					</div>
 				</div>

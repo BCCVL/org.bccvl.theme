@@ -16,8 +16,8 @@ requirejs.config({
         'jquery-xmlrpc':        'jquery-xmlrpc/jquery.xmlrpc.min',
         'bootstrap':            'bootstrap/js/bootstrap.min',
         'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',
-//        'parsley':              'parsley/parsley.min'
-        'parsley':              'parsley/parsley',
+        'parsley':              'parsley/parsley.min',
+//        'parsley':              'parsley/parsley',
         'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter'
     },
     shim: {

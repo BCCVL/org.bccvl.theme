@@ -2,19 +2,19 @@
 //
 // main JS for the new sdm experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-search', 'parsley', 'bootstrap'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway          ,  dimensions                  ,  search          , parsley  ) {
+define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator'],
+    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway          ,  dimensions                  ,  search          ,  formvalidator ) {
     // ==============================================================
         $(function() {
 
             // hook up stretchers
             stretch.init({ topPad: 60, bottomPad: 10 });
 
-            viz.init();         // init the visualiser
-            fadeaway.init();    // init the fadeaway instructions
-            dimensions.init();  // init the dimension chooser thingy
-            wiztabs.init();     // hook up the wizard buttons
-            search.init();      // hook up the search fields
+            viz.init();             // init the visualiser
+            fadeaway.init();        // init the fadeaway instructions
+            dimensions.init();      // init the dimension chooser thingy
+            wiztabs.init();         // hook up the wizard buttons
+            search.init();          // hook up the search fields
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
@@ -46,75 +46,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $checkbox.change();
             });
 
-            // -- form validation -----------------------------------
-
-            // TODO: most of this is pretty general, it should be in a
-            // bccvl-form-validate.js file or something.
-
-            // since we're pulling config blocks wholesale from plone, which sucks but is
-            // quick to get working, we have to work around a bunch of plone's document
-            // strutures and classes.  The easiest way to make validation errors show up
-            // is to give plone's ".object-widget-field" things an additional class of
-            // ".control-group".
-            $('form.bccvl-parsleyvalidate .object-widget-field').addClass('control-group');
-
-            // right, so now kick off parsley form validation on the forms..
-            $('form.bccvl-parsleyvalidate').parsley({
-                focus:        'none',       // don't switch focus to errors (we do that manually below)
-                successClass: 'success',    // use these two Bootstrap classes for the error
-                errorClass:   'error',      // and no-error states, and it'll look pretty.
-                errors: {
-                    // this error handling and elements make parsley errors Bookstrap friendly
-                    classHandler: function(el) { return $(el).closest('.control-group'); },
-                    container: function(el) {
-                        var $controlGroup = $(el).closest('.control-group');
-                        var $tableHeader = $controlGroup.find('th');
-                        // if the element is in a table, use the table header..
-                        if ($tableHeader.length > 0) return $tableHeader;
-                        // otherwise use the controlGroup
-                        return $controlGroup;
-                    },
-                    errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
-                    errorElem:     '<span></span>'
-                },
-                listeners: {
-                    onFormValidate: function(isFormValid, evt) {
-                        if (! isFormValid) {
-                            // if the form isn't valid, then there's at least one error
-                            // showing somewhere.  But if it's on another tab, parsley
-                            // won't be able to focus that field.  So, here we're gonna
-                            // find the first error indicator in the document, switch to
-                            // its tab, then focus its field.
-                            var $firstError = $('.control-group.error').first();  // first error
-
-                            // show the tab holding the first error
-                            var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
-                            if ($tabPane.length > 0) {
-                                // tab itself that belongs to the tab pane we're interested in
-                                var $tabLink = $('a[data-toggle="tab"][href="#' + $tabPane.attr('id') + '"]');
-                                if (! $tabPane.hasClass('active')) {
-                                    // if that tab isn't already showing, show it
-                                    $tabLink.tab('show');
-                                }
-                            }
-
-                            // open the config accordion holding the first error
-                            var $accordionPane = $firstError.closest('.accordion-group').find('.accordion-body');
-
-                            if ($accordionPane.length > 0) {
-                                // if that pane isn't already showing, show it
-                                $accordionPane.collapse('show');
-                            }
-
-                            // whether we had to flick the tab or not, focus the field
-                            $firstError.find('input, select, textarea').first().focus();
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                }
-            });
 
             // -- layer selection -----------------------------------
 
@@ -171,7 +102,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 html += '<tr data-envparent="' + parentId + '">';
                     // checkbox for selecting the layer
-                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection"  id="layer-' + parentId + '-' + layerId + '" value="' + layerId + '" /></td>';
+                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection"  id="layer-' + parentId + '-' + layerId + '" value="' + layerId + '" ';
+                    html += 'class="parsley-validated" parsley-mincheck="1" parsley-group="environmental_dataset" parsley-error-message="Please select at least one environmental dataset" '
+                    html += '/></td>';
                     html += '<td><label for="layer-' + parentId + '-' + layerId + '">' + friendlyNames[layerId] + '</label></td>'; // name the layer
                     // viz button to viz the layer (and whatever other actions eventually go here)
                     html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';

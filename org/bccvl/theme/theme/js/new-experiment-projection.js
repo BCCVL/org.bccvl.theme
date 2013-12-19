@@ -1,8 +1,8 @@
 //
 // main JS for the new projection experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          , fadeaway           ,  dimensions) {
+define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-form-validator'],
+    function( $      ,  viz                 ,  wiztabs              ,  stretch          , fadeaway           ,  dimensions                  ,  formvalidator) {
     // ==============================================================
 
         // do the work
