@@ -9,6 +9,7 @@
    <!-- view/notselectedItems -->
    <!-- view/selectedItems -->
    <tal:repeat tal:repeat="entry view/items">
+    <span class="option">
     <input type="checkbox" name="vehicle" value="Bike" id="mybox" class="foo"
            tal:attributes="id entry/id;
                            name string:${view/name};
@@ -17,6 +18,7 @@
                            checked python: entry in selected and 'checked' or None"/>
     <label for="mybox" tal:content="nocall: entry/content"
            tal:attributes="for entry/id;">Label</label>
+    </span>
    </tal:repeat>
 
   <input name="foo-empty-marker" type="hidden"
