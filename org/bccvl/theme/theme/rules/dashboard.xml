@@ -4,9 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- DASHBOARD ============================================= -->
-    <rules css:if-content="#portaltab-index_html.selected">
-        <rules css:if-content="#contentview-view a[href$='front-page']">
-            <theme href="html/dashboard.html" />
-        </rules>
+    <rules if-path="dashboard/">
+        <theme href="html/dashboard.html" />
     </rules>
 </rules>
