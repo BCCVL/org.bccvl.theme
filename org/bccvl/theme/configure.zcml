@@ -19,17 +19,4 @@
 
     <include package=".widgets"/>
 
-    <!-- overrides in override folder that can't be overriden by jbot -->
-    <z3c:widgetTemplate
-        mode="input"
-        widget="z3c.form.interfaces.IOrderedSelectWidget"
-        view="org.bccvl.site.browser.experiment.Add"
-        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="theme/overrides/z3c.form.bromser.orderedselect_input.pt"
-        />
-<!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
-    for, layer view, field, widget -> context, request, form, field,
-    self
-        field="org.bccvl.site.content.experiment.IProjectionExperiment.years"
- -->
 </configure>
