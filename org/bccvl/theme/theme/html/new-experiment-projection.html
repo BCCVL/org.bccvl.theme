@@ -77,9 +77,9 @@
 			>no theme</button>
 			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
 				"
-			>no placeholders</button>
+			>show placeholders</button>
 			<!-- debug -->
 			<!-- debug -->
 			<!-- debug -->
@@ -199,7 +199,7 @@
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="sdmInput" id="toad" value="ct">
 										</td>
@@ -211,7 +211,7 @@
 											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="sdmInput" id="finch" value="gf">
 										</td>
@@ -275,56 +275,56 @@
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear1990" value="1990">
 										</td><td class="bccvl-table-label"><label for="projYear1990">
 											<h1>1990 <small>(current)</small></h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear2025" value="2025">
 										</td><td class="bccvl-table-label"><label for="projYear2025">
 											<h1>2025</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<i class="icon-ban-circle"></i>
 										</td><td class="bccvl-table-label"><label for="projYear2035">
 											<h1 class="muted">2035</h1><p class="muted">not covered by Uploaded Variable</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear2045" value="2045">
 										</td><td class="bccvl-table-label"><label for="projYear2045">
 											<h1>2045</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear2055" value="2055">
 										</td><td class="bccvl-table-label"><label for="projYear2055">
 											<h1>2055</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear2065" value="2065">
 										</td><td class="bccvl-table-label"><label for="projYear2065">
 											<h1>2065</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<i class="icon-ban-circle"></i>
 										</td><td class="bccvl-table-label"><label for="projYear2075">
 											<h1 class="muted">2075</h1><p class="muted">not covered by Uploaded Variable</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projYear" id="projYear2085" value="2085">
 										</td><td class="bccvl-table-label"><label for="projYear2085">
@@ -347,35 +347,35 @@
 								</thead>
 								<tbody>
 
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioSresA1b" value="SresA1b">
 										</td><td class="bccvl-table-label"><label for="projScenarioSresA1b">
 											<h1>SRES A1B</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioSresA1c" value="SresA1c">
 										</td><td class="bccvl-table-label"><label for="projScenarioSresA1c">
 											<h1>SRES A1C</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioSresA1FI" value="SresA1FI">
 										</td><td class="bccvl-table-label"><label for="projScenarioSresA1FI">
 											<h1>SRES A1FI</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioSresB1" value="SresB1">
 										</td><td class="bccvl-table-label"><label for="projScenarioSresB1">
 											<h1>SRES B1</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioSresB2" value="SresB2">
 										</td><td class="bccvl-table-label"><label for="projScenarioSresB2">
@@ -383,28 +383,28 @@
 										</label></td>
 									</tr>
 
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioRcp3pd" value="Rcp3pd">
 										</td><td class="bccvl-table-label"><label for="projScenarioRcp3pd">
 											<h1>RCP 3PD</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioRcp45" value="Rcp45">
 										</td><td class="bccvl-table-label"><label for="projScenarioRcp45">
 											<h1>RCP 4.5</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioRcp6" value="Rcp6">
 										</td><td class="bccvl-table-label"><label for="projScenarioRcp6">
 											<h1>RCP 6</h1><p>covered by all variables</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projScenario" id="projScenarioRcp85" value="Rcp85">
 										</td><td class="bccvl-table-label"><label for="projScenarioRcp85">
@@ -427,21 +427,21 @@
 								</thead>
 								<tbody>
 
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projGcm" id="projGcmCccmaCgcm31" value="CccmaCgcm31">
 										</td><td class="bccvl-table-label"><label for="projGcmCccmaCgcm31">
 											<h1>cccma cgcm31 <small>CHCM 3.1 from the CCCMA</small></h1><p>not covered by Soil Type</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projGcm" id="projGcmCsiroMk30" value="CsiroMk30">
 										</td><td class="bccvl-table-label"><label for="projGcmCsiroMk30">
 											<h1>CSIRO Mk3 <small>Mk3.0 from CSIRO</small></h1><p>not covered by Soil Type</p>
 										</label></td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="checkbox" name="projGcm" id="projGcmUkmoHadgem1" value="UkmoHadgem1">
 										</td><td class="bccvl-table-label"><label for="projGcmUkmoHadgem1">

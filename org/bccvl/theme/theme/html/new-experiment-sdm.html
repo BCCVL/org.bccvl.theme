@@ -77,9 +77,9 @@
 			>no theme</button>
 			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
 				"
-			>no placeholders</button>
+			>show placeholders</button>
 			<!-- debug -->
 			<!-- debug -->
 			<!-- debug -->
@@ -203,7 +203,7 @@
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input class="broken" type="checkbox" disabled="disabled" name="sdmAlgorithm" id="bioclim" value="bioclim"></td>
 										<td class="bccvl-table-label"><label for="bioclim">
 											<h1>Bioclim <small>Bioclimatic Envelope Model</small></h1>
@@ -212,7 +212,7 @@
 											<a><i class="icon-info-sign" title="more information"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input class="broken" type="checkbox" disabled="disabled" name="sdmAlgorithm" id="brt" value="brt"></td>
 										<td class="bccvl-table-label"><label for="brt">
 											<h1>BRT <small>Boosted Regression Trees</small></h1>
@@ -281,7 +281,7 @@
 									-->
 								</thead>
 								<tbody>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="occurrenceInput" id="koalaID" value="koalaID">
 										</td>
@@ -294,7 +294,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="occurrenceInput" id="toadID" value="toadID">
 										</td>
@@ -307,7 +307,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="occurrenceInput" id="shmoadID" value="shmoadID">
 										</td>
@@ -320,7 +320,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="occurrenceInput" id="dogID" value="dogID">
 										</td>
@@ -371,8 +371,8 @@
 								</thead>
 
 								<tbody>
-									<tr class="sampledata">
-										<td class="bccvl-table-choose sampledata">
+									<tr class="sampledata" style="display: none">
+										<td class="bccvl-table-choose">
 											<input type="radio" name="absenceInput" id="bccvlRandom" value="bccvlRandom">
 										</td>
 										<td class="bccvl-table-label"><label for="bccvlRandom">
@@ -382,7 +382,7 @@
 										<td class="bccvl-table-controls">
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose">
 											<input type="radio" name="absenceInput" id="xkoalaID" value="xkoalaID">
 										</td>
@@ -444,7 +444,7 @@
 									-->
 								</thead>
 								<tbody>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim1" value="bioclim1"
 										>
 										</td>
@@ -456,7 +456,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim2" value="bioclim2"></td>
 										<td class="bccvl-table-label"><label for="bioclim2">
 											<h1>mean diurnal range <small>0.5&deg; (5km) resolution</small></h1><p>bioclim2 from WorldClim.org</p>
@@ -466,7 +466,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim3" value="bioclim3"></td>
 										<td class="bccvl-table-label"><label for="bioclim3">
 											<h1>bioclim3 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim3 from WorldClim.org</p>
@@ -476,7 +476,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim4" value="bioclim4"></td>
 										<td class="bccvl-table-label"><label for="bioclim4">
 											<h1>bioclim4 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim4 from WorldClim.org</p>
@@ -486,7 +486,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim5" value="bioclim5"></td>
 										<td class="bccvl-table-label"><label for="bioclim5">
 											<h1>bioclim5 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim5 from WorldClim.org</p>
@@ -496,7 +496,7 @@
 											<a><i class="icon-cog" title="uh, dunno"></i></a>
 										</td>
 									</tr>
-									<tr class="sampledata">
+									<tr class="sampledata" style="display: none">
 										<td class="bccvl-table-choose"><input type="checkbox" name="environmentInput" id="bioclim6" value="bioclim6"></td>
 										<td class="bccvl-table-label"><label for="bioclim6">
 											<h1>bioclim6 <small>0.5&deg; (5km) resolution</small></h1><p>bioclim6 from WorldClim.org</p>

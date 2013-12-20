@@ -75,9 +75,9 @@
 			>no theme</button>
 			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
 				"
-			>no placeholders</button>
+			>show placeholders</button>
 			<!-- debug -->
 			<!-- debug -->
 			<!-- debug -->
@@ -204,7 +204,7 @@
 							</th></tr>
 						</thead>
 						<tbody>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="bioclim1">
 									<h1>distribution model <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
 									<p>using annual mean temperature, bioclim3 and bioclim5</p>
@@ -214,7 +214,7 @@
 									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="bioclim1">
 									<h1>current projection <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
 									<p>using annual mean temperature, bioclim3 and bioclim5</p>
@@ -224,7 +224,7 @@
 									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="bioclim1">
 									<h1>terms of use <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
 									<p>terms of use for these results</p>
@@ -234,7 +234,7 @@
 									<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="bioclim1">
 									<h1>attributions <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
 									<p>attributions for these results</p>

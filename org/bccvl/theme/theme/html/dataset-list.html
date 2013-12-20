@@ -76,9 +76,9 @@
 			>no theme</button>
 			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
 				"
-			>no placeholders</button>
+			>show placeholders</button>
 			<!-- debug -->
 			<!-- debug -->
 			<!-- debug -->
@@ -143,7 +143,7 @@
 							</td></tr>
 						</thead>
 						<tbody>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									26 Aug 2013
 								</td>
@@ -157,7 +157,7 @@
 									<a><i class="icon-pencil" title="edit metadata"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									28 Aug 2013
 								</td>
@@ -183,7 +183,7 @@
 							</th></tr>
 						</thead>
 						<tbody>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									26 Aug 2013
 								</td>
@@ -195,7 +195,7 @@
 									<a><i class="icon-circle-arrow-down" title="download"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									28 Aug 2013
 								</td>

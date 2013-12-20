@@ -73,9 +73,9 @@
 			>no theme</button>
 			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
 				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', 'none');
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
 				"
-			>no placeholders</button>
+			>show placeholders</button>
 			<!-- debug -->
 			<!-- debug -->
 			<!-- debug -->
@@ -131,7 +131,7 @@
 							</th></tr>
 						</thead>
 						<tbody>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									28 Aug 2013
 								</td>
@@ -143,7 +143,7 @@
 									<a id="expID3456"><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td>
 									26 Aug 2013
 								</td>
@@ -178,7 +178,7 @@
 							</th></tr>
 						</thead>
 						<tbody>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="koalaID">
 									<h1>Species name (e.g. Koala)</h1>
 									<p>provenance (e.g. provided by BCCVL)</p>
@@ -187,7 +187,7 @@
 									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="toadID">
 									<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
 									<p>imported from ALA, 8 July 2013</p>
@@ -196,7 +196,7 @@
 									<a><i class="icon-chevron-right" title="view status &amp; results"></i></a>
 								</td>
 							</tr>
-							<tr class="sampledata">
+							<tr class="sampledata" style="display: none">
 								<td class="bccvl-table-label"><label for="shmoadID">
 									<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
 									<p>imported from ALA, 9 July 2013</p>
