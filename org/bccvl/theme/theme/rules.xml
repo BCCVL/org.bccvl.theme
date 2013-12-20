@@ -140,5 +140,6 @@
     <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='org-bccvl-content-dataset']" />
 
     <!-- miscellaneous -->
-   
+    <replace theme="//footer" content="//footer"/>
+
 </rules>

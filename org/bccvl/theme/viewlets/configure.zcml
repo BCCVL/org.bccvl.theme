@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="org.bccvl.theme">
+
+    <!-- modify viewlet manager that renders page footer -->
+    <browser:viewletManager
+        name="plone.portalfooter"
+        provides="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="theme/overrides/plone.portalfooter.pt"
+        />
+
+</configure>
