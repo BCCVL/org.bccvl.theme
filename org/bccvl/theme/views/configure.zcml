@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="org.bccvl.theme">
+
+    <browser:page
+        name="experiments_listing_view"
+        for="plone.app.contenttypes.interfaces.IFolder"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        class=".experiments_listing_view.ExperimentsListingView"
+        permission="zope2.View"
+        template="experiments_listing_view.pt"
+    />
+
+
+</configure>
