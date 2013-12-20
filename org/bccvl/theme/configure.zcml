@@ -17,7 +17,7 @@
         type="theme"
         />
 
-    <include package=".browser"/>
+    <include package=".widgets"/>
 
     <!-- overrides in override folder that can't be overriden by jbot -->
     <z3c:widgetTemplate
