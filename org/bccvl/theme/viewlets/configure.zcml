@@ -10,7 +10,7 @@
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="theme/overrides/plone.portalfooter.pt"
+        template="plone.portalfooter.pt"
         />
 
 </configure>
