@@ -193,16 +193,8 @@
             </xsl:for-each>
         </before>
 
-        <!-- hook in the environmental data list -->
-        <!--
-            We are converting a select to a checkbox input,
-            so we need to give the radio button the select's name,
-            not the option's name.
-        -->
-        <!-- new version is filled out using ajax -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-environmentaldatatable > tbody">
-            <tr><td colspan="3"></td></tr>
-        </replace>
+        <!-- The rest of this is filled in with AJAX -->
+        <replace css:theme="section.bccvl-experimentdetails table.bccvl-environmentaldatatable" content="//table[@id='form-widgets-environmental_datasets']" />
 
     </rules>
 
