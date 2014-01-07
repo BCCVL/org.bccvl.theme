@@ -12,6 +12,14 @@
          layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
     />
 
+    <z3c:widgetTemplate
+      mode="input"
+      widget="org.bccvl.site.browser.interfaces.IDatasetsWidget"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      template="datasets_input.pt"
+      />
+
+
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
     self

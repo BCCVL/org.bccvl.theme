@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<table class="table table-hover bccvl-environmentaldatatable">
+  <!-- <thead> -->
+  <!--   <tr><th colspan="3">Environmental Datasets</th></tr> -->
+  <!-- </thead> -->
+  <tbody>
+    <tr><td colspan="3"></td></tr>
+    <tal:block tal:repeat="key view/items">
+    <tr class="bccvl-envgroup info" data-envgroupid="env1group"
+        tal:attributes="data-envgroupid key/value">
+       <td><i class="icon-plus"></i></td>
+       <td colspan="2" tal:content="key/content">Dataset title</td>
+    </tr>
+    <tr class="hidden" data-envparent="env1group"
+        tal:attributes="data-envparent key/value">
+    </tr>
+    </tal:block>
+  </tbody>
+</table>
+</html>
