@@ -336,7 +336,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'viz': // visualise
                                 var vizParam = actionParam;
-                                $('<a class="fine"><i class="icon-eye-open"></i></a>').click(function(e) {
+                                $('<a class="fine"><i class="icon-eye-open icon-link"></i></a>').click(function(e) {
                                     $vizFrame.attr('src', vizParam);
                                     e.preventDefault();
                                     return false;
@@ -345,7 +345,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
                                 var alaParam = actionParam;
-                                $('<a class="fine"><i class="icon-download-alt"></i></a>').click(function(e) {
+                                $('<a class="fine"><i class="icon-download-alt icon-link"></i></a>').click(function(e) {
                                     $.xmlrpc({
                                         url: window.bccvl.config.data_mover.baseUrl,
                                         methodName: 'pullOccurrenceFromALA',

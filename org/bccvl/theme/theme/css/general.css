@@ -134,6 +134,10 @@ a:not([href]).fine,
     height: 100%;
 }
 
+.icon-link:hover {
+    cursor: pointer;
+}
+
 
 /* wizard+tabs interface ------------------------------------------------- */
 
