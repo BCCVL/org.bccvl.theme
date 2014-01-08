@@ -15,7 +15,7 @@
        <td><i class="icon-plus"></i></td>
        <td colspan="2" tal:content="key/content">Dataset title</td>
     </tr>
-    <input id="" name="" class="" type="hidden" value="1"
+    <input id="" name="" type="hidden" value="1"
            tal:attributes="id string:${key/id}-select;
                            name string:${key/name}.select;
                            value key/value;"/>
