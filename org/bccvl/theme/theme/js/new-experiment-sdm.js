@@ -61,51 +61,32 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
 
-                // for now scrap all the fields and rebuild every time
-                // TODO: do a more graceful update, rather than a burn down and rebuild
+                $secretFields = $('.bccvl-secretlayerselections');
+                $secretCountField = $secretFields.children("#form\\.widgets\\.environmental_layers\\.count");
 
-                // find the form
-                var $form = $envTable.closest('form');
-                // find the hidden field holder, delete it, and re-make it
-                var $secretFields = $form.find('.bccvl-secretlayerselections');
-                $secretFields.remove();
-                $secretFields = $('<div class="hidden bccvl-secretlayerselections"></div>');
-                $secretFields.appendTo($form);
+                var currentCount = parseInt($secretCountField.val());
 
-                // now loop through each checked checkbox, make the hidden fields for each
-                var $selectedLayers = $('input[name="bccvl-envlayer-selection"]').filter( function() {
-                    // filter out the non-checked checkboxes
-                    return $(this).prop('checked');
-                });
-
-                $selectedLayers.each( function(index, field) {
-                    // now we're just each-ing through the layer checkboxes that are checked
-                    var $field = $(field);
-                    $secretFields.append(
-                        '<select name="form.widgets.environmental_layers.key.' + index + ':list">' +
-                        '<option value="' + $field.attr('value') + '" selected="selected"></option>' +
-                        '</select>' +
-                        '<select name="form.widgets.environmental_layers.' + index + ':list">' +
-                        '<option value="' + $field.closest('tr[data-envparent]').attr('data-envparent') + '" selected="selected"></option>' +
-                        '</select>'
-                    );
-                });
-                $secretFields.append('<input type="hidden" name="form.widgets.environmental_layers.count" value="' + $selectedLayers.length + '" />');
+                // This is purely so we can do validation, to ensure at least n checkboxes are checked.
+                if ($checkBox.prop('checked')) {
+                    $secretCountField.val(currentCount + 1);
+                } else {
+                    $secretCountField.val(currentCount - 1);
+                }
             }
 
             // make a function to render a layer row.
             var renderLayerRow = function(parentId, layerId, friendlyName) {
-                var html = '';
-                // TODO: this should be a template in the HTML.  Gotta get it working today so
-                // it's not, but trust that Daniel is very embarrassed at doing this and should
-                // be mocked next time you see him.
 
+                // Build id and name
+                id = parentId + '_' + layerId;
+                name = 'form.widgets.environmental_datasets.' + parentId + ':list';
+
+                var html = '';
                 html += '<tr data-envparent="' + parentId + '">';
                     // checkbox for selecting the layer
-                    html += '<td><input type="checkbox" name="bccvl-envlayer-selection"  id="layer-' + parentId + '-' + layerId + '" value="' + layerId + '" ';
-                    html += 'class="parsley-validated" parsley-mincheck="1" parsley-group="environmental_dataset" parsley-error-message="Please select at least one environmental dataset" '
+                    html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" ';
                     html += '/></td>';
-                    html += '<td><label for="layer-' + parentId + '-' + layerId + '">' + friendlyName + '</label></td>'; // name the layer
+                    html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
                     // viz button to viz the layer (and whatever other actions eventually go here)
                     html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';
                 html += '</tr>';
@@ -119,7 +100,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     evt.preventDefault();
                 });
 
-                var $layerSelect = $html.find('input[name="bccvl-envlayer-selection"]');
+                var $layerSelect = $html.find('input[name="' + name + '"]');
                 $layerSelect.change(function(evt) {
                     layerUpdate(parentId, layerId, $layerSelect);
                 });
@@ -180,13 +161,21 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 }
             }
 
-            // Now to the real work.
-            // First we get friendly names for the environment layer data sources. They're at /dm/getVocabulary?name=envirolayer_source
+            // Add the secret hidden fields
+            var $form = $("#experimentSetup");
+            secretFields = '';
+            secretFields += '<div class="hidden bccvl-secretlayerselections">';
+            secretFields +=   '<input type="hidden" id="form.widgets.environmental_datasets.marker" name="form.widgets.environmental_datasets.marker" value="1" originalvalue="1" />';
+            secretFields +=   '<input type="hidden" id="form.widgets.environmental_layers.count" name="form.widgets.environmental_layers.count" value="0" />';
+            secretFields += '</div>';
+            $secretFields = $(secretFields);
+            $secretFields.appendTo($form);
+
+            // Wire up listeners to the climate layer boxes
             $(".bccvl-envgroup").click(function() {
                 var envgroupid = $(this).attr('data-envgroupid');
                 toggleEnvGroup(envgroupid);
             });
-
         });
     // ==============================================================
     }

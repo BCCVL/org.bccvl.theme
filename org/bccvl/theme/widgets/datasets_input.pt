@@ -15,6 +15,10 @@
        <td><i class="icon-plus"></i></td>
        <td colspan="2" tal:content="key/content">Dataset title</td>
     </tr>
+    <input id="" name="" class="" type="hidden" value="1"
+           tal:attributes="id string:${key/id}-select;
+                           name string:${key/name}.select;
+                           value key/value;"/>
     <!--
     <tr class="hidden" data-envparent="env1group"
         tal:attributes="data-envparent key/value">
