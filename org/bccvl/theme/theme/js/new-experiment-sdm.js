@@ -61,9 +61,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
 
-                $secretFields = $('.bccvl-secretlayerselections');
-                $secretCountField = $secretFields.children("#form\\.widgets\\.environmental_layers\\.count");
-
+                $secretCountField = $("#form\\.widgets\\.environmental_layers\\.count");
                 var currentCount = parseInt($secretCountField.val());
 
                 // This is purely so we can do validation, to ensure at least n checkboxes are checked.
