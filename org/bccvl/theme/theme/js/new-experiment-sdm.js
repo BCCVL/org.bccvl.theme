@@ -49,8 +49,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // -- layer selection -----------------------------------
 
-            // this part was written in a hurry, my apologies for what lies within.
-
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
 
@@ -61,15 +59,18 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
 
-                $secretCountField = $("#form\\.widgets\\.environmental_layers\\.count");
-                var currentCount = parseInt($secretCountField.val());
+                $secretCountField = $("#environmental_layers_count");
+                var currentCount = parseInt($secretCountField.attr("value"));
 
                 // This is purely so we can do validation, to ensure at least n checkboxes are checked.
                 if ($checkBox.prop('checked')) {
-                    $secretCountField.val(currentCount + 1);
+                    $secretCountField.attr("value", currentCount + 1);
                 } else {
-                    $secretCountField.val(currentCount - 1);
+                    $secretCountField.attr("value", currentCount - 1);
                 }
+
+                // Force a validation
+                $secretCountField.parsley('validate');
             }
 
             // make a function to render a layer row.
@@ -158,16 +159,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     }
                 }
             }
-
-            // Add the secret hidden fields
-            var $form = $("#experimentSetup");
-            secretFields = '';
-            secretFields += '<div class="hidden bccvl-secretlayerselections">';
-            secretFields +=   '<input type="hidden" id="form.widgets.environmental_datasets.marker" name="form.widgets.environmental_datasets.marker" value="1" originalvalue="1" />';
-            secretFields +=   '<input type="hidden" id="form.widgets.environmental_layers.count" name="form.widgets.environmental_layers.count" value="0" />';
-            secretFields += '</div>';
-            $secretFields = $(secretFields);
-            $secretFields.appendTo($form);
 
             // Wire up listeners to the climate layer boxes
             $(".bccvl-envgroup").click(function() {

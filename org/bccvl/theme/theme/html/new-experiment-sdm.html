@@ -421,33 +421,47 @@
 					<div class="row-fluid bccvl-stretch-parent">
 
 						<!-- list of available data -->
-						<div class="span4"><div class="control-group">
-							<table class="table table-hover bccvl-environmentaldatatable">
-								<thead>
-									<tr><th colspan="3">
-										Environmental Datasets
-									</th></tr>
-									<!--
-									<tr><td class="bccvl-searchform" colspan="3">
-										<div id="searchEnvironmental" class="bccvl-search-form form-inline">
-											<input name="searchEnvironmental_query" type="text" class="broken span8" placeholder="find environmental layers..">
-											<select name="searchEnvironmental_source" class="broken span4">
-												<option value="local">in this list</option>
-												<option value="worldclim">from worldclim.org</option>
-												<option value="tern">from TERN</option>
-											</select>
-										</div>
-									</td></tr>
-									<tr><td colspan="3">
-										<p><i>Coming: selectors for resolution, coverage etc</i></p>
-									</td></tr>
-									-->
-								</thead>
-								<tbody>
+						<div class="span4">
+							<div class="control-group">
+								<table class="table table-hover bccvl-environmentaldatatable">
+									<thead>
+										<tr><th colspan="3">
+											Environmental Datasets
+										</th></tr>
+										<!--
+										<tr><td class="bccvl-searchform" colspan="3">
+											<div id="searchEnvironmental" class="bccvl-search-form form-inline">
+												<input name="searchEnvironmental_query" type="text" class="broken span8" placeholder="find environmental layers..">
+												<select name="searchEnvironmental_source" class="broken span4">
+													<option value="local">in this list</option>
+													<option value="worldclim">from worldclim.org</option>
+													<option value="tern">from TERN</option>
+												</select>
+											</div>
+										</td></tr>
+										<tr><td colspan="3">
+											<p><i>Coming: selectors for resolution, coverage etc</i></p>
+										</td></tr>
+										-->
+									</thead>
+									<tbody>
 
-								</tbody>
-							</table>
-						</div></div>
+									</tbody>
+								</table>
+
+								<!-- secret hidden fields -->
+								<div class="hidden bccvl-secretlayerselections">
+									<!-- Secret field required by plone -->
+            						<input type="hidden" id="form.widgets.environmental_datasets.marker" name="form.widgets.environmental_datasets.marker" value="1" originalvalue="1" />
+
+        							<!-- This field's value is manipulated with javascript. Used to validate environmental layer selection (since they are ajax loaded). -->
+            						<input type="text" id="environmental_layers_count" name="environmental_layers_count" value="0"
+            				       		   parsley-min="2" parsley-error-message="Please select at least 2 environmental layers." />
+            					</div>
+							</div>
+						</div>
+
+						
 
 						<!-- preview area -->
 						<div class="span8">
