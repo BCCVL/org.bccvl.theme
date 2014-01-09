@@ -248,10 +248,16 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             }
 
                             timeout = setTimeout(function() {
-                                // if (typeof(current_ajax) != "undefined"){
-                                //     current_ajax.abort();
-                                // }
+                                if (typeof(current_ajax) != "undefined"){
+                                    current_ajax.abort();
+                                }
                                     
+                                // do nothing if input field is empty and hide spinner
+                                if ($.trim($inputField.val()) == ''){
+                                    $inputField.removeClass("bccvl-search-spinner");
+                                    return;
+                                } 
+
                                 $inputField.addClass("bccvl-search-spinner");
                                 var provider = bccvl_search.providers[$sourceField.val()];
                                 if (!provider) return;
@@ -285,51 +291,48 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             if (!provider) return selectedItem;
                             if (!provider.autocomplete) return selectedItem;
                             if (!provider.autocomplete.cleanAutoItem) return selectedItem;
+
+                            var selectedValue = provider.autocomplete.cleanAutoItem(selectedItem);
+                            var searchUrl = provider.search.searchUrl(selectedValue);
+
+                            // hide old results and show spinner for results
+                            $('.bccvl-searchform-results').hide();
+
+                            // do nothing if input field is empty
+                            if ($.trim($inputField.val()) == '') return;
+                            
+                            $('.bccvl-results-spinner').css('display', 'block');
+
+                            // get search results
+                            $.ajax({
+                                // xhrFields: { withCredentials: true }, // not using CORS (ALA said they were working on it)
+                                dataType: 'jsonp',                       // ..using JSONP instead
+                                url: searchUrl,
+                                success: function(data) {
+                                    // maybe the search provider will have a parseSearchData function,
+                                    // which extracts the result objects from the returned data.
+                                    if (provider.search.parseSearchData) {
+                                        // if this provider has a parseSearchData function, call it
+                                        bccvl_search.displayResults(provider.search.parseSearchData(data), $resultsField);
+                                    } else {
+                                        // otherwise assume the data is already good
+                                        bccvl_search.displayResults(data, $resultsField);
+                                    }
+                                },
+                                timeout: 60000, // ala is pretty slow...
+                                error: function(xhr, status, msg) {
+                                    if (status === 'timeout') {
+                                        alert('There was no response to your search query.');
+                                    } else {
+                                        alert('There was a problem that stopped your query from getting results.');
+                                    }
+                                }
+                            });
+
                             return provider.autocomplete.cleanAutoItem(selectedItem);
                         }
                     });
-
                 })();
-                
-                // acutally search when they enter something - - - - - - - - - - -
-
-                $inputField.change( function(event) {
-
-                    var provider = bccvl_search.providers[$sourceField.val()];
-                    if (!provider) return;
-                    if (!provider.search) return;
-                    if (!provider.search.searchUrl) return;
-                    var searchUrl = provider.search.searchUrl($inputField.val());
-
-                    // hide old results and show spinner for results
-                    $('.bccvl-searchform-results').hide();
-                    $('.bccvl-results-spinner').css('display', 'block');
-
-                    $.ajax({
-                        // xhrFields: { withCredentials: true }, // not using CORS (ALA said they were working on it)
-                        dataType: 'jsonp',                       // ..using JSONP instead
-                        url: searchUrl,
-                        success: function(data) {
-                            // maybe the search provider will have a parseSearchData function,
-                            // which extracts the result objects from the returned data.
-                            if (provider.search.parseSearchData) {
-                                // if this provider has a parseSearchData function, call it
-                                bccvl_search.displayResults(provider.search.parseSearchData(data), $resultsField);
-                            } else {
-                                // otherwise assume the data is already good
-                                bccvl_search.displayResults(data, $resultsField);
-                            }
-                        },
-                        timeout: 60000, // ala is pretty slow...
-                        error: function(xhr, status, msg) {
-                            if (status === 'timeout') {
-                                console.log('There was no response to your search query.');
-                            } else {
-                                console.log('There was a problem that stopped your query from getting results.');
-                            }
-                        }
-                    });
-                });
             },
             // --------------------------------------------------------------
             displayResults: function(results, domElement) {
