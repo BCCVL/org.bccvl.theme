@@ -184,6 +184,14 @@ a:not([href]).fine,
     opacity: 0;
 }
 
+/* Dataset page ---------------------------------------------------------*/
+.bccvl-search-spinner {
+    background:#FFFFFF url(../images/ajax-loader.gif) no-repeat 4px 4px;
+    padding:4px 4px 4px 22px;
+    height:18px;
+    background-position: right center;
+}
+
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */

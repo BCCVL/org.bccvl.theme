@@ -232,44 +232,68 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
 
                 // switch on twitter bootstrap autocomplete
-                $inputField.typeahead({
+                // only do search 
+                (function() {
+                    var delay = 500;
+                    var timeout;
+                    var current_ajax;
 
-                    items: 12,
+                    $inputField.typeahead({
 
-                    source: function(queryStr, process) {
-                        var provider = bccvl_search.providers[$sourceField.val()];
-                        if (!provider) return;
-                        if (!provider.autocomplete) return;
-                        if (!provider.autocomplete.autoUrl) return;
-                        var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
+                        items: 12,
 
-                        $.ajax({
-                            // xhrFields: { withCredentials: true }, // not using CORS
-                            dataType: 'jsonp',                       // ..using JSONP instead
-                            url: autocompleteUrl,
-                            success: function(data) {
-                                // either the search provider will have a parseAutoData function,
-                                // which extracts the possible matches from the returned data.
-                                if (provider.autocomplete.parseAutoData) {
-                                    // if this provider has a parseAutoData function, call it
-                                    process(provider.autocomplete.parseAutoData(data));
-                                } else {
-                                    // otherwise assume the data is already good
-                                    process(data);
-                                }
+                        source: function(queryStr, process) {
+                            if (timeout) {
+                                clearTimeout(timeout);
                             }
-                        });
-                    },
-                    updater: function(selectedItem) {
-                        // returns the value to put into the text box
-                        var provider = bccvl_search.providers[$sourceField.val()];
-                        if (!provider) return selectedItem;
-                        if (!provider.autocomplete) return selectedItem;
-                        if (!provider.autocomplete.cleanAutoItem) return selectedItem;
-                        return provider.autocomplete.cleanAutoItem(selectedItem);
-                    }
-                });
 
+                            timeout = setTimeout(function() {
+                                try{
+                                    current_ajax.abort();
+                                }
+                                catch(err){
+                                    console.log(err);
+                                }
+                                    
+                                $inputField.addClass("bccvl-search-spinner");
+                                var provider = bccvl_search.providers[$sourceField.val()];
+                                if (!provider) return;
+                                if (!provider.autocomplete) return;
+                                if (!provider.autocomplete.autoUrl) return;
+                                var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
+
+                                current_ajax = $.ajax({
+                                    // xhrFields: { withCredentials: true }, // not using CORS
+                                    dataType: 'jsonp',                       // ..using JSONP instead
+                                    url: autocompleteUrl,
+                                    success: function(data) {
+                                        // either the search provider will have a parseAutoData function,
+                                        // which extracts the possible matches from the returned data.
+                                        if (provider.autocomplete.parseAutoData) {
+                                            // if this provider has a parseAutoData function, call it
+                                            process(provider.autocomplete.parseAutoData(data));
+                                        } else {
+                                            // otherwise assume the data is already good
+                                            process(data);
+                                        }
+                                        $inputField.removeClass("bccvl-search-spinner");
+                                    }
+                                });
+                            }, delay);
+                            
+                        },
+                        updater: function(selectedItem) {
+                            // returns the value to put into the text box
+                            var provider = bccvl_search.providers[$sourceField.val()];
+                            if (!provider) return selectedItem;
+                            if (!provider.autocomplete) return selectedItem;
+                            if (!provider.autocomplete.cleanAutoItem) return selectedItem;
+                            return provider.autocomplete.cleanAutoItem(selectedItem);
+                        }
+                    });
+
+                })();
+                
                 // acutally search when they enter something - - - - - - - - - - -
 
                 $inputField.change( function(event) {
@@ -298,9 +322,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         timeout: 5000,
                         error: function(xhr, status, msg) {
                             if (status === 'timeout') {
-                                alert('There was no response to your search query.');
+                                console.log('There was no response to your search query.');
                             } else {
-                                alert('There was a problem that stopped your query from getting results.');
+                                console.log('There was a problem that stopped your query from getting results.');
                             }
                         }
                     });
