@@ -248,12 +248,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             }
 
                             timeout = setTimeout(function() {
-                                try{
-                                    current_ajax.abort();
-                                }
-                                catch(err){
-                                    console.log(err);
-                                }
+                                // if (typeof(current_ajax) != "undefined"){
+                                //     current_ajax.abort();
+                                // }
                                     
                                 $inputField.addClass("bccvl-search-spinner");
                                 var provider = bccvl_search.providers[$sourceField.val()];
@@ -304,6 +301,10 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                     if (!provider.search.searchUrl) return;
                     var searchUrl = provider.search.searchUrl($inputField.val());
 
+                    // hide old results and show spinner for results
+                    $('.bccvl-searchform-results').hide();
+                    $('.bccvl-results-spinner').css('display', 'block');
+
                     $.ajax({
                         // xhrFields: { withCredentials: true }, // not using CORS (ALA said they were working on it)
                         dataType: 'jsonp',                       // ..using JSONP instead
@@ -319,7 +320,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 bccvl_search.displayResults(data, $resultsField);
                             }
                         },
-                        timeout: 5000,
+                        timeout: 60000, // ala is pretty slow...
                         error: function(xhr, status, msg) {
                             if (status === 'timeout') {
                                 console.log('There was no response to your search query.');
@@ -334,6 +335,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             displayResults: function(results, domElement) {
                 // get a table dom fragment ready to put search results into
                 var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
+
                 var $tab = $(domElement).closest('.tab-pane');
                 if ($tab.length > 0) {
                     // if we're in a tab, find a viz frame on our tab
@@ -347,7 +349,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 $.each(results, function(index, item) {
                     var $info = $('<td class="bccvl-table-label"></td>');
                     var $actions = $('<td class="bccvl-table-controls"></td>');
-
+                    $('#bccvl-search-results').show();
                     if (item.thumbUrl) {
                         $info.append('<div class="bccvl-thumb"><img src="' + item.thumbUrl + '" /></div>');
                     }
@@ -398,6 +400,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
 
                 // finally, add the dom fragment to the page dom.
                 $(domElement).empty().addClass('bccvl-search-active').append($elem);
+                // get rid of spinner and show the results
+                $('.bccvl-results-spinner').css('display', 'none');
+                $('.bccvl-searchform-results').show();
             }
             // --------------------------------------------------------------
             // --------------------------------------------------------------

@@ -192,6 +192,14 @@ a:not([href]).fine,
     background-position: right center;
 }
 
+/*searchOccurrence_results*/
+.bccvl-results-spinner {
+    display: none;
+    padding-top:25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
