@@ -59,15 +59,22 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
 
-                $secretCountField = $("#environmental_layers_count");
-                var currentCount = parseInt($secretCountField.attr("value"));
+                $secretCountField = $('#environmental_layers_count');
+                var currentCount = parseInt($secretCountField.attr('value'));
 
                 // This is purely so we can do validation, to ensure at least n checkboxes are checked.
                 if ($checkBox.prop('checked')) {
-                    $secretCountField.attr("value", currentCount + 1);
+                    $secretCountField.attr('value', currentCount + 1);
                 } else {
-                    $secretCountField.attr("value", currentCount - 1);
+                    $secretCountField.attr('value', currentCount - 1);
                 }
+
+                // Count how many checkboxes are selected in the given climate layer
+                $layerSelectedField = $('#form-widgets-environmental_datasets-' + parentId + '-select');
+                var numSelected = $('input[name="form.widgets.environmental_datasets.' + parentId + ':list"]').filter(':checked').length;
+
+                // Enable/disable the climate layer accordingly
+                $layerSelectedField.attr('value', numSelected == 0 ? '' : parentId);
 
                 // Force a validation
                 $secretCountField.parsley('validate');
@@ -161,7 +168,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             }
 
             // Wire up listeners to the climate layer boxes
-            $(".bccvl-envgroup").click(function() {
+            $('.bccvl-envgroup').click(function() {
                 var envgroupid = $(this).attr('data-envgroupid');
                 toggleEnvGroup(envgroupid);
             });
