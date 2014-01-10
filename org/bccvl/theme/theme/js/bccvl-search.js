@@ -129,6 +129,20 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return list;
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        noResultsFound: function() {
+                            var $desc = $('.bccvl-labelfade-description');
+                            $desc.show();
+                            $desc.removeClass('bccvl-read');
+                            $desc.addClass('bccvl-unread');
+                            setTimeout(function() {
+                                $desc.removeClass('bccvl-unread');
+                                $desc.addClass('bccvl-read');
+                            }, 5000);
+                            setTimeout(function(){
+                                $desc.hide();
+                            }, 8000);
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
                         cleanAutoItem: function(selectedItem) {
                             // the string will always have <i>sciname</i> at the start, so..
                             return selectedItem.split(/<\/?i>/)[1];
@@ -274,7 +288,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                         // which extracts the possible matches from the returned data.
                                         if (provider.autocomplete.parseAutoData) {
                                             // if this provider has a parseAutoData function, call it
-                                            process(provider.autocomplete.parseAutoData(data));
+                                            var parsedDataList = provider.autocomplete.parseAutoData(data);
+                                            if (parsedDataList.length == 0) {
+                                                provider.autocomplete.noResultsFound();
+                                            } else {
+                                                process(parsedDataList);
+                                            }
                                         } else {
                                             // otherwise assume the data is already good
                                             process(data);

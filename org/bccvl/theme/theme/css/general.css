@@ -184,6 +184,27 @@ a:not([href]).fine,
     opacity: 0;
 }
 
+.bccvl-labelfade-description {
+    line-height: 1.1;
+    padding: 0 0 0.4em;
+    font-size: 100%;
+    text-align: center;
+    -moz-transition: opacity 3s;
+    -webkit-transition: opacity 3s;
+    -o-transition: opacity 3s;
+    transition: opacity 3s;
+    transition-delay: 1s;
+    display: none;
+}
+
+.bccvl-labelfade-description.bccvl-unread {
+    opacity: 0.5;
+}
+
+.bccvl-labelfade-description.bccvl-read {
+    opacity: 0;
+}
+
 /* Dataset page ---------------------------------------------------------*/
 .bccvl-search-spinner {
     background:#FFFFFF url(../images/ajax-loader.gif) no-repeat 4px 4px;
