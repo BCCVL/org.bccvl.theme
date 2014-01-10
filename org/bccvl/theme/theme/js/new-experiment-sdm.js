@@ -71,7 +71,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 // Count how many checkboxes are selected in the given climate layer
                 $layerSelectedField = $('#form-widgets-environmental_datasets-' + parentId + '-select');
-                var numSelected = $('input[name="form.widgets.environmental_datasets.' + parentId + ':list"]').filter(':checked').length;
+                var numSelected = $('input[name="form.widgets.environmental_datasets.' + parentId + ':list"]:checked').length;
 
                 // Enable/disable the climate layer accordingly
                 $layerSelectedField.attr('value', numSelected == 0 ? '' : parentId);
@@ -94,7 +94,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     html += '/></td>';
                     html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
                     // viz button to viz the layer (and whatever other actions eventually go here)
-                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open" title="view this layer"></i></a></td>';
+                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
                 html += '</tr>';
                 var $html = $(html);
 
