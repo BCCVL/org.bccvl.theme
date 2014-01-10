@@ -155,9 +155,10 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return ('ala/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
-                        parseSearchData: function(rawData) {
+                        parseSearchData: function(rawData, searchString) {
                             var list = [];
                             if (rawData.searchResults && rawData.searchResults.results) {
+                                var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {
                                     // build the proper data object
                                     result = { title: "", description: "", actions: {} };
@@ -166,6 +167,22 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     if (item.commonNameSingle) {
                                         result.title = item.commonNameSingle + ' <i class="taxonomy">' + result.title + '</i>';
                                     }
+
+                                    // ALA actually performs an 'OR' search on all terms provided.
+                                    // So, if we search for say 'Macropus Rufus' we would get back all species containing the
+                                    // word 'macropus' and also all species containing the word 'rufus'.
+                                    // This is a check to filter out results that do not contain ALL of the words.
+                                    var wrongSpecies = false;
+                                    $.each(searchStringWords, function(i, searchStringWord) {
+                                        if (result.title.toLowerCase().indexOf(searchStringWord) == -1) {
+                                            wrongSpecies = true;
+                                        }
+                                    });
+                                    if (wrongSpecies) {
+                                        // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
+                                        return true;
+                                    }
+
                                     if (item.rank) {
                                         result.description += ' (' + item.rank + ')';
                                     }
@@ -332,7 +349,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     // which extracts the result objects from the returned data.
                                     if (provider.search.parseSearchData) {
                                         // if this provider has a parseSearchData function, call it
-                                        bccvl_search.displayResults(provider.search.parseSearchData(data), $resultsField);
+                                        bccvl_search.displayResults(provider.search.parseSearchData(data, $inputField.val()), $resultsField);
                                     } else {
                                         // otherwise assume the data is already good
                                         bccvl_search.displayResults(data, $resultsField);
