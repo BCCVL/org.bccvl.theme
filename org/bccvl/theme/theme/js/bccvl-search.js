@@ -411,15 +411,22 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             case 'alaimport': // import from ala
                                 var alaParam = actionParam;
                                 $('<a class="fine"><i class="icon-download-alt icon-link"></i></a>').click(function(e) {
+                                    $download_button_div = $(this);
                                     $.xmlrpc({
                                         url: window.bccvl.config.data_mover.baseUrl,
                                         methodName: 'pullOccurrenceFromALA',
                                         params: [alaParam],
                                         success: function(response, status, jqXHR) {
                                             console.log('XMLRPC call to download ALA occurrences succeeded: ', status);
+                                            $download_button = $download_button_div.find('.icon-download-alt');
+                                            $download_button.hide();
+                                            $download_button_div.prepend('<div class="icon-ok"></div>');
+                                            $info.append('<p><i>Importing of this dataset has started.</i></p>');
+                                            $download_button_div.unbind( "click" );
                                         },
                                         error: function(jqXHR, status, error) {
                                             console.log('XMLRPC call to download ALA occurrences failed with status: "', status, '"; the error was: ', error);
+                                            $info.append('<p><i class="bccvl-fail-red">Failed to start import. Please try again.</i></p>');
                                             alert('There was a problem downloading your ALA data.');
                                         },
                                     });

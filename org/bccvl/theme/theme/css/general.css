@@ -221,6 +221,16 @@ a:not([href]).fine,
     margin-right: auto;
 }
 
+.bccvl-small-spinner {
+    background: url(../images/ajax-loader.gif) no-repeat 4px 4px;
+    padding: 4px 4px 0px 22px;
+    height: 15px;
+    background-position: right center;
+}
+
+.bccvl-fail-red {
+    color:#ff0000;
+}
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
