@@ -99,6 +99,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 $.each(rawData.autoCompleteList, function(index, item) {
                                     // each item in the autoCompleteList is a taxon.  so it
                                     // only needs to show up once in the suggestion list.
+                                    if (typeof(item.rankString) == 'undefined') return true;
                                     var name = ' (' + item.rankString + ')';
                                     name = name + ' <i>' + item.name + '</i>';
                                     if (item.commonName) {
