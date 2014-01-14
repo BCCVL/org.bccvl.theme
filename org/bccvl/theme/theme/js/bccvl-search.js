@@ -309,6 +309,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                             var parsedDataList = provider.autocomplete.parseAutoData(data);
                                             if (parsedDataList.length == 0) {
                                                 provider.autocomplete.noResultsFound();
+                                                process(parsedDataList);
                                             } else {
                                                 process(parsedDataList);
                                             }
@@ -317,6 +318,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                             process(data);
                                         }
                                         $inputField.removeClass("bccvl-search-spinner");
+                                    },
+                                    error: function(xhr, status, msg){
+                                        $inputField.removeClass("bccvl-search-spinner");
+                                        // THIS IS FOR DEBUGGING ON THE QA SERVER (search for fish)- remember to delete
+                                        if (status != 'abort'){
+                                            alert(status, xhr);
+                                        }
                                     }
                                 });
                             }, delay);
