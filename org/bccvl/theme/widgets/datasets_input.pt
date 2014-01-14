@@ -11,7 +11,7 @@
     <tr><td colspan="3"></td></tr>
     <tal:block tal:repeat="key view/items">
     <tr class="bccvl-envgroup info" data-envgroupid="env1group"
-        tal:attributes="data-envgroupid key/value">
+        tal:attributes="data-envgroupid key/value;data-friendlyname string:collapsable_climatelayer_${key/content}" >
        <td><i class="icon-plus"></i></td>
        <td colspan="2" tal:content="key/content">Dataset title</td>
     </tr>

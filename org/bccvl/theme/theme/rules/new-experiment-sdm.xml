@@ -36,6 +36,7 @@
                             </xsl:if>
                             <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                             <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
+                            <xsl:attribute name="data-friendlyname">checkbox_algorithm_<xsl:copy-of select="string(../label/span/text())" /></xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">
@@ -129,6 +130,7 @@
                                 </xsl:if>
                                 <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                                 <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
+                                <xsl:attribute name="data-friendlyname">radio_occurrence_<xsl:copy-of select="text()" /></xsl:attribute>
                                 <xsl:attribute name="required">required</xsl:attribute>
                                 <xsl:attribute name="parsley-error-message">Please choose a set of occurrences.</xsl:attribute>
                             </xsl:element>
@@ -169,6 +171,7 @@
                                 </xsl:if>
                                 <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                                 <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
+                                <xsl:attribute name="data-friendlyname">radio_absence_<xsl:copy-of select="text()" /></xsl:attribute>
                                 <xsl:attribute name="required">required</xsl:attribute>
                                 <xsl:attribute name="parsley-error-message">Please choose a set of absence points.</xsl:attribute>
                             </xsl:element>

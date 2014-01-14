@@ -162,11 +162,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {
                                     // build the proper data object
-                                    result = { title: "", description: "", actions: {} };
+                                    result = { title: "", description: "", actions: {}, friendlyname: "" };
                                     result.title = item.name;
+                                    result.friendlyname = item.name;
 
                                     if (item.commonNameSingle) {
-                                        result.title = item.commonNameSingle + ' <i class="taxonomy">' + result.title + '</i>';
+                                        result.title = item.commonNameSingle + ' <i class="taxonomy">' + item.name + '</i>';
+                                        result.friendlyname = item.commonNameSingle + ' ' + item.name;
                                     }
 
                                     // ALA actually performs an 'OR' search on all terms provided.
@@ -410,7 +412,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'viz': // visualise
                                 var vizParam = actionParam;
-                                $('<a class="fine"><i class="icon-eye-open icon-link"></i></a>').click(function(e) {
+                                $('<a class="fine"><i class="icon-eye-open icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i></a>').click(function(e) {
                                     $vizFrame.attr('src', vizParam);
                                     e.preventDefault();
                                     return false;
@@ -419,7 +421,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
                                 var alaParam = actionParam;
-                                $('<a class="fine"><i class="icon-download-alt icon-link"></i></a>').click(function(e) {
+                                $('<a class="fine"><i class="icon-download-alt icon-link" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i></a>').click(function(e) {
                                     $download_button_div = $(this);
                                     $.xmlrpc({
                                         url: window.bccvl.config.data_mover.baseUrl,

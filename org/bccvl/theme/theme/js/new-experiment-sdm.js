@@ -90,7 +90,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var html = '';
                 html += '<tr data-envparent="' + parentId + '">';
                     // checkbox for selecting the layer
-                    html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" ';
+                    html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" data-friendlyname="checkbox_climatelayer_' + friendlyName + '"';
                     html += '/></td>';
                     html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
                     // viz button to viz the layer (and whatever other actions eventually go here)
