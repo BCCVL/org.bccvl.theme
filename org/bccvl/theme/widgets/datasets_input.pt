@@ -9,21 +9,18 @@
   </thead>
   <tbody>
     <tr><td colspan="3"></td></tr>
-    <tal:block tal:repeat="key view/items">
-    <tr class="bccvl-envgroup info" data-envgroupid="env1group"
-        tal:attributes="data-envgroupid key/value;data-friendlyname string:collapsable_climatelayer_${key/content}" >
-       <td><i class="icon-plus"></i></td>
-       <td colspan="2" tal:content="key/content">Dataset title</td>
-    </tr>
-    <input id="" name="" type="hidden" value=""
-           tal:attributes="id string:${key/id}-select;
-                           name string:${key/name}.select;"/>
-    <!--
-    <tr class="hidden" data-envparent="env1group"
-        tal:attributes="data-envparent key/value">
-    </tr>
-    -->
-    </tal:block>
   </tbody>
+  <tal:block tal:repeat="key view/items">
+    <tbody>
+      <tr class="bccvl-envgroup info" data-envgroupid="env1group"
+          tal:attributes="data-envgroupid key/value;data-friendlyname string:collapsable_climatelayer_${key/content}" >
+        <td><i class="icon-plus"></i></td>
+        <td colspan="2" tal:content="key/content">Dataset title</td>
+      </tr>
+      <input id="" name="" type="hidden" value=""
+             tal:attributes="id string:${key/id}-select;
+                             name string:${key/name}.select;"/>
+    </tbody>
+  </tal:block>
 </table>
 </html>
