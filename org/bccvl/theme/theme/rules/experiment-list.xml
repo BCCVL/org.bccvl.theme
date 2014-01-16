@@ -6,10 +6,8 @@
     <!-- EXPERIMENT LIST ============================================ -->
     <rules if-path="experiments/">
         <theme href="html/experiment-list.html" />
-        <replace
-            css:theme-children="div#experiment-list" 
-            css:content-children="div#experiment-list" 
-        />
+
+        <replace css:theme-children="div#experiment-list"  css:content-children="div#experiment-list" />
     </rules>
     
 </rules>

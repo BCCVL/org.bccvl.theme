@@ -1,0 +1,35 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <rules if-path="knowledgebase">
+
+    	<theme href="html/knowledgebase.html" />
+
+    	<!-- Breadcrumbs -->
+    	<after css:theme-children="ul.breadcrumb">
+    		<xsl:for-each select="//div[@id='portal-breadcrumbs']/span[@dir='ltr']">
+    			<li class="separator icon-chevron-right"></li>
+    			<li>
+    				<xsl:element name="a">
+    					<xsl:choose>
+    						<xsl:when test="a">
+    							<xsl:attribute name="href">
+    								<xsl:value-of select="a/@href" />
+    							</xsl:attribute>
+    							<xsl:value-of select="a" />
+    						</xsl:when>
+    						<xsl:otherwise>
+    							<xsl:attribute name="href">.</xsl:attribute>
+    							<xsl:value-of select="span" />
+    						</xsl:otherwise>
+    					</xsl:choose>
+    				</xsl:element>
+    			</li>
+    		</xsl:for-each>
+    	</after>
+
+    </rules>
+
+</rules>
