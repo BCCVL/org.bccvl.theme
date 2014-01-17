@@ -130,8 +130,14 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return list;
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
-                        noResultsFound: function() {
+                        noResultsFound: function(reason) {
                             var $desc = $('.bccvl-labelfade-description');
+                            if (reason){
+                                $desc.html(reason);
+                            }
+                            else{
+                                $desc.html('No Results Found');
+                            }
                             $desc.show();
                             $desc.removeClass('bccvl-read');
                             $desc.addClass('bccvl-unread');
@@ -323,9 +329,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     },
                                     error: function(xhr, status, msg){
                                         $inputField.removeClass("bccvl-search-spinner");
-                                        // THIS IS FOR DEBUGGING ON THE QA SERVER (search for fish)- remember to delete
                                         if (status != 'abort'){
-                                            alert(status, xhr);
+                                            provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                            process(parsedDataList);
                                         }
                                     }
                                 });
@@ -356,6 +362,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 dataType: 'jsonp',                       // ..using JSONP instead
                                 url: searchUrl,
                                 success: function(data) {
+                                    if (data['searchResults']['status'] == 'ERROR'){
+                                        provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                        $('.bccvl-results-spinner').css('display', 'none');
+                                        return
+                                    }
+
                                     // maybe the search provider will have a parseSearchData function,
                                     // which extracts the result objects from the returned data.
                                     if (provider.search.parseSearchData) {
