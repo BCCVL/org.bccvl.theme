@@ -110,7 +110,9 @@ define(     ['jquery'],
 
                 if (params) {
                     for (param in params) {
-                        url = url + '&' + param + '=' + params[param];
+                        url = url + '&' 
+                        + encodeURIComponent(param) + '=' 
+                        + encodeURIComponent(params[param]);
                     }
                 }
 
