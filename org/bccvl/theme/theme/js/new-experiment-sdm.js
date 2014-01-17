@@ -81,7 +81,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             }
 
             // make a function to render a layer row.
-            var renderLayerRow = function(parentId, layerId, friendlyName) {
+            var renderLayerRow = function(parentId, layerId, friendlyName, fileName, zipFile) {
 
                 // Build id and name
                 id = parentId + '_' + layerId;
@@ -102,7 +102,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // here's where we hook up the viz
                 var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
                 $vizButton.click(function(evt) {
-                    viz.visualise(parentId, $vizButton); // the parentId (datasetId) isn't enough, TODO: talk to Robert about it
+                    var params = {
+                        file_name: fileName
+                    }
+                    viz.visualise(zipFile, $vizButton, null, params);
                     evt.preventDefault();
                 });
 
@@ -146,8 +149,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                     // render each layer
                                     $.each(list.layers, function(key, value) {
                                         var name = value.label;
+                                        var fileName = value.filename
+                                        var zipFile = list.file 
                                         layerNames.push(name);
-                                        layers[name] = renderLayerRow(token, key, name);
+                                        layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
                                     });
                                     // now sort the names and add them in order
                                     layerNames.sort();

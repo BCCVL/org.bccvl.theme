@@ -91,7 +91,7 @@ define(     ['jquery'],
                 });
             },
 
-            visualise: function(dataId, vizElement, options) {
+            visualise: function(dataId, vizElement, options, params) {
                 var opts = {
                     apiType: 'auto_detect',
                     apiVersion: '1',
@@ -102,18 +102,25 @@ define(     ['jquery'],
                     for (var opt in options) { opts[opt] = options[opt]; }
                 }
 
+                var url = this.visualiserBaseUrl +
+                    'api/' + encodeURIComponent(opts.apiType) +
+                    '/' + encodeURIComponent(opts.apiVersion) +
+                    '/' + encodeURIComponent(opts.vizType) +
+                    '?data_url=' + encodeURIComponent(dataId);
+
+                if (params) {
+                    for (param in params) {
+                        url = url + '&' + param + '=' + params[param];
+                    }
+                }
+
                 var $vizFrame = $(vizElement);
                 if (! $vizFrame.is('iframe')) {
                     // if the vizElement isn't an iframe, find the closest iframe
                     $vizFrame = $(vizElement).closest('.tab-pane, body').find('iframe.bccvl-viz'); // TODO: don't assume tabs
                 }
 
-                $vizFrame.attr('src', this.visualiserBaseUrl +
-                    'api/' + encodeURIComponent(opts.apiType) +
-                    '/' + encodeURIComponent(opts.apiVersion) +
-                    '/' + encodeURIComponent(opts.vizType) +
-                    '?data_url=' + encodeURIComponent(dataId)
-                );
+                $vizFrame.attr('src', url);
             }
         }
 
