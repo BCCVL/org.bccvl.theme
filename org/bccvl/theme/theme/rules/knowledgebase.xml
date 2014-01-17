@@ -30,6 +30,15 @@
     		</xsl:for-each>
     	</after>
 
+    	<!-- Navbar -->
+    	<replace css:theme-children="div.bccvl-navtree" css:content="ul.navTreeLevel0" />
+
+    	<!-- Content of a page that is not a leaf node -->
+    	<replace css:if-content="div.folder_listing" css:theme-children="div.bccvl-content" css:content="div.folder_listing" />
+
+    	<!-- Content of a page that is a leaf node -->
+    	<replace css:if-content="div#content" css:theme-children="div.bccvl-content" css:content="div#content" />
+
     </rules>
 
 </rules>
