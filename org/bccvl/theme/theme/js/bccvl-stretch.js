@@ -177,6 +177,10 @@ define(     ['jquery', 'bootstrap'],
                     height -= parentBottomPos;
                 }
 
+                if (height < 500){
+                    height = 500;
+                }
+
                 $stretcher.css('height', height + 'px');
                 $stretcher.css('top', top + 'px');
             }
