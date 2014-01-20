@@ -1,13 +1,24 @@
 
 //
-// main JS for the knowledgeboard page.
+// main JS for the knowledgebase page.
 //
 define(     ['jquery', 'bootstrap'],
     function( $) {
     // ==============================================================
         $(function() {
-            // nothing to do so far.
-            console.log('page behaviour loaded.');
+            
+            // Select the appropriate tab to show.
+            // Show the search tab if the URL contains '/facet_listing'
+        	var $tabPane;
+        	if (location.pathname.indexOf('/facet_listing') > -1) {
+        		$tabPane = $('a[href="#tab-search"]');
+        	} else {
+        		$tabPane = $('a[href="#tab-browse"]');
+        	}
+        	if (!$tabPane.hasClass('active')) {
+    			$tabPane.tab('show');
+    		}
+
         });
     // ==============================================================
     }

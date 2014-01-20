@@ -33,6 +33,9 @@
     	<!-- Navbar -->
     	<replace css:theme-children="div.bccvl-navtree" css:content="ul.navTreeLevel0" />
 
+        <!-- Search pane -->
+        <replace css:theme-children="div.bccvl-kbsearch" css:content="div.facets" />
+
     	<!-- Content of a page that is not a leaf node -->
     	<replace css:if-content="div.folder_listing" css:theme-children="div.bccvl-content" css:content="div.folder_listing" />
 

@@ -507,6 +507,7 @@ td.bccvl-full-list {
 .bccvl-experiment-summary {
     line-height: 15px;
 }
+
 /* footer ---------------------------------------------------------------- */
 
 footer {
@@ -528,7 +529,80 @@ footer.navbar {
 }
 
 
+/* knowledgebase ---------------------------------------------------------------- */
 
+.navTree {
+  margin-bottom: 0px;
+  margin-left: 0;
+  list-style: none;
+  *zoom: 1;
+  border-left: 1px dotted #d5d5d5;
+}
 
+.navTree > li {
+  float: none;
+}
 
+.navTree > li > a {
+  display: block;
+  line-height: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-right: 0;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+}
 
+.navTree > li > a:hover,
+.navTree > li > a:focus {
+  text-decoration: none;
+  background-color: #eeeeee;
+}
+
+.navTree > li > a > img {
+  max-width: none;
+  display: none;
+}
+
+.navTree > .pull-right {
+  float: right;
+}
+
+.navTree:before,
+.navTree:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.navTree:after {
+  clear: both;
+}
+
+.navTree > li:last-child > a {
+  margin-bottom: 1px;
+}
+
+.navTree > .navTreeCurrentNode > a,
+.navTree > .navTreeCurrentNode > a:hover,
+.navTree > .navTreeCurrentNode > a:focus {
+  color: #ffffff;
+  background-color: #0088cc;
+}
+
+.navTreeLevel0 {
+  border-left: 0px;
+}
+
+.navTreeLevel1,
+.navTreeLevel2,
+.navTreeLevel3,
+.navTreeLevel4,
+.navTreeLevel5 {
+  margin-left: 12px;
+}
