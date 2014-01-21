@@ -4,8 +4,37 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets/">
+    <rules if-path="datasets">
         <theme href="html/dataset-list.html" />
+
+        <!-- Breadcrumbs -->
+        <after css:theme-children="ul.breadcrumb">
+            <xsl:for-each select="//div[@id='portal-breadcrumbs']/span[@dir='ltr']">
+                <li class="separator icon-chevron-right"></li>
+                <li>
+                    <xsl:element name="a">
+                        <xsl:choose>
+                            <xsl:when test="a">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="a/@href" />
+                                </xsl:attribute>
+                                <xsl:value-of select="a" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="href">.</xsl:attribute>
+                                <xsl:value-of select="span" />
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:element>
+                </li>
+            </xsl:for-each>
+        </after>
+
+        <!-- Datasets Navbar -->
+        <before css:theme-children="div.bccvl-navtree" css:content="ul.navTreeLevel0" />
+
+        <!-- Content of a page that is a leaf node -->
+        <replace css:if-content="div#content" css:theme-children="div.bccvl-content" css:content="div#content" />
 
         <!--
         Get the list of datasets

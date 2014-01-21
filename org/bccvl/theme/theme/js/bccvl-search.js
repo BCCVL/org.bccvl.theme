@@ -401,7 +401,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 var $tab = $(domElement).closest('.tab-pane');
                 if ($tab.length > 0) {
                     // if we're in a tab, find a viz frame on our tab
-                    var $vizFrame = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz');
+                    var $vizFrames = $(domElement).closest('.tab-pane').find('iframe.bccvl-viz');
+                    if ($vizFrames.length > 0) {
+                        var $vizFrame = $vizFrames.first()
+                    } else {
+                        // We're in a tab with no viz frame
+                        var $vizFrame = $('iframe.bccvl-viz').first();
+                    }
                 } else {
                     // if we're not in a tab, just get the first viz frame on the page
                     var $vizFrame = $('iframe.bccvl-viz').first();
@@ -425,6 +431,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             case 'viz': // visualise
                                 var vizParam = actionParam;
                                 $('<a class="fine"><i class="icon-eye-open icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i></a>').click(function(e) {
+                                    if ($vizFrame.parent().hasClass('hidden')) {
+                                        // To switch between preview pane and vizualiser
+                                        $vizFrame.parent().removeClass('hidden');
+                                        $('div.bccvl-content').addClass('hidden');
+                                    }
                                     $vizFrame.attr('src', vizParam);
                                     e.preventDefault();
                                     return false;

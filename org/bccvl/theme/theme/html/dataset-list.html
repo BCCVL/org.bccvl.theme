@@ -109,8 +109,7 @@
 			<div class="span12">
 				<ul class="breadcrumb">
 					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-datasets">Datasets</a></li>
+					<!-- The rest of the breadcrumbs is filled in by diazo -->
 				</ul>
 			</div>
 		</div>
@@ -123,7 +122,41 @@
 
 				<div class="span4">
 
+					<!-- tabs -->
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-reference" data-toggle="tab">Reference Data Sets</a></li>
+						<li><a href="#tab-find" data-toggle="tab">Find Occurrences</a></li>
+					</ul>
+
+					<div class="tab-content">
+
+						<div class="bccvl-navtree tab-pane active" id="tab-reference">
+							<!-- Filled in by Diazo -->
+						</div>
+
+						<div class="tab-pane" id="tab-find">
+							<div id="searchOccurrence" class="bccvl-search-form form-inline">
+								<input name="searchOccurrence_query" type="text" class="span8" placeholder="Find more species...">
+								<select name="searchOccurrence_source" class="span4">
+									<option value="ala">at ALA</option>
+								</select>
+
+								<p class="bccvl-labelfade-description bccvl-read"></p>
+
+								<img src='images/big-ajax-loader.gif' class="bccvl-results-spinner"></img>
+								<div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+
+							</div>
+						</div>
+
+						<br/>
+						<a class="btn btn-primary bccvllinks-dataset-upload pull-left">Upload New Dataset</a>
+
+					</div>
+
+
 					<!-- list of my own datasets -->
+					<!--
 					<table class="table table-hover bccvl-datasettable">
 						<thead>
 							<tr><th colspan="3">
@@ -178,9 +211,10 @@
 							</tr>
 
 						</tbody>
-					</table>
+					</table> -->
 
 					<!-- list of datasets that are shared to me -->
+					<!--
 					<table class="table table-hover bccvl-datasettable">
 						<thead>
 							<tr><th colspan="3">
@@ -215,13 +249,19 @@
 
 						</tbody>
 					</table>
+					-->
 				</div>
+
 
 				<!-- preview area -->
 				<div class="span8">
-					<div class="bccvl-preview-pane well bccvl-stretcher">
+
+					<div class="bccvl-preview-pane well bccvl-stretcher hidden">
 						<iframe class="bccvl-viz" name="viz">
 						</iframe>
+					</div>
+
+					<div class="bccvl-content">
 					</div>
 				</div>
 
