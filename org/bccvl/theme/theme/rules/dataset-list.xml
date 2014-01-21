@@ -4,7 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets">
+    <rules if-path="datasets" if-not-path="++add++org.bccvl.content.dataset">
+
         <theme href="html/dataset-list.html" />
 
         <!-- Breadcrumbs -->

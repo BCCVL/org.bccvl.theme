@@ -7,17 +7,6 @@ body {
 }   }
 
 
-/* broken things (not yet implemented) */
-a[href=""],
-a[href="#"],
-a:not([href]),
-.broken
-{
-    box-shadow: inset 0 0 20px 3px #fee, 0 0 5px 3px #fee ! important;
-    opacity: 0.66 ! important;
-}
-
-
 /* not broken after all */
 a[href=""].fine,
 a[href="#"].fine,
