@@ -15,6 +15,7 @@
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/dashboard.xml" />
     <xi:include href="rules/knowledgebase.xml" />
+    <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
