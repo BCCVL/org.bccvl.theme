@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+	<meta charset="utf-8">
+	<title>BCCVL Search</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/general.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="lib/html5shiv/html5shiv.js"></script>
+	<![endif]-->
+
+    <!-- include portal_url to simplify path referencing -->
+    <script src="../plone_javascript_variables.js"></script>
+    
+	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+	<script src="lib/require/require.js"></script>
+	<script>
+		// require is a bit annoying to kick off when it's running in a plone/diazo page.
+		// Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+		// set that as a prefix in the requirejs config, but to initially get to that
+		// config file, it needs to have the prefix added there too.
+		if (window.location.port == '9292') {
+			require(['../js/common.js'], function (common) { require(['js/search']); } );
+		} else {
+			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/search']); } );
+		}
+	</script>
+</head>
+
+<body>
+
+<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+
+		<!-- button for narrow screen menu -->
+		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+
+		<!-- project title -->
+		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_final.png" alt="BCC Virtual Lab"></a>
+
+		<!-- container for content that will hide under menu when screen is narrow -->
+		<div class="nav-collapse collapse">
+
+			<!-- user menu -->
+			<div class="btn-group pull-right">
+				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
+					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a class="bccvllinks-userdetails"><i class="icon-info-sign"></i> My details</a></li>
+					<li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+					<li class="divider"></li>
+					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+				</ul>
+			</div>
+
+			<!-- search field -->
+			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
+			</form>
+
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<button id="untheme" class="bccvl-devbutton pull-right"
+				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
+			>no theme</button>
+			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
+				onclick="
+					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
+				"
+			>show placeholders</button>
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+			<!-- debug -->
+
+			<!-- main menu items -->
+			<ul class="nav">
+				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
+				<li               ><a class="bccvllinks-datasets">Data</a></li>
+				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
+				<!-- <li               ><a>Published Outputs</a></li> -->
+				<li               ><a class="bccvllinks-knowledgebase">Knowledgebase</a></li>
+			</ul>
+
+		</div><!--/.nav-collapse -->
+
+	</div></div></nav><!-- end of nav wrapper -->
+
+<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- container for main content -->
+	<div class="container-fluid bccvl-main">
+
+
+<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<div class="bccvl-breadcrumb row-fluid">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<li><a class="bccvllinks-home icon-home"></a></li>
+					<!-- The rest of the breadcrumbs is filled in by diazo -->
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-search" href="/@@search">Search</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+<!-- Search content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-search">
+
+			<div class="row-fluid bccvl-stretch-parent">
+
+        <div id="search-results">
+        	<!-- content of the search goes in here -->
+        </div>        
+      </div>
+
+		</section>
+
+	</div><!-- end of main content container -->
+
+
+
+<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<footer class="navbar navbar-fixed-bottom">
+		<div class="container-fluid">
+			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+		</div>
+	</footer>
+
+
+</body>
