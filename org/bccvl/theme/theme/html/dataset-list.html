@@ -118,23 +118,36 @@
 <!-- dataset list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<section class="bccvl-datasetlist">
 
-			<div class="row-fluid bccvl-stretch-parent">
+			<div class="row-fluid">
 
-				<div class="span4">
+				<!-- tabs -->
+				<ul class="nav nav-tabs">
+					<li id= "tab-add" class="active"><a href="#tab-find" data-toggle="tab">Add Data Sets</a></li>
+					<li id= "tab-ref"> <a href="#tab-reference" data-toggle="tab">Reference Data Sets</a></li>
+				</ul>
 
-					<!-- tabs -->
-					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab-reference" data-toggle="tab">Reference Data Sets</a></li>
-						<li><a href="#tab-find" data-toggle="tab">Find Occurrences</a></li>
-					</ul>
 
-					<div class="tab-content">
+				<div class="tab-content">
 
-						<div class="bccvl-navtree tab-pane active" id="tab-reference">
-							<!-- Filled in by Diazo -->
+					<div class="bccvl-my-datasets tab-pane" id="tab-reference">
+						<div class="span4">
+							<div class="bccvl-navtree">
+								<!-- Filled in by Diazo -->
+							</div>
 						</div>
+						<div class="span8">
+							<div class="bccvl-content">
+							</div>
+						</div>
+					</div>
 
-						<div class="tab-pane" id="tab-find">
+					<div class="bccvl-add-datasets tab-pane active" id="tab-find">
+						<div class="span4">
+
+							<div class="bccvlbutton-dataset-upload"></div>
+							<br>
+							<br>
+
 							<div id="searchOccurrence" class="bccvl-search-form form-inline">
 								<input name="searchOccurrence_query" type="text" class="span8" placeholder="Find more species...">
 								<select name="searchOccurrence_source" class="span4">
@@ -148,121 +161,15 @@
 
 							</div>
 						</div>
+						<div class="span8">
+							<div class="bccvl-preview-pane well ">
+								<iframe class="bccvl-viz" name="viz">
+								</iframe>
+							</div>
 
-						<br/>
-						<a class="btn btn-primary bccvllinks-dataset-upload pull-left">Upload New Dataset</a>
-
+						</div>
 					</div>
 
-
-					<!-- list of my own datasets -->
-					<!--
-					<table class="table table-hover bccvl-datasettable">
-						<thead>
-							<tr><th colspan="3">
-								My Datasets
-							</th></tr>
-							<tr><td colspan="3">
-								<a class="btn btn-primary bccvllinks-dataset-upload pull-right">Upload New Dataset</a>
-							</td></tr>
-							<tr><td class="bccvl-searchform" colspan="3">
-								<div id="searchOccurrence" class="bccvl-search-form form-inline">
-									<input name="searchOccurrence_query" type="text" class="span8" placeholder="Find more species...">
-									<select name="searchOccurrence_source" class="span4">
-										<option value="ala">at ALA</option>
-									</select>
-
-									<p class="bccvl-labelfade-description bccvl-read"></p>
-
-									<img src='images/big-ajax-loader.gif' class="bccvl-results-spinner"></img>
-									<div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
-
-								</div>
-							</td></tr>
-						</thead>
-						<tbody>
-							<tr class="sampledata" style="display: none">
-								<td>
-									26 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
-									<p>using: annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-share" title="share"></i></a>
-									<a><i class="icon-circle-arrow-down" title="download"></i></a>
-									<a><i class="icon-pencil" title="edit metadata"></i></a>
-								</td>
-							</tr>
-							<tr class="sampledata" style="display: none">
-								<td>
-									28 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>
-									<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-share" title="share"></i></a>
-									<a><i class="icon-circle-arrow-down" title="download"></i></a>
-									<a><i class="icon-pencil" title="edit metadata"></i></a>
-								</td>
-							</tr>
-
-						</tbody>
-					</table> -->
-
-					<!-- list of datasets that are shared to me -->
-					<!--
-					<table class="table table-hover bccvl-datasettable">
-						<thead>
-							<tr><th colspan="3">
-								Datasets Shared With Me
-							</th></tr>
-						</thead>
-						<tbody>
-							<tr class="sampledata" style="display: none">
-								<td>
-									26 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
-									<p>using: annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-circle-arrow-down" title="download"></i></a>
-								</td>
-							</tr>
-							<tr class="sampledata" style="display: none">
-								<td>
-									28 Aug 2013
-								</td>
-								<td class="bccvl-table-label">
-									<h1>Projection for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>2085, RCP6.0</small></h1>
-									<p>using: SDM from Bioclim; annual mean temp, rainfall wettest qtr</p>
-								</td>
-								<td class="bccvl-table-controls">
-									<a><i class="icon-circle-arrow-down" title="download"></i></a>
-								</td>
-							</tr>
-
-						</tbody>
-					</table>
-					-->
-				</div>
-
-
-				<!-- preview area -->
-				<div class="span8">
-
-					<div class="bccvl-preview-pane well bccvl-stretcher hidden">
-						<iframe class="bccvl-viz" name="viz">
-						</iframe>
-					</div>
-
-					<div class="bccvl-content">
-					</div>
 				</div>
 
 			</div>

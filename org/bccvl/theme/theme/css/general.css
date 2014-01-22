@@ -220,6 +220,10 @@ a:not([href]).fine,
 .bccvl-fail-red {
     color:#ff0000;
 }
+
+.bccvlbutton-dataset-upload{
+    float: right;
+}
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
@@ -595,6 +599,8 @@ footer.navbar {
 .navTreeLevel5 {
   margin-left: 12px;
 }
+
+/* search results ---------------------------------------------------------------- */
 
 #search-results-bar {
     border-bottom: 1px solid #DDDDDD;

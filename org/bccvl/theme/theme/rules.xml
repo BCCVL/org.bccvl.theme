@@ -139,7 +139,13 @@
     <!--    Link to upload a new dataset (which currently just means a file:
             //a#file
     -->
-    <merge attributes="href" css:theme="a.bccvllinks-dataset-upload"    content="//a[@id='org-bccvl-content-dataset']" />
+    <replace css:theme-children=".bccvlbutton-dataset-upload">
+        <a class="btn btn-primary bccvlbutton-dataset-upload pull-left" href="{$portal_base_url}/datasets/++add++org.bccvl.content.dataset">Upload New Dataset</a>
+    </replace>
+
+    <replace css:theme-children=".bccvllinks-dataset-upload">
+        <a href="{$portal_base_url}/datasets/++add++org.bccvl.content.dataset">Upload a Dataset</a>
+    </replace>
 
     <!-- miscellaneous -->
     <replace theme="//footer" content="//footer"/>
