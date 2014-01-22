@@ -9,8 +9,11 @@ define(     ['jquery', 'js/bccvl-search', 'js/bccvl-stretch', 'bootstrap'],
 
         		// This sets the active tab to reference data sets if the url 
         		// does not end with datasets
-        		var my_path = location.pathname;
-            if (!my_path.endsWith('datasets') || !my_path.endsWith('datasets/')){
+
+        		var my_path = String(location.pathname);
+        		console.log(!endsWith(my_path, '/datasets'))
+        		console.log(!endsWith(my_path, '/datasets/'))
+            if (!endsWith(my_path, '/datasets') && !endsWith(my_path, '/datasets/')){
             	$('.bccvl-add-datasets').removeClass('active');
             	$('.bccvl-my-datasets').addClass('active');
             	$('#tab-add').removeClass('active');
@@ -22,8 +25,8 @@ define(     ['jquery', 'js/bccvl-search', 'js/bccvl-stretch', 'bootstrap'],
 
         });
 
-        String.prototype.endsWith = function(suffix) {
-    			return this.indexOf(suffix, this.length - suffix.length) !== -1;
+				function endsWith(path, suffix){
+					return path.indexOf(suffix, path.length - suffix.length) !== -1;
 				};
     // ==============================================================
     }
