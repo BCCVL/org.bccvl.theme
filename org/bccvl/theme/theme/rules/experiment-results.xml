@@ -162,20 +162,23 @@
                         </td>
                         <td class="bccvl-table-controls">
                             <xsl:element name="a">
+                                <xsl:attribute name="class">fine</xsl:attribute>
                                 <xsl:attribute name="title">Download this file</xsl:attribute>
                                 <xsl:attribute name="href">
                                     <xsl:value-of select="@href" />/view/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" />
                                 </xsl:attribute>
                                 <i class="icon-download-alt icon-link"></i>
                             </xsl:element>
-                            <xsl:element name="a">
-                                <xsl:attribute name="class">bccvl-auto-viz</xsl:attribute>
-                                <xsl:attribute name="title">Preview this file</xsl:attribute>
-                                <xsl:attribute name="data-viz-id">
-                                    <xsl:value-of select="@href" />/view/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" />
-                                </xsl:attribute>
-                                <i class="icon-eye-open icon-link"></i>
-                            </xsl:element>
+                            <xsl:if test="not(@data-mimetype = 'application/octet-stream')">
+                                <xsl:element name="a">
+                                    <xsl:attribute name="class">bccvl-auto-viz</xsl:attribute>
+                                    <xsl:attribute name="title">Preview this file</xsl:attribute>
+                                    <xsl:attribute name="data-viz-id">
+                                        <xsl:value-of select="@href" />/view/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" />
+                                    </xsl:attribute>
+                                    <i class="icon-eye-open icon-link"></i>
+                                </xsl:element>
+                            </xsl:if>
                         </td>
                     </tr>
                 </xsl:for-each>
