@@ -21,7 +21,7 @@ define(     ['jquery'],
 
                 // This goes looking for viz buttons, and attaches a click event.
                 // The buttons (or links or whatever) should look like this:
-                // <button class=".bccvl-occurrence-viz" data-viz-id="someId">
+                // <button class=".bccvl-occurrence-viz" data-viz-id="http://<baseurl>/bccvl/<some path to the file>">
 
                 // here's a list of all the viz-able things.   We'll loop through this below.
                 // each item looks like this:
@@ -44,17 +44,17 @@ define(     ['jquery'],
                     // - - - - - - - - - - - - - - - - - - - - -
                     'raster': {
                         apiType:   'raster',
-                        resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
+                        resolveId: function(rawId) { return rawId; }
                     },
                     // - - - - - - - - - - - - - - - - - - - - -
                     'r': {
                         apiType:   'r',
-                        resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
+                        resolveId: function(rawId) { return rawId; }
                     },
                     // - - - - - - - - - - - - - - - - - - - - -
                     'auto': {
                         apiType:   'auto_detect',
-                        resolveId: function(rawId) { return window.location.protocol + '//' + window.location.host + rawId; }
+                        resolveId: function(rawId) { return rawId; }
                     },
                     // - - - - - - - - - - - - - - - - - - - - -
                 }
