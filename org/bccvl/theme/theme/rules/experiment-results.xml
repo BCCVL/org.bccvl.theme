@@ -169,7 +169,7 @@
                                 </xsl:attribute>
                                 <i class="icon-download-alt icon-link"></i>
                             </xsl:element>
-                            <xsl:if test="not(@data-mimetype = 'application/octet-stream')">
+                            <xsl:if test="not(@data-mimetype = 'application/octet-stream' or @data-mimetype = 'application/zip')">
                                 <xsl:element name="a">
                                     <xsl:attribute name="class">bccvl-auto-viz</xsl:attribute>
                                     <xsl:attribute name="title">Preview this file</xsl:attribute>
