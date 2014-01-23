@@ -19,6 +19,14 @@ define(     ['jquery', 'bootstrap'],
     			$tabPane.tab('show');
     		}
 
+            // Toggle More filters - hides or shows the extra filters
+            $('.morefilters').find('h4').click(function(event){
+                if ($(this).parent().find('.facetmenu').css('display') == 'none')
+                    $(this).parent().find('.facetmenu').css('display', 'block')
+                else
+                    $(this).parent().find('.facetmenu').css('display', 'none')
+            })
+
         });
     // ==============================================================
     }
