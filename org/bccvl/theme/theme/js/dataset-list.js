@@ -11,8 +11,7 @@ define(     ['jquery', 'js/bccvl-search', 'js/bccvl-stretch', 'bootstrap'],
         		// does not end with datasets
 
         		var my_path = String(location.pathname);
-        		console.log(!endsWith(my_path, '/datasets'))
-        		console.log(!endsWith(my_path, '/datasets/'))
+
             if (!endsWith(my_path, '/datasets') && !endsWith(my_path, '/datasets/')){
             	$('.bccvl-add-datasets').removeClass('active');
             	$('.bccvl-my-datasets').addClass('active');
