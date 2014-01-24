@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="org.bccvl.site">
+<body>
+    <!--<metal:slot metal:fill-slot="header" i18n:domain="cmf_default">-->
+      <!--<h1 tal:content="view/label">View Title</h1>-->
+    <!--</metal:slot>-->
+    <metal:main fill-slot="main">
+        <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
+
+        <div id="bccvl-experiment-view">
+            <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+            <table id="bccvl-experimentresults-table" class="table table-hover">
+              <thead>
+                <tr><th colspan="5">Experiment Results</th></tr>
+              </thead>
+              <tbody>
+                <tal:block tal:repeat="result context/@@folderListing">
+                  <tr class="info">
+                    <td colspan="3"
+                        tal:content="result/Title">Result Title</td>
+                  </tr>
+                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
+                     <tr>
+                       <td colspan="2" class="bccvl-table-label">
+                         <h1 tal:content="item/Title">Item Title</h1>
+                       </td>
+                       <td class="bccvl-table-controls"
+                           tal:define="downloadurl string:${item/getURL}/@@download/file/${item/file/filename}">
+                         <a class="fine"
+                            title="Download this file"
+                            href="#downloadurl"
+                            tal:attributes="href downloadurl">
+                            <i class="icon-download-alt icon-link"></i>
+                         </a>
+                         <a class="bccvl-auto-viz"
+                            title="Preview this file"
+                            data-viz-id="#downloadurl"
+                            tal:attributes="data-viz-id downloadurl"
+                            tal:condition="python: item.Format() not in ('application/octet-stream', 'application/zip')">
+                            <i class="icon-eye-open icon-link"></i>
+                         </a>
+                       </td>
+                     </tr>
+                  </tal:block>
+                </tal:block>
+              </tbody>
+            </table>
+        </div>
+    </metal:main>
+
+</body>
+</html>

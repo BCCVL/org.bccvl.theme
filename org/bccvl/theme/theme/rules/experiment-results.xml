@@ -134,57 +134,8 @@
         </before>
 
         <!-- get the results -->
-        <before css:theme-children=".bccvl-experimentresults table tbody">
-            <!--
-            <xsl:for-each select="//*[@id='bccvl-experimentresults']//li//a">
-                <tr>
-                    <td colpan="2" class="bccvl-table-label">
-                        <h1><xsl:copy-of select="text()" /></h1>
-                        <p class="broken">(provenance &amp; description)</p>
-                    </td>
-                    <td class="bccvl-table-controls">
-                        <xsl:element name="a">
-                            <xsl:attribute name="class">bccvl-auto-viz</xsl:attribute>
-                            <xsl:attribute name="title">preview this dataset</xsl:attribute>
-                            <xsl:attribute name="data-viz-id"><xsl:value-of select="@href" />/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" /></xsl:attribute>
-                            <i class="icon-eye-open"></i>
-                        </xsl:element>
-                    </td>
-                </tr>
-            </xsl:for-each>
-            -->
-            <xsl:for-each select="//*[@class='bccvl-experiment-result-set']">
-                <tr class="info"><td colspan="3"><xsl:value-of select="h3/a/text()" /></td></tr>
-                <xsl:for-each select="ul//li//a">
-                    <tr>
-                        <td colpan="2" class="bccvl-table-label">
-                            <h1><xsl:copy-of select="text()" /></h1>
-                        </td>
-                        <td class="bccvl-table-controls">
-                            <xsl:element name="a">
-                                <xsl:attribute name="class">fine</xsl:attribute>
-                                <xsl:attribute name="title">Download this file</xsl:attribute>
-                                <xsl:attribute name="href">
-                                    <xsl:value-of select="@href" />/view/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" />
-                                </xsl:attribute>
-                                <i class="icon-download-alt icon-link"></i>
-                            </xsl:element>
-                            <xsl:if test="not(@data-mimetype = 'application/octet-stream' or @data-mimetype = 'application/zip')">
-                                <xsl:element name="a">
-                                    <xsl:attribute name="class">bccvl-auto-viz</xsl:attribute>
-                                    <xsl:attribute name="title">Preview this file</xsl:attribute>
-                                    <xsl:attribute name="data-viz-id">
-                                        <xsl:value-of select="@href" />/view/++widget++form.widgets.file/@@download/<xsl:copy-of select="text()" />
-                                    </xsl:attribute>
-                                    <i class="icon-eye-open icon-link"></i>
-                                </xsl:element>
-                            </xsl:if>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </xsl:for-each>
-        </before>
-
+        <replace css:theme=".bccvl-experimentresults table"
+                 css:content="#bccvl-experimentresults-table"/>
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
