@@ -33,8 +33,13 @@
     	<!-- Navbar -->
     	<replace css:theme-children="div.bccvl-navtree" css:content="ul.navTreeLevel0" />
 
-        <!-- Search pane -->
-        <replace css:theme-children="div.bccvl-kbsearch" css:content="div.facets" />
+        <!-- Search Tab (if there is search available on the current page) -->
+        <after css:if-content="div.facets" css:theme-children="ul.nav-tabs" >
+            <li><a href="#tab-search" data-toggle="tab">Search</a></li>
+        </after>
+
+        <!-- Search Tab content (if there is search available on the current page) -->
+        <replace css:if-content="div.facets" css:theme-children="div.bccvl-kbsearch" css:content="div.facets" />
 
     	<!-- Content of a page that is not a leaf node -->
     	<replace css:if-content="div.folder_listing" css:theme-children="div.bccvl-content" css:content="div.folder_listing" />
