@@ -109,7 +109,8 @@
 			<div class="span12">
 				<ul class="breadcrumb">
 					<li><a class="bccvllinks-home icon-home"></a></li>
-					<!-- The rest of the breadcrumbs is filled in by diazo -->
+					<li class="separator icon-chevron-right"></li>
+					<li><a class="bccvllinks-datasets">Datasets</a></li>
 				</ul>
 			</div>
 		</div>
@@ -122,8 +123,8 @@
 
 				<!-- tabs -->
 				<ul class="nav nav-tabs">
-					<li id= "tab-add" class="active"><a href="#tab-find" data-toggle="tab">Add Data Sets</a></li>
-					<li id= "tab-ref"> <a href="#tab-reference" data-toggle="tab">Reference Data Sets</a></li>
+					<li id= "tab-add" class="active"><a href="#tab-find" data-toggle="tab">Add Dataset</a></li>
+					<li id= "tab-ref"> <a href="#tab-reference" data-toggle="tab">My Datasets</a></li>
 				</ul>
 
 
@@ -131,9 +132,33 @@
 
 					<div class="bccvl-my-datasets tab-pane" id="tab-reference">
 						<div class="span4">
-							<div class="bccvl-navtree">
-								<!-- Filled in by Diazo -->
-							</div>
+							<table class="table table-hover bccvl-datasetstable">
+
+								<thead>
+									<tr>
+										<th colspan="3">My Datasets</th>
+									</tr>
+								</thead>
+
+								<tbody>
+
+									<!-- Sample Data -->
+									<tr class="sampledata" style="display: none">
+										<td>
+											26 Aug 2013
+										</td>
+										<td class="bccvl-table-label">
+											<h1>SDM for Cane Toad <i class="taxonomy">Rhinella marina</i> <small>Bioclim</small></h1>
+											<p>using: annual mean temp, rainfall wettest qtr</p>
+										</td>
+										<td class="bccvl-table-controls">
+											<a><i class="icon-share" title="share"></i></a>
+											<a><i class="icon-circle-arrow-down" title="download"></i></a>
+											<a><i class="icon-pencil" title="edit metadata"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 						<div class="span8">
 							<div class="bccvl-content">
