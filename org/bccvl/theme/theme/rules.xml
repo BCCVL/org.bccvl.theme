@@ -123,6 +123,10 @@
                 <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">Log in</a>
             </div>
         </replace>
+
+        <drop css:theme="a.bccvllinks-dashboard"/>
+        <drop css:theme="a.bccvllinks-datasets"/>
+        <drop css:theme="a.bccvllinks-experiments"/>
     </rules>
 
     <!-- contentview (content level grouping) -->
