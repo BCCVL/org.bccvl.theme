@@ -8,26 +8,7 @@
 
         <theme href="html/dataset-list.html" />
 
-        <!-- List of datasets -->
-        <before css:theme-children="div.bccvl-my-datasets table.bccvl-datasetstable > tbody">
-            <xsl:for-each css:select="div#content-core table.listing > tbody > tr">
-                <tr>
-                    <td>
-                        <xsl:value-of select="(td)[4]" />
-                    </td>
-                    <td class="bccvl-table-label">
-                        <h1><xsl:value-of select="(td)[1]" /></h1>
-                        <p>Owner: <xsl:copy-of select="(td)[2]/a" /></p>
-                        <p>Type: <xsl:value-of select="(td)[3]"/></p>
-                    </td>
-                    <td class="bccvl-table-controls">
-                        <a><i class="icon-share" title="share"></i></a>
-                        <a><i class="icon-circle-arrow-down" title="download"></i></a>
-                        <a><i class="icon-pencil" title="edit metadata"></i></a>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </before>
+        <after css:theme-children="div.bccvl-my-datasets div.span4" css:content="table.bccvl-datasetstable" />
 
     </rules>
 </rules>
