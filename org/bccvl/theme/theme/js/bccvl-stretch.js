@@ -118,7 +118,7 @@ define(     ['jquery', 'bootstrap'],
 
                 // grab the stretcher we're working on, and its parents
                 var $stretcher = $(stretcherElem);
-                var $parent = $stretcher.offsetParent();
+                var $parent = $stretcher.closest('.bccvl-stretch-parent');
 
                 opts.startTop = $stretcher.position().top;
 
@@ -152,18 +152,21 @@ define(     ['jquery', 'bootstrap'],
             },
             // --------------------------------------------------------------
             _stretch: function($stretcher, $parent, opts) {
-
                 var $window = $(window);
 
                 // parentTopPos: pixels above the top of the viewport.
                 // includes adjustment for top padding.
                 // +ve: above the window, -ve: showing on screen
+
                 var parentTopPos = $window.scrollTop() - $parent.offset().top + opts.topPad;
 
                 // parentBottomPos: pixels above the bottom of the viewport.
                 // includes adjustment for bottom padding.
                 // +ve: below the window, -ve: showing on screen
                 var parentBottomPos = $parent.innerHeight() - $window.height() - parentTopPos + opts.topPad + opts.bottomPad;
+
+                // minimum height to deal with pages where the left table is too small
+                var minHeight = window.innerHeight - $stretcher.offset().top
 
                 var top = opts.startTop;
                 var height = $parent.innerHeight() - opts.startTop;
@@ -177,8 +180,8 @@ define(     ['jquery', 'bootstrap'],
                     height -= parentBottomPos;
                 }
 
-                if (height < 500){
-                    height = 500;
+                if (height < minHeight ){
+                    height = minHeight
                 }
 
                 $stretcher.css('height', height + 'px');
