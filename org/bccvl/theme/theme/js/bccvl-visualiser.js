@@ -34,12 +34,24 @@ define(     ['jquery'],
                     // - - - - - - - - - - - - - - - - - - - - -
                     'occurrence': {
                         apiType:   'point',
-                        resolveId: function(rawId) { return window.bccvl.lookups.occurrencesMap[rawId].file; }
+                        resolveId: function(rawId) {
+                            if (window.bccvl.lookups) {
+                                return window.bccvl.lookups.occurrencesMap[rawId].file;
+                            } else {
+                                return rawId;
+                            }
+                        }
                     },
                     // - - - - - - - - - - - - - - - - - - - - -
                     'absence': {
                         apiType:   'point',
-                        resolveId: function(rawId) { return window.bccvl.lookups.occurrencesMap[rawId].file; }
+                        resolveId: function(rawId) {
+                            if (window.bccvl.lookups) {
+                                return window.bccvl.lookups.occurrencesMap[rawId].file;
+                            } else {
+                                return rawId;
+                            }
+                        }
                     },
                     // - - - - - - - - - - - - - - - - - - - - -
                     'raster': {
