@@ -34,7 +34,7 @@
                          <a class="fine"
                             title="Download this file"
                             href="#downloadurl"
-                            tal:attributes="href downloadurl">
+                            tal:attributes="href downloadurl; data-friendlyname string:a_experimentoutput_${item/file/filename}">
                             <i class="icon-download-alt icon-link"></i>
                          </a>
                          <a class="bccvl-auto-viz"
