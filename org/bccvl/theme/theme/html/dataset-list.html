@@ -144,31 +144,33 @@
 					</div>
 
 					<div class="bccvl-add-datasets tab-pane active" id="tab-find">
-						<div class="span4">
+						<div class="row-fluid bccvl-stretch-parent">
+							<div class="span4">
 
-							<div class="bccvlbutton-dataset-upload"></div>
-							<br>
-							<br>
+								<div class="bccvlbutton-dataset-upload"></div>
+								<br>
+								<br>
 
-							<div id="searchOccurrence" class="bccvl-search-form form-inline">
-								<input name="searchOccurrence_query" type="text" class="span8" placeholder="Find more species...">
-								<select name="searchOccurrence_source" class="span4">
-									<option value="ala">at ALA</option>
-								</select>
+								<div id="searchOccurrence" class="bccvl-search-form form-inline">
+									<input name="searchOccurrence_query" type="text" class="span8" placeholder="Find more species...">
+									<select name="searchOccurrence_source" class="span4">
+										<option value="ala">at ALA</option>
+									</select>
 
-								<p class="bccvl-labelfade-description bccvl-read"></p>
+									<p class="bccvl-labelfade-description bccvl-read"></p>
 
-								<img src='images/big-ajax-loader.gif' class="bccvl-results-spinner"></img>
-								<div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+									<img src='images/big-ajax-loader.gif' class="bccvl-results-spinner"></img>
+									<div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+
+								</div>
+							</div>
+							<div class="span8">
+								<div class="bccvl-preview-pane well bccvl-stretcher">
+									<iframe class="bccvl-viz" name="viz">
+									</iframe>
+								</div>
 
 							</div>
-						</div>
-						<div class="span8">
-							<div class="bccvl-preview-pane well ">
-								<iframe class="bccvl-viz" name="viz">
-								</iframe>
-							</div>
-
 						</div>
 					</div>
 

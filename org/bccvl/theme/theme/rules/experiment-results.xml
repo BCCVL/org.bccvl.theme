@@ -137,6 +137,9 @@
         <replace css:theme=".bccvl-experimentresults table"
                  css:content="#bccvl-experimentresults-table"/>
 
+        <replace css:theme-children=".experiment-details" css:content-children="#fieldset-default"/>
+        <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters"/>
+
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     </rules>

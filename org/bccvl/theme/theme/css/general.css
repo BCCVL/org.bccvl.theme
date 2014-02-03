@@ -97,7 +97,6 @@ a:not([href]).fine,
 /* preview window -------------------------------------------------------- */
 
 .bccvl-preview-pane {
-    height: 500px;
     min-height: 100px;
     position: relative;
 }
@@ -744,4 +743,41 @@ div.morefilters h4 span.label {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+
+/*experiment results page*/
+
+.experiment-details > div > label{
+    font-weight:    bold;
+}
+
+.experiment-details > div{
+    margin-bottom: 15px;
+}
+
+.dict-field > .row{
+    margin-left: 0;
+}
+
+.experiment-configuration > div > label{
+    font-weight:    bold;
+}
+
+.experiment-configuration > div{
+    margin-bottom: 15px;
+}
+
+.experiment-configuration.object-widgetlabel {
+    display: inline;
+    font-weight: bold;
+}
+
+.label, .badge {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.experiment-configuration, .object-widget, .widget{
+    margin-left: 10px;
 }
