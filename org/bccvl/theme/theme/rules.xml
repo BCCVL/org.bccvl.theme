@@ -36,6 +36,11 @@
     <!-- don't theme special pages -->
     <notheme if-path="@@manage-job-queue/" />
     <notheme if-path="@@overview-controlpanel/" />
+    <notheme if-path="@@usergroup-userprefs/" />
+    <notheme if-path="@@usergroup-groupprefs/" />
+    <notheme if-path="@@usergroup-controlpanel/" />
+    <notheme if-path="@@member-registration/" />
+    <notheme if-path="@@new-user/" />
     <notheme if-path="prefs_install_products_form/" />
 
      <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
