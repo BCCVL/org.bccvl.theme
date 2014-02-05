@@ -67,25 +67,6 @@
 				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
 			</form>
 
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<button id="untheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
-			>no theme</button>
-			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
-				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
-				"
-			>show placeholders</button>
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-
 			<!-- main menu items -->
 			<ul class="nav">
 				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
@@ -203,24 +184,6 @@
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose"><input class="broken" type="checkbox" disabled="disabled" name="sdmAlgorithm" id="bioclim" value="bioclim"></td>
-										<td class="bccvl-table-label"><label for="bioclim">
-											<h1>Bioclim <small>Bioclimatic Envelope Model</small></h1>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-info-sign" title="more information"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose"><input class="broken" type="checkbox" disabled="disabled" name="sdmAlgorithm" id="brt" value="brt"></td>
-										<td class="bccvl-table-label"><label for="brt">
-											<h1>BRT <small>Boosted Regression Trees</small></h1>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-info-sign" title="more information"></i></a>
-										</td>
-									</tr>
 								</tbody>
 							</table>
 
@@ -281,58 +244,6 @@
 									-->
 								</thead>
 								<tbody>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="koalaID" value="koalaID">
-										</td>
-										<td class="bccvl-table-label"><label for="koalaID">
-											<h1>Species name (e.g. Koala)</h1>
-											<p>provenance (e.g. provided by BCCVL)</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="toadID" value="toadID">
-										</td>
-										<td class="bccvl-table-label"><label for="toadID">
-											<h1>Cane Toad <i class="taxonomy">Rhinella marina</i></h1>
-											<p>imported from ALA, 8 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="shmoadID" value="shmoadID">
-										</td>
-										<td class="bccvl-table-label"><label for="shmoadID">
-											<h1>Shmane Toad <i class="taxonomy">Rhinella shmarina</i></h1>
-											<p>imported from ALA, 9 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="occurrenceInput" id="dogID" value="dogID">
-										</td>
-										<td class="bccvl-table-label"><label for="dogID">
-											<h1>Dog</h1>
-											<p>imported from ALA, 10 July 2013</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
 								</tbody>
 							</table>
 						</div></div>
@@ -371,29 +282,6 @@
 								</thead>
 
 								<tbody>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="absenceInput" id="bccvlRandom" value="bccvlRandom">
-										</td>
-										<td class="bccvl-table-label"><label for="bccvlRandom">
-											<h1>Randomly generate points across the study area</h1>
-											<p>BCCVL will generate a set of 10,000 random points.</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-choose">
-											<input type="radio" name="absenceInput" id="xkoalaID" value="xkoalaID">
-										</td>
-										<td class="bccvl-table-label"><label for="xkoalaID">
-											<h1>Title, e.g. Random points across Queensland</h1>
-											<p>provenance, e.g. randomly generated by BCCVL)</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a><i class="icon-eye-open" title="preview this dataset"></i></a>
-										</td>
-									</tr>
 								</tbody>
 							</table>
 						</div></div>

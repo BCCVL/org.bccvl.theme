@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="utf-8">
-	<title>BCCVL Dashboard</title>
+	<title>BCCVL Home</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -62,15 +62,6 @@
 			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
 				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
 			</form>
-
-			<button id="untheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
-			>no theme</button>
-			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
-				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
-				"
-			>show placeholders</button>
 
 			<!-- main menu items -->
 			<ul class="nav">

@@ -65,25 +65,6 @@
 				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
 			</form>
 
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<button id="untheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
-			>no theme</button>
-			<button id="hide_placeholders" class="bccvl-devbutton pull-right"
-				onclick="
-					$('a[href=\'\'], a[href=\'#\'], a:not([href]), .broken, .sampledata td, .sampledata').not('a[href=\'].fine, a[href=\'#\'].fine, a:not([href]).fine, .typeahead.dropdown-menu a[href=\'#\'], .typeahead.dropdown-menu a:not([href])').css('display', '');
-				"
-			>show placeholders</button>
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-			<!-- debug -->
-
 			<!-- main menu items -->
 			<ul class="nav">
 				<li               ><a class="bccvllinks-dashboard">Dashboard</a></li>
@@ -182,7 +163,7 @@
 							<ul class="dropdown-menu">
 								<li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
 								<li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-								<li><a class="sampledata"><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
+								<li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
 							</ul>
 						</div>
 					</div>
@@ -223,46 +204,6 @@
 									</th></tr>
 								</thead>
 								<tbody>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>distribution model <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>current projection <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>using annual mean temperature, bioclim3 and bioclim5</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>terms of use <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>terms of use for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
-									<tr class="sampledata" style="display: none">
-										<td class="bccvl-table-label"><label for="bioclim1">
-											<h1>attributions <small>Cane Toad <i class="taxonomy">Rhinella marina</i></small></h1>
-											<p>attributions for these results</p>
-										</label></td>
-										<td class="bccvl-table-controls">
-											<a href=""><i class="icon-eye-open" title="preview this dataset"></i></a>
-											<a href=""><i class="icon-cog" title="uh, dunno"></i></a>
-										</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>

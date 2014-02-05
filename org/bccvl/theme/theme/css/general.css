@@ -19,33 +19,6 @@ a:not([href]).fine,
 }
 
 
-/* sample data (to demonstrate how content will show up) */
-.sampledata td,
-.sampledata {
-    background-image: url(../images/sample-data-bg.png);
-    opacity: 0.5;
-}
-
-.debug > div {
-    background: #ffd;
-    padding: 2em;
-    margin: 3em 0 1em;
-    opacity: 0.1;
-    transition: 1s;
-}
-.debug > div:hover { opacity: 1.0; }
-
-.bccvl-devbutton {
-    font-size: 66%;
-    margin: 0 0.3em;
-    padding: 0 0.7em;
-    border: none;
-    background: rgba(100,100,100,0.1);
-    opacity: 0.33;
-}
-.bccvl-devbutton:hover { opacity: 1; }
-
-
 /* main navbar ----------------------------------------------------------- */
 
 .navbar {

@@ -110,7 +110,7 @@
                                     <ul class="dropdown-menu">
                                         <li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
                                         <li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-                                        <li><a class="sampledata"><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
+                                        <li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
                                     </ul>
                                 </div>
                             </div>
