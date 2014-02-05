@@ -24,9 +24,9 @@
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
 		if (window.location.port == '9292') {
-			require(['../js/common.js'], function (common) { require(['js/dashboard']); } );
+			require(['../js/common.js'], function (common) { require(['js/login']); } );
 		} else {
-			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dashboard']); } );
+			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/login']); } );
 		}
 	</script>
 </head>
@@ -79,17 +79,39 @@
 	<div class="span10" id="notice-placehoder"></div>
 <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- container for main content -->
-	<div class="container-fluid bccvl-main">
-			<div class="span12">
-        <div class="row">
-            <div class="span6">
-                <div id="aaf-login" />
-            </div>    
-            <div class="span6">
-                <div id="site-login" />
-            </div>
-        </div>
-      </div>
+	<div class="bccvl-main">
+
+		<div class="row-fluid">
+			<div class="span6 offset3">
+				<nav class="navbar navbar-default navbar-static" role="navigation">
+					<div class="navbar-inner">
+						<a class="brand">Login</a>
+						<ul class="nav navbar-nav pull-right">
+							<li class="dropdown">
+								<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
+									Alternative Login
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
+									<li role="presentation">
+										<a id="login-aaf" href="#" tabindex="-1" role="menuitem">Australian Access Federation (AAF)</a>
+									</li>
+									<li role="presentation">
+										<a id="login-basic" href="#" tabindex="-1" role="menuitem">Built-in Authentication</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</nav>
+				<div id="wrapper-aaf" class="bccvl-loginfieldset">
+					<div id="aaf-login" />
+				</div>
+				<div id="wrapper-basic" class="hidden bccvl-loginfieldset">
+					<div id="site-login" />
+				</div>
+			</div>
+		</div>
 	</div><!-- end of main content container -->
 
 <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

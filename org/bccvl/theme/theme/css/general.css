@@ -166,6 +166,13 @@ a:not([href]).fine,
     opacity: 0;
 }
 
+
+/* Login page ---------------------------------------------------------*/
+.bccvl-loginfieldset {
+    text-align: center;
+}
+
+
 /* Dataset page ---------------------------------------------------------*/
 .bccvl-search-spinner {
     background:#FFFFFF url(../images/ajax-loader.gif) no-repeat 4px 4px;
