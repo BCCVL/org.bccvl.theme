@@ -22,9 +22,6 @@
        <div id="experiment-list">
             <table class="table table-hover bccvl-experimenttable">
                 <thead>
-                    <tr><th colspan="3">
-                        My Experiments
-                    </th></tr>
                       <tr class="headers">
                           <th class="header headerSortUp">Date<span /></th>
                           <th>Experiment<span /></th>
@@ -38,19 +35,16 @@
              <tr tal:define="exp python:view.experiment_details(item)">
                <td style="width: 13%;" tal:content="python: item.created.strftime('%b %d, %Y %I:%M %p')" />
                  <td class="bccvl-table-label">
-                   <h1 data-toggle="collapse"
-                       tal:attributes="data-target string:#${item_id}">
+                   <h1 tal:attributes="data-target string:#${item_id}">
                      <tal:experiment_title content="item/Title" />
                      <tal:sdm_details condition="python: item.portal_type == 'org.bccvl.content.sdmexperiment'">
                        <i class="taxonomy" tal:content="exp/species_occurrence" />
                        <small tal:content="exp/functions" />
                      </tal:sdm_details>
                    </h1>
-                   <div class="collapse"
-                        tal:attributes="id item_id">
+                   <div tal:attributes="id item_id">
                      <p class="bccvl-experiment-parameters"
                         tal:condition="python: item.portal_type == 'org.bccvl.content.sdmexperiment'">
-                        using:
                        <tal:species_absence content="exp/species_absence" />,
                        <tal:environmental_layers content="exp/environmental_layers" />
                      </p>
