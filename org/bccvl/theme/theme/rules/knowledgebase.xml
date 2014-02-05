@@ -7,42 +7,11 @@
 
     	<theme href="html/knowledgebase.html" />
 
-    	<!-- Breadcrumbs -->
-    	<after css:theme-children="ul.breadcrumb">
-    		<xsl:for-each select="//div[@id='portal-breadcrumbs']/span[@dir='ltr']">
-    			<li class="separator icon-chevron-right"></li>
-    			<li>
-    				<xsl:element name="a">
-    					<xsl:choose>
-    						<xsl:when test="a">
-    							<xsl:attribute name="href">
-    								<xsl:value-of select="a/@href" />
-    							</xsl:attribute>
-    							<xsl:value-of select="a" />
-    						</xsl:when>
-    						<xsl:otherwise>
-    							<xsl:attribute name="href">.</xsl:attribute>
-    							<xsl:value-of select="span" />
-    						</xsl:otherwise>
-    					</xsl:choose>
-    				</xsl:element>
-    			</li>
-    		</xsl:for-each>
-    	</after>
-
-    	<!-- Navbar -->
-    	<replace css:theme-children="div.bccvl-navtree" css:content="ul.navTreeLevel0" />
-
-        <!-- Search Tab (if there is search available on the current page) -->
-        <after css:if-content="div.facets" css:theme-children="ul.nav-tabs" >
-            <li><a href="#tab-search" data-toggle="tab">Search</a></li>
-        </after>
-
         <!-- Search Tab content (if there is search available on the current page) -->
         <replace css:if-content="div.facets" css:theme-children="div.bccvl-kbsearch" css:content="div.facets" />
 
     	<!-- Content of a page that is not a leaf node -->
-    	<replace css:if-content="div.folder_listing" css:theme-children="div.bccvl-content" css:content="div.folder_listing" />
+    	<replace css:if-content="div.folder_listing" css:theme-children="div.bccvl-kbsearchcontent" css:content="div.folder_listing" />
 
     	<!-- Content of a page that is a leaf node -->
     	<replace css:if-content="div#content" css:theme-children="div.bccvl-content" css:content="div#content" />
