@@ -429,17 +429,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         switch (action) {
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'viz': // visualise
-                                var vizParam = actionParam;
-                                $('<a class="fine"><i class="icon-eye-open icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i></a>').click(function(e) {
-                                    if ($vizFrame.parent().hasClass('hidden')) {
-                                        // To switch between preview pane and vizualiser
-                                        $vizFrame.parent().removeClass('hidden');
-                                        $('div.bccvl-content').addClass('hidden');
-                                    }
-                                    $vizFrame.attr('src', vizParam);
-                                    e.preventDefault();
-                                    return false;
-                                }).appendTo($actions);
+                                var html = '<a class="fine" href="' + actionParam + '" target="_blank">';
+                                html += '<i class="icon-eye-open icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i></a>';
+                                $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala

@@ -174,6 +174,11 @@ a:not([href]).fine,
 
 
 /* Dataset page ---------------------------------------------------------*/
+
+.bccvl-add-datasets {
+    min-height: 300px;
+}
+
 .bccvl-search-spinner {
     background:#FFFFFF url(../images/ajax-loader.gif) no-repeat 4px 4px;
     padding:4px 4px 4px 22px;
