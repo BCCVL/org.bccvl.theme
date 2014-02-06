@@ -4,10 +4,14 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets" if-not-path="++add++org.bccvl.content.dataset">
+    <rules if-path="datasets/" if-not-path="++add++org.bccvl.content.dataset">
 
         <theme href="html/dataset-list.html" />
 
+        <!-- Tabs -->
+        <before css:theme-children="section.bccvl-datasetlist > div.row-fluid" css:content="ul.nav" />
+
+        <!-- Dataset Table -->
         <after css:theme-children="div.bccvl-my-datasets div.span4" css:content="table.bccvl-datasetstable" />
 
     </rules>
