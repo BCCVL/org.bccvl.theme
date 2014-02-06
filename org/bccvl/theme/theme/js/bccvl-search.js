@@ -455,7 +455,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                             $download_button = $download_button_div.find('.icon-download-alt');
                                             $download_button.hide();
                                             $download_button_div.prepend('<div class="icon-ok"></div>');
-                                            $info.append('<p><i>Importing of this dataset has started.</i></p>');
+                                            $info.append('<p><i>Importing of this dataset has started. This may take a few minutes to complete.</i></p>');
                                             $download_button_div.unbind( "click" );
                                         },
                                         error: function(jqXHR, status, error) {
