@@ -208,6 +208,34 @@ a:not([href]).fine,
 .bccvlbutton-dataset-upload{
     float: right;
 }
+
+.bccvl-datasetstable th span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    margin-top: 5px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("++theme++org.bccvl.theme/lib/bootstrap/img/glyphicons-halflings.png");
+    background-position: 14px 14px;
+    background-repeat: no-repeat;
+}
+.bccvl-datasetstable th.headerSortUp span {
+    background-position: -288px -120px;
+}
+.bccvl-datasetstable th.headerSortDown span {
+    background-position: -313px -119px;
+}
+
+.bccvl-datasetstable tr.headers {
+    background-color: #f5f5f5;
+}
+
+.bccvl-datasetstable tr.headers th {
+    cursor: pointer;
+}
+
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
@@ -472,6 +500,10 @@ td.bccvl-table-controls a:hover {
 
 .bccvl-experimenttable tr.headers {
     background-color: #f5f5f5;
+}
+
+.bccvl-experimenttable tr.headers th {
+    cursor: pointer;
 }
 
 td.bccvl-full-list {

@@ -17,8 +17,10 @@
                    summary="Content listing"
                    i18n:attributes="summary summary_content_listing;">
                 <thead>
-                    <tr>
-                        <th colspan="3" tal:content="context/Title">My Datasets</th>
+                    <tr class="headers">
+                      <th class="header headerSortUp">Date<span /></th>
+                      <th>Summary<span /></th>
+                      <th />
                     </tr>
                 </thead>
 
