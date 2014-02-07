@@ -29,7 +29,7 @@
             <xsl:choose>
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed')">
                     <div class="row-fluid bccvl-status-block bccvl-status-error">
-                        <div class="span12 bccvl-expstatus alert alert-block alert-error" status="Failed">
+                        <div class="span12 bccvl-expstatus alert alert-block alert-error" data-status="Failed">
                             <p class="lead">this Experiment stopped with an <strong>error</strong></p>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
 
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New')">
                     <div class="row-fluid bccvl-status-block bccvl-status-running">
-                        <div class="span12 bccvl-expstatus alert alert-block" status="New">
+                        <div class="span12 bccvl-expstatus alert alert-block" data-status="New">
                             <p>
                                 This Experiment is <strong class="alert-queued-text">queued</strong>.
                             </p>
@@ -47,7 +47,7 @@
 
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued')">
                     <div class="row-fluid bccvl-status-block bccvl-status-running">
-                        <div class="span12 bccvl-expstatus alert alert-block" status="Queued">
+                        <div class="span12 bccvl-expstatus alert alert-block" data-status="Queued">
                             <p>
                                 This Experiment is <strong class="alert-queued-text">queued</strong>.
                             </p>
@@ -57,7 +57,7 @@
 
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Completed')">
                     <div class="row-fluid bccvl-status-block bccvl-status-complete">
-                        <div class="span12 bccvl-expstatus alert alert-success" status="Completed">
+                        <div class="span12 bccvl-expstatus alert alert-success" data-status="Completed">
                             <p>
                                 This Experiment is <strong>complete</strong>. The results are available below.
                             </p>

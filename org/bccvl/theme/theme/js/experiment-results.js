@@ -11,9 +11,11 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
           viz.init();
           
           // Check to see if the experiment is already completed or not before start polling
-          var experimentStatus = $(".bccvl-expstatus").attr('status');
+          var experimentStatus = $(".bccvl-expstatus").attr('data-status');
           if ( experimentStatus != 'Completed' && experimentStatus != 'Failed'){
-            pollExperimentStatus();  
+            pollExperimentStatus();
+            // Continue to poll until all algorithms are done
+            var intervalID = window.setInterval(pollExperimentStatus, 5000);
           }
         });
 
@@ -62,13 +64,11 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               $(".bccvl-expstatus").append(html);  
             }
 
-            // Continue to poll until all algorithms are done
             if (!completed){
               if (running){
                 $(".alert-queued-text").empty()
                 $(".alert-queued-text").text('running')
               }
-              setTimeout(function() { pollExperimentStatus(); }, 5000);
             }
             else {
               // refresh the page when the experiment is completed
