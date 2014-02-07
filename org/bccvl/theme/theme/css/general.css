@@ -175,7 +175,7 @@ a:not([href]).fine,
 
 /* Dataset page ---------------------------------------------------------*/
 
-.bccvl-add-datasets {
+.bccvl-datasetimportform {
     min-height: 300px;
 }
 

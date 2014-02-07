@@ -9,6 +9,7 @@
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/dataset-list.xml" />
+    <xi:include href="rules/dataset-import.xml" />
     <xi:include href="rules/experiment-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
@@ -110,6 +111,7 @@
     <merge attributes="href" css:theme="a.bccvllinks-events"            content="//li[@id='portaltab-events']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-users"             content="//li[@id='portaltab-Members']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-datasets"          content="//li[@id='portaltab-datasets']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-datasetsimport"    content="//li[@id='tab-datasetsimport']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-functions"         content="//li[@id='portaltab-functions']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />

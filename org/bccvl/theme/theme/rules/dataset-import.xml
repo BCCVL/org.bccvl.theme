@@ -1,0 +1,17 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- DATASET IMPORT ============================================ -->
+    <rules if-path="datasets_import_view/" >
+
+        <theme href="html/dataset-import.html" />
+
+        <!-- Tabs -->
+        <before css:theme-children="section.bccvl-datasetimport > div.row-fluid" css:content="ul.nav" />
+
+        <!-- Import Form -->
+        <after css:theme-children="div.bccvl-datasetimportform" css:content="div#searchOccurrence" />
+    </rules>
+</rules>

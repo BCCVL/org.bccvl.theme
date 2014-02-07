@@ -3,8 +3,8 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets/" if-not-path="++add++org.bccvl.content.dataset">
+    <!-- DATASET LIST ============================================ -->
+    <rules if-path="datasets/" >
 
         <theme href="html/dataset-list.html" />
 

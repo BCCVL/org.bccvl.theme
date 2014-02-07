@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>BCCVL My Datasets</title>
+	<title>BCCVL Import Dataset</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -26,9 +26,9 @@
 		// set that as a prefix in the requirejs config, but to initially get to that
 		// config file, it needs to have the prefix added there too.
 		if (window.location.port == '9292') {
-			require(['../js/common.js'], function (common) { require(['js/dataset-list']); } );
+			require(['../js/common.js'], function (common) { require(['js/dataset-import']); } );
 		} else {
-			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dataset-list']); } );
+			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dataset-import']); } );
 		}
 	</script>
 
@@ -90,28 +90,20 @@
 				<ul class="breadcrumb">
 					<li><a class="bccvllinks-home icon-home"></a></li>
 					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-datasets">My Datasets</a></li>
+					<li><a class="bccvllinks-datasetsimport">Import Dataset</a></li>
 				</ul>
 			</div>
 		</div>
 
 
-<!-- dataset list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-datasetlist">
+<!-- dataset import ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-datasetimport">
 
 			<div class="row-fluid">
 
-				<div class="bccvl-my-datasets" >
-					<div class="row-fluid bccvl-stretch-parent">
-						<div class="span4">
-						</div>
-						<div class="span8">
-							<div class="bccvl-preview-pane well bccvl-stretcher">
-								<iframe class="bccvl-viz" name="viz">
-								</iframe>
-							</div>
-						</div>
-					</div>	
+				<div class="span6 offset3">
+					<div class="bccvl-datasetimportform">
+					</div>
 				</div>
 
 			</div>
