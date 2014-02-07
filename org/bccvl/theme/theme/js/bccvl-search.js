@@ -209,7 +209,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     // now get the actions sorted.
                                     if (item.guid) {
                                         result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
-                                        result.actions.alaimport = item.guid;
+                                        result.actions.alaimport = [item.guid, item.name, item.commonNameSingle];
                                     }
 
                                     // actually we only want results that have occurrences..
@@ -435,13 +435,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
-                                var alaParam = actionParam;
                                 $('<a class="fine"><i class="icon-download-alt icon-link" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i></a>').click(function(e) {
                                     $download_button_div = $(this);
                                     $.xmlrpc({
                                         url: window.bccvl.config.data_mover.baseUrl,
                                         methodName: 'pullOccurrenceFromALA',
-                                        params: [alaParam],
+                                        params: actionParam,
                                         success: function(response, status, jqXHR) {
                                             console.log('XMLRPC call to download ALA occurrences succeeded: ', status);
                                             $download_button = $download_button_div.find('.icon-download-alt');
