@@ -798,3 +798,7 @@ div.morefilters h4 span.label {
 .experiment-configuration, .object-widget, .widget{
     margin-left: 10px;
 }
+
+.algorithm-status > span {
+    margin-right: 15px;
+}
