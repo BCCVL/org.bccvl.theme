@@ -19,6 +19,14 @@
       template="datasets_input.pt"
       />
 
+    <z3c:widgetTemplate
+      mode="input"
+      widget="org.bccvl.site.browser.interfaces.IDatasetsRadioWidget"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      template="datasetsradio_input.pt"
+      />
+
+
 
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
