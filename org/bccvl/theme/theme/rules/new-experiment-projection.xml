@@ -26,43 +26,8 @@
             so we need to give the radio button the select's name,
             not the option's name.
         -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-sdmtable > tbody">
-            <xsl:for-each select="//select[@id='form-widgets-species_distribution_models']/option">
-                <xsl:if test="@value!='--NOVALUE--'">
-                    <tr>
-                        <td class="bccvl-table-choose">
-                            <xsl:element name="input">
-                                <xsl:attribute name="type">radio</xsl:attribute>
-                                <xsl:attribute name="name"><xsl:value-of select="string(../@name)" /></xsl:attribute>
-                                <xsl:if test="@selected">
-                                    <xsl:attribute name="checked">checked</xsl:attribute>
-                                </xsl:if>
-                                <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
-                                <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
-                                <xsl:attribute name="required">required</xsl:attribute>
-                                <xsl:attribute name="parsley-error-message">Please choose a species distribution model</xsl:attribute>
-                            </xsl:element>
-                        </td>
-                        <td class="bccvl-table-label" colspan="2">
-                            <xsl:element name="label">
-                                <xsl:attribute name="for">
-                                    <xsl:value-of select="@id" />
-                                </xsl:attribute>
-                                <h1><xsl:copy-of select="text()" /></h1><p class="broken">provenance and description</p>
-                            </xsl:element>
-                        </td>
-                        <td class="bccvl-table-controls">
-                            <xsl:element name="a">
-                                <xsl:attribute name="class">fine bccvl-occurrence-viz</xsl:attribute>
-                                <xsl:attribute name="title">preview this sdm</xsl:attribute>
-                                <!--<xsl:attribute name="data-viz-id"><xsl:value-of select="@value" /></xsl:attribute>-->
-                                <i class="icon-eye-open icon-link"></i>
-                            </xsl:element>
-                        </td>
-                    </tr>
-                </xsl:if>
-            </xsl:for-each>
-        </before>
+
+        <replace css:theme="table.bccvl-sdmtable" css:content="table.bccvl-datasetstable" />
 
         <!-- hook in the years -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-yearstable > tbody">

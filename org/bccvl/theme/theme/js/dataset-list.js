@@ -12,8 +12,9 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 
 
       $('.bccvl-datasetstable').tablesorter({
         headers: { 
-            3: { sorter: false } // should be link column
-        }
+            2: { sorter: false } // should be link column
+        },
+            sortList: [[0,1]]
       });
 
     });

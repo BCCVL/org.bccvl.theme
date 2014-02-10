@@ -1,7 +1,7 @@
 //
 // main JS for the new projection experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-form-validator'],
+define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-form-validator', 'jquery-tablesorter'],
     function( $      ,  viz                 ,  wiztabs              ,  stretch          , fadeaway           ,  dimensions                  ,  formvalidator) {
     // ==============================================================
 
@@ -21,6 +21,15 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // hook up the wizard buttons
             wiztabs.init();
+
+            // init the table sorter
+            $('.bccvl-datasetstable').tablesorter({
+                headers: { 
+                    0: { sorter: false }, // radio box
+                    2: { sorter: 'text' }
+                },
+                sortList: [[1,1]]
+            });
 
         });
     // ==============================================================
