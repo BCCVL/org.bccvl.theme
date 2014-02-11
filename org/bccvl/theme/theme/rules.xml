@@ -112,6 +112,7 @@
     <merge attributes="href" css:theme="a.bccvllinks-users"             content="//li[@id='portaltab-Members']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-datasets"          content="//li[@id='portaltab-datasets']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-datasetsimport"    content="//li[@id='tab-datasetsimport']/a" />
+    <merge attributes="href" css:theme="a.bccvllinks-datasetsupload"    content="//li[@id='tab-datasetsupload']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-functions"         content="//li[@id='portaltab-functions']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
     <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />
@@ -148,17 +149,6 @@
     <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-sdmexperiment']" />
     <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"
                              content="//a[@id='org-bccvl-content-projectionexperiment']" />
-
-    <!--    Link to upload a new dataset (which currently just means a file:
-            //a#file
-    -->
-    <replace css:theme-children=".bccvlbutton-dataset-upload">
-        <a class="btn btn-primary bccvlbutton-dataset-upload pull-left" href="{$portal_base_url}/datasets/++add++org.bccvl.content.dataset">Upload New Dataset</a>
-    </replace>
-
-    <replace css:theme-children=".bccvllinks-dataset-upload">
-        <a href="{$portal_base_url}/datasets/++add++org.bccvl.content.dataset">Upload a Dataset</a>
-    </replace>
 
     <!-- miscellaneous -->
     <replace theme="//footer" content="//footer"/>

@@ -89,64 +89,133 @@
 				<ul class="breadcrumb">
 					<li><a class="bccvllinks-home icon-home"></a></li>
 					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-datasets">Datasets</a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li class="bccvllinks-dataset-upload"><a>Upload a Dataset</a></li>
+					<li><a class="bccvllinks-datasetsupload">Upload Datasets</a></li>
 				</ul>
 			</div>
 		</div>
 
 
-<!-- file upload form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-datasetupload row-fluid"><div class="span10 offset1">
+<!-- dataset upload ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-datasetupload">
 
-			<form class="form-horizontal" id="uploadDataset" method="" autocomplete="on" action="" enctype="multipart/form-data">
+			<div class="row-fluid">
 
-				<div class="control-group">
-					<label class="control-label">Data file</label>
-					<div class="controls">
-						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<span class="btn btn-file"><span class="fileupload-new">Select file to upload</span><span class="fileupload-exists">Change</span><input name="datasetFile" type="file" /></span>
-							<span class="fileupload-preview"></span>
-							<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+				<div class="span6 offset3">
+
+					<nav class="navbar navbar-default navbar-static" role="navigation">
+						<div class="navbar-inner">
+							<a class="brand">Upload a Dataset</a>
+							<ul class="nav navbar-nav pull-right">
+								<li class="dropdown">
+									<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
+										Dataset Type
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
+										<li role="presentation">
+											<a id="upload-species" href="#" tabindex="-1" role="menuitem">Species Dataset</a>
+										</li>
+										<li role="presentation">
+											<a id="upload-layer" href="#" tabindex="-1" role="menuitem">Layer Dataset</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
 						</div>
+					</nav>
+
+				<!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<div class="bccvl-datasetuploadspeciesform">
+
+						<form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+							<div class="control-group">
+								<label class="control-label">Species dataset file</label>
+								<div class="controls">
+									<div class="fileupload fileupload-new" data-provides="fileupload">
+										<span class="btn btn-file">
+											<span class="fileupload-new">Select file to upload</span>
+											<span class="fileupload-exists">Change</span>
+											<input name="addspecies.widgets.file" type="file" />
+										</span>
+										<span class="fileupload-preview"></span>
+										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Species dataset title</label>
+								<div class="controls">
+									<input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Species dataset description</label>
+								<div class="controls">
+									<textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Dataset Genre</label>
+								<div class="controls">
+									<select name="addspecies.widgets.datagenre:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Species Layer</label>
+								<div class="controls">
+									<select name="addspecies.widgets.specieslayer:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Scientific Name</label>
+								<div class="controls">
+									<input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Taxon ID</label>
+								<div class="controls">
+									<input type="text" name="addspecies.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Common Name</label>
+								<div class="controls">
+									<input type="text" name="addspecies.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<div class="controls">
+									<button name="addspecies.buttons.save" class="btn btn-primary" value="Save" type="submit">Upload Species Dataset</button>
+									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+								</div>
+							</div>
+
+						</form>
+
 					</div>
+
+				<!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<div class="bccvl-datasetuploadlayerform hidden">
+					</div>
+
 				</div>
 
-				<div class="control-group">
-					<label class="control-label">Dataset type</label>
-					<div class="controls">
-						<select name="datasetGenre">
-							<option>Species Occurrences</option>
-						</select>
-						<select name="datasetType">
-							<option>Presences</option>
-						</select>
-					</div>
-				</div>
+			</div>
 
-				<div class="control-group">
-					<label class="control-label">Dataset title</label>
-					<div class="controls">
-						<input type="text" name="datasetTitle" class="input-block-level" placeholder="Title of dataset">
-					</div>
-				</div>
 
-				<div class="control-group">
-					<label class="control-label">Dataset description</label>
-					<div class="controls">
-						<textarea name="datasetDescription" class="input-block-level" rows="6" placeholder="Description of dataset"></textarea>
-					</div>
-				</div>
-
-				<div class="control-group">
-					<div class="controls">
-						<button name="saveButton" class="btn btn-primary" value="Save" type="submit">Upload Dataset</button>
-						<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
-					</div>
-				</div>
-			</form>
-		</div></section>
+		</section>
 
 	</div><!-- end of main content container -->
 

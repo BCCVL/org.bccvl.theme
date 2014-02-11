@@ -3,59 +3,58 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!-- EXPERIMENT LIST ============================================ -->
-    <rules if-path="datasets/++add++org.bccvl.content.dataset">
+    <!-- DATASET UPLOAD ============================================ -->
+    <rules if-path="datasets_upload_view/">
 
         <theme href="html/dataset-upload.html" />
+
+        <!-- Tabs -->
+        <before css:theme-children="section.bccvl-datasetupload > div.row-fluid" css:content="ul.nav" />
+
+    <!-- Species form -->
+        <!-- Form field attributes -->
+        <copy attributes="name action method enctype" css:theme="form#addspecies" css:content="form#addspecies" />
+
+        <!-- Submit button -->
+        <copy attributes="name value type" css:theme="form#addspecies button[name='addspecies.buttons.save']" css:content="#addspecies-buttons-save" />
+
+        <!-- File field -->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.file']" css:content="#addspecies-widgets-file-input" />
+
+        <!-- Title field-->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.title']" css:content="#addspecies-widgets-title" />
+
+        <!-- Description field-->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.description']" css:content="#addspecies-widgets-description" />
+        <replace theme-children="//textarea[@name='addspecies.widgets.description']" content="//textarea[@id='addspecies-widgets-description']/text()" />
+
+        <!-- Dataset Genre field -->
+        <replace css:theme-children="form#addspecies [name='addspecies.widgets.datagenre:list']" css:content="#addspecies-widgets-datagenre option" />
+        <copy attributes="name" css:theme="form#addspecies [name='addspecies.widgets.datagenre:list']" css:content="#addspecies-widgets-datagenre" />
+
+        <!-- Species Layer field -->
+        <replace css:theme-children="form#addspecies [name='addspecies.widgets.specieslayer:list']" css:content="#addspecies-widgets-specieslayer option" />
+        <copy attributes="name" css:theme="form#addspecies [name='addspecies.widgets.specieslayer:list']" css:content="#addspecies-widgets-specieslayer" />
+
+        <!-- Scientific name field -->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.scientificName']" css:content="#addspecies-widgets-scientificName" />
+
+        <!-- Taxon ID field -->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />        
+
+        <!-- Common name field -->
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.vernacularName']" css:content="#addspecies-widgets-vernacularName" />        
+
+
+
 
         <!--
             don't theme the page unless the expected file input on it. This is required
             because the plone form posts back to the same URL, and we don't want to mess
             that up.
         -->
-        <notheme css:if-not-content="#form-widgets-file-input" />
-
-        <!-- hook in the new experiment form's attributes -->
-        <copy attributes="name action method enctype" css:theme="form#uploadDataset" css:content="#form" />
-
-        <!-- hook in the submit (save) button -->
-        <copy attributes="name value type" css:theme="form#uploadDataset button[name='saveButton']" css:content="#form-buttons-save" />
-
-        <!-- hook in file field -->
-        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetFile']" css:content="#form-widgets-file-input" />
-
-        <!-- hook in genre dropdown -->
-        <!-- for now we're just allowing the 'species occurrence' option -->
-        <replace css:theme-children="form#uploadDataset [name='datasetGenre']" css:content="[value='http://namespaces.bccvl.org.au/vocab#DataGenreSO']" />
-        <copy attributes="name" css:theme="form#uploadDataset [name='datasetGenre']" css:content="#form-widgets-http___namespaces_bccvl_org_au_prop_datagenre" />
-
-        <!-- hook in dataset type dropdown -->
-        <!-- for now we're just allowing the 'presence' option -->
-        <replace css:theme-children="form#uploadDataset [name='datasetType']" css:content="[value='http://namespaces.bccvl.org.au/vocab#SpeciesLayerP']" />
-        <copy attributes="name" css:theme="form#uploadDataset [name='datasetType']" css:content="#form-widgets-http___namespaces_bccvl_org_au_prop_specieslayer" />
-
-        <!-- hook in title and description fields -->
-        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetTitle']" css:content="#form-widgets-IDublinCore-title" />
-        <copy attributes="name value" css:theme="form#uploadDataset [name='datasetDescription']" css:content="#form-widgets-IDublinCore-description" />
-        <replace theme-children="//textarea[@name='datasetDescription']" content="//textarea[@id='form-widgets-description']/text()" />
-
-
-
-        <!-- add some currently-unused form fields -->
-        <after css:theme-children="form#uploadDataset">
-            <!-- data genre - currently always 'Species Occurrence' -->
-            <!--
-            <select name="form.widgets.http___namespaces_bccvl_org_au_prop_datagenre:list" class="select-widget rdfurichoicefield-field" size="1">
-                <option id="form-widgets-http___namespaces_bccvl_org_au_prop_datagenre-3" value="http://namespaces.bccvl.org.au/vocab#DataGenreSO">Species Occurrence</option>
-            </select>
-            <input type="hidden"
-                id=   "form-widgets-http___namespaces_bccvl_org_au_prop_datagenre"
-                name= "form-widgets-http___namespaces_bccvl_org_au_prop_datagenre:list"
-                value="http://namespaces.bccvl.org.au/vocab#DataGenreSO"
-            />
-            <input name="form.widgets.http___namespaces_bccvl_org_au_prop_datagenre-empty-marker" type="hidden" value="1" />
-            -->
-        </after>
+<!--         <notheme css:if-not-content="#form-widgets-file-input" />
+ -->
 
 
     </rules>
