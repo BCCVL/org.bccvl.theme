@@ -45,8 +45,57 @@
         <!-- Common name field -->
         <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.vernacularName']" css:content="#addspecies-widgets-vernacularName" />        
 
+    <!-- Layers form -->
+        <!-- Form field attributes -->
+        <copy attributes="name action method enctype" css:theme="form#addlayer" css:content="form#addlayer" />
 
+        <!-- Submit button -->
+        <copy attributes="name value type" css:theme="form#addlayer button[name='addlayer.buttons.save']" css:content="#addlayer-buttons-save" />
 
+        <!-- File field -->
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.file']" css:content="#addlayer-widgets-file-input" />
+
+        <!-- Title field-->
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.title']" css:content="#addlayer-widgets-title" />
+
+        <!-- Description field-->
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.description']" css:content="#addlayer-widgets-description" />
+        <replace theme-children="//textarea[@name='addlayer.widgets.description']" content="//textarea[@id='addlayer-widgets-description']/text()" />
+
+        <!-- Dataset Genre field -->
+        <replace css:theme-children="form#addlayer [name='addlayer.widgets.datagenre:list']" css:content="#addlayer-widgets-datagenre option" />
+        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.datagenre:list']" css:content="#addlayer-widgets-datagenre" />
+
+        <!-- Dataset Type field -->
+        <replace css:theme-children="form#addlayer [name='addlayer.widgets.datatype:list']" css:content="#addlayer-widgets-datatype option" />
+        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.datatype:list']" css:content="#addlayer-widgets-datatype" />
+
+        <!-- Resolution field -->
+        <replace css:theme-children="form#addlayer [name='addlayer.widgets.resolution:list']" css:content="#addlayer-widgets-resolution option" />
+        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.resolution:list']" css:content="#addlayer-widgets-resolution" />
+
+        <!-- Resolution (other) field-->
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.resolutiono']" css:content="#addlayer-widgets-resolutiono" />
+
+        <!-- Temporal Start -->
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-day']" css:content="#addlayer-widgets-temporal-start-day" />
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-month']" css:content="#addlayer-widgets-temporal-start-month" />
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-year']" css:content="#addlayer-widgets-temporal-start-year" />
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.temporal.starttext']" css:content="#addlayer-widgets-temporal-starttext" />
+
+        <!-- Temporal End -->
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-day']" css:content="#addlayer-widgets-temporal-end-day" />
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-month']" css:content="#addlayer-widgets-temporal-end-month" />
+        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-year']" css:content="#addlayer-widgets-temporal-end-year" />
+        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.temporal.endtext']" css:content="#addlayer-widgets-temporal-endtext" />
+
+        <!-- Emission Scenario -->
+        <replace css:theme-children="form#addlayer [name='addlayer.widgets.emissionscenario:list']" css:content="#addlayer-widgets-emissionscenario option" />
+        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.emissionscenario:list']" css:content="#addlayer-widgets-emissionscenario" />
+
+        <!-- Global Climate Model -->
+        <replace css:theme-children="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm option" />
+        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm" />
 
         <!--
             don't theme the page unless the expected file input on it. This is required

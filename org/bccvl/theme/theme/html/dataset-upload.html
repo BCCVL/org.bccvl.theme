@@ -130,7 +130,7 @@
 						<form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
 
 							<div class="control-group">
-								<label class="control-label">Species dataset file</label>
+								<label class="control-label">Species Dataset File</label>
 								<div class="controls">
 									<div class="fileupload fileupload-new" data-provides="fileupload">
 										<span class="btn btn-file">
@@ -145,14 +145,14 @@
 							</div>
 
 							<div class="control-group">
-								<label class="control-label">Species dataset title</label>
+								<label class="control-label">Species Dataset Title</label>
 								<div class="controls">
 									<input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset">
 								</div>
 							</div>
 
 							<div class="control-group">
-								<label class="control-label">Species dataset description</label>
+								<label class="control-label">Species Dataset Description</label>
 								<div class="controls">
 									<textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
 								</div>
@@ -208,6 +208,114 @@
 
 				<!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 					<div class="bccvl-datasetuploadlayerform hidden">
+
+						<form class="form-horizontal" id="addlayer" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+							<div class="control-group">
+								<label class="control-label">Layer Dataset File</label>
+								<div class="controls">
+									<div class="fileupload fileupload-new" data-provides="fileupload">
+										<span class="btn btn-file">
+											<span class="fileupload-new">Select file to upload</span>
+											<span class="fileupload-exists">Change</span>
+											<input name="addlayer.widgets.file" type="file" />
+										</span>
+										<span class="fileupload-preview"></span>
+										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Layer Dataset Title</label>
+								<div class="controls">
+									<input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of layer dataset">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Layer Dataset Description</label>
+								<div class="controls">
+									<textarea name="addlayer.widgets.description" class="input-block-level" rows="6" placeholder="Description of layer dataset"></textarea>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Dataset Genre</label>
+								<div class="controls">
+									<select name="addlayer.widgets.datagenre:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Type of Dataset</label>
+								<div class="controls">
+									<select name="addlayer.widgets.datatype:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Resolution</label>
+								<div class="controls">
+									<select name="addlayer.widgets.resolution:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Resolution (other)</label>
+								<div class="controls">
+									<input type="text" name="addlayer.widgets.resolutiono" class="input-block-level" placeholder="Other resolution">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Temporal Start Date</label>
+								<div class="controls">
+									<input type="text" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day">
+									<input type="text" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month">
+									<input type="text" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year">
+									<input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Temporal End Date</label>
+								<div class="controls">
+									<input type="text" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day">
+									<input type="text" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month">
+									<input type="text" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year">
+									<input type="text" name="addlayer.widgets.temporal.endtext" class="input-block-level" placeholder="End date description">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Emission Scenario</label>
+								<div class="controls">
+									<select name="addlayer.widgets.emissionscenario:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Global Climate Model</label>
+								<div class="controls">
+									<select name="addlayer.widgets.gcm:list">
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<div class="controls">
+									<button name="addlayer.buttons.save" class="btn btn-primary" value="Save" type="submit">Upload Layer Dataset</button>
+									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+								</div>
+							</div>
+
+						</form>
+
 					</div>
 
 				</div>
