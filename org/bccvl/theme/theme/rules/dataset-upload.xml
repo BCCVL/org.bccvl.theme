@@ -11,6 +11,18 @@
         <!-- Tabs -->
         <before css:theme-children="section.bccvl-datasetupload > div.row-fluid" css:content="ul.nav" />
 
+        <!-- Info notices -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+            <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+        </replace>
+
     <!-- Species form -->
         <!-- Form field attributes -->
         <copy attributes="name action method enctype" css:theme="form#addspecies" css:content="form#addspecies" />
@@ -96,15 +108,6 @@
         <!-- Global Climate Model -->
         <replace css:theme-children="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm option" />
         <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm" />
-
-        <!--
-            don't theme the page unless the expected file input on it. This is required
-            because the plone form posts back to the same URL, and we don't want to mess
-            that up.
-        -->
-<!--         <notheme css:if-not-content="#form-widgets-file-input" />
- -->
-
 
     </rules>
 </rules>

@@ -94,6 +94,12 @@
 			</div>
 		</div>
 
+<!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<section class="bccvl-flashmessages">
+		</section>
+		<section class="bccvl-flashmessages-info">
+		</section>
+
 
 <!-- dataset upload ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<section class="bccvl-datasetupload">
@@ -104,7 +110,7 @@
 
 					<nav class="navbar navbar-default navbar-static" role="navigation">
 						<div class="navbar-inner">
-							<a class="brand">Upload a Dataset</a>
+							<a id="upload-dataset-title" class="brand">Upload Species Dataset</a>
 							<ul class="nav navbar-nav pull-right">
 								<li class="dropdown">
 									<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
@@ -127,7 +133,7 @@
 				<!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 					<div class="bccvl-datasetuploadspeciesform">
 
-						<form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
+						<form class="form-horizontal bccvl-parsleyvalidate" id="addspecies" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
 
 							<div class="control-group">
 								<label class="control-label">Species Dataset File</label>
@@ -136,7 +142,8 @@
 										<span class="btn btn-file">
 											<span class="fileupload-new">Select file to upload</span>
 											<span class="fileupload-exists">Change</span>
-											<input name="addspecies.widgets.file" type="file" />
+											<input name="addspecies.widgets.file" type="file"
+											       required="required" parsley-trigger="change" />
 										</span>
 										<span class="fileupload-preview"></span>
 										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
@@ -147,7 +154,8 @@
 							<div class="control-group">
 								<label class="control-label">Species Dataset Title</label>
 								<div class="controls">
-									<input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset">
+									<input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+									       required="required" data-notblank="true" />
 								</div>
 							</div>
 
@@ -177,7 +185,8 @@
 							<div class="control-group">
 								<label class="control-label">Scientific Name</label>
 								<div class="controls">
-									<input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species">
+									<input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
+									       required="required" data-notblank="true" >
 								</div>
 							</div>
 
@@ -209,7 +218,7 @@
 				<!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 					<div class="bccvl-datasetuploadlayerform hidden">
 
-						<form class="form-horizontal" id="addlayer" method="" autocomplete="on" action="" enctype="multipart/form-data">
+						<form class="form-horizontal  bccvl-parsleyvalidate" id="addlayer" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
 
 							<div class="control-group">
 								<label class="control-label">Layer Dataset File</label>
@@ -218,7 +227,8 @@
 										<span class="btn btn-file">
 											<span class="fileupload-new">Select file to upload</span>
 											<span class="fileupload-exists">Change</span>
-											<input name="addlayer.widgets.file" type="file" />
+											<input name="addlayer.widgets.file" type="file"
+											       required="required" parsley-trigger="change" />
 										</span>
 										<span class="fileupload-preview"></span>
 										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
@@ -229,7 +239,8 @@
 							<div class="control-group">
 								<label class="control-label">Layer Dataset Title</label>
 								<div class="controls">
-									<input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of layer dataset">
+									<input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of layer dataset"
+									       required="required" data-notblank="true">
 								</div>
 							</div>
 

@@ -16,9 +16,10 @@ define(     ['jquery', 'parsley', 'bootstrap'],
 
             // right, so now kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley({
-                focus:        'none',       // don't switch focus to errors (we do that manually below)
-                successClass: 'success',    // use these two Bootstrap classes for the error
-                errorClass:   'error',      // and no-error states, and it'll look pretty.
+                excluded:     'input[type=hidden], :disabled',  // effectively enable validation of input type file (this is disbaled by default)
+                focus:        'none',                           // don't switch focus to errors (we do that manually below)
+                successClass: 'success',                        // use these two Bootstrap classes for the error
+                errorClass:   'error',                          // and no-error states, and it'll look pretty.
                 errors: {
                     // this error handling and elements make parsley errors Bookstrap friendly
                     classHandler: function(el) { return $(el).closest('.control-group'); },
