@@ -208,8 +208,15 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
 
                                     // now get the actions sorted.
                                     if (item.guid) {
+                                        var alaImportArgs = '?import=Import&';
+                                        alaImportArgs += 'lsid=' + encodeURIComponent(item.guid) + "&";
+                                        alaImportArgs += 'taxon=' + encodeURIComponent(item.name);
+                                        if (item.commonNameSingle) {
+                                            alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
+                                        }
+
                                         result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
-                                        result.actions.alaimport = [item.guid, item.name, item.commonNameSingle];
+                                        result.actions.alaimport = document.URL + alaImportArgs;
                                     }
 
                                     // actually we only want results that have occurrences..
@@ -435,29 +442,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
-                                $('<a class="fine"><i class="icon-download-alt icon-link" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i></a>').click(function(e) {
-                                    $download_button_div = $(this);
-                                    $.xmlrpc({
-                                        url: window.bccvl.config.data_mover.baseUrl,
-                                        methodName: 'pullOccurrenceFromALA',
-                                        params: actionParam,
-                                        success: function(response, status, jqXHR) {
-                                            console.log('XMLRPC call to download ALA occurrences succeeded: ', status);
-                                            $download_button = $download_button_div.find('.icon-download-alt');
-                                            $download_button.hide();
-                                            $download_button_div.prepend('<div class="icon-ok"></div>');
-                                            $info.append('<p><i>Importing of this dataset has started. This may take a few minutes to complete.</i></p>');
-                                            $download_button_div.unbind( "click" );
-                                        },
-                                        error: function(jqXHR, status, error) {
-                                            console.log('XMLRPC call to download ALA occurrences failed with status: "', status, '"; the error was: ', error);
-                                            $info.append('<p><i class="bccvl-fail-red">Failed to start import. Please try again.</i></p>');
-                                            alert('There was a problem downloading your ALA data.');
-                                        },
-                                    });
-                                    e.preventDefault();
-                                    return false;
-                                }).appendTo($actions);
+                                var html = '<a href="' + actionParam + '" class="fine"><i class="icon-download-alt icon-link" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i></a>';
+                                $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             default:

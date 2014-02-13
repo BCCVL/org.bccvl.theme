@@ -11,6 +11,18 @@
         <!-- Tabs -->
         <before css:theme-children="section.bccvl-datasetimport > div.row-fluid" css:content="ul.nav" />
 
+        <!-- Info notices -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+            <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+        </replace>
+
         <!-- Import Form -->
         <after css:theme-children="div.bccvl-datasetimportform" css:content="div#searchOccurrence" />
     </rules>
