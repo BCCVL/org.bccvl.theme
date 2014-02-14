@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="org.bccvl.theme">
 
@@ -16,6 +17,11 @@
         directory="theme"
         type="theme"
         />
+
+    <browser:resourceDirectory
+        name="bccvl"
+        directory="static"
+    />
 
     <include package=".views"/>
     <include package=".viewlets"/>

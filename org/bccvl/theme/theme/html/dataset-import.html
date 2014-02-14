@@ -15,7 +15,7 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-    
+
 	<script id="js-config"></script>
 
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
@@ -28,7 +28,7 @@
 		if (window.location.port == '9292') {
 			require(['../js/common.js'], function (common) { require(['js/dataset-import']); } );
 		} else {
-			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dataset-import']); } );
+			require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/dataset-import']); } );
 		}
 	</script>
 

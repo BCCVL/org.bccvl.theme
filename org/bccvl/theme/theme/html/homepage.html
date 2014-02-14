@@ -15,7 +15,7 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-    
+
 	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
 	<script src="lib/require/require.js"></script>
 	<script>
@@ -26,7 +26,7 @@
 		if (window.location.port == '9292') {
 			require(['../js/common.js'], function (common) { require(['js/dashboard']); } );
 		} else {
-			require(['++theme++org.bccvl.theme/js/common.js'], function (common) { require(['js/dashboard']); } );
+			require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/dashboard']); } );
 		}
 	</script>
 </head>
@@ -83,19 +83,19 @@
     <div class="span10 offset1">
         <div class="alert">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Demonstration Site Only</strong> - 
+            <strong>Demonstration Site Only</strong> -
             This site is for the purposes of demonstration and is not
             indicative of the final sate of the developed software
-            product. It is not ready for science at this stage. If you 
-            have any feedback or questions 
+            product. It is not ready for science at this stage. If you
+            have any feedback or questions
             <a href="http://bccvl.org.au/get-involved/">let us know</a>.
         </div>
-        
+
         <h2>What is the Biodiversity and Climate Change Virtual Lab?</h2>
         <div class="span8" style="">
-            The Biodiversity & Climate Change Virtual Laboratory (BCCVL) will provide an innovative, 
-            efficient, robust portfolio of integrated tools, data collections and access portals for modelling 
-            the potential responses of Australia’s biodiversity to climate change through an easy-to-use, 
+            The Biodiversity & Climate Change Virtual Laboratory (BCCVL) will provide an innovative,
+            efficient, robust portfolio of integrated tools, data collections and access portals for modelling
+            the potential responses of Australia’s biodiversity to climate change through an easy-to-use,
             web-based platform with advanced visualizations.
             <p></p>
             The BCCVL will transform biodiversity and climate change research by:
@@ -107,7 +107,7 @@
                 </li>
                 <li>
                     providing the means for Australian researchers to address new important questions.
-                    Quantitative modelling is one of our most transparent and science-based tools for the 
+                    Quantitative modelling is one of our most transparent and science-based tools for the
                     prediction of how, for example, species ranges will shift as a result of climate change, and the
                     information generated is needed to inform adaptation management strategies for species and
                     ecosystems.
@@ -115,7 +115,7 @@
             </ol>
         </div>
     </div>
-        
+
 	</div><!-- end of main content container -->
 
 <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
