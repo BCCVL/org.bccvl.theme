@@ -30,7 +30,9 @@
                          <h1 tal:content="item/Title">Item Title</h1>
                        </td>
                        <td class="bccvl-table-controls"
-                           tal:define="downloadurl string:${item/getURL}/@@download/file/${item/file/filename}">
+                           tal:define="downloadurl string:${item/getURL}/@@download/file/${item/file/filename};
+                                       visurl string:http://127.0.0.1:8201${item/getPath}/@@download/file/${item/file/filename}">
+
                          <a class="fine"
                             title="Download this file"
                             href="#downloadurl"
@@ -40,7 +42,7 @@
                          <a class="bccvl-auto-viz"
                             title="Preview this file"
                             data-viz-id="#downloadurl"
-                            tal:attributes="data-viz-id downloadurl"
+                            tal:attributes="data-viz-id visurl"
                             tal:condition="python: item.Format() not in ('application/octet-stream', 'application/zip')">
                             <i class="icon-eye-open icon-link"></i>
                          </a>
