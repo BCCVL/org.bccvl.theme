@@ -22,22 +22,27 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
         // Poll /jm/getJobStatus for the status of the experiments
         // This endpoint returns the status of each algorithm
         function pollExperimentStatus() {
-          var url = document.URL.replace('/view', '') + '/jm/getJobStatus'
+          var url = document.URL.replace(/#.*$/, '').replace('/view', '') + '/jm/getJobStatus'
 
           // ajax call
           $.get(url).done(function(data){
+
+            if (data == undefined || data == null || data.length == 0) {
+              return;
+            }
 
             var completed = true;
             var running = false;
             var html = '';
 
             data.forEach(function(job){
+
               var algorithm = job[0];
               var status = job[1];
               var icon;
 
               // Creates the html for the Algorithm and icon representing the status
-              if (status != 'Completed' && status != 'Failed'){
+              if (status != 'Completed' && status != 'Failed') {
                 completed = false;
                 icon = '<i class="bccvl-small-spinner" title="' + status + '"></i>'
               } 
@@ -49,7 +54,7 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               }
 
               // Determine if there are any running algorithms
-              if (status == 'Running'){
+              if (status == 'Running') {
                 running = true;
               }
 
@@ -59,13 +64,13 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
             html = '<div class="algorithm-status">' + html + '</div>'
 
             // update the status in html
-            if (html != ''){
+            if (html != '') {
               $(".algorithm-status").remove();
               $(".bccvl-expstatus").append(html);  
             }
 
-            if (!completed){
-              if (running){
+            if (!completed) {
+              if (running) {
                 $(".alert-queued-text").empty()
                 $(".alert-queued-text").text('running')
               }
