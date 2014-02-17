@@ -65,6 +65,7 @@
                                 tal:attributes="class icon_class;
                                                 title icon_title"></i>
                           </a> -->
+
                           <a href="#" tal:attributes="href string:${item_url}/@@download/file/${file/filename}"
                              tal:condition="file"
                              tal:define="item_obj item/getObject;
@@ -88,6 +89,11 @@
                             <i class="icon-eye-open icon-link" title="preview"></i>
                             <!-- TODO: Pull the data type from the instance - speak with GW -->
                           </a>
+
+                          <i class="dataset-import" tal:define="item_obj item/getObject;
+                                         file item_obj/file" tal:condition="not: file"
+                                         tal:attributes="data-url item_url" title="Import in progress"></i>
+     
                           <!-- <a  tal:attributes="href string:${item_url}/edit">
                             <i class="icon-pencil" title="edit"></i>
                           </a> -->
