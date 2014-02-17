@@ -67,7 +67,7 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 
 
     function generateControlButtons(dataset) {
       var $controlGroup = dataset.parent();
-      var $tableLabel = $controlGroup.parent().find('bccvl-table-label');
+      var $tableLabel = $controlGroup.parent().find('.bccvl-table-label');
       var dataUrl = dataset.attr('data-url');
       var dmUrl = dataUrl + '/dm/getMetadata'
 
@@ -85,7 +85,7 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 
           var descriptionHTML = '<p>' + data.description + '</p>';
           $controlGroup.append(downloadButtonHTML);
           $controlGroup.append(visualiseButtonHTML);
-          $(tableLabel).append(descriptionHTML);
+          $tableLabel.append(descriptionHTML);
           viz.init();
         }
       });
