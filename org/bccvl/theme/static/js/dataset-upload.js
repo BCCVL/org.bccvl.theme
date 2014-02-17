@@ -21,7 +21,7 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 			$('#upload-layer').click(function(e) {
             	$('div.bccvl-datasetuploadlayerform').removeClass('hidden');
             	$('div.bccvl-datasetuploadspeciesform').addClass('hidden');
-                $('a#upload-dataset-title').text('Upload Layer Dataset');
+                $('a#upload-dataset-title').text('Upload Environmental Layer');
             });        	
 
         });
