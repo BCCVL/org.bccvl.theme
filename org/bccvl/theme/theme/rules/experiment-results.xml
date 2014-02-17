@@ -30,26 +30,26 @@
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed')">
                     <div class="row-fluid bccvl-status-block bccvl-status-error">
                         <div class="span12 bccvl-expstatus alert alert-block alert-error" data-status="Failed">
-                            <p class="lead">this Experiment stopped with an <strong>error</strong></p>
+                            <p class="lead">This experiment stopped with an <strong>error</strong>.</p>
                         </div>
                     </div>
                 </xsl:when>
 
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New')">
-                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
                         <div class="span12 bccvl-expstatus alert alert-block" data-status="New">
                             <p>
-                                This Experiment is <strong class="alert-queued-text">queued</strong>.
+                                This experiment is <strong class="alert-queued-text">queued</strong>.
                             </p>
                         </div>
                     </div>
                 </xsl:when>
 
                 <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued')">
-                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
                         <div class="span12 bccvl-expstatus alert alert-block" data-status="Queued">
                             <p>
-                                This Experiment is <strong class="alert-queued-text">queued</strong>.
+                                This experiment is <strong class="alert-queued-text">queued</strong>.
                             </p>
                         </div>
                     </div>
@@ -59,17 +59,17 @@
                     <div class="row-fluid bccvl-status-block bccvl-status-complete">
                         <div class="span12 bccvl-expstatus alert alert-success" data-status="Completed">
                             <p>
-                                This Experiment is <strong>complete</strong>. The results are available below.
+                                This experiment is <strong>complete</strong>. The results are available below.
                             </p>
                         </div>
                     </div>
                 </xsl:when>
 
                 <xsl:otherwise>
-                    <div class="row-fluid bccvl-status-block bccvl-status-running">
+                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
                         <div class="span12 bccvl-expstatus alert alert-block">
                             <p>
-                                This Experiment is <strong>running</strong>.
+                                This experiment is <strong>running</strong>.
                             </p>
                         </div>
                     </div>

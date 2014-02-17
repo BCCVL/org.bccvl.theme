@@ -6,7 +6,7 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
     function( $,        stretch          ,  viz ) {
     // ==============================================================
         $(function() {
-
+          
           stretch.init({ topPad: 60, bottomPad: 10 });
           viz.init();
           
@@ -31,6 +31,11 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               return;
             }
 
+            var queuedAlgorithms = [];
+            var runningAlgorithms = [];
+            var failedAlgorithms = [];
+            var completedAlgorithms = [];
+
             var completed = true;
             var running = false;
             var html = '';
@@ -41,33 +46,51 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               var status = job[1];
               var icon;
 
+              // Failed, Transferring, Running, Retrieving, Completed, Cleanup and Queued
+
               // Creates the html for the Algorithm and icon representing the status
               if (status != 'Completed' && status != 'Failed') {
                 completed = false;
-                icon = '<i class="bccvl-small-spinner" title="' + status + '"></i>'
               } 
-              else if (status == 'Completed') {
-                icon = '<i class="icon-ok" title="Completed"></i>'
+
+              if (status == 'Queued') {
+                queuedAlgorithms.push(algorithm);                
+              }
+              else if (status == 'Failed'){
+                failedAlgorithms.push(algorithm);
+              }
+              else if (status == 'Completed'){
+                completedAlgorithms.push(algorithm);
               }
               else {
-                icon = '<i class="icon-exclamation-sign" title="Failed"></i>'
-              }
-
-              // Determine if there are any running algorithms
-              if (status == 'Running') {
                 running = true;
+                runningAlgorithms.push(algorithm);
               }
-
-              html += '<span>' + algorithm + ': ' + icon + '</span>';
             })
 
-            html = '<div class="algorithm-status">' + html + '</div>'
+            // do the maths for the progress bar
 
-            // update the status in html
-            if (html != '') {
-              $(".algorithm-status").remove();
-              $(".bccvl-expstatus").append(html);  
-            }
+            var numAlgorithms = queuedAlgorithms.length + runningAlgorithms.length + failedAlgorithms.length + completedAlgorithms.length;
+
+            var queuedPercentage = (queuedAlgorithms.length / numAlgorithms * 100).toString() + '%';
+            var runningPercentage = (runningAlgorithms.length / numAlgorithms * 100).toString() + '%';
+            var failedPercentage = (failedAlgorithms.length / numAlgorithms * 100).toString() + '%';
+            var completedPercentage = (completedAlgorithms.length / numAlgorithms * 100).toString() + '%';
+
+            // unhide the progress bar
+            $('.progress').removeClass('hidden');
+
+            // update the text inside the bars
+            $('#bar-queued').text(queuedAlgorithms.length.toString() + ' QUEUED');
+            $('#bar-running').text(runningAlgorithms.length.toString() + ' RUNNING');
+            $('#bar-failed').text(failedAlgorithms.length.toString() + ' FAILED');
+            $('#bar-completed').text(completedAlgorithms.length.toString() + ' COMPLETED');
+
+            // update the widths accordingly
+            $('#bar-queued').css('width', queuedPercentage);
+            $('#bar-running').css('width', runningPercentage);
+            $('#bar-failed').css('width', failedPercentage);
+            $('#bar-completed').css('width', completedPercentage);
 
             if (!completed) {
               if (running) {
