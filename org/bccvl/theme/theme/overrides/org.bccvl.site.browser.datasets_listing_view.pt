@@ -18,7 +18,7 @@
         </li>
         <li id="tab-datasetsimport">
             <a href="#"
-               tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Import Dataset</span></a>
+               tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Discover Dataset</span></a>
         </li>
         <li id="tab-datasetsupload">
             <a href="#"
