@@ -37,14 +37,11 @@
                  <td class="bccvl-table-label">
                    <h1 tal:attributes="data-target string:#${item_id}">
                      <tal:experiment_title content="item/Title" />
-                     <tal:sdm_details condition="python: item.portal_type == 'org.bccvl.content.sdmexperiment'">
                        <i class="taxonomy" tal:content="exp/species_occurrence" />
                        <small tal:content="exp/functions" />
-                     </tal:sdm_details>
                    </h1>
                    <div tal:attributes="id item_id">
-                     <p class="bccvl-experiment-parameters"
-                        tal:condition="python: item.portal_type == 'org.bccvl.content.sdmexperiment'">
+                     <p class="bccvl-experiment-parameters">
                        <tal:species_absence content="exp/species_absence" />,
                        <tal:environmental_layers content="exp/environmental_layers" />
                      </p>
