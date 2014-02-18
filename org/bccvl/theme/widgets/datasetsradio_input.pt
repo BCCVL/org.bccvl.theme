@@ -16,7 +16,7 @@
     <tbody>
         <tr class="option"
               tal:repeat="item view/items">
-            <td>         
+            <td>
                 <input id="" name="" class="" alt="" title=""
                          tabindex="" disabled="" readonly="" accesskey="" value=""
                          checked="" type="radio"
@@ -50,17 +50,25 @@
                                          checked python: checked and 'checked' or None"
                 />
             </td>
-
             <tal:block tal:define="itemdetails python:view.get_item_details(item)">
-                <td>
-                    <label tal:attributes="for item/id" tal:content="python: itemdetails.created.strftime('%b %d, %Y %I:%M %p')"/>
-                </td>
-                <td>
-                    <label tal:attributes="for item/id" tal:content="item/label">Label</label>          
-                </td>
-                <td><label tal:attributes="for item/id" tal:content="itemdetails/Creator"/></td>
-                <td><label tal:attributes="for item/id">Dataset used goes here</label></td>
-                <td><label tal:attributes="for item/id">Environmental Layers goes here</label></td>
+
+               <td style="width: 13%;" tal:content="python: itemdetails['model'].created.strftime('%b %d, %Y %I:%M %p')" />
+                 <td class="bccvl-table-label">
+                   <h1 tal:attributes="data-target string:#${item/id}">
+                     <tal:result_title content="itemdetails/experiment/Title" />
+                     <i class="taxonomy" tal:content="itemdetails/species/Title" />
+                     <small tal:content="itemdetails/function" />
+                   </h1>
+                   <div tal:attributes="id item/id">
+                     <p class="bccvl-experiment-parameters">
+                       <!-- <tal:species_absence content="exp/species_absence" />, -->
+                       <tal:environmental_layers content="itemdetails/layers" />
+                     </p>
+                     <p class="bccvl-experiment-summary" tal:content="itemdetails/experiment/description" />
+                   </div>
+                 </td>
+                 <!-- <td class="bccvl-table-label"><h1 tal:content="exp/type" /></td> -->
+
             </tal:block>
         </tr>
     </tbody>
