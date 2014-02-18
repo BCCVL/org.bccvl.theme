@@ -8,9 +8,6 @@
             <th></th>
             <th class="header headerSortUp">Date<span /></th>
             <th>Source Model<span /></th>
-            <th>Creator<span /></th>
-            <th>Dataset<span /></th>
-            <th>Environmental Layers<span /></th>
         </tr>
     </thead>
     <tbody>
