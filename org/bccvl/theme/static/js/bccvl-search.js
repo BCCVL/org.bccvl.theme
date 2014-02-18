@@ -379,7 +379,14 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     // which extracts the result objects from the returned data.
                                     if (provider.search.parseSearchData) {
                                         // if this provider has a parseSearchData function, call it
-                                        bccvl_search.displayResults(provider.search.parseSearchData(data, $inputField.val()), $resultsField);
+                                        var results = provider.search.parseSearchData(data, $inputField.val());
+                                        if (results.length !== 0){
+                                            bccvl_search.displayResults(results, $resultsField);
+                                        }
+                                        else {
+                                            provider.autocomplete.noResultsFound();
+                                            $('.bccvl-results-spinner').css('display', 'none');
+                                        }
                                     } else {
                                         // otherwise assume the data is already good
                                         bccvl_search.displayResults(data, $resultsField);
