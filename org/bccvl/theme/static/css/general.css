@@ -791,8 +791,33 @@ div.morefilters h4 span.label {
 }
 
 .label, .badge {
+    display: inline;
     background-color: #FFFFFF;
     color: #000000;
+    text-shadow: none;
+}
+
+.option > label {
+    display: inline;
+    margin-bottom: 0;
+}
+
+div.random-absences-settings div.formHelp {
+    font-size: 80%;
+}
+
+.single-checkbox-widget{
+    vertical-align: top;
+}
+div.random-absences-settings label.horizontal {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+div.random-absences-settings label.horizontal span.formHelp {
+    font-size: 80%;
+    font-weight: normal;
+    display: block;
 }
 
 .experiment-configuration, .object-widget, .widget{

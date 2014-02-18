@@ -158,7 +158,9 @@
                 </xsl:if>
             </xsl:for-each>
         </before>
-
+        
+        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_pseudo_absence_points']"/>
+        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_number_pseudo_absence_points']"/>
         <!-- hook in the absences list -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-absencestable > tbody">
             <xsl:for-each select="//select[@id='form-widgets-species_absence_dataset']/option">
