@@ -42,6 +42,20 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                             // won't be able to focus that field.  So, here we're gonna
                             // find the first error indicator in the document, switch to
                             // its tab, then focus its field.
+
+                            // but before all that, we need to check if the user has selected either to use random points
+                            // a dataset for absences for the sdm experiment
+                            var $absenceFields = $('.control-group.error').find('.random-absences-settings').parent();
+                            
+                            if ($absenceFields.length > 0) {
+                                if ($('#form-widgets-species_pseudo_absence_points-0').is(':checked')) {
+                                    $absenceFields.removeClass('error');
+                                }
+                                if ($('.control-group.error').length == 0){
+                                    return true;
+                                }
+                            }
+
                             var $firstError = $('.control-group.error').first();  // first error
 
                             // show the tab holding the first error
