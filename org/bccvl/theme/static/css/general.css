@@ -245,6 +245,10 @@ a:not([href]).fine,
     width: 50%;
 }
 
+.modal-body {
+    max-height: 60%
+}
+
 div.modal div.modal-body form div.action input#crud-edit-form-buttons-edit.submit-widget {
     display: inline-block;
     *display: inline;
