@@ -18,7 +18,8 @@ requirejs.config({
         'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',
         'parsley':              'parsley/parsley.min',
 //        'parsley':              'parsley/parsley',
-        'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter'
+        'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
+        'jquery-form':          'jquery-form/jquery.form.min'
     },
     shim: {
         'parsley':              ['jquery'],

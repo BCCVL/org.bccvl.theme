@@ -1,0 +1,15 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<rules if-path="@@editfilemetadata/" >
+	    <theme href="html/edit-environmental-layers-metadata.html" />
+
+	    <!-- <drop css:content="#crud-edit-form-buttons-edit" /> -->
+
+	    <replace css:theme-children=".modal-body" content="/html/body/div/form" />
+
+	</rules>
+
+</rules>

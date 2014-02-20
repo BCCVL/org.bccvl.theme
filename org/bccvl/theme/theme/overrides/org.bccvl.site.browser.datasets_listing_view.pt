@@ -90,13 +90,17 @@
                             <!-- TODO: Pull the data type from the instance - speak with GW -->
                           </a>
 
+                          <a class="environmentallayers-zip-edit" tal:attributes="href string:${item_url}/@@editfilemetadata"
+                            tal:define="item_obj item/getObject;
+                                         file item_obj/file"
+                            tal:condition="python: file and file.filename.endswith('.zip')">
+                            <i class="icon-pencil" title="edit"></i>
+                          </a>
                           <i class="dataset-import" tal:define="item_obj item/getObject;
                                          file item_obj/file" tal:condition="not: file"
                                          tal:attributes="data-url item_url" title="Import in progress"></i>
      
-                          <!-- <a  tal:attributes="href string:${item_url}/edit">
-                            <i class="icon-pencil" title="edit"></i>
-                          </a> -->
+                          
                         </td>
 
                     </tr>
