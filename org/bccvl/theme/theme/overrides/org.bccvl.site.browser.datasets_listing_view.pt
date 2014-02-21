@@ -43,7 +43,9 @@
                 <tbody>
                     <metal:block use-macro="context/folder_listing/macros/entries">
                         <metal:entry fill-slot="entry">
-                    <tr tal:define="oddrow repeat/item/odd;"
+                    <tr tal:define="oddrow repeat/item/odd;
+                                    item_obj item/getObject;
+                                    item_editable python:view.can_modify(item_obj);"
                         tal:attributes="class python: oddrow and 'even' or 'odd'">
                         <!-- Modified -->
                         <td tal:condition="show_about"
@@ -56,51 +58,51 @@
                           <p tal:content="item_description">Dataset short description</p>
                         </td>
                         <!-- Actions -->
+                        <!-- TODO: expects simple publication workflow
+                        publish/retract -->
                         <td class="bccvl-table-controls">
-                          <!-- <a tal:define="shared python:item_wf_state == 'published';
-                                         icon_class python: shared and 'icon-share' or 'icon-unshare';
-                                         icon_title python: shared and 'share' or 'unshare';"
+                          <a tal:define="action python:view.get_transition(item_obj);
+                                         icon_class python: action == 'publish' and 'icon-share' or 'icon-unshare';
+                                         icon_title python: action == 'publish' and 'share' or 'unshare';"
+                             tal:condition="action"
                              tal:attributes="href string:${item_url}/dm/${icon_title}">
                              <i class="icon-share" title="share"
                                 tal:attributes="class icon_class;
                                                 title icon_title"></i>
-                          </a> -->
+                          </a>
 
                           <a href="#" tal:attributes="href string:${item_url}/@@download/file/${file/filename}"
                              tal:condition="file"
-                             tal:define="item_obj item/getObject;
-                                         file item_obj/file">
+                             tal:define="file item_obj/file">
                             <i class="icon-circle-arrow-down" title="download"></i>
                           </a>
                           <a href="#" class="bccvl-occurrence-viz" tal:attributes="data-viz-id string:${visurl}/@@download/file/${file/filename}"
                              tal:condition="python: file and file.filename.endswith('.csv')"
-                             tal:define="item_obj item/getObject;
-                                         file item_obj/file;
+                             tal:define="file item_obj/file;
                                          visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
                             <i class="icon-eye-open icon-link" title="preview"></i>
-                            <!-- TODO: Pull the data type from the instance - speak with GW -->
+                            <!-- TODO: Pull the data type from the
+                                 instance - speak with GW -->
                           </a>
 
                           <a href="#" class="bccvl-auto-viz" tal:attributes="data-viz-id string:${visurl}/@@download/file/${file/filename}"
                              tal:condition="python: file and not file.filename.endswith('.csv')"
-                             tal:define="item_obj item/getObject;
-                                         file item_obj/file;
+                             tal:define="file item_obj/file;
                                          visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
                             <i class="icon-eye-open icon-link" title="preview"></i>
                             <!-- TODO: Pull the data type from the instance - speak with GW -->
                           </a>
 
                           <a class="environmentallayers-zip-edit" tal:attributes="href string:${item_url}/@@editfilemetadata"
-                            tal:define="item_obj item/getObject;
-                                         file item_obj/file"
-                            tal:condition="python: file and file.filename.endswith('.zip')">
+                            tal:define="file item_obj/file"
+                            tal:condition="python: item_editable and file and file.filename.endswith('.zip')">
                             <i class="icon-pencil" title="edit"></i>
                           </a>
                           <i class="dataset-import" tal:define="item_obj item/getObject;
                                          file item_obj/file" tal:condition="not: file"
                                          tal:attributes="data-url item_url" title="Import in progress"></i>
-     
-                          
+
+
                         </td>
 
                     </tr>
