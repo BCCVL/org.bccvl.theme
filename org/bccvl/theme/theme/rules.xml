@@ -70,6 +70,7 @@
             <dl class="bccvl-flashmessage bccvl-flashmessage-error alert alert-block alert-error">
                 <dt class="label label-important"><xsl:value-of select="./dt" /></dt>
                 <xsl:copy-of select="./dd" />
+                <xsl:copy-of select="following-sibling::div[@class='field error']"/>
             </dl>
         </xsl:for-each>
     </replace>
