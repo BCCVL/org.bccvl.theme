@@ -61,6 +61,32 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                             // show the tab holding the first error
                             var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
                             if ($tabPane.length > 0) {
+
+                                // add listener for the case where the random absense checkbox is selected
+                                $('#form-widgets-species_pseudo_absence_points-0').change(function() {
+                                    if ($(this).is(':checked')){
+                                        $('.random-absences-settings').parent().addClass('success');
+                                        $('.random-absences-settings').parent().removeClass('error');
+                                        $('#parsley-formwidgetsspecies_absence_datasetlist').hide();
+                                    }
+                                    else {
+                                        var datasetSelected = false;
+                                        var $absencesInput = $('.bccvl-absencestable').find('input');
+                                        $absencesInput.each(function(index){
+                                            if ($(this).is(':checked')) {
+                                                datasetSelected = true;
+                                            }
+                                        })
+
+                                        if (!datasetSelected){
+                                            $('.random-absences-settings').parent().addClass('error');
+                                            $('.random-absences-settings').parent().removeClass('success');
+                                            $('#parsley-formwidgetsspecies_absence_datasetlist').show();    
+                                        }
+                                    }
+
+                                })
+
                                 // tab itself that belongs to the tab pane we're interested in
                                 var $tabLink = $('a[data-toggle="tab"][href="#' + $tabPane.attr('id') + '"]');
                                 if (! $tabPane.hasClass('active')) {
