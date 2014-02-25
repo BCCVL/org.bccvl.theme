@@ -463,6 +463,16 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     font-weight: bold;
 }
 
+.bccvl-projections-counter {
+    font-size: 175%;
+    text-align: center;
+}
+
+.bccvl-projections-counter .bccvl-available-projections {
+    font-weight: bold;
+}
+
+
 .experiment-configuration > div > label{
     font-weight:    bold;
 }
