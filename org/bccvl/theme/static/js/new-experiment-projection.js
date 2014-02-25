@@ -123,6 +123,11 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // Update the number displayed on the page.
             $('.bccvl-available-projections').text(numDatasets);
+            // Get rid of error validation
+            if (numDatasets > 0) {
+                $('.bccvl-projections-counter').removeClass('control-group error');
+                $('.projection-error-message').addClass('hidden');
+            }
         }
     // ==============================================================
     }

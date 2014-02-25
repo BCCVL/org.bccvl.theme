@@ -36,6 +36,17 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                 },
                 listeners: {
                     onFormValidate: function(isFormValid, evt) {
+                        // validate the Projections selected
+                        var numberOfProjections = parseInt($('.bccvl-available-projections').text());
+                        if (numberOfProjections == 0) {
+                            $('.bccvl-projections-counter').addClass('control-group error');
+                            $('.projection-error-message').removeClass('hidden');
+                            isFormValid = false;
+                        }
+                        else {
+                            $('.bccvl-projections-counter').removeClass('control-group error');
+                            $('.projection-error-message').addClass('hidden');
+                        }
                         if (! isFormValid) {
                             // if the form isn't valid, then there's at least one error
                             // showing somewhere.  But if it's on another tab, parsley
@@ -62,7 +73,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                             var $tabPane = $firstError.closest('.tab-pane');      // tab pane containing first error
                             if ($tabPane.length > 0) {
 
-                                // add listener for the case where the random absense checkbox is selected
+                                // add listener for the case where the random absense checkbox is selected for SDM
                                 $('#form-widgets-species_pseudo_absence_points-0').change(function() {
                                     if ($(this).is(':checked')){
                                         $('.random-absences-settings').parent().addClass('success');
