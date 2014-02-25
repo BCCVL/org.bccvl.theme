@@ -318,10 +318,16 @@ div.modal div.modal-body form div.action input#crud-edit-form-buttons-edit.submi
  * that applies to 'error' radio buttons.
  */
 .control-group.error input[type="radio"],
-.control-group.error input[type="checkbox"] {
+.control-group.error input[type="checkbox"]
+.control-group.error p {
     outline: 1px solid red;
 }
 
+.projection-error-message {
+    text-align: center;
+    font-weight: bold;
+    color: #B94A48;
+}
 
 /* flash messages -------------------------------------------------------- */
 
