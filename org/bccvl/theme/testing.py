@@ -1,9 +1,6 @@
 from plone.testing import z2
 from plone.app.robotframework.testing import (
-    SIMPLE_PUBLICATION_FIXTURE,
-    LIVESEARCH_FIXTURE,
     AUTOLOGIN_LIBRARY_FIXTURE,
-    REMOTE_LIBRARY_BUNDLE_FIXTURE
 )
 from org.bccvl.site.testing import (
     BCCVL_FIXTURE, BCCVL_ASYNC_FIXTURE,
