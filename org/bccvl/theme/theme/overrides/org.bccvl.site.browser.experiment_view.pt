@@ -43,7 +43,7 @@
                             title="Preview this file"
                             data-viz-id="#downloadurl"
                             tal:attributes="data-viz-id visurl"
-                            tal:condition="python: item.Format() not in ('application/octet-stream', 'application/zip')">
+                            tal:condition="python: item.Format() not in ('application/octet-stream')">
                             <i class="icon-eye-open icon-link"></i>
                          </a>
                        </td>
