@@ -76,37 +76,35 @@
             string every time it occurs in the next bit of code.
             -->
 
-            <xsl:for-each select="//div">
-                <xsl:if test="starts-with(@data-fieldname,$prefix)">
+            <xsl:for-each select="//fieldset[@id='fieldset-parameters']/div">
+
+                <xsl:element name="div">
+                    <xsl:attribute name="class">accordion-group</xsl:attribute>
+                    <xsl:attribute name="data-function"><xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
+                    <div class="accordion-heading">
+                        <xsl:element name="a">
+                            <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
+                            <xsl:attribute name="data-toggle">collapse</xsl:attribute>
+                            <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
+                            <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
+                            <xsl:value-of select="string(./label/text())" />
+                        </xsl:element>
+                    </div>
 
                     <xsl:element name="div">
-                        <xsl:attribute name="class">accordion-group</xsl:attribute>
-                        <xsl:attribute name="data-function"><xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
-                        <div class="accordion-heading">
-                            <xsl:element name="a">
-                                <xsl:attribute name="class">accordion-toggle collapsed</xsl:attribute>
-                                <xsl:attribute name="data-toggle">collapse</xsl:attribute>
-                                <xsl:attribute name="data-parent">#algoConfig</xsl:attribute>
-                                <xsl:attribute name="href">#accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
-                                <xsl:value-of select="string(./label/text())" />
-                            </xsl:element>
+                        <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
+                        <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
+
+                        <div class="accordion-inner bccvl-algo-config">
+                            <fieldset class="form-horizontal">
+                                <xsl:copy-of select="." />
+                            </fieldset>
+
+                            <xsl:copy-of select="./label/*[@class='formHelp']" />
                         </div>
-
-                        <xsl:element name="div">
-                            <xsl:attribute name="class">accordion-body collapse</xsl:attribute>
-                            <xsl:attribute name="id">accordion_body_<xsl:value-of select="substring-after(@data-fieldname,$prefix)" /></xsl:attribute>
-
-                            <div class="accordion-inner bccvl-algo-config">
-                                <fieldset class="form-horizontal">
-                                    <xsl:copy-of select="." />
-                                </fieldset>
-
-                                <xsl:copy-of select="./label/*[@class='formHelp']" />
-                            </div>
-                        </xsl:element>
                     </xsl:element>
+                </xsl:element>
 
-                </xsl:if>
             </xsl:for-each>
 
         </replace>
