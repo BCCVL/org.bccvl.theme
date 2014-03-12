@@ -124,7 +124,8 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 
           var descriptionHTML = '<p>' + data.description + '</p>';
           $controlGroup.append(downloadButtonHTML);
           $controlGroup.append(visualiseButtonHTML);
-          $tableLabel.append(descriptionHTML);
+          var $descriptionField = $tableLabel.find("p");
+          $descriptionField.replaceWith(descriptionHTML);
           viz.init();
         }
       });
