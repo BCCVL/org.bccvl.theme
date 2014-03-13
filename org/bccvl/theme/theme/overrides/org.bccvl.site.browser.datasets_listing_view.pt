@@ -62,13 +62,19 @@
                         publish/retract -->
                         <td class="bccvl-table-controls">
                           <a tal:define="action python:view.get_transition(item_obj);
-                                         icon_class python: action == 'publish' and 'icon-share' or 'icon-unshare';
-                                         icon_title python: action == 'publish' and 'share' or 'unshare';"
+                                         icon_class python: action == 'publish' and 'icon-share-alt' or 'icon-remove';
+                                         icon_title python: action == 'publish' and 'Publish' or 'Unpublish';"
                              tal:condition="action"
                              tal:attributes="href string:${item_url}/dm/${icon_title}">
-                             <i class="icon-share" title="share"
+                             <i class="icon-share-alt" title="Publish"
                                 tal:attributes="class icon_class;
                                                 title icon_title"></i>
+                          </a>
+
+                          <a class="sharing-btn" href="#" tal:attributes="href string:${item_url}/@@sharing"
+                             tal:condition="file"
+                             tal:define="file item_obj/file">
+                            <i class="icon-share" title="Sharing Options"></i>
                           </a>
 
                           <a href="#" tal:attributes="href string:${item_url}/@@download/file/${file/filename}"
@@ -81,8 +87,6 @@
                              tal:define="file item_obj/file;
                                          visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
                             <i class="icon-eye-open icon-link" title="preview"></i>
-                            <!-- TODO: Pull the data type from the
-                                 instance - speak with GW -->
                           </a>
 
                           <a href="#" class="bccvl-auto-viz" tal:attributes="data-viz-id string:${visurl}/@@download/file/${file/filename}"
@@ -90,7 +94,6 @@
                              tal:define="file item_obj/file;
                                          visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
                             <i class="icon-eye-open icon-link" title="preview"></i>
-                            <!-- TODO: Pull the data type from the instance - speak with GW -->
                           </a>
 
                           <a class="environmentallayers-zip-edit" tal:attributes="href string:${item_url}/@@editfilemetadata"

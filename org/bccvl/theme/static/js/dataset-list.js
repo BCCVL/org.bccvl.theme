@@ -2,13 +2,14 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
-  function(   $      ,   stretch          ,  viz ) {
+define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
+  function(   $      ,   stretch          ,  viz                 ,  sharing ) {
   // ==============================================================
     $(function() {
 
       viz.init();
       stretch.init({ topPad: 60, bottomPad: 10 });
+      sharing.init();
 
       $('.bccvl-datasetstable').tablesorter({
         headers: { 
