@@ -25,7 +25,6 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap', 
 
       // This bit here gets the edit metadata page for environmental layers
       // and makes a modal out of it
-      var smallSpinner = '<i class="bccvl-small-spinner"/>'
       $(".environmentallayers-zip-edit").click(function(e) {
         
         // prevents it from going to the href
