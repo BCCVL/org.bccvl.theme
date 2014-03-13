@@ -911,3 +911,17 @@ div.morefilters h4 span.label {
 .algorithm-status > span {
     margin-right: 15px;
 }
+
+/** SHARING **/
+#user-group-sharing-head th{
+    font-size: 100%;
+}
+
+.modal-header h1 {
+    font-size: 24px;
+}
+
+#sharing-save-button, .standalone{
+    margin-top: 10px;
+    margin-right: 10px;
+}
