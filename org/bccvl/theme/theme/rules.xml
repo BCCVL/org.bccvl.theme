@@ -5,7 +5,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <theme href="html/homepage.html" /> <!--if="$is_anonymous"/>-->
-    
+
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/dataset-list.xml" />
@@ -33,18 +33,22 @@
     <!-- don't theme if there is an error -->
     <notheme css:if-content="body.template-default_error_message" />
 
-    <!-- <notheme if="'true'='true'" /> -->
-    <!-- <notheme if="$norules"/> -->
-
     <!-- don't theme special pages -->
-    <notheme if-path="@@manage-job-queue/" />
-    <notheme if-path="@@overview-controlpanel/" />
-    <notheme if-path="@@usergroup-userprefs/" />
-    <notheme if-path="@@usergroup-groupprefs/" />
-    <notheme if-path="@@usergroup-controlpanel/" />
-    <notheme if-path="@@member-registration/" />
-    <notheme if-path="@@new-user/" />
-    <notheme if-path="prefs_install_products_form/" />
+    <notheme if-path="@@manage-job-queue/
+                      @@overview-controlpanel/
+                      @@usergroup-userprefs/
+                      @@usergroup-groupprefs/
+                      @@usergroup-controlpanel/
+                      @@member-registration/
+                      @@new-user/
+                      @@usergroup-groupmembership/
+                      @@usergroup-groupdetails/
+                      @@manage-group-portlets/
+                      @@manage-group-dashboard/
+                      @@manage-dashboard/
+                      @@caching-controlpanel/
+                      prefs_install_products_form/
+                      portal_registry" />
 
      <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
