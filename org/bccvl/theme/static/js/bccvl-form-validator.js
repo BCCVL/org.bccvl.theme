@@ -56,7 +56,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
 
                             // but before all that, we need to check if the user has selected either to use random points
                             // a dataset for absences for the sdm experiment
-                            var $absenceFields = $('.control-group.error').find('.random-absences-settings').parent();
+                            var $absenceFields = $('.control-group.error').has('.random-absences-settings');
                             
                             if ($absenceFields.length > 0) {
                                 if ($('#form-widgets-species_pseudo_absence_points-0').is(':checked')) {
