@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone.z3cform"
+      tal:omit-tag="">
+
+  <head></head>
+
+  <body>
+
+    <metal:block metal:define-macro="algo_parameters">
+      <fieldset id="fieldset-parameters">
+        <div class="accordion-group" data-function="bioclim"
+             tal:repeat="group view/param_groups"
+             tal:attributes="data-function group/toolkit"
+             tal:condition="view/param_groups">
+          <div class="accordion-heading">
+            <a class="accordion-toggle collapsed"
+               data-toggle="collapse" data-parent="#algoConfig"
+               href="#accordion_body_bioclim"
+               tal:attributes="href string:#accordion_body_${group/toolkit}"
+               tal:content="group/label">Configuration bioclim</a>
+          </div>
+
+          <div class="accordion-body collapse"
+               id="accordion_body_bioclim"
+               tal:attributes="id string:accordion_body_${group/toolkit}">
+            <div class="accordion-inner bccvl-algo-config">
+              <span class="formHelp"
+                    tal:content="group/description">No configuration options</span>
+              <fieldset class="form-horizontal">
+                 <div class="algo-params">
+                 <tal:block define="view nocall:group">
+                   <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
+                 </tal:block>
+                 </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </metal:block>
+  </body>
+</html>
