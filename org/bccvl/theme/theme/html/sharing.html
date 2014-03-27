@@ -25,6 +25,26 @@
 		<h3 class="heading">Sharing</h3>
 	</div>
 	<div class="modal-body">
+		<form method="post">
+			<input type="hidden" value="True" name="form.submitted:boolean">
+			<div class="field" id="search-box"/>
+			<div id="user-group-sharing-container" />
+
+			<div id="field-inherit" class="field" />
+
+			<br>
+
+			<div>
+				<input id="legal-checkbox" type="checkbox" />
+				<label for="legal-checkbox">I agree to something... </label>
+			</div>
+
+			<input disabled id="sharing-save-button" class="context allowMultiSubmit" type="submit" value="Save" name="form.button.Save">
+			<input class="standalone" type="submit" value="Cancel" name="form.button.Cancel">
+
+			<input type="hidden" id="authenticator" />
+
+		</form>
 	</div>
 
 

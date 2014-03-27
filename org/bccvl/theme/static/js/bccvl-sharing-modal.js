@@ -21,6 +21,7 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 		            	$('.standalone').attr('data-dismiss', 'modal');
 
 		            	bindUserSearch(url);
+		            	legalCheckbox();
 		          	})
 				}
 			})
@@ -61,5 +62,16 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 				}
 			})
 		})
+	}
+
+	function legalCheckbox() {
+		$("#legal-checkbox:checkbox").change(function() {
+			if ($(this).is(":checked")) {
+				$("#sharing-save-button").removeAttr("disabled");
+			}
+			else {
+				$("#sharing-save-button").attr('disabled', 'disabled');
+			}
+		});
 	}
 })
