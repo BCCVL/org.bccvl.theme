@@ -933,3 +933,15 @@ div.morefilters h4 span.label {
     color: #808080;
     text-shadow: none;
 }
+
+/* Legals / Terms and conditions*/
+
+.legals {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.legals label {
+    display: inline;
+    padding-left: 10px;
+}
