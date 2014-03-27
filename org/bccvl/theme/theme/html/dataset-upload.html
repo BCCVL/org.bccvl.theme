@@ -203,9 +203,14 @@
 								</div>
 							</div>
 
+							<div>
+								<input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
+								<label for="legal-checkbox">I agree to something... </label>
+							</div>
+
 							<div class="control-group">
 								<div class="controls">
-									<button name="addspecies.buttons.save" class="btn btn-primary" value="Save" type="submit">Upload Species Dataset</button>
+									<button name="addspecies.buttons.save" class="btn btn-primary" id="dataset-save-btn" value="Save" type="submit" disabled>Upload Species Dataset</button>
 									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
 								</div>
 							</div>
@@ -318,8 +323,15 @@
 							</div>
 
 							<div class="control-group">
+								<label for="legal-checkbox">I agree to something... </label>
 								<div class="controls">
-									<button name="addlayer.buttons.save" class="btn btn-primary" value="Save" type="submit">Upload Environmental Layer</button>
+								<input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
+								</div>
+							</div>
+
+							<div class="control-group">
+								<div class="controls">
+									<button name="addlayer.buttons.save" class="btn btn-primary" id="env-save-btn" value="Save" type="submit" disabled>Upload Environmental Layer</button>
 									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
 								</div>
 							</div>
