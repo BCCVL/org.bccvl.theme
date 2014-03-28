@@ -945,3 +945,11 @@ div.morefilters h4 span.label {
     display: inline;
     padding-left: 10px;
 }
+
+.disclaimer {
+    padding-top: 20px;
+}
+
+#wrapper-aaf a {
+    cursor: default;
+}
