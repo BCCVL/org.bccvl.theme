@@ -159,7 +159,9 @@
             </xsl:for-each>
         </before>
 
-        <before css:theme="section.bccvl-experimentdetails table.bccvl-environmentaldatatable" css:content="#formfield-form-widgets-resolution"/>
+        <!-- The spatial scale -->
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-spatialscaletable tbody tr td" css:content="#form-widgets-resolution" />
+
         <!-- The rest of this is filled in with AJAX -->
         <replace css:theme="section.bccvl-experimentdetails table.bccvl-environmentaldatatable" content="//table[@id='form-widgets-environmental_datasets']" />
 

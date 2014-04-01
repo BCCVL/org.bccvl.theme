@@ -27,7 +27,6 @@
             not the option's name.
         -->
 
-        <before css:theme="table.bccvl-sdmtable" css:content="#formfield-form-widgets-resolution"/>
         <replace css:theme="table.bccvl-sdmtable" css:content="table.bccvl-datasetstable" />
 
         <!-- hook in the years -->
