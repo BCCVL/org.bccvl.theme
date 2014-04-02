@@ -135,9 +135,9 @@
               content="/html/head/script"
               theme-children="/html/head" />
         <replace css:theme-children="#user-menu">
-            <div class="btn">
-                <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">Log in</a>
-            </div>
+            <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">
+                <div class="btn">Log in</div>
+            </a>
         </replace>
 
         <drop css:theme="a.bccvllinks-dashboard"/>
