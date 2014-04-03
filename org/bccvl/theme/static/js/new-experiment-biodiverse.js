@@ -30,7 +30,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             "result": [
                                 {
                                     "year": "2015",
-                                    "files": [  ]
+                                    "files": [ "proj_1_2015.tif" ]
                                 },
                                 {
                                     "year": "2025",
@@ -42,7 +42,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                 },
                                 {
                                     "year": "2045",
-                                    "files": [ "RCP3PD_cccma-cgcm31_2015.tif" ]
+                                    "files": [ "proj_1_2045.tif" ]
                                 },
                                 {
                                     "year": "2055",
@@ -61,7 +61,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             "result": [
                                 {
                                     "year": "2015",
-                                    "files": [ "RCP3PD_cccma-cgcm31_2015.tif" ]
+                                    "files": [ "proj_2_2015.tif" ]
                                 },
                                 {
                                     "year": "2025",
@@ -100,6 +100,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $speciesTable = $('table.bccvl-speciestable');
             var $speciesTableBody = $speciesTable.find('tbody');
 
+            var $yearsTable = $('table.bccvl-yearstable');
+            var $yearsTableBody = $yearsTable.find('tbody');
+
             var renderProjection = function(projectionJSON) {
                 var html = '';
                 html += '<tr">';
@@ -117,10 +120,23 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var html = '';
                 html += '<tr">';
                 html +=  '<td>';
-                html +=   '<input class="bccvl-speces" type="checkbox"></input>';
+                html +=   '<input class="bccvl-species" type="checkbox"></input>';
                 html +=  '</td>';
                 html +=  '<td>';
                 html +=   speciesName;
+                html +=  '</td>';
+                html += '</tr>';
+                return html;
+            }
+
+            var renderYear = function(year) {
+                var html = '';
+                html += '<tr">';
+                html +=  '<td>';
+                html +=   '<input class="bccvl-year" type="checkbox"></input>';
+                html +=  '</td>';
+                html +=  '<td>';
+                html +=   year;
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -135,6 +151,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 // Remove all species & years
                 $speciesTableBody.empty();
+                $yearsTableBody.empty();
 
                 // Get all the projection checkboxes that are selected.
                 var $selectedProjectionCheckboxes = $('.bccvl-projection').filter(':checked');
@@ -164,7 +181,29 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     $speciesTableBody.append(renderSpecies(s));
                 });
 
+                // Determine all the years that the selected projections have in common.
+                // First - flatten the arrays
+                var $yearsArray = new Array();
+                $.each($selectedProjections, function(i, p){
+                    var years = new Array();
+                    $.each(p.result, function(j, r){
+                        if (r.files.length != 0) {
+                            years.push(r.year);
+                        }
+                    });
+                    $yearsArray.push(years);
+                });
 
+                // Next, determine the insersection of the common years.
+                $commonYears = $yearsArray[0];
+                $.each($yearsArray, function(i, y){
+                    $commonYears = $.intersect($commonYears, y);
+                });
+
+                // Create checkboxes for each common year.
+                $.each($commonYears.sort(), function(index, y){
+                    $yearsTableBody.append(renderYear(y));
+                });
             });
     });     
 });
