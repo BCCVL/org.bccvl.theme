@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/general.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="lib/html5shiv/html5shiv.js"></script>
+	<![endif]-->
+
+    <!-- include portal_url to simplify path referencing -->
+    <script src="../plone_javascript_variables.js"></script>
+
+	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+	<script src="lib/require/require.js"></script>
+
+</head>
+
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h3 class="heading">Sharing</h3>
+	</div>
+	<div class="modal-body">
+		<form method="post">
+			<input type="hidden" value="True" name="form.submitted:boolean">
+			<div class="field" id="search-box"/>
+			<div id="user-group-sharing-container" />
+
+			<div id="field-inherit" class="field" />
+
+			<br>
+
+			<div class="legals">
+				<input id="legal-checkbox" type="checkbox" />
+				<label for="legal-checkbox">I Agree To The <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+			</div>
+
+			<input disabled id="sharing-save-button" class="context allowMultiSubmit" type="submit" value="Save" name="form.button.Save">
+			<input class="standalone" type="submit" value="Cancel" name="form.button.Cancel">
+
+			<input type="hidden" id="authenticator" />
+
+		</form>
+	</div>
+
+
+</html>

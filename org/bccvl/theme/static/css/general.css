@@ -378,22 +378,23 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
 /* :: the config form elements from plone :::::::::::::::::::::::::::::::: */
 /* TODO: this is a five minute slap up, come back and fix
    this styling, it's fucking awful */
-
-.bccvl-algoconfig .object-widget-field {
+/* Gerhard */
+.bccvl-algoconfig .algo-params .field {
     clear: both;
     padding: 0.5em 0;
 }
-.bccvl-algoconfig .object-widget-field > label {
+.bccvl-algoconfig .algo-params .field > label {
     text-align: right;
     float: left;
     width: 47%;
     padding: 0.25em 2% 0 0;
 }
 /* hide the initial label "configuration for Blah Blah" which isn't needed */
-.bccvl-algo-config > fieldset > div > label { display: none; }
+.bccvl-algoconfig > fieldset > div > label { display: none; }
 /* hide the empty "required" indicator span */
-.bccvl-algoconfig .object-widget-field label .required { display: none; }
-.bccvl-algoconfig .object-widget-field label .formHelp {
+/* Gerhard */
+.bccvl-algoconfig .algo-params .field label .required { display: none; }
+.bccvl-algoconfig .algo-params .field label .formHelp {
     display: block;
     clear: both;
     font-size: 90%;
@@ -401,10 +402,11 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     padding-top: 0.25em;
 }
 /* the label for checkboxes, coming after the checkbox itself */
-.bccvl-algoconfig .object-widget-field span.option label {
+/* Gerhard */
+.bccvl-algoconfig .algo-params .field span.option label {
     display: inline;
 }
-.bccvl-algoconfig .object-widget-field span.option label .label {
+.bccvl-algoconfig .algo-params .field span.option label .label {
     font-size: inherit;
     font-weight: inherit;
     line-height: inherit;
@@ -414,14 +416,15 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     vertical-align: baseline;
     background-color: inherit;
 }
-.bccvl-algoconfig .object-widget-field select[size='1'] {
+/* Gerhard */
+.bccvl-algoconfig .algo-params .field select[size='1'] {
     /* Bootstrap sets the height of selects to 30px then
     back to auto for multi-selects.  Plone specifies
     size=1, but bootstrap assumes the size attribute always
     implies a multiselect.  So, reset the height. */
     height: 30px;
 }
-.bccvl-algoconfig .object-widget-field .help-inline:before {
+.bccvl-algoconfig .algo-params .field .help-inline:before {
     /* inside object-widget-fields the inline help actually needs to
     be less inline, but parsley writes an inline style attribute forcing
     it to be display: inline. */
@@ -522,7 +525,7 @@ div.random-absences-settings label.horizontal span.formHelp {
     display: block;
 }
 
-.experiment-configuration, .object-widget, .widget{
+.experiment-configuration, .algo-params, .widget{
     margin-left: 10px;
 }
 
@@ -910,4 +913,43 @@ div.morefilters h4 span.label {
 
 .algorithm-status > span {
     margin-right: 15px;
+}
+
+/** SHARING **/
+#user-group-sharing-head th{
+    font-size: 100%;
+}
+
+.modal-header h1 {
+    font-size: 24px;
+}
+
+#sharing-save-button, .standalone{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.navbar .btn-navbar {
+    color: #808080;
+    text-shadow: none;
+}
+
+/* Legals / Terms and conditions*/
+
+.legals {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.legals label {
+    display: inline;
+    padding-left: 10px;
+}
+
+.disclaimer {
+    padding-top: 20px;
+}
+
+#wrapper-aaf a {
+    cursor: default;
 }

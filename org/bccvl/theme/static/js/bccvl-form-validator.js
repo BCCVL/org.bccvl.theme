@@ -12,7 +12,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
             // strutures and classes.  The easiest way to make validation errors show up
             // is to give plone's ".object-widget-field" things an additional class of
             // ".control-group".
-            $('form.bccvl-parsleyvalidate .object-widget-field').addClass('control-group');
+            $('form.bccvl-parsleyvalidate .algo-params .field').addClass('control-group');
 
             // right, so now kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley({
@@ -56,8 +56,8 @@ define(     ['jquery', 'parsley', 'bootstrap'],
 
                             // but before all that, we need to check if the user has selected either to use random points
                             // a dataset for absences for the sdm experiment
-                            var $absenceFields = $('.control-group.error').find('.random-absences-settings').parent();
-                            
+                            var $absenceFields = $('.control-group.error').has('.random-absences-settings');
+
                             if ($absenceFields.length > 0) {
                                 if ($('#form-widgets-species_pseudo_absence_points-0').is(':checked')) {
                                     $absenceFields.removeClass('error');
@@ -92,7 +92,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                                         if (!datasetSelected){
                                             $('.random-absences-settings').parent().addClass('error');
                                             $('.random-absences-settings').parent().removeClass('success');
-                                            $('#parsley-formwidgetsspecies_absence_datasetlist').show();    
+                                            $('#parsley-formwidgetsspecies_absence_datasetlist').show();
                                         }
                                     }
 
@@ -127,6 +127,6 @@ define(     ['jquery', 'parsley', 'bootstrap'],
         });
 
     // ==============================================================
-    
+
     }
 );

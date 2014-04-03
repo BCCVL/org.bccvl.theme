@@ -1,0 +1,30 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- NEW PROJECTION EXPERIMENT ================================== -->
+    <rules if-path="++add++org.bccvl.content.biodiverseexperiment/">
+        <theme href="html/new-experiment-biodiverse.html" />
+
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
+
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
+
+        <!-- hook in title field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+
+        <!-- hook in description field -->
+        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+
+
+        <!-- Configuration page -->
+        <!-- Cluster Size -->
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-clustersizetable tbody tr td" css:content="#form-widgets-cluster_size" />
+
+    </rules>
+
+</rules>

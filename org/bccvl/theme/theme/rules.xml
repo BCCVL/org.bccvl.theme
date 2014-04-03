@@ -14,12 +14,14 @@
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
+    <xi:include href="rules/new-experiment-biodiverse.xml" />
     <xi:include href="rules/dashboard.xml" />
     <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
+    <xi:include href="rules/sharing.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
@@ -133,9 +135,9 @@
               content="/html/head/script"
               theme-children="/html/head" />
         <replace css:theme-children="#user-menu">
-            <div class="btn">
-                <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">Log in</a>
-            </div>
+            <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">
+                <div class="btn">Log in</div>
+            </a>
         </replace>
 
         <drop css:theme="a.bccvllinks-dashboard"/>
@@ -151,9 +153,9 @@
             //a[@id="org-bccvl-content-sdmexperiment"]
             Note: This link is NOT available when viewing a specific experiment.
     -->
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"    content="//a[@id='org-bccvl-content-sdmexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"
-                             content="//a[@id='org-bccvl-content-projectionexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"            content="//a[@id='org-bccvl-content-sdmexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"       content="//a[@id='org-bccvl-content-projectionexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-biodiverse-new" content="//a[@id='org-bccvl-content-biodiverseexperiment']" />
 
     <!-- miscellaneous -->
     <replace theme="//footer" content="//footer"/>

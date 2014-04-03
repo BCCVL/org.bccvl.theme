@@ -16,6 +16,25 @@ define(     ['jquery', 'bootstrap'],
             	$('#wrapper-basic').removeClass('hidden');
             	$('#wrapper-aaf').addClass('hidden');
             });
+
+            $("#wrapper-basic .btn-success").attr('disabled', 'disabled');
+            $("#wrapper-aaf a").attr('onclick','return false;');
+
+            $("#legals-checkbox:checkbox").change(function() {
+                if ($(this).is(":checked")) {
+                    $("#wrapper-basic .btn-success").removeAttr("disabled");
+                    
+                    $("#wrapper-aaf a").removeAttr('onclick');
+                    $("#wrapper-aaf a").css('cursor', 'pointer');
+
+                }
+                else {
+                    $("#wrapper-basic .btn-success").attr('disabled', 'disabled');
+                    $("#wrapper-aaf a").attr('onclick','return false;');
+                    $("#wrapper-aaf a").css('cursor', 'default');
+                }
+            })
+
         });
     // ==============================================================
     }

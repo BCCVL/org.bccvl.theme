@@ -19,7 +19,8 @@ requirejs.config({
         'parsley':              'parsley/parsley.min',
 //        'parsley':              'parsley/parsley',
         'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
-        'jquery-form':          'jquery-form/jquery.form.min'
+        'jquery-form':          'jquery-form/jquery.form.min',
+        'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min'
     },
     shim: {
         'parsley':              ['jquery'],
