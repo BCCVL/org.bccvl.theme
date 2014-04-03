@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0.2-dev'
+version = '1.0.3-dev'
 
 setup(name='org.bccvl.theme',
       version=version,
