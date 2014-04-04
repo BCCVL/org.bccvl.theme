@@ -129,6 +129,47 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return html;
             }
 
+            // Determines all the selected projections, and returns their JSON objects as an Array.
+            var getSelectedProjections = function() {
+
+                // Get all the projection checkboxes that are selected.
+                var $selectedProjectionCheckboxes = $('.bccvl-projection').filter(':checked');
+                if ($selectedProjectionCheckboxes.length == 0) {
+                    // No need to continue processing if there are no selected projections.
+                    return null;
+                }
+
+                // Get all the IDs of the selected projections
+                var $selectedProjectionIds = $.map($selectedProjectionCheckboxes, function(p){
+                    return $(p).attr("data-projectionid");
+                });
+
+                // Get the actual projection JSON objects for each selected checkbox.
+                return $.grep(projectionData.projections, function(p){
+                    return ($.inArray(p.id, $selectedProjectionIds) >= 0);
+                });
+            };
+
+            // Determines all the selected species, and returns an Array of Strings.
+            var getSelectedSpecies = function() {
+
+                // Get all the species checkboxes that are selected.
+                var $selectedSpeciesCheckboxes = $('.bccvl-species').filter(':checked');
+                return $.map($selectedSpeciesCheckboxes, function(s){
+                    return $(s).attr("value");
+                });
+            }
+
+            var getSelectedYears = function() {
+
+                // Get all the year checkboxes that are selected.
+                var $selectedYearCheckboxes = $('.bccvl-year').filter(':checked');
+                return $.map($selectedYearCheckboxes, function(y){
+                    return $(y).attr("value");
+                });
+            }
+
+            // Triggered whenever a projection is selected/deselected.
             var onProjectionChange = function(){
                 // Remove all species & years
                 $speciesTableBody.empty();
@@ -154,39 +195,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $('.bccvl-species').on("change", onSpeciesChange);
             };
 
-            // Determines all the selected projections, and returns their JSON objects as an Array.
-            var getSelectedProjections = function() {
-
-                // Get all the projection checkboxes that are selected.
-                var $selectedProjectionCheckboxes = $('.bccvl-projection').filter(':checked');
-                if ($selectedProjectionCheckboxes.length == 0) {
-                    // No need to continue processing if there are no selected projections.
-                    return null;
-                }
-
-                // Get all the IDs of the selected projections
-                var $selectedProjectionIds = $.map($selectedProjectionCheckboxes, function(p){
-                    return $(p).attr("data-projectionid");
-                });
-
-                // Get the actual projection JSON objects for each selected checkbox.
-                var $selectedProjections = $.grep(projectionData.projections, function(p){
-                    return ($.inArray(p.id, $selectedProjectionIds) >= 0);
-                });
-                return $selectedProjections;
-            };
-
-            // Determines all the selected species, and returns an Array of Strings.
-            var getSelectedSpecies = function() {
-
-                // Get all the species checkboxes that are selected.
-                var $selectedSpeciesCheckboxes = $('.bccvl-species').filter(':checked');
-                var $selectedSpecies = $.map($selectedSpeciesCheckboxes, function(s){
-                    return $(s).attr("value");
-                });
-                return $selectedSpecies;
-            }
-
             // Triggered whenever a species is selected/deselected.
             var onSpeciesChange = function() {
 
@@ -209,7 +217,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     var intersection = $.intersect(p.species, $selectedSpecies);
                     if (intersection.length == $selectedSpecies.length) {
                         $.each(p.result, function(index2, r){
-                            if (r.files.length != 0 $.inArray(r.year, years) >= 0) {
+                            if (r.files.length != 0 && $.inArray(r.year, years) < 0) {
                                 years.push(r.year);
                             }
                         });
