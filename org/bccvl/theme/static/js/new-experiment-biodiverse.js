@@ -129,6 +129,19 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return html;
             }
 
+            var renderLayer = function(layer) {
+                var html = '';
+                html += '<tr">';
+                html +=  '<td>';
+                html +=   '<input class="bccvl-layer" type="checkbox" value="' + layer + '"></input>';
+                html +=  '</td>';
+                html +=  '<td>';
+                html +=   layer;
+                html +=  '</td>';
+                html += '</tr>';
+                return html;
+            }
+
             // Determines all the selected projections, and returns their JSON objects as an Array.
             var getSelectedProjections = function() {
 
@@ -171,9 +184,11 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // Triggered whenever a projection is selected/deselected.
             var onProjectionChange = function(){
-                // Remove all species & years
+
+                // Remove all species & years & layers
                 $speciesTableBody.empty();
                 $yearsTableBody.empty();
+                $layersTableBody.empty();
 
                 $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
@@ -198,8 +213,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // Triggered whenever a species is selected/deselected.
             var onSpeciesChange = function() {
 
-                // Remove all years
+                // Remove all years & layers
                 $yearsTableBody.empty();
+                $layersTableBody.empty();
 
                 $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
@@ -228,7 +244,48 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $.each(years.sort(), function(index, y){
                     $yearsTableBody.append(renderYear(y));
                 });
+
+                // Wire up event listeners for all the newly created checkboxes.
+                $('.bccvl-year').on("change", onYearChange);
             }
+
+            var onYearChange = function() {
+
+                // Remove all layers
+                $layersTableBody.empty();
+
+                $selectedProjections = getSelectedProjections();
+                if ($selectedProjections == null) {
+                    return;
+                }
+
+                $selectedSpecies = getSelectedSpecies();
+                if ($selectedSpecies.length == 0) {
+                    return;
+                }
+
+                $selectedYears = getSelectedYears();
+                if ($selectedYears.length == 0) {
+                    return;
+                }
+
+                // Filter all selected projections for the selected species/year combinations to determine map layers.
+                var layers = new Array();
+                $.each($selectedProjections, function(index, p){
+                    var intersection = $.intersect(p.species, $selectedSpecies);
+                    if (intersection.length == $selectedSpecies.length) {
+                        $.each(p.result, function(index2, r){
+                            if (r.files.length != 0 && $.inArray(r.year, $selectedYears) >= 0) {
+                                layers = layers.concat(r.files);
+                            }
+                        });
+                    }
+                });
+
+                $.each(layers.sort(), function(index, l){
+                    $layersTableBody.append(renderLayer(l));
+                });
+            };
 
             // TODO: To be replaced by a call to an AJAX endpoint
             var projectionData = getMockProjectionData();
@@ -241,6 +298,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             var $yearsTable = $('table.bccvl-yearstable');
             var $yearsTableBody = $yearsTable.find('tbody');
+
+            var $layersTable = $('table.bccvl-layerstable');
+            var $layersTableBody = $layersTable.find('tbody');
 
             // Populate the projections table
             $.each(projectionData.projections, function(index, p){
