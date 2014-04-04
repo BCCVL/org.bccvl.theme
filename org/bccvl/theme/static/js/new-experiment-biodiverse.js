@@ -90,19 +90,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return projectionData;
             }
 
-
-            // TODO: To be replaced by a call to an AJAX endpoint
-            var projectionData = getMockProjectionData();
-
-            var $projectionTable = $('table.bccvl-projectiontable');
-            var $projectionTableBody = $projectionTable.find('tbody');
-
-            var $speciesTable = $('table.bccvl-speciestable');
-            var $speciesTableBody = $speciesTable.find('tbody');
-
-            var $yearsTable = $('table.bccvl-yearstable');
-            var $yearsTableBody = $yearsTable.find('tbody');
-
             var renderProjection = function(projectionJSON) {
                 var html = '';
                 html += '<tr">';
@@ -120,7 +107,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var html = '';
                 html += '<tr">';
                 html +=  '<td>';
-                html +=   '<input class="bccvl-species" type="checkbox"></input>';
+                html +=   '<input class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td>';
                 html +=   speciesName;
@@ -133,7 +120,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 var html = '';
                 html += '<tr">';
                 html +=  '<td>';
-                html +=   '<input class="bccvl-year" type="checkbox"></input>';
+                html +=   '<input class="bccvl-year" type="checkbox" value="' + year + '"></input>';
                 html +=  '</td>';
                 html +=  '<td>';
                 html +=   year;
@@ -142,33 +129,15 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 return html;
             }
 
-            $.each(projectionData.projections, function(index, p){
-                $projectionTableBody.append(renderProjection(p));
-            });
-
-            // Listener for when a Projection is selected/deselected.
-            $('.bccvl-projection').change(function() {
-
+            var onProjectionChange = function(){
                 // Remove all species & years
                 $speciesTableBody.empty();
                 $yearsTableBody.empty();
 
-                // Get all the projection checkboxes that are selected.
-                var $selectedProjectionCheckboxes = $('.bccvl-projection').filter(':checked');
-                if ($selectedProjectionCheckboxes.length == 0) {
-                    // No need to continue processing if there are no selected projections.
+                $selectedProjections = getSelectedProjections();
+                if ($selectedProjections == null) {
                     return;
                 }
-
-                // Get all the IDs of the selected projections
-                var $selectedProjectionIds = $.map($selectedProjectionCheckboxes, function(p){
-                    return $(p).attr("data-projectionid");
-                });
-
-                // Get the actual projection JSON objects for each selected checkbox.
-                var $selectedProjections = $.grep(projectionData.projections, function(p){
-                    return ($.inArray(p.id, $selectedProjectionIds) >= 0);
-                });
 
                 // Determine all the species that the selected projections have in common.
                 var $commonSpecies = $selectedProjections[0].species;
@@ -181,29 +150,96 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     $speciesTableBody.append(renderSpecies(s));
                 });
 
-                // Determine all the years that the selected projections have in common.
-                // First - flatten the arrays
-                var $yearsArray = new Array();
-                $.each($selectedProjections, function(i, p){
-                    var years = new Array();
-                    $.each(p.result, function(j, r){
-                        if (r.files.length != 0) {
-                            years.push(r.year);
-                        }
-                    });
-                    $yearsArray.push(years);
+                // Wire up event listeners for all the newly created checkboxes.
+                $('.bccvl-species').on("change", onSpeciesChange);
+            };
+
+            // Determines all the selected projections, and returns their JSON objects as an Array.
+            var getSelectedProjections = function() {
+
+                // Get all the projection checkboxes that are selected.
+                var $selectedProjectionCheckboxes = $('.bccvl-projection').filter(':checked');
+                if ($selectedProjectionCheckboxes.length == 0) {
+                    // No need to continue processing if there are no selected projections.
+                    return null;
+                }
+
+                // Get all the IDs of the selected projections
+                var $selectedProjectionIds = $.map($selectedProjectionCheckboxes, function(p){
+                    return $(p).attr("data-projectionid");
                 });
 
-                // Next, determine the insersection of the common years.
-                $commonYears = $yearsArray[0];
-                $.each($yearsArray, function(i, y){
-                    $commonYears = $.intersect($commonYears, y);
+                // Get the actual projection JSON objects for each selected checkbox.
+                var $selectedProjections = $.grep(projectionData.projections, function(p){
+                    return ($.inArray(p.id, $selectedProjectionIds) >= 0);
+                });
+                return $selectedProjections;
+            };
+
+            // Determines all the selected species, and returns an Array of Strings.
+            var getSelectedSpecies = function() {
+
+                // Get all the species checkboxes that are selected.
+                var $selectedSpeciesCheckboxes = $('.bccvl-species').filter(':checked');
+                var $selectedSpecies = $.map($selectedSpeciesCheckboxes, function(s){
+                    return $(s).attr("value");
+                });
+                return $selectedSpecies;
+            }
+
+            // Triggered whenever a species is selected/deselected.
+            var onSpeciesChange = function() {
+
+                // Remove all years
+                $yearsTableBody.empty();
+
+                $selectedProjections = getSelectedProjections();
+                if ($selectedProjections == null) {
+                    return;
+                }
+
+                $selectedSpecies = getSelectedSpecies();
+                if ($selectedSpecies.length == 0) {
+                    return;
+                }
+
+                // Filter all selected projections for the selected species, so we can get the intersection of the years.
+                var years = new Array();
+                $.each($selectedProjections, function(index, p){
+                    var intersection = $.intersect(p.species, $selectedSpecies);
+                    if (intersection.length == $selectedSpecies.length) {
+                        $.each(p.result, function(index2, r){
+                            if (r.files.length != 0 $.inArray(r.year, years) >= 0) {
+                                years.push(r.year);
+                            }
+                        });
+                    }
                 });
 
-                // Create checkboxes for each common year.
-                $.each($commonYears.sort(), function(index, y){
+                // Populate the years table.
+                $.each(years.sort(), function(index, y){
                     $yearsTableBody.append(renderYear(y));
                 });
+            }
+
+            // TODO: To be replaced by a call to an AJAX endpoint
+            var projectionData = getMockProjectionData();
+
+            var $projectionTable = $('table.bccvl-projectiontable');
+            var $projectionTableBody = $projectionTable.find('tbody');
+
+            var $speciesTable = $('table.bccvl-speciestable');
+            var $speciesTableBody = $speciesTable.find('tbody');
+
+            var $yearsTable = $('table.bccvl-yearstable');
+            var $yearsTableBody = $yearsTable.find('tbody');
+
+            // Populate the projections table
+            $.each(projectionData.projections, function(index, p){
+                $projectionTableBody.append(renderProjection(p));
             });
-    });     
+
+            // Listener for when a Projection is selected/deselected.
+            $('.bccvl-projection').on("change", onProjectionChange);
+    });
 });
