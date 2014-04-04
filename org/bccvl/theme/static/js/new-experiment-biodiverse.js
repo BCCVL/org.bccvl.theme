@@ -93,11 +93,13 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderProjection = function(projectionJSON) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td>';
-                html +=   '<input class="bccvl-projection" type="checkbox" data-projectionid="' + projectionJSON.id + '"></input>';
+                html +=  '<td class="bccvl-table-choose">';
+                html +=   '<input id="proj-' + projectionJSON.id + '" class="bccvl-projection" type="checkbox" data-projectionid="' + projectionJSON.id + '"></input>';
                 html +=  '</td>';
-                html +=  '<td>';
-                html +=   projectionJSON.name;
+                html +=  '<td class="bccvl-table-label">';
+                html +=   '<label for="proj-' + projectionJSON.id + '">';
+                html +=    '<h1>' + projectionJSON.name + '</h1>';
+                html +=   '</label>';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -106,11 +108,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderSpecies = function(speciesName) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td>';
-                html +=   '<input class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
+                html +=  '<td class="bccvl-table-choose">';
+                html +=   '<input id="species-' + speciesName + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
                 html +=  '</td>';
-                html +=  '<td>';
-                html +=   speciesName;
+                html +=  '<td class="bccvl-table-label">';
+                html +=   '<label for="species-' + speciesName + '">';
+                html +=    '<h1>' + speciesName + '</h1>';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -119,11 +122,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderYear = function(year) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td>';
-                html +=   '<input class="bccvl-year" type="checkbox" value="' + year + '"></input>';
+                html +=  '<td class="bccvl-table-choose">';
+                html +=   '<input id="year-' + year + '" class="bccvl-year" type="checkbox" value="' + year + '"></input>';
                 html +=  '</td>';
-                html +=  '<td>';
-                html +=   year;
+                html +=  '<td class="bccvl-table-label">';
+                html +=   '<label for="year-' + year + '">';
+                html +=    '<h1>' + year + '</h1>';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -132,11 +136,12 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderLayer = function(layer) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td>';
-                html +=   '<input class="bccvl-layer" type="checkbox" value="' + layer + '"></input>';
+                html +=  '<td class="bccvl-table-choose">';
+                html +=   '<input id="layer-' + layer + '" class="bccvl-layer" type="checkbox" value="' + layer + '"></input>';
                 html +=  '</td>';
-                html +=  '<td>';
-                html +=   layer;
+                html +=  '<td class="bccvl-table-label">';
+                html +=   '<label for="layer-' + layer + '">';
+                html +=    '<h1>' + layer + '</h1>';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
