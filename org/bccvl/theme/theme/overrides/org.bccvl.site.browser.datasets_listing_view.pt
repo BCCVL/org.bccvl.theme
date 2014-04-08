@@ -14,7 +14,7 @@
     <ul class="nav nav-tabs">
         <li id="tab-datasetslisting" class="active">
             <a href="#"
-               tal:attributes="href string:${context/absolute_url}"><span>My Datasets</span></a>
+               tal:attributes="href string:${context/absolute_url}"><span>Datasets</span></a>
         </li>
         <li id="tab-datasetsimport">
             <a href="#"
