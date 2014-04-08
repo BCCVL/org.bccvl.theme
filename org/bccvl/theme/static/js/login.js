@@ -33,8 +33,12 @@ define(     ['jquery', 'bootstrap'],
                     $("#wrapper-aaf a").attr('onclick','return false;');
                     $("#wrapper-aaf a").css('cursor', 'default');
                 }
-            })
+            });
 
+            $("#wrapper-aaf a").click(function() {
+                if ( !($("#legals-checkbox:checkbox").is(":checked")) )
+                    alert("Please agree to the terms and conditions to login.");
+            });
         });
     // ==============================================================
     }
