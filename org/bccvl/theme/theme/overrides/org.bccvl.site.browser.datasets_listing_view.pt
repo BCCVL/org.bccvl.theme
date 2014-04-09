@@ -71,10 +71,12 @@
                                                 title icon_title"></i>
                           </a>
 
-                          <a class="sharing-btn" href="#" tal:attributes="href string:${item_url}/@@sharing"
-                             tal:condition="file"
-                             tal:define="file item_obj/file">
-                            <i class="icon-share" title="Sharing Options"></i>
+                          <a class="sharing-btn" href="#" tal:attributes="href action/url"
+                             tal:condition="python:file and action.get('available')"
+                             tal:define="file item_obj/file;
+                                         action python:view.local_roles_action(item_obj);">
+                            <i class="icon-share" title="Sharing Options"
+                               tal:attributes="title action/title"></i>
                           </a>
 
                           <a href="#" tal:attributes="href string:${item_url}/@@download/file/${file/filename}"
