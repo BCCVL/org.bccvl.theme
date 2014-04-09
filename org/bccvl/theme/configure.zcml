@@ -20,7 +20,7 @@
 
     <browser:resourceDirectory
         name="bccvl"
-        directory="static"
+        directory="theme/html"
     />
 
     <include package=".views"/>
