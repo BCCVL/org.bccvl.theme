@@ -25,7 +25,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
             // init the table sorter
             $('.bccvl-datasetstable').tablesorter({
-                headers: { 
+                headers: {
                     0: { sorter: false }, // radio box
                     2: { sorter: 'text' }
                 },
@@ -47,10 +47,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             $("[id^=form-widgets-climate_models-]").change(function () {
                 validateProjection();
             });
-        }); 
+        });
 
-        
-        // This calls /dm/getProjectionDatasets - which currently returns the number of available
+
+        // This calls /dm/getFutureClimateDatasets - which currently returns the number of available
         // datasets in the system with the selected filters.
         // Added a cache like logic to speed things up.
         function validateProjection() {
@@ -106,7 +106,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                     if (!isCached) {
                         $.ajax({
-                            url: portal_url + '/dm/getProjectionDatasets',
+                            url: portal_url + '/dm/getFutureClimateDatasets',
                             data: datasetParams,
                             async: false,
                             success: function (data) {
