@@ -53,7 +53,7 @@
                  <td class="bccvl-table-label">
                    <h1 tal:attributes="data-target string:#${item/id}">
                      <tal:result_title content="itemdetails/experiment/Title" />
-                     <i class="taxonomy" tal:content="itemdetails/species/Title" />
+                     <i class="taxonomy" tal:content="itemdetails/species/Title|nothing" />
                      <small tal:content="itemdetails/function" />
                    </h1>
                    <div tal:attributes="id item/id">
