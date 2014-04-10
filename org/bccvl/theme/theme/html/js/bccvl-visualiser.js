@@ -36,7 +36,7 @@ define(     ['jquery'],
                         apiType:   'point',
                         resolveId: function(rawId) {
                             if (window.bccvl.lookups) {
-                                return window.bccvl.lookups.occurrencesMap[rawId].file;
+                                return window.bccvl.lookups.occurrencesMap[rawId].vizurl;
                             } else {
                                 return rawId;
                             }
@@ -47,7 +47,7 @@ define(     ['jquery'],
                         apiType:   'point',
                         resolveId: function(rawId) {
                             if (window.bccvl.lookups) {
-                                return window.bccvl.lookups.occurrencesMap[rawId].file;
+                                return window.bccvl.lookups.occurrencesMap[rawId].vizurl;
                             } else {
                                 return rawId;
                             }
