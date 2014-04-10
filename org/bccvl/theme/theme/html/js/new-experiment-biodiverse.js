@@ -1,17 +1,12 @@
 //
 // main JS for the new biodiverse experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway           , formvalidator) {
+define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils'],
+    function( $      ,  wiztabs              ,  fadeaway          ,  formvalidator) {
 
 		$(function() {
 
-			console.log('page behaviour loaded.');
-
-			// hook up stretchers
-            stretch.init({ topPad: 60, bottomPad: 10 });
-
-            viz.init();
+			console.log('biodiverse experiment page behaviour loaded.');
 
             // init the fadeaway instructions
             fadeaway.init();
@@ -19,87 +14,33 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             // hook up the wizard buttons
             wiztabs.init();
 
-            // TODO: Remove this when real AJAX endpoint integration is complete.
-            var getMockProjectionData = function() {
-                projectionData = {
-                    "projections": [
-                        {
-                            "name": "Projection Experiment 1",
-                            "id": "312321dsaads3",
-                            "species" : [ "Kangaroo", "Emu", "Koala" ],
-                            "result": [
-                                {
-                                    "year": "2015",
-                                    "files": [ "proj_1_2015.tif" ]
-                                },
-                                {
-                                    "year": "2025",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2035",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2045",
-                                    "files": [ "proj_1_2045.tif" ]
-                                },
-                                {
-                                    "year": "2055",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2065",
-                                    "files": [  ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Projection Experiment 2",
-                            "id": "4139czfxle1423123",
-                            "species" : [ "Kangaroo", "Emu" ],
-                            "result": [
-                                {
-                                    "year": "2015",
-                                    "files": [ "proj_2_2015.tif" ]
-                                },
-                                {
-                                    "year": "2025",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2035",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2045",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2055",
-                                    "files": [  ]
-                                },
-                                {
-                                    "year": "2065",
-                                    "files": [  ]
-                                }
-                            ]
-                        }
-                    ]
-                };
-                return projectionData;
+            var loadProjectionData = function() {
+                $.ajax({
+                    url: portal_url + '/dm/getProjectionDatasets',
+                    dataType: 'json',
+                }).done(function(data){
+                    projectionData = data;
+                    // Populate the projections table
+                    $.each(data.projections, function(index, p){
+                        $projectionTableBody.append(renderProjection(p));
+                        // Listener for when a Projection is selected/deselected.
+                        $('.bccvl-projection').on("change", onProjectionChange);
+                    });
+                });
             }
 
             var renderProjection = function(projectionJSON) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td class="bccvl-table-choose">';
+                html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
                 html +=   '<input id="proj-' + projectionJSON.id + '" class="bccvl-projection" type="checkbox" data-projectionid="' + projectionJSON.id + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="proj-' + projectionJSON.id + '">';
                 html +=    '<h1>' + projectionJSON.name + '</h1>';
                 html +=   '</label>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-controls">';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -108,12 +49,15 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderSpecies = function(speciesName) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td class="bccvl-table-choose">';
+                html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
                 html +=   '<input id="species-' + speciesName + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="species-' + speciesName + '">';
                 html +=    '<h1>' + speciesName + '</h1>';
+                html +=   '</label>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-controls">';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -122,26 +66,47 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var renderYear = function(year) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td class="bccvl-table-choose">';
+                html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
                 html +=   '<input id="year-' + year + '" class="bccvl-year" type="checkbox" value="' + year + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="year-' + year + '">';
                 html +=    '<h1>' + year + '</h1>';
+                html +=   '</label>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-controls">';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
             }
 
-            var renderLayer = function(layer) {
+            var renderLayer = function(layerName, layerId) {
                 var html = '';
                 html += '<tr">';
-                html +=  '<td class="bccvl-table-choose">';
-                html +=   '<input id="layer-' + layer + '" class="bccvl-layer" type="checkbox" value="' + layer + '"></input>';
+                html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
+                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label for="layer-' + layer + '">';
-                html +=    '<h1>' + layer + '</h1>';
+                html +=   '<label for="layer-' + layerName + '">';
+                html +=    '<h1>' + layerName + '</h1>';
+                html +=   '</label>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-controls">';
+                html +=  '</td>';
+                html += '</tr>';
+                return html;
+            }
+
+            var renderThreshold = function(layerName) {
+                var html = '';
+                html += '<tr">';
+                html +=  '<td class="bccvl-table-choose" >';
+                html +=   '<input id="threshold-' + layerName + '" class="bccvl-threshold required parsley-validated" type="number" value="0.5" style="width: 90px;"></input>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-label">';
+                html +=   '<h1>' + layerName + '</h1>';
+                html +=  '</td>';
+                html +=  '<td class="bccvl-table-controls">';
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
@@ -187,6 +152,15 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 });
             }
 
+            var getSelectedLayers = function() {
+
+                // Get all the layer checkboxes that are selected.
+                var $selectedLayerCheckboxes = $('.bccvl-layer').filter(':checked');
+                return $.map($selectedLayerCheckboxes, function(l){
+                    return $(l).attr("data-layername");
+                });
+            }
+
             // Triggered whenever a projection is selected/deselected.
             var onProjectionChange = function(){
 
@@ -194,8 +168,9 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $speciesTableBody.empty();
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
+                $thresholdTableBody.empty();
 
-                $selectedProjections = getSelectedProjections();
+                var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
                     return;
                 }
@@ -221,13 +196,14 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // Remove all years & layers
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
+                $thresholdTableBody.empty();
 
-                $selectedProjections = getSelectedProjections();
+                var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
                     return;
                 }
 
-                $selectedSpecies = getSelectedSpecies();
+                var $selectedSpecies = getSelectedSpecies();
                 if ($selectedSpecies.length == 0) {
                     return;
                 }
@@ -238,7 +214,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     var intersection = $.intersect(p.species, $selectedSpecies);
                     if (intersection.length == $selectedSpecies.length) {
                         $.each(p.result, function(index2, r){
-                            if (r.files.length != 0 && $.inArray(r.year, years) < 0) {
+                            if (r.files.length != 0 && r.year && $.inArray(r.year, years) < 0) {
                                 years.push(r.year);
                             }
                         });
@@ -258,18 +234,19 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 // Remove all layers
                 $layersTableBody.empty();
+                $thresholdTableBody.empty();
 
-                $selectedProjections = getSelectedProjections();
+                var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
                     return;
                 }
 
-                $selectedSpecies = getSelectedSpecies();
+                var $selectedSpecies = getSelectedSpecies();
                 if ($selectedSpecies.length == 0) {
                     return;
                 }
 
-                $selectedYears = getSelectedYears();
+                var $selectedYears = getSelectedYears();
                 if ($selectedYears.length == 0) {
                     return;
                 }
@@ -281,19 +258,36 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                     if (intersection.length == $selectedSpecies.length) {
                         $.each(p.result, function(index2, r){
                             if (r.files.length != 0 && $.inArray(r.year, $selectedYears) >= 0) {
-                                layers = layers.concat(r.files);
+                                $.each(r.files, function(index3, f){
+                                    layers = layers.concat({filename: f, uuid: r.uuid});
+                                });
                             }
                         });
                     }
                 });
 
                 $.each(layers.sort(), function(index, l){
-                    $layersTableBody.append(renderLayer(l));
+                    $layersTableBody.append(renderLayer(l.filename, l.uuid));
                 });
+
+                // Wire up event listeners for all the newly created checkboxes.
+                $('.bccvl-layer').on("change", onLayerChange);
             };
 
-            // TODO: To be replaced by a call to an AJAX endpoint
-            var projectionData = getMockProjectionData();
+            var onLayerChange = function() {
+
+                // Remove all threshold selections
+                $thresholdTableBody.empty();
+
+                var $selectedLayers = getSelectedLayers();
+                if ($selectedLayers.length == 0) {
+                    return;
+                }
+
+                $.each($selectedLayers.sort(), function(index, l){
+                    $thresholdTableBody.append(renderThreshold(l));
+                });
+            };
 
             var $projectionTable = $('table.bccvl-projectiontable');
             var $projectionTableBody = $projectionTable.find('tbody');
@@ -307,12 +301,10 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var $layersTable = $('table.bccvl-layerstable');
             var $layersTableBody = $layersTable.find('tbody');
 
-            // Populate the projections table
-            $.each(projectionData.projections, function(index, p){
-                $projectionTableBody.append(renderProjection(p));
-            });
+            var $thresholdTable = $('table.bccvl-thresholdtable');
+            var $thresholdTableBody = $thresholdTable.find('tbody');
 
-            // Listener for when a Projection is selected/deselected.
-            $('.bccvl-projection').on("change", onProjectionChange);
+            var projectionData;
+            loadProjectionData();           
     });
 });
