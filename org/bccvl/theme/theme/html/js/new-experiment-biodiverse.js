@@ -80,11 +80,13 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderLayer = function(layerName, layerId) {
+            var renderLayer = function(layerName, layerId, index) {
+                var prefix = 'form.widgets.projection.' + index;
+                var name = prefix + '.dataset';
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '"></input>';
+                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" name="' + name +'" value="' + layerId + '" data-layername="' + layerName + '" data-prefix="' + prefix + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="layer-' + layerName + '">';
@@ -97,11 +99,12 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderThreshold = function(layerName) {
+            var renderThreshold = function(layerName, prefix) {
+                var name = prefix + ".threshold";
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" >';
-                html +=   '<input id="threshold-' + layerName + '" class="bccvl-threshold required parsley-validated" type="number" value="0.5" style="width: 90px;"></input>';
+                html +=   '<input id="threshold-' + layerName + '" name="' + name + '" class="bccvl-threshold required parsley-validated" type="number" min="0" value="0.5" style="width: 90px;"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<h1>' + layerName + '</h1>';
@@ -111,6 +114,14 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html += '</tr>';
                 return html;
             }
+
+            // Clears the threshold table body. We need a more manual process here because the checkboxes must be removed from parsley.
+            var clearThresholdTableBody = function() {
+                $.each($thresholdTableBody.find('input'), function(index, c){
+                    $form.parsley('removeItem', $(c));
+                });
+                $thresholdTableBody.empty();
+            };
 
             // Determines all the selected projections, and returns their JSON objects as an Array.
             var getSelectedProjections = function() {
@@ -157,7 +168,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Get all the layer checkboxes that are selected.
                 var $selectedLayerCheckboxes = $('.bccvl-layer').filter(':checked');
                 return $.map($selectedLayerCheckboxes, function(l){
-                    return $(l).attr("data-layername");
+                    return {layerName: $(l).attr("data-layername"), prefix: $(l).attr("data-prefix")};
                 });
             }
 
@@ -168,7 +179,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 $speciesTableBody.empty();
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
+                $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
@@ -196,7 +208,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Remove all years & layers
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
+                $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
@@ -234,7 +247,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
                 // Remove all layers
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
+                $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
                 if ($selectedProjections == null) {
@@ -267,7 +281,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 });
 
                 $.each(layers.sort(), function(index, l){
-                    $layersTableBody.append(renderLayer(l.filename, l.uuid));
+                    $layersTableBody.append(renderLayer(l.filename, l.uuid, index));
                 });
 
                 // Wire up event listeners for all the newly created checkboxes.
@@ -277,17 +291,25 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
             var onLayerChange = function() {
 
                 // Remove all threshold selections
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
 
                 var $selectedLayers = getSelectedLayers();
+
+                // Update the count field
+                $thresholdCountInput.attr('value', $selectedLayers.length);
+
                 if ($selectedLayers.length == 0) {
                     return;
                 }
 
                 $.each($selectedLayers.sort(), function(index, l){
-                    $thresholdTableBody.append(renderThreshold(l));
+                    $thresholdTableBody.append(renderThreshold(l.layerName, l.prefix));
+                    var $input = $("input[id='threshold-" + l.layerName + "']");
+                    $form.parsley('addItem', $input);
                 });
             };
+
+            var $form = $('form.bccvl-parsleyvalidate');
 
             var $projectionTable = $('table.bccvl-projectiontable');
             var $projectionTableBody = $projectionTable.find('tbody');
@@ -303,6 +325,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
             var $thresholdTable = $('table.bccvl-thresholdtable');
             var $thresholdTableBody = $thresholdTable.find('tbody');
+
+            var $thresholdCountInput = $('input[name="form.widgets.projection.count"]');
 
             var projectionData;
             loadProjectionData();           

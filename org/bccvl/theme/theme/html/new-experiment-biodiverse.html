@@ -119,7 +119,7 @@
 <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 		<section class="bccvl-experimentdetails tabbable">
-		<form class="" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
+		<form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
 			<!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
@@ -182,51 +182,43 @@
 					<div class="row-fluid">
 
 						<div class="span4">
-							<div class="control-group">
-								<table class="table table-hover bccvl-projectiontable">
-									<thead>
-										<tr>
-											<th colspan="3">Projection Experiments</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-							</div>
 
+							<table class="table table-hover bccvl-projectiontable">
+								<thead>
+									<tr>
+										<th colspan="3">Projection Experiments</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
 
-							<div class="control-group">
-								<table class="table table-hover bccvl-speciestable">
-									<thead>
-										<tr>
-											<th colspan="3">Species</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-							</div>
-							
-
-							<div class="control-group">
-								<table class="table table-hover bccvl-yearstable">
-									<thead>
-										<tr>
-											<th colspan="3">Years</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-							</div>
+							<table class="table table-hover bccvl-speciestable">
+								<thead>
+									<tr>
+										<th colspan="3">Species</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						
+							<table class="table table-hover bccvl-yearstable">
+								<thead>
+									<tr>
+										<th colspan="3">Years</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
 							
 
 						</div>
 
  						<div class="span8">
 
-
- 							<div class="control-group">
+							<div class="control-group">
 								<table class="table table-hover bccvl-layerstable">
 									<thead>
 										<tr>
@@ -236,9 +228,13 @@
 									<tbody>
 									</tbody>
 								</table>
-							</div>
 
-							
+								<div style="display: none">
+									<!-- Dynamically updated by javascript, to keep track of how many projections layers have been selected. -->
+									<input type="number" id="form.widgets.projection.count" name="form.widgets.projection.count" value="0"
+										   parsley-min="1" parsley-error-message="Please select at least 1 map layer."/>
+							   </div>
+						    </div>
 						</div>
 
 					</div>
@@ -270,7 +266,7 @@
 						</div>
 
 						<div class="span6">
-							<div class="control-group">
+							
 								<table class="table table-hover bccvl-clustersizetable">
 									<thead>
 										<tr>
@@ -283,7 +279,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							
 						</div>
 					</div>
 
