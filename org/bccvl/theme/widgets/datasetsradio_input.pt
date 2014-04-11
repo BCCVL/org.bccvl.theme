@@ -51,6 +51,7 @@
 
                <td style="width: 13%;" tal:content="python: itemdetails['model'].created.strftime('%b %d, %Y %I:%M %p')" />
                  <td class="bccvl-table-label">
+                  <label tal:attributes="for item/id;">
                    <h1 tal:attributes="data-target string:#${item/id}">
                      <tal:result_title content="itemdetails/experiment/Title" />
                      <i class="taxonomy" tal:content="itemdetails/species/Title|nothing" />
@@ -63,6 +64,7 @@
                      </p>
                      <p class="bccvl-experiment-summary" tal:content="itemdetails/experiment/description" />
                    </div>
+                  </label>
                  </td>
                  <!-- <td class="bccvl-table-label"><h1 tal:content="exp/type" /></td> -->
 
