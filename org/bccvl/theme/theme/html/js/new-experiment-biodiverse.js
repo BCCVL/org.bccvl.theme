@@ -33,10 +33,10 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="proj-' + projectionJSON.id + '" class="bccvl-projection" type="checkbox" data-projectionid="' + projectionJSON.id + '"></input>';
+                html +=   '<input id="proj-' + projectionJSON.uuid + '" class="bccvl-projection" type="checkbox" data-projectionid="' + projectionJSON.uuid + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label for="proj-' + projectionJSON.id + '">';
+                html +=   '<label for="proj-' + projectionJSON.uuid + '">';
                 html +=    '<h1>' + projectionJSON.name + '</h1>';
                 html +=   '</label>';
                 html +=  '</td>';
@@ -144,7 +144,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
                 // Get the actual projection JSON objects for each selected checkbox.
                 return $.grep(projectionData.projections, function(p){
-                    return ($.inArray(p.id, $selectedProjectionIds) >= 0);
+                    return ($.inArray(p.uuid, $selectedProjectionIds) >= 0);
                 });
             };
 
@@ -343,6 +343,6 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
             var $hiddenInputsDiv = $('div#bccvl-hiddeninputs');
 
             var projectionData;
-            loadProjectionData();           
+            loadProjectionData();
     });
 });
