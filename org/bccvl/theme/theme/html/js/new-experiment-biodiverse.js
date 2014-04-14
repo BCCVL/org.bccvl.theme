@@ -187,14 +187,14 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                     return;
                 }
 
-                // Determine all the species that the selected projections have in common.
-                var $commonSpecies = $selectedProjections[0].species;
+                // Determine all the species in the selected projections
+                var $species = new Array();
                 $.each($selectedProjections, function(index, p){
-                    $commonSpecies = $.intersect($commonSpecies, p.species);
+                    $species = $.union($species, p.species);
                 });
 
                 // Create checkboxes for each common species.
-                $.each($commonSpecies.sort(), function(index, s){
+                $.each($species.sort(), function(index, s){
                     $speciesTableBody.append(renderSpecies(s));
                 });
 
@@ -224,9 +224,9 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Filter all selected projections for the selected species, so we can get the intersection of the years.
                 var years = new Array();
                 $.each($selectedProjections, function(index, p){
-                    var intersection = $.intersect(p.species, $selectedSpecies);
-                    if (intersection.length == $selectedSpecies.length) {
-                        $.each(p.result, function(index2, r){
+                    var $intersection = $.intersect(p.species, $selectedSpecies);
+                    if ($intersection.length > 0) {
+                        $.each(p.result, function(index2, r) {
                             if (r.files.length != 0 && r.year && $.inArray(r.year, years) < 0) {
                                 years.push(r.year);
                             }
@@ -268,8 +268,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Filter all selected projections for the selected species/year combinations to determine map layers.
                 var layers = new Array();
                 $.each($selectedProjections, function(index, p){
-                    var intersection = $.intersect(p.species, $selectedSpecies);
-                    if (intersection.length == $selectedSpecies.length) {
+                    var $intersection = $.intersect(p.species, $selectedSpecies);
+                    if ($intersection.length > 0) {
                         $.each(p.result, function(index2, r){
                             if (r.files.length != 0 && $.inArray(r.year, $selectedYears) >= 0) {
                                 $.each(r.files, function(index3, f){
@@ -280,7 +280,11 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                     }
                 });
 
-                $.each(layers.sort(), function(index, l){
+                layers = layers.sort(function(a, b){
+                    return a.filename.localeCompare(b.filename);
+                });
+
+                $.each(layers, function(index, l){
                     $layersTableBody.append(renderLayer(l.filename, l.uuid, index));
                 });
 
