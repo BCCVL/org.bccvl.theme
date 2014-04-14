@@ -1,5 +1,6 @@
 define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
     function( $      ) {
+
     	return { init: function() {
 
 			$(".sharing-btn").click(function(e) {
@@ -11,9 +12,18 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 					$(url).modal('open');
 				} 
 				else {
+
+					// Show the modal
+					$('.modal').modal({
+						backdrop: 'static'
+					});
+
+					// Show the ajax spinner (while the form is loading)
+					$('.modal').html(renderSpinner());
+
+					// AJAX load the form - which takes some time.
 					$.get(url, function(data) {
 		            	$('.modal').html(data);
-		            	$('.modal').modal();
 
 		            	$('#user-group-sharing').addClass('table');
 		            	$('#sharing-save-button').addClass('btn btn-primary');
@@ -22,12 +32,13 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 
 		            	bindUserSearch(url);
 		            	legalCheckbox();
-		          	})
+		          	});
 				}
-			})
+			});
 
 			// when the modal is shown
 		    $('.modal').on('shown', function () {
+
 				// scroll to the top of the modal
 				$('.modal-body').scrollTop(0);
 
@@ -39,8 +50,17 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 					$('.modal').modal('hide')
 					$('.modal').empty();
 				}); 
-		    })
+		    });
 		}
+	}
+
+	function renderSpinner() {
+		var html = '';
+		html += '<div style="text-align: center;" id="ajax_loader">';
+		html +=  '<img src="/++resource++bccvl/images/ajax-loader.gif"></img>';
+		html +=  '<p>Loading. Please Wait</p>';
+		html += '</div>';
+		return html;
 	}
 
 	// fix the search feature because we're not taking the js from plone
