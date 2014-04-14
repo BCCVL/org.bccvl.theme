@@ -80,13 +80,11 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderLayer = function(layerName, layerId, index) {
-                var prefix = 'form.widgets.projection.' + index;
-                var name = prefix + '.dataset';
+            var renderLayer = function(layerName, layerId) {
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" name="' + name +'" value="' + layerId + '" data-layername="' + layerName + '" data-prefix="' + prefix + '"></input>';
+                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="layer-' + layerName + '">';
@@ -99,8 +97,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderThreshold = function(layerName, prefix) {
-                var name = prefix + ".threshold";
+            var renderThreshold = function(layerName, index) {
+                var name = "form.widgets.projection." + index + ".threshold";
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" >';
@@ -112,6 +110,12 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html +=  '<td class="bccvl-table-controls">';
                 html +=  '</td>';
                 html += '</tr>';
+                return html;
+            }
+
+            var renderHiddenLayerSelect = function(layerId, index) {
+                var name = "form.widgets.projection." + index + ".dataset";
+                var html = '<input name="' + name + '" value="' + layerId + '" type="hidden" />';
                 return html;
             }
 
@@ -168,7 +172,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Get all the layer checkboxes that are selected.
                 var $selectedLayerCheckboxes = $('.bccvl-layer').filter(':checked');
                 return $.map($selectedLayerCheckboxes, function(l){
-                    return {layerName: $(l).attr("data-layername"), prefix: $(l).attr("data-prefix")};
+                    return {layerName: $(l).attr("data-layername"), id: $(l).attr("value")};
                 });
             }
 
@@ -180,6 +184,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
                 clearThresholdTableBody();
+                $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
@@ -209,6 +214,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
                 clearThresholdTableBody();
+                $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
@@ -248,6 +254,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Remove all layers
                 $layersTableBody.empty();
                 clearThresholdTableBody();
+                $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
                 var $selectedProjections = getSelectedProjections();
@@ -285,7 +292,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 });
 
                 $.each(layers, function(index, l){
-                    $layersTableBody.append(renderLayer(l.filename, l.uuid, index));
+                    $layersTableBody.append(renderLayer(l.filename, l.uuid));
                 });
 
                 // Wire up event listeners for all the newly created checkboxes.
@@ -296,6 +303,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
                 // Remove all threshold selections
                 clearThresholdTableBody();
+                $hiddenInputsDiv.empty();
 
                 var $selectedLayers = getSelectedLayers();
 
@@ -307,7 +315,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 }
 
                 $.each($selectedLayers.sort(), function(index, l){
-                    $thresholdTableBody.append(renderThreshold(l.layerName, l.prefix));
+                    $thresholdTableBody.append(renderThreshold(l.layerName, index));
+                    $hiddenInputsDiv.append(renderHiddenLayerSelect(l.id, index));
                     var $input = $("input[id='threshold-" + l.layerName + "']");
                     $form.parsley('addItem', $input);
                 });
@@ -331,6 +340,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
             var $thresholdTableBody = $thresholdTable.find('tbody');
 
             var $thresholdCountInput = $('input[name="form.widgets.projection.count"]');
+            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs');
 
             var projectionData;
             loadProjectionData();           
