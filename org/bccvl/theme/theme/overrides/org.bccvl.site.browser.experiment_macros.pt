@@ -10,11 +10,12 @@
   <body>
 
     <metal:block metal:define-macro="algo_parameters">
-      <fieldset id="fieldset-parameters">
+      <fieldset id="fieldset-parameters"
+                tal:define="param_groups view/param_groups|nothing"
+                tal:condition="param_groups">
         <div class="accordion-group" data-function="bioclim"
-             tal:repeat="group view/param_groups"
-             tal:attributes="data-function group/toolkit"
-             tal:condition="view/param_groups">
+             tal:repeat="group param_groups"
+             tal:attributes="data-function group/toolkit">
           <div class="accordion-heading">
             <a class="accordion-toggle collapsed"
                data-toggle="collapse" data-parent="#algoConfig"

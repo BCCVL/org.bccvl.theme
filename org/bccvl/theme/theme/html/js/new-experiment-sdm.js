@@ -45,7 +45,23 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // finally, invoke the change handler to get the inital visibility sorted out.
                 $checkbox.change();
             });
+            
+            // -- absences + random --------------------------------
+            $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+            $("#form-widgets-species_pseudo_absence_points-0:checkbox").change(function() {
+                if ($(this).is(":checked")) {
+                    $("input[id^='form-widgets-species_absence_dataset-']").prop('checked', false);
+                    $("#form-widgets-species_number_pseudo_absence_points").removeAttr('disabled');
+                }
+                else {
+                    $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+                }
+            });
 
+            $("input[id^='form-widgets-species_absence_dataset-']").change(function() {
+                $("#form-widgets-species_pseudo_absence_points-0:checkbox").prop('checked', false);
+                $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+            });
 
             // -- layer selection -----------------------------------
 

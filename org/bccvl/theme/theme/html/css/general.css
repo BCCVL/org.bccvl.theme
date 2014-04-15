@@ -391,9 +391,7 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
 }
 /* hide the initial label "configuration for Blah Blah" which isn't needed */
 .bccvl-algoconfig > fieldset > div > label { display: none; }
-/* hide the empty "required" indicator span */
-/* Gerhard */
-.bccvl-algoconfig .algo-params .field label .required { display: none; }
+
 .bccvl-algoconfig .algo-params .field label .formHelp {
     display: block;
     clear: both;

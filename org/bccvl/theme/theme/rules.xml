@@ -65,6 +65,8 @@
         window.bccvl.config.visualiser = {
             baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
         };
+
+        local = false;
     </after>
 
     <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

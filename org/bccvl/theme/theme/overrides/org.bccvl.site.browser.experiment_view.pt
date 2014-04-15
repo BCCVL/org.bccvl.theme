@@ -14,6 +14,8 @@
 
         <div id="bccvl-experiment-view">
             <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+             <!-- Algorithm parameter fieldsets -->
+             <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
             <table id="bccvl-experimentresults-table" class="table table-hover">
               <thead>
                 <tr><th colspan="5">Experiment Results</th></tr>
@@ -43,7 +45,7 @@
                             title="Preview this file"
                             data-viz-id="#downloadurl"
                             tal:attributes="data-viz-id visurl"
-                            tal:condition="python: item.Format() not in ('application/octet-stream')">
+                            tal:condition="python: item.Format() not in ('application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html') or item.file.filename.endswith('.html.zip') ">
                             <i class="icon-eye-open icon-link"></i>
                          </a>
                        </td>

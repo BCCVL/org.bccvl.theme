@@ -4,7 +4,9 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- DASHBOARD ============================================= -->
-    <rules if-path="login/">
+    <rules if-path="login/
+                    login_form/
+                    login_failed/">
         <theme href="html/login.html" />
         <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
         <replace css:theme="#site-login" css:content="#fieldset-site-login" />
