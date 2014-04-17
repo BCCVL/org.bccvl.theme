@@ -55,7 +55,13 @@
                     </div>
                 </xsl:when>
 
-                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Completed')">
+                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Completed')
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued'))
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New'))
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed'))
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Transferring'))
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Retrieving'))
+                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Cleanup'))">
                     <div class="row-fluid bccvl-status-block bccvl-status-complete">
                         <div class="span12 bccvl-expstatus alert alert-success" data-status="Completed">
                             <p>
