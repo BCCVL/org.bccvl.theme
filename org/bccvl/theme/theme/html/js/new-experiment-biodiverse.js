@@ -1,7 +1,7 @@
 //
 // main JS for the new biodiverse experiment page.
 //
-define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils'],
+define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
     function( $      ,  wiztabs              ,  fadeaway          ,  formvalidator) {
 
 		$(function() {
@@ -105,19 +105,13 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                     dataType: 'json',
                     data: {'projections' : projectionId },
                 }).done(function(data){
-                    var thresholdMap = data[projectionId];
 
                     var name = "form.widgets.projection." + index + ".threshold";
+                    var id = "threshold" + index;
                     var html = '';
                     html += '<tr">';
                     html +=  '<td class="bccvl-table-choose" >';
-                    html +=   '<select id="threshold-' + layerName + '" name="' + name + '" class="bccvl-threshold" style="width: 130px;">';
-
-                    for (var key in thresholdMap) {
-                        html += '<option value="' + thresholdMap[key] + '">' + key + ' (' + thresholdMap[key] + ')</option>';
-                    }
-
-                    html +=   '</select>'
+                    html +=   '<input id="' + id + '" name="' + name + '" type="number" class="bccvl-threshold parsley-validated required" min="0" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
                     html +=   '<h1>' + layerName + '</h1>';
@@ -127,8 +121,38 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                     html += '</tr>';
 
                     $thresholdTableBody.append(html);
+
+                    // Create an array to use as input to Select2
+                    var thresholdMap = data[projectionId];
+                    var array = new Array();
+                    for (var key in thresholdMap) {
+                        array.push({id: thresholdMap[key], text: key + ' (' + thresholdMap[key] + ')'});
+                    }
+
+                    $input = $('#' + id);
+                    $input.select2({
+                        data: array,
+                        // Allow user-entered values, > 0 and <= 1000
+                        createSearchChoice: function(term, data) {
+                            var val = parseFloat(term);
+                            if (term && term > 0 && term <= 1000) {
+                                return {id: term, text: term};
+                            }
+                            return null;
+                        }
+                    });
+                    $form.parsley('addItem', $input);
                 });
             }
+
+            // Clears the threshold table body. We need a more manual process here because the inputs must be removed from parsley.
+            var clearThresholdTableBody = function() {
+                $.each($thresholdTableBody.find('input'), function(index, c){
+                    $form.parsley('removeItem', $(c));
+                });
+                $thresholdTableBody.empty();
+            };
+
 
             var renderHiddenLayerSelect = function(layerId, index) {
                 var name = "form.widgets.projection." + index + ".dataset";
@@ -192,7 +216,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 $speciesTableBody.empty();
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
                 $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
@@ -222,7 +246,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Remove all years & layers
                 $yearsTableBody.empty();
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
                 $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
@@ -262,7 +286,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
                 // Remove all layers
                 $layersTableBody.empty();
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
                 $hiddenInputsDiv.empty();
                 $thresholdCountInput.attr('value', 0);
 
@@ -311,7 +335,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
             var onLayerChange = function() {
 
                 // Remove all threshold selections
-                $thresholdTableBody.empty();
+                clearThresholdTableBody();
                 $hiddenInputsDiv.empty();
 
                 var $selectedLayers = getSelectedLayers();

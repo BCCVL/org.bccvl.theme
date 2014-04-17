@@ -18,14 +18,17 @@ requirejs.config({
 //        'parsley':              'parsley/parsley',
         'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
         'jquery-form':          'jquery-form/jquery.form.min',
-        'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min'
+        'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
+        'select2':              'select2/js/select2.min'
     },
     shim: {
         'parsley':              ['jquery'],
         'bootstrap':            ['jquery'],
         'bootstrap-fileupload': ['jquery', 'bootstrap'],
         'jquery-xmlrpc':        ['jquery'],
-        'jquery-tablesorter':   ['jquery']
+        'jquery-tablesorter':   ['jquery'],
+        'jquery-arrayutils':    ['jquery'],
+        'select2':              ['jquery']
     }
 });
 
