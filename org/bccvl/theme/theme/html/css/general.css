@@ -951,3 +951,8 @@ div.morefilters h4 span.label {
 #wrapper-aaf a {
     cursor: default;
 }
+
+/* TODO: remove these once the fields are working */
+.bccvl-spatialscaletable {
+    display: none;
+}

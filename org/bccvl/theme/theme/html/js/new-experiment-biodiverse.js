@@ -1,7 +1,7 @@
 //
 // main JS for the new biodiverse experiment page.
 //
-define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils'],
+define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
     function( $      ,  wiztabs              ,  fadeaway          ,  formvalidator) {
 
 		$(function() {
@@ -80,14 +80,14 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderLayer = function(layerName, layerId) {
+            var renderLayer = function(layerName, layerId, projectionId) {
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="layer-' + layerName + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '"></input>';
+                html +=   '<input id="layer-' + layerId + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '" data-projectionid="' +  projectionId + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label for="layer-' + layerName + '">';
+                html +=   '<label for="layer-' + layerId + '">';
                 html +=    '<h1>' + layerName + '</h1>';
                 html +=   '</label>';
                 html +=  '</td>';
@@ -97,35 +97,68 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return html;
             }
 
-            var renderThreshold = function(layerName, index) {
-                var name = "form.widgets.projection." + index + ".threshold";
-                var html = '';
-                html += '<tr">';
-                html +=  '<td class="bccvl-table-choose" >';
-                html +=   '<input id="threshold-' + layerName + '" name="' + name + '" class="bccvl-threshold required parsley-validated" type="number" min="0" value="0.5" style="width: 90px;"></input>';
-                html +=  '</td>';
-                html +=  '<td class="bccvl-table-label">';
-                html +=   '<h1>' + layerName + '</h1>';
-                html +=  '</td>';
-                html +=  '<td class="bccvl-table-controls">';
-                html +=  '</td>';
-                html += '</tr>';
-                return html;
+            var renderThreshold = function(layerName, index, projectionId) {
+
+                // Threshold values are obtained from an AJAX call. There is one set of threshold values for all files in a projection.
+                $.ajax({
+                    url: portal_url + '/dm/getThresholds',
+                    dataType: 'json',
+                    data: {'projections' : projectionId },
+                }).done(function(data){
+
+                    var name = "form.widgets.projection." + index + ".threshold";
+                    var id = "threshold" + index;
+                    var html = '';
+                    html += '<tr">';
+                    html +=  '<td class="bccvl-table-choose" >';
+                    html +=   '<input id="' + id + '" name="' + name + '" type="number" class="bccvl-threshold parsley-validated required" min="0" style="width: 130px;">';
+                    html +=  '</td>';
+                    html +=  '<td class="bccvl-table-label">';
+                    html +=   '<h1>' + layerName + '</h1>';
+                    html +=  '</td>';
+                    html +=  '<td class="bccvl-table-controls">';
+                    html +=  '</td>';
+                    html += '</tr>';
+
+                    $thresholdTableBody.append(html);
+
+                    // Create an array to use as input to Select2
+                    var thresholdMap = data[projectionId];
+                    var array = new Array();
+                    for (var key in thresholdMap) {
+                        array.push({id: thresholdMap[key], text: key + ' (' + thresholdMap[key] + ')'});
+                    }
+
+                    $input = $('#' + id);
+                    $input.select2({
+                        data: array,
+                        // Allow user-entered values, > 0 and <= 1000
+                        createSearchChoice: function(term, data) {
+                            var val = parseFloat(term);
+                            if (term && term > 0 && term <= 1000) {
+                                return {id: term, text: term};
+                            }
+                            return null;
+                        }
+                    });
+                    $form.parsley('addItem', $input);
+                });
             }
 
-            var renderHiddenLayerSelect = function(layerId, index) {
-                var name = "form.widgets.projection." + index + ".dataset";
-                var html = '<input name="' + name + '" value="' + layerId + '" type="hidden" />';
-                return html;
-            }
-
-            // Clears the threshold table body. We need a more manual process here because the checkboxes must be removed from parsley.
+            // Clears the threshold table body. We need a more manual process here because the inputs must be removed from parsley.
             var clearThresholdTableBody = function() {
                 $.each($thresholdTableBody.find('input'), function(index, c){
                     $form.parsley('removeItem', $(c));
                 });
                 $thresholdTableBody.empty();
             };
+
+
+            var renderHiddenLayerSelect = function(layerId, index) {
+                var name = "form.widgets.projection." + index + ".dataset";
+                var html = '<input name="' + name + '" value="' + layerId + '" type="hidden" />';
+                return html;
+            }
 
             // Determines all the selected projections, and returns their JSON objects as an Array.
             var getSelectedProjections = function() {
@@ -172,7 +205,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 // Get all the layer checkboxes that are selected.
                 var $selectedLayerCheckboxes = $('.bccvl-layer').filter(':checked');
                 return $.map($selectedLayerCheckboxes, function(l){
-                    return {layerName: $(l).attr("data-layername"), id: $(l).attr("value")};
+                    return {layerName: $(l).attr("data-layername"), layeruuid: $(l).attr("value"), projectionuuid: $(l).attr("data-projectionid")};
                 });
             }
 
@@ -280,7 +313,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                         $.each(p.result, function(index2, r){
                             if (r.files.length != 0 && $.inArray(r.year, $selectedYears) >= 0) {
                                 $.each(r.files, function(index3, f){
-                                    layers = layers.concat({filename: f, uuid: r.uuid});
+                                    layers = layers.concat({filename: f, layeruuid: r.uuid, projectionuuid: p.uuid});
                                 });
                             }
                         });
@@ -292,7 +325,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 });
 
                 $.each(layers, function(index, l){
-                    $layersTableBody.append(renderLayer(l.filename, l.uuid));
+                    $layersTableBody.append(renderLayer(l.filename, l.layeruuid, l.projectionuuid));
                 });
 
                 // Wire up event listeners for all the newly created checkboxes.
@@ -315,10 +348,8 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 }
 
                 $.each($selectedLayers.sort(), function(index, l){
-                    $thresholdTableBody.append(renderThreshold(l.layerName, index));
-                    $hiddenInputsDiv.append(renderHiddenLayerSelect(l.id, index));
-                    var $input = $("input[id='threshold-" + l.layerName + "']");
-                    $form.parsley('addItem', $input);
+                    renderThreshold(l.layerName, index, l.projectionuuid);
+                    $hiddenInputsDiv.append(renderHiddenLayerSelect(l.layeruuid, index));
                 });
             };
 
