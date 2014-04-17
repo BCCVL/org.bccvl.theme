@@ -19,7 +19,7 @@ requirejs.config({
         'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
         'jquery-form':          'jquery-form/jquery.form.min',
         'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
-        'select2':              'select2/js/select2.min'
+        'select2':              'select2/select2.min'
     },
     shim: {
         'parsley':              ['jquery'],
