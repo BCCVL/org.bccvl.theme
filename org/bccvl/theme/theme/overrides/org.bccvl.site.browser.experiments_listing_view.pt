@@ -17,7 +17,7 @@
 
     <metal:text-field-view use-macro="context/folder_listing/text-field-view"/>
 
-    <tal:define define="folderContents view/experiments;
+    <tal:define define="contentFilter view/contentFilter;
                         limit_display request/limit_display|python:100">
        <div id="experiment-list">
             <table class="table table-hover bccvl-experimenttable">
@@ -59,15 +59,15 @@
                  </td>
              </tr>
           </metal:entry>
-       </metal:listing>
-           </tbody>
-         </table>
-
         <p class="discreet"
            tal:condition="not: folderContents"
            i18n:translate="description_no_items_in_folder">
             There are currently no items in this folder.
         </p>
+       </metal:listing>
+           </tbody>
+         </table>
+
 
        </div>
   </tal:define>
