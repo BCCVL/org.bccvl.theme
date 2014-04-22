@@ -149,6 +149,8 @@
 
 						<form class="form-horizontal" id="addspecies" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
 
+							<p class="bccvl-occurrencedescription"></p>
+
 							<div class="control-group">
 								<label class="control-label">Species Dataset File</label>
 								<div class="controls">
@@ -198,6 +200,7 @@
 
 							<div class="control-group">
 								<label class="control-label">Scientific Name</label>
+								<i class="icon-info-sign bccvl-scientificnameinfo pull-left" data-title="Scientific Name" data-content=""></i>
 								<div class="controls">
 									<input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
 									       required="required" data-notblank="true" >
@@ -206,6 +209,7 @@
 
 							<div class="control-group">
 								<label class="control-label">Taxon ID</label>
+								<i class="icon-info-sign bccvl-taxonidinfo pull-left" data-title="Taxon ID" data-content=""></i>
 								<div class="controls">
 									<input type="text" name="addspecies.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species">
 								</div>
@@ -213,6 +217,7 @@
 
 							<div class="control-group">
 								<label class="control-label">Common Name</label>
+								<i class="icon-info-sign bccvl-commonnameinfo pull-left" data-title="Common Name" data-content=""></i>
 								<div class="controls">
 									<input type="text" name="addspecies.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name">
 								</div>
@@ -238,6 +243,8 @@
 					<div class="bccvl-datasetuploadlayerform hidden">
 
 						<form class="form-horizontal  bccvl-parsleyvalidate" id="addlayer" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+							<p class="bccvl-layersdescription"></p>
 
 							<div class="control-group">
 								<label class="control-label">Environmental Layer File</label>

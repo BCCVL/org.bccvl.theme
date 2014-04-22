@@ -9,6 +9,11 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 
         	console.log('page behavior loaded');
 
+            $('.bccvl-scientificnameinfo').popover();
+            $('.bccvl-taxonidinfo').popover();
+            $('.bccvl-commonnameinfo').popover();
+
+
             // gets the file upload handling working
             $('.fileupload').fileupload();
 
@@ -47,20 +52,20 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 
             $("#dataset-legal-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
-                $("#dataset-save-btn").removeAttr("disabled");
-            }
-            else {
-                $("#dataset-save-btn").attr('disabled', 'disabled');
-            }
+                    $("#dataset-save-btn").removeAttr("disabled");
+                }
+                else {
+                    $("#dataset-save-btn").attr('disabled', 'disabled');
+                }
             });
 
             $("#env-legal-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
-                $("#env-save-btn").removeAttr("disabled");
-            }
-            else {
-                $("#env-save-btn").attr('disabled', 'disabled');
-            }
+                    $("#env-save-btn").removeAttr("disabled");
+                }
+                else {
+                    $("#env-save-btn").attr('disabled', 'disabled');
+                }
             });
 
         });
