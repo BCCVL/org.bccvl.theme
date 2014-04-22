@@ -22,8 +22,11 @@
                 </dl>
             </xsl:for-each>
         </replace>
-
+        
     <!-- Species form -->
+        <!-- Description -->
+        <replace css:theme-children="p.bccvl-occurrencedescription" content="//div[@id='portal-column-content']/div[2]/p[3]/text()" />
+
         <!-- Form field attributes -->
         <copy attributes="name action method enctype" css:theme="form#addspecies" css:content="form#addspecies" />
 
@@ -50,14 +53,20 @@
 
         <!-- Scientific name field -->
         <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.scientificName']" css:content="#addspecies-widgets-scientificName" />
-
+        <copy attributes="data-content" css:theme="i.bccvl-scientificnameinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
+        
         <!-- Taxon ID field -->
         <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />        
+        <copy attributes="data-content" css:theme="i.bccvl-taxonidinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
 
         <!-- Common name field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.vernacularName']" css:content="#addspecies-widgets-vernacularName" />        
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.vernacularName']" css:content="#addspecies-widgets-vernacularName" />
+        <copy attributes="data-content" css:theme="i.bccvl-commonnameinfo" css:content="label[for='addspecies-widgets-vernacularName'] span.formHelp" />
 
     <!-- Layers form -->
+        <!-- Description -->
+        <replace css:theme-children="p.bccvl-layersdescription" content="//div[@id='portal-column-content']/div[2]/p[6]/text()" />
+
         <!-- Form field attributes -->
         <copy attributes="name action method enctype" css:theme="form#addlayer" css:content="form#addlayer" />
 
