@@ -8,7 +8,9 @@
 
 	    <!-- <drop css:content="#crud-edit-form-buttons-edit" /> -->
 
-	    <replace css:theme-children=".modal-body" content="/html/body/div/form" />
+	    <merge attributes="action" css:theme=".modal-body form" content="/html/body/div/form" />
+	    
+	    <replace css:theme-children=".modal-body form" content-children="/html/body/div/form" />
 
 	</rules>
 
