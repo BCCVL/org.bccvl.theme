@@ -2,9 +2,12 @@
 //
 // main JS for the new sdm experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  fadeaway          ,  dimensions                  ,  search          ,  formvalidator ) {
-    // ==============================================================
+define(
+    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs',
+     'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-dimension-equation',
+     'js/bccvl-search', 'js/bccvl-form-validator'],
+    function($, viz, wiztabs, stretch, fadeaway, dimensions, search, formvalidator ) {
+        // ==============================================================
         $(function() {
 
             // hook up stretchers
@@ -45,22 +48,22 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 // finally, invoke the change handler to get the inital visibility sorted out.
                 $checkbox.change();
             });
-            
+
             // -- absences + random --------------------------------
-            $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+            $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
             $("#form-widgets-species_pseudo_absence_points-0:checkbox").change(function() {
                 if ($(this).is(":checked")) {
                     $("input[id^='form-widgets-species_absence_dataset-']").prop('checked', false);
                     $("#form-widgets-species_number_pseudo_absence_points").removeAttr('disabled');
                 }
                 else {
-                    $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+                    $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
                 }
             });
 
             $("input[id^='form-widgets-species_absence_dataset-']").change(function() {
                 $("#form-widgets-species_pseudo_absence_points-0:checkbox").prop('checked', false);
-                $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled')
+                $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
             });
 
             // -- layer selection -----------------------------------
@@ -75,7 +78,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
             var layerUpdate = function(parentId, layerId, checkBox) {
                 var $checkBox = $(checkBox);
 
-                $secretCountField = $('#environmental_layers_count');
+                var $secretCountField = $('#environmental_layers_count');
                 var currentCount = parseInt($secretCountField.attr('value'));
 
                 // This is purely so we can do validation, to ensure at least n checkboxes are checked.
@@ -86,7 +89,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 }
 
                 // Count how many checkboxes are selected in the given climate layer
-                $layerSelectedField = $('#form-widgets-environmental_datasets-' + parentId + '-select');
+                var $layerSelectedField = $('#form-widgets-environmental_datasets-' + parentId + '-select');
                 var numSelected = $('input[name="form.widgets.environmental_datasets.' + parentId + ':list"]:checked').length;
 
                 // Enable/disable the climate layer accordingly
@@ -94,23 +97,23 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
 
                 // Force a validation
                 $secretCountField.parsley('validate');
-            }
+            };
 
             // make a function to render a layer row.
             var renderLayerRow = function(parentId, layerId, friendlyName, fileName, zipFile) {
 
                 // Build id and name
-                id = parentId + '_' + layerId;
-                name = 'form.widgets.environmental_datasets.' + parentId + ':list';
+                var id = parentId + '_' + layerId;
+                var name = 'form.widgets.environmental_datasets.' + parentId + ':list';
 
                 var html = '';
                 html += '<tr data-envparent="' + parentId + '">';
-                    // checkbox for selecting the layer
-                    html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" data-friendlyname="checkbox_climatelayer_' + friendlyName + '"';
-                    html += '/></td>';
-                    html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
-                    // viz button to viz the layer (and whatever other actions eventually go here)
-                    html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
+                // checkbox for selecting the layer
+                html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" data-friendlyname="checkbox_climatelayer_' + friendlyName + '"';
+                html += '/></td>';
+                html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
+                // viz button to viz the layer (and whatever other actions eventually go here)
+                html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
                 html += '</tr>';
                 var $html = $(html);
 
@@ -120,7 +123,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $vizButton.click(function(evt) {
                     var params = {
                         file_name: fileName
-                    }
+                    };
                     viz.visualise(zipFile, $vizButton, null, params);
                     evt.preventDefault();
                 });
@@ -131,7 +134,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 });
 
                 return $html;
-            }
+            };
 
             // make a function that toggles between showing and hiding a dataset's layers
             var toggleEnvGroup = function(token) {
@@ -165,8 +168,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                                     // render each layer
                                     $.each(list.layers, function(key, value) {
                                         var name = value.label;
-                                        var fileName = value.filename
-                                        var zipFile = list.file 
+                                        var fileName = value.filename;
+                                        var zipFile = list.file;
                                         layerNames.push(name);
                                         layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
                                     });
@@ -186,7 +189,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         }
                     }
                 }
-            }
+            };
 
             // Wire up listeners to the climate layer boxes
             $('.bccvl-envgroup').click(function() {
@@ -194,6 +197,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 toggleEnvGroup(envgroupid);
             });
         });
-    // ==============================================================
+        // ==============================================================
     }
 );

@@ -1,12 +1,15 @@
 //
 // main JS for the new biodiverse experiment page.
 //
-define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
-    function( $      ,  wiztabs              ,  fadeaway          ,  formvalidator) {
+define(
+    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway',
+     'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
+     'select2'],
+    function($,  wiztabs, fadeaway, formvalidator) {
 
-		$(function() {
+        $(function() {
 
-			console.log('biodiverse experiment page behaviour loaded.');
+            console.log('biodiverse experiment page behaviour loaded.');
 
             // init the fadeaway instructions
             fadeaway.init();
@@ -17,7 +20,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
             var loadProjectionData = function() {
                 $.ajax({
                     url: portal_url + '/dm/getProjectionDatasets',
-                    dataType: 'json',
+                    dataType: 'json'
                 }).done(function(data){
                     projectionData = data;
                     // Populate the projections table
@@ -27,7 +30,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                         $('.bccvl-projection').on("change", onProjectionChange);
                     });
                 });
-            }
+            };
 
             var renderProjection = function(projectionJSON) {
                 var html = '';
@@ -44,7 +47,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
-            }
+            };
 
             var renderSpecies = function(speciesName) {
                 var html = '';
@@ -61,7 +64,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
-            }
+            };
 
             var renderYear = function(year) {
                 var html = '';
@@ -78,7 +81,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
-            }
+            };
 
             var renderLayer = function(layerName, layerId, projectionId) {
                 var html = '';
@@ -95,7 +98,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 html +=  '</td>';
                 html += '</tr>';
                 return html;
-            }
+            };
 
             var renderThreshold = function(layerName, index, projectionId) {
 
@@ -103,7 +106,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 $.ajax({
                     url: portal_url + '/dm/getThresholds',
                     dataType: 'json',
-                    data: {'projections' : projectionId },
+                    data: {'projections' : projectionId }
                 }).done(function(data){
 
                     var name = "form.widgets.projection." + index + ".threshold";
@@ -129,7 +132,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                         array.push({id: thresholdMap[key], text: key + ' (' + thresholdMap[key] + ')'});
                     }
 
-                    $input = $('#' + id);
+                    var $input = $('#' + id);
                     $input.select2({
                         data: array,
                         // Allow user-entered values, > 0 and <= 1000
@@ -143,7 +146,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                     });
                     $form.parsley('addItem', $input);
                 });
-            }
+            };
 
             // Clears the threshold table body. We need a more manual process here because the inputs must be removed from parsley.
             var clearThresholdTableBody = function() {
@@ -158,7 +161,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 var name = "form.widgets.projection." + index + ".dataset";
                 var html = '<input name="' + name + '" value="' + layerId + '" type="hidden" />';
                 return html;
-            }
+            };
 
             // Determines all the selected projections, and returns their JSON objects as an Array.
             var getSelectedProjections = function() {
@@ -189,7 +192,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return $.map($selectedSpeciesCheckboxes, function(s){
                     return $(s).attr("value");
                 });
-            }
+            };
 
             var getSelectedYears = function() {
 
@@ -198,7 +201,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return $.map($selectedYearCheckboxes, function(y){
                     return $(y).attr("value");
                 });
-            }
+            };
 
             var getSelectedLayers = function() {
 
@@ -207,7 +210,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
                 return $.map($selectedLayerCheckboxes, function(l){
                     return {layerName: $(l).attr("data-layername"), layeruuid: $(l).attr("value"), projectionuuid: $(l).attr("data-projectionid")};
                 });
-            }
+            };
 
             // Triggered whenever a projection is selected/deselected.
             var onProjectionChange = function(){
@@ -280,7 +283,7 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
                 // Wire up event listeners for all the newly created checkboxes.
                 $('.bccvl-year').on("change", onYearChange);
-            }
+            };
 
             var onYearChange = function() {
 
@@ -375,5 +378,6 @@ define(     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-fo
 
             var projectionData;
             loadProjectionData();
-    });
-});
+        });
+    }
+);

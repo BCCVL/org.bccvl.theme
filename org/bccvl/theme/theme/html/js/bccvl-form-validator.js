@@ -1,13 +1,14 @@
 //
 // Javascript to perform validation.
 //
-define(     ['jquery', 'parsley', 'bootstrap'],
+define(
+    ['jquery', 'parsley', 'bootstrap'],
     function( $) {
-    // ==============================================================
+        // ==============================================================
 
         $(function() {
 
-        	// since we're pulling config blocks wholesale from plone, which sucks but is
+            // since we're pulling config blocks wholesale from plone, which sucks but is
             // quick to get working, we have to work around a bunch of plone's document
             // strutures and classes.  The easiest way to make validation errors show up
             // is to give plone's ".object-widget-field" things an additional class of
@@ -87,7 +88,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                                             if ($(this).is(':checked')) {
                                                 datasetSelected = true;
                                             }
-                                        })
+                                        });
 
                                         if (!datasetSelected){
                                             $('.random-absences-settings').parent().addClass('error');
@@ -96,7 +97,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
                                         }
                                     }
 
-                                })
+                                });
 
                                 // tab itself that belongs to the tab pane we're interested in
                                 var $tabLink = $('a[data-toggle="tab"][href="#' + $tabPane.attr('id') + '"]');
@@ -126,7 +127,7 @@ define(     ['jquery', 'parsley', 'bootstrap'],
 
         });
 
-    // ==============================================================
+        // ==============================================================
 
     }
 );
