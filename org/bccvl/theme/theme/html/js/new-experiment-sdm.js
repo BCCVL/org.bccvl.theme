@@ -96,7 +96,7 @@ define(
                 $layerSelectedField.attr('value', numSelected == 0 ? '' : parentId);
 
                 // Force a validation
-                $secretCountField.parsley('validate');
+                $secretCountField.parsley().validate();
             };
 
             // make a function to render a layer row.

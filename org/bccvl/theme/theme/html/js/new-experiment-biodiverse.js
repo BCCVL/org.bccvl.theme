@@ -5,11 +5,11 @@ define(
     ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway',
      'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
      'select2'],
-    function($,  wiztabs, fadeaway, formvalidator) {
+    function($, wiztabs, fadeaway, formvalidator) {
 
-        $(function() {
+	$(function() {
 
-            console.log('biodiverse experiment page behaviour loaded.');
+	    console.log('biodiverse experiment page behaviour loaded.');
 
             // init the fadeaway instructions
             fadeaway.init();
@@ -114,7 +114,7 @@ define(
                     var html = '';
                     html += '<tr">';
                     html +=  '<td class="bccvl-table-choose" >';
-                    html +=   '<input id="' + id + '" name="' + name + '" type="number" class="bccvl-threshold parsley-validated required" min="0" style="width: 130px;">';
+                    html +=   '<input id="' + id + '" name="' + name + '" type="number" data-parsley-type="number" class="bccvl-threshold required" min="0" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
                     html +=   '<h1>' + layerName + '</h1>';
@@ -144,14 +144,14 @@ define(
                             return null;
                         }
                     });
-                    $form.parsley('addItem', $input);
+                    //$form.parsley().addItem($input);
                 });
             };
 
             // Clears the threshold table body. We need a more manual process here because the inputs must be removed from parsley.
             var clearThresholdTableBody = function() {
                 $.each($thresholdTableBody.find('input'), function(index, c){
-                    $form.parsley('removeItem', $(c));
+                    //$form.parsley().removeItem($(c));
                 });
                 $thresholdTableBody.empty();
             };

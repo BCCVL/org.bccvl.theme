@@ -47,9 +47,9 @@
                             <xsl:if test="@checked">
                                 <xsl:attribute name="checked">checked</xsl:attribute>
                             </xsl:if>
-                            <xsl:attribute name="parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="parsley-group">years</xsl:attribute>
-                            <xsl:attribute name="parsley-error-message">Please select at least 1 year.</xsl:attribute>
+                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
+                            <xsl:attribute name="data-parsley-group">years</xsl:attribute>
+                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 year.</xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">
@@ -83,9 +83,9 @@
                             <xsl:if test="@checked">
                                 <xsl:attribute name="checked">checked</xsl:attribute>
                             </xsl:if>
-                            <xsl:attribute name="parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="parsley-group">emission_scenarios</xsl:attribute>
-                            <xsl:attribute name="parsley-error-message">Please select at least 1 emission scenario.</xsl:attribute>
+                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
+                            <xsl:attribute name="data-parsley-group">emission_scenarios</xsl:attribute>
+                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 emission scenario.</xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">
@@ -119,9 +119,9 @@
                             <xsl:if test="@checked">
                                 <xsl:attribute name="checked">checked</xsl:attribute>
                             </xsl:if>
-                            <xsl:attribute name="parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="parsley-group">climate_models</xsl:attribute>
-                            <xsl:attribute name="parsley-error-message">Please select at least 1 climate model.</xsl:attribute>
+                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
+                            <xsl:attribute name="data-parsley-group">climate_models</xsl:attribute>
+                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 climate model.</xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">

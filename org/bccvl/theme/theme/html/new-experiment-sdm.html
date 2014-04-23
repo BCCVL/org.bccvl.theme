@@ -58,7 +58,7 @@
       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
       <!-- project title -->
-      <a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
+      <a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
 
       <!-- container for content that will hide under menu when screen is narrow -->
       <div class="nav-collapse collapse">
@@ -157,16 +157,16 @@
 		<div class="span12">
 		  <div class="control-group">
 		    <input type="text" name="expName" class="bccvl-expname input-block-level"
-			   required="required" data-notblank="true" data-trigger="change keyup"
+			   required="required" data-parsley-trigger="change keyup"
 			   pattern="^[^_].*"
-			   parsley-regex-message="Don't start your experiment name with an underscore."
-			   parsley-required-message="Please supply a descriptive name for this experiment."
+			   data-parsley-pattern-message="Don't start your experiment name with an underscore."
+			   data-parsley-required-message="Please supply a descriptive name for this experiment."
 			   placeholder="Name for this experiment"
 			   />
 		  </div>
 		  <div class="control-group">
 		    <textarea name="expDescription" class="input-block-level bccvl-expdesc"
-			      data-notblank="true" data-trigger="change keyup"
+			      data-parsley-trigger="change keyup"
 			      rows="6"
 			      placeholder="Description of experiment"
 			      ></textarea>
@@ -367,7 +367,7 @@
 
         	      <!-- This field's value is manipulated with javascript. Used to validate environmental layer selection (since they are ajax loaded). -->
             	      <input type="text" id="environmental_layers_count" name="environmental_layers_count" value="0"
-            		     parsley-min="2" parsley-error-message="Please select at least 2 environmental layers." />
+            		     data-parsley-min="2" data-parsley-error-message="Please select at least 2 environmental layers." />
             	    </div>
 		  </div>
 

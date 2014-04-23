@@ -26,9 +26,9 @@
                 <tr>
                     <td class="bccvl-table-choose">
                         <xsl:element name="input">
-                            <xsl:attribute name="parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="parsley-group">algorithms</xsl:attribute>
-                            <xsl:attribute name="parsley-error-message">Please select at least 1 algorithm.</xsl:attribute>
+                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
+                            <xsl:attribute name="data-parsley-group">algorithms</xsl:attribute>
+                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 algorithm.</xsl:attribute>
                             <xsl:attribute name="type">checkbox</xsl:attribute>
                             <xsl:attribute name="name"><xsl:value-of select="@name" /></xsl:attribute>
                             <xsl:if test="@checked">
@@ -93,7 +93,7 @@
                                 <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
                                 <xsl:attribute name="data-friendlyname">radio_occurrence_<xsl:copy-of select="text()" /></xsl:attribute>
                                 <xsl:attribute name="required">required</xsl:attribute>
-                                <xsl:attribute name="parsley-error-message">Please choose a set of occurrences.</xsl:attribute>
+                                <xsl:attribute name="data-parsley-error-message">Please choose a set of occurrences.</xsl:attribute>
                             </xsl:element>
                         </td>
                         <td class="bccvl-table-label">
@@ -136,7 +136,7 @@
                                 <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
                                 <xsl:attribute name="data-friendlyname">radio_absence_<xsl:copy-of select="text()" /></xsl:attribute>
                                 <xsl:attribute name="required">required</xsl:attribute>
-                                <xsl:attribute name="parsley-error-message">Please choose a set of absence points.</xsl:attribute>
+                                <xsl:attribute name="data-parsley-error-message">Please choose a set of absence points.</xsl:attribute>
                             </xsl:element>
                         </td>
                         <td class="bccvl-table-label">

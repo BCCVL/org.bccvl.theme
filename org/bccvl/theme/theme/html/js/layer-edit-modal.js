@@ -1,6 +1,6 @@
 define(
     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form', 'parsley'],
-    function( $      ) {
+    function($) {
 
         return {
             init: function() {
@@ -36,67 +36,64 @@ define(
                             // make sure there is no redirect when the form is submitted
                             // also hide and empty the modal
 
-                            $('.select-widget').attr('parsley-unique', 'true');
+                            $('.select-widget').attr('data-parsley-unique', 'true');
 
-                            $('form.layers-parsley-validated').parsley({
-                                successClass: 'success',
-                                errorClass:   'error',
-                                errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
-                                errorElem:     '<span></span>',
-                                validators: {
-                                    unique: function() {
-                                        return {
-                                            validate: function(val) {
+                            // assume parsleyconfig already loaded by bccvl-form-validator.js
+                            $.extend(window.ParsleyConfig, {
+                                'validators': {
+                                    unique: {
+                                        fn: function(val) {
 
-                                                var counter = 0;
+                                            var counter = 0;
 
-                                                // find any matching vals
-                                                $("[parsley-unique='true']").each(function() {
-                                                    if ($(this).val() == val) {
-                                                        counter += 1;
+                                            // find any matching vals
+                                            $("[data-parsley-unique='true']").each(function() {
+                                                if ($(this).val() == val) {
+                                                    counter += 1;
+                                                }
+                                            });
+
+                                            // do a check for the other error ones
+                                            $(".error[data-parsley-unique='true']").each(function() {
+                                                var errorVal = $(this).val();
+                                                var errorCount = 0;
+                                                $("[data-parsley-unique='true']").each(function() {
+                                                    if (errorVal == $(this).val()) {
+                                                        errorCount += 1;
                                                     }
                                                 });
 
-                                                // do a check for the other error ones
-                                                $(".error[parsley-unique='true']").each(function() {
-                                                    var errorVal = $(this).val();
-                                                    var errorCount = 0;
-                                                    $("[parsley-unique='true']").each(function() {
-                                                        if (errorVal == $(this).val()) {
-                                                            errorCount += 1;
-                                                        }
-                                                    });
+                                                // if only one count then fix it up
+                                                if (errorCount == 1) {
+                                                    $(this).removeClass('error');
+                                                    $(this).addClass('success');
+                                                    $(this).next("[id^='parsley']").fadeOut();
+                                                    $(this).next("[id^='parsley']").remove();
+                                                }
+                                            });
 
-                                                    // if only one count then fix it up
-                                                    if (errorCount == 1) {
-                                                        $(this).removeClass('error');
-                                                        $(this).addClass('success');
-                                                        $(this).next("[id^='parsley']").fadeOut();
-                                                        $(this).next("[id^='parsley']").remove();
-                                                    }
-                                                });
-
-                                                return counter == 1;
-                                            },
-                                            priority: 2
-                                        };
+                                            return counter == 1;
+                                        },
+                                        priority: 2
                                     }
                                 },
-                                messages: {
-                                    unique: "Bioclimatic Variable must be unique."
-                                },
-                                listeners: {
-                                    onFormValidate: function(isFormValid, evt) {
-
-                                        var errorList = $(".error[parsley-unique='true']");
-
-                                        if (errorList.length == 0) {
-                                            return true;
-                                        }
-                                        else return false;
-
+                                i18n: {
+                                    en: {
+                                        unique: "Bioclimatic Variable must be unique."
                                     }
                                 }
+                            });
+                            $('form.layers-parsley-validated').parsley();
+
+                            $.listen('parsley:form:validate', function(isFormValid, evt) {
+
+                                var errorList = $(".error[data-parsley-unique='true']");
+
+                                if (errorList.length == 0) {
+                                    return true;
+                                }
+                                else return false;
+
                             });
 
                             $('.modal form').ajaxForm(function() {
