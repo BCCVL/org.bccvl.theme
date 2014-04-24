@@ -53,10 +53,11 @@ define(
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="species-' + speciesName + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
+                // html +=   '<input id="species-' + speciesName + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
+                html +=   '<input class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label for="species-' + speciesName + '">';
+                html +=   '<label>';
                 html +=    '<h1>' + speciesName + '</h1>';
                 html +=   '</label>';
                 html +=  '</td>';
