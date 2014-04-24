@@ -10,8 +10,8 @@
     <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
     <link href="css/general.css" rel="stylesheet" />
     <!--[if lt IE 9]>
-	<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+        <script src="lib/html5shiv/html5shiv.js"></script>
+        <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
@@ -63,30 +63,30 @@
       <!-- container for content that will hide under menu when screen is narrow -->
       <div class="nav-collapse collapse">
 
-	<!-- user menu -->
-	<div id="user-menu" class="btn-group pull-right">
-	  <a class="btn dropdown-toggle fine" data-toggle="dropdown">
-	    <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-	  </a>
-	  <ul class="dropdown-menu">
+        <!-- user menu -->
+        <div id="user-menu" class="btn-group pull-right">
+          <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+            <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+          </a>
+          <ul class="dropdown-menu">
             <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-	    <li class="divider"></li>
-	    <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-	  </ul>
-	</div>
+            <li class="divider"></li>
+            <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+          </ul>
+        </div>
 
-	<!-- search field -->
-	<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-	  <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
-	</form>
+        <!-- search field -->
+        <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+          <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+        </form>
 
-	<!-- main menu items -->
-	<ul class="nav">
-	  <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-	  <li               ><a class="bccvllinks-datasets">Datasets</a></li>
-	  <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
-	  <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-	</ul>
+        <!-- main menu items -->
+        <ul class="nav">
+          <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+          <li               ><a class="bccvllinks-datasets">Datasets</a></li>
+          <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
+          <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+        </ul>
 
       </div><!--/.nav-collapse -->
 
@@ -100,15 +100,15 @@
 
       <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <div class="bccvl-breadcrumb row-fluid">
-	<div class="span12">
-	  <ul class="breadcrumb">
-	    <li><a  class="bccvllinks-home icon-home"></a></li>
-	    <li class="separator icon-chevron-right"></li>
-	    <li><a class="bccvllinks-experiments">Experiments</a></li>
-	    <li class="separator icon-chevron-right"></li>
-	    <li>New Species Distribution Model</li>
-	  </ul>
-	</div>
+        <div class="span12">
+          <ul class="breadcrumb">
+            <li><a  class="bccvllinks-home icon-home"></a></li>
+            <li class="separator icon-chevron-right"></li>
+            <li><a class="bccvllinks-experiments">Experiments</a></li>
+            <li class="separator icon-chevron-right"></li>
+            <li>New Species Distribution Model</li>
+          </ul>
+        </div>
       </div>
 
 
@@ -120,292 +120,292 @@
       <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <section class="bccvl-experimentdetails tabbable">
-	<form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
+        <form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
-	  <!-- the experiment form wizardy tabs, with the prev/next buttons -->
+          <!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
-	  <!-- tabs -->
-	  <div class="bccvl-wizardtabs">
-	    <div class="bccvl-wizardtabs-navbtns">
-	      <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i>previous</button>
-	      <button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
-	    </div>
-	    <ul class="nav nav-tabs">
-	      <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
-	      <li><a href="#tab-config" data-toggle="tab">Configuration</a></li>
-	      <li><a href="#tab-occur" data-toggle="tab">Occurrences</a></li>
-	      <li><a href="#tab-absent" data-toggle="tab">Absences</a></li>
-	      <li><a href="#tab-enviro" data-toggle="tab">Environment</a></li>
-	      <!-- <li><a href="#tab-climate" data-toggle="tab">Climate</a></li> -->
-	      <li><a href="#tab-review" data-toggle="tab">Run</a></li>
-	    </ul>
-	  </div>
+          <!-- tabs -->
+          <div class="bccvl-wizardtabs">
+            <div class="bccvl-wizardtabs-navbtns">
+              <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i>previous</button>
+              <button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
+            </div>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
+              <li><a href="#tab-config" data-toggle="tab">Configuration</a></li>
+              <li><a href="#tab-occur" data-toggle="tab">Occurrences</a></li>
+              <li><a href="#tab-absent" data-toggle="tab">Absences</a></li>
+              <li><a href="#tab-enviro" data-toggle="tab">Environment</a></li>
+              <!-- <li><a href="#tab-climate" data-toggle="tab">Climate</a></li> -->
+              <li><a href="#tab-review" data-toggle="tab">Run</a></li>
+            </ul>
+          </div>
 
-	  <!-- the contents of the wizard tab panes -->
-	  <div class="tab-content">
+          <!-- the contents of the wizard tab panes -->
+          <div class="tab-content">
 
-	    <!-- page: meta  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-meta">
+            <!-- page: meta  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-meta">
 
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Give your experiment a title and description.
-		</p>
-	      </div>
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Give your experiment a title and description.
+                </p>
+              </div>
 
-	      <div class="row-fluid">
-		<div class="span12">
-		  <div class="control-group">
-		    <input type="text" name="expName" class="bccvl-expname input-block-level"
-			   required="required" data-parsley-trigger="change keyup"
-			   pattern="^[^_].*"
-			   data-parsley-pattern-message="Don't start your experiment name with an underscore."
-			   data-parsley-required-message="Please supply a descriptive name for this experiment."
-			   placeholder="Name for this experiment"
-			   />
-		  </div>
-		  <div class="control-group">
-		    <textarea name="expDescription" class="input-block-level bccvl-expdesc"
-			      data-parsley-trigger="change keyup"
-			      rows="6"
-			      placeholder="Description of experiment"
-			      ></textarea>
-		  </div>
-		</div>
-	      </div>
-	    </div>
+              <div class="row-fluid">
+                <div class="span12">
+                  <div class="control-group">
+                    <input type="text" name="expName" class="bccvl-expname input-block-level"
+                           required="required" data-parsley-trigger="change keyup"
+                           pattern="^[^_].*"
+                           data-parsley-pattern-message="Don't start your experiment name with an underscore."
+                           data-parsley-required-message="Please supply a descriptive name for this experiment."
+                           placeholder="Name for this experiment"
+                           />
+                  </div>
+                  <div class="control-group">
+                    <textarea name="expDescription" class="input-block-level bccvl-expdesc"
+                              data-parsley-trigger="change keyup"
+                              rows="6"
+                              placeholder="Description of experiment"
+                              ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-	    <!-- page: config  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-config">
+            <!-- page: config  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-config">
 
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Choose and configure SDM algorithms.
-		</p>
-	      </div>
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Choose and configure SDM algorithms.
+                </p>
+              </div>
 
-	      <!-- experiment algo -->
-	      <div class="row-fluid">
+              <!-- experiment algo -->
+              <div class="row-fluid">
 
-		<div class="span4"><div class="control-group">
+                <div class="span4"><div class="control-group">
 
-		  <table class="table table-hover bccvl-algorithmtable">
-		    <thead>
-		      <tr><th colspan="3">
-			Species Distribution Model Production Algorithms
-		      </th></tr>
-		    </thead>
-		    <tbody>
-		    </tbody>
-		  </table>
+                  <table class="table table-hover bccvl-algorithmtable">
+                    <thead>
+                      <tr><th colspan="3">
+                        Species Distribution Model Production Algorithms
+                      </th></tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
 
-		</div></div>
+                </div></div>
 
-		<div class="bccvl-algoconfig span8" id="algoConfig">
-		</div>
+                <div class="bccvl-algoconfig span8" id="algoConfig">
+                </div>
 
-	      </div>
-	    </div>
+              </div>
+            </div>
 
-	    <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-occur">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Select the occurrences.
-		</p>
-	      </div>
+            <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-occur">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Select the occurrences.
+                </p>
+              </div>
 
-	      <div class="row-fluid bccvl-stretch-parent">
+              <div class="row-fluid bccvl-stretch-parent">
 
-		<!-- list of available data -->
-		<div class="span4"><div class="control-group">
-		  <table class="table table-hover bccvl-occurrencestable">
-		    <thead>
-		      <tr><th colspan="3">
-			Species Occurrence Datasets
-		      </th></tr>
-		      <tr><td colspan="3">
-			Import or upload new occurrence datasets
-			on the <a class="bccvllinks-datasets">dataset</a> page.
-			(For now you will need to re-start your experiment setup
-			before being able to use new occurrence data.)
-		      </td></tr>
-		      <!--
-			  <tr><td class="bccvl-searchform" colspan="3">
-			  <div id="searchOccurrence" class="bccvl-search-form form-inline">
-			  <input name="searchOccurrence_query" type="text" class="span8" placeholder="find more species..">
-			  <select name="searchOccurrence_source" class="span4">
-			  <option value="ala">at ALA</option>
-			  </select>
-			  <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
-			  </div>
-			  </td></tr>
-		      -->
-		    </thead>
-		    <tbody>
-		    </tbody>
-		  </table>
-		</div></div>
+                <!-- list of available data -->
+                <div class="span4"><div class="control-group">
+                  <table class="table table-hover bccvl-occurrencestable">
+                    <thead>
+                      <tr><th colspan="3">
+                        Species Occurrence Datasets
+                      </th></tr>
+                      <tr><td colspan="3">
+                        Import or upload new occurrence datasets
+                        on the <a class="bccvllinks-datasets">dataset</a> page.
+                        (For now you will need to re-start your experiment setup
+                        before being able to use new occurrence data.)
+                      </td></tr>
+                      <!--
+                          <tr><td class="bccvl-searchform" colspan="3">
+                          <div id="searchOccurrence" class="bccvl-search-form form-inline">
+                          <input name="searchOccurrence_query" type="text" class="span8" placeholder="find more species..">
+                          <select name="searchOccurrence_source" class="span4">
+                          <option value="ala">at ALA</option>
+                          </select>
+                          <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+                          </div>
+                          </td></tr>
+                      -->
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div></div>
 
-		<!-- preview area -->
-		<div class="span8">
-		  <!-- <div class="bccvl-preview-pane well"> -->
-		  <!-- <div style="position: relative; border: 1px solid blue; height: 400px; overflow: hidden"> -->
-		  <div class="bccvl-preview-pane well bccvl-stretcher">
-		    <iframe class="bccvl-viz" name="viz">
-		    </iframe>
-		  </div>
-		  <!-- </div> -->
-		</div>
-	      </div>
-	    </div>
+                <!-- preview area -->
+                <div class="span8">
+                  <!-- <div class="bccvl-preview-pane well"> -->
+                  <!-- <div style="position: relative; border: 1px solid blue; height: 400px; overflow: hidden"> -->
+                  <div class="bccvl-preview-pane well bccvl-stretcher">
+                    <iframe class="bccvl-viz" name="viz">
+                    </iframe>
+                  </div>
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
 
-	    <!-- page: species absences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-absent">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Select absences data.
-		</p>
-	      </div>
+            <!-- page: species absences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-absent">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Select absences data.
+                </p>
+              </div>
 
-	      <div class="row-fluid bccvl-stretch-parent">
-		<!-- list of available data -->
-		<div class="span4"><div class="control-group">
+              <div class="row-fluid bccvl-stretch-parent">
+                <!-- list of available data -->
+                <div class="span4"><div class="control-group">
 
-		  <div class="accordion" id="absence-accordion">
-		    <div class="accordion-group">
-		      <div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseOne">
-			  Pseudo absence points
-			</a>
-		      </div>
-		      <div id="collapseOne" class="accordion-body collapse">
-			<div class="accordion-inner">
-			  <div class="random-absences-settings"></div>
-			</div>
-		      </div>
-		    </div>
-		    <div class="accordion-group">
-		      <div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseTwo">
-			  Species Absence Datasets
-			</a>
-		      </div>
-		      <div id="collapseTwo" class="accordion-body collapse in">
-			<div class="accordion-inner">
-			  <table class="table table-hover bccvl-absencestable">
-			    <thead>
-			      <tr><th colspan="3">
-				Species Absence Datasets
-			      </th></tr>
-			    </thead>
-			    <tbody></tbody>
-			  </table>
+                  <div class="accordion" id="absence-accordion">
+                    <div class="accordion-group">
+                      <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseOne">
+                          Pseudo absence points
+                        </a>
+                      </div>
+                      <div id="collapseOne" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                          <div class="random-absences-settings"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-group">
+                      <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseTwo">
+                          Species Absence Datasets
+                        </a>
+                      </div>
+                      <div id="collapseTwo" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                          <table class="table table-hover bccvl-absencestable">
+                            <thead>
+                              <tr><th colspan="3">
+                                Species Absence Datasets
+                              </th></tr>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
 
-			</div>
-		      </div>
-		    </div>
-		  </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-		</div></div>
+                </div></div>
 
-		<!-- preview area -->
-		<div class="span8">
-		  <div class="bccvl-preview-pane well bccvl-stretcher">
-		    <iframe class="bccvl-viz" name="viz">
-		    </iframe>
-		  </div>
-		</div>
-	      </div>
-	    </div>
-
-
-
-	    <!-- page: environmental layers  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-enviro">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Select the climate and other environmental variables.
-		</p>
-	      </div>
-
-	      <div class="row-fluid bccvl-stretch-parent">
-
-		<!-- list of available data -->
-		<div class="span4">
-
-		  <div class="control-group">
-		    <table class="table table-hover bccvl-spatialscaletable">
-		      <thead>
-			<tr>
-			  <th colspan="3">Spatial Scale</th>
-			</tr>
-		      </thead>
-		      <tbody>
-			<tr>
-			  <td></td>
-			</tr>
-		      </tbody>
-		    </table>
-		  </div>
-
-		  <div class="control-group">
-		    <table class="table table-hover bccvl-environmentaldatatable">
-		      <thead>
-			<tr>
-			  <th colspan="3">Environmental Datasets</th>
-			</tr>
-		      </thead>
-		      <tbody>
-		      </tbody>
-		    </table>
-
-		    <!-- secret hidden fields -->
-		    <div class="hidden bccvl-secretlayerselections">
-		      <!-- Secret field required by plone -->
-            	      <input type="hidden" id="form.widgets.environmental_datasets.marker" name="form.widgets.environmental_datasets.marker" value="1" originalvalue="1" />
-
-        	      <!-- This field's value is manipulated with javascript. Used to validate environmental layer selection (since they are ajax loaded). -->
-            	      <input type="text" id="environmental_layers_count" name="environmental_layers_count" value="0"
-            		     data-parsley-min="2" data-parsley-error-message="Please select at least 2 environmental layers." />
-            	    </div>
-		  </div>
-
-		</div>
+                <!-- preview area -->
+                <div class="span8">
+                  <div class="bccvl-preview-pane well bccvl-stretcher">
+                    <iframe class="bccvl-viz" name="viz">
+                    </iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
 
-		<!-- preview area -->
-		<div class="span8">
-		  <div class="bccvl-preview-pane well bccvl-stretcher">
-		    <iframe class="bccvl-viz" name="viz">
-		    </iframe>
-		  </div>
-		</div>
+            <!-- page: environmental layers  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-enviro">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Select the climate and other environmental variables.
+                </p>
+              </div>
 
-	      </div>
-	    </div>
+              <div class="row-fluid bccvl-stretch-parent">
+
+                <!-- list of available data -->
+                <div class="span4">
+
+                  <div class="control-group">
+                    <table class="table table-hover bccvl-spatialscaletable">
+                      <thead>
+                        <tr>
+                          <th colspan="3">Spatial Scale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="control-group">
+                    <table class="table table-hover bccvl-environmentaldatatable">
+                      <thead>
+                        <tr>
+                          <th colspan="3">Environmental Datasets</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+
+                    <!-- secret hidden fields -->
+                    <div class="hidden bccvl-secretlayerselections">
+                      <!-- Secret field required by plone -->
+                      <input type="hidden" id="form.widgets.environmental_datasets.marker" name="form.widgets.environmental_datasets.marker" value="1" originalvalue="1" />
+
+                      <!-- This field's value is manipulated with javascript. Used to validate environmental layer selection (since they are ajax loaded). -->
+                      <input type="text" id="environmental_layers_count" name="environmental_layers_count" value="0"
+                             data-parsley-min="2" data-parsley-error-message="Please select at least 2 environmental layers." />
+                    </div>
+                  </div>
+
+                </div>
 
 
-	    <!-- page: review  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-review">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Review and run your experiment.
-		</p>
-	      </div>
 
-	      <div class="row-fluid">
-		<!-- show the current status -->
-		<div class="span12 bccvl-expstatus alert alert-block alert-info">
-		  <button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
-		</div>
-	      </div>
-	    </div><!-- end of status page -->
+                <!-- preview area -->
+                <div class="span8">
+                  <div class="bccvl-preview-pane well bccvl-stretcher">
+                    <iframe class="bccvl-viz" name="viz">
+                    </iframe>
+                  </div>
+                </div>
 
-	  </div>
+              </div>
+            </div>
 
-	</form>
+
+            <!-- page: review  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-review">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Review and run your experiment.
+                </p>
+              </div>
+
+              <div class="row-fluid">
+                <!-- show the current status -->
+                <div class="span12 bccvl-expstatus alert alert-block alert-info">
+                  <button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
+                </div>
+              </div>
+            </div><!-- end of status page -->
+
+          </div>
+
+        </form>
       </section>
 
     </div><!-- end of main content container -->
@@ -413,7 +413,7 @@
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <footer class="navbar navbar-fixed-bottom">
       <div class="container-fluid">
-	<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+        <small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
       </div>
     </footer>
 
