@@ -11,8 +11,8 @@
     <link href="lib/select2/select2.css" rel="stylesheet"/>
     <link href="css/general.css" rel="stylesheet"/>
     <!--[if lt IE 9]>
-	<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+        <script src="lib/html5shiv/html5shiv.js"></script>
+        <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
@@ -120,198 +120,198 @@
       <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <section class="bccvl-experimentdetails tabbable">
-	<form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
+        <form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
-	  <!-- the experiment form wizardy tabs, with the prev/next buttons -->
+          <!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
-	  <!-- tabs -->
-	  <div class="bccvl-wizardtabs">
-	    <div class="bccvl-wizardtabs-navbtns">
-	      <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i>previous</button>
-	      <button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
-	    </div>
-	    <ul class="nav nav-tabs">
-	      <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
-	      <li><a href="#tab-source-projection" data-toggle="tab">Source Projection</a></li>
-	      <li><a href="#tab-configuration" data-toggle="tab">Configuration</a></li>
-	      <li><a href="#tab-review" data-toggle="tab">Run</a></li>
-	    </ul>
-	  </div>
+          <!-- tabs -->
+          <div class="bccvl-wizardtabs">
+            <div class="bccvl-wizardtabs-navbtns">
+              <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i>previous</button>
+              <button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
+            </div>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
+              <li><a href="#tab-source-projection" data-toggle="tab">Source Projection</a></li>
+              <li><a href="#tab-configuration" data-toggle="tab">Configuration</a></li>
+              <li><a href="#tab-review" data-toggle="tab">Run</a></li>
+            </ul>
+          </div>
 
-	  <!-- the contents of the wizard tab panes -->
-	  <div class="tab-content">
+          <!-- the contents of the wizard tab panes -->
+          <div class="tab-content">
 
-	    <!-- page: meta  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-meta">
+            <!-- page: meta  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-meta">
 
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Give your experiment a title and description.
-		</p>
-	      </div>
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Give your experiment a title and description.
+                </p>
+              </div>
 
-	      <div class="row-fluid">
-		<div class="span12">
-		  <div class="control-group">
-		    <input type="text" name="expName" class="bccvl-expname input-block-level"
-			   required="required" data-notblank="true" data-trigger="change keyup"
-			   pattern="^[^_].*"
-			   data-parsley-regex-message="Don't start your experiment name with an underscore."
-			   data-parsley-required-message="Please supply a descriptive name for this experiment."
-			   placeholder="Name for this experiment"
-			   />
-		  </div>
-		  <div class="control-group">
-		    <textarea name="expDescription" class="input-block-level bccvl-expdesc"
-			      data-notblank="true" data-trigger="change keyup"
-			      rows="6"
-			      placeholder="Description of experiment"
-			      ></textarea>
-		  </div>
-		</div>
-	      </div>
-	    </div>
+              <div class="row-fluid">
+                <div class="span12">
+                  <div class="control-group">
+                    <input type="text" name="expName" class="bccvl-expname input-block-level"
+                           required="required" data-notblank="true" data-trigger="change keyup"
+                           pattern="^[^_].*"
+                           data-parsley-regex-message="Don't start your experiment name with an underscore."
+                           data-parsley-required-message="Please supply a descriptive name for this experiment."
+                           placeholder="Name for this experiment"
+                           />
+                  </div>
+                  <div class="control-group">
+                    <textarea name="expDescription" class="input-block-level bccvl-expdesc"
+                              data-notblank="true" data-trigger="change keyup"
+                              rows="6"
+                              placeholder="Description of experiment"
+                              ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-	    <!-- page: source projection  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-source-projection">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Select the species datasets
-		</p>
-	      </div>
+            <!-- page: source projection  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-source-projection">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Select the species datasets
+                </p>
+              </div>
 
-	      <div class="row-fluid">
+              <div class="row-fluid">
 
-		<div class="span4">
+                <div class="span4">
 
-		  <table class="table table-hover bccvl-projectiontable">
-		    <thead>
-		      <tr>
-			<th colspan="3">Projection Experiments</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		    </tbody>
-		  </table>
+                  <table class="table table-hover bccvl-projectiontable">
+                    <thead>
+                      <tr>
+                        <th colspan="3">Projection Experiments</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
 
-		  <table class="table table-hover bccvl-speciestable">
-		    <thead>
-		      <tr>
-			<th colspan="3">Species</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		    </tbody>
-		  </table>
+                  <table class="table table-hover bccvl-speciestable">
+                    <thead>
+                      <tr>
+                        <th colspan="3">Species</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
 
-		  <table class="table table-hover bccvl-yearstable">
-		    <thead>
-		      <tr>
-			<th colspan="3">Years</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		    </tbody>
-		  </table>
+                  <table class="table table-hover bccvl-yearstable">
+                    <thead>
+                      <tr>
+                        <th colspan="3">Years</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
 
-		</div>
+                </div>
 
- 		<div class="span8">
+                <div class="span8">
 
-		  <div class="control-group">
-		    <table class="table table-hover bccvl-layerstable">
-		      <thead>
-			<tr>
-			  <th colspan="3">Map Layers</th>
-			</tr>
-		      </thead>
-		      <tbody>
-		      </tbody>
-		    </table>
+                  <div class="control-group">
+                    <table class="table table-hover bccvl-layerstable">
+                      <thead>
+                        <tr>
+                          <th colspan="3">Map Layers</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
 
-		    <div style="display: none">
-		      <div id="bccvl-hiddeninputs" style="display: none">
-			<!-- Javascript actually creates the dataset inputs here  -->
-		      </div>
+                    <div style="display: none">
+                      <div id="bccvl-hiddeninputs" style="display: none">
+                        <!-- Javascript actually creates the dataset inputs here  -->
+                      </div>
 
-		      <!-- Dynamically updated by javascript, to keep track of how many projections layers have been selected. -->
-		      <input type="number" id="form.widgets.projection.count" name="form.widgets.projection.count" value="0"
-			     data-parsley-min="1" data-parsley-error-message="Please select at least 1 map layer."/>
-		    </div>
-		  </div>
-		</div>
+                      <!-- Dynamically updated by javascript, to keep track of how many projections layers have been selected. -->
+                      <input type="number" id="form.widgets.projection.count" name="form.widgets.projection.count" value="0"
+                             data-parsley-min="1" data-parsley-error-message="Please select at least 1 map layer."/>
+                    </div>
+                  </div>
+                </div>
 
-	      </div>
+              </div>
 
-	    </div>
+            </div>
 
-	    <!-- page: configuration  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-configuration">
+            <!-- page: configuration  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-configuration">
 
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Configure
-		</p>
-	      </div>
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Configure
+                </p>
+              </div>
 
-	      <div class="row-fluid">
-		<div class="span6">
+              <div class="row-fluid">
+                <div class="span6">
 
-		  <div class="control-group">
-		    <table class="table table-hover bccvl-thresholdtable">
-		      <thead>
-			<tr>
-			  <th colspan="3">Set threshold value for selected map layers</th>
-			</tr>
-		      </thead>
-		      <tbody>
-		      </tbody>
-		    </table>
-		  </div>
-		</div>
+                  <div class="control-group">
+                    <table class="table table-hover bccvl-thresholdtable">
+                      <thead>
+                        <tr>
+                          <th colspan="3">Set threshold value for selected map layers</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-		<div class="span6">
+                <div class="span6">
 
-		  <table class="table table-hover bccvl-clustersizetable">
-		    <thead>
-		      <tr>
-			<th>Set Cluster Size (x/y cell size)</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <tr>
-			<td></td>
-		      </tr>
-		    </tbody>
-		  </table>
+                  <table class="table table-hover bccvl-clustersizetable">
+                    <thead>
+                      <tr>
+                        <th>Set Cluster Size (x/y cell size)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-		</div>
-	      </div>
-
-
-	    </div>
+                </div>
+              </div>
 
 
-	    <!-- page: review  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-	    <div class="tab-pane active" id="tab-review">
-	      <div class="row-fluid">
-		<p class="span12 bccvl-tab-description">
-		  Review and run your experiment.
-		</p>
-	      </div>
-
-	      <div class="row-fluid">
-		<!-- show the current status -->
-		<div class="span12 bccvl-expstatus alert alert-block alert-info">
-		  <button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
-		</div>
-	      </div>
-	    </div><!-- end of status page -->
+            </div>
 
 
-	  </div>
+            <!-- page: review  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+            <div class="tab-pane active" id="tab-review">
+              <div class="row-fluid">
+                <p class="span12 bccvl-tab-description">
+                  Review and run your experiment.
+                </p>
+              </div>
 
-	</form>
+              <div class="row-fluid">
+                <!-- show the current status -->
+                <div class="span12 bccvl-expstatus alert alert-block alert-info">
+                  <button type="submit" class="btn btn-primary btn-large bccvllinks-experiment-start">start Experiment</button>
+                </div>
+              </div>
+            </div><!-- end of status page -->
+
+
+          </div>
+
+        </form>
       </section>
 
     </div><!-- end of main content container -->
@@ -319,7 +319,7 @@
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <footer class="navbar navbar-fixed-bottom">
       <div class="container-fluid">
-	<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+        <small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
       </div>
     </footer>
 
