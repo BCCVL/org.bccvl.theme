@@ -209,7 +209,11 @@ a:not([href]).fine,
     float: right;
 }
 
-.bccvl-datasetstable th span {
+.bccvl-datasetstable th.control-group {
+    padding: 0px;
+}
+
+.bccvl-datasetstable th.headerSortUp span {
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -218,14 +222,20 @@ a:not([href]).fine,
     line-height: 14px;
     vertical-align: text-top;
     background-image: url("++resource++bccvl/lib/bootstrap/img/glyphicons-halflings.png");
-    background-position: 14px 14px;
+    background-position: -288px -120px;
     background-repeat: no-repeat;
 }
-.bccvl-datasetstable th.headerSortUp span {
-    background-position: -288px -120px;
-}
 .bccvl-datasetstable th.headerSortDown span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    margin-top: 5px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url("++resource++bccvl/lib/bootstrap/img/glyphicons-halflings.png");
     background-position: -313px -119px;
+    background-repeat: no-repeat;
 }
 
 .bccvl-datasetstable tr.headers {

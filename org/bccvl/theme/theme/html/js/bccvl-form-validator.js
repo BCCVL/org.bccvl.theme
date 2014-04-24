@@ -28,9 +28,17 @@ define(
                     return parsleyField.$element.closest('.control-group'); },
                 errorsContainer: function(parsleyField) {
                     var $controlGroup = parsleyField.$element.closest('.control-group');
-                    var $tableHeader = $controlGroup.find('th');
+
+                    // if the element is in a table that has a header configured specifically to be used as a control group, use it.
+                    var $table = $controlGroup.find('table');
+                    var $tableControlGroup = $table.find('th.control-group');
+                    if ($tableControlGroup.length > 0)
+                        return $tableControlGroup
+
                     // if the element is in a table, use the table header..
-                    if ($tableHeader.length > 0) return $tableHeader;
+                    var $tableHeader = $controlGroup.find('th');
+                    if ($tableHeader.length > 0)
+                        return $tableHeader;
                     // otherwise use the controlGroup
                     return $controlGroup;
                 },
