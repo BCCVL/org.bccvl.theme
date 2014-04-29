@@ -7,18 +7,6 @@ body {
 }   }
 
 
-/* not broken after all */
-a[href=""].fine,
-a[href="#"].fine,
-a:not([href]).fine,
-.typeahead.dropdown-menu a[href="#"],
-.typeahead.dropdown-menu a:not([href])
-{
-    box-shadow: none ! important;
-    opacity: 1 ! important;
-}
-
-
 /* main navbar ----------------------------------------------------------- */
 
 .navbar {
