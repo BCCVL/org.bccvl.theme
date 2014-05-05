@@ -1,0 +1,47 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- FEEDBACK FORM ============================================ -->
+    <rules if-path="contact-info/">
+        <theme href="html/feedback.html" />
+
+        <!-- Info notices -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+            <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+        </replace>
+
+        <rules css:if-content="form[name='feedback_form']">
+            <!-- Form field attributes -->
+            <copy attributes="name action method enctype" css:theme="form#feedback" css:content="form[name='feedback_form']" />
+
+            <!-- Name field -->
+            <copy attributes="name" css:theme="input#sender_fullname" css:content="input#sender_fullname" />
+
+            <!-- E-Mail field -->
+            <copy attributes="name" css:theme="input#sender_from_address" css:content="input#sender_from_address" />
+
+            <!-- Subject field -->
+            <copy attributes="name" css:theme="input#subject" css:content="input#subject" />
+
+            <!-- Message field -->
+            <copy attributes="name" css:theme="textarea#message" css:content="textarea#message" />
+
+            <!-- Hidden input -->
+            <copy attributes="value" css:theme="input#form_submitted" css:content="input[name='form.submitted']" />
+
+            <!-- Submit Button -->
+            <copy attributes="name type value" css:theme="button#feedback-save-button" css:content="input[name='form.button.Send']" />        
+        </rules>
+
+    </rules>
+    
+</rules>
