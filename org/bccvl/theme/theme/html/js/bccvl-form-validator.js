@@ -114,6 +114,8 @@ define(
                             $absenceFields.removeClass('error');
                         }
                         if ($('.control-group.error').length == 0){
+                            // absence ponit is ok, and no other errors on form, let's pass validation'
+                            parsleyForm.validationResult = true;
                             return true;
                         }
                     }
