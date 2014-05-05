@@ -53,8 +53,8 @@ define(
 
             // let's configure parsley globally'
             window.ParsleyConfig = {
-                excluded:     'input[type=hidden], :disabled',  // effectively enable validation of input type file (this is disbaled by default)
-                //excluded:     ':disabled',  // effectively enable validation of input type file (this is disbaled by default)
+                // in general we want to validate hidden (non visible fields as well)
+                excluded:     'input[type=button], input[type=submit], input[type=reset], input[type=hidden], [disabled]',
                 focus:        'none',                           // don't switch focus to errors (we do that manually below)
                 successClass: 'success',                        // use these two Bootstrap classes for the error
                 errorClass:   'error',                          // and no-error states, and it'll look pretty.
