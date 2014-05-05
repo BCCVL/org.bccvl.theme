@@ -6,6 +6,42 @@ define(
     function( $) {
         // ==============================================================
 
+        var customTypeValidator = function(type) {
+            var assert;
+
+            switch(type){
+                case 'email':
+                    assert = new Validator.Assert().Email();
+                    break;
+                case 'number':
+                    assert = new Validator.Assert().Callback(function(value) {
+                      var numb = Number(value);
+                      return (!Number.isNaN(numb) && Number.isFinite(numb));
+                    });
+                    // Regexp('^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)?(?:\\.\\d+)?$');
+                    break;
+                case 'integer':
+                    assert = new Validator.Assert().Callback(function(value) {
+                      var numb = Number(value);
+                      return Number.isInteger(numb);
+                    });
+                    //assert = new Validator.Assert().Regexp('^-?\\d+$');
+                    break;
+                case 'digits':
+                    assert = new Validator.Assert().Regexp('^\\d+$');
+                    break;
+                case 'alphanum':
+                    assert = new Validator.Assert().Regexp('^\\w+$', 'i');
+                    break;
+                case 'url':
+                    assert = new Validator.Assert().Regexp('(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)', 'i');
+                    break;
+                default:
+                    throw new Error('validator type `' + type + '` is not supported');
+            }
+            return $.extend(assert, { priority: 256 });
+        };
+
         $(function() {
 
             // since we're pulling config blocks wholesale from plone, which sucks but is
@@ -45,8 +81,11 @@ define(
                 errorsWrapper: '<span class=\"help-inline bccvl-formerror\"></span>',
                 errorTemplate: '<span></span>'
             };
+            // setup custom global validators. This method can be used as soon as parsley.js has been loaded
+            window.ParsleyValidator.validators.type = customTypeValidator;
             // right, so now kick off parsley form validation on the forms..
             $('form.bccvl-parsleyvalidate').parsley();
+
             $.listen('parsley:form:validated', function(parsleyForm) {
                 // validate the Projections selected
                 var numberOfProjections = parseInt($('.bccvl-available-projections').text());
