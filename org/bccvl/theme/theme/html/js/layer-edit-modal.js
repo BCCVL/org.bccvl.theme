@@ -71,7 +71,6 @@ define(
 
                             $('.modal form').ajaxForm(function() {
                                 $('.modal').modal('hide');
-                                $("body").removeClass("modal-open");
                                 $('.modal').empty();
                             });
 
@@ -85,6 +84,10 @@ define(
                     $('.modal-body').scrollTop(0);
                     $("body").addClass("modal-open");
                 });
+
+                $('.modal').on('hidden', function () {
+                    $("body").removeClass("modal-open");
+                })
 
             }
 
