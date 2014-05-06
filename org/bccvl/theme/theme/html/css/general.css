@@ -247,6 +247,10 @@ body {
     max-height: 60%
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */

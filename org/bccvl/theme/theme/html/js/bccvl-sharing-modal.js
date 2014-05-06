@@ -36,6 +36,7 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 
 						$form.ajaxForm(function() { 
 							$('.modal').modal('hide')
+							$("body").removeClass("modal-open");
 							$('.modal').empty();
 						}); 
 		            	
@@ -46,12 +47,9 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 			});
 
 			// when the modal is shown
-		    $('.modal').on('shown', function () {
-
-				// scroll to the top of the modal
+		    $('.modal').on('show', function () {
 				$('.modal-body').scrollTop(0);
-
-				
+				$("body").addClass("modal-open");
 		    });
 		}
 	}

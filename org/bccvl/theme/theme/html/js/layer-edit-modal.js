@@ -32,6 +32,8 @@ define(
                             $('.modal').html(data);
                             $('.modal .listing').addClass('table');
                             $('#crud-edit-form-buttons-edit').addClass('btn btn-primary');
+                            var $cancelButton = '<input class="btn btn-danger" type="submit" name="form.button.Cancel" value="Cancel" data-dismiss="modal"></input>';
+                            $('.modal form .action').append($cancelButton);
 
                             // make sure there is no redirect when the form is submitted
                             // also hide and empty the modal
@@ -69,6 +71,7 @@ define(
 
                             $('.modal form').ajaxForm(function() {
                                 $('.modal').modal('hide');
+                                $("body").removeClass("modal-open");
                                 $('.modal').empty();
                             });
 
@@ -77,10 +80,10 @@ define(
                     }
                 });
 
-                var $form = $('.modal form');
 
-                $form.on('shown', function () {
+                $('.modal').on('show', function () {
                     $('.modal-body').scrollTop(0);
+                    $("body").addClass("modal-open");
                 });
 
             }
