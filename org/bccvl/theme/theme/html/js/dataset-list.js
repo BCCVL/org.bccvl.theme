@@ -77,6 +77,8 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
         async: false,
         success: function (data) {
           var downloadButtonHTML = '<a href="' + data.file + '"><i class="icon-circle-arrow-down" title="download"></i></a>';
+          var publishButtonHTML = '<a href="' + data.url + '/dm/publish"><i class="icon-share-alt" title="Publish"></i></a>';
+          var sharingButtonHTML = '<a class="sharing-btn" href="' + data.url + '/@@sharing"><i class="icon-share" title="Sharing Options"></i></a>';
           if (data.mimetype == 'text/csv') {
             var visualiseButtonHTML = '<a href="#" class="bccvl-occurrence-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
           }
@@ -84,11 +86,14 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
             var visualiseButtonHTML = '<a href="#" class="bccvl-auto-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
           }
           var descriptionHTML = '<p>' + data.description + '</p>';
+          $controlGroup.append(publishButtonHTML);
+          $controlGroup.append(sharingButtonHTML);
           $controlGroup.append(downloadButtonHTML);
           $controlGroup.append(visualiseButtonHTML);
           var $descriptionField = $tableLabel.find("p");
           $descriptionField.replaceWith(descriptionHTML);
           viz.init();
+          sharing.init();
         }
       });
     }

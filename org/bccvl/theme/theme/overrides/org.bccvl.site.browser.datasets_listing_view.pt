@@ -61,10 +61,11 @@
                         <!-- TODO: expects simple publication workflow
                         publish/retract -->
                         <td class="bccvl-table-controls">
-                          <a tal:define="action python:view.get_transition(item_obj);
-                                         icon_class python: action == 'publish' and 'icon-share-alt' or 'icon-remove';
-                                         icon_title python: action == 'publish' and 'Publish' or 'Unpublish';"
-                             tal:condition="action"
+                          <a tal:define="file item_obj/file|nothing;
+                                        action python:view.get_transition(item_obj);
+                                        icon_class python: action == 'publish' and 'icon-share-alt' or 'icon-remove';
+                                        icon_title python: action == 'publish' and 'Publish' or 'Unpublish';"
+                             tal:condition="python:file and action"
                              tal:attributes="href string:${item_url}/dm/${icon_title}">
                              <i class="icon-share-alt" title="Publish"
                                 tal:attributes="class icon_class;
