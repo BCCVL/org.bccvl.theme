@@ -39,50 +39,20 @@ define(
                             $('.select-widget').attr('data-parsley-unique', 'true');
 
                             // assume parsleyconfig already loaded by bccvl-form-validator.js
-                            $.extend(window.ParsleyConfig, {
-                                'validators': {
-                                    unique: {
-                                        fn: function(val) {
+                            
+                            window.ParsleyValidator
+                                .addValidator('unique', function(val, requirement) {
+                                    var counter = 0;
+                                    $("[data-parsley-unique='true']").each(function() {
+                                        if ($(this).val() == val) {
+                                            counter++;
+                                        }
+                                    });
 
-                                            var counter = 0;
+                                    return counter == 1;
+                                })
+                                .addMessage('en', 'unique', 'Bioclimatic Variable must be unique.')
 
-                                            // find any matching vals
-                                            $("[data-parsley-unique='true']").each(function() {
-                                                if ($(this).val() == val) {
-                                                    counter += 1;
-                                                }
-                                            });
-
-                                            // do a check for the other error ones
-                                            $(".error[data-parsley-unique='true']").each(function() {
-                                                var errorVal = $(this).val();
-                                                var errorCount = 0;
-                                                $("[data-parsley-unique='true']").each(function() {
-                                                    if (errorVal == $(this).val()) {
-                                                        errorCount += 1;
-                                                    }
-                                                });
-
-                                                // if only one count then fix it up
-                                                if (errorCount == 1) {
-                                                    $(this).removeClass('error');
-                                                    $(this).addClass('success');
-                                                    $(this).next("[id^='parsley']").fadeOut();
-                                                    $(this).next("[id^='parsley']").remove();
-                                                }
-                                            });
-
-                                            return counter == 1;
-                                        },
-                                        priority: 2
-                                    }
-                                },
-                                i18n: {
-                                    en: {
-                                        unique: "Bioclimatic Variable must be unique."
-                                    }
-                                }
-                            });
                             $('form.layers-parsley-validated').parsley();
 
                             $.listen('parsley:form:validate', function(isFormValid, evt) {
@@ -95,6 +65,7 @@ define(
                                 else return false;
 
                             });
+             
 
                             $('.modal form').ajaxForm(function() {
                                 $('.modal').modal('hide');
