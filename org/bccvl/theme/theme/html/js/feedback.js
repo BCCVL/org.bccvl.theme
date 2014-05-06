@@ -15,6 +15,18 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'parsley'],
                 $form.hide();
             }
 
+            var $nameField = $('input#sender_fullname');
+            var $emailField = $('input#sender_from_address');
+
+            if ($nameField.val()) {
+                $nameField.prop('readonly', true);
+            }
+            if ($emailField.val()) {
+                $emailField.prop('readonly', true);
+            }
+
+
+
         });
     // ==============================================================
     }

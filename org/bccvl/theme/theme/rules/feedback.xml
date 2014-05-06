@@ -24,10 +24,10 @@
             <copy attributes="name action method enctype" css:theme="form#feedback" css:content="form[name='feedback_form']" />
 
             <!-- Name field -->
-            <copy attributes="name" css:theme="input#sender_fullname" css:content="input#sender_fullname" />
+            <copy attributes="value" css:theme="input#sender_fullname" css:content="input[name='sender_fullname']" />
 
             <!-- E-Mail field -->
-            <copy attributes="name" css:theme="input#sender_from_address" css:content="input#sender_from_address" />
+            <copy attributes="value" css:theme="input#sender_from_address" css:content="input[name='sender_from_address']" />
 
             <!-- Subject field -->
             <copy attributes="name" css:theme="input#subject" css:content="input#subject" />
