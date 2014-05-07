@@ -2,14 +2,15 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
-  function(   $      ,   stretch          ,  viz                 ,  sharing ) {
+define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
+  function(   $      ,   stretch          ,  viz                 ,  sharing                ,  editmodal) {
   // ==============================================================
     $(function() {
 
       viz.init();
       stretch.init({ topPad: 60, bottomPad: 10 });
       sharing.init();
+      editmodal.init();
 
       $('.bccvl-datasetstable').tablesorter({
         headers: { 
@@ -23,46 +24,7 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
         pollImportStatus();
         var pollID = window.setInterval(pollImportStatus, 5000);
       }
-
-      // This bit here gets the edit metadata page for environmental layers
-      // and makes a modal out of it
-      $(".environmentallayers-zip-edit").click(function(e) {
-        
-        // prevents it from going to the href
-        e.preventDefault();
-
-        var url = $(this).attr('href');
-
-        // just a little error check if the href isn't blank or a #
-        if (url.indexOf('#') == 0) {
-          $(url).modal('open');
-        } else {
-          // get the page from url
-          $.get(url, function(data) {
-            // put the page into the modal and show it
-            $('.modal').html(data);
-            $('.modal').modal();
-            // add a little spinner
-            // $('.bccvl-small-spinner').remove();
-          })
-        }
-      })
     });
-  
-    // when the modal is shown
-    $('.modal').on('shown', function () {
-      // scroll to the top of the modal
-      $('.modal-body').scrollTop(0);
-
-      // make sure there is no redirect when the form is submitted
-      // also hide and empty the modal
-      var $form = $('.modal form');
-
-      $form.ajaxForm(function() { 
-        $('.modal').modal('hide')
-        $('.modal').empty();
-      }); 
-    })
 
     function pollImportStatus(pollID) {
       var $datasets = $('.dataset-import');
@@ -115,6 +77,8 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
         async: false,
         success: function (data) {
           var downloadButtonHTML = '<a href="' + data.file + '"><i class="icon-circle-arrow-down" title="download"></i></a>';
+          var publishButtonHTML = '<a href="' + data.url + '/dm/publish"><i class="icon-share-alt" title="Publish"></i></a>';
+          var sharingButtonHTML = '<a class="sharing-btn" href="' + data.url + '/@@sharing"><i class="icon-share" title="Sharing Options"></i></a>';
           if (data.mimetype == 'text/csv') {
             var visualiseButtonHTML = '<a href="#" class="bccvl-occurrence-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
           }
@@ -122,11 +86,14 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
             var visualiseButtonHTML = '<a href="#" class="bccvl-auto-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
           }
           var descriptionHTML = '<p>' + data.description + '</p>';
+          $controlGroup.append(publishButtonHTML);
+          $controlGroup.append(sharingButtonHTML);
           $controlGroup.append(downloadButtonHTML);
           $controlGroup.append(visualiseButtonHTML);
           var $descriptionField = $tableLabel.find("p");
           $descriptionField.replaceWith(descriptionHTML);
           viz.init();
+          sharing.init();
         }
       });
     }

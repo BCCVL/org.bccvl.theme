@@ -1,372 +1,391 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8"/>
-	<title>BCCVL Upload Dataset</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>BCCVL Upload Dataset</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
-	<link href="lib/bootstrap-fileupload/bootstrap-fileupload.min.css" rel="stylesheet"/>
-	<link href="css/general.css" rel="stylesheet"/>
-	<!--[if lt IE 9]>
-		<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="lib/bootstrap-fileupload/bootstrap-fileupload.min.css" rel="stylesheet"/>
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+        <script src="lib/html5shiv/html5shiv.js"></script>
+        <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
-    <script src="../plone_javascript_variables.js"></script>
-	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-        <script src="lib/require/require.js" type="text/javascript"></script>
+    <script src="../plone_javascript_variables.js" type="text/javascript"></script>
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
 
-	<script id="js-config" type="text/javascript">
-        // this block needs to be replaced when served via plone
-        window.bccvl || (window.bccvl = {});
-        window.bccvl.config || (window.bccvl.config = {});
-        window.bccvl.config.data_mover = {
-            baseUrl: 'https://demo.bccvl.org.au/dv',
-        };
-        window.bccvl.config.visualiser = {
-            baseUrl: '/_visualiser/',
-        };
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv',
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/',
+      };
 
-        local = window.location.protocol == 'file:';
+      local = window.location.protocol == 'file:';
 
-        </script>
+    </script>
 
-	<script type="text/javascript">
-        // require is a bit annoying to kick off when it's running in a plone/diazo page.
-        // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-        // set that as a prefix in the requirejs config, but to initially get to that
-        // config file, it needs to have the prefix added there too.
-        if (local) {
-            require(['js/common.js'], function (common) { require(['js/dataset-upload']); } );
-        } else {
-            require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/dataset-upload']); } );
-        }
-	</script>
+    <script type="text/javascript">
+      // require is a bit annoying to kick off when it's running in a plone/diazo page.
+      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+      // set that as a prefix in the requirejs config, but to initially get to that
+      // config file, it needs to have the prefix added there too.
+      if (local) {
+          require(['js/common.js'], function (common) { require(['js/dataset-upload']); } );
+      } else {
+          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/dataset-upload']); } );
+      }
+    </script>
 
-</head>
+  </head>
 
-<body>
+  <body>
 
-<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+    <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
 
-		<!-- button for narrow screen menu -->
-		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+      <!-- button for narrow screen menu -->
+      <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
-		<!-- project title -->
-		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+      <!-- project title -->
+      <a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
 
-		<!-- container for content that will hide under menu when screen is narrow -->
-		<div class="nav-collapse collapse">
+      <!-- container for content that will hide under menu when screen is narrow -->
+      <div class="nav-collapse collapse">
 
-			<!-- user menu -->
-			<div id="user-menu" class="btn-group pull-right">
-				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
-					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-					<li class="divider"></li>
-					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-				</ul>
-			</div>
+        <!-- user menu -->
+        <div id="user-menu" class="btn-group pull-right">
+          <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+            <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+            <li class="divider"></li>
+            <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+          </ul>
+        </div>
 
-			<!-- search field -->
-			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-				<input type="text" name="siteSearchQuery" class="search-query" placeholder="search">
-			</form>
+        <!-- search field -->
+        <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+          <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+        </form>
 
-			<!-- main menu items -->
-			<ul class="nav">
-				<!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-				<li class="active"><a class="bccvllinks-datasets">Datasets</a></li>
-				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
-				<li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-			</ul>
+        <!-- main menu items -->
+        <ul class="nav">
+          <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+          <li class="active"><a class="bccvllinks-datasets">Datasets</a></li>
+          <li               ><a class="bccvllinks-experiments">Experiments</a></li>
+          <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+        </ul>
 
-		</div><!--/.nav-collapse -->
+      </div><!--/.nav-collapse -->
 
-	</div></div></nav><!-- end of nav wrapper -->
-
-
-<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- container for main content -->
-	<div class="container-fluid bccvl-main">
+    </div></div></nav><!-- end of nav wrapper -->
 
 
-<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="bccvl-breadcrumb row-fluid">
-			<div class="span12">
-				<ul class="breadcrumb">
-					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-datasetsupload">Upload Datasets</a></li>
-				</ul>
-			</div>
-		</div>
+    <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- container for main content -->
+    <div class="container-fluid bccvl-main">
 
-<!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-flashmessages">
-		</section>
-		<section class="bccvl-flashmessages-info">
-		</section>
+      <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <div class="bccvl-breadcrumb row-fluid">
+        <div class="span12">
+          <ul class="breadcrumb">
+            <li><a class="bccvllinks-home icon-home"></a></li>
+            <li class="separator icon-chevron-right"></li>
+            <li><a class="bccvllinks-datasetsupload">Upload Datasets</a></li>
+          </ul>
+        </div>
+      </div>
 
-
-<!-- dataset upload ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-datasetupload">
-
-			<div class="row-fluid">
-
-				<div class="span6 offset3">
-
-					<nav class="navbar navbar-default navbar-static" role="navigation">
-						<div class="navbar-inner">
-							<a id="upload-dataset-title" class="brand">Upload Species Dataset</a>
-							<ul class="nav navbar-nav pull-right">
-								<li class="dropdown">
-									<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
-										Dataset Type
-										<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
-										<li role="presentation">
-											<a id="upload-species" href="#" tabindex="-1" role="menuitem">Species Dataset</a>
-										</li>
-										<li role="presentation">
-											<a id="upload-layer" href="#" tabindex="-1" role="menuitem">Environmental Layer</a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</nav>
-
-				<!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-					<div class="bccvl-datasetuploadspeciesform">
-
-						<form class="form-horizontal" id="addspecies" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
-
-							<div class="control-group">
-								<label class="control-label">Species Dataset File</label>
-								<div class="controls">
-									<div class="fileupload fileupload-new" data-provides="fileupload">
-										<span class="btn btn-file">
-											<span class="fileupload-new">Select file to upload</span>
-											<span class="fileupload-exists">Change</span>
-											<input name="addspecies.widgets.file" type="file"
-											       required="required" parsley-trigger="change" />
-										</span>
-										<span class="fileupload-preview"></span>
-										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-									</div>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Species Dataset Title</label>
-								<div class="controls">
-									<input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset"
-									       required="required" data-notblank="true" />
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Species Dataset Description</label>
-								<div class="controls">
-									<textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Dataset Genre</label>
-								<div class="controls">
-									<select name="addspecies.widgets.datagenre:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Species Layer</label>
-								<div class="controls">
-									<select name="addspecies.widgets.specieslayer:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Scientific Name</label>
-								<div class="controls">
-									<input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
-									       required="required" data-notblank="true" >
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Taxon ID</label>
-								<div class="controls">
-									<input type="text" name="addspecies.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Common Name</label>
-								<div class="controls">
-									<input type="text" name="addspecies.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name">
-								</div>
-							</div>
-
-							<div class="legals">
-								<input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
-								<label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
-							</div>
-
-							<div class="control-group">
-								<div class="controls">
-									<button name="addspecies.buttons.save" class="btn btn-primary" id="dataset-save-btn" value="Save" type="submit" disabled>Upload Species Dataset</button>
-									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
-								</div>
-							</div>
-
-						</form>
-
-					</div>
-
-				<!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-					<div class="bccvl-datasetuploadlayerform hidden">
-
-						<form class="form-horizontal  bccvl-parsleyvalidate" id="addlayer" novalidate="novalidate" method="" autocomplete="on" action="" enctype="multipart/form-data">
-
-							<div class="control-group">
-								<label class="control-label">Environmental Layer File</label>
-								<div class="controls">
-									<div class="fileupload fileupload-new" data-provides="fileupload">
-										<span class="btn btn-file">
-											<span class="fileupload-new">Select file to upload</span>
-											<span class="fileupload-exists">Change</span>
-											<input name="addlayer.widgets.file" type="file"
-											       required="required" parsley-trigger="change" />
-										</span>
-										<span class="fileupload-preview"></span>
-										<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-									</div>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Environmental Layer Title</label>
-								<div class="controls">
-									<input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
-									       required="required" data-notblank="true">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Environmental Layer Description</label>
-								<div class="controls">
-									<textarea name="addlayer.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Dataset Genre</label>
-								<div class="controls">
-									<select name="addlayer.widgets.datagenre:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Type</label>
-								<div class="controls">
-									<select name="addlayer.widgets.datatype:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Resolution</label>
-								<div class="controls">
-									<select name="addlayer.widgets.resolution:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Resolution (other)</label>
-								<div class="controls">
-									<input type="text" name="addlayer.widgets.resolutiono" class="input-block-level" placeholder="Other resolution">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Temporal Start Date</label>
-								<div class="controls">
-									<input type="text" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day">
-									<input type="text" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month">
-									<input type="text" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year">
-									<input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Temporal End Date</label>
-								<div class="controls">
-									<input type="text" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day">
-									<input type="text" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month">
-									<input type="text" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year">
-									<input type="text" name="addlayer.widgets.temporal.endtext" class="input-block-level" placeholder="End date description">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Emission Scenario</label>
-								<div class="controls">
-									<select name="addlayer.widgets.emissionscenario:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label">Global Climate Model</label>
-								<div class="controls">
-									<select name="addlayer.widgets.gcm:list">
-									</select>
-								</div>
-							</div>
-
-							<div class="legals">
-								<input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
-								<label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
-							</div>
-
-							<div class="control-group">
-								<div class="controls">
-									<button name="addlayer.buttons.save" class="btn btn-primary" id="env-save-btn" value="Save" type="submit" disabled>Upload Environmental Layer</button>
-									<a class="btn btn-danger bccvllinks-datasets">Cancel</a>
-								</div>
-							</div>
-
-						</form>
-
-					</div>
-
-				</div>
-
-			</div>
+      <!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="bccvl-flashmessages">
+      </section>
+      <section class="bccvl-flashmessages-info">
+      </section>
 
 
-		</section>
+      <!-- dataset upload ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section class="bccvl-datasetupload">
 
-	</div><!-- end of main content container -->
+        <div class="row-fluid">
 
-<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<footer class="navbar navbar-fixed-bottom">
-		<div class="container-fluid">
-			<small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
-		</div>
-	</footer>
-</body>
+          <div class="span6 offset3">
+
+            <nav class="navbar navbar-default navbar-static" role="navigation">
+              <div class="navbar-inner">
+                <a id="upload-dataset-title" class="brand">Upload Species Dataset</a>
+                <ul class="nav navbar-nav pull-right">
+                  <li class="dropdown">
+                    <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
+                      Dataset Type
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
+                      <li role="presentation">
+                        <a id="upload-species" href="#" tabindex="-1" role="menuitem">Species Dataset</a>
+                      </li>
+                      <li role="presentation">
+                        <a id="upload-layer" href="#" tabindex="-1" role="menuitem">Environmental Layer</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+
+            <!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="bccvl-datasetuploadspeciesform">
+
+              <form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+                <p class="bccvl-occurrencedescription"></p>
+
+                <div class="control-group">
+                  <label class="control-label">Species Dataset File</label>
+                  <div class="controls">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                      <span class="btn btn-file">
+                        <span class="fileupload-new">Select file to upload</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input name="addspecies.widgets.file" type="file"
+                               required="required" data-parsley-trigger="change" />
+                      </span>
+                      <span class="fileupload-preview"></span>
+                      <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Species Dataset Title</label>
+                  <div class="controls">
+                    <input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+                           required="required" data-notblank="true" />
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Species Dataset Description</label>
+                  <div class="controls">
+                    <textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Dataset Genre</label>
+                  <div class="controls">
+                    <select name="addspecies.widgets.datagenre:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Species Layer</label>
+                  <div class="controls">
+                    <select name="addspecies.widgets.specieslayer:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Scientific Name</label>
+                  <i class="icon-info-sign bccvl-scientificnameinfo pull-left" data-title="Scientific Name" data-content=""></i>
+                  <div class="controls">
+                    <input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
+                           required="required" data-notblank="true" />
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Taxon ID</label>
+                  <i class="icon-info-sign bccvl-taxonidinfo pull-left" data-title="Taxon ID" data-content=""></i>
+                  <div class="controls">
+                    <input type="text" name="addspecies.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species"/>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Common Name</label>
+                  <i class="icon-info-sign bccvl-commonnameinfo pull-left" data-title="Common Name" data-content=""></i>
+                  <div class="controls">
+                    <input type="text" name="addspecies.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name"/>
+                  </div>
+                </div>
+
+                <div class="legals">
+                  <input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
+                  <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                </div>
+
+                <div class="control-group">
+                  <div class="controls">
+                    <button name="addspecies.buttons.save" class="btn btn-primary" id="dataset-save-btn" value="Save" type="submit" disabled="disabled">Upload Species Dataset</button>
+                    <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+
+            <!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="bccvl-datasetuploadlayerform hidden">
+
+              <form class="form-horizontal bccvl-parsleyvalidate" id="addlayer" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+                <p class="bccvl-layersdescription"></p>
+
+                <div class="control-group">
+                  <label class="control-label">Environmental Layer File</label>
+                  <div class="controls">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                      <span class="btn btn-file">
+                        <span class="fileupload-new">Select file to upload</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input name="addlayer.widgets.file" type="file"
+                               required="required" data-parsley-trigger="change" />
+                      </span>
+                      <span class="fileupload-preview"></span>
+                      <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Environmental Layer Title</label>
+                  <div class="controls">
+                    <input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
+                           required="required" data-notblank="true"/>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Environmental Layer Description</label>
+                  <div class="controls">
+                    <textarea name="addlayer.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Dataset Genre</label>
+                  <div class="controls">
+                    <select name="addlayer.widgets.datagenre:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Type</label>
+                  <div class="controls">
+                    <select name="addlayer.widgets.datatype:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Resolution</label>
+                  <div class="controls">
+                    <select name="addlayer.widgets.resolution:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Resolution (other)</label>
+                  <div class="controls">
+                    <input type="text" name="addlayer.widgets.resolutiono" class="input-block-level" placeholder="Other resolution"/>
+                  </div>
+                </div>
+
+                <label class="control-label">Temporal Start Date</label>
+                  <div class="controls">
+                    <div class="control-group">
+                      <input type="number" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day"/>
+                    </div>
+                    <div class="control-group">
+                      <input type="number" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month"/>
+                    </div>
+                    <div class="control-group">
+                      <input type="number" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year"/>
+                    </div>
+                    <div class="control-group">
+                      <input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
+                    </div>
+                  </div>
+                
+                <label class="control-label">Temporal End Date</label>
+                <div class="controls">
+                  <div class="control-group">
+                    <input type="number" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day"/>
+                  </div>
+                  <div class="control-group">
+                    <input type="number" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month"/>
+                  </div>
+                  <div class="control-group">
+                    <input type="number" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year"/>
+                  </div>
+                  <div class="control-group">
+                    <input type="text" name="addlayer.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Emission Scenario</label>
+                  <div class="controls">
+                    <select name="addlayer.widgets.emissionscenario:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Global Climate Model</label>
+                  <div class="controls">
+                    <select name="addlayer.widgets.gcm:list">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="legals">
+                  <input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
+                  <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                </div>
+
+                <div class="control-group">
+                  <div class="controls">
+                    <button name="addlayer.buttons.save" class="btn btn-primary" id="env-save-btn" value="Save" type="submit" disabled="disabled">Upload Environmental Layer</button>
+                    <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+    </div><!-- end of main content container -->
+
+    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer class="navbar navbar-fixed-bottom">
+      <div class="container-fluid">
+        <small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+      </div>
+    </footer>
+  </body>
+
 </html>

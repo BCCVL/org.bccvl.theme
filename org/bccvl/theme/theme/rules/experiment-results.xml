@@ -13,75 +13,10 @@
             css:content-children="#breadcrumbs-current"
         />
 
-        <!-- update the job status -->
-
-        <!--
-            known possible statuses: Pending, Active, Performing Callbacks, Completed.
-
-            template supported statuses: Active, Completed we'll use the template for
-            all unknown statuses
-        -->
-
-        <!-- new plan: chuck everything and build a status block -->
+        <!-- remove all mocked status blocks -->
         <drop css:theme=".bccvl-status-block" />
-
-        <before css:theme-children=".bccvl-experimentresults">
-            <xsl:choose>
-                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed')">
-                    <div class="row-fluid bccvl-status-block bccvl-status-error">
-                        <div class="span12 bccvl-expstatus alert alert-block alert-error" data-status="Failed">
-                            <p class="lead">This experiment stopped with an <strong>error</strong>.</p>
-                        </div>
-                    </div>
-                </xsl:when>
-
-                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New')">
-                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
-                        <div class="span12 bccvl-expstatus alert alert-block" data-status="New">
-                            <p>
-                                This experiment is <strong class="alert-queued-text">queued</strong>.
-                            </p>
-                        </div>
-                    </div>
-                </xsl:when>
-
-                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued')">
-                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
-                        <div class="span12 bccvl-expstatus alert alert-block" data-status="Queued">
-                            <p>
-                                This experiment is <strong class="alert-queued-text">queued</strong>.
-                            </p>
-                        </div>
-                    </div>
-                </xsl:when>
-
-                <xsl:when test="contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Completed')
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Queued'))
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'New'))
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Failed'))
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Transferring'))
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Retrieving'))
-                                and not(contains(//span[@id='form-widgets-IJobStatus-status']/text(),'Cleanup'))">
-                    <div class="row-fluid bccvl-status-block bccvl-status-complete">
-                        <div class="span12 bccvl-expstatus alert alert-success" data-status="Completed">
-                            <p>
-                                This experiment is <strong>complete</strong>. The results are available below.
-                            </p>
-                        </div>
-                    </div>
-                </xsl:when>
-
-                <xsl:otherwise>
-                    <div class="row-fluid bccvl-status-block bccvl-status-running hidden">
-                        <div class="span12 bccvl-expstatus alert alert-block">
-                            <p>
-                                This experiment is <strong>running</strong>.
-                            </p>
-                        </div>
-                    </div>
-                </xsl:otherwise>
-            </xsl:choose>
-        </before>
+        <!-- insert template status block -->
+        <before css:theme-children=".bccvl-experimentresults" css:content="#experiment_state"/>
 
         <!-- get the results -->
         <replace css:theme=".bccvl-experimentresults table"

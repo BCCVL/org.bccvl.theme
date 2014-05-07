@@ -13,6 +13,14 @@
     />
 
     <z3c:widgetTemplate
+         mode="input"
+         widget="z3c.form.interfaces.ITextWidget"
+         field="zope.schema.interfaces.IDecimal"
+         template="decimal_input.pt"
+         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+    />
+
+    <z3c:widgetTemplate
       mode="input"
       widget="org.bccvl.site.browser.interfaces.IDatasetsWidget"
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"

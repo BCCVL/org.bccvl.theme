@@ -30,6 +30,15 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 		            	$('.standalone').addClass('btn btn-danger');
 		            	$('.standalone').attr('data-dismiss', 'modal');
 
+		            	// make sure there is no redirect when the form is submitted
+						// also hide and empty the modal
+						var $form = $('.modal form');
+
+						$form.ajaxForm(function() { 
+							$('.modal').modal('hide')
+							$('.modal').empty();
+						}); 
+		            	
 		            	bindUserSearch(url);
 		            	legalCheckbox();
 		          	});
@@ -37,20 +46,15 @@ define(     ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
 			});
 
 			// when the modal is shown
-		    $('.modal').on('shown', function () {
-
-				// scroll to the top of the modal
+		    $('.modal').on('show', function () {
 				$('.modal-body').scrollTop(0);
-
-				// make sure there is no redirect when the form is submitted
-				// also hide and empty the modal
-				var $form = $('.modal form');
-
-				$form.ajaxForm(function() { 
-					$('.modal').modal('hide')
-					$('.modal').empty();
-				}); 
+				$("body").addClass("modal-open");
 		    });
+
+		    $('.modal').on('hidden', function () {
+            	$("body").removeClass("modal-open");
+            })
+
 		}
 	}
 

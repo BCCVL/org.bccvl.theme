@@ -42,5 +42,41 @@
         </div>
       </fieldset>
     </metal:block>
+
+    <metal:block define-macro="experiment_state">
+        <div id="experiment_state" class="row-fluid bccvl-status-block"
+             tal:define="state view/job_state;
+                         klassstate python: {
+                             'Queued': 'bccvl-status-running hidden',
+                             'Running': 'bccvl-status-running hidden',
+                             'Completed': 'bccvl-status-complete',
+                            'Failed': 'bccvl-status-error'}.get(state);
+                         klass string:row-fluid bccvl-status-block ${klassstate};"
+             tal:attributes="class klass">
+
+            <div class="span12 bccvl-expstatus alert alert-block"
+                 tal:attributes="data-status state"
+                 tal:condition="python: state in ('Queued', 'New')">
+              <p>This experiment is <strong class="alert-queued-text">queued</strong>.</p>
+            </div>
+            <div class="span12 bccvl-expstatus alert alert-block"
+                 tal:attributes="data-status state"
+                 tal:condition="python: state in ('Running',)">
+              <p>This experiment is <strong class="">running</strong>.</p>
+            </div>
+            <div class="span12 bccvl-expstatus alert alert-success"
+                 tal:attributes="data-status state"
+                 tal:condition="python: state in ('Completed',)">
+              <p>This experiment is <strong>complete</strong>. The
+              results are available below</p>
+            </div>
+            <div class="span12 bccvl-expstatus alert alert-block alert-error"
+                 tal:attributes="data-status state"
+                  tal:condition="python: state in ('Failed',)">
+              <p class="lead">This experiment stopped with an <strong>error</strong>.</p>
+            </div>
+        </div>
+    </metal:block>
+
   </body>
 </html>

@@ -22,12 +22,15 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
     <xi:include href="rules/sharing.xml" />
+    <xi:include href="rules/feedback.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
 
     <!-- don't theme ajax calls (Plone overlays) -->
     <notheme if="$ajax_load" />
+
+    <notheme if="$norules"/>
 
     <!-- don't theme the page unless the user is logged in -->
     <!--<notheme css:if-content="#anon-personalbar" />-->
@@ -160,6 +163,23 @@
     <merge attributes="href" css:theme="a.bccvllinks-experiment-biodiverse-new" content="//a[@id='org-bccvl-content-biodiverseexperiment']" />
 
     <!-- miscellaneous -->
+    <!-- TODO: don't use // xpath selector. It is slow -->
+    <!-- TODO: CSS3 selectors may be slower than XPath selectors -->
     <replace theme="//footer" content="//footer"/>
+
+    <!-- if debug insert helper links in navbar -->
+    <rules if="$is_debug">
+    	<after css:theme="#siteSearch">
+    		<button id="untheme" class="bccvl-devbutton pull-right"
+				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
+			>no theme</button>
+			<button id="debugtheme" class="bccvl-devbutton pull-right"
+				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.debug=1';"
+			>debug theme</button>
+			<button id="norules" class="bccvl-devbutton pull-right"
+				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?norules=1';"
+			>no rules</button>
+	</after>
+    </rules>
 
 </rules>
