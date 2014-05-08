@@ -32,11 +32,18 @@ define(
                     var $algoCheckbox = $(evt.target);
                     // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
                     var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
+                    var $accordionToggle = $configBlock.find('.accordion-toggle');
+                    var $accordionBody = $configBlock.find('.accordion-body');
                     if ($configBlock.length > 0) {
                         // if there is a config block..
                         if ($algoCheckbox.prop('checked')) {
                             $configBlock.show(250);
                         } else {
+                            // make sure that the accordion closes before hiding it
+                            if ($accordionBody.hasClass('in')) {
+                                $accordionBody.collapse('hide');
+                                $accordionToggle.addClass('collapsed');
+                            }
                             $configBlock.hide(250);
                         }
                     } else {
