@@ -49,7 +49,24 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
                 }
             });
 
+            $("#addspecies").submit(function(event) {
+                $('.modal').modal({
+                    backdrop: 'static'
+                });
+            });
+
+            $("#addlayer").submit(function(event) {
+                $('.modal').modal({
+                    backdrop: 'static'
+                });
+            });
+
+            $('.modal').on('show', function () {
+                $("body").addClass("modal-open");
+            });
+
         });
+
     // ==============================================================
     }
 );
