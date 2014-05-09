@@ -22,6 +22,9 @@ define(
                     break;
                 case 'integer':
                     assert = new Validator.Assert().Callback(function(value) {
+                      if (value.indexOf(".") >= 0) {
+                        return false;
+                      }
                       var numb = Number(value);
                       return Number.isInteger(numb);
                     });
