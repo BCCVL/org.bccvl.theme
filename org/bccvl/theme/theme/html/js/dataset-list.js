@@ -13,7 +13,7 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
       editmodal.init();
 
       $('.bccvl-datasetstable').tablesorter({
-        headers: { 
+        headers: {
             2: { sorter: false } // should be link column
         },
             sortList: [[0,1]]
@@ -34,33 +34,33 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
         var dataUrl = dataset.attr('data-url');
 
         var jmUrl = dataUrl + '/jm/getJobStatus'
-        
+
         $.ajax({
           url: jmUrl,
           success: function (data) {
 
             var completed = false;
 
-            data.forEach(function(job){
-              var jobName = job[0];
-              var jobStatus = job[1];
+            var jobStatus = data;
 
-              if (jobStatus == 'Running') {
-                completed = false;
-                dataset.addClass('bccvl-small-spinner');
-              }
-
-              if (jobStatus == 'Completed' || jobStatus == 'Queued'){
+            if (jobStatus == 'COMPLETED') {
                 completed = true;
-              }
-            })
-
-            if (completed) {
-              dataset.removeClass('bccvl-small-spinner');
-              dataset.removeClass('dataset-import')
-            
-              generateControlButtons(dataset);             
+            } else if (jobStatus == 'FAILED') {
+                completed = true;
+            } else if (jobStatus == null) {
+                return;
+            } else {
+                completed = false;
             }
+            if (completed) {
+                dataset.removeClass('bccvl-small-spinner');
+                dataset.removeClass('dataset-import');
+
+                generateControlButtons(dataset);
+            } else {
+                dataset.addClass('bccvl-small-spinner');
+            }
+
           }
         });
       })
