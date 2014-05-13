@@ -44,6 +44,11 @@ define(
                                 $accordionBody.collapse('hide');
                                 $accordionToggle.addClass('collapsed');
                             }
+                            // This is to avoid parsley thinking that there are validation errors on algo conifg items that have been
+                            // deselected - so we put the default value back into the text field when deselected.
+                            $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
+                                $(c).val($(c).attr('data-default'));
+                            });
                             $configBlock.hide(250);
                         }
                     } else {
