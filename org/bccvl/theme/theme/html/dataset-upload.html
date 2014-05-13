@@ -319,31 +319,31 @@
                 </div>
 
                 <label class="control-label">Temporal Start Date</label>
-                  <div class="controls">
-                    <div class="control-group">
-                      <input type="number" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="number" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="number" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
-                    </div>
+                <div class="controls">
+                  <div class="control-group">
+                    <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day"/>
                   </div>
+                  <div class="control-group">
+                    <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month"/>
+                  </div>
+                  <div class="control-group">
+                    <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year"/>
+                  </div>
+                  <div class="control-group">
+                    <input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
+                  </div>
+                </div>
                 
                 <label class="control-label">Temporal End Date</label>
                 <div class="controls">
                   <div class="control-group">
-                    <input type="number" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day"/>
+                    <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day"/>
                   </div>
                   <div class="control-group">
-                    <input type="number" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month"/>
+                    <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month"/>
                   </div>
                   <div class="control-group">
-                    <input type="number" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year"/>
+                    <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year"/>
                   </div>
                   <div class="control-group">
                     <input type="text" name="addlayer.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
