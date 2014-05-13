@@ -99,6 +99,9 @@
     <copy attributes="action method" css:theme="form#siteSearch" css:content="#searchGadget_form" />
     <copy attributes="name" css:theme="form#siteSearch input[name=siteSearchQuery]" css:content="#searchGadget" />
 
+    <!-- Google Analytics -->
+    <replace css:theme="script#google-analytics" css:content="script#google-analytics"/>
+
 
     <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!--
