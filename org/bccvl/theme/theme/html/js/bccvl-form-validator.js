@@ -21,11 +21,7 @@ define(
                     // Regexp('^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)?(?:\\.\\d+)?$');
                     break;
                 case 'integer':
-                    assert = new Validator.Assert().Callback(function(value) {
-                      var numb = Number(value);
-                      return Number.isInteger(numb);
-                    });
-                    //assert = new Validator.Assert().Regexp('^-?\\d+$');
+                    assert = new Validator.Assert().Regexp('^-?\\d+$');
                     break;
                 case 'digits':
                     assert = new Validator.Assert().Regexp('^\\d+$');

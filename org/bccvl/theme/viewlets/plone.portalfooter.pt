@@ -9,4 +9,10 @@
             <a href="http://www.bccvl.org.au">BCCVL Website</a>
         </small>
     </div>
+    <div>
+        <tal:viewlets repeat="viewlet view/viewlets">
+            <tal:viewlet replace="structure python:viewlet.render()"
+                         tal:condition="python: viewlet.__name__ == 'plone.analytics'" />
+        </tal:viewlets>
+    </div>
 </footer>
