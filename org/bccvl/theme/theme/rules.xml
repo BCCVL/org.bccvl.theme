@@ -135,6 +135,10 @@
 
     <!-- user management -->
     <merge attributes="href" css:theme="a.bccvllinks-adminaccess"       content="//li[@id='personaltools-plone_setup']/a" />
+
+    <drop css:theme="a.bccvllinks-adminaccess" if-not-content="//li[@id='personaltools-plone_setup']/a"/>
+    <drop css:theme="ul.dropdown-menu li.divider" if-not-content="//li[@id='personaltools-plone_setup']/a"/>
+
     <merge attributes="href" css:theme="a.bccvllinks-logoutuser"        content="//li[@id='personaltools-logout']/a" />
 
     <!-- anonymous user -->
