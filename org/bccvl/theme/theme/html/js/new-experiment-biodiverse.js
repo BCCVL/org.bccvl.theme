@@ -115,7 +115,7 @@ define(
                     var html = '';
                     html += '<tr">';
                     html +=  '<td class="bccvl-table-choose" >';
-                    html +=   '<input id="' + id + '" name="' + name + '" type="number" data-parsley-type="number" class="bccvl-threshold required" min="0" style="width: 130px;">';
+                    html +=   '<input id="' + id + '" name="' + name + '" data-parsley-type="number" class="bccvl-threshold required" min="0" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
                     html +=   '<h1>' + layerName + '</h1>';
