@@ -7,14 +7,14 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
     // ==============================================================
         var intervalID;
         $(function() {
-          
+
           stretch.init({ topPad: 60, bottomPad: 10 });
           viz.init();
-          
+
           // Check to see if the experiment is already completed or not before start polling
           var experimentStatus = $(".bccvl-expstatus").attr('data-status');
 
-          if ( experimentStatus != 'Completed' && experimentStatus != 'Failed'){
+          if ( experimentStatus != 'COMPLETED' && experimentStatus != 'FAILED'){
             pollExperimentStatus();
             // Continue to poll until all algorithms are done
             intervalID = window.setInterval(pollExperimentStatus, 5000);
@@ -51,17 +51,17 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               // Failed, Transferring, Running, Retrieving, Completed, Cleanup and Queued
 
               // Creates the html for the Algorithm and icon representing the status
-              if (status != 'Completed' && status != 'Failed') {
+              if (status != 'COMPLETED' && status != 'FAILED') {
                 completed = false;
-              } 
-
-              if (status == 'Queued') {
-                queuedAlgorithms.push(algorithm);                
               }
-              else if (status == 'Failed'){
+
+              if (status == 'QUEUED') {
+                queuedAlgorithms.push(algorithm);
+              }
+              else if (status == 'FAILED'){
                 failedAlgorithms.push(algorithm);
               }
-              else if (status == 'Completed'){
+              else if (status == 'COMPLETED'){
                 completedAlgorithms.push(algorithm);
               }
               else {
@@ -104,11 +104,11 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
               // stop the polling
               clearInterval(intervalID);
               // refresh the page when the experiment is completed
-              location.reload(); 
+              location.reload();
             }
 
           })
-          
+
         }
 
     // ==============================================================
