@@ -104,8 +104,7 @@
                             tal:condition="python: item_editable and file and file.filename.endswith('.zip')">
                             <i class="icon-pencil" title="edit"></i>
                           </a>
-                          <tal:block tal:define="item_obj item/getObject;
-                                                 state item_obj/jm/getJobStatus;
+                          <tal:block tal:define="state item/job_state;
                                                  klass python: 'dataset-import-failed' if state == 'FAILED' else 'dataset-import';
                                                  klass python: '' if state in (None, 'COMPLETED') else klass;
                                                  title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
