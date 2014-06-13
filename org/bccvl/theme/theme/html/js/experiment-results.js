@@ -24,7 +24,7 @@ define(     ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
         // Poll /jm/getJobStatus for the status of the experiments
         // This endpoint returns the status of each algorithm
         function pollExperimentStatus() {
-          var url = document.URL.replace(/#.*$/, '').replace('/view', '') + '/jm/getJobStatus'
+          var url = document.URL.replace(/#.*$/, '').replace('/view', '') + '/jm/getJobStates'
 
           // ajax call
           $.get(url).done(function(data){
