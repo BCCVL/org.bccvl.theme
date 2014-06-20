@@ -60,12 +60,12 @@
                         <!-- Actions -->
                         <!-- TODO: expects simple publication workflow
                         publish/retract -->
-                        <td class="bccvl-table-controls">
-                          <a tal:define="file item_obj/file|nothing;
-                                        action python:view.get_transition(item_obj);
-                                        icon_class python: action == 'publish' and 'icon-share-alt' or 'icon-remove';
-                                        icon_title python: action == 'publish' and 'Publish' or 'Unpublish';"
-                             tal:condition="python:file and action"
+                        <td class="bccvl-table-controls"
+                            tal:define="complete python: item.job_state in ('COMPLETED', None)">
+                          <a tal:define="action python:view.get_transition(item_obj);
+                                         icon_class python: action == 'publish' and 'icon-share-alt' or 'icon-remove';
+                                         icon_title python: action == 'publish' and 'Publish' or 'Unpublish';"
+                             tal:condition="python: complete and action"
                              tal:attributes="href string:${item_url}/dm/${icon_title}">
                              <i class="icon-share-alt" title="Publish"
                                 tal:attributes="class icon_class;
@@ -73,31 +73,27 @@
                           </a>
 
                           <a class="sharing-btn" href="#" tal:attributes="href action/url"
-                             tal:condition="python:file and action.get('available')"
-                             tal:define="file item_obj/file|nothing;
-                                         action python:view.local_roles_action(item_obj);">
+                             tal:condition="python: complete and action.get('available')"
+                             tal:define="action python:view.local_roles_action(item_obj);">
                             <i class="icon-share" title="Sharing Options"
                                tal:attributes="title action/title"></i>
                           </a>
 
-                          <a href="#" tal:attributes="href string:${item_url}/@@download/file/${file/filename}"
-                             tal:condition="file"
-                             tal:define="file item_obj/file|nothing">
+                          <tal:block tal:define="dlinfo python: view.get_download_info(item)">
+                          <a href="#" tal:attributes="href dlinfo/url"
+                             tal:condition="complete">
                             <i class="icon-circle-arrow-down" title="download"></i>
                           </a>
-                          <a href="#" class="bccvl-occurrence-viz" tal:attributes="data-viz-id string:${visurl}/@@download/file/${file/filename}"
-                             tal:condition="python: file and file.filename.endswith('.csv')"
-                             tal:define="file item_obj/file|nothing;
-                                         visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
+                          <a href="#" class="bccvl-occurrence-viz" tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                             tal:condition="python: complete and item_obj.content_type() == 'text/csv'">
                             <i class="icon-eye-open icon-link" title="preview"></i>
                           </a>
 
-                          <a href="#" class="bccvl-auto-viz" tal:attributes="data-viz-id string:${visurl}/@@download/file/${file/filename}"
-                             tal:condition="python: file and not file.filename.endswith('.csv')"
-                             tal:define="file item_obj/file|nothing;
-                                         visurl python:'http://127.0.0.1:8201' + '/'.join(item_obj.getPhysicalPath())">
+                          <a href="#" class="bccvl-auto-viz" tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                             tal:condition="python: complete and item_obj.content_type() != 'text/csv'">
                             <i class="icon-eye-open icon-link" title="preview"></i>
                           </a>
+                      </tal:block>
 
                           <a class="environmentallayers-zip-edit" tal:attributes="href string:${item_url}/@@editfilemetadata"
                             tal:define="file item_obj/file|nothing"
