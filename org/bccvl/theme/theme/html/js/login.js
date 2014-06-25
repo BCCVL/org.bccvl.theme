@@ -8,13 +8,19 @@ define(     ['jquery', 'bootstrap'],
             console.log('login page behaviour loaded.');
 
             $('#login-aaf').click(function(e) {
+                $(this).addClass('active');
+                $('#login-basic').removeClass('active');
             	$('#wrapper-basic').addClass('hidden');
             	$('#wrapper-aaf').removeClass('hidden');
+                $('.disclaimer.legals').appendTo('#wrapper-aaf');
             });
 
             $('#login-basic').click(function(e) {
+                $(this).addClass('active');
+                $('#login-aaf').removeClass('active');
             	$('#wrapper-basic').removeClass('hidden');
             	$('#wrapper-aaf').addClass('hidden');
+                $('.disclaimer.legals').insertBefore('#login-form .formControls');
             });
 
             $("#wrapper-basic .btn-success").attr('disabled', 'disabled');

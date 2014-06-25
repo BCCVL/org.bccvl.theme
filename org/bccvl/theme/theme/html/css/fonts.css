@@ -175,6 +175,10 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.25em;
 	margin: .5em 0 .25em;
 }
+h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong {
+	font-family: "OpenSansRegular"!important;
+	font-weight:normal!important;
+}
 body, p, ul, ol {
 	font-family: "Helvetica", Arial, sans-serif;
 	font-weight:normal;

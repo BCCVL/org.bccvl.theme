@@ -100,8 +100,8 @@
 	<div class="container bccvl-main">
 
 		<div class="row">
-			<div class="span6 offset3">
-				<nav class="navbar navbar-default navbar-static" role="navigation">
+			<div class="span10 offset1">
+				<!--<nav class="navbar navbar-default navbar-static" role="navigation">
 					<div class="navbar-inner">
 						<a class="brand">Login</a>
 						<ul class="nav navbar-nav pull-right">
@@ -121,18 +121,26 @@
 							</li>
 						</ul>
 					</div>
-				</nav>
+				</nav>-->
+				<div style="text-align:center;">
+					<span class="logo-icon logo-icon-lge"></span><br/>
+					<a id="login-aaf" href="#" class="active">Australian Access Federation (AAF)</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+					<a id="login-basic" href="#">Built-in Authentication</a>
+				</div>
+
 				<div id="wrapper-aaf" class="bccvl-loginfieldset">
+					<h1>Sign in with your <strong>AAF account</strong></h1>
+					<p>Australian Access Federation (AAF) University Login</p>
 					<div id="aaf-login" />
 				</div>
-				<div id="wrapper-basic" class="hidden bccvl-loginfieldset">
+				<div id="wrapper-basic" class="hidden bccvl-loginfieldset">	
+					<h1>Sign in to your account</h1>
 					<div id="site-login" />
 				</div>
 
 				<div class="disclaimer legals">
 					<input type="checkbox" id="legals-checkbox" />
 					<label for="legals-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a>.</label>
-
 				</div>
 			</div>
 		</div>

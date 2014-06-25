@@ -17,7 +17,11 @@ body {
 h1,h2,h3,h4,h5,h6 {
     color: #009FE3;
 }
-
+a.active, a.active:hover {
+    color:rgba(0,0,0,.5);
+    cursor:default;
+    text-decoration: none;
+}
 .btn-default, .btn {
     text-align: center;
     vertical-align: middle;
@@ -60,6 +64,36 @@ h1,h2,h3,h4,h5,h6 {
     color: #ffffff!important;
     background: #4dc345!important;
 }
+.btn-success {
+    color: #ffffff!important;
+    text-shadow:none;
+    border-color: #0090cd!important;
+    background: #009fe3!important;
+    background-image: -webkit-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -moz-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -ms-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -o-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: linear-gradient(to bottom, #4dbceb 0%, #009fe3 100%)!important;
+    text-transform: capitalize;
+}
+.btn-success[disabled] {
+    opacity:0.5!important;
+}
+.btn-success:hover {
+    background-position: 0 0!important;
+    color: #ffffff!important;
+    background: #4dbceb!important;
+}
+.logo-icon {
+    background-image:url('../images/bccvl_logo_beta.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    display:inline-block;
+}
+.logo-icon-lge {
+    width:100px;
+    height:100px;
+} 
 .bccvl-main {
     padding-bottom:2em;
 }
@@ -174,6 +208,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 .window-layout .bccvl-my-datasets .span4 {
     overflow-y:scroll;
+    box-shadow: inset 0px -3px 2px rgba(0,0,0,.1), inset 0px 3px 2px rgba(0,0,0,.1);
 }
 
 /* wizard+tabs interface ------------------------------------------------- */
@@ -247,7 +282,15 @@ h1,h2,h3,h4,h5,h6 {
 .bccvl-loginfieldset {
     text-align: center;
 }
-
+#login-form .field {
+    display:inline-block;
+}
+#fieldset-site-login h3 {
+    display:none;
+}
+.disclaimer input[type="checkbox"], .legals input[type="checkbox"]{
+    margin-top:0;
+}
 
 /* Dataset page ---------------------------------------------------------*/
 
@@ -975,7 +1018,6 @@ div.morefilters h4 span.label {
 
 .legals {
     text-align: center;
-    margin-bottom: 20px;
 }
 
 .legals label {
@@ -983,9 +1025,6 @@ div.morefilters h4 span.label {
     padding-left: 10px;
 }
 
-.disclaimer {
-    padding-top: 20px;
-}
 
 #wrapper-aaf a {
     cursor: default;
