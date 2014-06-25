@@ -54,7 +54,7 @@
                         </td>
                         <!-- Title -->
                         <td class="bccvl-table-label">
-                          <h1 tal:content="item_title_or_id">Dataset title</h1>
+                          <p tal:content="item_title_or_id">Dataset title</p>
                           <p tal:content="item_description">Dataset short description</p>
                         </td>
                         <!-- Actions -->
