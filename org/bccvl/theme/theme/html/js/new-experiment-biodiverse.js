@@ -49,15 +49,14 @@ define(
                 return html;
             };
 
-            var renderSpecies = function(speciesName) {
+            var renderSpecies = function(index, speciesName) {
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                // html +=   '<input id="species-' + speciesName + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
-                html +=   '<input class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
+                html +=   '<input id="species-' + index + '" class="bccvl-species" type="checkbox" value="' + speciesName + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label>';
+                html +=   '<label for="species-' + index + '">';
                 html +=    '<h1>' + speciesName + '</h1>';
                 html +=   '</label>';
                 html +=  '</td>';
@@ -145,15 +144,11 @@ define(
                             return null;
                         }
                     });
-                    //$form.parsley().addItem($input);
                 });
             };
 
             // Clears the threshold table body. We need a more manual process here because the inputs must be removed from parsley.
             var clearThresholdTableBody = function() {
-                $.each($thresholdTableBody.find('input'), function(index, c){
-                    //$form.parsley().removeItem($(c));
-                });
                 $thresholdTableBody.empty();
             };
 
@@ -237,7 +232,7 @@ define(
 
                 // Create checkboxes for each common species.
                 $.each($species.sort(), function(index, s){
-                    $speciesTableBody.append(renderSpecies(s));
+                    $speciesTableBody.append(renderSpecies(index, s));
                 });
 
                 // Wire up event listeners for all the newly created checkboxes.
