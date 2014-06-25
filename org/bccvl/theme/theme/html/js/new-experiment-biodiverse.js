@@ -40,7 +40,7 @@ define(
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="proj-' + projectionJSON.uuid + '">';
-                html +=    '<h1>' + projectionJSON.name + '</h1>';
+                html +=    '<p>' + projectionJSON.name + '</p>';
                 html +=   '</label>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-controls">';
@@ -58,7 +58,7 @@ define(
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label>';
-                html +=    '<h1>' + speciesName + '</h1>';
+                html +=    '<p>' + speciesName + '</p>';
                 html +=   '</label>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-controls">';
@@ -75,7 +75,7 @@ define(
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="year-' + year + '">';
-                html +=    '<h1>' + year + '</h1>';
+                html +=    '<p>' + year + '</p>';
                 html +=   '</label>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-controls">';
@@ -92,7 +92,7 @@ define(
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
                 html +=   '<label for="layer-' + layerId + '">';
-                html +=    '<h1>' + layerName + '</h1>';
+                html +=    '<p>' + layerName + '</p>';
                 html +=   '</label>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-controls">';
@@ -118,7 +118,7 @@ define(
                     html +=   '<input id="' + id + '" name="' + name + '" data-parsley-type="number" class="bccvl-threshold required" min="0" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
-                    html +=   '<h1>' + layerName + '</h1>';
+                    html +=   '<p>' + layerName + '</p>';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-controls">';
                     html +=  '</td>';

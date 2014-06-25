@@ -176,16 +176,16 @@ h1, h2, h3, h4, h5, h6 {
 	margin: .5em 0 .25em;
 }
 body, p, ul, ol {
-	font-family: "OpenSansLight";
+	font-family: "Helvetica", Arial, sans-serif;
 	font-weight:normal;
-	color:#2c2f2f;
+	color:#333;
 }
 p, ul, ol {
 	color:black;
 }
 body strong, p strong, ul strong, ol strong {
-	font-weight: normal;
-	font-family: "OpenSansSemibold";
+	font-weight: bold!important;
+	font-family: "Helvetica", Arial, sans-serif;
 }
 .red {
 	color:#ed1c24;
