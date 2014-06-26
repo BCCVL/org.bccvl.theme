@@ -148,6 +148,9 @@
                       <li role="presentation">
                         <a id="upload-layer" href="#" tabindex="-1" role="menuitem">Environmental Layer</a>
                       </li>
+                      <li role="presentation">
+                        <a id="upload-trait" href="#" tabindex="-1" role="menuitem">Species Traits</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -380,6 +383,59 @@
 
               </form>
 
+            </div>
+
+            <!-- upload species trait ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <div class="bccvl-datasetspeciestraitsform hidden">
+              <form class="form-horizontal bccvl-parsleyvalidate" id="addspeciestrait" method="" autocomplete="on" action="" enctype="multipart/form-data">
+
+                <p class="bccvl-traitdescription"></p>
+
+                <div class="control-group">
+                  <label class="control-label">Species Traits File</label>
+                  <div class="controls">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                      <span class="btn btn-file">
+                        <span class="fileupload-new">Select file to upload</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input name="addtrait.widgets.file" type="file"
+                               required="required" data-parsley-trigger="change" />
+                      </span>
+                      <span class="fileupload-preview"></span>
+                      <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Species Traits Title</label>
+                  <div class="controls">
+                    <input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+                           required="required" data-notblank="true" />
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Species Traits Description</label>
+                  <div class="controls">
+                    <textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species trait dataset"></textarea>
+                  </div>
+                </div>
+
+                <div class="legals">
+                  <input id="traits-legal-checkbox" name="traits-legal-checkbox" type="checkbox" />
+                  <label for="traits-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                </div>
+
+                <div class="control-group">
+                  <div class="controls">
+                    <button name="addtrait.buttons.save" class="btn btn-primary" id="traits-save-btn" value="Save" type="submit" disabled="disabled">Upload Species Trait</button>
+                    <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                  </div>
+                </div>
+
+              </form>
             </div>
 
           </div>

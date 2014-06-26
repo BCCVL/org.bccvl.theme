@@ -18,6 +18,7 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 
         	$('#upload-species').click(function(e) {
             	$('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
             	$('div.bccvl-datasetuploadspeciesform').removeClass('hidden');
                 $('a#upload-dataset-title').text('Upload Species Dataset');
             });
@@ -25,7 +26,15 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 			$('#upload-layer').click(function(e) {
             	$('div.bccvl-datasetuploadlayerform').removeClass('hidden');
             	$('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
                 $('a#upload-dataset-title').text('Upload Environmental Layer');
+            });
+
+            $('#upload-trait').click(function(e) {
+                $('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').removeClass('hidden');
+                $('a#upload-dataset-title').text('Upload Species Traits');
             });
 
             // assume parsleyconfig already loaded by bccvl-form-validator.js
@@ -46,6 +55,15 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
                 }
                 else {
                     $("#env-save-btn").attr('disabled', 'disabled');
+                }
+            });
+
+            $("#traits-legal-checkbox:checkbox").change(function() {
+                if ($(this).is(":checked")) {
+                    $("#traits-save-btn").removeAttr("disabled");
+                }
+                else {
+                    $("#traits-save-btn").attr('disabled', 'disabled');
                 }
             });
 
