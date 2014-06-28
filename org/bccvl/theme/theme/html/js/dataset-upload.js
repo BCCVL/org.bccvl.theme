@@ -83,6 +83,8 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
                 $("body").addClass("modal-open");
             });
 
+            $('i.icon-info-sign').popover();
+
         });
 
     // ==============================================================
