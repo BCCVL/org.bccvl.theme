@@ -29,9 +29,9 @@
 
     <z3c:widgetTemplate
       mode="input"
-      widget="org.bccvl.site.browser.interfaces.IDatasetsWidget"
+      widget="org.bccvl.site.browser.interfaces.IDatasetLayersWidget"
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="datasets_input.pt"
+      template="datasetlayers_input.pt"
       />
 
     <z3c:widgetTemplate
