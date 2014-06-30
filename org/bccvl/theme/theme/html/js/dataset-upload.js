@@ -18,6 +18,7 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 
         	/*$('#upload-species').click(function(e) {
             	$('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
             	$('div.bccvl-datasetuploadspeciesform').removeClass('hidden');
                 $('a#upload-dataset-title').text('Upload Species Dataset');
             });
@@ -25,6 +26,7 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
 			$('#upload-layer').click(function(e) {
             	$('div.bccvl-datasetuploadlayerform').removeClass('hidden');
             	$('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
                 $('a#upload-dataset-title').text('Upload Environmental Layer');
             });*/
 
@@ -38,6 +40,13 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
                     $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
                 }
                 $('div.bccvl-datasetupload-prompt').addClass('hidden');
+            });
+
+            $('#upload-trait').click(function(e) {
+                $('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                $('div.bccvl-datasetspeciestraitsform').removeClass('hidden');
+                $('a#upload-dataset-title').text('Upload Species Traits');
             });
 
             // assume parsleyconfig already loaded by bccvl-form-validator.js
@@ -61,6 +70,15 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
                 }
             });
 
+            $("#traits-legal-checkbox:checkbox").change(function() {
+                if ($(this).is(":checked")) {
+                    $("#traits-save-btn").removeAttr("disabled");
+                }
+                else {
+                    $("#traits-save-btn").attr('disabled', 'disabled');
+                }
+            });
+
             $("#addspecies").submit(function(event) {
                 $('.modal').modal({
                     backdrop: 'static'
@@ -76,6 +94,8 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
             $('.modal').on('show', function () {
                 $("body").addClass("modal-open");
             });
+
+            $('i.icon-info-sign').popover();
 
         });
 

@@ -36,5 +36,95 @@
     </ul>
 
     </metal:block>
+
+    <!-- variables required:
+         rowstyle .. 'odd', 'even'
+         show_about ... boolean
+         item ... brain
+         item_objctt ... object
+         item_title_or_id, item_description, item_modified
+         item_url,
+         use_view_action, navigation_root_url
+         tools ... pas_member, toLocalizedTime
+         -->
+    <metal:block metal:define-macro="datasets_listitem">
+        <tr tal:attributes="class rowstyle"
+            tal:define="item_editable item_obj/dataset_tools/can_modify;">
+            <!-- Modified -->
+            <td tal:condition="show_about"
+                tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</td>
+            <!-- Title -->
+            <td class="bccvl-table-label">
+                <h1 tal:content="item_title_or_id">Dataset title</h1>
+                <p tal:content="item_description">Dataset short description</p>
+            </td>
+            <!-- Actions -->
+            <!-- TODO: expects simple publication workflow
+                       publish/retract -->
+            <td class="bccvl-table-controls"
+                tal:define="complete python: item.job_state in ('COMPLETED', None)">
+                <a tal:define="action item_obj/dataset_tools/get_transition;
+                               icon_class python:'publish' in action and 'icon-share-alt' or 'icon-remove';
+                               icon_title python: 'publish' in action and 'Publish' or 'Unpublish';"
+                    tal:condition="python: complete and action"
+                    tal:attributes="href string:${item_url}/dm/${icon_title}">
+                    <i class="icon-share-alt" title="Publish"
+                       tal:attributes="class icon_class;
+                                       title icon_title"></i>
+                </a>
+                <!-- TODO: needs update, action is now dict -->
+                <a class="sharing-btn" href="#"
+                   tal:attributes="href action/url"
+                   tal:condition="python: complete and action.get('available')"
+                   tal:define="action item_obj/dataset_tools/local_roles_action;">
+                    <i class="icon-share" title="Sharing Options"
+                       tal:attributes="title action/title"></i>
+                </a>
+
+                <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
+                            tal:condition="complete">
+                    <a href="#"
+                       tal:attributes="href dlinfo/url">
+                        <i class="icon-circle-arrow-down" title="download"></i>
+                    </a>
+                    <a href="#" class="bccvl-occurrence-viz"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                       tal:condition="python: item_obj.format == 'text/csv'">
+                        <i class="icon-eye-open icon-link" title="preview"></i>
+                    </a>
+
+                    <a href="#" class="bccvl-auto-viz"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                       tal:condition="python: item_obj.format != 'text/csv'">
+                         <i class="icon-eye-open icon-link" title="preview"></i>
+                    </a>
+                </tal:block>
+
+                <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
+                <a class="environmentallayers-zip-edit"
+                   tal:attributes="href string:${item_url}/@@editfilemetadata"
+                   tal:condition="python: item_editable and item_obj.format == 'application/zip'">
+                    <i class="icon-pencil" title="edit"></i>
+                </a>
+
+                <!-- TODO: helper method or customisable dict? or agree on classes? -->
+                <tal:block
+                    tal:define="state item/job_state;
+                                klass python: 'dataset-import-failed' if state == 'FAILED' else 'dataset-import';
+                                klass python: '' if state in (None, 'COMPLETED') else klass;
+                                title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
+                                title python: '' if state in (None, 'COMPLETED') else title;">
+                    <i class="" data-url="" title=""
+                       tal:condition="klass"
+                       tal:attributes="data-url item_url;
+                                       class klass;
+                                       title title;"></i>
+                </tal:block>
+
+            </td>
+
+        </tr>
+
+    </metal:block>
   </body>
 </html>

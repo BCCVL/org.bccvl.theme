@@ -212,6 +212,7 @@
                 <p class="projection-error-message hidden">Please select at least one dataset.</p>
               </div>
 
+              <!-- TODO: should have some example items in each of the select lists -->
               <div class="row-fluid bccvl-dimensions">
 
                 <div class="span4 bccvl-dimension"><div class="control-group">
@@ -224,6 +225,30 @@
                       </th></tr>
                     </thead>
                     <tbody>
+                      <tr class="warning">
+                        <td colspan="2">
+                          <p><small>Some projection points are not covered by every variables.</small></p>
+                        </td>
+                      </tr>
+
+                      <tr class="test-content">
+                        <td class="bccvl-table-choose">
+                          <input type="checkbox"
+                                 id="id=form-widgets-years-0"
+                                 name="form.widgets.years"
+                                 value="<value>"
+                                 checked="checked" ???
+                                 data-parsley-mincheck="1"
+                                 data-parsley-group="form.widgets.years"
+                                 data-parsley-error-message="Please select at least 1 year."></td>
+                        <td class="bccvl-table-label">
+                          <label for="form-widgets-years-0">
+                            <h1>2015</h1>
+                            <p>provenance and description</p>
+                          </label>
+                        </td>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div></div>
