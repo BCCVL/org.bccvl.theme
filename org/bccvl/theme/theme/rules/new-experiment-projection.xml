@@ -30,113 +30,17 @@
         <replace css:theme="table.bccvl-sdmtable" css:content="table.bccvl-datasetstable" />
 
         <!-- hook in the years -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-yearstable > tbody">
-            <tr class="warning">
-                <td colspan="2">
-                    <p><small>Some projection points are not covered by every variables.</small></p>
-                </td>
-            </tr>
-            <xsl:for-each select="//input[@name='form.widgets.years']">
-                <tr>
-                    <td class="bccvl-table-choose">
-                        <xsl:element name="input">
-                            <xsl:attribute name="type">checkbox</xsl:attribute>
-                            <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-                            <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                            <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                            <xsl:if test="@checked">
-                                <xsl:attribute name="checked">checked</xsl:attribute>
-                            </xsl:if>
-                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="data-parsley-group">years</xsl:attribute>
-                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 year.</xsl:attribute>
-                        </xsl:element>
-                    </td>
-                    <td class="bccvl-table-label">
-                        <xsl:element name="label">
-                            <xsl:attribute name="for"><xsl:value-of select="@id"/></xsl:attribute>
-                            <h1>
-                                <xsl:copy-of select="../label/text()"/>
-                            </h1>
-                            <p>provenance and description</p>
-                        </xsl:element>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </before>
+        <drop css:theme=".test-content"/>
+        <replace css:theme-children="table.bccvl-yearstable"
+               css:content-children="#form-widgets-years"/>
 
         <!-- hook in the emission scenarios -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-emissionscenariostable > tbody">
-            <tr class="success">
-                <td colspan="2">
-                    <p><small>All projection points are covered by all variables.</small></p>
-                </td>
-            </tr>
-            <xsl:for-each select="//input[@name='form.widgets.emission_scenarios']">
-                <tr>
-                    <td class="bccvl-table-choose">
-                        <xsl:element name="input">
-                            <xsl:attribute name="type">checkbox</xsl:attribute>
-                            <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-                            <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                            <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                            <xsl:if test="@checked">
-                                <xsl:attribute name="checked">checked</xsl:attribute>
-                            </xsl:if>
-                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="data-parsley-group">emission_scenarios</xsl:attribute>
-                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 emission scenario.</xsl:attribute>
-                        </xsl:element>
-                    </td>
-                    <td class="bccvl-table-label">
-                        <xsl:element name="label">
-                            <xsl:attribute name="for"><xsl:value-of select="@id"/></xsl:attribute>
-                            <h1>
-                                <xsl:copy-of select="../label/text()"/>
-                            </h1>
-                            <p>provenance and description</p>
-                        </xsl:element>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </before>
-
+        <!-- TODO: this table is terrible -->
+        <replace css:theme-children="table.bccvl-emissionscenariostable"
+               css:content-children="#form-widgets-emission_scenarios"/>
         <!-- hook in the climate models -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-climatemodelstable > tbody">
-            <tr class="warning">
-                <td colspan="2">
-                    <p><small><b>Soil Type</b> does not address this dimension so will be assumed to stay constant.</small></p>
-                </td>
-            </tr>
-            <xsl:for-each select="//input[@name='form.widgets.climate_models']">
-                <tr>
-                    <td class="bccvl-table-choose">
-                        <xsl:element name="input">
-                            <xsl:attribute name="type">checkbox</xsl:attribute>
-                            <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-                            <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                            <xsl:attribute name="value"><xsl:value-of select="@value"/></xsl:attribute>
-                            <xsl:if test="@checked">
-                                <xsl:attribute name="checked">checked</xsl:attribute>
-                            </xsl:if>
-                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
-                            <xsl:attribute name="data-parsley-group">climate_models</xsl:attribute>
-                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 climate model.</xsl:attribute>
-                        </xsl:element>
-                    </td>
-                    <td class="bccvl-table-label">
-                        <xsl:element name="label">
-                            <xsl:attribute name="for"><xsl:value-of select="@id"/></xsl:attribute>
-                            <h1>
-                                <xsl:copy-of select="../label/text()"/>
-                                <small>from some source</small>
-                            </h1>
-                            <p>provenance and description</p>
-                        </xsl:element>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </before>
+        <replace css:theme-children="table.bccvl-climatemodelstable"
+               css:content-children="#form-widgets-climate_models"/>
 
     </rules>
 

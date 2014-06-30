@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<!-- change: no .bccvl-yearstable class
+     table.class: completely overriden anyway
+         -->
+<div>
+<table class="table table-condensed table-hover"
+       id=""
+       tal:attributes="id view/id"
+       tal:define="class view/klass;
+                   selected view/selectedItems">
+    <thead>
+      <tr><th colspan="2" tal:content="view/field/title"></th></tr>
+    </thead>
+    <tbody>
+      <tr class="warning">
+        <td colspan="2">
+          <p><small>Some projection points are not covered by every variable.</small></p>
+        </td>
+      </tr>
+      <!-- view/notselectedItems -->
+      <!-- view/selectedItems -->
+        <tr tal:repeat="entry view/items">
+          <td class="bccvl-table-choose">
+          <!-- TODO: can I move parsley attributes up? -->
+          <!-- TODO: use required and min_length for mincheck -->
+          <input type="checkbox" id="form.widgets.years-0"
+                 name="form.widgets.years" value="1900"
+                 class="required list-field"
+                 data-parsley-mincheck="1"
+                 data-parsley-group="form.widgets.years"
+                 data-parsley-error-message="Prease select at least 1 year."
+                 tal:attributes="
+                   id entry/id;
+                   name string:${view/name};
+                   class class;
+                   checked python: entry in selected and 'checked' or None;
+                   value entry/value;
+                   required view/required|nothing;
+                   data-parsley-group string:${view/name};
+                   data-parsley-error-message view/errmsg;"/>
+          </td>
+          <td class="bccvl-table-label">
+            <label for="form-widgets-years-0"
+                   tal:attributes="for entry/id;">
+              <h1 tal:content="entry/content">1900</h1>
+              <!-- <p>provenance and descriptions</p> -->
+            </label>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <input name="foo-empty-marker" type="hidden"
+        tal:attributes="name string:${view/name}-empty-marker"/>
+
+</div>
+
+</html>
