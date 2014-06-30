@@ -118,5 +118,23 @@
         <replace css:theme-children="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm option" />
         <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm" />
 
+    <!-- Species Trait form -->
+        <!-- Form field attributes -->
+        <copy attributes="name action method enctype" css:theme="form#addtraits" css:content="form#addtraits" />
+
+        <!-- Submit button -->
+        <copy attributes="name value type" css:theme="form#addtraits button[name='addtraits.buttons.save']" css:content="#addtraits-buttons-save" />
+
+        <!-- File field -->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.file']" css:content="#addtraits-widgets-file-input" />
+
+        <!-- Title field-->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.title']" css:content="#addtraits-widgets-title" />
+
+        <!-- Description field-->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.description']" css:content="#addtraits-widgets-description" />
+        <replace theme-children="//textarea[@name='addtraits.widgets.description']" content="//textarea[@id='addtraits-widgets-description']/text()" />
+
+
     </rules>
 </rules>
