@@ -7,6 +7,66 @@
     <rules if-path="++add++org.bccvl.content.speciestraitsexperiment/">
         <theme href="html/new-experiment-speciestrait.html" />
 
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
+
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
+
+        <!-- hook in title field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+
+        <!-- hook in description field -->
+        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+
+        <!-- hook in the algorithm list -->
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
+            <xsl:for-each select="//input[@name='form.widgets.algorithm']">
+                <tr>
+                    <td class="bccvl-table-choose">
+                        <xsl:element name="input">
+                            <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
+                            <xsl:attribute name="data-parsley-error-message">Please select at least 1 algorithm.</xsl:attribute>
+                            <xsl:attribute name="type">radio</xsl:attribute>
+                            <xsl:attribute name="class">required</xsl:attribute>
+                            <xsl:attribute name="name"><xsl:value-of select="@name" /></xsl:attribute>
+                            <xsl:if test="@checked">
+                                <xsl:attribute name="checked">checked</xsl:attribute>
+                            </xsl:if>
+                            <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
+                            <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
+                            <xsl:attribute name="data-friendlyname">radio_algorithm_<xsl:copy-of select="string(../span/text())" /></xsl:attribute>
+                        </xsl:element>
+                    </td>
+                    <td class="bccvl-table-label">
+                        <xsl:element name="label">
+                            <xsl:attribute name="for">
+                                <xsl:value-of select="@id" />
+                            </xsl:attribute>
+                            <h1><xsl:copy-of select="string(../span/text())" /></h1>
+                        </xsl:element>
+                    </td>
+                    <td class="bccvl-table-controls">
+                        <xsl:element name="a">
+                            <xsl:attribute name="target">_blank</xsl:attribute>
+                            <xsl:attribute name="href">
+                                <!-- grab the search root URL from the page's search box,
+                                     and add the @value which is the algo's plone name. The
+                                     knowledgebase can use the algo name as a tag on docs
+                                     that are relevant to this algo. -->
+                                <xsl:value-of select="//form[@id='searchGadget_form']/@action" />?Subject%3Alist=<xsl:value-of select="@value" />
+                            </xsl:attribute>
+                            <i class="icon-info-sign" title="more information"></i>
+                        </xsl:element>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </before>
+
+        <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
+        <replace css:theme-children="#algoConfig"
+                 css:content-children="#fieldset-parameters"/>
 
     </rules>
 
