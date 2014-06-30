@@ -2,20 +2,30 @@
 // main JS for the new species trait model experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway',
+    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs',
+     'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-search',
      'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
      'select2'],
-    function($, wiztabs, fadeaway, formvalidator) {
+    function($, viz, wiztabs, stretch, fadeaway, search, formvalidator) {
 
     $(function() {
 
         console.log('species trait model experiment page behaviour loaded.');
+
+        // hook up stretchers
+        stretch.init({ topPad: 60, bottomPad: 10 });
+
+        // init the visualiser
+        viz.init();
 
         // init the fadeaway instructions
         fadeaway.init();
 
         // hook up the wizard buttons
         wiztabs.init();
+
+        // hook up the search fields
+        search.init();
 
 
         // -- hook up algo config -------------------------------

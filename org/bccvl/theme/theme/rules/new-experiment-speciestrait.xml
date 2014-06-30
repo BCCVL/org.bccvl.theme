@@ -68,6 +68,10 @@
         <replace css:theme-children="#algoConfig"
                  css:content-children="#fieldset-parameters"/>
 
+        <!-- Datasets -->
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-datasetstable"
+                 css:content-children="#form-widgets-data_table" />
+
     </rules>
 
 </rules>
