@@ -22,7 +22,7 @@
                 </dl>
             </xsl:for-each>
         </replace>
-        
+
     <!-- Species form -->
         <!-- Description -->
         <replace css:theme-children="p.bccvl-occurrencedescription" content="//div[@id='portal-column-content']/div[2]/p[3]/text()" />
@@ -54,9 +54,9 @@
         <!-- Scientific name field -->
         <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.scientificName']" css:content="#addspecies-widgets-scientificName" />
         <copy attributes="data-content" css:theme="i.bccvl-scientificnameinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
-        
+
         <!-- Taxon ID field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />        
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />
         <copy attributes="data-content" css:theme="i.bccvl-taxonidinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
 
         <!-- Common name field -->
@@ -134,6 +134,8 @@
         <!-- Description field-->
         <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.description']" css:content="#addtraits-widgets-description" />
         <replace theme-children="//textarea[@name='addtraits.widgets.description']" content="//textarea[@id='addtraits-widgets-description']/text()" />
+
+        <replace css:theme="form#addtraits [name='addtraits.widgets.datagenre:list']" css:content="#addtraits-widgets-datagenre" />
 
 
     </rules>
