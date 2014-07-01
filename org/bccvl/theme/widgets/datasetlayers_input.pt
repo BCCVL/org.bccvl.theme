@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<table class="table table-hover bccvl-environmentaldatatable" id=""
+       tal:attributes="id view/id">
+  <thead>
+  <tr><th colspan="3" tal:content="view/label"></th></tr>
+  </thead>
+  <tbody><tr><td colspan="3"></td></tr></tbody>
+  <tbody tal:repeat="key view/items">
+
+    <tr class="bccvl-envgroup info" data-friendlyname="" data-envgroupid=""
+        tal:attributes="data-friendlyname string:collapbsable_climatelayer_${key/content};
+                        data-envgroupid key/value">
+      <td>
+        <i class="icon-plus"></i>
+      </td>
+      <td colspan="2" tal:content="nocall: key/content">Dataset title</td>
+    </tr>
+<!-- For each selected layer in this dataset -->
+    <tal:block tal:repeat="layer key/value_widget/items">
+    <tal:define tal:define="
+                   selected python: [];
+                   checked python: layer in selected;">
+      <tr data-envparent="e6c850d3206a4a3fbf7e2568fd73ee40"
+          tal:attributes="data-envparent key/value"
+          tal:condition="checked">
+        <td>
+          <input type="checkbox"
+                 id="e6c850d3206a4a3fbf7e2568fd73ee40_http://namespaces.bccvl.org.au/bioclim#B01"
+                 name="form.widgets.environmental_datasets.e6c850d3206a4a3fbf7e2568fd73ee40:list"
+                 value="http://namespaces.bccvl.org.au/bioclim#B01"
+                 data-friendlyname="checkbox_climatelayer_B01 - Annual Mean Temperature"
+                 tal:attributes="
+                   id layer/id;
+                   name key/value_widget/name;
+                   value layer/value;
+                   data-friendlyname string:checkbox_climatelayer_${layer/content};
+                   checked checked;"/>
+        </td>
+        <td>
+          <label for="e6c850d3206a4a3fbf7e2568fd73ee40_http://namespaces.bccvl.org.au/bioclim#B01"
+                 tal:attributes="for layer/id"
+                 tal:content="layer/content">B01 - Annual Mean Temperature</label>
+        </td>
+        <td class="bccvl-table-controls">
+          <a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a>
+        </td>
+      </tr>
+    </tal:define>
+    </tal:block>
+  </tbody>
+</table>
+</html>

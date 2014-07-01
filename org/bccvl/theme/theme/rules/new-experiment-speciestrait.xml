@@ -3,9 +3,9 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++org.bccvl.content.sdmexperiment/">
-        <theme href="html/new-experiment-sdm.html" />
+    <!-- NEW SPECIES TRAIT MODEL EXPERIMENT ================================== -->
+    <rules if-path="++add++org.bccvl.content.speciestraitsexperiment/">
+        <theme href="html/new-experiment-speciestrait.html" />
 
         <!-- hook in the new experiment form's attributes -->
         <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
@@ -20,15 +20,18 @@
         <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
+        <!-- hook in the formula field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-formula" css:content="#form-widgets-formula" />
+
         <!-- hook in the algorithm list -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
-            <xsl:for-each select="//input[@name='form.widgets.functions:list']">
+            <xsl:for-each select="//input[@name='form.widgets.algorithm']">
                 <tr>
                     <td class="bccvl-table-choose">
                         <xsl:element name="input">
                             <xsl:attribute name="data-parsley-mincheck">1</xsl:attribute>
                             <xsl:attribute name="data-parsley-error-message">Please select at least 1 algorithm.</xsl:attribute>
-                            <xsl:attribute name="type">checkbox</xsl:attribute>
+                            <xsl:attribute name="type">radio</xsl:attribute>
                             <xsl:attribute name="class">required</xsl:attribute>
                             <xsl:attribute name="name"><xsl:value-of select="@name" /></xsl:attribute>
                             <xsl:if test="@checked">
@@ -36,7 +39,7 @@
                             </xsl:if>
                             <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                             <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
-                            <xsl:attribute name="data-friendlyname">checkbox_algorithm_<xsl:copy-of select="string(../label/span/text())" /></xsl:attribute>
+                            <xsl:attribute name="data-friendlyname">radio_algorithm_<xsl:copy-of select="string(../span/text())" /></xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">
@@ -44,7 +47,7 @@
                             <xsl:attribute name="for">
                                 <xsl:value-of select="@id" />
                             </xsl:attribute>
-                            <h1><xsl:copy-of select="string(../label/span/text())" /></h1>
+                            <h1><xsl:copy-of select="string(../span/text())" /></h1>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-controls">
@@ -65,34 +68,12 @@
         </before>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
-
         <replace css:theme-children="#algoConfig"
                  css:content-children="#fieldset-parameters"/>
 
-
-        <!-- hook in the occurrences list -->
-
-        <!--
-            We are converting a select to a radio button input,
-            so we need to give the radio button the select's name,
-            not the option's name.
-
-        -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-occurrencestable"
-                 css:content-children="#form-widgets-species_occurrence_dataset" />
-
-        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_pseudo_absence_points']"/>
-        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_number_pseudo_absence_points']"/>
-        <!-- hook in the absences list -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-absencestable"
-                 css:content-children="#form-widgets-species_absence_dataset" />
-
-
-        <!-- The spatial scale -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-spatialscaletable tbody tr td" css:content="#form-widgets-resolution" />
-
-        <!-- The rest of this is filled in with AJAX -->
-        <replace css:theme="section.bccvl-experimentdetails table.bccvl-environmentaldatatable" content="//table[@id='form-widgets-environmental_datasets']" />
+        <!-- Datasets -->
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-datasetstable"
+                 css:content-children="#form-widgets-data_table" />
 
     </rules>
 

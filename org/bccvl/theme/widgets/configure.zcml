@@ -22,9 +22,16 @@
 
     <z3c:widgetTemplate
       mode="input"
-      widget="org.bccvl.site.browser.interfaces.IDatasetsWidget"
+      widget="org.bccvl.site.browser.interfaces.IOrderedCheckboxWidget"
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="datasets_input.pt"
+      template="orderedcheckbox_input.pt"
+      />
+
+    <z3c:widgetTemplate
+      mode="input"
+      widget="org.bccvl.site.browser.interfaces.IDatasetLayersWidget"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      template="datasetlayers_input.pt"
       />
 
     <z3c:widgetTemplate
@@ -34,6 +41,12 @@
       template="datasetsradio_input.pt"
       />
 
+    <z3c:widgetTemplate
+      mode="input"
+      widget="org.bccvl.site.browser.interfaces.IDatasetsMultiSelectWidget"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      template="datasetsmultiselect_input.pt"
+      />
 
 
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"

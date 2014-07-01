@@ -22,7 +22,7 @@
                 </dl>
             </xsl:for-each>
         </replace>
-        
+
     <!-- Species form -->
         <!-- Description -->
         <replace css:theme-children="p.bccvl-occurrencedescription" content="//div[@id='portal-column-content']/div[2]/p[3]/text()" />
@@ -54,9 +54,9 @@
         <!-- Scientific name field -->
         <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.scientificName']" css:content="#addspecies-widgets-scientificName" />
         <copy attributes="data-content" css:theme="i.bccvl-scientificnameinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
-        
+
         <!-- Taxon ID field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />        
+        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />
         <copy attributes="data-content" css:theme="i.bccvl-taxonidinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
 
         <!-- Common name field -->
@@ -117,6 +117,26 @@
         <!-- Global Climate Model -->
         <replace css:theme-children="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm option" />
         <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm" />
+
+    <!-- Species Trait form -->
+        <!-- Form field attributes -->
+        <copy attributes="name action method enctype" css:theme="form#addtraits" css:content="form#addtraits" />
+
+        <!-- Submit button -->
+        <copy attributes="name value type" css:theme="form#addtraits button[name='addtraits.buttons.save']" css:content="#addtraits-buttons-save" />
+
+        <!-- File field -->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.file']" css:content="#addtraits-widgets-file-input" />
+
+        <!-- Title field-->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.title']" css:content="#addtraits-widgets-title" />
+
+        <!-- Description field-->
+        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.description']" css:content="#addtraits-widgets-description" />
+        <replace theme-children="//textarea[@name='addtraits.widgets.description']" content="//textarea[@id='addtraits-widgets-description']/text()" />
+
+        <replace css:theme="form#addtraits [name='addtraits.widgets.datagenre:list']" css:content="#addtraits-widgets-datagenre" />
+
 
     </rules>
 </rules>
