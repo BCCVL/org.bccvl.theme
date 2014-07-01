@@ -20,6 +20,9 @@
         <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
+        <!-- hook in the formula field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-formula" css:content="#form-widgets-formula" />
+
         <!-- hook in the algorithm list -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
             <xsl:for-each select="//input[@name='form.widgets.algorithm']">
