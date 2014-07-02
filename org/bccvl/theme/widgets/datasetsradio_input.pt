@@ -31,7 +31,7 @@
       <td class="bccvl-table-label">
         <label for="inputid"
                tal:attributes="for item/id">
-          <h1 tal:content="item/label">Label</h1>
+          <p tal:content="item/label"><strong>Label</strong></p>
           <p class="broken">provenance and description</p>
         </label>
       </td>
