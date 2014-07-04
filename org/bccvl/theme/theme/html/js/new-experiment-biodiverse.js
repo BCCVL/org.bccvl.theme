@@ -100,13 +100,13 @@ define(
                 return html;
             };
 
-            var renderThreshold = function(layerName, index, projectionId) {
+            var renderThreshold = function(layerName, index, layerId) {
 
                 // Threshold values are obtained from an AJAX call. There is one set of threshold values for all files in a projection.
                 $.ajax({
                     url: portal_url + '/dm/getThresholds',
                     dataType: 'json',
-                    data: {'projections' : projectionId }
+                    data: {'datasets' : layerId }
                 }).done(function(data){
 
                     var name = "form.widgets.projection." + index + ".threshold";
@@ -126,7 +126,7 @@ define(
                     $thresholdTableBody.append(html);
 
                     // Create an array to use as input to Select2
-                    var thresholdMap = data[projectionId];
+                    var thresholdMap = data[layerId];
                     var array = new Array();
                     for (var key in thresholdMap) {
                         array.push({id: thresholdMap[key], text: key + ' (' + thresholdMap[key] + ')'});
@@ -347,7 +347,7 @@ define(
                 }
 
                 $.each($selectedLayers.sort(), function(index, l){
-                    renderThreshold(l.layerName, index, l.projectionuuid);
+                    renderThreshold(l.layerName, index, l.layeruuid);
                     $hiddenInputsDiv.append(renderHiddenLayerSelect(l.layeruuid, index));
                 });
             };
