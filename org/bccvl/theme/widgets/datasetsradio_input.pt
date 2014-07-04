@@ -14,7 +14,7 @@
     <tr tal:repeat="item view/items">
       <td class="bccvl-table-choose">
         <input id="" name="" checked="" type="radio" value=""
-               data-friendlyname="radio_title"
+               data-friendlyname="radio_occurrence_title"
                required=""
                data-parsley-error-message="view/errmsg"
                tal:attributes="
@@ -22,7 +22,7 @@
                  name item/name;
                  checked item/checked;
                  value item/value;
-                 data-friendlyname string:radio_${item/label};
+                 data-friendlyname string:radio_occurrence_${item/label};
                  required view/required;
                  data-parsley-error-message view/errmsg|nothing"
                 />
