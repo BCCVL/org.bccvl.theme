@@ -15,6 +15,7 @@
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/new-experiment-biodiverse.xml" />
+    <xi:include href="rules/new-experiment-speciestrait.xml" />
     <xi:include href="rules/dashboard.xml" />
     <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
@@ -166,9 +167,10 @@
             //a[@id="org-bccvl-content-sdmexperiment"]
             Note: This link is NOT available when viewing a specific experiment.
     -->
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"            content="//a[@id='org-bccvl-content-sdmexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"       content="//a[@id='org-bccvl-content-projectionexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-biodiverse-new" content="//a[@id='org-bccvl-content-biodiverseexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"              content="//a[@id='org-bccvl-content-sdmexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"         content="//a[@id='org-bccvl-content-projectionexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-biodiverse-new"   content="//a[@id='org-bccvl-content-biodiverseexperiment']" />
+    <merge attributes="href" css:theme="a.bccvllinks-experiment-speciestrait-new" content="//a[@id='org-bccvl-content-speciestraitsexperiment']" />
 
     <!-- miscellaneous -->
     <!-- TODO: don't use // xpath selector. It is slow -->

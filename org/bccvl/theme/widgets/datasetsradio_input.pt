@@ -14,7 +14,7 @@
     <tr tal:repeat="item view/items">
       <td class="bccvl-table-choose">
         <input id="" name="" checked="" type="radio" value=""
-               data-friendlyname="radio_occurrence_title"
+               data-friendlyname="radio_title"
                required=""
                data-parsley-error-message="view/errmsg"
                tal:attributes="
@@ -22,7 +22,7 @@
                  name item/name;
                  checked item/checked;
                  value item/value;
-                 data-friendlyname string:radio_occurrence_${item/label};
+                 data-friendlyname string:radio_${item/label};
                  required view/required;
                  data-parsley-error-message view/errmsg|nothing"
                 />
@@ -40,7 +40,7 @@
         <a class="fine bccvl-occurrence-viz"
            title="preview this dataset"
            data-viz-id="value"
-           tal:attributes="data-viz-id item/value;
+           tal:attributes="data-viz-id python: item['dlinfo']['alturl'][0];
                            class view/vizclass">
            <i class="icon-eye-open icon-link"></i>
         </a>

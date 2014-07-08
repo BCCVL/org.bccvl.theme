@@ -34,13 +34,16 @@
                          <p tal:content="item/Title">Item Title</p>
                        </td>
                        <td class="bccvl-table-controls"
-                           tal:define="downloadurl string:${item/getURL}/@@download/file/${item/file/filename};
-                                       visurl string:http://127.0.0.1:8201${item/getPath}/@@download/file/${item/file/filename}">
+                           tal:define="item_obj item/getObject;
+                                       dlinfo item_obj/dataset_tools/get_download_info;
+                                       downloadurl dlinfo/url;
+                                       visurl python: dlinfo['alturl'][0]">
 
                          <a class="fine"
                             title="Download this file"
                             href="#downloadurl"
-                            tal:attributes="href downloadurl; data-friendlyname string:a_experimentoutput_${item/file/filename}">
+                            tal:attributes="href downloadurl;
+                                            data-friendlyname string:a_experimentoutput_${item/file/filename}">
                             <i class="icon-download-alt icon-link"></i>
                          </a>
                          <a class="bccvl-auto-viz"
