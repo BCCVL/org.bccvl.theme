@@ -52,9 +52,9 @@
   </head>
 
   <body>
-
+    <div class="white-bg">
     <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+    <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
       <!-- button for narrow screen menu -->
       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
@@ -105,7 +105,7 @@
 
     <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- container for main content -->
-    <div class="container-fluid bccvl-main">
+    <div class="container bccvl-main">
 
       <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <div class="bccvl-breadcrumb row-fluid">
@@ -131,10 +131,10 @@
         <div class="row-fluid">
 
           <div class="span6 offset3">
-
-            <nav class="navbar navbar-default navbar-static" role="navigation">
+            <h1>Upload Dataset</h1>
+            <!--<nav class="navbar navbar-default navbar-static" role="navigation">
               <div class="navbar-inner">
-                <a id="upload-dataset-title" class="brand">Upload Species Dataset</a>
+                <a id="upload-dataset-title" class="brand"></a>
                 <ul class="nav navbar-nav pull-right">
                   <li class="dropdown">
                     <a id="drop1" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
@@ -143,10 +143,10 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="drop1" role="menu">
                       <li role="presentation">
-                        <a id="upload-species" href="#" tabindex="-1" role="menuitem">Species Dataset</a>
+                        
                       </li>
                       <li role="presentation">
-                        <a id="upload-layer" href="#" tabindex="-1" role="menuitem">Environmental Layer</a>
+                        
                       </li>
                       <li role="presentation">
                         <a id="upload-trait" href="#" tabindex="-1" role="menuitem">Species Trait</a>
@@ -155,10 +155,28 @@
                   </li>
                 </ul>
               </div>
-            </nav>
+            </nav>-->
 
             <!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-            <div class="bccvl-datasetuploadspeciesform">
+            
+            <form class="form-horizontal">
+              
+              <div class="control-group">
+                  <label class="control-label">Dataset Type</label>
+                  <div class="controls">
+                    <select id="upload-dataset-type">
+                      <option selected value="">Please Select ...</option>
+                      <option value="species">Species Dataset</option>
+                      <option value="environmental-layer">Environmental Layer</option>
+                    </select>
+                  </div>
+                </div>
+            </form>
+            <div class="bccvl-datasetupload-prompt alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Please select a dataset type above to display an upload form.</strong> 
+            </div>
+            <div class="bccvl-datasetuploadspeciesform hidden">
 
               <form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
 
@@ -236,9 +254,11 @@
                   </div>
                 </div>
 
-                <div class="legals">
-                  <input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
-                  <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                <div class="control-group">
+                  <div class="legals controls">
+                    <input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
+                    <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                  </div>
                 </div>
 
                 <div class="control-group">
@@ -256,9 +276,7 @@
             <div class="bccvl-datasetuploadlayerform hidden">
 
               <form class="form-horizontal bccvl-parsleyvalidate" id="addlayer" method="" autocomplete="on" action="" enctype="multipart/form-data">
-
-                <p class="bccvl-layersdescription"></p>
-
+                <p class="bccvl-occurrencedescription"></p>
                 <div class="control-group">
                   <label class="control-label">Environmental Layer File</label>
                   <div class="controls">
@@ -369,9 +387,11 @@
                   </div>
                 </div>
 
-                <div class="legals">
-                  <input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
-                  <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                <div class="control-group">
+                  <div class="legals controls">
+                    <input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
+                    <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                  </div>
                 </div>
 
                 <div class="control-group">
@@ -453,7 +473,7 @@
       </section>
 
     </div><!-- end of main content container -->
-
+  </div>
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <footer class="navbar navbar-fixed-bottom">
       <div class="container-fluid">

@@ -31,7 +31,7 @@
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
                      <tr>
                        <td colspan="2" class="bccvl-table-label">
-                         <h1 tal:content="item/Title">Item Title</h1>
+                         <p tal:content="item/Title">Item Title</p>
                        </td>
                        <td class="bccvl-table-controls"
                            tal:define="item_obj item/getObject;
