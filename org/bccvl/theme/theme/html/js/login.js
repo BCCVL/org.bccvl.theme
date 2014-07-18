@@ -6,13 +6,13 @@ define(     ['jquery', 'bootstrap'],
     // ==============================================================
         $(function() {
             console.log('login page behaviour loaded.');
-
+            $('.disclaimer.legals').insertBefore('.aaf-logo-link');
             $('#login-aaf').click(function(e) {
                 $(this).addClass('active');
                 $('#login-basic').removeClass('active');
             	$('#wrapper-basic').addClass('hidden');
             	$('#wrapper-aaf').removeClass('hidden');
-                $('.disclaimer.legals').appendTo('#wrapper-aaf');
+                $('.disclaimer.legals').insertBefore('.aaf-logo-link');
             });
 
             $('#login-basic').click(function(e) {
@@ -23,12 +23,12 @@ define(     ['jquery', 'bootstrap'],
                 $('.disclaimer.legals').insertBefore('#login-form .formControls');
             });
 
-            $("#wrapper-basic .btn-success").attr('disabled', 'disabled');
+            $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
             $("#wrapper-aaf a").attr('onclick','return false;');
 
             $("#legals-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
-                    $("#wrapper-basic .btn-success").removeAttr("disabled");
+                    $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").removeAttr("disabled");
                     
                     $("#wrapper-aaf a").removeAttr('onclick');
                     $("#wrapper-aaf a").css('cursor', 'pointer');
