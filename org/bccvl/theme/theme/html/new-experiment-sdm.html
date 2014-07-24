@@ -53,9 +53,9 @@
   </head>
 
   <body>
-
+  <div class="white-bg">
     <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <nav class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+    <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
       <!-- button for narrow screen menu -->
       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
@@ -98,7 +98,7 @@
 
     <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- container for main content -->
-    <div class="container-fluid bccvl-main">
+    <div class="container bccvl-main">
 
 
       <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -372,7 +372,7 @@
 
                       <!-- This field's value is manipulated with javascript. Used to validate environmental layer selection (since they are ajax loaded). -->
                       <input type="text" id="environmental_layers_count" name="environmental_layers_count" value="0"
-                             data-parsley-min="2" data-parsley-error-message="Please select at least 2 environmental layers." />
+                             data-parsley-min="1" data-parsley-error-message="Please select at least 1 environment layer." />
                     </div>
                   </div>
 
@@ -414,7 +414,7 @@
       </section>
 
     </div><!-- end of main content container -->
-
+  </div>
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <footer class="navbar navbar-fixed-bottom">
       <div class="container-fluid">

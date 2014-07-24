@@ -45,7 +45,7 @@
           <td class="bccvl-table-label">
             <label for="form-widgets-years-0"
                    tal:attributes="for entry/id;">
-              <h1 tal:content="entry/content">1900</h1>
+              <p tal:content="entry/content">1900</p>
               <!-- <p>provenance and descriptions</p> -->
             </label>
           </td>

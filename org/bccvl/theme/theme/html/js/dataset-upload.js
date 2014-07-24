@@ -16,25 +16,21 @@ define(     ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileup
             // gets the file upload handling working
             $('.fileupload').fileupload();
 
-        	$('#upload-species').click(function(e) {
-            	$('div.bccvl-datasetuploadlayerform').addClass('hidden');
-                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
-            	$('div.bccvl-datasetuploadspeciesform').removeClass('hidden');
-                $('a#upload-dataset-title').text('Upload Species Dataset');
-            });
-
-			$('#upload-layer').click(function(e) {
-            	$('div.bccvl-datasetuploadlayerform').removeClass('hidden');
-            	$('div.bccvl-datasetuploadspeciesform').addClass('hidden');
-                $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
-                $('a#upload-dataset-title').text('Upload Environmental Layer');
-            });
-
-            $('#upload-trait').click(function(e) {
-                $('div.bccvl-datasetuploadlayerform').addClass('hidden');
-                $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
-                $('div.bccvl-datasetspeciestraitsform').removeClass('hidden');
-                $('a#upload-dataset-title').text('Upload Species Trait Dataset');
+            $('#upload-dataset-type').change(function(e){
+                if ($(this).val() == "species") {
+                    $('div.bccvl-datasetuploadspeciesform').removeClass('hidden');
+                    $('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                    $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
+                } else if ($(this).val() == "environmental-layer") {
+                    $('div.bccvl-datasetuploadlayerform').removeClass('hidden');
+                    $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                    $('div.bccvl-datasetspeciestraitsform').addClass('hidden');
+                } else if ($(this).val() == "species-trait") {
+                    $('div.bccvl-datasetspeciestraitsform').removeClass('hidden');
+                    $('div.bccvl-datasetuploadspeciesform').addClass('hidden');
+                    $('div.bccvl-datasetuploadlayerform').addClass('hidden');
+                }
+                $('div.bccvl-datasetupload-prompt').addClass('hidden');
             });
 
             // assume parsleyconfig already loaded by bccvl-form-validator.js

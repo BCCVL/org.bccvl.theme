@@ -1,33 +1,149 @@
 
+@import url('fonts.css');
 body {
-    padding-top: 60px; /* pad enough to show the fixed navbar */
+    background:#333333;
+    font-size:13px;
+    line-height: 19px;
+}
+* {
+    font-weight: normal!important;
+}
+.white-bg {
+    background:#FFF;
 }
 @media (max-width: 980px) { body {
     padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
 }   }
-
-
+h1,h2,h3,h4,h5,h6 {
+    color: #009FE3;
+}
+a.active, a.active:hover {
+    color:rgba(0,0,0,.5);
+    cursor:default;
+    text-decoration: none;
+}
+.btn-default, .btn {
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #333333 !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    border: 1px solid #D5D2D2 !important;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-primary {
+    color: #ffffff!important;
+    text-shadow:none;
+    border-color: #2a8b25!important;
+    background: #3bab35!important;
+    background-image: -webkit-linear-gradient(top, #4dc345 0%, #3bab35 100%)!important;
+    background-image: -moz-linear-gradient(top, #4dc345 0%, #3bab35 100%)!important;
+    background-image: -ms-linear-gradient(top, #4dc345 0%, #3bab35 100%)!important;
+    background-image: -o-linear-gradient(top, #4dc345 0%, #3bab35 100%)!important;
+    background-image: linear-gradient(to bottom, #4dc345 0%, #3bab35 100%)!important;
+    text-transform: capitalize;
+}
+.btn-primary[disabled] {
+    opacity:0.5!important;
+}
+.btn-primary:hover {
+    background-position: 0 0!important;
+    color: #ffffff!important;
+    background: #4dc345!important;
+}
+.btn-success {
+    color: #ffffff!important;
+    text-shadow:none;
+    border-color: #0090cd!important;
+    background: #009fe3!important;
+    background-image: -webkit-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -moz-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -ms-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: -o-linear-gradient(top, #4dbceb 0%, #009fe3 100%)!important;
+    background-image: linear-gradient(to bottom, #4dbceb 0%, #009fe3 100%)!important;
+    text-transform: capitalize;
+}
+.btn-success[disabled] {
+    opacity:0.5!important;
+}
+.btn-success:hover {
+    background-position: 0 0!important;
+    color: #ffffff!important;
+    background: #4dbceb!important;
+}
+.logo-icon {
+    background-image:url('../images/bccvl_logo_beta.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    display:inline-block;
+}
+.logo-icon-lge {
+    width:100px;
+    height:100px;
+} 
+.bccvl-main {
+    padding-bottom:2em;
+}
 /* main navbar ----------------------------------------------------------- */
 
 .navbar {
     background: #cfd; /* doesn't work, come back later in Less */
 }
-
+.navbar .nav {
+    margin:1.6em 0;
+    float:none;
+}
 .navbar a.brand {
     color: #094;
     padding-left: 15px;
-    padding-right: 35px;
 }
 
 .navbar a img {
-    opacity: 0.66;
     float: left;
-    margin: -5px 6px -9px;
+    max-width:190px;
+    margin:8px 0;
+}
+
+.navbar .nav > li > a {
+    color:#333;
+    font-family:'OpenSansRegular';
+    padding-left:.75em;
+    padding-right:.75em;
+    font-size:1.15em;
+    text-shadow: none;
 }
 
 .navbar .pull-right {
     padding-left: 5px;
     padding-right: 5px;
+}
+.navbar-static-top {
+    margin-bottom:2em;
+}
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+    box-shadow: 0px 1px 1px rgba(0,0,0,.15);
+    background:#FFF;
+    border-bottom:0px;
+}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+    background: rgba(0,0,0,.1);
+    box-shadow: none;
+}
+.navbar-search .search-query {
+    line-height: 20px;
 }
 
 @media (max-width: 980px) { .navbar .pull-right {
@@ -39,7 +155,7 @@ body {
 /* breadcrumbs trail ----------------------------------------------------- */
 
 .bccvl-breadcrumb ul.breadcrumb {
-    margin: 1em 0 3em;
+    margin: 0 0 1em;
 }
 
 .bccvl-breadcrumb ul.breadcrumb li.separator {
@@ -60,6 +176,10 @@ body {
 .bccvl-preview-pane {
     min-height: 100px;
     position: relative;
+    padding:0;
+    background:rgba(0,0,0,.1);
+    border:1px solid rgba(0,0,0,.1);
+    height: 100%;
 }
 
 .bccvl-preview-pane .empty {
@@ -86,7 +206,10 @@ body {
 .icon-link:hover {
     cursor: pointer;
 }
-
+.window-layout .bccvl-my-datasets .span4 {
+    overflow-y:scroll;
+    box-shadow: inset 0px -3px 2px rgba(0,0,0,.1), inset 0px 3px 2px rgba(0,0,0,.1);
+}
 
 /* wizard+tabs interface ------------------------------------------------- */
 
@@ -159,7 +282,15 @@ body {
 .bccvl-loginfieldset {
     text-align: center;
 }
-
+#login-form .field {
+    display:inline-block;
+}
+#fieldset-site-login h3 {
+    display:none;
+}
+.disclaimer input[type="checkbox"], .legals input[type="checkbox"]{
+    margin-top:0;
+}
 
 /* Dataset page ---------------------------------------------------------*/
 
@@ -196,7 +327,9 @@ body {
 .bccvlbutton-dataset-upload{
     float: right;
 }
-
+.bccvl-datasetstable th:first-child, .bccvl-datasetstable th:last-child {
+    width: 30%;
+}
 .bccvl-datasetstable th.control-group {
     padding: 0px;
 }
@@ -206,7 +339,6 @@ body {
     width: 14px;
     height: 14px;
     margin-left: 6px;
-    margin-top: 5px;
     line-height: 14px;
     vertical-align: text-top;
     background-image: url("++resource++bccvl/lib/bootstrap/img/glyphicons-halflings.png");
@@ -232,6 +364,7 @@ body {
 
 .bccvl-datasetstable tr.headers th {
     cursor: pointer;
+    font-size: 1.2em;
 }
 
 /* ---Edit layer modal--- */
@@ -513,7 +646,7 @@ div.random-absences-settings label.horizontal span.formHelp {
 }
 
 thead th {
-    font-size: 150%;
+    font-family:'OpenSansSemibold';
 }
 
 td.bccvl-table-controls {
@@ -523,9 +656,11 @@ td.bccvl-table-controls a {
     float: right;
     border-radius: 1px;
     padding: 3px 6px;
+    border-radius:4px;
 }
 td.bccvl-table-controls a:hover {
-    box-shadow: 0 0 1px 1px #ccc;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,.25);
+    background:#FFF;
 }
 
 .bccvl-table-label h1 {
@@ -538,10 +673,13 @@ td.bccvl-table-controls a:hover {
     font-size: 90%;
 }
 
+.bccvl-datasetstable td {
+    line-height: 1.3em;
+}
 .bccvl-table-label p {
     padding: 0;
-    margin: 0;
-    font-size: 80%;
+    margin: 0; 
+    line-height: 1.3em;
 }
 
 .bccvl-table-empty p {
@@ -598,14 +736,14 @@ td.bccvl-full-list {
 /* footer ---------------------------------------------------------------- */
 
 footer {
-    opacity: 0.33;
+    /*opacity: 0.33;
     box-shadow: inset 0 9px 9px -9px #094;
     box-shadow: inset 0 75px 75px -75px #bbb;
-    margin-top: 4em;
+    margin-top: 2em;
     border-top: 1px solid #aaa;
-    color: #094;
+    padding-bottom: 2em;*/
+    color: #777;
     text-align: center;
-    padding-bottom: 2em;
 }
 footer > div {
     padding-top: 1em;
@@ -614,7 +752,9 @@ footer > div {
 footer.navbar {
     background-color: transparent;
 }
-
+footer a {
+    color:#FFF;
+}
 
 /* knowledgebase ---------------------------------------------------------------- */
 
@@ -750,10 +890,6 @@ div.morefilters h4 span.label {
 
 #content {
     clear: both;
-    line-height: 1.5em;
-    margin: 1em 0.25em 2em;
-    padding-left: 10%;
-    padding-right: 10%;
 }
 
 .actionMenuContent {
@@ -882,7 +1018,6 @@ div.morefilters h4 span.label {
 
 .legals {
     text-align: center;
-    margin-bottom: 20px;
 }
 
 .legals label {
@@ -890,9 +1025,6 @@ div.morefilters h4 span.label {
     padding-left: 10px;
 }
 
-.disclaimer {
-    padding-top: 20px;
-}
 
 #wrapper-aaf a {
     cursor: default;

@@ -2,13 +2,12 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
-  function(   $      ,   stretch          ,  viz                 ,  sharing                ,  editmodal) {
+define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
+  function(   $      ,   preview_layout          ,  viz                 ,  sharing                ,  editmodal) {
   // ==============================================================
     $(function() {
 
       viz.init();
-      stretch.init({ topPad: 60, bottomPad: 10 });
       sharing.init();
       editmodal.init();
 
@@ -27,6 +26,7 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
     });
 
     function pollImportStatus(pollID) {
+
       var $datasets = $('.dataset-import');
 
       $datasets.each(function (){
@@ -37,65 +37,69 @@ define(     ['jquery',  'js/bccvl-stretch', 'js/bccvl-visualiser', 'js/bccvl-sha
 
         $.ajax({
           url: jmUrl,
-          success: function (data) {
+          success: function (jobStatus) {
 
             var completed = false;
-
-            var jobStatus = data;
+            var failed = false;
 
             if (jobStatus == 'COMPLETED') {
                 completed = true;
             } else if (jobStatus == 'FAILED') {
                 completed = true;
+                failed = true;
             } else if (jobStatus == null) {
                 return;
             } else {
                 completed = false;
             }
+
             if (completed) {
                 dataset.removeClass('bccvl-small-spinner');
                 dataset.removeClass('dataset-import');
-
-                generateControlButtons(dataset);
+                generateControlButtons(dataset, failed);
             } else {
                 dataset.addClass('bccvl-small-spinner');
             }
-
           }
         });
-      })
+      });
     }
 
-    function generateControlButtons(dataset) {
+    function generateControlButtons(dataset, failed) {
       var $controlGroup = dataset.parent();
       var $tableLabel = $controlGroup.parent().find('.bccvl-table-label');
-      var dataUrl = dataset.attr('data-url');
-      var dmUrl = dataUrl + '/dm/getMetadata'
 
-      $.ajax({
-        url: dmUrl,
-        async: false,
-        success: function (data) {
-          var downloadButtonHTML = '<a href="' + data.file + '"><i class="icon-circle-arrow-down" title="download"></i></a>';
-          var publishButtonHTML = '<a href="' + data.url + '/dm/publish"><i class="icon-share-alt" title="Publish"></i></a>';
-          var sharingButtonHTML = '<a class="sharing-btn" href="' + data.url + '/@@sharing"><i class="icon-share" title="Sharing Options"></i></a>';
-          if (data.mimetype == 'text/csv') {
-            var visualiseButtonHTML = '<a href="#" class="bccvl-occurrence-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
+      if (!failed) {
+        var dmUrl = dataset.attr('data-url') + '/dm/getMetadata'
+
+        $.ajax({
+          url: dmUrl,
+          async: false,
+          success: function (data) {
+            var downloadButtonHTML = '<a href="' + data.file + '"><i class="icon-circle-arrow-down" title="download"></i></a>';
+            var publishButtonHTML = '<a href="' + data.url + '/dm/publish"><i class="icon-share-alt" title="Publish"></i></a>';
+            var sharingButtonHTML = '<a class="sharing-btn" href="' + data.url + '/@@sharing"><i class="icon-share" title="Sharing Options"></i></a>';
+            if (data.mimetype == 'text/csv') {
+              var visualiseButtonHTML = '<a href="#" class="bccvl-occurrence-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
+            }
+            else {
+              var visualiseButtonHTML = '<a href="#" class="bccvl-auto-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
+            }
+            var descriptionHTML = '<p>' + data.description + '</p>';
+            $controlGroup.append(publishButtonHTML);
+            $controlGroup.append(sharingButtonHTML);
+            $controlGroup.append(downloadButtonHTML);
+            $controlGroup.append(visualiseButtonHTML);
+            var $descriptionField = $tableLabel.find("p");
+            $descriptionField.replaceWith(descriptionHTML);
+            viz.init();
+            sharing.init();
           }
-          else {
-            var visualiseButtonHTML = '<a href="#" class="bccvl-auto-viz" data-viz-id="' + data.vizurl + '"><i class="icon-eye-open icon-link" title="preview"></i></a>';
-          }
-          var descriptionHTML = '<p>' + data.description + '</p>';
-          $controlGroup.append(publishButtonHTML);
-          $controlGroup.append(sharingButtonHTML);
-          $controlGroup.append(downloadButtonHTML);
-          $controlGroup.append(visualiseButtonHTML);
-          var $descriptionField = $tableLabel.find("p");
-          $descriptionField.replaceWith(descriptionHTML);
-          viz.init();
-          sharing.init();
-        }
-      });
+        });
+      } else {
+        var failIndicatorHTML = '<i class="icon-warning-sign" title="Import failed"/>';
+        $controlGroup.append(failIndicatorHTML);
+      }
     }
 
   // ==============================================================

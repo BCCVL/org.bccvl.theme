@@ -35,11 +35,11 @@
              <tr tal:define="exp python:view.experiment_details(item)">
                <td style="width: 13%;" tal:content="python: item.created.strftime('%b %d, %Y %I:%M %p')" />
                  <td class="bccvl-table-label">
-                   <h1 tal:attributes="data-target string:#${item_id}">
+                   <p tal:attributes="data-target string:#${item_id}">
                      <tal:experiment_title content="item/Title" />
                        <i class="taxonomy" tal:content="exp/species_occurrence" />
                        <small tal:content="exp/functions" />
-                   </h1>
+                   </p>
                    <div tal:attributes="id item_id">
                      <p class="bccvl-experiment-parameters">
                        <tal:species_absence content="exp/species_absence" />,
@@ -48,7 +48,7 @@
                      <p class="bccvl-experiment-summary" tal:content="item/Description" />
                    </div>
                  </td>
-                 <td class="bccvl-table-label"><h1 tal:content="exp/type" /></td>
+                 <td class="bccvl-table-label"><p tal:content="exp/type" /></td>
                  <td class="bccvl-table-controls">
                    <a tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
                      <i class="icon-chevron-right" title="view status &amp; results"></i>
