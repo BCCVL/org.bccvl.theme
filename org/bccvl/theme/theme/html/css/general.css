@@ -97,6 +97,12 @@ a.active, a.active:hover {
 .bccvl-main {
     padding-bottom:2em;
 }
+.aaf-logo-link {
+    margin-top:1em;
+}
+.login .bccvl-main, .dashboard .bccvl-main {
+    padding:2% 0 4%;
+}
 /* main navbar ----------------------------------------------------------- */
 
 .navbar {
