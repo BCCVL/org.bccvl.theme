@@ -94,5 +94,19 @@ define(
 
         // Force a change on page load so we populate experiments 
         $('select.bccvl-inputdatasettype').change();
+
+        // Listener for change events when layer files are selected - so we can create hidden inputs
+        $('input.bccvl-inputfile').on("change", function() {
+            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs');
+            $hiddenInputsDiv.empty();
+
+            // Choose all selected layers
+            var $selectedLayerCheckboxes = $('input.bccvl-inputfile').filter(':checked');
+            $.each($selectedLayerCheckboxes, function(i, layerCheckbox) {
+                var name = "form.widgets.dataset." + i;
+                var html = '<input name="' + name + '" value="' + $(layerCheckbox).val() + '" type="hidden" />';
+                $hiddenInputsDiv.append(html);
+            });
+        });
     });
 });
