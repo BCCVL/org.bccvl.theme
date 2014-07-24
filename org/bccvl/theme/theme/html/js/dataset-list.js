@@ -2,8 +2,8 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
-  function(   $      ,   preview_layout          ,  viz                 ,  sharing                ,  editmodal) {
+define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'OpenLayers', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
+  function(   $      ,   preview_layout          ,  viz                 ,  vizmap                 ,  sharing                ,  editmodal           ) {
   // ==============================================================
     $(function() {
 

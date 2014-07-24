@@ -19,7 +19,7 @@ define(     ['jquery', 'bootstrap'],
             var footerHeight = $('body>footer').outerHeight(true);
             // preview and list height
             var paneHeight = windowHeight - (headerHeight+breadcrumbHeight+tabsHeight+mainPadding+footerHeight);
-            $('.window-layout .bccvl-my-datasets [class*="span"]').css('height',''+paneHeight+'px');
+            $('.window-layout .bccvl-my-datasets [class*="span"], #map').css('height',''+paneHeight+'px');
         }
         $(document).ready(function(){
             layoutResize();
