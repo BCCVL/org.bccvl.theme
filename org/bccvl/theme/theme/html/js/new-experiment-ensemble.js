@@ -23,7 +23,7 @@ define(
             html += '</td>';
             html += '<td class="bccvl-table-label">';
             html +=  '<label for="'+experiment.uuid+'">'
-            html +=   '<h1>'+experiment.name+'</h1>'
+            html +=   '<p>'+experiment.name+'</p>'
             html +=  '</label>'
             html += '</td>';
             html += '<td class="bccvl-table-controls">';
@@ -39,7 +39,7 @@ define(
             html += '</td>';
             html += '<td class="bccvl-table-label">';
             html +=  '<label for="'+result.uuid+'">'
-            html +=   '<h1>'+result.title+'</h1>'
+            html +=   '<p>'+result.title+'</p>'
             html +=  '</label>'
             html += '</td>';
             html += '<td class="bccvl-table-controls">';
