@@ -107,6 +107,10 @@ define(
                 var html = '<input name="' + name + '" value="' + $(layerCheckbox).val() + '" type="hidden" />';
                 $hiddenInputsDiv.append(html);
             });
+
+            // Update the count of selected inputs
+            var $thresholdCountInput = $('input[name="form.widgets.dataset.count"]');
+            $thresholdCountInput.attr('value', $selectedLayerCheckboxes.length);
         });
     });
 });

@@ -219,24 +219,27 @@
                 </div>
 
                 <div class="span8">
+                  <div class="control-group">
+                    <table class="table table-hover bccvl-inputfiletable">
+                      <thead>
+                        <tr>
+                          <th colspan="3">Select available files</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
 
-                  <table class="table table-hover bccvl-inputfiletable">
-                    <thead>
-                      <tr>
-                        <th colspan="3">Select available files</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
+                    <div style="display: none">
+                      <div id="bccvl-hiddeninputs" style="display: none">
+                        <!-- Javascript actually creates the dataset inputs here  -->
+                      </div>
 
-                </div>
-
-              </div>
-
-              <div style="display: none">
-                <div id="bccvl-hiddeninputs" style="display: none">
-                  <!-- Javascript actually creates the dataset inputs here  -->
+                      <!-- Dynamically updated by javascript, to keep track of how many projections layers have been selected. -->
+                      <input type="number" id="form.widgets.dataset.count" name="form.widgets.dataset.count" value="0"
+                             data-parsley-min="1" data-parsley-error-message="Please select at least 1 map layer."/>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
