@@ -285,7 +285,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function renderMap(url){
-
             // Remove all the existing data layers, keep the baselayers and map.
             var dataLayers = map.getLayersBy('isBaseLayer', false);
             $.each(dataLayers, function(i){
@@ -297,17 +296,23 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             request.filename = request.pathname.split('@@')[0];
 
             $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
-
+                console.log(data);
                 var myLayers = [];
-
                 var filepath = data.file;
-
-                $.each( data.layers, function(namespace, layer){
+                // check for layers metadata, if none exists than the request is returning a single layer
+                if ( $.isEmptyObject(data.layers) ) {
+                    //single layer
+                    var layerName;
+                    if(data.description!=''){
+                        layerName = layer.description
+                    } else {
+                        layerName = 'HEATMAP';
+                    }
                     var newLayer = new OpenLayers.Layer.WMS(
-                        ''+layer.label+'', // Layer Name
+                        ''+layerName+'', // Layer Name
                         (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
                         {   
-                            DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
+                            DATA_URL: data.vizurl,   // The data_url the user specified
                             SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
                             layers: "DEFAULT",
                             transparent: "true",
@@ -315,12 +320,40 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             version: '1.3.0'
                         },
                         {
-                            isBaseLayer: false,
-                            visibility: false
+                            isBaseLayer: false
                         }
                     );
                     myLayers.push(newLayer);
-                })
+                } else {
+                    // multiple layers
+                    var i = 0;
+                    $.each( data.layers, function(namespace, layer){
+                        i += 1;
+                        var visibleIfFirst;
+                        if (i == 1){
+                            visibleIfFirst = true;
+                        } else {
+                            visibleIfFirst = false;
+                        }
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layer.label+'', // Layer Name
+                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            {   
+                                DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
+                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png",
+                                version: '1.3.0'
+                            },
+                            {
+                                isBaseLayer: false,
+                                visibility: visibleIfFirst
+                            }
+                        );
+                        myLayers.push(newLayer);
+                    })
+                }
 
                 map.addLayers(myLayers);
             });
