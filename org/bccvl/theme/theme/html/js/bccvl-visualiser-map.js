@@ -6,7 +6,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
-        $('.bccvl-auto-viz').click(function(){
+        $('.bccvl-auto-viz, .bccvl-occurrence-viz').click(function(){
             renderMap($(this).data('viz-id'));
         });
 
@@ -285,6 +285,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function renderMap(url){
+            console.log(url);
             // Remove all the existing data layers, keep the baselayers and map.
             var dataLayers = map.getLayersBy('isBaseLayer', false);
             $.each(dataLayers, function(i){
@@ -296,6 +297,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             request.filename = request.pathname.split('@@')[0];
 
             $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
+                console.log(data);
                 var myLayers = [];
                 var filepath = data.file;
                 // check for layers metadata, if none exists than the request is returning a single layer
@@ -315,8 +317,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, data.filename),
                             layers: "DEFAULT",
                             transparent: "true",
-                            format: "image/png",
-                            version: '1.3.0'
+                            format: "image/png"
                         },
                         {
                             isBaseLayer: false
@@ -346,8 +347,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                                 SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.filename),
                                 layers: "DEFAULT",
                                 transparent: "true",
-                                format: "image/png",
-                                version: '1.3.0'
+                                format: "image/png"
                             },
                             {
                                 isBaseLayer: false,
