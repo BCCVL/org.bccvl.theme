@@ -1,7 +1,7 @@
 <footer>
     <div class="container-fluid">
         <small>
-            <a href="http://www.bccvl.org.au/legals">Terms and Conditions</a> | 
+            <a href="http://www.bccvl.org.au/bccvl/legals/">Terms and Conditions</a> | 
             <a href="http://www.bccvl.org.au/contact">Help</a> | 
             <a href=""
                tal:attributes="href string:${context/portal_url}/contact-info">Feedback Form</a> | 
