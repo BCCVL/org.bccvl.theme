@@ -134,7 +134,10 @@
             <h1>Upload Dataset</h1>
 
             <!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
+            <div class="bccvl-datasetupload-prompt alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Please select a dataset type to display an upload form.</strong> 
+            </div>
             <form class="form-horizontal">
               
               <div class="control-group">
@@ -149,10 +152,7 @@
                   </div>
                 </div>
             </form>
-            <div class="bccvl-datasetupload-prompt alert" >
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <strong>Please select a dataset type above to display an upload form.</strong> 
-            </div>
+            
             <div class="bccvl-datasetuploadspeciesform hidden">
 
               <form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
