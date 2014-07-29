@@ -630,7 +630,8 @@ div.olControlAttribution {
     font-weight: 300;
     font-size:11px;
     line-height: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    cursor:default;
 }
 .olControlLayerSwitcher .minimizeDiv {
     background-color: rgba(0, 60, 136, 0.5);

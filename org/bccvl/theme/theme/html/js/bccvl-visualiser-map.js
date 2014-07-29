@@ -235,9 +235,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
             var standard_range;
 
-            if(/bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(layer.name)){
+            if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(layer.name)){
                 var standard_range = 'rainfall';
-            } else if(/bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(layer.name)){
+            } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(layer.name)){
                 var standard_range = 'temperature';
             } else {
                 var standard_range = 'soil';
@@ -277,7 +277,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 }
             }
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-            $('#'+layer.div.id+'').parents('.olMapViewport').append(legend);
+            $('#map .olMapViewport').append(legend);
         }
 
         /* END LEGEND FUNCTION */
@@ -296,7 +296,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             request.filename = request.pathname.split('@@')[0];
 
             $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
-                console.log(data);
                 var myLayers = [];
                 var filepath = data.file;
                 // check for layers metadata, if none exists than the request is returning a single layer
@@ -313,7 +312,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
                         {   
                             DATA_URL: data.vizurl,   // The data_url the user specified
-                            SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
+                            SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, data.filename),
                             layers: "DEFAULT",
                             transparent: "true",
                             format: "image/png",
@@ -323,6 +322,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             isBaseLayer: false
                         }
                     );
+                    var legend = {}; legend.name = data.filename;
+                    createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
                     myLayers.push(newLayer);
                 } else {
                     // multiple layers
@@ -332,6 +333,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         var visibleIfFirst;
                         if (i == 1){
                             visibleIfFirst = true;
+                            var legend = {}; legend.name = layer.label;
+                            createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
                         } else {
                             visibleIfFirst = false;
                         }
@@ -340,7 +343,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
                             {   
                                 DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
-                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
+                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.filename),
                                 layers: "DEFAULT",
                                 transparent: "true",
                                 format: "image/png",
@@ -367,9 +370,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     dataLayer.layer.visibility = true;
                     dataLayer.layer.display(true);
                     // create a new legend if one hasn't already been generated.
-                    if (dataLayer.layer.div.getElementsByClassName('olLegend').length == 0){
-                        createLegend(dataLayer.layer,styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
-                    }
+                    //if (dataLayer.layer.div.getElementsByClassName('olLegend').length == 0){
+                        createLegend(dataLayer.layer, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                    //}
                 }     
                 else {
                     dataLayer.layer.visibility = false;
