@@ -6,8 +6,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
-        $('.bccvl-auto-viz, .bccvl-occurrence-viz').click(function(){
-            renderMap($(this).data('viz-id'));
+        $('.bccvl-auto-viz').click(function(){
+            renderMap($(this).data('viz-id'), 'auto');
+        });
+
+         $('.bccvl-occurrence-viz').click(function(){
+            renderMap($(this).data('viz-id'), 'occurence');
         });
 
         // CREATE BASE MAP
@@ -284,8 +288,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function renderMap(url){
-            console.log(url);
+        function renderMap(url, type){
+
             // Remove all the existing data layers, keep the baselayers and map.
             var dataLayers = map.getLayersBy('isBaseLayer', false);
             $.each(dataLayers, function(i){
@@ -297,7 +301,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             request.filename = request.pathname.split('@@')[0];
 
             $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
-                console.log(data);
                 var myLayers = [];
                 var filepath = data.file;
                 // check for layers metadata, if none exists than the request is returning a single layer
@@ -307,24 +310,40 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     if(data.description!=''){
                         layerName = layer.description
                     } else {
-                        layerName = 'HEATMAP';
+                        layerName = 'Data Overlay';
                     }
-                    var newLayer = new OpenLayers.Layer.WMS(
-                        ''+layerName+'', // Layer Name
-                        (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
-                        {   
-                            DATA_URL: data.vizurl,   // The data_url the user specified
-                            SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, data.filename),
-                            layers: "DEFAULT",
-                            transparent: "true",
-                            format: "image/png"
-                        },
-                        {
-                            isBaseLayer: false
-                        }
-                    );
-                    var legend = {}; legend.name = data.filename;
-                    createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                    if (type !== 'occurence'){
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layerName+'', // Layer Name
+                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            {   
+                                DATA_URL: data.vizurl,   // The data_url the user specified
+                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, data.filename),
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png"
+                            },
+                            {
+                                isBaseLayer: false
+                            }
+                        );
+                        var legend = {}; legend.name = data.filename;
+                        createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                    } else {
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layerName+'', // Layer Name
+                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            {   
+                                DATA_URL: data.vizurl,   // The data_url the user specified
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png"
+                            },
+                            {
+                                isBaseLayer: false
+                            }
+                        );
+                    }
                     myLayers.push(newLayer);
                 } else {
                     // multiple layers
