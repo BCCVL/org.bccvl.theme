@@ -101,7 +101,7 @@
                 <!-- TODO: helper method or customisable dict? or agree on classes? -->
                 <tal:block
                     tal:define="state item/job_state;
-                                klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import';
+                                klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import bccvl-small-spinner';
                                 klass python: '' if state in (None, 'COMPLETED') else klass;
                                 title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
                                 title python: '' if state in (None, 'COMPLETED') else title;">
