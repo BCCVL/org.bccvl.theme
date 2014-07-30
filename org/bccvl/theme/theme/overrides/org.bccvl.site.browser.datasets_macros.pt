@@ -63,15 +63,6 @@
                        publish/retract -->
             <td class="bccvl-table-controls"
                 tal:define="complete python: item.job_state in ('COMPLETED', None)">
-                <a tal:define="action item_obj/dataset_tools/get_transition;
-                               icon_class python:'publish' in action and 'icon-share-alt' or 'icon-remove';
-                               icon_title python: 'publish' in action and 'Publish' or 'Unpublish';"
-                    tal:condition="python: complete and action"
-                    tal:attributes="href string:${item_url}/dm/${icon_title}">
-                    <i class="icon-share-alt" title="Publish"
-                       tal:attributes="class icon_class;
-                                       title icon_title"></i>
-                </a>
                 <!-- TODO: needs update, action is now dict -->
                 <a class="sharing-btn" href="#"
                    tal:attributes="href action/url"
