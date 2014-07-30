@@ -73,9 +73,19 @@ define(
 
         // Listener for change events on the source experiment type drop-down
         $('select.bccvl-inputdatasettype').on("change", function() {
+            // Show the source experiments
             $('table.bccvl-sourceexperimenttable tbody').find('tr').hide();
             var expType = $(this).val();
             $('table.bccvl-sourceexperimenttable tbody').find('tr[data-experimenttype="'+expType+'"]').show();
+
+            // Clear the selected source experiments
+            $('input.bccvl-inputexperiment').prop('checked', false);
+
+            // Clear the selected files
+            $.each($('table.bccvl-inputfiletable tbody tr'), function(i, tr) {
+                $(tr).find('input:checkbox').prop('checked', false).change();
+                $(tr).hide();
+            });
         });
 
         // Listener for change events on source experiment checkboxes
@@ -97,7 +107,7 @@ define(
 
         // Listener for change events when layer files are selected - so we can create hidden inputs
         $('input.bccvl-inputfile').on("change", function() {
-            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs');
+            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs'); 
             $hiddenInputsDiv.empty();
 
             // Choose all selected layers
