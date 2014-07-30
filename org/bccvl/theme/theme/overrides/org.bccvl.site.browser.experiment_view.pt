@@ -49,8 +49,11 @@
                          <a class="bccvl-auto-viz"
                             title="Preview this file"
                             data-viz-id="#downloadurl"
-                            tal:attributes="data-viz-id visurl"
-                            tal:condition="python: item.Format() not in (None, 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html') or item.file.filename.endswith('.html.zip') ">
+                            data-mimetype="application/octet-tream"
+                            tal:attributes="data-viz-id visurl;
+                                            data-mimetype item/Format"
+                            tal:condition="python: item.Format() not
+                                           in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html') or item.file.filename.endswith('.html.zip') ">
                             <i class="icon-eye-open icon-link"></i>
                          </a>
                        </td>
