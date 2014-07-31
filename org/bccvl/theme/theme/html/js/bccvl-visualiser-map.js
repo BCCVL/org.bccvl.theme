@@ -34,28 +34,31 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         australia_bounds = australia_bounds.transform(geographic, mercator);
         var zoom_bounds = australia_bounds;
 
-        map = new OpenLayers.Map('map', {
-            projection: mercator,
-            eventListeners: {
-                "changelayer": mapLayerChanged
-            }
-        });
+        setTimeout(function(){
+           map = new OpenLayers.Map('map', {
+                projection: mercator,
+                eventListeners: {
+                    "changelayer": mapLayerChanged
+                }
+            });
 
-        loading_panel = new OpenLayers.Control.LoadingPanel();
-        map.addControl(loading_panel);
+            loading_panel = new OpenLayers.Control.LoadingPanel();
+            map.addControl(loading_panel);
 
-        // Base layers
-        var osm = new OpenLayers.Layer.OSM();
-        var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
+            // Base layers
+            var osm = new OpenLayers.Layer.OSM();
+            var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
 
-        var ls = new OpenLayers.Control.LayerSwitcher();
+            var ls = new OpenLayers.Control.LayerSwitcher();
 
-        map.addLayers([osm, gmap]);
-        map.addControl(ls);
-        map.zoomToExtent(zoom_bounds);
+            map.addLayers([osm, gmap]);
+            map.addControl(ls);
+            map.zoomToExtent(zoom_bounds);
 
-        // Make the layer switcher open by default
-        ls.maximizeControl();
+            // Make the layer switcher open by default
+            ls.maximizeControl(); 
+        }, 300);
+        
 
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
@@ -74,7 +77,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             result will always have +1 threshold and +2 color values on top of your desired number of colour values.
         */
 
-        function generateRangeArr(minVal, maxVal, steps, standard_range){
+        function generateRangeArr(standard_range, minVal, maxVal, steps){
 
             if (standard_range == 'rainfall'){
                 // rainfall BOM standard range
@@ -98,7 +101,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             return rangeArr;
         }
 
-        function generateColorArr(steps, startpoint, midpoint, endpoint, standard_range){
+        function generateColorArr(standard_range, steps, startpoint, midpoint, endpoint){
             /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
             if (standard_range == 'rainfall'){
                 // rainfall BOM standard colours
@@ -201,7 +204,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             return colorArr;
         }
 
-        function generateSLD(minVal, maxVal, steps, startpoint, midpoint, endpoint, filename) {
+        function generateSLD(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint ) {
             var standard_range;
 
             if(/bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(filename)){
@@ -212,8 +215,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 var standard_range = 'soil';
             }
 
-            var rangeArr = generateRangeArr(minVal, maxVal, steps, standard_range);
-            var colorArr = generateColorArr(steps, startpoint, midpoint, endpoint, standard_range);
+            var rangeArr = generateRangeArr(standard_range, minVal, maxVal, steps);
+            var colorArr = generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
         
             var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.7</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
 
@@ -247,8 +250,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 var standard_range = 'soil';
             }
             // Get hex color range and map values
-            var rangeArr = generateRangeArr(minVal, maxVal, steps, standard_range);
-            var colorArr = generateColorArr(steps, startpoint, midpoint, endpoint, standard_range);
+            var rangeArr = generateRangeArr(standard_range, minVal, maxVal, steps);
+            var colorArr = generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
             // Build legend obj
             var legend = document.createElement('div');
             legend.className = 'olLegend';
@@ -295,14 +298,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             $.each(dataLayers, function(i){
                 map.removeLayer(dataLayers[i]);
             })
+            // Remove any existing legends.
+            $('.olLegend').remove();
 
             var request = document.createElement('a');
             request.href = url;
             request.filename = request.pathname.split('@@')[0];
 
+            var responseSuccess = false;
+
             $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
+                responseSuccess = true;
+
                 var myLayers = [];
                 var filepath = data.file;
+                
                 // check for layers metadata, if none exists than the request is returning a single layer
                 if ( $.isEmptyObject(data.layers) ) {
                     //single layer
@@ -318,7 +328,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
                             {   
                                 DATA_URL: data.vizurl,   // The data_url the user specified
-                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, data.filename),
+                                SLD_BODY: generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
                                 layers: "DEFAULT",
                                 transparent: "true",
                                 format: "image/png"
@@ -354,7 +364,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         if (i == 1){
                             visibleIfFirst = true;
                             var legend = {}; legend.name = layer.label;
-                            createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                            createLegend(legend, layer.min, layer.max, 20);
                         } else {
                             visibleIfFirst = false;
                         }
@@ -363,7 +373,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
                             {   
                                 DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
-                                SLD_BODY: generateSLD(styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.filename),
+                                SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
                                 layers: "DEFAULT",
                                 transparent: "true",
                                 format: "image/png"
@@ -379,6 +389,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
                 map.addLayers(myLayers);
             });
+            setTimeout(function() {
+                if (!responseSuccess) {
+                    alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
+                }
+            }, 5000);
         }
         
 
