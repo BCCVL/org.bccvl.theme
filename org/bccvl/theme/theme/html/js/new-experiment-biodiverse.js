@@ -114,7 +114,7 @@ define(
                     var html = '';
                     html += '<tr">';
                     html +=  '<td class="bccvl-table-choose" >';
-                    html +=   '<input id="' + id + '" name="' + name + '" data-parsley-type="number" class="bccvl-threshold required" min="0" style="width: 130px;">';
+                    html +=   '<input id="' + id + '" name="' + name + '" data-parsley-type="number" class="bccvl-threshold required" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
                     html +=   '<p>' + layerName + '</p>';
@@ -138,10 +138,11 @@ define(
                         // Allow user-entered values, > 0 and <= 1000
                         createSearchChoice: function(term, data) {
                             var val = parseFloat(term);
-                            if (term && term > 0 && term <= 1000) {
+                            // TODO: fix float validation, there is no range here (at least not yet)
+                            //if (term && term > 0 && term <= 1000) {
                                 return {id: term, text: term};
-                            }
-                            return null;
+                            //}
+                            // return null;
                         }
                     });
                 });
