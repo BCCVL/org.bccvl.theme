@@ -15,11 +15,11 @@
       <tr><th colspan="2" tal:content="view/field/title"></th></tr>
     </thead>
     <tbody>
-      <tr class="warning">
+      <!--<tr class="warning">
         <td colspan="2">
           <p><small>Some projection points are not covered by every variable.</small></p>
         </td>
-      </tr>
+      </tr>-->
       <!-- view/notselectedItems -->
       <!-- view/selectedItems -->
         <tr tal:repeat="entry view/items">

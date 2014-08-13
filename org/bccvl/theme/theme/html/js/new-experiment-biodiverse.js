@@ -2,17 +2,14 @@
 // main JS for the new biodiverse experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway',
+    ['jquery', 'js/bccvl-wizard-tabs', 
      'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
      'select2'],
-    function($, wiztabs, fadeaway, formvalidator) {
+    function($, wiztabs, formvalidator) {
 
 	$(function() {
 
 	    console.log('biodiverse experiment page behaviour loaded.');
-
-            // init the fadeaway instructions
-            fadeaway.init();
 
             // hook up the wizard buttons
             wiztabs.init();
