@@ -32,7 +32,8 @@
         <label for="inputid"
                tal:attributes="for item/id">
           <p tal:content="item/label"><strong>Label</strong></p>
-          <p class="broken">provenance and description</p>
+          <p tal:condition="item/md/rows">rows:<i tal:content="item/md/rows"></i></p>
+          <p tal:condition="item/md/scientificname">species:<i tal:content="item/md/scientificname"></i></p>
         </label>
       </td>
 
