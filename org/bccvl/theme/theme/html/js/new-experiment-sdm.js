@@ -50,7 +50,7 @@ define(
                                 $(c).val($(c).attr('data-default'));
                                 $(c).parsley().validate();
                             });
-                            
+
                             $configBlock.hide(250);
                         }
                     } else {
@@ -175,8 +175,8 @@ define(
                             // fetch metadata for this dataset, to see what env layers it holds
                             var layerReq = $.ajax({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
                             layerReq.done( function(list) {
-                                if (list.layers) {
-                                    // collect layers by name (for sorting them)
+                                // collect layers by name (for sorting them)
+                                if (Object.keys(list.layers).length) {
                                     var layerNames = [];
                                     var layers = {};
                                     // render each layer
@@ -193,6 +193,13 @@ define(
                                     for(var index = layerNames.length - 1; index >= 0; index--) {
                                         $header.after(layers[layerNames[index]]);
                                     }
+                                } else if (list.layer) {
+                                    var name = list.label;
+                                    var fileName = '';
+                                    var zipFile = list.file ;
+                                    var key = list.layer ;
+                                    layer = renderLayerRow(token, key, name, fileName, zipFile);
+                                    $header.after(layer);
                                 } else {
                                     alert('There are no layers in selected dataset.');
                                 }
