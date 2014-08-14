@@ -125,13 +125,13 @@
       <section class="bccvl-experimentdetails tabbable">
         <form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
-          <!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
+          <!-- the experiment form wizardy tabs, with the prev/next buttons -->
           <!-- tabs -->
           <div class="bccvl-wizardtabs">
             <div class="bccvl-wizardtabs-navbtns">
-              <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i>previous</button>
-              <button class="btn bccvl-wizardtabs-next" type="button">next<i class="icon-chevron-right"></i></button>
+              <button class="btn bccvl-wizardtabs-prev" type="button"><i class="icon-chevron-left"></i> Previous</button>
+              <button class="btn bccvl-wizardtabs-next" type="button">Next <i class="icon-chevron-right"></i></button>
             </div>
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
@@ -147,14 +147,24 @@
             <!-- page: meta  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
             <div class="tab-pane active" id="tab-meta">
 
-              <div class="row-fluid">
-                <p class="span12 bccvl-tab-description">
-                  Give your experiment a title and description.
-                </p>
-              </div>
+              <!--<div class="row-fluid">
+                
+                <div class="span3">
+                  <p style="text-align:right;"><a href="#" target="_blank" class="btn btn-info"><i class="icon-info-sign"></i> What is biodiverse?</a></p>
+                  <p style="text-align:right;"><a href="#" target="_blank" class="btn btn-info"><i class="icon-info-sign"></i> What does it calculate?</a></p>
+                </div>
+                
+              </div>-->
 
               <div class="row-fluid">
-                <div class="span12">
+                <div class="span6">
+                  <h3>To calculate biodiversity statistics on the results of your SDM or climate change experiment, the BCCVL has implemented a statistical tool called 'Biodiverse'. </h3>
+                  <p>This program calculates two indices of biodiversity currently; species richness and endemism. Species richness is simply the number of species present in a sample, community, or taxonomic group, and is one component of the concept of species diversity. Endemism is the ecological state of a species being unique to a defined geographic location.</p>
+                </div>
+                <div class="span6">
+                  <p class="bccvl-tab-description">
+                    Give your experiment a title and description.
+                  </p>
                   <div class="control-group">
                     <input type="text" name="expName" class="bccvl-expname input-block-level"
                            required="required" data-notblank="true" data-trigger="change keyup"
@@ -179,7 +189,7 @@
             <div class="tab-pane active" id="tab-source-projection">
               <div class="row-fluid">
                 <p class="span12 bccvl-tab-description">
-                  Select the species datasets
+                  Select the SDM or Climate Change experiments.
                 </p>
               </div>
 
@@ -253,7 +263,7 @@
 
               <div class="row-fluid">
                 <p class="span12 bccvl-tab-description">
-                  Configure
+                  Configure your experiment.
                 </p>
               </div>
 

@@ -53,7 +53,12 @@
                    <a tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
                      <i class="icon-chevron-right" title="view status &amp; results"></i>
                    </a>
-                   <a class="sharing-btn" tal:attributes="href string:${item_url}/@@sharing; data-friendlyname string:sharing_${item/Title}">
+                   <a class="sharing-btn"
+                      tal:attributes="href action/url;
+                                      data-friendlyname string:sharing_${item/Title}"
+                      tal:condition="python: action.get('available')"
+                      tal:define="item_obj item/getObject;
+                                  action item_obj/dataset_tools/local_roles_action;">
                      <i class="icon-share" title="Share Results"></i>
                    </a>
                  </td>

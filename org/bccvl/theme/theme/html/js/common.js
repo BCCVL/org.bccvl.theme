@@ -19,6 +19,7 @@ requirejs.config({
         'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
         'jquery-form':          'jquery-form/jquery.form.min',
         'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
+        'jquery-timer':         'jquery-timer/jquery.timer',
         'select2':              'select2/select2.min',
         'OpenLayers':           'openlayers/OpenLayers'
     },
@@ -29,6 +30,7 @@ requirejs.config({
         'jquery-xmlrpc':        ['jquery'],
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
+        'jquery-timer':         ['jquery'],
         'select2':              ['jquery']
     }
 });

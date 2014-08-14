@@ -3,10 +3,10 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs',
-     'js/bccvl-stretch', 'js/bccvl-fadeaway', 'js/bccvl-search',
+     'js/bccvl-stretch', 'js/bccvl-search',
      'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
      'select2'],
-    function($, viz, wiztabs, stretch, fadeaway, search, formvalidator) {
+    function($, viz, wiztabs, stretch, search, formvalidator) {
 
     $(function() {
 
@@ -17,9 +17,6 @@ define(
 
         // init the visualiser
         viz.init();
-
-        // init the fadeaway instructions
-        fadeaway.init();
 
         // hook up the wizard buttons
         wiztabs.init();

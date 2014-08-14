@@ -134,7 +134,10 @@
             <h1>Upload Dataset</h1>
 
             <!-- upload species form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
+            <div class="bccvl-datasetupload-prompt alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Please select a dataset type to display an upload form.</strong> 
+            </div>
             <form class="form-horizontal">
               
               <div class="control-group">
@@ -149,10 +152,7 @@
                   </div>
                 </div>
             </form>
-            <div class="bccvl-datasetupload-prompt alert" >
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <strong>Please select a dataset type above to display an upload form.</strong> 
-            </div>
+            
             <div class="bccvl-datasetuploadspeciesform hidden">
 
               <form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
@@ -234,7 +234,7 @@
                 <div class="control-group">
                   <div class="legals controls">
                     <input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
-                    <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                    <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                   </div>
                 </div>
 
@@ -316,7 +316,7 @@
                   </div>
                 </div>
 
-                <label class="control-label">Temporal Start Date</label>
+                <label class="control-label">Start Date</label>
                 <div class="controls">
                   <div class="control-group">
                     <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day"/>
@@ -332,7 +332,7 @@
                   </div>
                 </div>
 
-                <label class="control-label">Temporal End Date</label>
+                <label class="control-label">End Date</label>
                 <div class="controls">
                   <div class="control-group">
                     <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day"/>
@@ -367,7 +367,7 @@
                 <div class="control-group">
                   <div class="legals controls">
                     <input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
-                    <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                    <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                   </div>
                 </div>
 
@@ -429,7 +429,7 @@
 
                 <div class="legals">
                   <input id="traits-legal-checkbox" name="traits-legal-checkbox" type="checkbox" />
-                  <label for="traits-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/legals" target="_blank">Terms and Conditions</a></label>
+                  <label for="traits-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                 </div>
 
                 <div class="control-group">

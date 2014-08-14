@@ -70,15 +70,6 @@
                        publish/retract -->
             <td class="bccvl-table-controls"
                 tal:define="complete python: item.job_state in ('COMPLETED', None)">
-                <a tal:define="action item_obj/dataset_tools/get_transition;
-                               icon_class python:'publish' in action and 'icon-share-alt' or 'icon-remove';
-                               icon_title python: 'publish' in action and 'Publish' or 'Unpublish';"
-                    tal:condition="python: complete and action"
-                    tal:attributes="href string:${item_url}/dm/${icon_title}">
-                    <i class="icon-share-alt" title="Publish"
-                       tal:attributes="class icon_class;
-                                       title icon_title"></i>
-                </a>
                 <!-- TODO: needs update, action is now dict -->
                 <a class="sharing-btn" href="#"
                    tal:attributes="href action/url"
@@ -117,7 +108,7 @@
                 <!-- TODO: helper method or customisable dict? or agree on classes? -->
                 <tal:block
                     tal:define="state item/job_state;
-                                klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import';
+                                klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import bccvl-small-spinner';
                                 klass python: '' if state in (None, 'COMPLETED') else klass;
                                 title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
                                 title python: '' if state in (None, 'COMPLETED') else title;">

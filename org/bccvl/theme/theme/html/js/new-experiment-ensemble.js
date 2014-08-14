@@ -2,15 +2,12 @@
 // main JS for the new ensemble experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-fadeaway', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
-    function($, wiztabs,                fadeaway,            formvalidator) {
+    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
+    function($, wiztabs,                formvalidator) {
 
     $(function() {
 
         console.log('ensemble experiment page behaviour loaded.');
-
-        // init the fadeaway instructions
-        fadeaway.init();
 
         // hook up the wizard buttons
         wiztabs.init();
@@ -73,9 +70,19 @@ define(
 
         // Listener for change events on the source experiment type drop-down
         $('select.bccvl-inputdatasettype').on("change", function() {
+            // Show the source experiments
             $('table.bccvl-sourceexperimenttable tbody').find('tr').hide();
             var expType = $(this).val();
             $('table.bccvl-sourceexperimenttable tbody').find('tr[data-experimenttype="'+expType+'"]').show();
+
+            // Clear the selected source experiments
+            $('input.bccvl-inputexperiment').prop('checked', false);
+
+            // Clear the selected files
+            $.each($('table.bccvl-inputfiletable tbody tr'), function(i, tr) {
+                $(tr).find('input:checkbox').prop('checked', false).change();
+                $(tr).hide();
+            });
         });
 
         // Listener for change events on source experiment checkboxes
@@ -97,7 +104,7 @@ define(
 
         // Listener for change events when layer files are selected - so we can create hidden inputs
         $('input.bccvl-inputfile').on("change", function() {
-            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs');
+            var $hiddenInputsDiv = $('div#bccvl-hiddeninputs'); 
             $hiddenInputsDiv.empty();
 
             // Choose all selected layers
@@ -107,6 +114,10 @@ define(
                 var html = '<input name="' + name + '" value="' + $(layerCheckbox).val() + '" type="hidden" />';
                 $hiddenInputsDiv.append(html);
             });
+
+            // Update the count of selected inputs
+            var $thresholdCountInput = $('input[name="form.widgets.dataset.count"]');
+            $thresholdCountInput.attr('value', $selectedLayerCheckboxes.length);
         });
     });
 });
