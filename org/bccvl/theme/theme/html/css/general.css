@@ -869,7 +869,7 @@ ul.facetmenu li input {
     float: right;
 }
 
-ul.facetmenu
+ul.facetmenu {}
 
 div.searchfilter h3 {
     font-size: 110%;
@@ -880,26 +880,55 @@ div.searchfilter h3 {
 
 div.morefilters h4 {
     background-color: #F5F5F5;
-    border-bottom: 1px solid #CCCCCC;
-    color: #000099;
     cursor: pointer;
-    font-size: 0.9em;
-    margin: 0;
     padding: 0.2em 0.5em;
-    border-radius: 15px;
+    color: #009FE3;
+    font-family: Helvetica, sans-serif;
 }
 
 div.morefilters h5 {
-    font-size: 0.8em;
-    font-style: italic;
-    font-weight: normal;
-    margin-right: 1em;
-    margin-top: -1.8em;
-    text-align: right;
+    display:none;
 }
 
 div.morefilters h4 span.label {
-    text-decoration: underline;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    color: #009FE3;
+    font-family: Helvetica, sans-serif;
+    margin-top: .4em;
+    display: inline-block;
+}
+
+.bccvl-kbsearch .facets {
+  border:1px solid #ddd;
+  padding:0 1em
+}
+.bccvl-kbsearch .facets .instructions {
+  color:#666;
+  font-size:0.9em;
+  line-height:1.4em
+}
+.bccvl-kbsearch .facets h3 {
+  font-size:2em;
+  text-transform:capitalize;
+}
+.bccvl-kbsearch .facets .searchfilter h3 {
+  font-size:1.2em;
+  color: #3baa35;
+  text-transform:none;
+  font-family:'OpenSansRegular';
+  margin-top:1.5em
+}
+.bccvl-kbsearch .facets .label {
+  background:transparent;
+}
+div.morefilters h4:hover .label {
+    color: #FFF;
+}
+div.morefilters h4:hover {
+    background: #009FE3;
+    color: #FFF;
 }
 
 
