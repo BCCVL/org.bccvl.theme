@@ -11,9 +11,12 @@
   <tbody><tr><td colspan="3"></td></tr></tbody>
   <tbody tal:repeat="key view/items">
 
-    <tr class="bccvl-envgroup info" data-friendlyname="" data-envgroupid=""
+    <tr class="bccvl-envgroup info" data-friendlyname=""
+        data-envgroupid=""
+        data-resolution="http://namespaces.bccvl.org.au/vocab#Resolution2_5m"
         tal:attributes="data-friendlyname string:collapbsable_climatelayer_${key/content};
-                        data-envgroupid key/value">
+                        data-envgroupid key/value;
+                        data-resolution key/resolution">
       <td>
         <i class="icon-plus"></i>
       </td>
