@@ -16,10 +16,6 @@
     	<!-- Content of a page that is a leaf node -->
     	<replace css:if-content="div#content" css:theme-children="div.bccvl-content" css:content="div#content" />
 
-        <xsl:template match="//div[@class='bccvl-kbsearch']//input[@type='submit']/@class">
-          <xsl:attribute name="class">btn btn-primary</xsl:attribute>
-        </xsl:template>
-
     </rules>
 
 </rules>

@@ -147,13 +147,14 @@
             <div class="tab-pane active" id="tab-meta">
 
               <div class="row-fluid">
-                <p class="span12 bccvl-tab-description">
-                  Give your experiment a title and description.
-                </p>
-              </div>
-
-              <div class="row-fluid">
-                <div class="span12">
+                <div class="span6">
+                  <h3>With the BCCVL, you can investigate the distribution of a species under potential future climatic conditions.</h3>
+                  <p>You are able to take the results of your Species Distribution Modelling experiment, and project that distribution for a certain year in the future with the climate information from one of several climate models that the BCCVL has made available for this purpose. You can also select one of several greenhouse gas emissions scenarios that the climate models are run with. There are a variety of future climates to run an experiment with - from 2015 to 2085.</p>
+                </div>
+                <div class="span6">
+                  <p class="bccvl-tab-description">
+                    Give your experiment a title and description.
+                  </p>
                   <div class="control-group">
                     <input type="text" name="expName" class="bccvl-expname input-block-level"
                            required="required" data-notblank="true" data-trigger="change keyup"
@@ -207,7 +208,8 @@
 
               <div class="alert" >
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Ensure that your resolution scale is appropriately selected.</strong> 
+                <strong>Projection datasets will be based on resolution of source model, currently 30"(~1km) and 2.5'(5km).</strong><br/> 
+                If no values are available, please re-run the SDM experiment at the alternative resolution.
               </div>
 
               <div class="row-fluid">

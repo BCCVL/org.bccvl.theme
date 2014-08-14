@@ -869,13 +869,14 @@ ul.facetmenu li input {
     float: right;
 }
 
-ul.facetmenu {}
+ul.facetmenu {
+    list-style-type: none;
+    padding-left:0;
+    margin-left:0;
+}
 
-div.searchfilter h3 {
-    font-size: 110%;
-    font-weight: bold;
-    margin: 0;
-    padding: 0.2em 0.5em;
+.searchfilter .conjunction_choice {
+    display:none;
 }
 
 div.morefilters h4 {
@@ -891,15 +892,27 @@ div.morefilters h5 {
 }
 
 div.morefilters h4 span.label {
-    vertical-align: top;
     margin: 0;
     padding: 0;
     color: #009FE3;
     font-family: Helvetica, sans-serif;
-    margin-top: .4em;
+    margin: .3em 0;
     display: inline-block;
 }
-
+.folder_listing h3 {
+    font-size: 2.5em;
+}
+.documentByline {
+    color:rgba(0,0,0,.5);
+}
+.item_title {
+    margin-top:1em;
+    margin-bottom:0;
+    font-size:1.3em;
+}
+.title_link img {
+    margin-right:3px;
+}
 .bccvl-kbsearch .facets {
   border:1px solid #ddd;
   padding:0 1em
