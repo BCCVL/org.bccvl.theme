@@ -7,58 +7,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
         $('.bccvl-auto-viz').click(function(){
-            renderMap($(this).data('viz-id'), 'auto');
+            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto');
         });
 
-         $('.bccvl-occurrence-viz').click(function(){
-            renderMap($(this).data('viz-id'), 'occurence');
-        });
-
-        // CREATE BASE MAP
-        // -------------------------------------------------------------------------------------------
-
-        var map, mercator, geographic;
-        var loading_panel;
-        
-        // DecLat, DecLng 
-        geographic = new OpenLayers.Projection("EPSG:4326");
-        
-        // Spherical Meters
-        // The official name for the 900913 (google) projection
-        mercator = new OpenLayers.Projection("EPSG:3857");
-        
-        // Australia Bounds
-        australia_bounds = new OpenLayers.Bounds();
-        australia_bounds.extend(new OpenLayers.LonLat(111,-10));
-        australia_bounds.extend(new OpenLayers.LonLat(152,-44));
-        australia_bounds = australia_bounds.transform(geographic, mercator);
-        var zoom_bounds = australia_bounds;
-
-        setTimeout(function(){
-           map = new OpenLayers.Map('map', {
-                projection: mercator,
-                eventListeners: {
-                    "changelayer": mapLayerChanged
-                }
-            });
-
-            loading_panel = new OpenLayers.Control.LoadingPanel();
-            map.addControl(loading_panel);
-
-            // Base layers
-            var osm = new OpenLayers.Layer.OSM();
-            var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
-
-            var ls = new OpenLayers.Control.LayerSwitcher();
-
-            map.addLayers([osm, gmap]);
-            map.addControl(ls);
-            map.zoomToExtent(zoom_bounds);
-
-            // Make the layer switcher open by default
-            ls.maximizeControl(); 
-        }, 300);
-        
+         $('.bccvl-occurrence-viz, .bccvl-absence-viz').click(function(){
+            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+        });   
 
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
@@ -236,7 +190,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         /* FUNCTIONS FOR CREATING LEGEND */
         // -------------------------------------------------------------------------------------------
 
-        function createLegend(layer, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
+        function createLegend(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
             $('.olLegend').remove();
 
@@ -283,15 +237,65 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     }
                 }
             }
+            console.log(id);
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-            $('#map .olMapViewport').append(legend);
+            $('#'+id+' .olMapViewport').append(legend);
         }
 
         /* END LEGEND FUNCTION */
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function renderMap(url, type){
+        function renderMap(url, id, type){
+
+            // CREATE BASE MAP
+            // -------------------------------------------------------------------------------------------
+
+            // NEED TO DESTROY ANY EXISTING MAP
+            var container = $('#'+id);
+            if (container.hasClass('olMap'))
+                window.map.destroy();
+
+            window.map;
+            var mercator, geographic;
+            var loading_panel;
+            
+            // DecLat, DecLng 
+            geographic = new OpenLayers.Projection("EPSG:4326");
+            
+            // Spherical Meters
+            // The official name for the 900913 (google) projection
+            mercator = new OpenLayers.Projection("EPSG:3857");
+            
+            // Australia Bounds
+            australia_bounds = new OpenLayers.Bounds();
+            australia_bounds.extend(new OpenLayers.LonLat(111,-10));
+            australia_bounds.extend(new OpenLayers.LonLat(152,-44));
+            australia_bounds = australia_bounds.transform(geographic, mercator);
+            var zoom_bounds = australia_bounds;
+            
+            map = new OpenLayers.Map(id, {
+                projection: mercator,
+                eventListeners: {
+                    "changelayer": mapLayerChanged
+                }
+            });
+
+            loading_panel = new OpenLayers.Control.LoadingPanel();
+            map.addControl(loading_panel);
+
+            // Base layers
+            var osm = new OpenLayers.Layer.OSM();
+            var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
+
+            var ls = new OpenLayers.Control.LayerSwitcher();
+
+            map.addLayers([osm, gmap]);
+            map.addControl(ls);
+            map.zoomToExtent(zoom_bounds);
+
+            // Make the layer switcher open by default
+            ls.maximizeControl(); 
 
             // Remove all the existing data layers, keep the baselayers and map.
             var dataLayers = map.getLayersBy('isBaseLayer', false);
@@ -338,7 +342,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             }
                         );
                         var legend = {}; legend.name = data.filename;
-                        createLegend(legend, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                        createLegend(legend, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
                     } else {
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
@@ -364,7 +368,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         if (i == 1){
                             visibleIfFirst = true;
                             var legend = {}; legend.name = layer.label;
-                            createLegend(legend, layer.min, layer.max, 20);
+                            createLegend(legend, id, layer.min, layer.max, 20);
                         } else {
                             visibleIfFirst = false;
                         }
@@ -394,25 +398,27 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
                 }
             }, 5000);
+
+            // eventListener which only allows one overlay to displayed at a time
+            function mapLayerChanged(event) {
+                ls.dataLayers.forEach(function(dataLayer) {
+                    if (dataLayer.layer.name == event.layer.name && event.layer.visibility) {
+                        dataLayer.layer.visibility = true;
+                        dataLayer.layer.display(true);
+                        // create a legend if type requires it
+                        if (type != 'occurence'){
+                            createLegend(dataLayer.layer, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                        }
+                    }     
+                    else {
+                        dataLayer.layer.visibility = false;
+                        dataLayer.layer.display(false);
+                    }
+                })
+            }
         }
         
 
-        // eventListener which only allows one overlay to displayed at a time
-        function mapLayerChanged(event) {
-            ls.dataLayers.forEach(function(dataLayer) {
-                if (dataLayer.layer.name == event.layer.name && event.layer.visibility) {
-                    dataLayer.layer.visibility = true;
-                    dataLayer.layer.display(true);
-                    // create a new legend if one hasn't already been generated.
-                    //if (dataLayer.layer.div.getElementsByClassName('olLegend').length == 0){
-                        createLegend(dataLayer.layer, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
-                    //}
-                }     
-                else {
-                    dataLayer.layer.visibility = false;
-                    dataLayer.layer.display(false);
-                }
-            })
-        }
+        
     }
 );

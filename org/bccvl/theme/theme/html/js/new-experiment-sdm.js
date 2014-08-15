@@ -3,15 +3,11 @@
 // main JS for the new sdm experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs',
-     'js/bccvl-stretch', 'js/bccvl-dimension-equation',
-     'js/bccvl-search', 'js/bccvl-form-validator'],
-    function($, viz, wiztabs, stretch, dimensions, search, formvalidator ) {
+    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'OpenLayers', 'js/bccvl-wizard-tabs',  'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator'],
+    function($, preview_layout,  viz, vizmap, openlayers, wiztabs, dimensions, search, formvalidator ) {
+
         // ==============================================================
         $(function() {
-
-            // hook up stretchers
-            stretch.init({ topPad: 60, bottomPad: 10 });
 
             viz.init();             // init the visualiser
             dimensions.init();      // init the dimension chooser thingy
