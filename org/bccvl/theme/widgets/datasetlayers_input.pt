@@ -13,10 +13,12 @@
 
     <tr class="bccvl-envgroup info disabled" data-friendlyname=""
         data-envgroupid=""
+        data-viz-id=""
         data-resolution="http://namespaces.bccvl.org.au/vocab#Resolution2_5m"
         tal:attributes="data-friendlyname string:collapbsable_climatelayer_${key/content};
                         data-envgroupid key/value;
-                        data-resolution key/resolution">
+                        data-resolution key/resolution;
+                        data-viz-id python: key['dlinfo']['alturl'][0]">
       <td>
         <i class="icon-plus"></i>
       </td>
@@ -52,7 +54,7 @@
                  tal:content="layer/content">B01 - Annual Mean Temperature</label>
         </td>
         <td class="bccvl-table-controls">
-          <a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a>
+          <a class="fine "><i class="icon-eye-open icon-link" title="view this layer"></i></a>
         </td>
       </tr>
     </tal:define>
