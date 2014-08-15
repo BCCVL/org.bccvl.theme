@@ -1099,7 +1099,87 @@ div.morefilters h4:hover {
     cursor: default;
 }
 
-/* TODO: remove these once the fields are working */
-.bccvl-spatialscaletable {
-    display: none;
+.table th {
+    font-weight: normal;
+    font-family: 'OpenSansSemibold';
 }
+
+table.bccvl-environmentaldatatable.table-hover tbody tr.info:hover > td {
+    background:rgba(0, 159, 227, 1);
+}
+table.bccvl-environmentaldatatable.table-hover tbody tr.info.disabled:hover > td {
+    background:rgba(0, 159, 227, .8);
+}
+table.bccvl-environmentaldatatable tbody + tbody {
+    border-top:1px solid rgb(232, 232, 232);
+}
+table.bccvl-environmentaldatatable input[type="checkbox"] {
+    margin-top:4px;
+}
+table.bccvl-environmentaldatatable label {
+    font-size:12px;
+    margin-top:3px;
+    margin-bottom:0;
+    line-height: 1.2em
+}
+table.bccvl-environmentaldatatable td:first-child {
+    border-left:1px solid rgb(0, 159, 227);
+}
+table.bccvl-environmentaldatatable td:last-child {
+    border-right:1px solid rgb(0, 159, 227);
+}
+table.bccvl-environmentaldatatable tbody tr.info td {
+    color: white;
+    text-decoration: none;
+    font-family: "OpenSansSemibold", sans-serif;
+    font-weight: normal;
+    background:rgba(0, 159, 227, .8);
+    border-top:1px solid rgb(0, 159, 227);
+    cursor:pointer;
+}
+table.bccvl-environmentaldatatable tbody tr td {
+    border-top:1px dashed rgb(232, 232, 232);
+}
+table.bccvl-environmentaldatatable tbody tr:nth-child(2) td {
+    border-top:0px dashed rgb(232, 232, 232);
+}
+table.bccvl-environmentaldatatable tbody tr.info td {
+    border-bottom:1px solid rgba(0, 159, 227);
+}
+
+table.bccvl-environmentaldatatable tbody tr:last-child td {
+    border-bottom:1px solid rgb(0, 159, 227);
+} 
+table.bccvl-environmentaldatatable tbody tr.info:last-child td {
+    border-bottom:0px solid rgb(0, 159, 227);
+}
+table.bccvl-environmentaldatatable tbody tr.info td:first-child {
+    border-left:1px solid rgb(0, 159, 227);
+} 
+table.bccvl-environmentaldatatable tbody tr.info td:last-child {
+    border-right:1px solid rgb(0, 159, 227);
+}
+table.bccvl-environmentaldatatable tbody tr.info.disabled td {
+    border-top:1px solid rgba(0, 159, 227, .1);
+}
+table.bccvl-environmentaldatatable tbody tr.info.disabled td:first-child {
+    border-left:1px solid rgba(0, 159, 227, .1);
+} 
+table.bccvl-environmentaldatatable tbody tr.info.disabled td:last-child {
+    border-right:1px solid rgba(0, 159, 227, .35);
+}
+/*table.bccvl-environmentaldatatable tbody:last-child tr:last-child td, table.bccvl-environmentaldatatable tbody:last-child tr:first-child td  {
+    border-bottom:1px solid rgb(0, 159, 227);
+}*/
+table.bccvl-environmentaldatatable tbody tr.info.disabled {
+    opacity: .35;
+}
+table.bccvl-environmentaldatatable tbody tr.info.disabled td {
+    cursor:default;
+} 
+#form-widgets-resolution {
+    padding: 8px;
+    width: 100%;
+    height: 2em;
+}
+

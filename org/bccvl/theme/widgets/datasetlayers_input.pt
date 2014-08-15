@@ -5,13 +5,13 @@
       tal:omit-tag="">
 <table class="table table-hover bccvl-environmentaldatatable" id=""
        tal:attributes="id view/id">
-  <thead>
+  <!--<thead>
   <tr><th colspan="3" tal:content="view/label"></th></tr>
   </thead>
-  <tbody><tr><td colspan="3"></td></tr></tbody>
+  <tbody><tr><td colspan="3"></td></tr></tbody>-->
   <tbody tal:repeat="key view/items">
 
-    <tr class="bccvl-envgroup info" data-friendlyname=""
+    <tr class="bccvl-envgroup info disabled" data-friendlyname=""
         data-envgroupid=""
         data-resolution="http://namespaces.bccvl.org.au/vocab#Resolution2_5m"
         tal:attributes="data-friendlyname string:collapbsable_climatelayer_${key/content};

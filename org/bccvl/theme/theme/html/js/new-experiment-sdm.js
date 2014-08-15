@@ -76,6 +76,12 @@ define(
                 $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
             });
 
+            $('#form-widgets-resolution').prepend('<option value="" selected>Select resolution to begin ...</option>');
+            $('#form-widgets-resolution').change(function(){
+                $('table.bccvl-environmentaldatatable').find('tr.info').addClass('disabled bccvl-envgroup');
+                $('table.bccvl-environmentaldatatable').find('tr.info[data-resolution="'+$(this).val()+'"]').removeClass('disabled bccvl-envgroup');
+            });
+
             // -- layer selection -----------------------------------
 
             var $envTable = $('table.bccvl-environmentaldatatable');
@@ -149,53 +155,59 @@ define(
             // make a function that toggles between showing and hiding a dataset's layers
             var toggleEnvGroup = function(token) {
                 // find the group header
-                var $header = $('[data-envgroupid=' + token + ']');
-                if ($header.length > 0) {
-                    if ($header.hasClass('bccvl-open')) {
-                        // it was open, so close it
-                        $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
-                        $header.removeClass('bccvl-open');
-                        // hide all the layer rows
-                        $header.parent().find('tr[data-envparent=' + token + ']').addClass('hidden');
-                    } else {
-                        // it's not open, so open it
-                        $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
-                        $header.addClass('bccvl-open');
+                if ($('[data-envgroupid=' + token + ']').hasClass('disabled')){
 
-                        // got any child rows?
-                        var $layerRows = $header.parent().find('tr[data-envparent=' + token + ']');
-                        if ($layerRows.length > 0) {
-                            // already fetched the layers. just show them
-                            $layerRows.removeClass('hidden');
+                } else {
+                    var $header = $('[data-envgroupid=' + token + ']');
+                    if ($header.length > 0) {
+                        if ($header.hasClass('bccvl-open')) {
+                            // it was open, so close it
+                            $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
+                            $header.removeClass('bccvl-open');
+                            // hide all the layer rows
+                            //$header.parent().find('tr[data-envparent=' + token + ']').addClass('hidden');
+                            $header.parent().find('tr[data-envparent=' + token + ']').fadeOut();
                         } else {
-                            // fetch metadata for this dataset, to see what env layers it holds
-                            var layerReq = $.ajax({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
-                            layerReq.done( function(list) {
-                                if (list.layers) {
-                                    // collect layers by name (for sorting them)
-                                    var layerNames = [];
-                                    var layers = {};
-                                    // render each layer
-                                    $.each(list.layers, function(key, value) {
-                                        var name = value.label;
-                                        var fileName = value.filename;
-                                        var zipFile = list.file;
-                                        layerNames.push(name);
-                                        layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
-                                    });
-                                    // now sort the names and add them in order
-                                    layerNames.sort();
-                                    // gotta be reverse order, coz we add each successive one in right after the $header
-                                    for(var index = layerNames.length - 1; index >= 0; index--) {
-                                        $header.after(layers[layerNames[index]]);
+                            // it's not open, so open it
+                            $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
+                            $header.addClass('bccvl-open');
+
+                            // got any child rows?
+                            var $layerRows = $header.parent().find('tr[data-envparent=' + token + ']');
+                            if ($layerRows.length > 0) {
+                                // already fetched the layers. just show them
+                                //$layerRows.removeClass('hidden');
+                                $layerRows.fadeIn();
+                            } else {
+                                // fetch metadata for this dataset, to see what env layers it holds
+                                var layerReq = $.ajax({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
+                                layerReq.done( function(list) {
+                                    if (list.layers) {
+                                        // collect layers by name (for sorting them)
+                                        var layerNames = [];
+                                        var layers = {};
+                                        // render each layer
+                                        $.each(list.layers, function(key, value) {
+                                            var name = value.label;
+                                            var fileName = value.filename;
+                                            var zipFile = list.file;
+                                            layerNames.push(name);
+                                            layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
+                                        });
+                                        // now sort the names and add them in order
+                                        layerNames.sort();
+                                        // gotta be reverse order, coz we add each successive one in right after the $header
+                                        for(var index = layerNames.length - 1; index >= 0; index--) {
+                                            $header.after(layers[layerNames[index]]);
+                                        }
+                                    } else {
+                                        alert('There are no layers in selected dataset.');
                                     }
-                                } else {
-                                    alert('There are no layers in selected dataset.');
-                                }
-                            });
-                            layerReq.fail( function(jqxhr, status) {
-                                alert('Failed to get layers contained in selected dataset; status was "' + status + '", whatever that means.');
-                            });
+                                });
+                                layerReq.fail( function(jqxhr, status) {
+                                    alert('Failed to get layers contained in selected dataset; status was "' + status + '", whatever that means.');
+                                });
+                            }
                         }
                     }
                 }
