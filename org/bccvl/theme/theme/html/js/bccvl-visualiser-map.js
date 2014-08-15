@@ -322,7 +322,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     //single layer
                     var layerName;
                     if(data.description!=''){
-                        layerName = layer.description
+                        layerName = data.description
                     } else {
                         layerName = 'Data Overlay';
                     }
