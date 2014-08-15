@@ -20,7 +20,10 @@
       <td>
         <i class="icon-plus"></i>
       </td>
-      <td colspan="2" tal:content="nocall: key/content">Dataset title</td>
+      <td colspan="2">
+        <tal:replace tal:replace="nocall:key/content">Dataset title</tal:replace>
+        <p>Scale: <tal:replace tal:replace="key/resolution_label"></tal:replace></p>
+      </td>
     </tr>
 <!-- For each selected layer in this dataset -->
     <tal:block tal:repeat="layer key/value_widget/items">
