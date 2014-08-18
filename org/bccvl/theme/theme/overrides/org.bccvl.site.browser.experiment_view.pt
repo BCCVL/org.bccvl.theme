@@ -26,10 +26,24 @@
                 <tal:block tal:repeat="result context/@@folderListing">
                   <tr class="info">
                     <td colspan="3">
-                      <tal:replace tal:replace="result/Title">Result Title</tal:replace>
-                      <p>Algorithm: <tal:replace
-                      tal:replace="result/job_params/function">bioclim</tal:replace></p>
-                      <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                      <tal:replace tal:replace="result/Title">Result
+                      Title</tal:replace>
+                      <!-- FIXME: get a better condition or use
+                           adapters -->
+                      <tal:block tal:condition="python: 'function' in result.job_params">
+                        <p>Algorithm: <tal:replace
+                                       tal:replace="result/job_params/function">bioclim</tal:replace></p>
+                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                      </tal:block>
+                      <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
+                        <p>Emissions Scenario: <tal:replace
+                                       tal:replace="result/job_params/emission_scenario">bioclim</tal:replace></p>
+                        <p>Circulation Model: <tal:replace
+                                       tal:replace="result/job_params/climate_models">bioclim</tal:replace></p>
+                        <p>Year: <tal:replace
+                                  tal:replace="result/job_params/year">bioclim</tal:replace></p>
+                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                      </tal:block>
                     </td>
                   </tr>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
