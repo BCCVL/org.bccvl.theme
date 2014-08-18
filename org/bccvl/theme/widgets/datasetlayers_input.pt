@@ -15,16 +15,23 @@
         data-envgroupid=""
         data-viz-id=""
         data-resolution="http://namespaces.bccvl.org.au/vocab#Resolution2_5m"
+        tal:define="datavizid python: key['dlinfo']['alturl'][0]"
         tal:attributes="data-friendlyname string:collapbsable_climatelayer_${key/content};
                         data-envgroupid key/value;
                         data-resolution key/resolution;
-                        data-viz-id python: key['dlinfo']['alturl'][0]">
+                        data-viz-id datavizid">
       <td>
         <i class="icon-plus"></i>
       </td>
       <td colspan="2">
         <tal:replace tal:replace="nocall:key/content">Dataset title</tal:replace>
         <p>Scale: <tal:replace tal:replace="key/resolution_label"></tal:replace></p>
+      </td>
+      <td class="bccvl-table-controls">
+        <a href="#" class="bccvl-auto-viz"
+           tal:attributes="data-viz-id datavizid">
+          <i class="icon-eye-open icon-link" title="preview"></i>
+        </a>
       </td>
     </tr>
 <!-- For each selected layer in this dataset -->
