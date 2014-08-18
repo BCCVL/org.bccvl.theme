@@ -25,13 +25,27 @@
               <tbody>
                 <tal:block tal:repeat="result context/@@folderListing">
                   <tr class="info">
-                    <td colspan="3"
-                        tal:content="result/Title">Result Title</td>
+                    <td colspan="3">
+                      <tal:replace tal:replace="result/Title">Result Title</tal:replace>
+                      <p>Algorithm: <tal:replace
+                      tal:replace="result/job_params/function">bioclim</tal:replace></p>
+                      <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                    </td>
                   </tr>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
                      <tr>
-                       <td colspan="2" class="bccvl-table-label">
+                       <td colspan="2" class="bccvl-table-label"
+                           tal:define="itemobj item/getObject;
+                                       md itemobj/dataset_tools/metadata">
                          <p tal:content="item/Title">Item Title</p>
+                         <p tal:content="item/Description">Dataset short description</p>
+                         <p tal:condition="md/rows">rows:<i tal:content="md/rows"></i></p>
+                         <p tal:condition="md/scientificname">species:<i tal:content="md/scientificname"></i></p>
+                         <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p>
+                         <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p>
+                         <p tal:condition="md/resolution">resolution:<i tal:content="md/resolution"></i></p>
+                         <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p>
+
                        </td>
                        <td class="bccvl-table-controls"
                            tal:define="item_obj item/getObject;
