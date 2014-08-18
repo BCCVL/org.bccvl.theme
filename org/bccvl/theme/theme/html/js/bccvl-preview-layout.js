@@ -10,16 +10,16 @@ define(     ['jquery', 'bootstrap'],
             // header height
             var headerHeight = $('.navbar-static-top').outerHeight(true);
             // breadcrumbs
-            var breadcrumbHeight = $('.bccvl-breadcrumb').outerHeight(true);
+            var breadcrumbHeight = $('.bccvl-breadcrumb .breadcrumb').outerHeight(true);
             // main container padding 
-            var tabsHeight = $('.window-layout .nav-tabs').outerHeight(true);
+            var tabsHeight = $('.window-layout .nav-tabs').outerHeight(true) + $('.bccvl-tab-description').outerHeight(true) + $('.bccvl-wizardtabs .nav-tabs').outerHeight(true);
             // main container padding 
             var mainPadding = parseInt($('.bccvl-main').css('padding-bottom'));
             // footer
             var footerHeight = $('body>footer').outerHeight(true);
             // preview and list height
             var paneHeight = windowHeight - (headerHeight+breadcrumbHeight+tabsHeight+mainPadding+footerHeight);
-            $('.window-layout .bccvl-my-datasets [class*="span"], .bccvl-preview-pane').css('height',''+paneHeight+'px');
+            $('.window-layout .bccvl-my-datasets [class*="span"], .bccvl-preview-pane, .bccvl-stretch-parent .span4').css('height',''+paneHeight+'px');
         }
         $(document).ready(function(){
             layoutResize();

@@ -78,6 +78,7 @@ define(
 
             $('#form-widgets-resolution').prepend('<option value="" selected>Select resolution to begin ...</option>');
             $('#form-widgets-resolution').change(function(){
+                $('table.bccvl-environmentaldatatable').find('tr.layer-row').fadeOut();
                 $('table.bccvl-environmentaldatatable').find('tr.info').addClass('disabled bccvl-envgroup');
                 $('table.bccvl-environmentaldatatable').find('tr.info[data-resolution="'+$(this).val()+'"]').removeClass('disabled bccvl-envgroup');
             });
@@ -123,26 +124,27 @@ define(
                 var name = 'form.widgets.environmental_datasets.' + parentId + ':list';
 
                 var html = '';
-                html += '<tr data-envparent="' + parentId + '">';
+                html += '<tr data-envparent="' + parentId + '" class="layer-row">';
                 // checkbox for selecting the layer
                 html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" data-friendlyname="checkbox_climatelayer_' + friendlyName + '"';
                 html += '/></td>';
                 html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
                 // viz button to viz the layer (and whatever other actions eventually go here)
-                html += '<td class="bccvl-table-controls"><a class="fine"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
+                html += '<td class="bccvl-table-controls"><a href="javascript:void(0);" class="fine bccvl-auto-viz" data-viz-id="'+zipFile+'" data-viz-layer="'+fileName+'"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
                 html += '</tr>';
                 var $html = $(html);
 
                 // now attach some behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
                 // here's where we hook up the viz
                 var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
-                $vizButton.click(function(evt) {
+                
+                /*$vizButton.click(function(evt) {
                     var params = {
                         file_name: fileName
                     };
                     viz.visualise(zipFile, $vizButton, null, params);
                     evt.preventDefault();
-                });
+                });*/
 
                 var $layerSelect = $html.find('input[name="' + name + '"]');
                 $layerSelect.change(function(evt) {
@@ -194,6 +196,7 @@ define(
                                             layerNames.push(name);
                                             layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
                                         });
+
                                         // now sort the names and add them in order
                                         layerNames.sort();
                                         // gotta be reverse order, coz we add each successive one in right after the $header

@@ -14,6 +14,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         });   
 
+        $('#form-widgets-environmental_datasets').on('click', 'a.bccvl-auto-viz', function(event){
+            event.preventDefault();
+            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+        });
+
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
 
@@ -237,7 +242,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     }
                 }
             }
-            console.log(id);
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
             $('#'+id+' .olMapViewport').append(legend);
         }
@@ -246,7 +250,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function renderMap(url, id, type){
+        function renderMap(url, id, type, visibleLayer){
 
             // CREATE BASE MAP
             // -------------------------------------------------------------------------------------------
@@ -363,15 +367,30 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     // multiple layers
                     var i = 0;
                     $.each( data.layers, function(namespace, layer){
+
+                        // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST 
                         i += 1;
-                        var visibleIfFirst;
-                        if (i == 1){
-                            visibleIfFirst = true;
-                            var legend = {}; legend.name = layer.label;
-                            createLegend(legend, id, layer.min, layer.max, 20);
+                        var isVisible;
+                        // if a layer is specified to render first, make it visible
+                        if (typeof visibleLayer !== 'undefined') {
+                            if (layer.filename == visibleLayer) {
+                                isVisible = true;
+                                var legend = {}; legend.name = layer.label;
+                                createLegend(legend, id, layer.min, layer.max, 20);
+                            } else {
+                                isVisible = false;
+                            }
                         } else {
-                            visibleIfFirst = false;
+                            if (i == 1){
+                                isVisible = true;
+                                var legend = {}; legend.name = layer.label;
+                                createLegend(legend, id, layer.min, layer.max, 20);
+                            } else {
+                                isVisible = false;
+                            }
                         }
+
+                        
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layer.label+'', // Layer Name
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
@@ -384,7 +403,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             },
                             {
                                 isBaseLayer: false,
-                                visibility: visibleIfFirst
+                                visibility: isVisible
                             }
                         );
                         myLayers.push(newLayer);

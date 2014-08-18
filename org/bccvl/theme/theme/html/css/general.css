@@ -154,7 +154,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     padding-right: 5px;
 }
 .navbar-static-top {
-    margin-bottom:2em;
+    margin-bottom:1.5em;
 }
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
     box-shadow: 0px 1px 1px rgba(0,0,0,.15);
@@ -263,7 +263,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 
 .bccvl-tab-description {
     line-height: 1.1;
-    padding: 0 0 0.4em 0;
+    padding: 0 0 .3em 0;
     font-size: 125%;
     color: #3baa35;
     -moz-transition: opacity 3s;
@@ -273,7 +273,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     transition-delay: 1s;
     display: block;
     margin-left: 0!important;
-    margin-top: 1em;
+    margin-top: 0em;
+    margin-bottom:.35em;
+    height:30px;
     font-family: 'OpenSansRegular';
 }
 
@@ -1116,6 +1118,9 @@ table.bccvl-environmentaldatatable tbody + tbody {
 table.bccvl-environmentaldatatable input[type="checkbox"] {
     margin-top:4px;
 }
+table.bccvl-environmentaldatatable {
+    margin-bottom:0;
+}
 table.bccvl-environmentaldatatable label {
     font-size:12px;
     margin-top:3px;
@@ -1139,6 +1144,15 @@ table.bccvl-environmentaldatatable tbody tr.info td {
 }
 table.bccvl-environmentaldatatable tbody tr td {
     border-top:1px dashed rgb(232, 232, 232);
+    padding-top:.35em;
+    padding-bottom:.4em;
+}
+table.bccvl-environmentaldatatable tbody tr td p {
+    margin:0;
+    color:rgba(255,255,255,.8);
+}
+table.bccvl-environmentaldatatable tbody tr td:nth-child(1) {
+    padding-top:.5em;
 }
 table.bccvl-environmentaldatatable tbody tr:nth-child(2) td {
     border-top:0px dashed rgb(232, 232, 232);
@@ -1181,5 +1195,15 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled td {
     padding: 8px;
     width: 100%;
     height: 2em;
+    margin-bottom:0;
 }
-
+.bccvl-stretch-parent .span4 {
+    overflow-y: auto;
+    box-shadow: inset 0px -3px 2px rgba(0,0,0,.07);
+}
+#experimentSetup {
+    margin-bottom:0;
+}
+.bccvl-spatialscaletable {
+    margin-bottom:0;
+}
