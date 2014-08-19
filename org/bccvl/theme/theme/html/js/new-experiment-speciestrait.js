@@ -2,18 +2,15 @@
 // main JS for the new species trait model experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs',
-     'js/bccvl-stretch', 'js/bccvl-search',
-     'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
-     'select2'],
-    function($, viz, wiztabs, stretch, search, formvalidator) {
+    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-search', 'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
+    function($, preview_layout, viz, wiztabs, search, formvalidator) {
 
     $(function() {
 
         console.log('species trait model experiment page behaviour loaded.');
 
         // hook up stretchers
-        stretch.init({ topPad: 60, bottomPad: 10 });
+        //stretch.init({ topPad: 60, bottomPad: 10 });
 
         // init the visualiser
         viz.init();

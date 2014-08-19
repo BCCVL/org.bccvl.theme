@@ -8,7 +8,7 @@
     <tr>
       <th colspan="3" tal:content="view/field/title">Title</th>
     </tr>
-    <tr><td colspan="3" tal:content="view/field/description">Description</td></tr>
+    <tr tal:condition="view/field/description"><td colspan="3" tal:content="view/field/description">Description</td></tr>
   </thead>
   <tbody>
     <tr tal:repeat="item view/items">

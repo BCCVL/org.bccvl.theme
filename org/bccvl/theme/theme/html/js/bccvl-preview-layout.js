@@ -12,7 +12,7 @@ define(     ['jquery', 'bootstrap'],
             // breadcrumbs
             var breadcrumbHeight = $('.bccvl-breadcrumb .breadcrumb').outerHeight(true);
             // main container padding 
-            var tabsHeight = $('.window-layout .nav-tabs').outerHeight(true) + $('.bccvl-tab-description').outerHeight(true) + $('.bccvl-wizardtabs .nav-tabs').outerHeight(true);
+            var tabsHeight = $('.window-layout .nav-tabs').outerHeight(true) + $('.bccvl-tab-description').outerHeight(true) + $('.bccvl-wizardtabs .nav-tabs').outerHeight(true) + $('.bccvl-main>.alert:visible').outerHeight(true);
             // main container padding 
             var mainPadding = parseInt($('.bccvl-main').css('padding-bottom'));
             // footer

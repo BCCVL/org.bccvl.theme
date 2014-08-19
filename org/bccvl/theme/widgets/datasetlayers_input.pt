@@ -23,7 +23,7 @@
       <td>
         <i class="icon-plus"></i>
       </td>
-      <td colspan="2">
+      <td>
         <tal:replace tal:replace="nocall:key/content">Dataset title</tal:replace>
         <p>Scale: <tal:replace tal:replace="key/resolution_label"></tal:replace></p>
       </td>
