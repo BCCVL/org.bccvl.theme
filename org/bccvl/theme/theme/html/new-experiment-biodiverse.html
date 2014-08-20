@@ -135,7 +135,7 @@
             </div>
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
-              <li><a href="#tab-source-projection" data-toggle="tab">Source Projection</a></li>
+              <li><a href="#tab-source-projection" data-toggle="tab">Source SDM Experiment</a></li>
               <li><a href="#tab-configuration" data-toggle="tab">Configuration</a></li>
               <li><a href="#tab-review" data-toggle="tab">Run</a></li>
             </ul>
@@ -158,8 +158,10 @@
 
               <div class="row-fluid">
                 <div class="span6">
-                  <h3>To calculate biodiversity statistics on the results of your SDM or climate change experiment, the BCCVL has implemented a statistical tool called 'Biodiverse'. </h3>
-                  <p>This program calculates two indices of biodiversity currently; species richness and endemism. Species richness is simply the number of species present in a sample, community, or taxonomic group, and is one component of the concept of species diversity. Endemism is the ecological state of a species being unique to a defined geographic location.</p>
+                  <h3>To conduct a Biodiverse experiment, first choose a name for the proposed experiment, and add a short description.</h3>
+                  <p>Then in the 'Source SDM Experiment' tab, you will be asked to nominate a Species Distribution Model experiment that you have already run. The results of your selected experiment will be used to calculate biodiversity indices. For example, you could do a Biodiverse analysis for a SDM experiment you have previously run, or a climate change experiment.</p>
+                  <p>Then you will be asked to configure your experiment. Select a threshold criteria to convert the SDMs continuous probability of species presence into binary presence-absence data. For advice on which criteria to use, the <a class="bccvllinks-knowledgebase" target="_blank">Knowledge Base</a> has some useful papers to guide your decision.</p>
+                  <p>Finally you must select the select biodiverse cell size for your experiment</p>
                 </div>
                 <div class="span6">
                   <p class="bccvl-tab-description">
@@ -274,7 +276,7 @@
                     <table class="table table-hover bccvl-thresholdtable">
                       <thead>
                         <tr>
-                          <th colspan="3">Set threshold value for selected map layers</th>
+                          <th colspan="3">Set criteria to convert predictions to presence/absence.</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -288,7 +290,7 @@
                   <table class="table table-hover bccvl-clustersizetable">
                     <thead>
                       <tr>
-                        <th>Set Cluster Size (x/y cell size)</th>
+                        <th>Select biodiverse cell size (m).</th>
                       </tr>
                     </thead>
                     <tbody>
