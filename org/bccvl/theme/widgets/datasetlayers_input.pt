@@ -29,7 +29,8 @@
       </td>
       <td class="bccvl-table-controls">
         <a href="#" class="bccvl-auto-viz"
-           tal:attributes="data-viz-id datavizid">
+           tal:attributes="data-viz-id datavizid;
+                           data-uuid key/value">
           <i class="icon-eye-open icon-link" title="preview"></i>
         </a>
       </td>

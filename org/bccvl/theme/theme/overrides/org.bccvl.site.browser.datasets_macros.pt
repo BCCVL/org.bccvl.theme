@@ -86,13 +86,15 @@
                         <i class="icon-circle-arrow-down" title="download"></i>
                     </a>
                     <a href="#" class="bccvl-occurrence-viz"
-                       tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                       data-uuid item/UID"
                        tal:condition="python: item_obj.format == 'text/csv'">
                         <i class="icon-eye-open icon-link" title="preview"></i>
                     </a>
 
                     <a href="#" class="bccvl-auto-viz"
-                       tal:attributes="data-viz-id python: dlinfo['alturl'][0]"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                       data-uuid item/UID"
                        tal:condition="python: item_obj.format != 'text/csv'">
                          <i class="icon-eye-open icon-link" title="preview"></i>
                     </a>
