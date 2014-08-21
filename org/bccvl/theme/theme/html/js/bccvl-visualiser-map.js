@@ -7,17 +7,19 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
         /*$('.bccvl-auto-viz').click(function(){
-            event.preventDefault();
-            console.log('non bubbled');
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto');
-        });*/
+        });
+
+        $('.bccvl-occurrence-viz, .bccvl-absence-viz').click(function(){
+            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+        }); */  
         
-        $(document).on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
+        $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         });   
 
-        $(document).on('click', 'a.bccvl-auto-viz', function(event){
+        $('body').on('click', 'a.bccvl-auto-viz', function(event){
             event.preventDefault();
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
         });
