@@ -14,6 +14,12 @@ p strong {
 .white-bg {
     background:#FFF;
 }
+@media (max-width: 760px) {
+.white-bg {
+    margin: 0 -20px;
+    padding: 0 20px;
+}
+}
 @media (max-width: 980px) { body {
     padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
 }   }
@@ -1157,4 +1163,78 @@ div.morefilters h4:hover {
 /* TODO: remove these once the fields are working */
 .bccvl-spatialscaletable {
     display: none;
+}
+
+
+/* home page layout */
+.jumbotron {
+    text-align: center;
+    padding-bottom:1.5em;
+    margin-bottom:1.5em;
+    border-bottom:1px solid rgba(0,0,0,.1);
+}
+.jumbotron h1 {
+    font-size:3.6em;
+    margin:.5em 0 .4em 0;
+}
+iframe.homepage {
+    margin: .5em 0 1.5em;
+}
+.jumbotron p { 
+    font-size:1.1em;
+    line-height: 1.3em;
+}
+.alert h3 {
+    margin:.2em 0 .5em;
+    font-family: "OpenSansSemibold";
+}
+.jumbotron .alert {
+    font-size:1.1em;
+}
+.intro-steps .step {
+    border-radius:5px;
+    padding:.75em;
+    margin:.25em 0 .75em;
+    font-family: "OpenSansRegular";
+    font-size:1.1em;
+    background:#ecf0f1;
+}
+.intro-steps .step i {
+    display:inline-block;
+    float:left;
+    font-size:1.4em;
+    margin-right:10px;
+
+}
+.intro-steps .step1 i {
+    color:#f9b233;
+}
+.intro-steps .step2 i {
+    color:#4dc345;
+}
+.intro-steps .step3 i {
+    color:#009FE3;
+}
+.notifications {
+    border-radius:5px;
+    padding:1em;
+    margin:1em 0;
+    background:#ecf0f1;
+}
+.notifications ul {
+    list-style-type: none;
+    padding-left:0;
+    margin-left:0;
+}
+.notifications ul li {
+    margin-bottom:1em;
+}
+.notifications small.label {
+    color: #FFF;
+    background: #009FE3;
+    font-weight: bold!important;
+    font-size: 0.8em;
+}
+body.home>.white-bg {
+    padding-bottom: 1em;
 }
