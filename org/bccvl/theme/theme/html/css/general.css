@@ -8,6 +8,9 @@ body {
 * {
     font-weight: normal!important;
 }
+p strong {
+    font-size:14px;
+}
 .white-bg {
     background:#FFF;
 }
@@ -101,6 +104,58 @@ border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25) !importa
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2f96b4', GradientType=0);
 filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
+.new-experiment-button {
+    position: relative;
+    display:inline-block;
+    border-radius: 100px;
+    height: 140px;
+    width: 140px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 18px;
+    text-indent: 0;
+    font-family: "OpenSansSemiBold";
+    background: #f9b233!important;
+    border: 0px!important;
+    box-shadow: none!important;
+    text-shadow: none;
+    color: #FFF!important;
+    margin: 1em;
+    text-transform: capitalize;
+}
+.experiment-cce {
+    background: #4dc345!important;
+}
+.experiment-bio {
+    background: #009FE3!important;
+}
+.experiment-sdm {
+    background: #e74c3c!important;
+}
+.experiment-ensemble {
+    background: #34495e!important;
+}
+
+.new-experiment-button a {
+    color: #FFF;
+    display:block;
+    height:100%;
+    transition: all linear .1s;
+}
+.new-experiment-button a i {
+    display:inline-block;
+    font-size: 1.6em;
+}
+.new-experiment-button a:hover {
+    text-decoration: none;
+    background-color:rgba(255,255,255,.2)!important;
+}
+.new-experiment-button a span {
+    display: inline-block;
+    padding: 16px 10px;
+}
+
 .logo-icon {
     background-image:url('../images/bccvl_logo_beta.png');
     background-repeat: no-repeat;
