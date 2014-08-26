@@ -1265,11 +1265,10 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled td {
 #experimentSetup {
     margin-bottom:0;
 }
+
 .bccvl-spatialscaletable {
-    display: none;
+    margin-bottom:0;
 }
-
-
 /* home page layout */
 .jumbotron {
     text-align: center;
