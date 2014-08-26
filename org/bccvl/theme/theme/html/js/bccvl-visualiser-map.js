@@ -3,7 +3,7 @@
 
 define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visualiser-loading-panel'],
     function( $      ) {
-        
+
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
         /*$('.bccvl-auto-viz').click(function(){
@@ -12,8 +12,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         $('.bccvl-occurrence-viz, .bccvl-absence-viz').click(function(){
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
-        }); */  
-        
+        }); */
+
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
             renderMap($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
@@ -36,15 +36,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         var styleObj = {"minVal":0,"maxVal":100,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:0,g:159,b:227},"endpoint":{r:30,g:77,b:155}};
 
-        /*  Goal here is to determine minimum and maximum raster values in the map layer, 
+        /*  Goal here is to determine minimum and maximum raster values in the map layer,
             dividing it by an arbitrary number of levels.  This is then used to make an array
-            of thresholds for color values to be associated with.  
+            of thresholds for color values to be associated with.
         */
 
         /*  Important to note here that due to the structure of an SLD doc, the number of
             threshold values must always be one more than the number of desired color levels.
             The number of color values must then be one greater than the thresholds.
-            SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end 
+            SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end
             result will always have +1 threshold and +2 color values on top of your desired number of colour values.
         */
 
@@ -61,14 +61,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 if (minVal==undefined) minVal = 0;
                 if (maxVal==undefined) maxVal = 215;
                 if (steps==undefined) steps = 20; // must be even number for 3 color phase to work
-                
+
                 var rangeInt = (maxVal - minVal)/steps;
                 var rangeArr = [];
                 for (var i = 0; i < (steps+1); i++) {
                     rangeArr.push((rangeInt*i).toFixed(2));
                 }
             }
-            
+
             return rangeArr;
         }
 
@@ -112,7 +112,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             endpoint.g = 48;
                             endpoint.b = 0;
                     }
-                    
+
                     // first half
                     for (var i = 0; i < ((steps/2)+1); i++) {
                         // red
@@ -141,7 +141,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         var blueVal = midpoint.b - (blueInt*i);
 
                         colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                    }  
+                    }
                 } else {
                     // White to blue spectrum
                     if (startpoint==undefined) {
@@ -156,7 +156,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             endpoint.g = 77;
                             endpoint.b = 155;
                     }
-                    
+
                     for (var i = 0; i < (steps+2); i++) {
                         // red
                         var redInt = (startpoint.r - endpoint.r)/steps;
@@ -169,7 +169,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         var blueVal = startpoint.b - (blueInt*i);
 
                         colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                    }  
+                    }
                 }
             }
             return colorArr;
@@ -188,7 +188,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
             var rangeArr = generateRangeArr(standard_range, minVal, maxVal, steps);
             var colorArr = generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
-        
+
             var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.7</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
 
             for (var i = 0; i < (steps+1); i++) {
@@ -201,7 +201,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
             return xmlStylesheet;
         }
-    
+
         /* END SLD GENERATION */
 
         /* FUNCTIONS FOR CREATING LEGEND */
@@ -275,21 +275,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             window.map;
             var mercator, geographic;
             var loading_panel;
-            
-            // DecLat, DecLng 
+
+            // DecLat, DecLng
             geographic = new OpenLayers.Projection("EPSG:4326");
-            
+
             // Spherical Meters
             // The official name for the 900913 (google) projection
             mercator = new OpenLayers.Projection("EPSG:3857");
-            
+
             // Australia Bounds
             australia_bounds = new OpenLayers.Bounds();
             australia_bounds.extend(new OpenLayers.LonLat(111,-10));
             australia_bounds.extend(new OpenLayers.LonLat(152,-44));
             australia_bounds = australia_bounds.transform(geographic, mercator);
             var zoom_bounds = australia_bounds;
-            
+
             map = new OpenLayers.Map(id, {
                 projection: mercator,
                 eventListeners: {
@@ -328,7 +328,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
                 var myLayers = [];
                 var filepath = data.file;
-                
+
                 // check for layers metadata, if none exists than the request is returning a single layer
                 if ( $.isEmptyObject(data.layers) ) {
                     //single layer
@@ -342,7 +342,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
-                            {   
+                            {
                                 DATA_URL: data.vizurl,   // The data_url the user specified
                                 SLD_BODY: generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
                                 layers: "DEFAULT",
@@ -359,7 +359,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
-                            {   
+                            {
                                 DATA_URL: data.vizurl,   // The data_url the user specified
                                 layers: "DEFAULT",
                                 transparent: "true",
@@ -376,7 +376,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     var i = 0;
                     $.each( data.layers, function(namespace, layer){
 
-                        // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST 
+                        // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
                         i += 1;
                         var isVisible;
                         // if a layer is specified to render first, make it visible
@@ -398,11 +398,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             }
                         }
 
-                        
+
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layer.label+'', // Layer Name
                             (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
-                            {   
+                            {
                                 DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
                                 SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
                                 layers: "DEFAULT",
@@ -436,7 +436,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         if (type != 'occurence'){
                             createLegend(dataLayer.layer, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
                         }
-                    }     
+                    }
                     else {
                         dataLayer.layer.visibility = false;
                         dataLayer.layer.display(false);
@@ -444,8 +444,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 });
             }
         }
-        
 
-        
+
+
     }
 );
