@@ -16,13 +16,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
-        });   
+            renderMap($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+        });
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+            renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
         });
+
+        /* Global configuration */
+        // ----------------------------------------------------------------
+        // visualiser base url
+        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
+        // dataset manager getMetadata endpoint url
+        var dmurl = portal_url + '/dm/getMetadata';
 
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
@@ -255,7 +262,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function renderMap(url, id, type, visibleLayer){
+        function renderMap(uuid, url, id, type, visibleLayer){
 
             // CREATE BASE MAP
             // -------------------------------------------------------------------------------------------
@@ -314,13 +321,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             // Remove any existing legends.
             $('.olLegend').remove();
 
-            var request = document.createElement('a');
-            request.href = url;
-            request.filename = request.pathname.split('@@')[0];
-
             var responseSuccess = false;
 
-            $.getJSON(''+location.protocol+'//'+window.location.hostname+request.pathname.split('@@')[0]+'/dm/getMetadata/', function( data ) {
+            $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
                 responseSuccess = true;
 
                 var myLayers = [];
