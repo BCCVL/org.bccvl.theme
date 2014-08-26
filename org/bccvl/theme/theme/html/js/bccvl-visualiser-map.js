@@ -34,7 +34,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
 
-        var styleObj = {"minVal":0,"maxVal":100,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:0,g:159,b:227},"endpoint":{r:30,g:77,b:155}} 
+        var styleObj = {"minVal":0,"maxVal":100,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:0,g:159,b:227},"endpoint":{r:30,g:77,b:155}};
 
         /*  Goal here is to determine minimum and maximum raster values in the map layer, 
             dividing it by an arbitrary number of levels.  This is then used to make an array
@@ -227,7 +227,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             var legend = document.createElement('div');
             legend.className = 'olLegend';
             if (standard_range == 'rainfall'){
-                legend.innerHTML = '<h5>Units (mm)</h5>'
+                legend.innerHTML = '<h5>Units (mm)</h5>';
                 for (var i = 0; i < (rangeArr.length); i = i+1) {
                     if (i == (rangeArr.length-1)){
                         legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
@@ -236,7 +236,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     }
                 }
             } else if (standard_range == 'temperature') {
-                legend.innerHTML = '<h5>Units (&deg;C)</h5>'
+                legend.innerHTML = '<h5>Units (&deg;C)</h5>';
                 for (var i = 0; i < (rangeArr.length); i = i+1) {
                     if (i == (rangeArr.length-1)){
                         legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
@@ -245,7 +245,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     }
                 }
             } else {
-                legend.innerHTML = '<h5>Units ('+layer.units+')</h5>'
+                legend.innerHTML = '<h5>Units ('+layer.units+')</h5>';
                 for (var i = 0; i < (steps+1); i = i+5) {
                     if (i == (steps)){
                         legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
@@ -311,13 +311,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
             map.zoomToExtent(zoom_bounds);
 
             // Make the layer switcher open by default
-            ls.maximizeControl(); 
+            ls.maximizeControl();
 
             // Remove all the existing data layers, keep the baselayers and map.
             var dataLayers = map.getLayersBy('isBaseLayer', false);
             $.each(dataLayers, function(i){
                 map.removeLayer(dataLayers[i]);
-            })
+            });
             // Remove any existing legends.
             $('.olLegend').remove();
 
@@ -334,7 +334,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     //single layer
                     var layerName;
                     if(data.description!=''){
-                        layerName = data.description
+                        layerName = data.description;
                     } else {
                         layerName = 'Data Overlay';
                     }
@@ -415,7 +415,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             }
                         );
                         myLayers.push(newLayer);
-                    })
+                    });
                 }
 
                 map.addLayers(myLayers);
@@ -441,7 +441,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                         dataLayer.layer.visibility = false;
                         dataLayer.layer.display(false);
                     }
-                })
+                });
             }
         }
         
