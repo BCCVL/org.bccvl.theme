@@ -13,6 +13,11 @@ define(     ['jquery', 'bootstrap'],
             	$('#wrapper-basic').addClass('hidden');
             	$('#wrapper-aaf').removeClass('hidden');
                 $('.disclaimer.legals').insertBefore('.aaf-logo-link');
+                if( $('#legals-checkbox').prop('checked') == true ){
+                    $('.aaf-logo-link').attr('disabled',false);
+                } else {
+                    $('.aaf-logo-link').attr('disabled',true);
+                }
             });
 
             $('#login-basic').click(function(e) {
@@ -21,6 +26,11 @@ define(     ['jquery', 'bootstrap'],
             	$('#wrapper-basic').removeClass('hidden');
             	$('#wrapper-aaf').addClass('hidden');
                 $('.disclaimer.legals').insertBefore('#login-form .formControls');
+                if( $('#legals-checkbox').prop('checked') == true ){
+                    $('#login-form input[type="submit"]').attr('disabled',false);
+                } else {
+                    $('#login-form input[type="submit"]').attr('disabled',true);
+                }
             });
 
             $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
