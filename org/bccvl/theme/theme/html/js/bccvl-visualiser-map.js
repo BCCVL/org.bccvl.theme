@@ -28,6 +28,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         // ----------------------------------------------------------------
         // visualiser base url
         var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
+        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
 
@@ -341,7 +342,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     if (type !== 'occurence'){
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
-                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: data.vizurl,   // The data_url the user specified
                                 SLD_BODY: generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
@@ -358,7 +359,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                     } else {
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
-                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: data.vizurl,   // The data_url the user specified
                                 layers: "DEFAULT",
@@ -401,7 +402,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layer.label+'', // Layer Name
-                            (location.protocol+'//'+window.location.hostname+'/_visualiser/api/wms/1/wms'),    // Layer URL
+                            (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
                                 SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
