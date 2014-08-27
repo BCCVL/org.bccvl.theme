@@ -1251,9 +1251,9 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled {
 }
 table.bccvl-environmentaldatatable tbody tr.info.disabled td {
     cursor:default;
-} 
+}
 #form-widgets-resolution {
-    padding: 8px;
+    /*padding: 8px;*/
     width: 100%;
     height: 2em;
     margin-bottom:0;
