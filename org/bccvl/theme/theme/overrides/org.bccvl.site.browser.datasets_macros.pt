@@ -58,12 +58,12 @@
             <td class="bccvl-table-label">
                 <p tal:content="item_title_or_id"><strong>Dataset title</strong></p>
                 <p tal:content="item_description">Dataset short description</p>
-                <p tal:condition="md/rows">rows:<i tal:content="md/rows"></i></p>
-                <p tal:condition="md/scientificname">species:<i tal:content="md/scientificname"></i></p>
-                <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p>
-                <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p>
-                <p tal:condition="md/resolution">resolution:<i tal:content="md/resolution"></i></p>
-                <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p>
+                <p tal:condition="md/rows">rows: <i tal:content="md/rows"></i></p>
+                <p tal:condition="md/scientificname">species: <i tal:content="md/scientificname"></i></p>
+                <p tal:condition="md/width">size: <i tal:content="md/width"></i>x<i tal:content="md/height"></i></p>
+                <p tal:condition="md/min">min/max: <i tal:content="md/min"></i>/<i tal:content="md/max"></i></p>
+                <p tal:condition="md/resolution">resolution: <i tal:content="md/resolution"></i></p>
+                <p tal:condition="md/crs">crs: <i tal:content="md/crs"></i></p>
             </td>
             <!-- Actions -->
             <!-- TODO: expects simple publication workflow
