@@ -41,7 +41,9 @@
         <a class="fine bccvl-occurrence-viz"
            title="preview this dataset"
            data-viz-id="value"
+           data-uuid="value"
            tal:attributes="data-viz-id python: item['dlinfo']['alturl'][0];
+                           data-uuid item/value;
                            class view/vizclass">
            <i class="icon-eye-open icon-link"></i>
         </a>
