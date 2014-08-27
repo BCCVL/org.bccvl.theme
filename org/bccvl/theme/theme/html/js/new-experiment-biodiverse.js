@@ -2,7 +2,7 @@
 // main JS for the new biodiverse experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 
+    ['jquery', 'js/bccvl-wizard-tabs',
      'js/bccvl-form-validator', 'jquery-tablesorter', 'jquery-arrayutils',
      'select2'],
     function($, wiztabs, formvalidator) {
@@ -79,16 +79,19 @@ define(
                 html += '</tr>';
                 return html;
             };
-
-            var renderLayer = function(layerName, layerId, projectionId) {
+// layername=r.filename, layerid =r.uuid, projectionid=p.uuid
+            var renderLayer = function(result, projection) {
                 var html = '';
                 html += '<tr">';
                 html +=  '<td class="bccvl-table-choose" style="width: 30px;">';
-                html +=   '<input id="layer-' + layerId + '" class="bccvl-layer" type="checkbox" value="' + layerId + '" data-layername="' + layerName + '" data-projectionid="' +  projectionId + '"></input>';
+                html +=   '<input id="layer-' + result.uuid + '" class="bccvl-layer" type="checkbox" value="' + result.uuid + '" data-layername="' + result.title + '" data-projectionid="' +  projection.uuid + '"></input>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-label">';
-                html +=   '<label for="layer-' + layerId + '">';
-                html +=    '<p>' + layerName + '</p>';
+                html +=   '<label for="layer-' + result.uuid + '">';
+                html +=    '<p>' + result.title + '</p>';
+                // result.emsc, result.gcm, result.resolution,
+                // result.sdm.algorithm, result.sdm.title, result.sdm.url
+                html +=  '    <p>' + projection.name + ': ' + result.sdm.algorithm + '</p>';
                 html +=   '</label>';
                 html +=  '</td>';
                 html +=  '<td class="bccvl-table-controls">';
@@ -97,13 +100,13 @@ define(
                 return html;
             };
 
-            var renderThreshold = function(layerName, index, layerId) {
+            var renderThreshold = function(index, projection, result) {
 
                 // Threshold values are obtained from an AJAX call. There is one set of threshold values for all files in a projection.
                 $.ajax({
                     url: portal_url + '/dm/getThresholds',
                     dataType: 'json',
-                    data: {'datasets' : layerId }
+                    data: {'datasets' : result.uuid }
                 }).done(function(data){
 
                     var name = "form.widgets.projection." + index + ".threshold";
@@ -114,7 +117,8 @@ define(
                     html +=   '<input id="' + id + '" name="' + name + '" data-parsley-type="number" class="bccvl-threshold required" style="width: 130px;">';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-label">';
-                    html +=   '<p>' + layerName + '</p>';
+                    html +=   '<p>' + result.title + '</p>';
+                    html +=  '    <p>' + projection.name + ': ' + result.sdm.algorithm + '</p>';
                     html +=  '</td>';
                     html +=  '<td class="bccvl-table-controls">';
                     html +=  '</td>';
@@ -123,7 +127,7 @@ define(
                     $thresholdTableBody.append(html);
 
                     // Create an array to use as input to Select2
-                    var thresholdMap = data[layerId];
+                    var thresholdMap = data[result.uuid];
                     var array = new Array();
                     for (var key in thresholdMap) {
                         array.push({id: thresholdMap[key], text: key + ' (' + thresholdMap[key] + ')'});
@@ -310,7 +314,7 @@ define(
                         $.each(p.result, function(index2, r){
                             if (r.files.length != 0 && $.inArray(r.year, $selectedYears) >= 0) {
                                 $.each(r.files, function(index3, f){
-                                    layers = layers.concat({filename: f, layeruuid: r.uuid, projectionuuid: p.uuid});
+                                    layers = layers.concat({result: r, projection: p});
                                 });
                             }
                         });
@@ -318,15 +322,33 @@ define(
                 });
 
                 layers = layers.sort(function(a, b){
-                    return a.filename.localeCompare(b.filename);
+                    return a.result.title.localeCompare(b.result.title);
                 });
 
                 $.each(layers, function(index, l){
-                    $layersTableBody.append(renderLayer(l.filename, l.layeruuid, l.projectionuuid));
+                    $layersTableBody.append(renderLayer(l.result, l.projection));
                 });
 
                 // Wire up event listeners for all the newly created checkboxes.
                 $('.bccvl-layer').on("change", onLayerChange);
+            };
+
+            var getDetails = function(projectionuuid, layeruuid) {
+
+                var projection, result, i;
+                for (i=0; i < projectionData.projections.length; i++) {
+                    if (projectionData.projections[i].uuid == projectionuuid) {
+                        projection = projectionData.projections[i];
+                        break;
+                    }
+                }
+                for (i=0; i < projection.result.length; i++) {
+                    if (projection.result[i].uuid == layeruuid) {
+                        result = projection.result[i];
+                        break;
+                    }
+                }
+                return {projection: projection, result: result};
             };
 
             var onLayerChange = function() {
@@ -345,7 +367,8 @@ define(
                 }
 
                 $.each($selectedLayers.sort(), function(index, l){
-                    renderThreshold(l.layerName, index, l.layeruuid);
+                    var details = getDetails(l.projectionuuid, l.layeruuid);
+                    renderThreshold(index, details.projection, details.result);
                     $hiddenInputsDiv.append(renderHiddenLayerSelect(l.layeruuid, index));
                 });
             };
