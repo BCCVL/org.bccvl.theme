@@ -44,6 +44,30 @@ define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bc
                 autostart: true,
             });
         });
+
+        // Request metadata for datasets
+        // These buttons have a fallback to open their request in a new tab (if JS is disabled)
+        $('body').on('click', '.dataset-info-btn', function(event){
+             event.preventDefault();
+             var requestUrl = $(this).attr('href');
+             $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
+             $.ajax(requestUrl)
+                .done(function(data){
+                    console.log(data);
+                    $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
+                        $('#dataset-meta-modal .modal-body').html(data);
+                        $('#dataset-meta-modal .modal-body').fadeIn(300);
+                    });
+                })
+                .fail(function() {
+                    $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
+                        $('#dataset-meta-modal .modal-body').html('<h1>No metadata is available for this dataset at this time.</h1>');
+                        $('#dataset-meta-modal .modal-body').fadeIn(300);
+                    });
+                });
+             $('#dataset-meta-modal').modal();
+         });
+
     });
 
     function renderDatasetRow(completeURL, $tr) {

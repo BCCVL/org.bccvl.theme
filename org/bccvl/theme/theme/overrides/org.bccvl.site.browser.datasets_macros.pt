@@ -79,6 +79,11 @@
                        tal:attributes="title action/title"></i>
                 </a>
 
+                <a class="dataset-info-btn" href="#" target="_blank"
+                   tal:attributes="href string:${item_url}/details">
+                    <i class="icon-info-sign" title="More information for this dataset."></i>
+                </a>
+
                 <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
                             tal:condition="complete">
                     <a href="#"

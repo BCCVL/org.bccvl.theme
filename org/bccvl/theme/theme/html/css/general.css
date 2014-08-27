@@ -1341,3 +1341,20 @@ iframe.homepage {
 body.home>.white-bg {
     padding-bottom: 1em;
 }
+.modal-body span.loading-gif {
+    text-align: center;
+    background-image: url('../lib/openlayers/img/Preloader_2.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+}
+.modal-body h1 {
+    font-size: 1.6em;
+    color: #333;
+}
+.modal-body h3 {
+    font-size: 1.2em;
+    font-family: "OpenSansRegular";
+}
