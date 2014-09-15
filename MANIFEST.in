@@ -1,2 +1,2 @@
 include *.rst
-recursive-include org *.zcml *.xml *.js *.css *.png *.svg *.gif *.xcf *.robot *.html *.cfg *.pt *.txt *.eot *.ttf *.woff
+recursive-include org *.zcml *.xml *.js *.css *.png *.svg *.gif *.xcf *.robot *.html *.cfg *.pt *.txt *.eot *.ttf *.woff *.ico *.cpt
