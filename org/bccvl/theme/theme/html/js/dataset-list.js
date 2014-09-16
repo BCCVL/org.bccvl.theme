@@ -34,14 +34,14 @@ define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bc
                         if (status == 'COMPLETED' || status == 'FAILED') {
                             timer.stop();
                             // The import is complete, now render the row.
-                            renderDatasetRow(completeURL, $(spinner).parents('tr'));
+                            renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
                         }
                     }
                 });
             });
             timer.set({
                 time: 5000,
-                autostart: true,
+                autostart: true
             });
         });
 
@@ -76,13 +76,14 @@ define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bc
     function renderDatasetRow(completeURL, $tr) {
         $.ajax({
             url: completeURL,
-             success: function(rowHTML) {
-                $tr.html($(rowHTML).children());
+            success: function(rowHTML) {
+                $tr.replaceWith($(rowHTML));
                 // Wire up visualiser and sharing
-                viz.init(); 
+                viz.init();
                 sharing.init();
             }
         });
-    }
+    };
+
 
 });

@@ -3,5 +3,13 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="org.bccvl.theme">
 
+  <browser:page
+      name="batchnavigation"
+      for="*"
+      permission="zope.Public"
+      class="plone.batching.browser.PloneBootstrapBatchView"
+      template="batchnavigation_bootstrap.pt"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
 
 </configure>

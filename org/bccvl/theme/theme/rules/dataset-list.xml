@@ -6,13 +6,16 @@
     <!-- DATASET LIST ============================================ -->
     <rules if-path="datasets/" >
 
-        <theme href="html/dataset-list.html" />
+      <theme href="html/dataset-list.html" />
 
-        <!-- Tabs -->
-        <before css:theme-children="section.bccvl-datasetlist > div.row-fluid" css:content="ul.nav" />
+      <!-- Datasets sub navigation -->
+      <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
 
-        <!-- Dataset Table -->
-        <after css:theme-children="div.bccvl-my-datasets div.span4" css:content="table.bccvl-datasetstable" />
+      <!-- Search filter -->
+      <replace css:theme="#datasets-filter" css:content="#datasets-filter"/>
+
+      <!-- Dataset Table -->
+      <replace css:theme-children="#datasets-listing" css:content="#datasets-listing" />
 
     </rules>
 </rules>

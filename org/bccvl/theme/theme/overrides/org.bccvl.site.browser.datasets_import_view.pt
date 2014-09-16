@@ -10,7 +10,7 @@
 
 <metal:content-core fill-slot="body">
 
-    <tal:tabs metal:use-macro="context/datasets-macros/datasets_tabs"></tal:tabs>
+    <tal:tabs metal:use-macro="context/datasets_listing_view/datasets_tabs"></tal:tabs>
 
     <div id="searchOccurrence" class="bccvl-search-form form-inline">
         <input name="searchOccurrence_query" type="text"
