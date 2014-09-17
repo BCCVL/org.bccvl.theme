@@ -328,12 +328,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                 responseSuccess = true;
 
                 var myLayers = [];
-                var filepath = data.file;
 
-                // check for layers metadata, if none exists than the request is returning a single layer
+                // check for layers metadata, if none exists then the request is returning a data like a csv file
                 if ( $.isEmptyObject(data.layers) ) {
                     //single layer
                     var layerName;
+                    // TODO: use data.title (needs to be populated)
                     if(data.description!=''){
                         layerName = data.description;
                     } else {
@@ -399,12 +399,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
                             }
                         }
 
-
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layer.label+'', // Layer Name
                             (visualiserWMS),    // Layer URL
                             {
-                                DATA_URL: filepath+'#'+layer.filename,   // The data_url the user specified
+                                DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
                                 SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
                                 layers: "DEFAULT",
                                 transparent: "true",

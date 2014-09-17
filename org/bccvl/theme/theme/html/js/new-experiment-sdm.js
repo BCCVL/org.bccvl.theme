@@ -137,7 +137,7 @@ define(
                 // now attach some behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
                 // here's where we hook up the viz
                 var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
-                
+
                 /*$vizButton.click(function(evt) {
                     var params = {
                         file_name: fileName
@@ -191,7 +191,7 @@ define(
                                         // render each layer
                                         $.each(list.layers, function(key, value) {
                                             var name = value.label;
-                                            var fileName = value.filename;
+                                            var fileName = 'filename' in value ? value.filename : list.file;
                                             var zipFile = list.file;
                                             layerNames.push(name);
                                             layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
@@ -203,13 +203,6 @@ define(
                                         for(var index = layerNames.length - 1; index >= 0; index--) {
                                             $header.after(layers[layerNames[index]]);
                                         }
-                                    } else if (list.layer) {
-                                        var name = list.label;
-                                        var fileName = '';
-                                        var zipFile = list.file ;
-                                        var key = list.layer ;
-                                        layer = renderLayerRow(token, key, name, fileName, zipFile);
-                                        $header.after(layer);
                                     } else {
                                         alert('There are no layers in selected dataset.');
                                     }
