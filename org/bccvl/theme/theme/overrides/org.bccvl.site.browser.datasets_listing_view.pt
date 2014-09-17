@@ -95,7 +95,7 @@
                    isAnon context/@@plone_portal_state/anonymous;
                    show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
 
-    <!-- <div metal:use-macro="context/batch_macros/macros/navigation" /> -->
+    <div metal:use-macro="context/batch_macros/macros/navigation" />
 
     <div class="alert" tal:condition="not: batch">
       <p>No matches found</p>
@@ -129,10 +129,10 @@
               <p><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
               <p tal:condition="md/scientificname"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
               <p tal:condition="md/rows"><small><b>rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
-              <p tal:condition="md/width"><small><b>size:</b> <tal:r tal:replace="md/width"></tal:r>x<tal:r tal:replace="md/height"></tal:r></small></p>
-              <p tal:condition="md/min"><small><b>min/max:</b> <tal:r tal:replace="md/min"></tal:r>/<tal:r tal:replace="md/max"></tal:r></small></p>
+              <!-- <p tal:condition="md/width"><small><b>size:</b> <tal:r tal:replace="md/width"></tal:r>x<tal:r tal:replace="md/height"></tal:r></small></p> -->
+              <!-- <p tal:condition="md/min"><small><b>min/max:</b> <tal:r tal:replace="md/min"></tal:r>/<tal:r tal:replace="md/max"></tal:r></small></p> -->
               <p tal:condition="md/resolution"><small><b>resolution: <tal:r tal:replace="md/resolution"></tal:r></b></small></p>
-              <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p>
+              <!-- <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p> -->
               <p><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
               <p><small><b>Source:</b> ALA import</small></p>
               <p><small><b>Date:</b> <tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
@@ -203,6 +203,7 @@
       </div>
       </tal:comment>
     </tal:condition>
+    <div metal:use-macro="context/batch_macros/macros/navigation" />
   </div>
 
 
