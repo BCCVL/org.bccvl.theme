@@ -6,7 +6,7 @@ body {
     line-height: 19px;
 }
 * {
-    
+
 }
 p strong {
     font-size:14px;
@@ -171,7 +171,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 .logo-icon-lge {
     width:100px;
     height:100px;
-} 
+}
 .bccvl-main {
     padding-bottom:2em;
 }
@@ -768,7 +768,7 @@ td.bccvl-table-controls a:hover {
 }
 .bccvl-table-label p {
     padding: 0;
-    margin: 0; 
+    margin: 0;
     line-height: 1.3em;
 }
 
@@ -1224,13 +1224,13 @@ table.bccvl-environmentaldatatable tbody tr.info td {
 
 table.bccvl-environmentaldatatable tbody tr:last-child td {
     border-bottom:1px solid rgb(0, 159, 227);
-} 
+}
 table.bccvl-environmentaldatatable tbody tr.info:last-child td {
     border-bottom:0px solid rgb(0, 159, 227);
 }
 table.bccvl-environmentaldatatable tbody tr.info td:first-child {
     border-left:1px solid rgb(0, 159, 227);
-} 
+}
 table.bccvl-environmentaldatatable tbody tr.info td:last-child {
     border-right:1px solid rgb(0, 159, 227);
 }
@@ -1239,7 +1239,7 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled td {
 }
 table.bccvl-environmentaldatatable tbody tr.info.disabled td:first-child {
     border-left:1px solid rgba(0, 159, 227, .1);
-} 
+}
 table.bccvl-environmentaldatatable tbody tr.info.disabled td:last-child {
     border-right:1px solid rgba(0, 159, 227, .35);
 }
@@ -1283,7 +1283,7 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled td {
 iframe.homepage {
     margin: .5em 0 1.5em;
 }
-.jumbotron p { 
+.jumbotron p {
     font-size:1.1em;
     line-height: 1.3em;
 }
