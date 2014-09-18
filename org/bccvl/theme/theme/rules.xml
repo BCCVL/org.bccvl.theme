@@ -62,7 +62,7 @@
     <drop css:theme=".non-plone" />
 
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <after css:theme-children="#js-config">
+    <replace css:theme-children="#js-config">
         window.bccvl || (window.bccvl = {});
         window.bccvl.config || (window.bccvl.config = {});
         window.bccvl.config.data_mover = {
@@ -73,7 +73,7 @@
         };
 
         local = false;
-    </after>
+    </replace>
 
     <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
@@ -89,95 +89,23 @@
         </xsl:for-each>
     </replace>
 
-    <!-- hook up the user management menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-    <!-- user name -->
-    <replace css:theme-children=".bccvl-username" css:content-children="#user-name" />
-    <!-- (other user handling is in the link section below) -->
-
-
+    <!-- Site Header ~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <replace css:theme="#portal-logo" css:content="#portal-logo"/>
+    <replace css:theme="#user-menu" css:content="#user-menu"/>
     <!-- hook up the search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <replace css:theme="#siteSearch" css:content="#siteSearch"/>
+    <!-- copy global navbar -->
+    <replace css:theme="#portal-globalnav" css:content="#portal-globalnav"/>
 
-    <!-- yes, it really is 'searchGadget_form', plone replaces the id with javascript when an unthemed page is displayed -->
-    <copy attributes="action method" css:theme="form#siteSearch" css:content="#searchGadget_form" />
-    <copy attributes="name" css:theme="form#siteSearch input[name=siteSearchQuery]" css:content="#searchGadget" />
 
     <!-- Google Analytics -->
     <replace css:theme="script#google-analytics" css:content="script#google-analytics"/>
 
+    <!-- Breadcrumbs: -->
+    <replace css:theme="#breadcrumbs" css:content="#breadcrumbs"/>
 
-    <!-- update links ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!--
-    This section replaces the href attribute of the theme links with
-    the actual content links.
-
-    We use css-selectors to look up the anchors (links) in the theme.
-    Specifically, we're using css classes to classify where an anchor should
-    link to link.
-
-    We use XPATH to lookup the desired anchor in Plone's content page.
-
-    We use Diazo's merge function to merge href attribute in the content with
-    the href attribute in the template. For this reason, the href attribute
-    in the template should always be undefined, i.e. no href attribute should
-    be defined.
-    -->
-
-    <!-- portaltab (high level grouping) -->
-    <merge attributes="href" css:theme="a.bccvllinks-home"              content="//li[@id='portaltab-index_html']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-dashboard"         content="//li[@id='personaltools-dashboard']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-news"              content="//li[@id='portaltab-news']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-events"            content="//li[@id='portaltab-events']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-users"             content="//li[@id='portaltab-Members']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-datasets"          content="//li[@id='portaltab-datasets']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-datasetsimport"    content="//li[@id='tab-datasetsimport']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-datasetsupload"    content="//li[@id='tab-datasetsupload']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-functions"         content="//li[@id='portaltab-functions']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-knowledgebase"     content="//li[@id='portaltab-knowledgebase']/a" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiments"       content="//li[@id='portaltab-experiments']/a" />
-
-    <!-- user management -->
-    <merge attributes="href" css:theme="a.bccvllinks-adminaccess"       content="//li[@id='personaltools-plone_setup']/a" />
-
-    <drop css:theme="a.bccvllinks-adminaccess" if-not-content="//li[@id='personaltools-plone_setup']/a"/>
-    <drop css:theme="ul.dropdown-menu li.divider" if-not-content="//li[@id='personaltools-plone_setup']/a"/>
-
-    <merge attributes="href" css:theme="a.bccvllinks-logoutuser"        content="//li[@id='personaltools-logout']/a" />
-
-    <!-- anonymous user -->
-    <rules if="$is_anonymous">
-        <before
-              content="/html/head/script"
-              theme-children="/html/head" />
-        <replace css:theme-children="#user-menu">
-            <a id="personaltools-login" href="{$portal_base_url}/login" rel="#pb_1" class="link-overlay">
-                <div class="btn">Log in</div>
-            </a>
-        </replace>
-
-        <drop css:theme="a.bccvllinks-dashboard"/>
-        <drop css:theme="a.bccvllinks-datasets"/>
-        <drop css:theme="a.bccvllinks-experiments"/>
-    </rules>
-
-    <!-- contentview (content level grouping) -->
-    <!-- experiment -->
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-view"   content="//li[@id='contentview-view']/a" />
-
-    <!--    Link to create a new experiment:
-            //a[@id="org-bccvl-content-sdmexperiment"]
-            Note: This link is NOT available when viewing a specific experiment.
-    -->
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-new"              content="//a[@id='org-bccvl-content-sdmexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-proj-new"         content="//a[@id='org-bccvl-content-projectionexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-biodiverse-new"   content="//a[@id='org-bccvl-content-biodiverseexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-speciestrait-new" content="//a[@id='org-bccvl-content-speciestraitsexperiment']" />
-    <merge attributes="href" css:theme="a.bccvllinks-experiment-ensemble-new"     content="//a[@id='org-bccvl-content-ensemble']" />
-
-    <!-- miscellaneous -->
-    <!-- TODO: don't use // xpath selector. It is slow -->
-    <!-- TODO: CSS3 selectors may be slower than XPath selectors -->
-    <replace theme="//footer" content="//footer"/>
+    <!-- Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <replace css:theme="#footer" css:content="#footer"/>
 
     <!-- if debug insert helper links in navbar -->
     <rules if="$is_debug">

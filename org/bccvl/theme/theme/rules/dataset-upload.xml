@@ -9,7 +9,7 @@
         <theme href="html/dataset-upload.html" />
 
         <!-- Tabs -->
-        <before css:theme-children="section.bccvl-datasetupload > div.row-fluid" css:content="ul.nav" />
+        <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
 
         <!-- Info notices -->
         <replace css:theme-children=".bccvl-flashmessages-info">
