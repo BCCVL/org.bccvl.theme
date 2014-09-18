@@ -5,10 +5,12 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
-
+<head>
+  <title>Datasets</title>
+</head>
 <body>
 
-<metal:content-core fill-slot="body">
+  <metal:content-core fill-slot="body">
 
   <ul id="datasets-nav" class="nav nav-tabs" metal:define-macro="datasets_tabs">
     <li class="tab-datasetslisting"

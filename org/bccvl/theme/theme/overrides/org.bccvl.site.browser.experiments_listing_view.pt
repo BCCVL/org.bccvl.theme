@@ -11,25 +11,49 @@
 <metal:content-core fill-slot="content-core">
 
 <metal:block define-macro="content-core"
-                    tal:define="kssClassesView context/@@kss_field_decorator_view;
-                                getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                                templateId template/getId">
+             tal:define="kssClassesView context/@@kss_field_decorator_view;
+                         getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                         templateId template/getId">
 
-    <metal:text-field-view use-macro="context/folder_listing/text-field-view"/>
+  <div id="new-experiment-menu"
+       tal:define="actions view/new_experiment_actions">
+    <div class="new-experiment-button experiment-sdm">
+      <a class="bccvllinks-experiment-new"
+         tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i><br/>new Species Distribution Modelling Experiment</span></a>
+    </div>
+    <div class="new-experiment-button experiment-cce">
+      <a class=" bccvllinks-experiment-proj-new"
+         tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New Climate change experiment</span></a>
+    </div>
+    <div class="new-experiment-button experiment-bio">
+      <a class=" bccvllinks-experiment-biodiverse-new"
+         tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New <br/>Biodiverse Experiment</span></a>
+    </div>
+    <div class="new-experiment-button experiment-stm">
+      <a class=" bccvllinks-experiment-speciestrait-new"
+         tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New Species Trait Modelling Experiment</span></a>
+    </div>
+    <div class="new-experiment-button experiment-ensemble">
+      <a class=" bccvllinks-experiment-ensemble-new"
+         tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i><br/>New <br/>Ensemble Analysis</span></a>
+    </div>
+  </div>
 
-    <tal:define define="contentFilter view/contentFilter;
-                        limit_display request/limit_display|python:100">
-       <div id="experiment-list">
-            <table class="table table-hover bccvl-experimenttable">
-                <thead>
-                      <tr class="headers">
-                          <th class="header headerSortUp">Date<span /></th>
-                          <th>Experiment<span /></th>
-                          <th>Type<span /></th>
-                          <th />
-                      </tr>
-                </thead>
-                <tbody>
+  <metal:text-field-view use-macro="context/folder_listing/text-field-view"/>
+
+  <tal:define define="contentFilter view/contentFilter;
+                      limit_display request/limit_display|python:100">
+    <div id="experiment-list">
+      <table class="table table-hover bccvl-experimenttable">
+        <thead>
+          <tr class="headers">
+            <th class="header headerSortUp">Date<span /></th>
+            <th>Experiment<span /></th>
+            <th>Type<span /></th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
        <metal:listing use-macro="context/folder_listing/listing">
           <metal:entry fill-slot="entry">
              <tr tal:define="exp python:view.experiment_details(item)">
