@@ -1,0 +1,34 @@
+<!-- user menu -->
+<div id="user-menu" class="btn-group pull-right">
+  <tal:block condition="not: view/anonymous">
+    <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+      <i class="icon-user"></i> <span class="bccvl-username" tal:content="view/user_name">unknown user</span> <i class="caret"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <tal:actions tal:repeat="action view/user_actions">
+        <li class="divider" tal:condition="python:repeat['action'].last and not repeat['action'].first"></li>
+        <li>
+          <a class="bccvllinks-action"
+             tal:attributes="href action/url;
+                             traget action/link_target|nothing;
+                             class string:bccvllinks-${action/id};">
+            <i class="icon-eye-open"
+               tal:attributes="class action/class"></i>
+            <tal:r tal:replace="action/title">Action title</tal:r>
+          </a>
+      </li>
+      </tal:actions>
+    </ul>
+  </tal:block>
+  <tal:block tal:condition="python:view.user_actions and
+                            view.anonymous">
+    <tal:actions repeat="action view/user_actions">
+        <a class="bccvllinks-action"
+           tal:attributes="href action/url;
+                           traget action/link_target|nothing;
+                           class string:bccvllinks-${action/id};">
+          <div class="btn"
+               tal:content="action/title">Action title</div></a>
+    </tal:actions>
+  </tal:block>
+</div>

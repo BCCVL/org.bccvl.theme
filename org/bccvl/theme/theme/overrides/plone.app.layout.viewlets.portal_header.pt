@@ -1,0 +1,49 @@
+<nav id="portal-nav" class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <!-- button for narrow screen menu -->
+      <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</button>
+      <div tal:replace="structure provider:plone.portalheader"/>
+    </div>
+  </div>
+</nav>
+
+<!--       <\!-- button for narrow screen menu -\-> -->
+<!--       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</button> -->
+
+<!--       <\!-- project title -\-> -->
+<!--       <a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a> -->
+
+<!--       <\!-- container for content that will hide under menu when screen is narrow -\-> -->
+<!--       <div class="nav-collapse collapse"> -->
+
+<!-- 	<\!-- user menu -\-> -->
+<!-- 	<div id="user-menu" class="btn-group pull-right"> -->
+<!-- 	  <a class="btn dropdown-toggle fine" data-toggle="dropdown"> -->
+<!-- 	    <i class="icon-user"></i> -->
+<!--             <span class="bccvl-username">unknown user</span> -->
+<!--             <i class="caret"></i> -->
+<!-- 	  </a> -->
+<!-- 	  <ul class="dropdown-menu"> -->
+<!-- 	    <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li> -->
+<!-- 	    <li class="divider"></li> -->
+<!-- 	    <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li> -->
+<!-- 	  </ul> -->
+<!-- 	</div> -->
+
+<!-- 	<\!-- search field -\-> -->
+<!-- 	<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain"> -->
+<!-- 	  <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/> -->
+<!-- 	</form> -->
+
+<!-- 	<\!-- main menu items -\-> -->
+<!-- 	<ul id="portal-globalnav" class="nav"> -->
+<!-- 	  <\!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -\-> -->
+<!-- 	  <li               ><a class="bccvllinks-datasets">Datasets</a></li> -->
+<!-- 	  <li               ><a class="bccvllinks-experiments">Experiments</a></li> -->
+<!-- 	  <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li> -->
+<!-- 	</ul> -->
+<!--       </div><\!--/.nav-collapse -\-> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </nav> -->

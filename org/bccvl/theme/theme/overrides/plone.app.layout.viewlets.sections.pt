@@ -1,0 +1,20 @@
+<tal:sections tal:define="portal_tabs view/portal_tabs"
+     tal:condition="portal_tabs"
+     i18n:domain="plone">
+  <div class="nav-collapse collapse">
+    <ul id="portal-globalnav" class="nav"
+        tal:define="selected_tab python:view.selected_portal_tab">
+      <tal:tabs tal:repeat="tab portal_tabs">
+        <li tal:define="tid tab/id"
+            tal:attributes="class python:selected_tab==tid and 'active' or ''">
+          <a href="#" class=""
+             tal:content="tab/name"
+             tal:attributes="href tab/url;
+                             class string:bccvllinks-${tid};
+                             title tab/description|nothing;
+                             target tab/link_target|nothing;">Tab Name</a>
+        </li>
+      </tal:tabs>
+    </ul>
+  </div>
+</tal:sections>

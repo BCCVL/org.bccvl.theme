@@ -1,0 +1,9 @@
+<!-- project title -->
+<a id="portal-logo" href="/" class="bccvllinks-home brand"
+   tal:define="root view/navigation_root_url;"
+   tal:attributes="href root;">
+  <img src="images/bccvl_logo_beta.png"
+       alt="Biodiversity &amp; Climate Change Virtual Lab"
+       tal:attributes="src string:${root}/++resource++bccvl/images/bccvl_logo_beta.png;
+                       alt view/navigation_root_title;"/>
+</a>

@@ -1,0 +1,9 @@
+<form id="siteSearch" class="navbar-search pull-right" method="@@search"
+      autocomplete="on" action="" enctype="text/plain"
+      tal:define="navigation_root_url view/navigation_root_url;
+                  search_input_id view/search_input_id;"
+      tal:attributes="action string:${navigation_root_url}/@@search;">
+  <input type="text" name="SearchableText" class="search-query"
+         placeholder="Search"
+         tal:attributes="value requset/form/SearchableText|nothing;"/>
+</form>

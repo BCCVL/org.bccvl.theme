@@ -1,0 +1,17 @@
+<div id="breadcrumbs" class="bccvl-breadcrumb row"
+     tal:define="breadcrumbs view/breadcrumbs;
+                 is_rtl view/is_rtl">
+  <div class="span12">
+    <ul class="breadcrumb">
+      <li><a class="bccvllinks-home icon-home"
+                    tal:attributes="href
+                                    view/navigation_root_url"></a></li>
+      <tal:loop tal:repeat="crumb breadcrumbs">
+        <li tal:condition="breadcrumbs" class="separator icon-chevron-right"></li>
+        <li><a class="bccvllinks"
+               tal:content="crumb/Title"
+               tal:attributes="href crumb/absolute_url"></a></li>
+      </tal:loop>
+    </ul>
+  </div>
+</div>
