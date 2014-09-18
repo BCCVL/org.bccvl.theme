@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8"/>
     <title>BCCVL New Biodiverse Experiment</title>
@@ -12,7 +12,7 @@
     <link href="css/general.css" rel="stylesheet"/>
     <!--[if lt IE 9]>
         <script src="lib/html5shiv/html5shiv.js"></script>
-        <![endif]-->
+    <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
@@ -48,21 +48,20 @@
       }
     </script>
 
-    <script id="google-analytics">
-    </script>
+    <script id="google-analytics"></script>
 
   </head>
 
   <body>
     <div class="white-bg">
     <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
+    <nav id="portal-nav" class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
       <!-- button for narrow screen menu -->
       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
       <!-- project title -->
-      <a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+      <a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
 
       <!-- container for content that will hide under menu when screen is narrow -->
       <div class="nav-collapse collapse">
@@ -85,7 +84,7 @@
         </form>
 
         <!-- main menu items -->
-        <ul class="nav">
+        <ul id="portal-globalnav" class="nav">
           <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
           <li               ><a class="bccvllinks-datasets">Datasets</a></li>
           <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
@@ -103,7 +102,7 @@
 
 
       <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <div class="bccvl-breadcrumb row-fluid">
+      <div id="breadcrumbs" class="bccvl-breadcrumb row-fluid">
         <div class="span12">
           <ul class="breadcrumb">
             <li><a  class="bccvllinks-home icon-home"></a></li>
@@ -148,12 +147,12 @@
             <div class="tab-pane active" id="tab-meta">
 
               <!--<div class="row-fluid">
-                
+
                 <div class="span3">
                   <p style="text-align:right;"><a href="#" target="_blank" class="btn btn-info"><i class="icon-info-sign"></i> What is biodiverse?</a></p>
                   <p style="text-align:right;"><a href="#" target="_blank" class="btn btn-info"><i class="icon-info-sign"></i> What does it calculate?</a></p>
                 </div>
-                
+
               </div>-->
 
               <div class="row-fluid">
@@ -330,7 +329,7 @@
     </div><!-- end of main content container -->
   </div>
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <footer class="navbar navbar-fixed-bottom">
+    <footer id="portal-footer" class="navbar navbar-fixed-bottom">
       <div class="container-fluid">
         <small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
       </div>

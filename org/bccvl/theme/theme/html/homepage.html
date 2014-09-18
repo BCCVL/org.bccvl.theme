@@ -1,150 +1,152 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-	<meta charset="utf-8"/>
-	<title>BCCVL Home</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>BCCVL Home</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
     <link href="lib/fontawesome/css/font-awesome.min.css" rel="stylesheet"/>
-	<link href="css/general.css" rel="stylesheet"/>
-	<!--[if lt IE 9]>
-		<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+	<script src="lib/html5shiv/html5shiv.js"></script>
+    <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
     <script src="lib/require/require.js" type="text/javascript"></script>
 
-	<script id="js-config" type="text/javascript">
-        // this block needs to be replaced when served via plone
-        window.bccvl || (window.bccvl = {});
-        window.bccvl.config || (window.bccvl.config = {});
-        window.bccvl.config.data_mover = {
-            baseUrl: 'https://demo.bccvl.org.au/dv',
-        };
-        window.bccvl.config.visualiser = {
-            baseUrl: '/_visualiser/',
-        };
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv',
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/',
+      };
 
-        local = window.location.protocol == 'file:';
+      local = window.location.protocol == 'file:';
 
-        </script>
-
-	<script type="text/javascript">
-        // require is a bit annoying to kick off when it's running in a plone/diazo page.
-        // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-        // set that as a prefix in the requirejs config, but to initially get to that
-        // config file, it needs to have the prefix added there too.
-        if (local) {
-            require(['js/common.js'], function (common) { require(['js/homepage']); } );
-        } else {
-            require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/homepage']); } );
-        }
-	</script>
-
-    <script id="google-analytics">
     </script>
-</head>
 
-<body class="home">
-<div class="white-bg">
-<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
+    <script type="text/javascript">
+      // require is a bit annoying to kick off when it's running in a plone/diazo page.
+      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+      // set that as a prefix in the requirejs config, but to initially get to that
+      // config file, it needs to have the prefix added there too.
+      if (local) {
+          require(['js/common.js'], function (common) { require(['js/homepage']); } );
+      } else {
+          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/homepage']); } );
+      }
+    </script>
 
-		<!-- button for narrow screen menu -->
-		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</button>
+    <script id="google-analytics"></script>
+  </head>
 
-		<!-- project title -->
-		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+  <body class="home">
+    <div class="white-bg">
+      <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <nav id="portal-nav" class="navbar navbar-static-top">
+        <div class="navbar-inner">
+          <div class="container">
 
-		<!-- container for content that will hide under menu when screen is narrow -->
-		<div class="nav-collapse collapse">
+            <!-- button for narrow screen menu -->
+            <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">Menu</button>
 
-			<!-- user menu -->
-			<div id="user-menu" class="btn-group pull-right">
-				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
-					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-					<li class="divider"></li>
-					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-				</ul>
-			</div>
+            <!-- project title -->
+            <a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
 
-			<!-- search field -->
-			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-				<input type="text" name="siteSearchQuery" class="search-query" placeholder="Search">
-			</form>
+            <!-- container for content that will hide under menu when screen is narrow -->
+            <div class="nav-collapse collapse">
 
-			<!-- main menu items -->
-			<ul class="nav">
-				<!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-				<li               ><a class="bccvllinks-datasets">Datasets</a></li>
-				<li               ><a class="bccvllinks-experiments">Experiments</a></li>
-				<li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-			</ul>
+	      <!-- user menu -->
+	      <div id="user-menu" class="btn-group pull-right">
+	        <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+	          <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+	        </a>
+	        <ul class="dropdown-menu">
+	          <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+	          <li class="divider"></li>
+	          <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+	        </ul>
+	      </div>
 
-		</div><!--/.nav-collapse -->
+	      <!-- search field -->
+	      <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+	        <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+	      </form>
 
-	</div></div></nav><!-- end of nav wrapper -->
+	      <!-- main menu items -->
+	      <ul id="portal-globalnav" class="nav">
+	        <!-- <li><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+	        <li><a class="bccvllinks-datasets">Datasets</a></li>
+	        <li><a class="bccvllinks-experiments">Experiments</a></li>
+	        <li><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+	      </ul>
+
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </nav><!-- end of nav wrapper -->
 
 
-<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- container for main content -->
-	<div class="container bccvl-main">
+      <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- container for main content -->
+      <div class="container bccvl-main">
         <div class="row">
-            <div class="span10 offset1 jumbotron">
-                <h1>Welcome to the Biodiversity &amp; Climate Change Virtual Laboratory</h1>
-                <div class="beta-msg alert alert-block alert-warning">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <h3>The BCCVL is currently in BETA release.</h3>
-                  You may experience issues with currently deployed functionality, or find some functionality missing.  Periodic builds will be released with fixes, extensions and improvements to the BCCVL in the coming weeks and months.  Please <a href="/contact-info/" target="_blank">Contact Us</a> if you have any requests, suggestions and feedback.
-                </div>
-                <p>The Biodiversity &amp; Climate Change Virtual Laboratory (BCCVL) provides an innovative, efficient, robust portfolio of integrated tools and data collections modelling the potential responses of Australia’s biodiversity to climate change through an easy-to-use, web-based platform.</p>
+          <div class="span10 offset1 jumbotron">
+            <h1>Welcome to the Biodiversity &amp; Climate Change Virtual Laboratory</h1>
+            <div class="beta-msg alert alert-block alert-warning">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h3>The BCCVL is currently in BETA release.</h3>
+              You may experience issues with currently deployed functionality, or find some functionality missing.  Periodic builds will be released with fixes, extensions and improvements to the BCCVL in the coming weeks and months.  Please <a href="/contact-info/" target="_blank">Contact Us</a> if you have any requests, suggestions and feedback.
             </div>
+            <p>The Biodiversity &amp; Climate Change Virtual Laboratory (BCCVL) provides an innovative, efficient, robust portfolio of integrated tools and data collections modelling the potential responses of Australia’s biodiversity to climate change through an easy-to-use, web-based platform.</p>
+          </div>
         </div>
         <div class="row">
-            <div class="span4">
-                <h3>About The BCCVL</h3>
-                <iframe src="" data-src="//www.youtube.com/embed/ACj6BsLoMXo?rel=0" frameborder="0" allowfullscreen class="homepage"></iframe>
+          <div class="span4">
+            <h3>About The BCCVL</h3>
+            <iframe src="" data-src="//www.youtube.com/embed/ACj6BsLoMXo?rel=0" frameborder="0" allowfullscreen class="homepage"></iframe>
+
+          </div>
+          <div class="span4 intro-steps">
+            <h3>Running An Experiment</h3>
+            <p>There are three simple steps to conduct an experiment:</p>
+            <div class="step step1">
+              <i class="fa fa-upload"></i> Upload your own datasets or preview provided datasets.
+            </div>
+            <div class="step step2">
+              <i class="fa fa-history"></i> Run a single experiment or twenty.
+            </div>
+            <div class="step step3">
+              <i class="fa fa-share-alt"></i> View your results and share them with others (if you want to).
+            </div>
+            <p><a href="javascript:void(0);" onClick="document.location.href=(portal_url+'/login');" >Login now</a> to start an experiement!</a></p>
+          </div>
+          <div class="span4">
+            <h3>Notifications</h3>
+            <div class="notifications">
+              <ul>
+                <li><small class="label label-default">22 August 2014</small> Better search and sort functions for datasets to be rolled out in upcoming builds. </li>
+                <li><small class="label label-default">21 August 2014</small> Minor issues with ALA import, developers are investigating. </li>
+              </ul>
 
             </div>
-            <div class="span4 intro-steps">
-                <h3>Running An Experiment</h3>
-                <p>There are three simple steps to conduct an experiment:</p>
-                <div class="step step1">
-                    <i class="fa fa-upload"></i> Upload your own datasets or preview provided datasets.
-                </div>
-                <div class="step step2">
-                    <i class="fa fa-history"></i> Run a single experiment or twenty.
-                </div>
-                <div class="step step3">
-                    <i class="fa fa-share-alt"></i> View your results and share them with others (if you want to).
-                </div>
-                <p><a href="javascript:void(0);" onClick="document.location.href=(portal_url+'/login');" >Login now</a> to start an experiement!</a></p>
-            </div>
-            <div class="span4">
-                <h3>Notifications</h3>
-                <div class="notifications">
-                    <ul>
-                        <li><small class="label label-default">22 August 2014</small> Better search and sort functions for datasets to be rolled out in upcoming builds. </li>
-                        <li><small class="label label-default">21 August 2014</small> Minor issues with ALA import, developers are investigating. </li>
-                    </ul>
-
-                </div>
-            </div>
+          </div>
         </div>
 
-	</div><!-- end of main content container -->
-</div>
-<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<footer>
-	</footer>
-</body>
+      </div><!-- end of main content container -->
+    </div>
+    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer id="portal-footer">
+    </footer>
+  </body>
 
 </html>

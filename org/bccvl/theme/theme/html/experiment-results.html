@@ -1,253 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8"/>
-	<title>BCCVL Experiment Results</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>BCCVL Experiment Results</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
-	<link href="css/general.css" rel="stylesheet"/>
-	<!--[if lt IE 9]>
-		<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+	<script src="lib/html5shiv/html5shiv.js"></script>
+    <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-        <script src="lib/require/require.js" type="text/javascript"></script>
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
 
-	<script id="js-config" type="text/javascript">
-        // this block needs to be replaced when served via plone
-        window.bccvl || (window.bccvl = {});
-        window.bccvl.config || (window.bccvl.config = {});
-        window.bccvl.config.data_mover = {
-            baseUrl: 'https://demo.bccvl.org.au/dv',
-        };
-        window.bccvl.config.visualiser = {
-            baseUrl: '/_visualiser/',
-        };
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv',
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/',
+      };
 
-        local = window.location.protocol == 'file:';
+      local = window.location.protocol == 'file:';
 
-        </script>
-
-	<script type="text/javascript">
-        // require is a bit annoying to kick off when it's running in a plone/diazo page.
-        // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-        // set that as a prefix in the requirejs config, but to initially get to that
-        // config file, it needs to have the prefix added there too.
-        if (local) {
-            require(['js/common.js'], function (common) { require(['js/experiment-results']); } );
-        } else {
-            require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-results']); } );
-        }
-	</script>
-
-	<script id="google-analytics">
     </script>
 
-</head>
+    <script type="text/javascript">
+      // require is a bit annoying to kick off when it's running in a plone/diazo page.
+      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+      // set that as a prefix in the requirejs config, but to initially get to that
+      // config file, it needs to have the prefix added there too.
+      if (local) {
+          require(['js/common.js'], function (common) { require(['js/experiment-results']); } );
+      } else {
+          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-results']); } );
+      }
+    </script>
 
-<body>
-<div class="white-bg">
-<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
+    <script id="google-analytics"></script>
 
-		<!-- button for narrow screen menu -->
-		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+  </head>
 
-		<!-- project title -->
-		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+  <body>
+    <div class="white-bg">
+      <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
-		<!-- container for content that will hide under menu when screen is narrow -->
-		<div class="nav-collapse collapse">
+	<!-- button for narrow screen menu -->
+	<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
-			<!-- user menu -->
-			<div id="user-menu" class="btn-group pull-right">
-				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
-					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-					<li class="divider"></li>
-					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-				</ul>
-			</div>
+	<!-- project title -->
+	<a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
 
-			<!-- search field -->
-			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-				<input type="text" name="siteSearchQuery" class="search-query" placeholder="Search">
-			</form>
+	<!-- container for content that will hide under menu when screen is narrow -->
+	<div class="nav-collapse collapse">
 
-			<!-- main menu items -->
-			<ul class="nav">
-				<!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-				<li               ><a class="bccvllinks-datasets">Datasets</a></li>
-				<li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
-				<li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-			</ul>
+	  <!-- user menu -->
+	  <div id="user-menu" class="btn-group pull-right">
+	    <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+	      <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+	    </a>
+	    <ul class="dropdown-menu">
+              <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+	      <li class="divider"></li>
+	      <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+	    </ul>
+	  </div>
 
-		</div><!--/.nav-collapse -->
+	  <!-- search field -->
+	  <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+	    <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+	  </form>
 
-	</div></div></nav><!-- end of nav wrapper -->
+	  <!-- main menu items -->
+	  <ul id="portal-globalnav" class="nav">
+	    <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+	    <li               ><a class="bccvllinks-datasets">Datasets</a></li>
+	    <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
+	    <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+	  </ul>
 
+	</div><!--/.nav-collapse -->
 
-<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- container for main content -->
-	<div class="container bccvl-main">
+      </div></div></nav><!-- end of nav wrapper -->
 
+      <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- container for main content -->
+      <div class="container bccvl-main">
 
-<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="bccvl-breadcrumb row">
-			<div class="span12">
-				<ul class="breadcrumb">
-					<li><a  class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"> </li>
-					<li><a class="bccvllinks-experiments"> Experiments</a></li>
-					<li class="separator icon-chevron-right"> </li>
-					<li><a class="bccvllinks-experiment-view"> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
-				</ul>
-			</div>
+        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<div id="breadcrumbs" class="bccvl-breadcrumb row">
+	  <div class="span12">
+	    <ul class="breadcrumb">
+	      <li><a  class="bccvllinks-home icon-home"></a></li>
+	      <li class="separator icon-chevron-right"> </li>
+	      <li><a class="bccvllinks-experiments"> Experiments</a></li>
+	      <li class="separator icon-chevron-right"> </li>
+	      <li><a class="bccvllinks-experiment-view"> ExpID1234: SDM for Cane Toad <i class="taxonomy">Rhinella marina</i></a></li>
+	    </ul>
+	  </div>
+	</div>
+
+        <!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<section class="bccvl-flashmessages">
+	</section>
+
+        <!-- experiment results ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<section class="bccvl-experimentresults">
+
+	  <!--
+	      four states:
+	      - not started yet
+	      - started/queued, not finished
+	      - finished
+	      - some kind of error state (ideally just started-but-errored-out, but also system level errors)
+	  -->
+
+	  <div class="row-fluid bccvl-status-block bccvl-status-template">
+	    <div class="span12 bccvl-expstatus alert alert-block">
+	      <p class="lead">this Experiment is <strong class="bccvl-status"></strong></p>
+	    </div>
+	  </div>
+
+	  <div class="row-fluid bccvl-status-block bccvl-status-notstarted">
+	    <div class="span12 bccvl-expstatus alert alert-block alert-info">
+	      <p class="lead">this Experiment has <strong>not been started</strong></p>
+	      <a class="broken bccvllinks-experiment-start btn btn-primary btn-large">start Experiment</a>
+	    </div>
+	  </div>
+
+	  <div class="row-fluid bccvl-status-block bccvl-status-running">
+	    <div class="span12 bccvl-expstatus alert alert-block">
+	      <p class="lead">this Experiment is <strong>running</strong></p>
+	      <a class="broken bccvllinks-experiment-stop btn btn-warning">abandon Experiment</a>
+	    </div>
+	  </div>
+
+	  <div class="row-fluid bccvl-status-block bccvl-status-error">
+	    <div class="span12 bccvl-expstatus alert alert-block alert-error">
+	      <p class="lead">this Experiment stopped with an <strong>error</strong></p>
+	      <!--
+ 		  <p>
+		  See the error details in the results section below.  If the error is unlikely to recur,
+		  you can re-attempt the experiment.
+		  </p>
+		  <a class="broken bccvllinks-experiment-start btn btn-danger">start Experiment again</a>
+ 	      -->
+ 	    </div>
+	  </div>
+
+	  <div class="row-fluid bccvl-status-block bccvl-status-complete">
+	    <div class="span12 bccvl-expstatus alert alert-success">
+	      <p>
+		This Experiment is <strong>complete</strong>. The results are available below.
+	      </p>
+	    </div>
+
+	    <div class="row-fluid bccvl-buttonbar">
+	      <div class="span3">
+		<div class="btn-group btn-block">
+		  <a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
+		    <strong>delete</strong> this Experiment
+		  </a>
+		  <ul class="dropdown-menu">
+		    <li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
+		    <li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
+		    <li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
+		  </ul>
+		</div>
+	      </div>
+	      <div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
+	      <div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
+	      <div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
+	    </div>
+
+	  </div>
+
+	  <div class="progress hidden">
+	    <div class="bar bar-warning" id="bar-queued" style="width: 100%;">QUEUED</div>
+	    <div class="bar bar-info" id="bar-running" style="width: 0%;">RUNNING</div>
+	    <div class="bar bar-danger" id="bar-failed" style="width: 0%;">FAILED</div>
+	    <div class="bar bar-success" id="bar-completed" style="width: 0%;">COMPLETED</div>
+	  </div>
+
+	  <!-- tabs -->
+	  <ul class="nav nav-tabs">
+	    <li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
+	    <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+	  </ul>
+
+	  <div class="tab-content">
+	    <!-- DETAILS TAB-PANE -->
+	    <div class="tab-pane" id="tab-details">
+	      <div class="row-fluid experiment-details span6">
+	      </div>
+
+	      <div class="row-fluid experiment-configuration span6">
+	      </div>
+	    </div>
+
+	    <!-- RESULTS TAB-PANE -->
+	    <div class="tab-pane active" id="tab-results">
+	      <div class="row-fluid bccvl-stretch-parent">
+		<!-- list of (potential) results -->
+		<div class="span4">
+
+		  <table class="table table-hover">
+		    <thead>
+		      <tr><th colspan="3">
+			Experiment Results
+		      </th></tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+		  </table>
 		</div>
 
+		<!-- preview area -->
+		<div class="span8">
+		  <div class="bccvl-preview-pane well bccvl-stretcher">
+		    <iframe class="bccvl-viz" name="viz">
+		    </iframe>
+		  </div>
+		</div>
+	      </div>
+	    </div>
+	  </div>
 
-<!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-flashmessages">
-		</section>
+	</section>
 
-<!-- experiment results ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      </div><!-- end of main content container -->
+    </div>
+    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer id="portal-footer">
+    </footer>
 
-		<section class="bccvl-experimentresults">
-
-			<!--
-			four states:
-			- not started yet
-			- started/queued, not finished
-			- finished
-			- some kind of error state (ideally just started-but-errored-out, but also system level errors)
-			-->
-
-			<div class="row-fluid bccvl-status-block bccvl-status-template">
-				<div class="span12 bccvl-expstatus alert alert-block">
-					<p class="lead">this Experiment is <strong class="bccvl-status"></strong></p>
-				</div>
-			</div>
-
-			<div class="row-fluid bccvl-status-block bccvl-status-notstarted">
-				<div class="span12 bccvl-expstatus alert alert-block alert-info">
-					<p class="lead">this Experiment has <strong>not been started</strong></p>
-					<a class="broken bccvllinks-experiment-start btn btn-primary btn-large">start Experiment</a>
-				</div>
-			</div>
-
-			<div class="row-fluid bccvl-status-block bccvl-status-running">
-				<div class="span12 bccvl-expstatus alert alert-block">
-					<p class="lead">this Experiment is <strong>running</strong></p>
-					<a class="broken bccvllinks-experiment-stop btn btn-warning">abandon Experiment</a>
-				</div>
-			</div>
-
-			<div class="row-fluid bccvl-status-block bccvl-status-error">
-				<div class="span12 bccvl-expstatus alert alert-block alert-error">
-					<p class="lead">this Experiment stopped with an <strong>error</strong></p>
-					<!--
- 					<p>
-						See the error details in the results section below.  If the error is unlikely to recur,
-						you can re-attempt the experiment.
-					</p>
-					<a class="broken bccvllinks-experiment-start btn btn-danger">start Experiment again</a>
- 					-->
- 				</div>
-			</div>
-
-			<div class="row-fluid bccvl-status-block bccvl-status-complete">
-				<div class="span12 bccvl-expstatus alert alert-success">
-					<p>
-						This Experiment is <strong>complete</strong>. The results are available below.
-					</p>
-				</div>
-
-				<div class="row-fluid bccvl-buttonbar">
-					<div class="span3">
-						<div class="btn-group btn-block">
-							<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
-								<strong>delete</strong> this Experiment
-							</a>
-							<ul class="dropdown-menu">
-								<li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
-								<li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-								<li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
-					<div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
-					<div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
-				</div>
-
-			</div>
-
-			<div class="progress hidden">
-			  <div class="bar bar-warning" id="bar-queued" style="width: 100%;">QUEUED</div>
-				<div class="bar bar-info" id="bar-running" style="width: 0%;">RUNNING</div>
-			  <div class="bar bar-danger" id="bar-failed" style="width: 0%;">FAILED</div>
-			  <div class="bar bar-success" id="bar-completed" style="width: 0%;">COMPLETED</div>
-			</div>
-
-			<!-- tabs -->
-			<ul class="nav nav-tabs">
-				<li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-				<li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-			</ul>
-
-			<div class="tab-content">
-				<!-- DETAILS TAB-PANE -->
-				<div class="tab-pane" id="tab-details">
-					<div class="row-fluid experiment-details span6">
-					</div>
-
-					<div class="row-fluid experiment-configuration span6">
-					</div>
-				</div>
-
-				<!-- RESULTS TAB-PANE -->
-				<div class="tab-pane active" id="tab-results">
-					<div class="row-fluid bccvl-stretch-parent">
-						<!-- list of (potential) results -->
-						<div class="span4">
-
-							<table class="table table-hover">
-								<thead>
-									<tr><th colspan="3">
-										Experiment Results
-									</th></tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- preview area -->
-						<div class="span8">
-							<div class="bccvl-preview-pane well bccvl-stretcher">
-								<iframe class="bccvl-viz" name="viz">
-								</iframe>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</section>
-
-	</div><!-- end of main content container -->
-</div>
-<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<footer>
-	</footer>
-
-<!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-</body>
+    <!-- javascript ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </body>
 </html>

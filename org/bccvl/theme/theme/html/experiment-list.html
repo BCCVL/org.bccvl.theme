@@ -1,170 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8"/>
-	<title>BCCVL Experiment List</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>BCCVL Experiment List</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-	<link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
-	<link href="lib/fontawesome/css/font-awesome.min.css" rel="stylesheet"/>
-	<link href="css/general.css" rel="stylesheet"/>
-	<!--[if lt IE 9]>
-		<script src="lib/html5shiv/html5shiv.js"></script>
-	<![endif]-->
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="lib/fontawesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+        <script src="lib/html5shiv/html5shiv.js"></script>
+    <![endif]-->
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-	<!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-        <script src="lib/require/require.js" type="text/javascript"></script>
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
 
-	<script id="js-config" type="text/javascript">
-        // this block needs to be replaced when served via plone
-        window.bccvl || (window.bccvl = {});
-        window.bccvl.config || (window.bccvl.config = {});
-        window.bccvl.config.data_mover = {
-            baseUrl: 'https://demo.bccvl.org.au/dv',
-        };
-        window.bccvl.config.visualiser = {
-            baseUrl: '/_visualiser/',
-        };
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv'
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/'
+      };
 
-        local = window.location.protocol == 'file:';
+      local = window.location.protocol == 'file:';
 
-        </script>
-
-	<script type="text/javascript">
-        // require is a bit annoying to kick off when it's running in a plone/diazo page.
-        // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-        // set that as a prefix in the requirejs config, but to initially get to that
-        // config file, it needs to have the prefix added there too.
-        if (local) {
-            require(['js/common.js'], function (common) { require(['js/experiment-list']); } );
-        } else {
-            require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-list']); } );
-        }
-	</script>
-
-    <script id="google-analytics">
     </script>
 
-</head>
+    <script type="text/javascript">
+      // require is a bit annoying to kick off when it's running in a plone/diazo page.
+      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
+      // set that as a prefix in the requirejs config, but to initially get to that
+      // config file, it needs to have the prefix added there too.
+      if (local) {
+          require(['js/common.js'], function (common) { require(['js/experiment-list']); } );
+      } else {
+          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-list']); } );
+      }
+    </script>
 
-<body>
-<div class="white-bg">
-<!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
+    <script id="google-analytics"></script>
 
-		<!-- button for narrow screen menu -->
-		<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+  </head>
 
-		<!-- project title -->
-		<a class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+  <body>
+    <div class="white-bg">
+      <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
-		<!-- container for content that will hide under menu when screen is narrow -->
-		<div class="nav-collapse collapse">
+	<!-- button for narrow screen menu -->
+	<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
 
-			<!-- user menu -->
-			<div id="user-menu" class="btn-group pull-right">
-				<a class="btn dropdown-toggle fine" data-toggle="dropdown">
-					<i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-				</a>
-				<ul class="dropdown-menu">
-                    <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-					<li class="divider"></li>
-					<li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-				</ul>
-			</div>
+	<!-- project title -->
+	<a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
 
-			<!-- search field -->
-			<form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-				<input type="text" name="siteSearchQuery" class="search-query" placeholder="Search">
-			</form>
+	<!-- container for content that will hide under menu when screen is narrow -->
+	<div class="nav-collapse collapse">
 
-			<!-- main menu items -->
-			<ul class="nav">
-				<!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-				<li               ><a class="bccvllinks-datasets">Datasets</a></li>
-				<li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
-				<li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-			</ul>
+	  <!-- user menu -->
+	  <div id="user-menu" class="btn-group pull-right">
+	    <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+	      <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+	    </a>
+	    <ul class="dropdown-menu">
+              <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+	      <li class="divider"></li>
+	      <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+	    </ul>
+	  </div>
 
-		</div><!--/.nav-collapse -->
+	  <!-- search field -->
+	  <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+	    <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+	  </form>
 
-	</div></div></nav><!-- end of nav wrapper -->
+	  <!-- main menu items -->
+	  <ul id="portal-globalnav" class="nav">
+	    <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+	    <li               ><a class="bccvllinks-datasets">Datasets</a></li>
+	    <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
+	    <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+	  </ul>
 
-	<div class="modal hide fade"> </div>
-<!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- container for main content -->
-	<div class="container bccvl-main">
+	</div><!--/.nav-collapse -->
 
+      </div></div></nav><!-- end of nav wrapper -->
 
-<!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<div class="bccvl-breadcrumb row">
-			<div class="span12">
-				<ul class="breadcrumb">
-					<li><a class="bccvllinks-home icon-home"></a></li>
-					<li class="separator icon-chevron-right"></li>
-					<li><a class="bccvllinks-experiments">Experiments</a></li>
-				</ul>
-			</div>
-		</div>
+      <div class="modal hide fade"> </div>
+      <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- container for main content -->
+      <div class="container bccvl-main">
 
+        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div id="breadcrumbs" class="bccvl-breadcrumb row">
+          <div class="span12">
+	    <ul class="breadcrumb">
+	      <li><a class="bccvllinks-home icon-home"></a></li>
+	      <li class="separator icon-chevron-right"></li>
+	      <li><a class="bccvllinks-experiments">Experiments</a></li>
+	    </ul>
+          </div>
+        </div>
 
-<!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section class="bccvl-experimentlist">
+        <!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <section class="bccvl-experimentlist">
 
-            <div class="row-fluid">
-            	<div class="span12">
-					<h2>Run A New Experiment</h2>
-					<p>The BCCVL enables you to conduct five types of experiments to investigate the impact of climate and climate change on biodiversity.</p>
-					<div class="alert">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						Before conducting an experiment you need to make sure all the species, climate, and other environmental datasets are uploaded into the BCCVL.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<!-- some controls -->
-				<div class="span12" style="text-align:center;">
-					<div class="new-experiment-button experiment-sdm">
-						<a class=" bccvllinks-experiment-new"><span><i class="fa fa-plus"></i><br/>new Species Distribution Modelling Experiment</span></a>
-					</div>
-					<div class="new-experiment-button experiment-cce">
-						<a class=" bccvllinks-experiment-proj-new"><span><i class="fa fa-plus"></i><br/>New Climate change experiment</span></a>
-					</div>
-					<div class="new-experiment-button experiment-bio">
-						<a class=" bccvllinks-experiment-biodiverse-new"><span><i class="fa fa-plus"></i><br/>New <br/>Biodiverse Experiment</span></a>
-					</div>
-					<div class="new-experiment-button experiment-stm">
-                    	<a class=" bccvllinks-experiment-speciestrait-new"><span><i class="fa fa-plus"></i><br/>New Species Trait Modelling Experiment</span></a>
-                    </div>
-					<div class="new-experiment-button experiment-ensemble">
-                    	<a class=" bccvllinks-experiment-ensemble-new"><span><i class="fa fa-plus"></i><br/>New <br/>Ensemble Analysis</span></a>
-                    </div>
-				</div>
+          <div class="row-fluid">
+            <div class="span12">
+	      <h2>Run A New Experiment</h2>
+	      <p>The BCCVL enables you to conduct five types of experiments to investigate the impact of climate and climate change on biodiversity.</p>
+	      <div class="alert">
+	        <button type="button" class="close" data-dismiss="alert">&times;</button>
+	        <p>Before conducting an experiment you need to make sure all the species, climate, and other environmental datasets are uploaded into the BCCVL.</p>
+	      </div>
+	    </div>
+          </div>
+          <div class="row-fluid">
+	    <!-- some controls -->
+	    <div id="new-experiment-menu" class="span12" style="text-align:center;">
+	      <div class="new-experiment-button experiment-sdm">
+	        <a class=" bccvllinks-experiment-new"><span><i class="fa fa-plus"></i><br/>new Species Distribution Modelling Experiment</span></a>
+	      </div>
+	      <div class="new-experiment-button experiment-cce">
+	        <a class=" bccvllinks-experiment-proj-new"><span><i class="fa fa-plus"></i><br/>New Climate change experiment</span></a>
+	      </div>
+	      <div class="new-experiment-button experiment-bio">
+	        <a class=" bccvllinks-experiment-biodiverse-new"><span><i class="fa fa-plus"></i><br/>New <br/>Biodiverse Experiment</span></a>
+	      </div>
+	      <div class="new-experiment-button experiment-stm">
+                <a class=" bccvllinks-experiment-speciestrait-new"><span><i class="fa fa-plus"></i><br/>New Species Trait Modelling Experiment</span></a>
+              </div>
+	      <div class="new-experiment-button experiment-ensemble">
+                <a class=" bccvllinks-experiment-ensemble-new"><span><i class="fa fa-plus"></i><br/>New <br/>Ensemble Analysis</span></a>
+              </div>
+	    </div>
+          </div>
 
-			</div>
-			<div class="row-fluid">
-				<!-- list of available experiments -->
-				<div class="span12">
-					<h2>Existing Experiments</h2>
-                    <div id="experiment-list">
-                    	<div class="alert">
-		                	<strong>You have no experiments.</strong><br/>
-		                	Listed here are all the recent experiments you've conducted, including experiments shared by other people. 
-		                </div>
-                    </div>
-				</div>
-			</div>
+          <div class="row-fluid">
+	    <!-- list of available experiments -->
+	    <div class="span12">
+	      <h2>Existing Experiments</h2>
+              <div id="experiment-list">
+                <div class="alert">
+	          <strong>You have no experiments.</strong><br/>
+	          Listed here are all the recent experiments you've conducted, including experiments shared by other people.
+	        </div>
+              </div>
+	    </div>
+          </div>
 
-		</section>
+        </section>
 
-	</div><!-- end of main content container -->
-</div>
-<!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<footer>
-	</footer>
-</body>
+      </div><!-- end of main content container -->
+    </div>
+    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer id="portal-footer">
+    </footer>
+  </body>
 </html>
