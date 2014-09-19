@@ -94,6 +94,7 @@
                    normalizeString nocall: context/plone_utils/normalizeString;
                    toLocalizedTime nocall: context/@@plone/toLocalizedTime;
                    site_properties context/portal_properties/site_properties;
+                   dataset_tools nocall:context/@@dataset_tools;
                    isAnon context/@@plone_portal_state/anonymous;
                    show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
 
@@ -105,8 +106,7 @@
 
     <tal:condition tal:condition="batch">
       <tal:loop tal:repeat="item batch">
-        <tal:define tal:define="rowstyle python: repeat['item'].odd and 'even' or 'odd';
-                                item_title_or_id item/pretty_title_or_id;
+        <tal:define tal:define="item_title_or_id item/pretty_title_or_id;
                                 item_icon python:plone_view.getIcon(item);
                                 item_creator item/Creator;
                                 item_modified item/ModificationDate;
@@ -115,16 +115,16 @@
                                 item_type item/portal_type;
                                 item_type_class python:'contenttype-' + normalizeString(item_type);
                                 item_genre item/BCCDataGenre;
-                                item_genre_title python:view.item_genre_title(item['BCCDataGenre']);
+                                item_genre_title python:dataset_tools.genre_title(item['BCCDataGenre']);
                                 item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
                                 item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                 use_view_action site_properties/typesUseViewActionInListings|python:();
                                 item_obj item/getObject;
-                                ">
+                                "
+                    metal:define-macro="datasets_listitem">
           <div class="datasets-list-entry" style="margin: 0 0 .5em;"
                tal:define="md item_obj/dataset_tools/metadata;
-                           item_editable item_obj/dataset_tools/can_modify;"
-               metal:define-macro="datasets_listitem">
+                           item_editable item_obj/dataset_tools/can_modify;">
             <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;"
                  tal:define="author python:pas_member.info(item_creator)">
               <p class="lead" tal:content="item_title_or_id">Pig (Sus scrofa) occurrences</p>

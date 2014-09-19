@@ -69,7 +69,7 @@ define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bc
              $('#dataset-meta-modal').on('hidden', function(){
                 $('#dataset-meta-modal .modal-body').html('<span class="loading-gif"></span>');
              });
-         });
+        });
 
     });
 

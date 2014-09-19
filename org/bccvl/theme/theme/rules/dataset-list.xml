@@ -15,7 +15,7 @@
       <replace css:theme="#datasets-filter" css:content="#datasets-filter"/>
 
       <!-- Dataset Table -->
-      <replace css:theme-children="#datasets-listing" css:content="#datasets-listing" />
+      <replace css:theme-children="#datasets-listing" css:content-children="#datasets-listing" />
 
     </rules>
 </rules>
