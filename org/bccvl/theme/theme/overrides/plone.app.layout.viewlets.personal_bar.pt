@@ -13,7 +13,7 @@
                              traget action/link_target|nothing;
                              class string:bccvllinks-${action/id};">
             <i class="icon-eye-open"
-               tal:attributes="class action/class"></i>
+               tal:attributes="class action/icon_class"></i>
             <tal:r tal:replace="action/title">Action title</tal:r>
           </a>
       </li>
