@@ -194,7 +194,7 @@ define(
                                             var fileName = 'filename' in value ? value.filename : list.file;
                                             var zipFile = list.file;
                                             layerNames.push(name);
-                                            layers[name] = renderLayerRow(token, key, name, fileName, zipFile);
+                                            layers[name] = renderLayerRow(token, value.layer, name, fileName, zipFile);
                                         });
 
                                         // now sort the names and add them in order
