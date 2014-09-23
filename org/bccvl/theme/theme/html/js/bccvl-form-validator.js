@@ -65,7 +65,7 @@ define(
                     var $table = $controlGroup.find('table');
                     var $tableControlGroup = $table.find('th.control-group');
                     if ($tableControlGroup.length > 0)
-                        return $tableControlGroup
+                        return $tableControlGroup;
 
                     // if the element is in a table, use the table header..
                     var $tableHeader = $controlGroup.find('th');

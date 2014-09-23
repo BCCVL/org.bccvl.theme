@@ -21,6 +21,13 @@
     />
 
     <z3c:widgetTemplate
+         mode="input"
+         widget="z3c.form.interfaces.ITextWidget"
+         template="text_input.pt"
+         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+    />
+
+    <z3c:widgetTemplate
       mode="input"
       widget="org.bccvl.site.browser.interfaces.IOrderedCheckboxWidget"
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
