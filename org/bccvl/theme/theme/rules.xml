@@ -105,7 +105,7 @@
     <replace css:theme="#breadcrumbs" css:content="#breadcrumbs"/>
 
     <!-- Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <replace css:theme="#footer" css:content="#footer"/>
+    <replace css:theme="#portal-footer" css:content="#portal-footer"/>
 
     <!-- if debug insert helper links in navbar -->
     <rules if="$is_debug">
