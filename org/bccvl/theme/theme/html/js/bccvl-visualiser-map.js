@@ -13,7 +13,19 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         $('.bccvl-occurrence-viz, .bccvl-absence-viz').click(function(){
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         }); */
+        
+        // new list layout events
+        $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
+            event.preventDefault();
+            renderMap($(this).data('uuid'), $(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'occurence');
+        });
 
+        $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
+            event.preventDefault();
+            renderMap($(this).data('uuid'),$(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
+        });   
+
+        // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
             renderMap($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');

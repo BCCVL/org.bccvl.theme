@@ -2,8 +2,8 @@
 //
 // main JS for the dataset list page.
 //
-define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'OpenLayers', 'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer'],
-  function(   $      ,   preview_layout          ,  viz                 ,  vizmap                 ,  sharing                ,  editmodal) {
+define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'OpenLayers', 'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer'],
+  function(   $      ,  viz                 ,  vizmap                 ,  sharing                ,  editmodal) {
 
   // ==============================================================
   $(function() {
@@ -43,6 +43,39 @@ define(     ['jquery',  'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bc
                 time: 5000,
                 autostart: true
             });
+        });
+
+
+        // Dateset entry dropdown functions
+        $('body').on('click', '.dropdown-button', function(event){
+            event.preventDefault();
+            var el = $(this);
+            if (el.hasClass('open')){
+                $('div.preview-dropdown:visible').slideUp(300);
+                el.find('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                el.removeClass('open');
+            } else {
+                if($('div.preview-dropdown:visible').length != 0){
+                    $('div.preview-dropdown:visible').slideUp(300, function(){
+                        el.prev('div.preview-dropdown').slideDown(300, function(){
+                            $('html,body').animate({
+                              scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
+                            }, 1000); 
+                        });
+                    });
+                } else {
+                    el.prev('div.preview-dropdown').slideDown(300, function(){
+                        $('html,body').animate({
+                          scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
+                        }, 1000); 
+                    });
+                }
+                el.find('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+                el.addClass('open')
+            } 
+            
+                       
+            
         });
 
         // Request metadata for datasets

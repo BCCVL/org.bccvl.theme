@@ -129,51 +129,44 @@
           </li>
         </ul>
 
-        <div id="datasets-filter" class="bccvl-datasetlist-filter row">
-          <form action="" method="get" id="datasets-filter">
-            <div class="span3">
-              <p>Search</p>
-              <div class="input-append">
-                <input id="datasets-search" name="datasets.search" type="text" placeholder="Search Datesets" class="input-medium"/>
-                <button class="btn" type="submit"><i class="icon-search"></i></button>
-              </div>
-              <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit">Submit Filter</button>
-              <button type="reset">Reset Filter</button>
-            </div>
-            <div class="span9">
-              <p>Filter</p>
-              <select id="datasets-filter-genre" name="datasets.filter.genre" multiple="multiple" class="span3">
-                <option selected="selected" disabled="disabled">Select a Genre</option>
-                <option value="genre1">Species Presence</option>
-                <option value="genre2">Species Absence</option>
-                <option value="genre3">Climate</option>
-                <option value="genre4">Future Climate</option>
-                <option value="genre5">Environmental</option>
-              </select>
-              <select id="datasets-filter-resolution" name="datasets.filter.resolution" multiple="multiple" class="span3">
-                <option selected="selected" disabled="disabled">Select a Resolution</option>
-                <option value="resolution1">250m ~7.5 arc sec.</option>
-                <option value="resolution2">1km ~30 arc sec.</option>
-                <option value="resolution3">5km ~1 arc min.</option>
-              </select>
-              <select id="datasets-filter-source" name="datasets.filter.source" multiple="multiple" class="span3">
-                <option selected="selected" disabled="disabled">Select a Source</option>
-                <option value="source1">My Datasets</option>
-                <option value="source2">Provided by BCCVL</option>
-                <option value="source3">Imported from ALA</option>
-                <option value="source4">User provided</option>
-              </select>
-            </div>
-          </form>
-        </div>
         <!-- dataset list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <section class="bccvl-datasetlist window-layout">
-
-          <div class="row-fluid">
-
+        <section class="bccvl-datasetlist">
+          <div class="row">
+            <div id="datasets-filter" class="bccvl-datasetlist-filter">
+              <form action="" method="get" id="datasets-filter">
+                  <p>Search</p>
+                  <div class="input-append">
+                    <input id="datasets-search" name="datasets.search" type="text" placeholder="Search Datesets" class="input-medium"/>
+                    <button class="btn" type="submit"><i class="icon-search"></i></button>
+                  </div>
+                  <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit">Submit Filter</button>
+                  <button type="reset">Reset Filter</button>
+                  <p>Filter</p>
+                  <select id="datasets-filter-genre" name="datasets.filter.genre" multiple="multiple" class="span3">
+                    <option selected="selected" disabled="disabled">Select a Genre</option>
+                    <option value="genre1">Species Presence</option>
+                    <option value="genre2">Species Absence</option>
+                    <option value="genre3">Climate</option>
+                    <option value="genre4">Future Climate</option>
+                    <option value="genre5">Environmental</option>
+                  </select>
+                  <select id="datasets-filter-resolution" name="datasets.filter.resolution" multiple="multiple" class="span3">
+                    <option selected="selected" disabled="disabled">Select a Resolution</option>
+                    <option value="resolution1">250m ~7.5 arc sec.</option>
+                    <option value="resolution2">1km ~30 arc sec.</option>
+                    <option value="resolution3">5km ~1 arc min.</option>
+                  </select>
+                  <select id="datasets-filter-source" name="datasets.filter.source" multiple="multiple" class="span3">
+                    <option selected="selected" disabled="disabled">Select a Source</option>
+                    <option value="source1">My Datasets</option>
+                    <option value="source2">Provided by BCCVL</option>
+                    <option value="source3">Imported from ALA</option>
+                    <option value="source4">User provided</option>
+                  </select>
+              </form>
+            </div>
             <div class="bccvl-my-datasets">
-              <div class="row-fluid">
-                <div class="span4" id="datasets-listing">
+                <div class="span8" id="datasets-listing">
                   <div class="row pagination pagination-mini pagination-centered">
                     <ul>
                       <li class="active"><a href="#">1</a></li>
@@ -274,16 +267,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="span8">
+                <!--<div class="span8">
                   <div class="bccvl-preview-pane" id="map">
-                    <!--<iframe class="bccvl-viz" name="viz">
-                    </iframe>-->
+                    
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
 
-          </div>
         </section>
 
       </div><!-- end of main content container -->

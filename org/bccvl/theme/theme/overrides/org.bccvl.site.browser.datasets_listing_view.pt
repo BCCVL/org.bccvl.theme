@@ -34,21 +34,19 @@
   </ul>
 
 
-  <div id="datasets-filter" class="bccvl-datasetlist-filter row">
+  <div id="datasets-filter" class="bccvl-datasetlist-filter span4">
     <form action="" method="get" id="datasets-filter-form">
-      <div class="span3">
-        <p>Search</p>
-        <div class="input-append">
-          <input id="datasets-filter-text" name="datasets.filter.text"
-                 type="text" placeholder="Search Datesets"
-                 class="input-medium" tal:attributes="value python:request.get('datasets.filter.text')"/>
-          <button class="btn" type="submit"><i class="icon-search"></i></button>
+      <div class="filter-bar">
+        <h4>Search</h4>
+        <div class="filter">
+          <div class="input-append search-widget">
+            <input id="datasets-filter-text" name="datasets.filter.text"
+                   type="text" placeholder="Search Datasets"
+                   class="input-medium" tal:attributes="value python:request.get('datasets.filter.text')"/>
+            <button class="btn" type="submit"><i class="icon-search"></i></button>
+          </div>
         </div>
-        <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit">Submit Filter</button>
-        <button type="reset">Reset Filter</button>
-      </div>
-      <div class="span9">
-        <p>Filter</p>
+        <!--<h4>Available Filters</h4>
         <select id="datasets-filter-genre"
                 name="datasets.filter.genre:list" multiple="multiple">
           <option disabled="disabled">Select a Genre</option>
@@ -58,8 +56,25 @@
                                   disabled opt/disabled;
                                   value opt/token;"
                   tal:content="opt/label">Option label</option>
-        </select>
-        <select id="datasets-filter-resolution"
+        </select>-->
+        <div class="filter">
+          <h4>Genre</h4>
+          <ul id="datasets-filter-genre" name="datasets-filter-genre-list">
+            <li tal:repeat="opt view/genre_list">
+              <label class="filter-option" 
+                     tal:attributes="for string:checkbox-${opt/token};
+                                     class opt/selected;">
+                <input type="checkbox" name="datasets.filter.genre:list"
+                       tal:attributes="checked opt/selected;
+                                       disabled opt/disabled;
+                                       value opt/token;
+                                       id string:checkbox-${opt/token};"/>
+                <span tal:content="opt/label">Genre Label</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <!--<select id="datasets-filter-resolution"
                 name="datasets.filter.resolution:list"
                 multiple="multiple"
                 value="">
@@ -70,8 +85,25 @@
                                   disabled opt/disabled;
                                   value opt/token;"
                   tal:content="opt/label">Option label</option>
-        </select>
-        <select id="datasets-filter-source"
+        </select>-->
+        <div class="filter">
+          <h4>Resolution</h4>
+          <ul id="datasets-filter-resolution" name="datasets-filter-resolution-list">
+            <li tal:repeat="opt view/resolution_list">
+              <label class="filter-option"
+                     tal:attributes="for string:checkbox-${opt/token};
+                                     class opt/selected;">
+                <input type="checkbox" name="datasets.filter.resolution:list"
+                       tal:attributes="checked opt/selected;
+                                       disabled opt/disabled;
+                                       value opt/token;
+                                       id string:checkbox-${opt/token};"/>
+                <span tal:content="opt/label">Resolution Label</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <!--<select id="datasets-filter-source"
                 name="datasets.filter.source:list"
                 multiple="multiple">
           <option disabled="disabled">Select a Source</option>
@@ -81,7 +113,26 @@
                                   disabled opt/disabled;
                                   value opt/token;"
                   tal:content="opt/label">Option label</option>
-        </select>
+        </select>-->
+        <div class="filter">
+          <h4>Data Source</h4>
+          <ul id="datasets-filter-resolution" name="datasets-filter-source-list">
+            <li tal:repeat="opt view/source_list">
+              <label class="filter-option"
+                     tal:attributes="for string:checkbox-${opt/token};
+                                     class opt/selected;">
+                <input type="checkbox" name="datasets.filter.source:list"
+                       tal:attributes="checked opt/selected;
+                                       disabled opt/disabled;
+                                       value opt/token;
+                                       id string:checkbox-${opt/token};"/>
+                <span tal:content="opt/label">Source Label</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit" class="btn btn-block btn-primary">Apply Filters</button>
+        <!--<button type="reset">Reset Filter</button>-->
       </div>
     </form>
   </div>
@@ -122,75 +173,85 @@
                                 item_obj item/getObject;
                                 "
                     metal:define-macro="datasets_listitem">
-          <div class="datasets-list-entry" style="margin: 0 0 .5em;"
+          <div class="datasets-list-entry"
                tal:define="md item_obj/dataset_tools/metadata;
                            item_editable item_obj/dataset_tools/can_modify;">
-            <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;"
+            <div class="bccvl-table-label"
                  tal:define="author python:pas_member.info(item_creator)">
               <p class="lead" tal:content="item_title_or_id">Pig (Sus scrofa) occurrences</p>
-              <p><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
+              <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
               <p tal:condition="md/scientificname"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
-              <p tal:condition="md/rows"><small><b>rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
+              <p tal:condition="md/rows"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
               <!-- <p tal:condition="md/width"><small><b>size:</b> <tal:r tal:replace="md/width"></tal:r>x<tal:r tal:replace="md/height"></tal:r></small></p> -->
               <!-- <p tal:condition="md/min"><small><b>min/max:</b> <tal:r tal:replace="md/min"></tal:r>/<tal:r tal:replace="md/max"></tal:r></small></p> -->
-              <p tal:condition="md/resolution"><small><b>resolution: <tal:r tal:replace="md/resolution"></tal:r></b></small></p>
+              <p tal:condition="md/resolution"><small><b>Resolution: <tal:r tal:replace="md/resolution"></tal:r></b></small></p>
               <!-- <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p> -->
               <p><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
               <p><small><b>Source:</b> ALA import</small></p>
               <p><small><b>Date:</b> <tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
             </div>
-            <div class="datasets-controls" style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);margin:0;padding:0 .5em .5em .5em;"
+            <div class="dataset-list-dropdown">
+              <div class="preview-dropdown" style="display:none;">
+                <div class="datasets-controls"
                  tal:define="complete python: item.job_state in ('COMPLETED', None)">
-              <a class="dataset-info-btn" href="#" target="_blank"
-                 tal:attributes="href string:${item_url}/details">
-                <i class="icon-info-sign" title="More information for this dataset."></i>
-              </a>
-              <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
-                         tal:condition="complete">
-                <a href="#"
-                   tal:attributes="href dlinfo/url">
-                  <i class="icon-circle-arrow-down" title="download"></i>
-                </a>
-                <a href="#" class="bccvl-occurrence-viz"
-                   tal:attributes="data-viz-id python: dlinfo['alturl'][0];
-                                   data-uuid item/UID"
-                   tal:condition="python: item_obj.format == 'text/csv'">
-                  <i class="icon-eye-open icon-link" title="preview"></i>
-                </a>
-                <a href="#" class="bccvl-auto-viz"
-                   tal:attributes="data-viz-id python: dlinfo['alturl'][0];
-                                   data-uuid item/UID"
-                   tal:condition="python: item_obj.format != 'text/csv'">
-                  <i class="icon-eye-open icon-link" title="preview"></i>
-                </a>
-              </tal:block>
-              <a class="sharing-btn" href="#"
-                 tal:attributes="href action/url"
-                 tal:condition="python: complete and action.get('available')"
-                 tal:define="action item_obj/dataset_tools/local_roles_action;">
-                <i class="icon-share" title="Sharing Options"
-                   tal:attributes="title action/title"></i>
-              </a>
-              <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
-              <a class="environmentallayers-zip-edit"
-                 tal:attributes="href string:${item_url}/@@editfilemetadata"
-                 tal:condition="python: item_editable and item_obj.format == 'application/zip'">
-                <i class="icon-pencil" title="edit"></i>
-              </a>
-              <!-- TODO: helper method or customisable dict? or agree on classes? -->
-              <tal:block
-                  tal:define="state item/job_state;
-                              klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import bccvl-small-spinner';
-                              klass python: '' if state in (None, 'COMPLETED') else klass;
-                              title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
-                              title python: '' if state in (None, 'COMPLETED') else title;">
-                <i class="" data-url="" title=""
-                   tal:condition="klass"
-                   tal:attributes="data-url item_url;
-                                   class klass;
-                                   title title;"></i>
-              </tal:block>
+                  <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
+                             tal:condition="complete">
+                    <a href="#" class="bccvl-list-occurrence-viz btn btn-primary btn-small"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                       data-uuid item/UID"
+                       tal:condition="python: item_obj.format == 'text/csv'">
+                      <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                      Preview</a>
+                    <a href="#" class="bccvl-list-auto-viz btn btn-primary btn-small"
+                       tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                       data-uuid item/UID"                       tal:condition="python: item_obj.format != 'text/csv'">
+                      <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                      Preview</a>
+                    <a href="#"
+                       tal:attributes="href dlinfo/url" class="btn btn-primary btn-small">
+                      <i class="icon-circle-arrow-down icon-white" title="download"></i>
+                      Download Data</a>
+                  </tal:block>
+                  <a class="dataset-info-btn btn btn-primary btn-small" href="#" target="_blank"
+                     tal:attributes="href string:${item_url}/details">
+                    <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                    More Info</a>
+                  <a class="sharing-btn btn btn-primary btn-small" href="#"
+                     tal:attributes="href action/url"
+                     tal:condition="python: complete and action.get('available')"
+                     tal:define="action item_obj/dataset_tools/local_roles_action;">
+                    <i class="icon-share icon-white" title="Sharing Options"
+                       tal:attributes="title action/title"></i>
+                       Sharing</a>
+                  
+                  <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
+                  <a class="environmentallayers-zip-edit btn btn-primary btn-small"
+                     tal:attributes="href string:${item_url}/@@editfilemetadata"
+                     tal:condition="python: item_editable and item_obj.format == 'application/zip'">
+                    <i class="icon-pencil icon-white" title="edit"></i>
+                    Edit</a>
+                  <!-- TODO: helper method or customisable dict? or agree on classes? -->
+                  <tal:block
+                      tal:define="state item/job_state;
+                                  klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import bccvl-small-spinner';
+                                  klass python: '' if state in (None, 'COMPLETED') else klass;
+                                  title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
+                                  title python: '' if state in (None, 'COMPLETED') else title;">
+                    <i class="" data-url="" title=""
+                       tal:condition="klass"
+                       tal:attributes="data-url item_url;
+                                       class klass;
+                                       title title;"></i>
+                  </tal:block>
+                </div>
+                <div class="bccvl-list-preview-pane" style="height:500px;"
+                  tal:attributes="id string:map-${item/UID}"
+                  >
+                </div>
+              </div>
+              <a class="dropdown-button" href="javascrip:void(0)"><i class="icon-chevron-down icon-white"></i></a>
             </div>
+            
           </div>
 
         </tal:define>
