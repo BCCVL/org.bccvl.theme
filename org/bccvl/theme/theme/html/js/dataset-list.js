@@ -50,13 +50,20 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
         $('body').on('click', '.dropdown-button', function(event){
             event.preventDefault();
             var el = $(this);
+            $('.dropdown-button').removeClass('open');
+            $('.dropdown-button i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
             if (el.hasClass('open')){
-                $('div.preview-dropdown:visible').slideUp(300);
+                $('div.preview-dropdown:visible').slideUp(300, function(){
+                    el.prev('.bccvl-list-preview-pane').html('');
+                });
                 el.find('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
                 el.removeClass('open');
             } else {
                 if($('div.preview-dropdown:visible').length != 0){
+                    var existingMap = $('div.preview-dropdown:visible').find('.bccvl-list-preview-pane');
                     $('div.preview-dropdown:visible').slideUp(300, function(){
+                        existingMap.html('');
+                        el.prev('.bccvl-list-preview-pane').html('');
                         el.prev('div.preview-dropdown').slideDown(300, function(){
                             $('html,body').animate({
                               scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
