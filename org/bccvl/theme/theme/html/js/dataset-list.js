@@ -50,7 +50,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
         $('body').on('click', '.dropdown-button', function(event){
             event.preventDefault();
             var el = $(this);
-            $('.dropdown-button').removeClass('open');
             $('.dropdown-button i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
             if (el.hasClass('open')){
                 $('div.preview-dropdown:visible').slideUp(300, function(){
@@ -62,6 +61,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
                 if($('div.preview-dropdown:visible').length != 0){
                     var existingMap = $('div.preview-dropdown:visible').find('.bccvl-list-preview-pane');
                     $('div.preview-dropdown:visible').slideUp(300, function(){
+                        $('.dropdown-button').removeClass('open');
                         existingMap.html('');
                         el.prev('.bccvl-list-preview-pane').html('');
                         el.prev('div.preview-dropdown').slideDown(300, function(){
