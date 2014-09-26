@@ -249,7 +249,7 @@
                   >
                 </div>
               </div>
-              <a class="dropdown-button" href="javascrip:void(0)"><i class="icon-chevron-down icon-white"></i></a>
+              <a class="dropdown-button" href="javascript:void(0)"><i class="icon-chevron-down icon-white"></i></a>
             </div>
             
           </div>
