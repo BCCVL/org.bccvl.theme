@@ -51,6 +51,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
             event.preventDefault();
             var el = $(this);
             $('.dropdown-button i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+            // if a user clicks on the dropdown button on a dataset thats already open
             if (el.hasClass('open')){
                 $('div.preview-dropdown:visible').slideUp(300, function(){
                     el.prev('.bccvl-list-preview-pane').html('');
@@ -58,6 +59,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
                 el.find('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
                 el.removeClass('open');
             } else {
+                // if a dataset is already open
                 if($('div.preview-dropdown:visible').length != 0){
                     var existingMap = $('div.preview-dropdown:visible').find('.bccvl-list-preview-pane');
                     $('div.preview-dropdown:visible').slideUp(300, function(){
@@ -69,16 +71,19 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
                               scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
                             }, 1000); 
                         });
+                        el.addClass('open')
                     });
-                } else {
+                } // if no datasets are open yet 
+                else {
                     el.prev('div.preview-dropdown').slideDown(300, function(){
                         $('html,body').animate({
                           scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
                         }, 1000); 
+                        el.addClass('open')
                     });
                 }
                 el.find('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-                el.addClass('open')
+                
             } 
             
                        
