@@ -132,7 +132,8 @@
           </ul>
         </div>
         <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit" class="btn btn-block btn-primary">Apply Filters</button>
-        <!--<button type="reset">Reset Filter</button>-->
+        <a href="#" class="btn btn-block btn-secondary"
+          tal:attributes="href string:${context/absolute_url}/datasets">Reset Filters</a>
       </div>
     </form>
   </div>

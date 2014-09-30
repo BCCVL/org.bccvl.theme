@@ -71,7 +71,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
                               scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
                             }, 1000); 
                         });
-                        el.addClass('open')
+                        el.addClass('open');
+                        $('div.preview-dropdown:visible').find('.bccvl-list-occurrence-viz, .bccvl-list-absence-viz, .bccvl-list-auto-viz').trigger('click');
                     });
                 } // if no datasets are open yet 
                 else {
@@ -79,7 +80,8 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'js/bcc
                         $('html,body').animate({
                           scrollTop: (el.parents('div.datasets-list-entry').offset().top - 10)
                         }, 1000); 
-                        el.addClass('open')
+                        el.addClass('open');
+                        $('div.preview-dropdown:visible').find('.bccvl-list-occurrence-viz, .bccvl-list-absence-viz, .bccvl-list-auto-viz').trigger('click');
                     });
                 }
                 el.find('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');

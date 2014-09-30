@@ -312,9 +312,6 @@ div.olControlSaveFeaturesItemInactive {
     right: 0;
     width: 20em;
     font-weight: bold;
-    margin-top: 3px;
-    margin-left: 3px;
-    margin-bottom: 3px;
     color: white;
     background-color: transparent;
 }
@@ -336,7 +333,9 @@ div.olControlSaveFeaturesItemInactive {
 
 .olControlLayerSwitcher .layersDiv .baseLayersDiv,
 .olControlLayerSwitcher .layersDiv .dataLayersDiv {
-    padding-left: 10px;
+    padding-left: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .olControlLayerSwitcher .maximizeDiv,
@@ -548,27 +547,30 @@ img.olTileImage {
 
 .olControlLayerSwitcher .layersDiv {
     background-color: rgba(255,255,255,.75);
-    padding: 4px 15px 14px 8px;
-    border-top-left-radius: 4px;
+    padding: 0 3% 0 0;
     box-shadow: 0px 2px 2px rgba(0,0,0,.1);
     color: #000;
     font-weight: 300;
     line-height: 1.3em;
-    border-bottom-left-radius: 4px;
+    overflow-y: auto;
+    height: 100%;
 }
 .olControlLayerSwitcher .layersDiv .baseLbl, .olControlLayerSwitcher .layersDiv .dataLbl {
-    margin: 12px 10px 3px 9px;
+    margin: 15px 10px 3px 12px;
 }
 .baseLbl, .dataLbl {
     font-weight: 500;
 }
 .olControlLayerSwitcher {
-    width:auto;
-    top:8px
+    width:30%;
+    top:0px;
+    height: 100%
 }
 .dataLayersDiv input.olButton, .baseLayersDiv input.olButton {
-    display: inline-block;
-    margin: 0px 5px 0px 0px;
+    display: inline;
+    margin: 7px 5px 0px 0px;
+    clear: left;
+    float: left;
 }
 div.olControlAttribution {
     font-family: "Helvetica", sans-serif;
@@ -644,9 +646,14 @@ div.olControlAttribution {
     font-size:12px;
 }
 .baseLayersDiv label, .dataLayersDiv label {
-    font-size:11px;
+    font-size: 11px;
     display: inline-block;
     font-weight: 300;
-    margin-bottom:0px;
+    margin-bottom: 0px;
     vertical-align: middle!important;
+    line-height: 1.3em;
+    word-wrap: break-word;
+    float: left;
+    width: 90%;
+    margin-top: 6px;
 }
