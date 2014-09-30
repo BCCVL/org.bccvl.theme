@@ -4,7 +4,8 @@
 define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-wizard-tabs', 'js/bccvl-search', 'js/bccvl-form-validator',
-     'jquery-tablesorter', 'jquery-arrayutils', 'select2'],
+     'jquery-tablesorter', 'jquery-arrayutils', 'select2',
+     'js/bccvl-form-popover'],
     function($, preview_layout, viz, wiztabs, search, formvalidator) {
 
         $(function() {
