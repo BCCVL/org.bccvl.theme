@@ -1,4 +1,4 @@
-<div
+<div class="control-group"
    metal:define-macro="widget-wrapper"
    i18n:domain="plone"
    tal:define="widget nocall:context;
@@ -8,33 +8,26 @@
                empty_values python: (None, '', [], ('', '', '', '00', '00', ''), ('', '', ''));
                empty_class python: (widget.value in empty_values) and ' empty' or '';
                fieldname_class string:kssattr-fieldname-${widget/name};"
-   tal:attributes="class string:field z3cformInlineValidation ${fieldname_class}${error_class}${empty_class};
-                   data-fieldname widget/name;
+   tal:attributes="data-fieldname widget/name;
                    id string:formfield-${widget/id};">
-    <label for="" class="horizontal"
+    <label for="" class="control-label"
         tal:attributes="for widget/id"
-        tal:condition="not:hidden">
-        <span i18n:translate="" tal:replace="widget/label">label</span>
+        tal:condition="not:hidden"
+        tal:content="widget/label">label</label>
+    <i class="icon-info-sign pull-left" data-title="label"
+       data-content="field description"
+       data-toggle="popover"
+       tal:condition="widget/field/description"
+       tal:attributes="data-title widget/label;
+                       data-content widget/field/description"></i>
+    <div class="controls">
 
-        <span class="required horizontal" title="Required"
-              tal:condition="python:widget.required and widget.mode == 'input'"
-              i18n:attributes="title title_required;">&nbsp;</span>
-
-        <span class="formHelp"
-            tal:define="description widget/field/description"
-            i18n:translate=""
-            tal:content="structure description"
-            tal:condition="python:description and not hidden"
-            tal:attributes="data-content description"
-            >field description
-        </span>
-    </label>
-
-    <div class="fieldErrorBox"
-        tal:content="structure error/render|nothing">
-        Error
-    </div>
+    <!-- <div class="fieldErrorBox" -->
+    <!--     tal:content="structure error/render|nothing"> -->
+    <!--     Error -->
+    <!-- </div> -->
 
     <input type="text" tal:replace="structure widget/render"
            metal:define-slot="widget" />
+  </div>
 </div>
