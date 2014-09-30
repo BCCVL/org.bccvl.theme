@@ -41,7 +41,7 @@ define(
                             $('.select-widget').attr('data-parsley-unique', 'true');
 
                             // assume parsleyconfig already loaded by bccvl-form-validator.js
-                            
+
                             window.ParsleyValidator
                                 .addValidator('unique', function(val, requirement) {
                                     var counter = 0;
@@ -53,7 +53,7 @@ define(
 
                                     return counter == 1;
                                 })
-                                .addMessage('en', 'unique', 'Bioclimatic Variable must be unique.')
+                                .addMessage('en', 'unique', 'Bioclimatic Variable must be unique.');
 
                             $('form.layers-parsley-validated').parsley();
 
@@ -67,7 +67,7 @@ define(
                                 else return false;
 
                             });
-             
+
 
                             $('.modal form').ajaxForm(function() {
                                 $('.modal').modal('hide');
@@ -87,7 +87,7 @@ define(
 
                 $('.modal').on('hidden', function () {
                     $("body").removeClass("modal-open");
-                })
+                });
 
             }
 

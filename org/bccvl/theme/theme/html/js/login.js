@@ -1,9 +1,10 @@
 //
 // main JS for the login page.
 //
-define(     ['jquery', 'bootstrap'],
+define(
+    ['jquery', 'bootstrap'],
     function( $) {
-    // ==============================================================
+        // ==============================================================
         $(function() {
             console.log('login page behaviour loaded.');
             $('.disclaimer.legals').insertBefore('.aaf-logo-link');
@@ -39,7 +40,7 @@ define(     ['jquery', 'bootstrap'],
             $("#legals-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
                     $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").removeAttr("disabled");
-                    
+
                     $("#wrapper-aaf a").removeAttr('onclick');
                     $("#wrapper-aaf a").css('cursor', 'pointer');
 
@@ -56,6 +57,6 @@ define(     ['jquery', 'bootstrap'],
                     alert("Please agree to the terms and conditions to login.");
             });
         });
-    // ==============================================================
+        // ==============================================================
     }
 );

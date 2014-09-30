@@ -1,23 +1,23 @@
-
 //
 // main JS for the knowledgebase page.
 //
-define(     ['jquery', 'bootstrap'],
+define(
+    ['jquery', 'bootstrap'],
     function( $) {
-    // ==============================================================
+        // ==============================================================
         $(function() {
-            
+
             // Select the appropriate tab to show.
             // Show the search tab if the URL contains '/facet_listing'
-        	var $tabPane;
-        	if (location.pathname.indexOf('/facet_listing') > -1) {
-        		$tabPane = $('a[href="#tab-search"]');
-        	} else {
-        		$tabPane = $('a[href="#tab-browse"]');
-        	}
-        	if (!$tabPane.hasClass('active')) {
-    			$tabPane.tab('show');
-    		}
+            var $tabPane;
+            if (location.pathname.indexOf('/facet_listing') > -1) {
+        	$tabPane = $('a[href="#tab-search"]');
+            } else {
+        	$tabPane = $('a[href="#tab-browse"]');
+            }
+            if (!$tabPane.hasClass('active')) {
+    		$tabPane.tab('show');
+    	    }
 
             $('.morefilters').find('h4').each(function(){
                 $(this).html($(this).find('.label'));
@@ -31,12 +31,12 @@ define(     ['jquery', 'bootstrap'],
             $('.morefilters').find('h4').click(function(event){
                 $(this).parent().find('.facetmenu').slideToggle();
                 if ($(this).parent().find('.facetmenu').css('display') == 'none')
-                    $(this).find('.label').html('&#43; More')
+                    $(this).find('.label').html('&#43; More');
                 else
-                    $(this).find('.label').html('&#45; Less')
-            })
+                    $(this).find('.label').html('&#45; Less');
+            });
 
         });
-    // ==============================================================
+        // ==============================================================
     }
 );
