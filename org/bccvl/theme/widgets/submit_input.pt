@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
+      tal:define="iscancel python: 'cancel' in view.__name__">
+  <tal:submit tal:condition="not:iscancel">
+    <button type="submit" id="" name="" class="btn btn-primary" value="" disabled=""
+            tal:attributes="id view/id;
+                            name view/name;
+                            data-class view/klass;
+                            value view/value;
+                            disabled view/disabled;"
+            tal:content="view/title">Button</button>
+  </tal:submit>
+  <tal:cancel tal:condition="iscancel">
+    <a href="" class="btn btn-danger"
+       tal:attributes="href view/form/context/absolute_url"
+       tal:content="view/title">Cancel</a>
+  </tal:cancel>
+</html>

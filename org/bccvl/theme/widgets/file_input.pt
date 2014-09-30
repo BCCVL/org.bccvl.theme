@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag="">
+  <div class="fileupload fileupload-new"
+       data-provides="fileupload">
+    <span class="btn btn-file">
+      <span class="fileupload-new">Select a file to upload</span>
+      <span class="fileupload-exists">Change</span>
+      <input id="" name="" type="file"
+             required="required" data-parsley-trigger="change"
+             tal:attributes="id view/id;
+                             name view/name;
+                             title view/title;
+                             disabled view/disabled;
+                             readonly view/readonly;
+                             alt view/alt;
+                             required view/required;
+                             data-view-class view/klass;"/>
+    </span>
+    <span class="fileupload-preview"></span>
+    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+  </div>
+</html>

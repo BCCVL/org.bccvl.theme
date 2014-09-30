@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag="">
+  <textarea
+      id="" name="" class="input-block-level" cols="" rows=""
+      disabled="" readonly="" placeholder=""
+      tal:attributes="id view/id;
+                      name view/name;
+                      data-view-class view/klass;
+                      title view/title;
+                      disabled view/disabled;
+                      cols view/cols;
+                      rows view/rows;
+                      readonly view/readonly;"
+      tal:content="view/value" />
+</html>

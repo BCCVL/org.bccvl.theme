@@ -10,7 +10,7 @@
          field="zope.schema.interfaces.IInt"
          template="number_input.pt"
          layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-    />
+         />
 
     <z3c:widgetTemplate
          mode="input"
@@ -18,43 +18,69 @@
          field="zope.schema.interfaces.IDecimal"
          template="decimal_input.pt"
          layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-    />
+         />
 
     <z3c:widgetTemplate
          mode="input"
          widget="z3c.form.interfaces.ITextWidget"
          template="text_input.pt"
          layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-    />
+         />
 
     <z3c:widgetTemplate
-      mode="input"
-      widget="org.bccvl.site.browser.interfaces.IOrderedCheckboxWidget"
-      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="orderedcheckbox_input.pt"
-      />
+        mode="input"
+        widget="z3c.form.interfaces.ITextAreaWidget"
+        template="textarea_input.pt"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        />
 
     <z3c:widgetTemplate
-      mode="input"
-      widget="org.bccvl.site.browser.interfaces.IDatasetLayersWidget"
-      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="datasetlayers_input.pt"
-      />
+        mode="input"
+        widget="org.bccvl.site.browser.interfaces.IOrderedCheckboxWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="orderedcheckbox_input.pt"
+        />
 
     <z3c:widgetTemplate
-      mode="input"
-      widget="org.bccvl.site.browser.interfaces.IDatasetsRadioWidget"
-      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="datasetsradio_input.pt"
-      />
+        mode="input"
+        widget="org.bccvl.site.browser.interfaces.IDatasetLayersWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasetlayers_input.pt"
+        />
 
     <z3c:widgetTemplate
-      mode="input"
-      widget="org.bccvl.site.browser.interfaces.IDatasetsMultiSelectWidget"
-      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-      template="datasetsmultiselect_input.pt"
-      />
+        mode="input"
+        widget="org.bccvl.site.browser.interfaces.IDatasetsRadioWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasetsradio_input.pt"
+        />
 
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.browser.interfaces.IDatasetsMultiSelectWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasetsmultiselect_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="z3c.form.interfaces.IFileWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="file_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="gu.plone.rdf.interfaces.IDateWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="date_input.pt" />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="z3c.form.interfaces.ISubmitWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="submit_input.pt"
+        />
 
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
