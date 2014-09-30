@@ -1,0 +1,17 @@
+<metal:block use-macro="context/@@ploneform-macros/titlelessform">
+  <!-- empty description slot -->
+  <metal:description fill-slot="formtop">
+    <p class="bccvl-formdescription"
+       tal:content="structure view/description">form help text</p>
+  </metal:description>
+
+  <metal:actions fill-slot="actions">
+    <div class="control-group" tal:condition="view/actions/values|nothing">
+      <div class="controls">
+        <tal:block repeat="action view/actions/values">
+          <input type="submit" tal:replace="structure action/render" />
+        </tal:block>
+      </div>
+    </div>
+  </metal:actions>
+</metal:block>
