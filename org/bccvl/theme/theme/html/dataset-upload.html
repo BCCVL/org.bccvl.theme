@@ -77,16 +77,16 @@
           </div>
 
           <!-- search field -->
-          <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+          <form id="siteSearch" class="navbar-search pull-right" method="post" autocomplete="on" action="" enctype="text/plain">
             <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
           </form>
 
           <!-- main menu items -->
           <ul id="portal-globalnav" class="nav">
             <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-            <li class="active"><a class="bccvllinks-datasets">Datasets</a></li>
-            <li               ><a class="bccvllinks-experiments">Experiments</a></li>
-            <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+            <li class="active"><a class="bccvllinks-datasets" href="dataset-list.html">Datasets</a></li>
+            <li               ><a class="bccvllinks-experiments" href="experiment-list.hml">Experiments</a></li>
+            <li               ><a class="bccvllinks-knowledgebase" href="knowledgebase.html">Knowledge Base</a></li>
           </ul>
 
         </div><!--/.nav-collapse -->
@@ -124,13 +124,13 @@
         </section>
 
         <ul id="datasets_tabs" class="nav nav-tabs">
-          <li class="tab-datasetslisting active">
+          <li class="tab-datasetslisting">
             <a href="dataset-list.html"><span>Datasets</span></a>
           </li>
           <li class="tab-datasetsimport ">
             <a href="dataset-import.html"><span>Discover Dataset</span></a>
           </li>
-          <li class="tab-datasetsupload ">
+          <li class="tab-datasetsupload active">
             <a href="dataset-upload.html"><span>Upload Dataset</span></a>
           </li>
         </ul>
@@ -155,20 +155,24 @@
                   <label class="control-label">Dataset Type</label>
                   <div class="controls">
                     <select id="upload-dataset-type">
-                      <option selected value="">Please Select ...</option>
-                      <option value="species">Species Dataset</option>
-                      <option value="environmental-layer">Environmental Layer</option>
-                      <option value="species-trait">Species Trait</option>
+                      <option disabled="disabled" selected="selected" value="">Please Select ...</option>
+                      <option value="speciesabsence">Species Absence</option>
+                      <option value="speciesabundance">Species Abundance</option>
+                      <option value="speciesoccurrence">Species Occurrence</option>
+                      <option value="climatecurrent">Current Climate</option>
+                      <option value="environmental">Environmental</option>
+                      <option value="climatefuture">Future Climate</option>
+                      <option value="speciestrait">Species Trait</option>
                     </select>
                   </div>
                 </div>
               </form>
 
-              <div class="bccvl-datasetuploadspeciesform hidden">
+              <div class="bccvl-upload-speciesabsence hidden">
 
-                <form class="form-horizontal" id="addspecies" method="" autocomplete="on" action="" enctype="multipart/form-data">
+                <form class="form-horizontal" id="speciesabsence" method="post" autocomplete="on" action="" enctype="multipart/form-data">
 
-                  <p class="bccvl-occurrencedescription"></p>
+                  <p class="bccvl-formdescription">Description for species upload form</p>
 
                   <div class="control-group">
                     <label class="control-label">Species Dataset File</label>
@@ -177,7 +181,7 @@
                         <span class="btn btn-file">
                           <span class="fileupload-new">Select file to upload</span>
                           <span class="fileupload-exists">Change</span>
-                          <input name="addspecies.widgets.file" type="file"
+                          <input name="speciesabsence.widgets.file" type="file"
                                  required="required" data-parsley-trigger="change" />
                         </span>
                         <span class="fileupload-preview"></span>
@@ -189,7 +193,7 @@
                   <div class="control-group">
                     <label class="control-label">Species Dataset Title</label>
                     <div class="controls">
-                      <input type="text" name="addspecies.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+                      <input type="text" name="speciesabsence.widgets.title" class="input-block-level" placeholder="Title of species dataset"
                              required="required" data-notblank="true" />
                     </div>
                   </div>
@@ -197,23 +201,7 @@
                   <div class="control-group">
                     <label class="control-label">Species Dataset Description</label>
                     <div class="controls">
-                      <textarea name="addspecies.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
-                    </div>
-                  </div>
-
-                  <div class="control-group">
-                    <label class="control-label">Dataset Genre</label>
-                    <div class="controls">
-                      <select name="addspecies.widgets.datagenre:list">
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="control-group">
-                    <label class="control-label">Species Layer</label>
-                    <div class="controls">
-                      <select name="addspecies.widgets.specieslayer:list">
-                      </select>
+                      <textarea name="speciesabsence.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
                     </div>
                   </div>
 
@@ -221,7 +209,7 @@
                     <label class="control-label">Scientific Name</label>
                     <i class="icon-info-sign bccvl-scientificnameinfo pull-left" data-title="Scientific Name" data-content=""></i>
                     <div class="controls">
-                      <input type="text" name="addspecies.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
+                      <input type="text" name="speciesabsence.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
                              required="required" data-notblank="true" />
                     </div>
                   </div>
@@ -230,7 +218,7 @@
                     <label class="control-label">Taxon ID</label>
                     <i class="icon-info-sign bccvl-taxonidinfo pull-left" data-title="Taxon ID" data-content=""></i>
                     <div class="controls">
-                      <input type="text" name="addspecies.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species"/>
+                      <input type="text" name="speciesabsence.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species"/>
                     </div>
                   </div>
 
@@ -238,20 +226,207 @@
                     <label class="control-label">Common Name</label>
                     <i class="icon-info-sign bccvl-commonnameinfo pull-left" data-title="Common Name" data-content=""></i>
                     <div class="controls">
-                      <input type="text" name="addspecies.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name"/>
+                      <input type="text" name="speciesabsence.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="speciesabsence.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
                     </div>
                   </div>
 
                   <div class="control-group">
                     <div class="legals controls">
-                      <input id="dataset-legal-checkbox" name="dataset-legal-checkbox" type="checkbox" />
-                      <label for="dataset-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                      <input id="speciesabsence-widgets-legalcheckbox" name="speciesabsence.widgets.legalcheckbox" type="checkbox" />
+                      <label for="speciesabsence-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                     </div>
                   </div>
 
                   <div class="control-group">
                     <div class="controls">
-                      <button name="addspecies.buttons.save" class="btn btn-primary" id="dataset-save-btn" value="Save" type="submit" disabled="disabled">Upload Species Dataset</button>
+                      <button name="speciesabsence.buttons.save" class="btn btn-primary" id="speciesabsence-buttons-save" value="Save" type="submit" disabled="disabled">Upload Species Dataset</button>
+                      <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+<!-- species abundance -->
+              <div class="bccvl-upload-speciesabundance hidden">
+
+                <form class="form-horizontal" id="speciesabundance" method="post" autocomplete="on" action="" enctype="multipart/form-data">
+
+                  <p class="bccvl-formdescription">Description for species upload form</p>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset File</label>
+                    <div class="controls">
+                      <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <span class="btn btn-file">
+                          <span class="fileupload-new">Select file to upload</span>
+                          <span class="fileupload-exists">Change</span>
+                          <input name="speciesabundance.widgets.file" type="file"
+                                 required="required" data-parsley-trigger="change" />
+                        </span>
+                        <span class="fileupload-preview"></span>
+                        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset Title</label>
+                    <div class="controls">
+                      <input type="text" name="speciesabundance.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+                             required="required" data-notblank="true" />
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset Description</label>
+                    <div class="controls">
+                      <textarea name="speciesabundance.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Scientific Name</label>
+                    <i class="icon-info-sign bccvl-scientificnameinfo pull-left" data-title="Scientific Name" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesabundance.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
+                             required="required" data-notblank="true" />
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Taxon ID</label>
+                    <i class="icon-info-sign bccvl-taxonidinfo pull-left" data-title="Taxon ID" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesabundance.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Common Name</label>
+                    <i class="icon-info-sign bccvl-commonnameinfo pull-left" data-title="Common Name" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesabundance.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="speciesabundance.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="legals controls">
+                      <input id="speciesabundance-widgets-legalcheckbox" name="speciesabundance.widgets.legalcheckbox" type="checkbox" />
+                      <label for="speciesabundance-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button name="speciesabundance.buttons.save" class="btn btn-primary" id="speciesabundance-buttons-save" value="Save" type="submit" disabled="disabled">Upload Species Dataset</button>
+                      <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+<!-- species occurrence -->
+              <div class="bccvl-upload-speciesoccurrence hidden">
+
+                <form class="form-horizontal" id="speciesoccurrence" method="post" autocomplete="on" action="" enctype="multipart/form-data">
+
+                  <p class="bccvl-formdescription">Description for species upload form</p>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset File</label>
+                    <div class="controls">
+                      <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <span class="btn btn-file">
+                          <span class="fileupload-new">Select file to upload</span>
+                          <span class="fileupload-exists">Change</span>
+                          <input name="speciesoccurrence.widgets.file" type="file"
+                                 required="required" data-parsley-trigger="change" />
+                        </span>
+                        <span class="fileupload-preview"></span>
+                        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset Title</label>
+                    <div class="controls">
+                      <input type="text" name="speciesoccurrence.widgets.title" class="input-block-level" placeholder="Title of species dataset"
+                             required="required" data-notblank="true" />
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Species Dataset Description</label>
+                    <div class="controls">
+                      <textarea name="speciesoccurrence.widgets.description" class="input-block-level" rows="6" placeholder="Description of species dataset"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Scientific Name</label>
+                    <i class="icon-info-sign bccvl-scientificnameinfo pull-left" data-title="Scientific Name" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesoccurrence.widgets.scientificName" class="input-block-level" placeholder="Scientific name of species"
+                             required="required" data-notblank="true" />
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Taxon ID</label>
+                    <i class="icon-info-sign bccvl-taxonidinfo pull-left" data-title="Taxon ID" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesoccurrence.widgets.taxonID" class="input-block-level" placeholder="Taxon ID of species"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Common Name</label>
+                    <i class="icon-info-sign bccvl-commonnameinfo pull-left" data-title="Common Name" data-content=""></i>
+                    <div class="controls">
+                      <input type="text" name="speciesoccurrence.widgets.vernacularName" class="input-block-level" placeholder="Common or vernacular name"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="speciesoccurrence.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="legals controls">
+                      <input id="speciesoccurrence-widgets-legalcheckbox" name="speciesoccurrence.widgets.legalcheckbox" type="checkbox" />
+                      <label for="speciesoccurrence-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button name="speciesoccurrence.buttons.save" class="btn btn-primary" id="speciesoccurrence-buttons-save" value="Save" type="submit" disabled="disabled">Upload Species Dataset</button>
                       <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
                     </div>
                   </div>
@@ -261,18 +436,18 @@
               </div>
 
               <!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-              <div class="bccvl-datasetuploadlayerform hidden">
+              <div class="bccvl-upload-climatecurrent hidden">
 
-                <form class="form-horizontal bccvl-parsleyvalidate" id="addlayer" method="" autocomplete="on" action="" enctype="multipart/form-data">
-                  <p class="bccvl-occurrencedescription"></p>
+                <form class="form-horizontal" id="climatecurrent" method="post" autocomplete="on" action="" enctype="multipart/form-data">
+                  <p class="bccvl-formdescription"></p>
                   <div class="control-group">
-                    <label class="control-label">Environmental Layer File</label>
+                    <label class="control-label">Current Climate File</label>
                     <div class="controls">
                       <div class="fileupload fileupload-new" data-provides="fileupload">
                         <span class="btn btn-file">
                           <span class="fileupload-new">Select file to upload</span>
                           <span class="fileupload-exists">Change</span>
-                          <input name="addlayer.widgets.file" type="file"
+                          <input name="climatecurrent.widgets.file" type="file"
                                  required="required" data-parsley-trigger="change" />
                         </span>
                         <span class="fileupload-preview"></span>
@@ -284,7 +459,7 @@
                   <div class="control-group">
                     <label class="control-label">Environmental Layer Title</label>
                     <div class="controls">
-                      <input type="text" name="addlayer.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
+                      <input type="text" name="climatecurrent.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
                              required="required" data-notblank="true"/>
                     </div>
                   </div>
@@ -292,22 +467,14 @@
                   <div class="control-group">
                     <label class="control-label">Environmental Layer Description</label>
                     <div class="controls">
-                      <textarea name="addlayer.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
+                      <textarea name="climatecurrent.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
                     </div>
                   </div>
 
                   <div class="control-group">
-                    <label class="control-label">Dataset Genre</label>
+                    <label class="control-label">Type TODO: what about mixed?</label>
                     <div class="controls">
-                      <select name="addlayer.widgets.datagenre:list">
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="control-group">
-                    <label class="control-label">Type</label>
-                    <div class="controls">
-                      <select name="addlayer.widgets.datatype:list">
+                      <select name="climatecurrent.widgets.datatype:list">
                       </select>
                     </div>
                   </div>
@@ -315,7 +482,7 @@
                   <div class="control-group">
                     <label class="control-label">Resolution</label>
                     <div class="controls">
-                      <select name="addlayer.widgets.resolution:list">
+                      <select name="climatecurrent.widgets.resolution:list">
                       </select>
                     </div>
                   </div>
@@ -323,46 +490,246 @@
                   <div class="control-group">
                     <label class="control-label">Resolution (other)</label>
                     <div class="controls">
-                      <input type="text" name="addlayer.widgets.resolutiono" class="input-block-level" placeholder="Other resolution"/>
+                      <input type="text" name="climatecurrent.widgets.resolutiono" class="input-block-level" placeholder="Other resolution"/>
                     </div>
                   </div>
 
                   <label class="control-label">Start Date</label>
                   <div class="controls">
                     <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.start-day" class="input-block-level" placeholder="Day"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.start-month" class="input-block-level" placeholder="Month"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.start-year" class="input-block-level" placeholder="Year"/>
-                    </div>
-                    <div class="control-group">
-                      <input type="text" name="addlayer.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="climatecurrent.widgets.temporal.start-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="climatecurrent.widgets.temporal.start-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="climatecurrent.widgets.temporal.start-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="climatecurrent.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
                     </div>
                   </div>
 
                   <label class="control-label">End Date</label>
                   <div class="controls">
                     <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="addlayer.widgets.temporal.end-day" class="input-block-level" placeholder="Day"/>
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="climatecurrent.widgets.temporal.end-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="climatecurrent.widgets.temporal.end-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="climatecurrent.widgets.temporal.end-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="climatecurrent.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
                     </div>
-                    <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="addlayer.widgets.temporal.end-month" class="input-block-level" placeholder="Month"/>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="climatecurrent.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
                     </div>
-                    <div class="control-group">
-                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="addlayer.widgets.temporal.end-year" class="input-block-level" placeholder="Year"/>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="legals controls">
+                      <input id="climatecurrent-widgets-legalcheckbox" name="climatecurrent.widgets.legalcheckbox" type="checkbox" />
+                      <label for="climatecurrent-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                     </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button name="climatecurrent.buttons.save" class="btn btn-primary" id="climatecurrent-buttons-save" value="Save" type="submit" disabled="disabled">Upload Environmental Layer</button>
+                      <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+
+              <!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+              <div class="bccvl-upload-environmental hidden">
+
+                <form class="form-horizontal" id="environmental" method="post" autocomplete="on" action="" enctype="multipart/form-data">
+                  <p class="bccvl-formdescription"></p>
+                  <div class="control-group">
+                    <label class="control-label">Current Climate File</label>
+                    <div class="controls">
+                      <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <span class="btn btn-file">
+                          <span class="fileupload-new">Select file to upload</span>
+                          <span class="fileupload-exists">Change</span>
+                          <input name="environmental.widgets.file" type="file"
+                                 required="required" data-parsley-trigger="change" />
+                        </span>
+                        <span class="fileupload-preview"></span>
+                        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Environmental Layer Title</label>
+                    <div class="controls">
+                      <input type="text" name="environmental.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
+                             required="required" data-notblank="true"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Environmental Layer Description</label>
+                    <div class="controls">
+                      <textarea name="environmental.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Type TODO: what about mixed?</label>
+                    <div class="controls">
+                      <select name="environmental.widgets.datatype:list">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Resolution</label>
+                    <div class="controls">
+                      <select name="environmental.widgets.resolution:list">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Resolution (other)</label>
+                    <div class="controls">
+                      <input type="text" name="environmental.widgets.resolutiono" class="input-block-level" placeholder="Other resolution"/>
+                    </div>
+                  </div>
+
+                  <label class="control-label">Start Date</label>
+                  <div class="controls">
                     <div class="control-group">
-                      <input type="text" name="addlayer.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="environmental.widgets.temporal.start-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="environmental.widgets.temporal.start-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="environmental.widgets.temporal.start-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="environmental.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
+                    </div>
+                  </div>
+
+                  <label class="control-label">End Date</label>
+                  <div class="controls">
+                    <div class="control-group">
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="environmental.widgets.temporal.end-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="environmental.widgets.temporal.end-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="environmental.widgets.temporal.end-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="environmental.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="environmental.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="legals controls">
+                      <input id="environmental-widgets-legalcheckbox" name="environmental.widgets.legalcheckbox" type="checkbox" />
+                      <label for="environmental-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button name="environmental.buttons.save" class="btn btn-primary" id="environmental-buttons-save" value="Save" type="submit" disabled="disabled">Upload Environmental Layer</button>
+                      <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+
+              <!-- upload layer form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+              <div class="bccvl-upload-climatefuture hidden">
+
+                <form class="form-horizontal" id="climatefuture" method="post" autocomplete="on" action="" enctype="multipart/form-data">
+                  <p class="bccvl-formdescription"></p>
+                  <div class="control-group">
+                    <label class="control-label">Current Climate File</label>
+                    <div class="controls">
+                      <div class="fileupload fileupload-new" data-provides="fileupload">
+                        <span class="btn btn-file">
+                          <span class="fileupload-new">Select file to upload</span>
+                          <span class="fileupload-exists">Change</span>
+                          <input name="climatefuture.widgets.file" type="file"
+                                 required="required" data-parsley-trigger="change" />
+                        </span>
+                        <span class="fileupload-preview"></span>
+                        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Environmental Layer Title</label>
+                    <div class="controls">
+                      <input type="text" name="climatefuture.widgets.title" class="input-block-level" placeholder="Title of Environmental Layer"
+                             required="required" data-notblank="true"/>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Environmental Layer Description</label>
+                    <div class="controls">
+                      <textarea name="climatefuture.widgets.description" class="input-block-level" rows="6" placeholder="Description of Environmental Layer"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Type TODO: what about mixed?</label>
+                    <div class="controls">
+                      <select name="climatefuture.widgets.datatype:list">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Resolution</label>
+                    <div class="controls">
+                      <select name="climatefuture.widgets.resolution:list">
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
+                    <label class="control-label">Resolution (other)</label>
+                    <div class="controls">
+                      <input type="text" name="climatefuture.widgets.resolutiono" class="input-block-level" placeholder="Other resolution"/>
+                    </div>
+                  </div>
+
+                  <label class="control-label">Start Date</label>
+                  <div class="controls">
+                    <div class="control-group">
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="climatefuture.widgets.temporal.start-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="climatefuture.widgets.temporal.start-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="climatefuture.widgets.temporal.start-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="climatefuture.widgets.temporal.starttext" class="input-block-level" placeholder="Start date description"/>
+                    </div>
+                  </div>
+
+                  <label class="control-label">End Date</label>
+                  <div class="controls">
+                    <div class="control-group">
+                      <input type="text" data-parsley-type="integer" min="1900" max="3000" data-parsley-error-message="Please enter a valid year" name="climatefuture.widgets.temporal.end-year" class="input-small" placeholder="Year"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="12" data-parsley-error-message="Please enter a valid month" name="climatefuture.widgets.temporal.end-month" class="input-small" placeholder="Month"/> /
+                      <input type="text" data-parsley-type="integer" min="1" max="31" data-parsley-error-message="Please enter a valid day" name="climatefuture.widgets.temporal.end-day" class="input-small" placeholder="Day"/>
+                      <input type="text" name="climatefuture.widgets.temporal.endtext" class="input-block-level" placeholder="End date description"/>
                     </div>
                   </div>
 
                   <div class="control-group">
                     <label class="control-label">Emission Scenario</label>
                     <div class="controls">
-                      <select name="addlayer.widgets.emissionscenario:list">
+                      <select name="climatefuture.widgets.emissionscenario:list">
                       </select>
                     </div>
                   </div>
@@ -370,21 +737,30 @@
                   <div class="control-group">
                     <label class="control-label">Global Climate Model</label>
                     <div class="controls">
-                      <select name="addlayer.widgets.gcm:list">
+                      <select name="climatefuture.widgets.gcm:list">
                       </select>
                     </div>
                   </div>
 
                   <div class="control-group">
+                    <label class="control-label">Right statement</label>
+                    <div class="controls">
+                      <textarea name="climatefuture.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="control-group">
                     <div class="legals controls">
-                      <input id="env-legal-checkbox" name="env-legal-checkbox" type="checkbox" />
-                      <label for="env-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                      <input id="climatefuture-widgets-legalcheckbox" name="climatefuture.widgets.legalcheckbox" type="checkbox" />
+                      <label for="climatefuture-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                     </div>
                   </div>
 
                   <div class="control-group">
                     <div class="controls">
-                      <button name="addlayer.buttons.save" class="btn btn-primary" id="env-save-btn" value="Save" type="submit" disabled="disabled">Upload Environmental Layer</button>
+                      <button name="climatefuture.buttons.save" class="btn btn-primary" id="climatefuture-buttons-save" value="Save" type="submit" disabled="disabled">Upload Environmental Layer</button>
                       <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
                     </div>
                   </div>
@@ -394,11 +770,10 @@
               </div>
 
               <!-- upload species trait form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+              <div class="bccvl-upload-speciestrait hidden">
+                <form class="form-horizontal" id="speciestrait" method="post" autocomplete="on" action="" enctype="multipart/form-data">
 
-              <div class="bccvl-datasetspeciestraitsform hidden">
-                <form class="form-horizontal bccvl-parsleyvalidate" id="addtraits" method="" autocomplete="on" action="" enctype="multipart/form-data">
-
-                  <p class="bccvl-traitdescription"></p>
+                  <p class="bccvl-formdescription"></p>
 
                   <div class="control-group">
                     <label class="control-label">Upload File</label>
@@ -407,7 +782,7 @@
                         <span class="btn btn-file">
                           <span class="fileupload-new">Select file to upload</span>
                           <span class="fileupload-exists">Change</span>
-                          <input name="addtraits.widgets.file" type="file"
+                          <input name="speciestrait.widgets.file" type="file"
                                  required="required" data-parsley-trigger="change" />
                         </span>
                         <span class="fileupload-preview"></span>
@@ -419,7 +794,7 @@
                   <div class="control-group">
                     <label class="control-label">Dataset Title</label>
                     <div class="controls">
-                      <input type="text" name="addtraits.widgets.title" class="input-block-level" placeholder="Title of species trait dataset"
+                      <input type="text" name="speciestrait.widgets.title" class="input-block-level" placeholder="Title of species trait dataset"
                              required="required" data-notblank="true" />
                     </div>
                   </div>
@@ -427,25 +802,27 @@
                   <div class="control-group">
                     <label class="control-label">Dataset Description</label>
                     <div class="controls">
-                      <textarea name="addtraits.widgets.description" class="input-block-level" rows="6" placeholder="Description of species trait dataset"></textarea>
+                      <textarea name="speciestrait.widgets.description" class="input-block-level" rows="6" placeholder="Description of species trait dataset"></textarea>
                     </div>
                   </div>
 
-                  <div class="control-group hidden">
-                    <label class="control-label">Dataset Genre</label>
+                  <div class="control-group">
+                    <label class="control-label">Right statement</label>
                     <div class="controls">
-                      <input type="hidden" name="addtraits.widgets.datagenre:list"/>
+                      <textarea name="speciestrait.widgets.rights"
+                                class="input-block-level" rows="6"
+                                placeholder="Rights and citation info"></textarea>
                     </div>
                   </div>
 
                   <div class="legals">
-                    <input id="traits-legal-checkbox" name="traits-legal-checkbox" type="checkbox" />
-                    <label for="traits-legal-checkbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
+                    <input id="speciestrait-widgets-legalcheckbox" name="speciestrait.widgets.legalcheckbox" type="checkbox" />
+                    <label for="speciestrait-widgets-legalcheckbox">I agree to the <a href="http://www.bccvl.org.au/bccvl/legals/" target="_blank">Terms and Conditions</a></label>
                   </div>
 
                   <div class="control-group">
                     <div class="controls">
-                      <button name="addtraits.buttons.save" class="btn btn-primary" id="addtraits-buttons-save" value="Save" type="submit" disabled="disabled">Upload Dataset</button>
+                      <button name="speciestrait.buttons.save" class="btn btn-primary" id="speciestrait-buttons-save" value="Save" type="submit" disabled="disabled">Upload Dataset</button>
                       <a class="btn btn-danger bccvllinks-datasets">Cancel</a>
                     </div>
                   </div>
@@ -462,9 +839,16 @@
       </div><!-- end of main content container -->
     </div>
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <footer  id="portal-footer" class="navbar navbar-fixed-bottom">
+          <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer id="portal-footer">
       <div class="container-fluid">
-        <small>&hearts; and &copy; 2013 &nbsp;&middot;&nbsp; the BCCVL team</small>
+        <small>
+          <a href="http://www.bccvl.org.au/bccvl/legals/">Terms and Conditions</a> |
+          <a href="http://www.bccvl.org.au/contact-us">Help</a> |
+          <a href="https://192.168.100.200/_debug/bccvl/contact-info">Feedback Form</a> |
+          <a href="http://www.bccvl.org.au/contact-us">Contact Support</a> |
+          <a href="http://www.bccvl.org.au">BCCVL Website</a>
+        </small>
       </div>
     </footer>
   </body>
