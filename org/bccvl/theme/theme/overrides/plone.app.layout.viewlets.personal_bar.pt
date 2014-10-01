@@ -6,7 +6,7 @@
     </a>
     <ul class="dropdown-menu">
       <tal:actions tal:repeat="action view/user_actions">
-        <li class="divider" tal:condition="python:repeat['action'].last and not repeat['action'].first"></li>
+        <li class="divider" tal:condition="python:repeat['action'].end and not repeat['action'].start"></li>
         <li>
           <a class="bccvllinks-action"
              tal:attributes="href action/url;
