@@ -17,7 +17,7 @@
     <i class="icon-info-sign pull-left" data-title="label"
        data-content="field description"
        data-toggle="popover"
-       tal:condition="widget/field/description"
+       tal:condition="python: not hidden and widget.field.description"
        tal:attributes="data-title widget/label;
                        data-content widget/field/description"></i>
     <div class="controls">
