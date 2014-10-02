@@ -51,13 +51,13 @@ define(
             $('body').on('click', '.dropdown-button', function(event){
                 event.preventDefault();
                 var el = $(this);
-                $('.dropdown-button i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $('.dropdown-button i:first-child').removeClass('icon-chevron-up').addClass('icon-chevron-down');
                 // if a user clicks on the dropdown button on a dataset thats already open
                 if (el.hasClass('open')){
                     $('div.preview-dropdown:visible').slideUp(300, function(){
                         el.prev('.bccvl-list-preview-pane').html('');
                     });
-                    el.find('i').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                    el.find('i:first-child').removeClass('icon-chevron-up').addClass('icon-chevron-down');
                     el.removeClass('open');
                 } else {
                     // if a dataset is already open
@@ -85,7 +85,7 @@ define(
                             $('div.preview-dropdown:visible').find('.bccvl-list-occurrence-viz, .bccvl-list-absence-viz, .bccvl-list-auto-viz').trigger('click');
                         });
                     }
-                    el.find('i').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+                    el.find('i:first-child').removeClass('icon-chevron-down').addClass('icon-chevron-up');
 
                 }
 
