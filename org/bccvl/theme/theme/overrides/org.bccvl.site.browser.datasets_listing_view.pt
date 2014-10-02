@@ -185,11 +185,11 @@
               <p tal:condition="md/rows"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
               <!-- <p tal:condition="md/width"><small><b>size:</b> <tal:r tal:replace="md/width"></tal:r>x<tal:r tal:replace="md/height"></tal:r></small></p> -->
               <!-- <p tal:condition="md/min"><small><b>min/max:</b> <tal:r tal:replace="md/min"></tal:r>/<tal:r tal:replace="md/max"></tal:r></small></p> -->
-              <p tal:condition="md/resolution"><small><b>Resolution: <tal:r tal:replace="md/resolution"></tal:r></b></small></p>
+              <p tal:condition="md/resolution"><small><b>Resolution: </b><tal:r tal:replace="md/resolution"></tal:r></small></p>
               <!-- <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p> -->
               <p><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
               <p><small><b>Source:</b> ALA import</small></p>
-              <p><small><b>Date:</b> <tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
+              <p><small><b>Date Imported:</b> <tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
             </div>
             <div class="dataset-list-dropdown">
               <div class="preview-dropdown" style="display:none;">
@@ -250,7 +250,7 @@
                   >
                 </div>
               </div>
-              <a class="dropdown-button" href="javascript:void(0)"><i class="icon-chevron-down icon-white"></i></a>
+              <a class="dropdown-button" href="javascript:void(0)">Details <i class="icon-chevron-down icon-white"></i></a>
             </div>
             
           </div>
