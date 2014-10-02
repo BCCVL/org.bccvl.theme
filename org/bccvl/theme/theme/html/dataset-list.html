@@ -132,42 +132,93 @@
         <!-- dataset list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <section class="bccvl-datasetlist">
           <div class="row">
-            <div id="datasets-filter" class="bccvl-datasetlist-filter">
+            <div id="datasets-filter" class="bccvl-datasetlist-filter span4">
               <form action="" method="get" id="datasets-filter">
-                  <p>Search</p>
-                  <div class="input-append">
-                    <input id="datasets-search" name="datasets.search" type="text" placeholder="Search Datesets" class="input-medium"/>
-                    <button class="btn" type="submit"><i class="icon-search"></i></button>
+                <div class="filter-bar">
+                  <h4>Search</h4>
+                  <div class="filter">
+                    <div class="input-append search-widget">
+                      <input id="datasets-search" name="datasets.search" type="text" placeholder="Search Datesets" class="input-medium"/>
+                      <button class="btn" type="submit"><i class="icon-search"></i></button>
+                    </div>
                   </div>
-                  <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit">Submit Filter</button>
-                  <button type="reset">Reset Filter</button>
-                  <p>Filter</p>
-                  <select id="datasets-filter-genre" name="datasets.filter.genre" multiple="multiple" class="span3">
-                    <option selected="selected" disabled="disabled">Select a Genre</option>
-                    <option value="genre1">Species Presence</option>
-                    <option value="genre2">Species Absence</option>
-                    <option value="genre3">Climate</option>
-                    <option value="genre4">Future Climate</option>
-                    <option value="genre5">Environmental</option>
-                  </select>
-                  <select id="datasets-filter-resolution" name="datasets.filter.resolution" multiple="multiple" class="span3">
-                    <option selected="selected" disabled="disabled">Select a Resolution</option>
-                    <option value="resolution1">250m ~7.5 arc sec.</option>
-                    <option value="resolution2">1km ~30 arc sec.</option>
-                    <option value="resolution3">5km ~1 arc min.</option>
-                  </select>
-                  <select id="datasets-filter-source" name="datasets.filter.source" multiple="multiple" class="span3">
-                    <option selected="selected" disabled="disabled">Select a Source</option>
-                    <option value="source1">My Datasets</option>
-                    <option value="source2">Provided by BCCVL</option>
-                    <option value="source3">Imported from ALA</option>
-                    <option value="source4">User provided</option>
-                  </select>
+                  <div class="filter">
+                    <h4>Genre</h4>
+                    <ul id="datasets-filter-genre" name="datasets-filter-genre-list"><li>
+                      <label class="False" for="checkbox-genre1">
+                        <input type="checkbox" name="datasets.filter.genre:list" value="genre1" id="checkbox-genre1"/><span>Species Absence</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="False" for="checkbox-genre2">
+                        <input type="checkbox" name="datasets.filter.genre:list" value="genre2" id="checkbox-genre2"/><span>Species Abundance</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="False" for="checkbox-genre3">
+                        <input type="checkbox" name="datasets.filter.genre:list" value="genre3" id="checkbox-genre3"/><span>Species Occurrence</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="False" for="checkbox-genre4">
+                    <input type="checkbox" name="datasets.filter.genre:list" value="genre4" id="checkbox-genre4"/><span>Current Climate</span>
+                      </label>
+                    </li>
+                    </ul>
+                  </div>
+                  <div class="filter">
+                    <h4>Resolution</h4>
+                    <ul id="datasets-filter-resolution" name="datasets-filter-resolution-list">
+                      <li>
+                        <label class="False" for="checkbox-resolution1">
+                          <input type="checkbox" name="datasets.filter.resolution:list" value="resolution1" id="checkbox-resolution1"/><span>9" (~250m)</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="False" for="checkbox-resolution2">
+                          <input type="checkbox" name="datasets.filter.resolution:list" value="resolution2" id="checkbox-resolution2"/><span>30" (~1km)</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="False" for="checkbox-resolution3">
+                          <input type="checkbox" name="datasets.filter.resolution:list" value="resolution3" id="checkbox-resolution3"/><span>2.5' (~5km)</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="filter">
+                    <h4>Data Source</h4>
+                    <ul id="datasets-filter-resolution" name="datasets-filter-source-list">
+                      <li>
+                        <label class="False" for="checkbox-source1">
+                          <input type="checkbox" name="datasets.filter.source:list" value="source1" id="checkbox-source1"/><span>My Datasets</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="False" for="checkbox-source2">
+                          <input type="checkbox" name="datasets.filter.source:list" value="source2" id="checkbox-source2"/><span>Provided by BCCVL</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="False" for="checkbox-source3">
+                          <input type="checkbox" name="datasets.filter.source:list" value="source3" id="checkbox-source3"/><span>Imported from ALA</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label class="False" for="checkbox-source4">
+                          <input type="checkbox" name="datasets.filter.source:list" value="source4" id="checkbox-source4"/><span>Shared</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                  <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit" class="btn btn-block btn-primary">Submit Filter</button>
+                  <a href="." class="btn btn-block btn-secondary">Reset Filters</a>
+                </div>
               </form>
             </div>
             <div class="bccvl-my-datasets">
                 <div class="span8" id="datasets-listing">
-                  <div class="row pagination pagination-mini pagination-centered">
+                  <div class="pagination pagination-mini pagination-centered">
                     <ul>
                       <li class="active"><a href="#">1</a></li>
                       <!-- Pagelist with links to next pages for quick navigation -->
@@ -182,8 +233,8 @@
                       <!-- Last -->
                     </ul>
                   </div>
-                  <div class="datasets-list-entry" style="margin: 0 0 .5em;">
-                    <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;">
+                  <div class="datasets-list-entry">
+                    <div class="bccvl-table-label">
                       <p class="lead">Pig (Sus scrofa) occurrences</p>
                       <p><small>Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
                       <p><small><b>Species:</b> Sus scrofa</small></p>
@@ -191,20 +242,24 @@
                       <p><small><b>Source:</b> ALA import</small></p>
                       <p><small><b>Date:</b> Sep 07, 2014 11:20 PM</small></p>
                     </div>
-                    <div class="datasets-controls" style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);margin:0;padding:0 .5em .5em .5em;">
-                      <a target="_blank" href="dataset-1/details" class="dataset-info-btn">
-                        <i title="More information for this dataset." class="icon-info-sign"></i>
-                      </a>
-                      <a href="dataset-1/@@download/file/dataset1.csv">
-                        <i title="download" class="icon-circle-arrow-down"></i>
-                      </a>
-                      <a data-uuid="dataset1uuid" data-viz-id="dataset-1/@@download/file/dataset1.csv" class="bccvl-occurrence-viz fine" href="#">
-                        <i title="preview" class="icon-eye-open icon-link"></i>
+                    <div class="dataset-list-dropdown">
+                      <div class="preview-dropdown" style="display:none;">
+                        <div class="datasets-controls">
+                          <a class="dataset-info-btn btn btn-primary btn-small" href="dataset-1/details" target="_blank">
+                            <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                            More Info
+                          </a>
+                        </div>
+                        <div class="bccvl-list-preview-pane" style="height:500px;" id="map-e62b4fb9bbb1435ea1ed9abf6cd0ba83"></div>
+                      </div>
+                      <a class="dropdown-button" href="javascript:void(0)">
+                        <i class="icon-chevron-down icon-white"></i>
+                        <i class="dataset-import bccvl-small-spinner" data-url="dataset-1" title="Import in progress"></i>
                       </a>
                     </div>
                   </div>
-                  <div class="datasets-list-entry" style="margin: 0 0 .5em;">
-                    <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;">
+                  <div class="datasets-list-entry">
+                    <div class="bccvl-table-label">
                       <p class="lead">Platypus (Ornithorhynchus anatinus) occurrences</p>
                       <p><small>Observed occurrences for Platypus (Ornithorhynchus anatinus), imported from ALA on 08/09/2014</small></p>
                       <p><small><b>Species:</b> Ornithorhynchus anatinus</small></p>
@@ -212,64 +267,90 @@
                       <p><small><b>Source:</b> Provided</small></p>
                       <p><small><b>Date:</b> Aug 01, 2014 12:20 PM</small></p>
                     </div>
-                    <div class="datasets-controls" style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);margin:0;padding:0 .5em .5em .5em;">
-                      <a target="_blank" href="dataset-1/details" class="dataset-info-btn">
-                        <i title="More information for this dataset." class="icon-info-sign"></i>
-                      </a>
-                      <a href="dataset-1/@@download/file/dataset1.csv">
-                        <i title="download" class="icon-circle-arrow-down"></i>
-                      </a>
-                      <a data-uuid="dataset1uuid" data-viz-id="dataset-1/@@download/file/dataset1.csv" class="bccvl-occurrence-viz fine" href="#">
-                        <i title="preview" class="icon-eye-open icon-link"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="datasets-list-entry" style="margin: 0 0 .5em;">
-                    <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;">
-                      <p class="lead">Pig (Sus scrofa) occurrences</p>
-                      <p><small>Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
-                      <p><small><b>Species:</b> Sus scrofa</small></p>
-                      <p><small><b>Owner:</b> Me</small></p>
-                      <p><small><b>Source:</b> User uploaded</small></p>
-                      <p><small><b>Date:</b> Sep 08, 2014 11:16 PM</small></p>
-                    </div>
-                    <div class="datasets-controls" style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);margin:0;padding:0 .5em .5em .5em;">
-                      <a target="_blank" href="dataset-1/details" class="dataset-info-btn">
-                        <i title="More information for this dataset." class="icon-info-sign"></i>
-                      </a>
-                      <a href="dataset-1/@@download/file/dataset1.csv">
-                        <i title="download" class="icon-circle-arrow-down"></i>
-                      </a>
-                      <a data-uuid="dataset1uuid" data-viz-id="dataset-1/@@download/file/dataset1.csv" class="bccvl-occurrence-viz fine" href="#">
-                        <i title="preview" class="icon-eye-open icon-link"></i>
+                    <div class="dataset-list-dropdown">
+                      <div class="preview-dropdown" style="display:none;">
+                        <div class="datasets-controls">
+                          <a class="dataset-info-btn btn btn-primary btn-small" href="dataset-1/details" target="_blank">
+                            <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                            More Info
+                          </a>
+                        </div>
+                        <div class="bccvl-list-preview-pane" style="height:500px;" id="map-e62b4fb9bbb1435ea1ed9abf6cd0ba83"></div>
+                      </div>
+                      <a class="dropdown-button" href="javascript:void(0)">
+                        <i class="icon-chevron-down icon-white"></i>
+                        <i class="icon-warning-sign" data-url="dataset-2" title="Import failed"></i>
                       </a>
                     </div>
                   </div>
-                  <div class="datasets-list-entry" style="margin: 0 0 .5em;">
-                    <div class="bccvl-table-label" style="padding:.5em .5em 0;margin:0;">
-                      <p class="lead">Pig (Sus scrofa) occurrences</p>
-                      <p><small>Observed occurrences for Pig (Sus scrofa), imported from ALA on 07/09/2014</small></p>
-                      <p><small><b>Species:</b> Sus scrofa</small></p>
-                      <p><small><b>Owner:</b> Other User</small></p>
-                      <p><small><b>Source:</b> User uploaded</small></p>
-                      <p><small><b>Date:</b> Sep 07, 2014 11:24 PM</small></p>
+                  <div class="datasets-list-entry">
+                    <div class="bccvl-table-label">
+                      <p class="lead">Small Red-leaved Wattle (Acacia sp. Small Red-leaved Wattle (J.B.Williams 95033)) occurrences</p>
+                      <p><small>Observed occurrences for Small Red-leaved Wattle (Acacia sp. Small Red-leaved Wattle (J.B.Williams 95033)), imported from ALA on 03/10/2014</small></p>
+                      <p><small><b>Species:</b> Acacia sp. Small Red-leaved Wattle (J.B.Williams 95033)</small></p>
+                      <p><small><b>Owner:</b> admin</small></p>
+                      <p><small><b>Source:</b> ALA import</small></p>
+                      <p><small><b>Date:</b> Oct 03, 2014 08:18 AM</small></p>
                     </div>
-                    <div class="datasets-controls" style="background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);margin:0;padding:0 .5em .5em .5em;">
-                      <a target="_blank" href="dataset-1/details" class="dataset-info-btn">
-                        <i title="More information for this dataset." class="icon-info-sign"></i>
-                      </a>
-                      <a href="dataset-1/@@download/file/dataset1.csv">
-                        <i title="download" class="icon-circle-arrow-down"></i>
-                      </a>
-                      <a data-uuid="dataset1uuid" data-viz-id="dataset-1/@@download/file/dataset1.csv" class="bccvl-occurrence-viz fine" href="#">
-                        <i title="preview" class="icon-eye-open icon-link"></i>
-                      </a>
+                    <div class="dataset-list-dropdown">
+                      <div class="preview-dropdown" style="display:none;">
+                        <div class="datasets-controls">
+                          <a href="#" class="bccvl-list-occurrence-viz btn btn-primary btn-small" data-viz-id="dataset-1/@@download/file/dataset3.csv" data-uuid="dataset3uuid">
+                            <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                            Preview
+                          </a>
+                          <a href="dataset-1/@@download/file/dataset3.csv" class="btn btn-primary btn-small">
+                            <i class="icon-circle-arrow-down icon-white" title="download"></i>
+                            Download Data
+                          </a>
+                          <a class="dataset-info-btn btn btn-primary btn-small" href="dataset-1/details" target="_blank">
+                            <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                            More Info
+                          </a>
+                          <a class="sharing-btn btn btn-primary btn-small" href="dataset-1/@@staring">
+                            <i class="icon-share icon-white" title="Sharing"></i>
+                            Sharing
+                          </a>
+                        </div>
+                        <div class="bccvl-list-preview-pane" style="height:500px;" id="map-e62b4fb9bbb1435ea1ed9abf6cd0ba83"></div>
+                      </div>
+                      <a class="dropdown-button" href="javascript:void(0)"><i class="icon-chevron-down icon-white"></i></a>
+                    </div>
+                  </div>
+                  <div class="datasets-list-entry">
+                    <div class="bccvl-table-label">
+                      <p class="lead">Climate Projection RCP3PD based on CCCMA-CGCM31, 2.5arcmin (~5km) - 2015</p>
+                      <p><small><b>Resolution: 2.5' (~5km)</b></small></p>
+                    </div>
+                    <div class="dataset-list-dropdown">
+                      <div class="preview-dropdown" style="display:none;">
+                        <div class="datasets-controls">
+                          <a href="#" class="bccvl-list-occurrence-viz btn btn-primary btn-small" data-viz-id="dataset-1/@@download/file/dataset4.csv" data-uuid="dataset4uuid">
+                            <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                            Preview
+                          </a>
+                          <a href="dataset-1/@@download/file/dataset4.csv" class="btn btn-primary btn-small">
+                            <i class="icon-circle-arrow-down icon-white" title="download"></i>
+                            Download Data
+                          </a>
+                          <a class="dataset-info-btn btn btn-primary btn-small" href="dataset-1/details" target="_blank">
+                            <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                            More Info
+                          </a>
+                          <a class="sharing-btn btn btn-primary btn-small" href="dataset-1/@@staring">
+                            <i class="icon-share icon-white" title="Sharing"></i>
+                            Sharing
+                          </a>
+                        </div>
+                        <div class="bccvl-list-preview-pane" style="height:500px;" id="map-e62b4fb9bbb1435ea1ed9abf6cd0ba83"></div>
+                      </div>
+                      <a class="dropdown-button" href="javascript:void(0)"><i class="icon-chevron-down icon-white"></i></a>
                     </div>
                   </div>
                 </div>
                 <!--<div class="span8">
                   <div class="bccvl-preview-pane" id="map">
-                    
+
                   </div>
                 </div>-->
               </div>
