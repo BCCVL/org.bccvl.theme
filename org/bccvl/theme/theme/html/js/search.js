@@ -1,12 +1,12 @@
-
 //
 // main JS for the search page.
 //
-define(     ['jquery', 'bootstrap'],
+define(
+    ['jquery', 'bootstrap'],
     function( $) {
-    // ==============================================================
+        // ==============================================================
         $(function() {
-            
+
             var filterToggle = false;
 
             // Prevent the in line javascript
@@ -25,23 +25,22 @@ define(     ['jquery', 'bootstrap'],
                     filterToggle = true;
                 }
 
-            })
+            });
 
             //This is for the Select All/None checkbox
             $('#pt_toggle').click(function(event){
                 var checked = $('#pt_toggle').prop('checked');
                 $( ":checkbox" ).prop('checked', checked);
-            })
+            });
 
             // This uncheck the Select All/None if any of the checkboxes are unchecked
             $( ":checkbox" ).click(function(event){
                 if ($(this).prop('checked') == false){
                     $('#pt_toggle').prop('checked', false);
                 }
-            })
-
+            });
 
         });
-    // ==============================================================
+        // ==============================================================
     }
 );

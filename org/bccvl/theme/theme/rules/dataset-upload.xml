@@ -23,120 +23,14 @@
             </xsl:for-each>
         </replace>
 
-    <!-- Species form -->
-        <!-- Description -->
-        <replace css:theme-children="p.bccvl-occurrencedescription" content="//div[@id='portal-column-content']/div[2]/p[3]/text()" />
-
-        <!-- Form field attributes -->
-        <copy attributes="name action method enctype" css:theme="form#addspecies" css:content="form#addspecies" />
-
-        <!-- Submit button -->
-        <copy attributes="name value type" css:theme="form#addspecies button[name='addspecies.buttons.save']" css:content="#addspecies-buttons-save" />
-
-        <!-- File field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.file']" css:content="#addspecies-widgets-file-input" />
-
-        <!-- Title field-->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.title']" css:content="#addspecies-widgets-title" />
-
-        <!-- Description field-->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.description']" css:content="#addspecies-widgets-description" />
-        <replace theme-children="//textarea[@name='addspecies.widgets.description']" content="//textarea[@id='addspecies-widgets-description']/text()" />
-
-        <!-- Dataset Genre field -->
-        <replace css:theme-children="form#addspecies [name='addspecies.widgets.datagenre:list']" css:content="#addspecies-widgets-datagenre option" />
-        <copy attributes="name" css:theme="form#addspecies [name='addspecies.widgets.datagenre:list']" css:content="#addspecies-widgets-datagenre" />
-
-        <!-- Species Layer field -->
-        <replace css:theme-children="form#addspecies [name='addspecies.widgets.specieslayer:list']" css:content="#addspecies-widgets-specieslayer option" />
-        <copy attributes="name" css:theme="form#addspecies [name='addspecies.widgets.specieslayer:list']" css:content="#addspecies-widgets-specieslayer" />
-
-        <!-- Scientific name field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.scientificName']" css:content="#addspecies-widgets-scientificName" />
-        <copy attributes="data-content" css:theme="i.bccvl-scientificnameinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
-
-        <!-- Taxon ID field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.taxonID']" css:content="#addspecies-widgets-taxonID" />
-        <copy attributes="data-content" css:theme="i.bccvl-taxonidinfo" css:content="label[for='addspecies-widgets-taxonID'] span.formHelp" />
-
-        <!-- Common name field -->
-        <copy attributes="name value" css:theme="form#addspecies [name='addspecies.widgets.vernacularName']" css:content="#addspecies-widgets-vernacularName" />
-        <copy attributes="data-content" css:theme="i.bccvl-commonnameinfo" css:content="label[for='addspecies-widgets-vernacularName'] span.formHelp" />
-
-    <!-- Layers form -->
-        <!-- Description -->
-        <replace css:theme-children="p.bccvl-layersdescription" content="//div[@id='portal-column-content']/div[2]/p[6]/text()" />
-
-        <!-- Form field attributes -->
-        <copy attributes="name action method enctype" css:theme="form#addlayer" css:content="form#addlayer" />
-
-        <!-- Submit button -->
-        <copy attributes="name value type" css:theme="form#addlayer button[name='addlayer.buttons.save']" css:content="#addlayer-buttons-save" />
-
-        <!-- File field -->
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.file']" css:content="#addlayer-widgets-file-input" />
-
-        <!-- Title field-->
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.title']" css:content="#addlayer-widgets-title" />
-
-        <!-- Description field-->
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.description']" css:content="#addlayer-widgets-description" />
-        <replace theme-children="//textarea[@name='addlayer.widgets.description']" content="//textarea[@id='addlayer-widgets-description']/text()" />
-
-        <!-- Dataset Genre field -->
-        <replace css:theme-children="form#addlayer [name='addlayer.widgets.datagenre:list']" css:content="#addlayer-widgets-datagenre option" />
-        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.datagenre:list']" css:content="#addlayer-widgets-datagenre" />
-
-        <!-- Dataset Type field -->
-        <replace css:theme-children="form#addlayer [name='addlayer.widgets.datatype:list']" css:content="#addlayer-widgets-datatype option" />
-        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.datatype:list']" css:content="#addlayer-widgets-datatype" />
-
-        <!-- Resolution field -->
-        <replace css:theme-children="form#addlayer [name='addlayer.widgets.resolution:list']" css:content="#addlayer-widgets-resolution option" />
-        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.resolution:list']" css:content="#addlayer-widgets-resolution" />
-
-        <!-- Resolution (other) field-->
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.resolutiono']" css:content="#addlayer-widgets-resolutiono" />
-
-        <!-- Temporal Start -->
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-day']" css:content="#addlayer-widgets-temporal-start-day" />
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-month']" css:content="#addlayer-widgets-temporal-start-month" />
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.start-year']" css:content="#addlayer-widgets-temporal-start-year" />
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.temporal.starttext']" css:content="#addlayer-widgets-temporal-starttext" />
-
-        <!-- Temporal End -->
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-day']" css:content="#addlayer-widgets-temporal-end-day" />
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-month']" css:content="#addlayer-widgets-temporal-end-month" />
-        <copy attributes="name value maxlength size" css:theme="form#addlayer [name='addlayer.widgets.temporal.end-year']" css:content="#addlayer-widgets-temporal-end-year" />
-        <copy attributes="name value" css:theme="form#addlayer [name='addlayer.widgets.temporal.endtext']" css:content="#addlayer-widgets-temporal-endtext" />
-
-        <!-- Emission Scenario -->
-        <replace css:theme-children="form#addlayer [name='addlayer.widgets.emissionscenario:list']" css:content="#addlayer-widgets-emissionscenario option" />
-        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.emissionscenario:list']" css:content="#addlayer-widgets-emissionscenario" />
-
-        <!-- Global Climate Model -->
-        <replace css:theme-children="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm option" />
-        <copy attributes="name" css:theme="form#addlayer [name='addlayer.widgets.gcm:list']" css:content="#addlayer-widgets-gcm" />
-
-    <!-- Species Trait form -->
-        <!-- Form field attributes -->
-        <copy attributes="name action method enctype" css:theme="form#addtraits" css:content="form#addtraits" />
-
-        <!-- Submit button -->
-        <copy attributes="name value type" css:theme="form#addtraits button[name='addtraits.buttons.save']" css:content="#addtraits-buttons-save" />
-
-        <!-- File field -->
-        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.file']" css:content="#addtraits-widgets-file-input" />
-
-        <!-- Title field-->
-        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.title']" css:content="#addtraits-widgets-title" />
-
-        <!-- Description field-->
-        <copy attributes="name value" css:theme="form#addtraits [name='addtraits.widgets.description']" css:content="#addtraits-widgets-description" />
-        <replace theme-children="//textarea[@name='addtraits.widgets.description']" content="//textarea[@id='addtraits-widgets-description']/text()" />
-
-        <replace css:theme="form#addtraits [name='addtraits.widgets.datagenre:list']" css:content="#addtraits-widgets-datagenre" />
-
+        <!-- Upload forms -->
+        <replace css:theme="#speciesabsence" css:content="#speciesabsence"/>
+        <replace css:theme="#speciesabundance" css:content="#speciesabundance"/>
+        <replace css:theme="#speciesoccurrence" css:content="#speciesoccurrence"/>
+        <replace css:theme="#climatecurrent" css:content="#climatecurrent"/>
+        <replace css:theme="#environmental" css:content="#environmental"/>
+        <replace css:theme="#climatefuture" css:content="#climatefuture"/>
+        <replace css:theme="#speciestrait" css:content="#speciestrait"/>
 
     </rules>
 </rules>

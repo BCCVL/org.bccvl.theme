@@ -1,9 +1,11 @@
 //
 // main JS for the new projection experiment page.
 //
-define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch', 'js/bccvl-dimension-equation', 'js/bccvl-form-validator', 'jquery-tablesorter'],
-    function( $      ,  viz                 ,  wiztabs              ,  stretch          ,  dimensions                  ,  formvalidator) {
-    // ==============================================================
+define(
+    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch',
+     'js/bccvl-dimension-equation', 'js/bccvl-form-validator', 'jquery-tablesorter'],
+    function($, viz, wiztabs, stretch, dimensions, formvalidator) {
+        // ==============================================================
         // global list for projection validation
         var cachedProjectionDatasets = [];
         // do the work
@@ -77,13 +79,13 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                         datasetParams[yearKey] = year.attr('value');
                         datasetParams[emissionScenarioKey] = emissionScenario.attr('value');
                         datasetParams[climateModelKey] = climateModel.attr('value');
-                        console.log(climateModel.attr('value'))
+                        console.log(climateModel.attr('value'));
                         combinations.push(datasetParams);
-                    })
+                    });
 
-                })
+                });
 
-            })
+            });
 
             // make ajax call to the endpoint with each combination
             // endpoint returns a int value of the number of datasets available
@@ -99,7 +101,7 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                             numDatasets += cachedDataset['numberOfAvailableDatasets'];
                             isCached = true;
                         }
-                    })
+                    });
 
                     if (!isCached) {
                         $.ajax({
@@ -126,6 +128,6 @@ define(     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-
                 $('.projection-error-message').addClass('hidden');
             }
         }
-    // ==============================================================
+        // ==============================================================
     }
 );

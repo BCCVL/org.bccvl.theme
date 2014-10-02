@@ -1325,14 +1325,16 @@ iframe.homepage {
         margin-top:0;
     }
 }
-
 .intro-steps .step1 i {
-    color:#f9b233;
+    color:#e74c3c;
 }
 .intro-steps .step2 i {
-    color:#4dc345;
+    color:#f9b233;
 }
 .intro-steps .step3 i {
+    color:#4dc345;
+}
+.intro-steps .step4 i {
     color:#009FE3;
 }
 .notifications {

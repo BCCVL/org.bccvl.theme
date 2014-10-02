@@ -3,7 +3,10 @@
 // main JS for the new sdm experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'OpenLayers', 'js/bccvl-wizard-tabs',  'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator'],
+    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
+     'js/bccvl-visualiser-map', 'OpenLayers', 'js/bccvl-wizard-tabs',
+     'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator',
+     'js/bccvl-form-popover'],
     function($, preview_layout,  viz, vizmap, openlayers, wiztabs, dimensions, search, formvalidator ) {
 
         // ==============================================================

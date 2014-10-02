@@ -1,0 +1,35 @@
+<tal:root>
+  <input type="text" min="1900" max="3000" name="year"
+         class="input-small"  placeholder="Year" size="4" maxlength="4"
+         data-parsley-type="integer"
+         data-parsley-error-message="Please enter a valid year"
+         tal:attributes="id string:${view/id}-yeal;
+                         name string:${view/name}-year;
+                         data-class view/klass;
+                         title view/title;
+                         value view/year;
+                         disabled view/disabled;
+                         readonly view/readonly;"/> /
+  <input type="text" min="1" max="12" name="month"
+         class="input-small"  placeholder="Month" size="2" maxlength="2"
+         data-parsley-type="integer"
+         data-parsley-error-message="Please enter a valid month"
+         tal:attributes="id string:${view/id}-yeal;
+                         name string:${view/name}-month;
+                         data-class view/klass;
+                         title view/title;
+                         value view/month;
+                         disabled view/disabled;
+                         readonly view/readonly;"/> /
+  <input type="text" min="1" max="31" name="day"
+         class="input-small"  placeholder="Day" size="2" maxlength="2"
+         data-parsley-type="integer"
+         data-parsley-error-message="Please enter a valid day"
+         tal:attributes="id string:${view/id}-yeal;
+                         name string:${view/name}-day;
+                         data-class view/klass;
+                         title view/title;
+                         value view/day;
+                         disabled view/disabled;
+                         readonly view/readonly;"/>
+</tal:root>
