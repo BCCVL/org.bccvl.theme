@@ -4,7 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++org.bccvl.content.sdmexperiment/">
+    <rules if-path="++add++org.bccvl.content.sdmexperiment/
+                    newsdm/">
         <theme href="html/new-experiment-sdm.html" />
 
         <!-- hook in the new experiment form's attributes -->
@@ -36,7 +37,7 @@
                             </xsl:if>
                             <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
                             <xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
-                            <xsl:attribute name="data-friendlyname">checkbox_algorithm_<xsl:copy-of select="string(../label/span/text())" /></xsl:attribute>
+                            <xsl:attribute name="data-friendlyname">checkbox_algorithm_<xsl:value-of select="normalize-space(../text()[last()])" /></xsl:attribute>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-label">
@@ -44,7 +45,7 @@
                             <xsl:attribute name="for">
                                 <xsl:value-of select="@id" />
                             </xsl:attribute>
-                            <h1><xsl:copy-of select="string(../label/span/text())" /></h1>
+                            <h1><xsl:value-of select="normalize-space(../text()[last()])" /></h1>
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-controls">
@@ -55,7 +56,8 @@
                                      and add the @value which is the algo's plone name. The
                                      knowledgebase can use the algo name as a tag on docs
                                      that are relevant to this algo. -->
-                                <xsl:value-of select="//form[@id='searchGadget_form']/@action" />?Subject%3Alist=<xsl:value-of select="@value" />
+                                <xsl:value-of select="//form[@id='siteSearch']/@action" />?Subject%3Alist=<xsl:value-of select="@value" />
+                                <!-- <xsl:value-of select="//form[@id='searchGadget_form']/@action" />?Subject%3Alist=<xsl:value-of select="@value" /> -->
                             </xsl:attribute>
                             <i class="icon-info-sign" title="more information"></i>
                         </xsl:element>
