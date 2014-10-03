@@ -82,6 +82,12 @@
         template="submit_input.pt"
         />
 
+    <z3c:widgetTemplate
+        mode="input"
+        widget="z3c.form.interfaces.ICheckBoxWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="checkbox_input.pt"
+        />
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
     self

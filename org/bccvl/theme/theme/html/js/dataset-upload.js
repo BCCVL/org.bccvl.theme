@@ -54,7 +54,7 @@ define(
             // assume parsleyconfig already loaded by bccvl-form-validator.js
             //$('form#addspecies').parsley();
 
-            $("input[id$='-widgets-legalcheckbox']").change(function() {
+            $("input[id$='-widgets-legalcheckbox-0']").change(function() {
                 var idprefix = this.id.split('-')[0];
                 var btnid = idprefix + '-buttons-save';
                 if ($(this).is(":checked")) {
