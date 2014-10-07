@@ -155,7 +155,7 @@
                   <p tal:condition="md/resolution"><small><b>Resolution: <tal:r tal:replace="md/resolution"></tal:r></b></small></p>
                   <!-- <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p> -->
                   <p><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
-                  <p><small><b>Source:</b> ALA import</small></p>
+                  <!-- <p><small><b>Source:</b> ALA import</small></p> -->
                   <p><small><b>Date:</b> <tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
                 </div>
                 <div class="dataset-list-dropdown">
