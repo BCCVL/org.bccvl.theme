@@ -83,8 +83,10 @@
         <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-occurrencestable"
                  css:content-children="#form-widgets-species_occurrence_dataset" />
 
-        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_pseudo_absence_points']"/>
-        <after css:theme-children=".random-absences-settings" content-children="//*[@id='formfield-form-widgets-species_number_pseudo_absence_points']"/>
+        <replace css:theme-children=".random-absences-settings"
+               css:content="#formfield-form-widgets-species_pseudo_absence_points"/>
+        <after css:theme-children=".random-absences-settings"
+               css:content="#formfield-form-widgets-species_number_pseudo_absence_points"/>
         <!-- hook in the absences list -->
         <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-absencestable"
                  css:content-children="#form-widgets-species_absence_dataset" />
