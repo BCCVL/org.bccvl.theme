@@ -7,14 +7,9 @@
                error_class python:error and ' error' or '';"
    tal:attributes="data-fieldname widget/name;
                    id string:formfield-${widget/id};">
+
   <div class="controls">
     <input type="text" tal:replace="structure widget/render"
            metal:define-slot="widget" />
-    <i class="icon-info-sign pull-left" data-title="label"
-       data-content="field description"
-       data-toggle="popover"
-       tal:condition="python: not hidden and widget.field.description"
-       tal:attributes="data-title widget/label;
-                       data-content widget/field/description"></i>
   </div>
 </div>
