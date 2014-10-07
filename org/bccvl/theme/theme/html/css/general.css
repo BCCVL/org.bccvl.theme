@@ -1466,3 +1466,6 @@ body.home>.white-bg {
     display: inline-block;
     margin-right: 1em;
 }
+.bccvl-datasetlist-filter .hidden-options {
+    display:none;
+}
