@@ -1471,3 +1471,6 @@ body.home>.white-bg {
     color:#555;
     margin-top:0;
 }
+.bccvl-datasetlist-filter .hidden-options {
+    display:none;
+}

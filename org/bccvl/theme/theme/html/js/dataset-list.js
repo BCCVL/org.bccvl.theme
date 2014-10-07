@@ -21,6 +21,20 @@ define(
                 sortList: [[0,1]]
             });
 
+            // duplicate top bar filters as hidden fields in the filters form
+            // wont set after being created, something wrong with the dom, has to be hand-duped for now
+            /*$('.datasets-list-sorting select, .datasets-list-sorting input').each(function(){
+                $(this).clone().appendTo('#datasets-filter-form .hidden-options');
+            });*/
+
+            $('.datasets-list-sorting select').change(function(){
+                var selection = $(this).val();
+                $('#datasets-filter-form .hidden-options select.'+$(this).data('field-class')+' option').filter(function(){
+                    return ($(this).val() == selection);
+                }).prop('selected', true);
+                $('#datasets-filter-form').submit();
+            });
+
             // Identify datasets that are currently importing.
             // These are the spinner icons.
             $.each($('i.dataset-import'), function(i, spinner) {
