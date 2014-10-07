@@ -20,12 +20,12 @@
             <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
             <table id="bccvl-experimentresults-table" class="table table-hover">
               <thead>
-                <tr><th colspan="5">Experiment Results</th></tr>
+                <tr><th colspan="2">Experiment Results</th></tr>
               </thead>
               <tbody>
                 <tal:block tal:repeat="result context/@@folderListing">
-                  <tr class="info">
-                    <td colspan="3">
+                  <tr class="info" >
+                    <td colspan="2">
                       <tal:replace tal:replace="result/Title">Result
                       Title</tal:replace>
                       <!-- FIXME: get a better condition or use
@@ -48,7 +48,7 @@
                   </tr>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
                      <tr>
-                       <td colspan="2" class="bccvl-table-label"
+                       <td class="bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
                          <p tal:content="item/Title">Item Title</p>
