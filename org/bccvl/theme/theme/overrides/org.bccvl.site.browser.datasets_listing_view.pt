@@ -223,7 +223,7 @@
                     </div>
                   </div>
                   <a class="dropdown-button" href="javascript:void(0)">
-                    <i class="icon-chevron-down icon-white"></i>
+                    Details <i class="icon-chevron-down icon-white"></i>
                     <!-- TODO: helper method or customisable dict? or agree on classes? -->
                     <tal:block
                         tal:define="state item/job_state;
