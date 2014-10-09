@@ -1303,7 +1303,7 @@ iframe.homepage {
     font-family: "OpenSansRegular";
     font-size:1.4em;
     line-height: 1.3em;
-    
+
 }
 
 .intro-steps .step i {
@@ -1451,7 +1451,7 @@ body.home>.white-bg {
 }
 .dataset-list-dropdown {
     margin: 0 -1em -1em -1em;
-    padding: 0em 1em; 
+    padding: 0em 1em;
 }
 .preview-dropdown  .datasets-controls {
     margin: .5em 0 1em;
@@ -1464,8 +1464,6 @@ body.home>.white-bg {
 }
 .bccvl-table-label p {
     display: inline-block;
+    word-break:break-word;
     margin-right: 1em;
-}
-.bccvl-datasetlist-filter .hidden-options {
-    display:none;
 }
