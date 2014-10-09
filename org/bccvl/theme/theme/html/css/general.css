@@ -335,7 +335,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     transition-delay: 1s;
     display: block;
     margin-left: 0!important;
-    margin-top: 0em;
+    margin-top: 0.5em;
     margin-bottom:.35em;
     height:30px;
     font-family: 'OpenSansRegular';
@@ -1466,4 +1466,8 @@ body.home>.white-bg {
     display: inline-block;
     word-break:break-word;
     margin-right: 1em;
+}
+.bccvl-experimentdetails h3 {
+    color:#555;
+    margin-top:0;
 }
