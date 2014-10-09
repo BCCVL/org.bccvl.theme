@@ -36,12 +36,17 @@
 
       <div id="datasets-filter" class="bccvl-datasetlist-filter span4">
         <form action="" method="get" id="datasets-filter-form">
-          <div class="hidden-options">
+          <div class="hidden-options"
+               tal:define="selectedvalue python:request.get('datasets.filter.sort', 'modified')">
             <select id="datasets-filter-sort" name="datasets.filter.sort" data-field-class="datasets-sort" class="datasets-sort">
-              <option selected value="">Sort By ...</option>
-              <option value="date">Date Modified</option>
-              <option value="created">Date Created</option>
-              <option value="sortable_title">Title</option>
+              <option value=""
+                      tal:attributes="selected python:selectedvalue is None">Sort By ...</option>
+              <option value="modified"
+                      tal:attributes="selected python:selectedvalue == 'modified'">Date Modified</option>
+              <option value="created"
+                      tal:attributes="selected python:selectedvalue == 'created'">Date Created</option>
+              <option value="title"
+                      tal:attributes="selected python:selectedvalue == 'title'">Title</option>
             </select>
           </div>
 
@@ -126,12 +131,17 @@
                        isAnon context/@@plone_portal_state/anonymous;
                        show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
 
-        <div class="datasets-list-sorting">
+        <div class="datasets-list-sorting"
+             tal:define="selectedvalue python:request.get('datasets.filter.sort', 'modified')">
           <select name="datasets.filter.sort" data-field-class="datasets-sort" class="sort-dropdown">
-            <option selected value="">Sort By ...</option>
-            <option value="date">Date Modified</option>
-            <option value="created">Date Created</option>
-            <option value="sortable_title">Title</option>
+            <option value=""
+                    tal:attributes="selected python:selectedvalue is None">Sort By ...</option>
+            <option value="modified"
+                    tal:attributes="selected python:selectedvalue == 'modified'">Date Modified</option>
+            <option value="created"
+                    tal:attributes="selected python:selectedvalue == 'created'">Date Created</option>
+            <option value="title"
+                    tal:attributes="selected python:selectedvalue == 'title'">Title</option>
           </select>
         </div>
 
