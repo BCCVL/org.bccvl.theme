@@ -1474,3 +1474,14 @@ body.home>.white-bg {
 .bccvl-datasetlist-filter .hidden-options {
     display:none;
 }
+.datasets-list-sorting {
+    font-size: 0.9em;
+    vertical-align: baseline;
+    font-weight: bold;
+}
+.sort-dropdown {
+    font-size:1em;
+    line-height: 1em;
+    height:2em;
+    margin-bottom:0;
+}
