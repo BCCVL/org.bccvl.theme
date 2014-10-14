@@ -32,15 +32,13 @@
              tal:attributes="href string:${context/absolute_url}/datasets_upload_view"><span>Upload Dataset</span></a>
         </li>
       </ul>
-
-
       <div id="datasets-filter" class="bccvl-datasetlist-filter span4">
-        <form action="" method="get" id="datasets-filter-form">
+        <form action="" method="get" id="datasets-filter-form"> 
           <div class="hidden-options"
                tal:define="selectedvalue python:request.get('datasets.filter.sort', 'modified')">
             <select id="datasets-filter-sort" name="datasets.filter.sort" data-field-class="datasets-sort" class="datasets-sort">
               <option value=""
-                      tal:attributes="selected python:selectedvalue is None">Sort By ...</option>
+                      tal:attributes="selected python:selectedvalue is None">Please Select ...</option>
               <option value="modified"
                       tal:attributes="selected python:selectedvalue == 'modified'">Date Modified</option>
               <option value="created"
@@ -133,9 +131,10 @@
 
         <div class="datasets-list-sorting"
              tal:define="selectedvalue python:request.get('datasets.filter.sort', 'modified')">
+          Sort By:
           <select name="datasets.filter.sort" data-field-class="datasets-sort" class="sort-dropdown">
             <option value=""
-                    tal:attributes="selected python:selectedvalue is None">Sort By ...</option>
+                    tal:attributes="selected python:selectedvalue is None">Please Select ...</option>
             <option value="modified"
                     tal:attributes="selected python:selectedvalue == 'modified'">Date Modified</option>
             <option value="created"
