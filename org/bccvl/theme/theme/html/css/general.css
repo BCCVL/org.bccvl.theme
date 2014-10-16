@@ -1478,6 +1478,12 @@ body.home>.white-bg {
     font-size: 0.9em;
     vertical-align: baseline;
     font-weight: bold;
+    display:inline-block;
+    margin-bottom:1em;
+}
+.pagination-centered {
+    float: right;
+    margin: 0 0 1em 0;
 }
 .sort-dropdown {
     font-size:1em;
