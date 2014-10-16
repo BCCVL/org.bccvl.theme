@@ -1478,10 +1478,46 @@ body.home>.white-bg {
     font-size: 0.9em;
     vertical-align: baseline;
     font-weight: bold;
+    display:inline-block;
+    margin-bottom:1em;
+}
+.pagination-centered {
+    float: right;
+    margin: 0 0 1em 0;
 }
 .sort-dropdown {
     font-size:1em;
     line-height: 1em;
     height:2em;
     margin-bottom:0;
+}
+.filter ul li {
+    display: inline-block;
+    width: 49%;
+}
+.bccvl-wizardtabs .nav-tabs li a.error {
+    color:red;
+    font-weight: bold;
+}
+.bccvl-wizardtabs .nav-tabs li a.completed {
+    color:green;
+    font-weight: normal;
+}
+
+input.error:focus, textarea.error:focus, select.error:focus {
+    border-color: #e9322d;
+    -webkit-box-shadow: 0 0 6px #f8b9b7;
+    -moz-box-shadow: 0 0 6px #f8b9b7;
+    box-shadow: 0 0 6px #f8b9b7;
+}
+input.error, textarea.error, select.error {
+    color: #b94a48;
+    border-color: #ee5f5b;
+}
+input[type="radio"].error {
+    outline: 1px solid #ee5f5b;
+}
+label.error {
+    color: #b94a48;
+    margin-top:0;
 }
