@@ -327,7 +327,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     line-height: 1.1;
     padding: 0 0 .3em 0;
     font-size: 125%;
-    color: #3baa35;
+    color: #009FE3;
     -moz-transition: opacity 3s;
     -webkit-transition: opacity 3s;
     -o-transition: opacity 3s;
@@ -1495,13 +1495,17 @@ body.home>.white-bg {
     display: inline-block;
     width: 49%;
 }
-.bccvl-wizardtabs .nav-tabs li a.error {
-    color:red;
-    font-weight: bold;
-}
 .bccvl-wizardtabs .nav-tabs li a.completed {
-    color:green;
-    font-weight: normal;
+    color:#3baa35;
+}
+.bccvl-wizardtabs .nav-tabs li a.error {
+    color:#b94a48;
+}
+.bccvl-flashmessages p {
+    margin: .5em 0;
+}
+.bccvl-flashmessages p strong {
+    font-size: 1em;
 }
 
 input.error:focus, textarea.error:focus, select.error:focus {

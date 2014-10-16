@@ -53,7 +53,7 @@ define(
                         // deselected - so we put the default value back into the text field when deselected.
                         $.each($accordionGroup.find('input[type="number"], input[type="text"]'), function(i2, c) {
                             $(c).val($(c).attr('data-default'));
-                            $(c).parsley().validate();
+                            //$(c).parsley().validate();
                         });
 
                         // Finally - hide
