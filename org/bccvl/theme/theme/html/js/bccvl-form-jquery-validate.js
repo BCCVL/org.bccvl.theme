@@ -14,8 +14,25 @@ define(
         // *DONE* - Add error/complete class to tab headers on submit
         // *DONE* - Add notification of how many errors to panel above form
         // Mirror parsley rules with validate rules
-        // Start removing parsley from templates
+        // Start removing parsley from
         // Clean up code, add notes
+
+
+        // use required class as well as attr
+        $('[required]').addClass('required');
+        // fallback to shift any remaining parsley error messages
+        $('[data-parsley-error-message]').each(function(){
+            $(this).data('error-message', $(this).data('parsleyErrorMessage'));
+        });
+        // steal any floating parsley data types to use them as class rules
+        $('[data-parsley-type]').each(function(){
+            $(this).addClass(''+$(this).data('parsleyDataType')+'');
+        });
+        // add common class rules
+        jQuery.validator.addClassRules(
+            'number', {
+                number: true
+        });
 
         // nominate form, init validate
         var form = $('.bccvl-jqueryvalidate');
@@ -46,7 +63,7 @@ define(
                     var errorFields = validator.currentElements;
                     // add notification panel
                     $('.bccvl-flashmessages').append('<div id="form-errors-panels" class="alert alert-error" style="display:none;"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Form Errors</h4></div>');
-                    console.log(errorFields);
+
                     // add error or complete classes to headers
                     $.each(errorFields, function(i){
                         // find error's tabs, used for rest of function
@@ -87,16 +104,9 @@ define(
                             });
                         },5000);
                     });
-
+                    //alert('There are errors or incomplete fields in the form that need to be addressed before the experiment can begin.');
                 }
             }
-        });
-
-        // use required class as well as attr
-        $('[required]').addClass('required');
-        // fallback to shift any remaining parsley error messages
-        $('[data-parsley-error-message]').each(function(){
-            $(this).data('error-message', $(this).data('parsleyErrorMessage'));
         });
 
         $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event){

@@ -3,7 +3,7 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch',
-     'js/bccvl-dimension-equation', 'js/bccvl-form-validator', 'jquery-tablesorter'],
+     'js/bccvl-dimension-equation', 'js/bccvl-form-jquery-validate'],
     function($, viz, wiztabs, stretch, dimensions, formvalidator) {
         // ==============================================================
         // global list for projection validation
@@ -21,15 +21,6 @@ define(
 
             // hook up the wizard buttons
             wiztabs.init();
-
-            // init the table sorter
-            $('.bccvl-datasetstable').tablesorter({
-                headers: {
-                    0: { sorter: false }, // radio box
-                    2: { sorter: 'text' }
-                },
-                sortList: [[1,1]]
-            });
 
             // validate onload since some fields may already be filled in
             validateProjection();

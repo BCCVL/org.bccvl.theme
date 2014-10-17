@@ -80,33 +80,8 @@ define(
             // setup custom global validators. This method can be used as soon as parsley.js has been loaded
             window.ParsleyValidator.validators.type = customTypeValidator;
             // right, so now kick off parsley form validation on the forms..
-            
-            // apply parsley's shitty group attributes because it's incapable of validating fields that are fed to it after init.
-            // NEEERRRRPPPPP that doesn't work.
-            /*$('body').find('fieldset.tab').each(function(i){
-                $(this).data('parsley-group', 'block'+i+'');
-                $(this).find('input, textarea, select').each(function(){
-                    $(this).data('parsley-group', 'block'+i+'');
-                });
-            });*/
 
             $('form.bccvl-parsleyvalidate').parsley();
-
-            // partial validation for tabbed forms
-            console.log($('fieldset.tab:visible').data() );
-            $('body').on('click', '.bccvl-wizardtabs-next', function(event){
-
-                event.preventDefault();
-                
-                var block = 'block1'
-                if ( $('form.bccvl-parsleyvalidate').parsley().isValid( block ) == true ) {
-                    $('body').find('.bccvl-wizardtabs a.'+block+'').removeClass('error').addClass('completed');
-                    return true;
-                } else {
-                    $('form.bccvl-parsleyvalidate').parsley().validate( block );
-                    $('body').find('.bccvl-wizardtabs a.'+block+'').removeClass('completed').addClass('error');
-                }
-            });
 
             $.listen('parsley:form:validated', function(parsleyForm) {
                 // validate the Projections selected

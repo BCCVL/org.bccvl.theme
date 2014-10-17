@@ -29,7 +29,6 @@ define(     ['jquery', 'bootstrap'],
             $.each(wizards, function(wizardIndex, wizard) {
                 $(wizard).parent().find('.tab-content').add(wizard).css('opacity', '0.01');
             });
-
             //
             // now actually do the work for each wizard tab set..
             //
@@ -93,7 +92,7 @@ define(     ['jquery', 'bootstrap'],
                     if (!$default) {
                         $default = $('.nav.nav-tabs .active a').first();
                     }
-                    var $urlTab = $('a[href=' + location.hash + ']');
+                    var $urlTab = $('a[href="' + location.hash + '"]');
                     if ($urlTab.length > 0) {
                         $urlTab.tab('show');
                         $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
@@ -124,7 +123,8 @@ define(     ['jquery', 'bootstrap'],
                     rememberTab(this);
                 });
             });
-
+            
+    
             //
             // finally, fade the tab contents in.
             //
