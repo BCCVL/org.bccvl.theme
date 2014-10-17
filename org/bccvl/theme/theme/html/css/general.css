@@ -1491,3 +1491,30 @@ body.home>.white-bg {
     height:2em;
     margin-bottom:0;
 }
+.bccvl-dashboardlists .btn {
+    padding-left:1em;
+    padding-right:1em;
+}
+.dash-panel{
+    border-radius: 5px;
+    padding: 1.5em;
+    margin: 2em 0;
+    background: #ecf0f1;
+}
+.dash-panel h2, .dash-panel h5, .dash-panel p {
+    margin:0;
+    color:black;
+    line-height: 1em;
+}
+.home-stat {
+    font-size:7em;
+    line-height: 1em;
+}
+.dashlist {
+    margin-top:1em;
+}
+.dashlist h4 {
+    margin-bottom:.25em;
+}
+
+

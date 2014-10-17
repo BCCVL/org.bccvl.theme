@@ -6,5 +6,6 @@
     <!-- DASHBOARD ============================================= -->
     <rules if-path="dashboard/">
         <theme href="html/dashboard.html" />
+        <!--<replace css:theme-children="#experiment-list" css:content-children="#experiment-list" />-->
     </rules>
 </rules>
