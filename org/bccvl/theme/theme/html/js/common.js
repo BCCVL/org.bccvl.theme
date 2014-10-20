@@ -11,6 +11,7 @@ requirejs.config({
     paths: {
         'js':                   (local ? '../js' : '++resource++bccvl/js'),  // bccvl stuff, which starts with js/, is in the js folder
         'jquery':               'jquery/jquery-2.0.3',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
+        'jquery-ui':            'jquery-ui/jquery-ui.min',
         'jquery-xmlrpc':        'jquery-xmlrpc/jquery.xmlrpc.min',
         'bootstrap':            'bootstrap/js/bootstrap.min',
         'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',

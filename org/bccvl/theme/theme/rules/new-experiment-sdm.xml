@@ -4,8 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="++add++org.bccvl.content.sdmexperiment/
-                    newsdm/">
+    <rules if-path="newSpeciesDistribution/">"
         <theme href="html/new-experiment-sdm.html" />
 
         <!-- hook in the new experiment form's attributes -->
@@ -22,7 +21,7 @@
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
         <!-- hook in the algorithm list -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
             <xsl:for-each select="//input[@name='form.widgets.functions:list']">
                 <tr>
                     <td class="bccvl-table-choose">
@@ -64,7 +63,7 @@
                     </td>
                 </tr>
             </xsl:for-each>
-        </before>
+        </replace>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
@@ -80,23 +79,24 @@
             not the option's name.
 
         -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-occurrencestable"
-                 css:content-children="#form-widgets-species_occurrence_dataset" />
+        <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
+                 css:content="#formfield-form-widgets-species_occurrence_dataset" />
 
         <replace css:theme-children=".random-absences-settings"
                css:content="#formfield-form-widgets-species_pseudo_absence_points"/>
         <after css:theme-children=".random-absences-settings"
                css:content="#formfield-form-widgets-species_number_pseudo_absence_points"/>
         <!-- hook in the absences list -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-absencestable"
-                 css:content-children="#form-widgets-species_absence_dataset" />
+        <replace css:theme="#formfield-form-widgets-species_absence_dataset"
+                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
 
 
         <!-- The spatial scale -->
         <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-spatialscaletable tbody tr td" css:content="#form-widgets-resolution" />
 
         <!-- The rest of this is filled in with AJAX -->
-        <replace css:theme="section.bccvl-experimentdetails table.bccvl-environmentaldatatable" content="//table[@id='form-widgets-environmental_datasets']" />
+        <replace css:theme="#formfield-form-widgets-environmental_datasets"
+                 css:content="#formfield-form-widgets-environmental_datasets"/>"
 
     </rules>
 

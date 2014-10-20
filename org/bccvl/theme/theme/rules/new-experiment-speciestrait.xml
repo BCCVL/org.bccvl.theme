@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW SPECIES TRAIT MODEL EXPERIMENT ================================== -->
-    <rules if-path="++add++org.bccvl.content.speciestraitsexperiment/">
+    <rules if-path="newSpeciesTraits/">
         <theme href="html/new-experiment-speciestrait.html" />
 
         <!-- hook in the new experiment form's attributes -->

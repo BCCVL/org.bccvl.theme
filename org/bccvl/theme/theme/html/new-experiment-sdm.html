@@ -12,14 +12,25 @@
     <!--[if lt IE 9]>
         <script src="lib/html5shiv/html5shiv.js"></script>
     <![endif]-->
+    <style>
+
+      .modal.large {
+          width: 80%; /* responsive width */
+          margin-left: -40%; /* width/2 */
+          left: 50%;
+          overflow-y: initial ;
+      }
+
+      .modal-body {
+          max-height: 500px;
+      }
+
+      #datasets-popup-result .ui-selecting { background: #FECA40; }
+      #datasets-popup-result .ui-selected { background: #F39814; color: white; }
+    </style>
+
 
     <!-- include portal_url to simplify path referencing -->
-    <script src="../plone_javascript_variables.js" type="text/javascript"></script>
-    <!-- this script writes to doc asynchonously, cannot be included via requirejs -->
-    <script src="//maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
-    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-    <script src="lib/require/require.js" type="text/javascript"></script>
-
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
       window.bccvl || (window.bccvl = {});
@@ -32,21 +43,22 @@
       };
 
       local = window.location.protocol == 'file:';
-
+      portal_url = document.URL.split('/').slice(0, -1).join('/');
     </script>
 
-    <script id="bccvl-lookups" type="text/javascript"></script>
+    <script src="../plone_javascript_variables.js" type="text/javascript"></script>
 
+    <!-- this script writes to doc asynchonously, cannot be included via requirejs -->
+    <script src="//maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+
+    <!-- load requirejs -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
+    <!-- configue requirejs ... if insite plone: data-main= portal_url + '/++resource++bccvl/js/common.js -->
+    <script src="js/common.js" type="text/javascript"></script>
+
+    <!-- load main js -->
     <script type="text/javascript">
-      // require is a bit annoying to kick off when it's running in a plone/diazo page.
-      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-      // set that as a prefix in the requirejs config, but to initially get to that
-      // config file, it needs to have the prefix added there too.
-      if (local) {
-          require(['js/common.js'], function (common) { require(['js/new-experiment-sdm']); } );
-      } else {
-          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/new-experiment-sdm']); } );
-      }
+      require(['js/new-experiment-sdm']);
     </script>
 
     <script id="google-analytics"></script>
@@ -55,6 +67,7 @@
 
   <body>
     <div class="white-bg">
+
       <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
 
@@ -128,6 +141,41 @@
         <!-- experiment setup form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
         <section class="bccvl-experimentdetails tabbable">
+    <div id="species_occurrence_dataset-modal" class="modal large hide fade" tabindex="-1" role="dialog">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Select a species occurrence dataset</h3>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- Modal Dialog absences -->
+    <div id="species_absence_dataset-modal" class="modal large hide fade" tabindex="-1" role="dialog">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Select a species absence dataset</h3>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- Modal Dialog layers -->
+    <div id="environmental_datasets-modal" class="modal large hide fade" tabindex="-1" role="dialog">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Select a climate and environmental data</h3>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Add layers</button>
+      </div>
+    </div>
           <form class="bccvl-parsleyvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
             <h3>New Species Distribution Model Experiment.</h3>
@@ -208,16 +256,121 @@
                         </th></tr>
                       </thead>
                       <tbody>
+                        <tr>
+                          <td class="bccvl-table-choose">
+                            <input type="checkbox" data-friendlyname="checkbox_algorithm_Artificial Neural Network" value="algo1uuid" id="form-widgets-functions-0" name="form.widgets.functions:list" class="required" data-parsley-error-message="Please select at least 1 algorithm." data-parsley-mincheck="1" data-parsley-multiple="formwidgetsfunctionslist"/>
+                          </td>
+                          <td class="bccvl-table-label">
+                            <label for="form-widgets-functions-0"><h1>Artificial Neural Network</h1></label>
+                          </td>
+                          <td class="bccvl-table-controls">
+                            <a href="/@@search?Subject%3algo1title" target="_blank"><i title="more information" class="icon-info-sign"></i></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="bccvl-table-choose">
+                            <input type="checkbox" data-friendlyname="checkbox_algorithm_Bioclim" value="algo2uuid" id="form-widgets-functions-1" name="form.widgets.functions:list" class="required" data-parsley-error-message="Please select at least 1 algorithm." data-parsley-mincheck="1" data-parsley-multiple="formwidgetsfunctionslist"/>
+                          </td>
+                          <td class="bccvl-table-label">
+                            <label for="form-widgets-functions-1"><h1>Bioclim</h1></label>
+                          </td>
+                          <td class="bccvl-table-controls">
+                            <a href="/@@search?Subject%3Alist=algo2title" target="_blank"><i title="more information" class="icon-info-sign"></i></a>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
 
                   </div></div>
 
                   <div class="bccvl-algoconfig span8" id="algoConfig">
+                    <div data-function="algo1uuid" class="accordion-group" style="display: none;">
+                      <div class="accordion-heading">
+                        <a href="#accordion_body_algo1uuid" data-parent="#algoConfig" data-toggle="collapse" class="accordion-toggle collapsed">configuration for Artificial Neural Network</a>
+                      </div>
+                      <div id="accordion_body_algo1uuid" class="accordion-body collapse">
+                        <div class="accordion-inner bccvl-algo-config">
+                          <span class="formHelp"></span>
+                          <fieldset class="form-horizontal"><div class="algo-params">
+                            <div id="formfield-form-widgets-algo1uuid-nb_run_eval" data-fieldname="form.widgets.algo1uuid.nb_run_eval" class="control-group">
+                              <div class="controls">
+                                <input type="hidden" class="hidden-widget" value="10" name="form.widgets.algo1uuid.nb_run_eval" id="form-widgets-algo1uuid-nb_run_eval"/>
+                              </div>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-data_split" data-fieldname="form.widgets.algo1uuid.data_split" class="control-group">
+                              <div class="controls">
+                                <input type="hidden" class="hidden-widget" value="100" name="form.widgets.algo1uuid.data_split" id="form-widgets-algo1uuid-data_split"/>
+                              </div>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-prevalence" data-fieldname="form.widgets.algo1uuid.prevalence" class="control-group">
+                              <label class="control-label" for="form-widgets-algo1uuid-prevalence">weighted response weights</label>
+                              <div class="controls">
+                                <input type="text" max="1" min="0" data-default="" data-parsley-type="number" value="" class="text-widget decimal-field" name="form.widgets.algo1uuid.prevalence" id="form-widgets-algo1uuid-prevalence"/>
+                              </div>
+                              <span class="help-inline bccvl-formerror"></span>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-var_import" data-fieldname="form.widgets.algo1uuid.var_import" class="control-group success">
+                              <label class="control-label" for="form-widgets-algo1uuid-var_import">resampling</label>
+                              <i data-toggle="popover" data-content="number of resampling of each explanatory variable to measure the relative importance of each variable for each selected model" data-title="resampling" class="icon-info-sign pull-left" data-original-title="" title=""></i>
+                              <div class="controls">
+                                <input type="number" min="0" data-default="0" value="0" class="text-widget required int-field" name="form.widgets.algo1uuid.var_import" id="form-widgets-algo1uuid-var_import"/>
+                              </div>
+                              <span class="help-inline bccvl-formerror"></span>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-do_full_models" data-fieldname="form.widgets.algo1uuid.do_full_models" class="control-group">
+                              <div class="controls">
+                                <input type="hidden" class="hidden-widget" value="true" name="form.widgets.algo1uuid.do_full_models" id="form-widgets-algo1uuid-do_full_models-0"/>
+                              </div>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-nbcv" data-fieldname="form.widgets.algo1uuid.nbcv" class="control-group success">
+                              <label class="control-label" for="form-widgets-algo1uuid-nbcv">NbCV</label>
+                              <i data-toggle="popover" data-content="nb of cross validation to find best size and decay parameters" data-title="NbCV" class="icon-info-sign pull-left" data-original-title="" title=""></i>
+                              <div class="controls">
+                                <input type="number" min="1" data-default="5" value="5" class="text-widget int-field" name="form.widgets.algo1uuid.nbcv" id="form-widgets-algo1uuid-nbcv"/>
+                              </div>
+                              <span class="help-inline bccvl-formerror"></span>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-rang" data-fieldname="form.widgets.algo1uuid.rang" class="control-group success">
+                              <label class="control-label" for="form-widgets-algo1uuid-rang">rang</label>
+                              <i data-toggle="popover" data-content="Initial random weights" data-title="rang" class="icon-info-sign pull-left" data-original-title="" title=""></i>
+                              <div class="controls">
+                                <input type="text" min="0" data-default="0.1" data-parsley-type="number" value="0.1" class="text-widget decimal-field" name="form.widgets.algo1uuid.rang" id="form-widgets-algo1uuid-rang"/>
+                              </div>
+                              <span class="help-inline bccvl-formerror" id="parsley-id-6641"></span>
+                            </div>
+                            <div id="formfield-form-widgets-algo1uuid-maxit" data-fieldname="form.widgets.algo1uuid.maxit" class="control-group success">
+                              <label class="control-label" for="form-widgets-algo1uuid-maxit">maxit</label>
+                              <i data-toggle="popover" data-content="Maximum number of iterations" data-title="maxit" class="icon-info-sign pull-left" data-original-title="" title=""></i>
+                              <div class="controls">
+                                <input type="number" min="0" data-default="100" value="100" class="text-widget int-field" name="form.widgets.algo1uuid.maxit" id="form-widgets-algo1uuid-maxit"/>
+                              </div>
+                              <span class="help-inline bccvl-formerror"></span>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div data-function="algo2uuid" class="accordion-group" style="display: none;">
+                    <div class="accordion-heading">
+                      <a href="#accordion_body_algo2uuid" data-parent="#algoConfig" data-toggle="collapse" class="accordion-toggle collapsed">configuration for Bioclim</a>
+                    </div>
+
+                    <div id="accordion_body_algo2uuid" class="accordion-body collapse">
+                      <div class="accordion-inner bccvl-algo-config">
+                        <span class="formHelp">No configuration options</span>
+                        <fieldset class="form-horizontal">
+                          <div class="algo-params">
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
               </div>
+            </div>
 
               <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-occur">
@@ -233,15 +386,36 @@
                   <div class="span4"><div class="control-group">
                     <table class="table table-hover bccvl-occurrencestable">
                       <thead>
-                        <tr><th colspan="3">
-                          Species Occurrence Datasets
-                        </th></tr>
                         <tr><td colspan="3">
                           Import or upload new occurrence datasets
                           on the <a class="bccvllinks-datasets">dataset</a> page.
-                          (For now you will need to re-start your experiment setup
-                          before being able to use new occurrence data.)
                         </td></tr>
+                        <tr>
+                          <td>
+                          <div id="formfield-form-widgets-species_occurrence_dataset" data-fieldname="form.widgets.species_occurrence_dataset" class="control-group">
+                            <label class="control-label" for="form-widgets-species_occurrence_dataset">Species Occurrence Datasets</label>
+                            <div class="controls">
+                              <script type="text/javascript">//&lt;![CDATA[
+                              require(['jquery', 'js/bccvl-widgets'],function($, bccvl){
+            $(document).ready(function(){
+                bccvl.select_dataset($("a#species_occurrence_dataset-popup"), {
+                    field: 'species_occurrence_dataset',
+                    genre: ['DataGenreSpeciesOccurrence'],
+                    widgetname: 'form.widgets.species_occurrence_dataset',
+                    widgetid: 'form-widgets-species_occurrence_dataset',
+                    widgeturl: location.origin + location.pathname + '/++widget++species_occurrence_dataset',
+                    });
+                    });
+            });//]]&gt;
+                              </script>
+                              <a href="#" id="species_occurrence_dataset-popup">Select Species Occurrence Datasets</a>
+                              <div id="form-widgets-species_occurrence_dataset-selected">
+
+                              </div>
+                            </div>
+                          </div>
+                          </td>
+                        </tr>
                         <!--
                             <tr><td class="bccvl-searchform" colspan="3">
                             <div id="searchOccurrence" class="bccvl-search-form form-inline">
@@ -305,12 +479,12 @@
                         <div id="collapseTwo" class="accordion-body collapse in">
                           <div class="accordion-inner">
                             <table class="table table-hover bccvl-absencestable">
-                              <thead>
-                                <tr><th colspan="3">
-                                  Species Absence Datasets
-                                </th></tr>
-                              </thead>
-                              <tbody></tbody>
+                              <tbody>
+                                <tr><td>
+                                  <div id="formfield-form-widgets-species_absence_dataset">
+                                  </div>
+                                </td></tr>
+                              </tbody>
                             </table>
 
                           </div>
@@ -361,14 +535,11 @@
 
                     <div class="control-group">
                       <table class="table table-hover bccvl-environmentaldatatable">
-                        <thead>
-                          <tr>
-                            <th colspan="3">Environmental Datasets</th>
-                            <!-- TODO: error element goes in here -->
-                          </tr>
-                        </thead>
-                        <tbody><tr><td colspan="3"></td></tr></tbody>
                         <tbody>
+                          <tr><td>
+                            <div id="formfield-form-widgets-environmental_datasets">
+                            </div>
+                          </td></tr>
                         </tbody>
                       </table>
 
