@@ -6,6 +6,12 @@
     <!-- DASHBOARD ============================================= -->
     <rules if-path="dashboard/">
         <theme href="html/dashboard.html" />
-        <!--<replace css:theme-children="#experiment-list" css:content-children="#experiment-list" />-->
+
+        <replace css:theme="#row-welcome"
+                 css:content="#row-welcome"/>
+
+        <replace css:theme="#row-recent"
+                 css:content="#row-recent"/>
+
     </rules>
 </rules>
