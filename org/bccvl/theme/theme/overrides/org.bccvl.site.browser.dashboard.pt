@@ -39,13 +39,6 @@
 
       <div class="span4">
         <div tal:content="structure provider:bccvl.news"></div>
-	<h4>Notifications</h4>
-	<div class="notifications">
-	  <ul>
-	    <li><small class="label label-default">22 August 2014</small> Better search and sort functions for datasets to be rolled out in upcoming builds. </li>
-	    <li><small class="label label-default">21 August 2014</small> Minor issues with ALA import, developers are investigating. </li>
-	  </ul>
-	</div>
       </div>
     </div>
 

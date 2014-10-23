@@ -104,6 +104,10 @@
     <!-- Breadcrumbs: -->
     <replace css:theme="#breadcrumbs" css:content="#breadcrumbs"/>
 
+    <!-- notifications -->
+    <replace css:theme-children="#notifications"
+             css:content-children="#notifications"/>
+
     <!-- Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <replace css:theme="#portal-footer" css:content="#portal-footer"/>
 

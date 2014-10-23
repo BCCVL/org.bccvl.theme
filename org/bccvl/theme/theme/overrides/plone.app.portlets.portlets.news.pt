@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+  <h3>Notifications</h3>
+  <div class="notifications">
+    <ul>
+      <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                  plone_view context/@@plone;
+                                  getIcon nocall:plone_view/getIcon;"
+                      tal:repeat="obj view/published_news_items">
+        <li><small class="label label-default"
+                   tal:content="python:toLocalizedTime(obj.Date)">22
+        August 2014</small> <span tal:replace="obj/pretty_title_or_id">Better search and
+        sort functions for datasets to be rolled out in upcoming builds.</span></li>
+      </tal:newsitems>
+    </ul>
+  </div>
+</html>
