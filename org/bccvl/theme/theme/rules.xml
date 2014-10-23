@@ -41,20 +41,31 @@
     <notheme css:if-content="body.template-default_error_message" />
 
     <!-- don't theme special pages -->
-    <notheme if-path="@@manage-job-queue/
-                      @@overview-controlpanel/
-                      @@usergroup-userprefs/
-                      @@usergroup-groupprefs/
-                      @@usergroup-controlpanel/
-                      @@member-registration/
-                      @@new-user/
-                      @@usergroup-groupmembership/
-                      @@usergroup-groupdetails/
+    <notheme if-path="@@caching-controlpanel/
+                      @@caching-controlpanel-import/
+                      @@caching-controlpanel-purge/
+                      @@caching-controlpanel-ramcache/
+                      @@dexteritymembrane-settings/
+                      @@indexing-controlpanel/
+                      @@mail-controlpanel/
+                      @@maintenance-controlpanel/
                       @@manage-group-portlets/
                       @@manage-group-dashboard/
                       @@manage-dashboard/
-                      @@caching-controlpanel/
+                      @@new-user/
+                      @@member-registration/
+                      @@onlogin-settings/
+                      @@overview-controlpanel/
                       @@pipeline-config/
+                      @@search-controlpanel/
+                      @@security-controlpanel/
+                      @@site-controlpanel/
+                      @@usergroup-userprefs/
+                      @@usergroup-groupprefs/
+                      @@usergroup-controlpanel/
+                      @@usergroup-groupmembership/
+                      @@usergroup-groupdetails/
+                      prefs_error_log_form/
                       prefs_install_products_form/
                       portal_registry" />
 
