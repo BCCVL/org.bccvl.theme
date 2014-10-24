@@ -5,7 +5,7 @@
 define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-visualiser-map', 'OpenLayers', 'js/bccvl-wizard-tabs',
-     'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-validator',
+     'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover'],
     function($, preview_layout,  viz, vizmap, openlayers, wiztabs, dimensions, search, formvalidator, popover ) {
 
@@ -47,7 +47,7 @@ define(
                             // deselected - so we put the default value back into the text field when deselected.
                             $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
                                 $(c).val($(c).attr('data-default'));
-                                $(c).parsley().validate();
+                                //$(c).parsley().validate();
                             });
 
                             $configBlock.hide(250);
@@ -116,7 +116,7 @@ define(
                 $layerSelectedField.attr('value', numSelected == 0 ? '' : parentId);
 
                 // Force a validation
-                $secretCountField.parsley().validate();
+                //$secretCountField.parsley().validate();
             };
 
             // make a function to render a layer row.

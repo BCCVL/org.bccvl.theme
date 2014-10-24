@@ -1549,6 +1549,12 @@ label.error {
     color: #b94a48;
     margin-top:0;
 }
-
+table.error {
+    border: 1px solid rgba(255,0,0,.5);
+}
+table.error td {
+    background: rgba(255,0,0,.1);
+    border-top: 1px solid rgba(255,0,0,.1);
+}
 
 

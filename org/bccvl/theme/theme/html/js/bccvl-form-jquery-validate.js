@@ -28,11 +28,17 @@ define(
         $('[data-parsley-type]').each(function(){
             $(this).addClass(''+$(this).data('parsleyDataType')+'');
         });
+
+        // NEED TO ADD A REQUIRE-ONE-CHECKBOX RULE TO BE APPLIED BY CLASS HERE.
+
+        // FOLLOW UP ERRORS ON OCCURENCES AND C&E TABS
+
         // add common class rules
         jQuery.validator.addClassRules(
             'number', {
                 number: true
-        });
+            }
+        );
 
         // nominate form, init validate
         var form = $('.bccvl-jqueryvalidate');
@@ -44,11 +50,17 @@ define(
             // custom errors
             errorPlacement: function(error, element){
                 // drop error labels for radio fields after the table
-                if (element.attr('type') == 'radio') {
+                if (element.parents('table').length > 0) {
                     element.parents('table').addClass('error');
                     error.insertAfter(element.parents('table'));
                 } else {
                     error.insertAfter(element);
+                }
+            },
+            success: function(label, element){
+                // remove error class from tables once the fields validate.
+                if ($(element).parents('table').length > 0) {
+                    $(element).parents('table').removeClass('error');
                 }
             },
             // this is default behaviour
