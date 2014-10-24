@@ -327,7 +327,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     line-height: 1.1;
     padding: 0 0 .3em 0;
     font-size: 125%;
-    color: #009FE3;
+    color: #3baa35;
     -moz-transition: opacity 3s;
     -webkit-transition: opacity 3s;
     -o-transition: opacity 3s;
@@ -1491,6 +1491,31 @@ body.home>.white-bg {
     height:2em;
     margin-bottom:0;
 }
+.bccvl-dashboardlists .btn {
+    padding-left:1em;
+    padding-right:1em;
+}
+.dash-panel{
+    border-radius: 5px;
+    padding: 1.5em;
+    margin: 2em 0;
+    background: #ecf0f1;
+}
+.dash-panel h2, .dash-panel h5, .dash-panel p {
+    margin:0;
+    color:black;
+    line-height: 1em;
+}
+.home-stat {
+    font-size:7em;
+    line-height: 1em;
+}
+.dashlist {
+    margin-top:1em;
+}
+.dashlist h4 {
+    margin-bottom:.25em;
+}
 .filter ul li {
     display: inline-block;
     width: 49%;
@@ -1507,7 +1532,6 @@ body.home>.white-bg {
 .bccvl-flashmessages p strong {
     font-size: 1em;
 }
-
 input.error:focus, textarea.error:focus, select.error:focus {
     border-color: #e9322d;
     -webkit-box-shadow: 0 0 6px #f8b9b7;
@@ -1525,3 +1549,6 @@ label.error {
     color: #b94a48;
     margin-top:0;
 }
+
+
+

@@ -70,6 +70,7 @@
 	      <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
 	    </a>
 	    <ul class="dropdown-menu">
+              <li><a class="bccvllinks-dashboard"><i class="icon-eye-open"></i>Dashboard</a></li>
 	      <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
 	      <li class="divider"></li>
 	      <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
@@ -79,25 +80,25 @@
 	  <!-- search field -->
 	  <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
 	    <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
-	    </form>
+	  </form>
 
-	    <!-- main menu items -->
-	    <ul id="portal-globalnav" class="nav">
-	      <li class="active"><a class="bccvllinks-dashboard">Dashboard</a></li>
-	      <li               ><a class="bccvllinks-datasets">Datasets</a></li>
-	      <li               ><a class="bccvllinks-experiments">Experiments</a></li>
-	      <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
-	    </ul>
+	  <!-- main menu items -->
+	  <ul id="portal-globalnav" class="nav">
+	    <!-- <li><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+	    <li><a class="bccvllinks-datasets">Datasets</a></li>
+	    <li><a class="bccvllinks-experiments">Experiments</a></li>
+	    <li><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+	  </ul>
 
-	  </div><!--/.nav-collapse -->
+	</div><!--/.nav-collapse -->
 
-	</div></div></nav><!-- end of nav wrapper -->
+      </div></div></nav><!-- end of nav wrapper -->
 
-        <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- container for main content -->
-	<div class="container bccvl-main">
+      <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- container for main content -->
+      <div class="container bccvl-main">
 
-          <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	  <div id="breadcrumbs" class="bccvl-breadcrumb row-fluid">
 	    <div class="span12">
 	      <ul class="breadcrumb">
@@ -106,64 +107,77 @@
 		<li><a class="bccvllinks-dashboard">Dashboard</a></li>
 	      </ul>
 	    </div>
-	  </div>
+	  </div> -->
 
-          <!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	  <section class="bccvl-dashboardlists">
+        <!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<section class="bccvl-dashboardlists">
 
-	    <div class="row-fluid">
-
-	      <!-- gap -->
-	      <div class="span1">
+	  <div id="row-welcome" class="row-fluid">
+	    <div class="span8">
+	      <h1 style="margin-top:0;">Welcome <strong>Username</strong></h1>
+	      <h4>Available datasets are listed below, along with your current experiments.</h4>
+	      <p>Need help? <a href="/knowledgebase">Visit our knowledge base</a> or <a href="/contactus">contact our support team</a>.</p>
+	      <div class="row-fluid">
+		<div class="span5">
+		  <div class="dash-panel">
+		    <h5><strong>Explore</strong></h5>
+		    <h2>Datasets</h2>
+		    <p><span class="home-stat">47</span></p>
+		    <a class="bccvllinks-datasets">Browse Datasets</a>
+		  </div>
+		</div>
+		<div class="span5 offset1">
+		  <div class="dash-panel">
+		    <h5><strong>Analyse</strong></h5>
+		    <h2>Experiments</h2>
+		    <p><span class="home-stat">5</span></p>
+		    <a class="bccvllinks-experiments">View Experiments</a>
+		  </div>
+		</div>
 	      </div>
-
-	      <!-- experiments -->
-	      <div class="span5">
-		<table class="table table-hover bccvl-experimenttable">
-		  <thead>
-		    <tr><th colspan="3">
-		      My Recent Experiments
-		    </th></tr>
-		  </thead>
-		  <tbody>
-		  </tbody>
-		  <tfoot>
-		    <tr><td colspan="3" class="bccvl-full-list">
-		      <a class="bccvllinks-experiments">all my experiments <i class="icon-chevron-right"></i></a>
-		    </td></tr>
-		  </tfoot>
-		</table>
-	      </div>
-
-	      <!-- gap -->
-	      <div class="span1">
-	      </div>
-
-	      <!-- data -->
-	      <div class="span4">
-
-		<table class="table table-hover bccvl-occurrencestable">
-		  <thead>
-		    <tr><th colspan="2">
-		      My Recent Datasets
-		    </th></tr>
-		  </thead>
-		  <tbody>
-		  </tbody>
-		  <tfoot>
-		    <tr><td colspan="2" class="bccvl-full-list">
-		      <a class="bccvllinks-datasets">all my datasets <i class="icon-chevron-right"></i></a>
-		    </td></tr>
-		  </tfoot>
-		</table>
-
-	      </div>
-
-	      <!-- gap -->
-	      <div class="span1">
-	      </div>
-
 	    </div>
+	    <div class="span4">
+	      <h4>Notifications</h4>
+	      <div class="notifications">
+	        <ul>
+	          <li><small class="label label-default">22 August 2014</small> Better search and sort functions for datasets to be rolled out in upcoming builds. </li>
+	          <li><small class="label label-default">21 August 2014</small> Minor issues with ALA import, developers are investigating. </li>
+	        </ul>
+
+	      </div>
+	    </div>
+
+	  </div>
+	  <div id="row-recent" class="row-fluid">
+	    <!-- data -->
+	    <div class="span5 dashlist">
+	      <h4><strong>Recently Added Datasets</strong></h4>
+	      <hr/>
+	      <div id="recent-datasets-list">
+	        <div class="alert">
+		  <strong>No datasets are available yet.</strong><br/>
+		  Listed here are all the recently uploaded datasets that are available to you, including experiments shared by other people.
+		</div>
+	      </div>
+	      <a class="bccvllinks-experiments btn btn-primary">Start a new experiment <i class="icon-chevron-right icon-white"></i></a>
+	      <a class="bccvllinks-datasets" style="float:right;">View All My Datasets</a>
+	    </div>
+
+	    <div class="span5 offset1 dashlist">
+	      <h4><strong>My Recent Experiments</strong></h4>
+	      <hr/>
+	      <div id="experiment-list">
+	        <div class="alert">
+		  <strong>You have no experiments.</strong><br/>
+		  Listed here are all the recent experiments you've conducted, including experiments shared by other people.
+		</div>
+	      </div>
+	      <a class="bccvllinks-datasets btn btn-primary">Upload A Dataset <i class="icon-chevron-right icon-white"></i></a>
+	      <a class="bccvllinks-experiments" style="float:right;">View All My Experiments</a>
+	    </div>
+
+
+	  </div>
 
 	  </section>
 
