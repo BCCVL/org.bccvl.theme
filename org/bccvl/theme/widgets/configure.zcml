@@ -49,19 +49,19 @@
     <!--     layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer" -->
     <!--     template="orderedcheckbox_input.pt" -->
     <!--     /> -->
-  <adapter
-      for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-           org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
-      provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-      factory=".widgets.JS_WRAPPER_ADAPTER"
-      />
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
 
-    <!-- <z3c:widgetTemplate -->
-    <!--     mode="input" -->
-    <!--     widget="org.bccvl.site.browser.interfaces.IDatasetLayersWidget" -->
-    <!--     layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer" -->
-    <!--     template="datasetlayers_input.pt" -->
-    <!--     /> -->
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasetlayers_input.pt"
+        />
 
     <z3c:widgetTemplate
         mode="input"
