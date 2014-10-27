@@ -63,12 +63,12 @@
     <!--     template="datasetlayers_input.pt" -->
     <!--     /> -->
 
-    <!-- <z3c:widgetTemplate -->
-    <!--     mode="input" -->
-    <!--     widget="org.bccvl.site.widgets.interfaces.IDatasetWidget" -->
-    <!--     layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer" -->
-    <!--     template="dataset_input.pt" -->
-    <!--     /> -->
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IDatasetWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="dataset_input.pt"
+        />
 
     <!-- <z3c:widgetTemplate -->
     <!--     mode="input" -->
