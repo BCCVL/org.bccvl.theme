@@ -25,6 +25,15 @@
         <a class="btn btn-mini" href="#"><i class="icon-remove"></i></a>
         <span tal:content="brain/Title">Dataset</span>
         <span tal:content="layer/label">Layer</span>
+        <a class="fine bccvl-auto-viz"
+           title="preview this dataset"
+           data-viz-id="vizurl"
+           data-uuid="uuid"
+           tal:attributes="data-viz-id item/vizurl;
+                           data-uuid brain/UID;">
+          <i class="icon-eye-open icon-link"></i>
+        </a>
+
         <!-- TODO: should this one be outside of the div here?
                    need to update load script to fetch it as well
                    though -->

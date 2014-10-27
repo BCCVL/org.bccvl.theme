@@ -7,9 +7,13 @@
      tal:attributes="id string:${view/field/__name__}-popup">Select A Dataset</a>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
+    <tal:block tal:define="item view/item"
+               tal:condition="python: view.value and item">
     <div class="selecteditem"
-         tal:define="item view/item"
-         tal:condition="python: view.value and item">
+         tal:define="itemob item/getObject;
+                     dstool itemob/@@dataset_tools;
+                     itemmd dstool/metadata;
+                     dlinfo dstool/get_download_info;">
       <input type="hidden" value="" name="form.widgets.fieldname"
              tal:attributes="value view/value;
                              name view/name;
@@ -19,7 +23,18 @@
       <a class="btn btn-mini" href="#"><i class="icon-remove"></i></a>
       <span class="selected-option"
             tal:content="item/Title">Species</span>
+      <span tal:content="itemmd/scientificname">Scientific Name</span>
+      <span tal:content="itemmd/rows">Number of points</span>
+      <a class="fine bccvl-occurrence-viz"
+         title="preview this dataset"
+         data-viz-id="vizurl"
+         data-uuid="uuid"
+         tal:attributes="data-viz-id python:dlinfo['alturl'][0];
+                         data-uuid item/UID;">
+        <i class="icon-eye-open icon-link"></i>
+      </a>
     </div>
+    </tal:block>
     <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
            tal:condition="not:view/value"
            tal:attributes="name string:${view/name}.empty" />
