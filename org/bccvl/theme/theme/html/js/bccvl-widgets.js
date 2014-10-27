@@ -208,6 +208,7 @@ define(
         $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
             event.preventDefault();
             $(this).parents('div.selecteditem').remove();
+            // need to re-add the empty field
         });
 
     };

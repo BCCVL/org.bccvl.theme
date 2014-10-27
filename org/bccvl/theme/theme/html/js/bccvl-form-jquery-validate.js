@@ -8,14 +8,6 @@ define(
 
 
         // TODOS
-        // *DONE* - Add error/complete class to tab header
-        // *DONE* - Add validation triggers to tab header clicks
-        // *DONE* - Add return to first invalid field on submit
-        // *DONE* - Add error/complete class to tab headers on submit
-        // *DONE* - Add notification of how many errors to panel above form
-        // Mirror parsley rules with validate rules
-        // Start removing parsley from
-        // Clean up code, add notes
 
 
         // use required class as well as attr
@@ -29,10 +21,6 @@ define(
             $(this).addClass(''+$(this).data('parsleyDataType')+'');
         });
 
-        // NEED TO ADD A REQUIRE-ONE-CHECKBOX RULE TO BE APPLIED BY CLASS HERE.
-
-        // FOLLOW UP ERRORS ON OCCURENCES AND C&E TABS
-
         // add common class rules
         jQuery.validator.addClassRules(
             'number', {
@@ -45,8 +33,7 @@ define(
         // add custom placement/rules
         form.validate({
             // by default hidden fields are ignored, we need to check them.
-            // unless they're alogrithm config fields
-            ignore: "#algoConfig :hidden",
+            ignore: "",
             // custom errors
             errorPlacement: function(error, element){
                 // drop error labels for radio fields after the table
@@ -72,23 +59,24 @@ define(
                 var errors = validator.numberOfInvalids();
                 if (errors) {
                     event.preventDefault();
-                    var errorFields = validator.currentElements;
+                    var errorFields = validator.errorList;
                     // add notification panel
                     $('.bccvl-flashmessages').append('<div id="form-errors-panels" class="alert alert-error" style="display:none;"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Form Errors</h4></div>');
 
                     // add error or complete classes to headers
                     $.each(errorFields, function(i){
+                        // convert array object into jquery object
+                        var element = $(this)[0].element;
                         // find error's tabs, used for rest of function
-                        var tabId = $(this).parents('.tab-pane').attr('id');
-
+                        var tabId = $(element).parents('.tab-pane').attr('id');
                         // generate error messages for top panel
                         var errorMessage;
-                        if (typeof $(this).data('errorMessage') !== "undefined"){
-                            errorMessage = $(this).data('errorMessage');
-                        } else if (typeof $(this).data('friendlyName') !== "undefined"){
-                            errorMessage = $(this).data('friendlyName');
-                        } else if (typeof $(this).attr('placeholder') !== "undefined"){
-                            errorMessage = $(this).attr('placeholder');
+                        if (typeof $(element).data('errorMessage') !== "undefined"){
+                            errorMessage = $(element).data('errorMessage');
+                        } else if (typeof $(element).data('friendlyName') !== "undefined"){
+                            errorMessage = $(element).data('friendlyName');
+                        } else if (typeof $(element).attr('placeholder') !== "undefined"){
+                            errorMessage = $(element).attr('placeholder');
                         } else {
                             errorMessage = "Problem with field."
                         }

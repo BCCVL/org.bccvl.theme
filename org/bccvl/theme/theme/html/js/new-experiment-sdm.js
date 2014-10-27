@@ -17,6 +17,8 @@ define(
             wiztabs.init();         // hook up the wizard buttons
             search.init();          // hook up the search fields
 
+            $('.bccvllinks-datasets').attr('href', portal_url+'/datasets');
+
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
             // revealed depending on whether the algorithm is

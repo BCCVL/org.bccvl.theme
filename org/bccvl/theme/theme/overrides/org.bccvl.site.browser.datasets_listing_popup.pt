@@ -35,7 +35,7 @@
       <div class="cell span3">
         <input id="datasets-filter-text"
                name="datasets.filter.text" type="text"
-               placeholder="Search Datesets" class="input-medium"
+               placeholder="Search Datasets" class="input-medium"
                tal:attributes="value python:request.get('datasets.filter.text')"/>
         <input name="datasets.filter.genre:list" type="hidden"
                tal:attributes="value genre"
@@ -46,7 +46,7 @@
         <select id="datasets-filter-source"
                 name="datasets.filter.source:list"
                 multiple="multiple">
-          <option disabled="disabled">Select a Source</option>
+          <option disabled="disabled">Filter by Source</option>
           <option value="optionvalue"
                   tal:repeat="opt view/source_list"
                   tal:attributes="selected opt/selected;
@@ -60,7 +60,7 @@
         <select id="datasets-filter-layer"
                 name="datasets.filter.layer:list"
                 multiple="multiple">
-          <option disabled="disbaled">Select Layers</option>
+          <option disabled="disbaled">Filter by Layers</option>
           <option value="layerid"
                   tal:repeat="opt view/layer_list"
                   tal:attributes="selected opt/selected;
@@ -109,7 +109,7 @@
         </div>
       </div>
       <!-- layered datasets -->
-      <div class="row"
+      <div class="datasets-list-entry"
            tal:condition="enable_layers"
            tal:attributes="data-uuid item/UID;
                            data-layer layer/layer"
@@ -132,7 +132,7 @@
                                height item_icon/height;" />
         </div>
         <div class="cell offset1">
-          <p tal:content="item_title_or_id">Item Title</p>
+          <p class="lead" tal:content="item_title_or_id">Item Title</p>
           <p tal:content="item_description">Item description</p>
           <p tal:content="layer/label">Layer title</p>
           <p>Creator: <span tal:condition="item_creator"

@@ -1556,5 +1556,11 @@ table.error td {
     background: rgba(255,0,0,.1);
     border-top: 1px solid rgba(255,0,0,.1);
 }
-
+.ui-selectee {
+    cursor: pointer;
+}
+p.lead.ui-selectee {
+    font-size: 1.3em;
+    margin-bottom: .3em;
+}
 

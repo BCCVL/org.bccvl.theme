@@ -5,9 +5,8 @@
       tal:omit-tag="">
   <script type="text/javascript"
           tal:content="structure view/js"></script>
-  <a id="fieldname-popup" href="#"
-     tal:attributes="id string:${view/field/__name__}-popup"
-     tal:content="string:Select ${view/label}">Select Occurrence Dataset</a>
+  <a id="fieldname-popup" href="#" class="btn btn-primary"
+     tal:attributes="id string:${view/field/__name__}-popup">Select Available Datasets</a>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
     <tal:repeat tal:repeat="item view/items">
@@ -35,5 +34,8 @@
                                name string:${view/name}.count"/>
       </div>
     </tal:repeat>
+    <!--<input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+                tal:condition="python: len(view.items())==0"
+                tal:attributes="name string:${view/name}.empty" />-->
   </div>
 </html>

@@ -387,53 +387,36 @@
 
                     <!-- list of available data -->
                     <div class="span4"><div class="control-group">
-                      <table class="table table-hover bccvl-occurrencestable">
-                        <thead>
-                          <tr><td colspan="3">
-                            Import or upload new occurrence datasets
-                            on the <a class="bccvllinks-datasets">dataset</a> page.
-                          </td></tr>
-                          <tr>
-                            <td>
+                      <div class="bccvl-occurrencestable">
+                        <div class="alert alert-info">
+                         <strong>Need to import or upload new occurrence datasets?</strong>
+                         <a class="bccvllinks-datasets" href="/datasets">Visit the dataset's page.</a>
+                        </div>
+                        <div class="alert alert-warning">
+                         <strong>You must select an occurence dataset for this experiment type.</strong>
+                        </div>
                             <div id="formfield-form-widgets-species_occurrence_dataset" data-fieldname="form.widgets.species_occurrence_dataset" class="control-group">
-                              <label class="control-label" for="form-widgets-species_occurrence_dataset">Species Occurrence Datasets</label>
                               <div class="controls">
                                 <script type="text/javascript">//&lt;![CDATA[
                                 require(['jquery', 'js/bccvl-widgets'],function($, bccvl){
-              $(document).ready(function(){
-                  bccvl.select_dataset($("a#species_occurrence_dataset-popup"), {
-                      field: 'species_occurrence_dataset',
-                      genre: ['DataGenreSpeciesOccurrence'],
-                      widgetname: 'form.widgets.species_occurrence_dataset',
-                      widgetid: 'form-widgets-species_occurrence_dataset',
-                      widgeturl: location.origin + location.pathname + '/++widget++species_occurrence_dataset',
-                      });
-                      });
-              });//]]&gt;
+                                $(document).ready(function(){
+                                    bccvl.select_dataset($("a#species_occurrence_dataset-popup"), {
+                                        field: 'species_occurrence_dataset',
+                                        genre: ['DataGenreSpeciesOccurrence'],
+                                        widgetname: 'form.widgets.species_occurrence_dataset',
+                                        widgetid: 'form-widgets-species_occurrence_dataset',
+                                        widgeturl: location.origin + location.pathname + '/++widget++species_occurrence_dataset',
+                                        });
+                                        });
+                                });//]]&gt;
                                 </script>
-                                <a href="#" id="species_occurrence_dataset-popup">Select Species Occurrence Datasets</a>
+                                <a href="#" id="species_occurrence_dataset-popup" class="btn btn-primary"> Occurrence Datasets</a>
                                 <div id="form-widgets-species_occurrence_dataset-selected">
 
                                 </div>
                               </div>
                             </div>
-                            </td>
-                          </tr>
-                          <!--
-                              <tr><td class="bccvl-searchform" colspan="3">
-                              <div id="searchOccurrence" class="bccvl-search-form form-inline">
-                              <input name="searchOccurrence_query" type="text" class="span8" placeholder="find more species..">
-                              <select name="searchOccurrence_source" class="span4">
-                              <option value="ala">at ALA</option>
-                              </select>
-                              <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
-                              </div>
-                              </td></tr>
-                          -->
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
+                      </div>
                     </div></div>
 
                     <!-- preview area -->
@@ -461,12 +444,18 @@
                   <div class="row-fluid bccvl-stretch-parent">
                     <!-- list of available data -->
                     <div class="span4"><div class="control-group">
-
+                      <div class="alert alert-warning">
+                         <strong>You must select an abscence dataset for this experiment type.</strong>
+                        </div>
+                      <div class="bccvl-absencestable">
+                        <div id="formfield-form-widgets-species_absence_dataset">
+                        </div>
+                      </div>
                       <div class="accordion" id="absence-accordion">
                         <div class="accordion-group">
                           <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseOne">
-                              Pseudo absence points
+                              Use Pseudo Absence Points.
                             </a>
                           </div>
                           <div id="collapseOne" class="accordion-body collapse">
@@ -475,26 +464,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="accordion-group">
-                          <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#absence-accordion" href="#collapseTwo">
-                              Species Absence Datasets
-                            </a>
-                          </div>
-                          <div id="collapseTwo" class="accordion-body collapse in">
-                            <div class="accordion-inner">
-                              <table class="table table-hover bccvl-absencestable">
-                                <tbody>
-                                  <tr><td>
-                                    <div id="formfield-form-widgets-species_absence_dataset">
-                                    </div>
-                                  </td></tr>
-                                </tbody>
-                              </table>
-
-                            </div>
-                          </div>
-                        </div>
+                        
                       </div>
 
                     </div></div>
@@ -524,8 +494,11 @@
 
                     <!-- list of available data -->
                     <div class="span4">
+                      <div class="alert alert-warning">
+                         <strong>You must select at least one climate and environmental dataset for this experiment type.</strong>
+                      </div>
 
-                      <div class="control-group">
+                      <!--<div class="control-group">
                         <table class="table table-hover bccvl-spatialscaletable">
                           <thead>
                             <tr>
@@ -538,17 +511,10 @@
                             </tr>
                           </tbody>
                         </table>
-                      </div>
+                      </div>-->
 
-                      <div class="control-group">
-                        <table class="table table-hover bccvl-environmentaldatatable">
-                          <tbody>
-                            <tr><td>
-                              <div id="formfield-form-widgets-environmental_datasets">
-                              </div>
-                            </td></tr>
-                          </tbody>
-                        </table>
+                      <div class="control-group bccvl-environmentaldatatable">
+                        <div id="formfield-form-widgets-environmental_datasets"></div>
 
                         <!-- secret hidden fields -->
                         <div class="hidden bccvl-secretlayerselections">
