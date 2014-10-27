@@ -2,6 +2,7 @@ define(
     ['jquery', 'jquery-ui'],
     function($) {
 
+    // helper to enforce single selection for jquery-ui selectable
     function single_selectable($elements) {
         $elements.selectable({
             selected: function(event, ui) {
@@ -13,10 +14,10 @@ define(
     }
 
 
+    // single select widget
     var select_dataset = function($element, options) {
 
-        // required options: field, genre
-
+        // TODO: document settings
         var settings = $.extend({
             // These are the defaults.
             target: '#' + options.field + '-modal',
@@ -67,6 +68,14 @@ define(
             single_selectable($modal.find(settings.result_child_selector));
         };
 
+        // reload widget via ajax
+        function reload_widget(params) {
+            $('#' + settings.widgetid + '-selected').load(
+                settings.widgeturl + ' ' + settings.widgetelement,
+                params
+            );
+        };
+
         // clear modal on close
         $modal.on('hidden', function() {
             $(this).removeData('modal');
@@ -86,21 +95,19 @@ define(
                 $.each(uuid, function(index, value){
                     params.push({name: settings.widgetname, value: value});
                 });
-                $('#' + settings.widgetid + '-selected').load(
-                    settings.widgeturl + ' ' + settings.widgetelement,
-                    params
-                );
+                reload_widget(params);
             }
         });
 
         // allow user to remove selected elements
         $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
             event.preventDefault();
-            $(this).parents('div.selecteditem').remove();
+            reload_widget();
         });
 
     };
 
+    // multi layer select widget
     var select_dataset_layers = function($element, options) {
 
         // required options: field, genre
@@ -156,6 +163,32 @@ define(
             $modal.find(settings.result_child_selector).selectable();
         };
 
+        // reload widget via ajax
+        function reload_widget(params) {
+            $('#' + settings.widgetid + '-selected').load(
+                settings.widgeturl + ' ' + settings.widgetelement,
+                params
+            );
+        };
+
+        // return currently selected datasets and layers
+        // as structure suitable to pass on to reload_widget
+        function get_current_selection() {
+            var params = [];
+            var count = 0;
+            // collect all existing datasets and layers
+            var $cursel = $('input[name^="' + settings.widgetname + '.dataset"]');
+            $.each($cursel, function(index, dsinput) {
+                var $layer = $('input[name="' + $(dsinput).attr('name').replace(/\.dataset\./, '.layer.') + '"]');
+                params.push({name: settings.widgetname + '.dataset.' + count,
+                             value: $(dsinput).val()});
+                params.push({name: settings.widgetname + '.layer.' + count,
+                             value: $layer.val()});
+                count += 1;
+            });
+            return params;
+        };
+
         // clear modal on close
         $modal.on('hidden', function() {
             $(this).removeData('modal');
@@ -174,18 +207,9 @@ define(
             $modal.modal('hide');
             if ($selected.length) {
                 // we only change things if there was a selection
-                var params = [{name: 'ajax_load', value: 1}];
+                var params = get_current_selection();
                 // collect all existing datasets and layers
-                var $cursel = $('input[name^="' + settings.widgetname + '.dataset"]');
-                var count = 0;
-                $.each($cursel, function(index, dsinput) {
-                    var $layer = $('input[name="' + $(dsinput).attr('name').replace(/\.dataset\./, '.layer.') + '"]');
-                    params.push({name: settings.widgetname + '.dataset.' + count,
-                                 value: $(dsinput).val()});
-                    params.push({name: settings.widgetname + '.layer.' + count,
-                                 value: $layer.val()});
-                    count += 1;
-                });
+                var count = params.length;
                 // collect newly selected layers
                 $.each(uuid, function(index, value){
                     params.push({name: settings.widgetname + '.dataset.' + count,
@@ -196,11 +220,10 @@ define(
                 });
                 // add count parameter
                 params.push({name: settings.widgetname + '.count', value: count});
+                // add ajax_load parameter
+                params.push({name: 'ajax_load', value: 1});
                 // fetch html for widget
-                $('#' + settings.widgetid + '-selected').load(
-                    settings.widgeturl + ' ' + settings.widgetelement,
-                    params
-                );
+                reload_widget(params);
             }
         });
 
@@ -208,7 +231,13 @@ define(
         $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
             event.preventDefault();
             $(this).parents('div.selecteditem').remove();
-            // need to re-add the empty field
+            var params = get_current_selection();
+            // add count parameter
+            params.push({name: settings.widgetname + '.count', value: params.length});
+            // add ajax_load parameter
+            params.push({name: 'ajax_load', value: 1});
+            // fetch html for widget
+            reload_widget(params);
         });
 
     };
