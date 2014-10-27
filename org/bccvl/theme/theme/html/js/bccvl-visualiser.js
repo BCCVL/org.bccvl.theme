@@ -67,9 +67,9 @@ define(     ['jquery'],
                     'auto': {
                         apiType:   'auto_detect',
                         resolveId: function(rawId) { return rawId; }
-                    },
+                    }
                     // - - - - - - - - - - - - - - - - - - - - -
-                }
+                };
 
 
                 $.each(visualisableTypes, function(name, vizType) {
@@ -107,7 +107,7 @@ define(     ['jquery'],
                 var opts = {
                     apiType: 'auto_detect',
                     apiVersion: '1',
-                    vizType: 'default',
+                    vizType: 'default'
                 };
                 // merge in the caller's options
                 if (options) {
@@ -122,8 +122,8 @@ define(     ['jquery'],
 
                 if (params) {
                     for (param in params) {
-                        url = url + '&' 
-                        + encodeURIComponent(param) + '=' 
+                        url = url + '&'
+                        + encodeURIComponent(param) + '='
                         + encodeURIComponent(params[param]);
                     }
                 }
@@ -136,7 +136,7 @@ define(     ['jquery'],
 
                 $vizFrame.attr('src', url);
             }
-        }
+        };
 
         return bccvl_visualiser;
     }
