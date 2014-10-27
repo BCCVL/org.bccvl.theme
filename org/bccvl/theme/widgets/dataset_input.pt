@@ -20,5 +20,8 @@
       <span class="selected-option"
             tal:content="item/Title">Species</span>
     </div>
+    <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+           tal:condition="not:view/value"
+           tal:attributes="name string:${view/name}.empty" />
   </div>
 </html>

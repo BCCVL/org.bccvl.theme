@@ -34,8 +34,8 @@
                                name string:${view/name}.count"/>
       </div>
     </tal:repeat>
-    <!--<input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
-                tal:condition="python: len(view.items())==0"
-                tal:attributes="name string:${view/name}.empty" />-->
+    <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+                tal:condition="not:view/value"
+                tal:attributes="name string:${view/name}.empty" />
   </div>
 </html>
