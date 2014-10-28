@@ -152,6 +152,12 @@
         </div>
       </div>
     </tal:repeat>
+    <div class="row"
+         tal:condition="not:batch">
+      <div class="cell span12">
+        <p>No Datasets found</p>
+      </div>
+    </div>
     </div>
   </div>
 </html>
