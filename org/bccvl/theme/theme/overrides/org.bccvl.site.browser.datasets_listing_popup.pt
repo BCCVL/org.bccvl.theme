@@ -32,57 +32,62 @@
           tal:define="context_state context/@@plone_context_state"
           tal:attributes="action context_state/current_base_url">
       <div class="row-fluid">
-        <div class="span3">
-          <label for="datasets-filter-text">Filter by Keywords</label>
-          <input id="datasets-filter-text"
-                 name="datasets.filter.text" type="text"
-                 placeholder="Enter search terms." class="input-medium"
-                 tal:attributes="value python:request.get('datasets.filter.text')"/>
-          <input name="datasets.filter.genre:list" type="hidden"
-                 tal:attributes="value genre"
-                 tal:repeat="genre python:request.get('datasets.filter.genre')"/>
+        <div class="span10">
+          <div class="span3">
+            <label for="datasets-filter-resolution">Choose a Resolution to Begin</label>
+            <select id="datasets-filter-resolution"
+                    name="datasets.filter.resolution">
+              <option value="resolutionid"
+                      tal:repeat="opt view/resolution_list"
+                      tal:attributes="selected opt/selected;
+                                      disabled opt/disabled;
+                                      value opt/token;"
+                      tal:content="opt/label">Resolution title</option>
+            </select>
+          </div>
+          <div class="span3">
+            <label for="datasets-filter-text">Filter by Keywords</label>
+            <input id="datasets-filter-text"
+                   name="datasets.filter.text" type="text"
+                   placeholder="Enter search terms." class="input-medium"
+                   tal:attributes="value python:request.get('datasets.filter.text')"/>
+            <input name="datasets.filter.genre:list" type="hidden"
+                   tal:attributes="value genre"
+                   tal:repeat="genre python:request.get('datasets.filter.genre')"/>
 
-        </div>
-        <div class="span3">
-          <label for="datasets-filter-source">Filter by Source</label>
-          <select id="datasets-filter-source"
-                  name="datasets.filter.source:list"
-                  multiple="multiple">
+          </div>
+          <div class="span3">
+            <label for="datasets-filter-source">Filter by Source</label>
+            <select id="datasets-filter-source"
+                    name="datasets.filter.source:list"
+                    multiple="multiple">
 
-            <option value="optionvalue"
-                    tal:repeat="opt view/source_list"
-                    tal:attributes="selected opt/selected;
-                                    disabled opt/disabled;
-                                    value opt/token;"
-                    tal:content="opt/label">Option label</option>
-          </select>
-        </div>
-        <div class="span3"
-             tal:condition="enable_layers">
-          <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
-          <label for="datasets-filter-layer">Filter by Layers</label>
-          <select id="datasets-filter-layer"
-                  name="datasets.filter.layer:list"
-                  multiple="multiple">
+              <option value="optionvalue"
+                      tal:repeat="opt view/source_list"
+                      tal:attributes="selected opt/selected;
+                                      disabled opt/disabled;
+                                      value opt/token;"
+                      tal:content="opt/label">Option label</option>
+            </select>
+          </div>
+          <div class="span3"
+               tal:condition="enable_layers">
+            <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
+            <label for="datasets-filter-layer">Filter by Layers</label>
+            <select id="datasets-filter-layer"
+                    name="datasets.filter.layer:list"
+                    multiple="multiple">
 
-            <option value="layerid"
-                    tal:repeat="opt view/layer_list"
-                    tal:attributes="selected opt/selected;
-                                    disabled opt/disabled;
-                                    value opt/token;"
-                    tal:content="opt/label">Layer title</option>
-          </select>
-          <select id="datasets-filter-resolution"
-                  name="datasets.filter.resolution">
-            <option value="resolutionid"
-                    tal:repeat="opt view/resolution_list"
-                    tal:attributes="selected opt/selected;
-                                    disabled opt/disabled;
-                                    value opt/token;"
-                    tal:content="opt/label">Resolution title</option>
-          </select>
+              <option value="layerid"
+                      tal:repeat="opt view/layer_list"
+                      tal:attributes="selected opt/selected;
+                                      disabled opt/disabled;
+                                      value opt/token;"
+                      tal:content="opt/label">Layer title</option>
+            </select>
+          </div>
         </div>
-        <div class="span3">
+        <div class="span2">
           <label for="datasets-filter-source">Apply Filters</label>
           <button class="btn btn-block" type="submit">Show Layers!</button>
           <p><small>Select multiple layers by <strong>holding CTRL (CMD on Mac)</strong> when clicking on results.</small></p>
@@ -96,7 +101,7 @@
     <div id="datasets-popup-result-list">
     <tal:repeat tal:repeat="item batch">
       <!-- non layered datasets -->
-      <div class="row"
+      <div class="datasets-list-entry"
            tal:condition="not:enable_layers"
            tal:attributes="data-uuid item/UID"
            tal:define="item_title_or_id item/pretty_title_or_id;
@@ -107,7 +112,7 @@
                        ">
         <div class="cell"
              tal:condition="not:enable_layers">
-          <p>
+          <p class="lead">
             <img width="16" height="16"
                src="" alt=""
                tal:condition="item_icon/url"
@@ -117,7 +122,8 @@
                                width item_icon/width;
                                height item_icon/height;" />&nbsp;
             <span tal:content="item_title_or_id">Item Title</span></p>
-          <p tal:content="item_description">Item description</p>
+          <p  tal:condition="item_description"
+              tal:content="item_description">Item description</p>
           <p><strong>Creator:</strong> <span tal:condition="item_creator"
           tal:define="author python:pas_member.info(item_creator)"
           tal:content="author/name_or_id">Bob Dobalina</span>
@@ -161,10 +167,11 @@
         </div>
       </div>
     </tal:repeat>
-    <div class="row"
+    <div class=""
          tal:condition="not:batch">
-      <div class="cell span12">
-        <p>No Datasets found</p>
+      <div class="alert alert-warning">
+        <p><strong>No datasets match the resolution and filters above.</strong></p>
+        <p>Try selecting a different resolution. You can also expand filters by holding CTRL (CMD on Mac) and selecting more in the same list.</p>
       </div>
     </div>
     </div>

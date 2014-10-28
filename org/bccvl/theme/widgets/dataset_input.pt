@@ -4,7 +4,7 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <a id="fieldname-popup" href="#" class="btn btn-primary"
-     tal:attributes="id string:${view/field/__name__}-popup">Select A Dataset</a>
+     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select A Dataset</a>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
     <tal:block tal:define="item view/item"

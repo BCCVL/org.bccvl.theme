@@ -6,7 +6,7 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <a id="fieldname-popup" href="#" class="btn btn-primary"
-     tal:attributes="id string:${view/field/__name__}-popup">Select Available Datasets</a>
+     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select Available Datasets</a>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
     <tal:repeat tal:repeat="item view/items">
