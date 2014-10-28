@@ -3,8 +3,7 @@
       tal:omit-tag="">
   <script type="text/javascript"
           tal:content="structure view/js"></script>
-  <a id="fieldname-popup" href="#" class="btn btn-primary"
-     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select A Dataset</a>
+  
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
     <tal:block tal:define="item view/item"
@@ -20,23 +19,31 @@
                              id view/id;
                              required view/required;
                              "/>
-      <a class="btn btn-mini" href="#"><i class="icon-remove"></i></a>
-      <span class="selected-option"
-            tal:content="item/Title">Species</span>
-      <span tal:content="itemmd/scientificname">Scientific Name</span>
-      <span tal:content="itemmd/rows">Number of points</span>
-      <a class="fine bccvl-occurrence-viz"
+      <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
+      <a class="fine bccvl-occurrence-viz btn pull-right btn-primary"
          title="preview this dataset"
          data-viz-id="vizurl"
          data-uuid="uuid"
          tal:attributes="data-viz-id python:dlinfo['alturl'][0];
                          data-uuid item/UID;">
-        <i class="icon-eye-open icon-link"></i>
+        <i class="icon-eye-open icon-link icon-white"></i>
       </a>
+      <p><strong><span class="selected-option"
+            tal:content="item/Title">Species</span></strong>
+      <span tal:content="itemmd/scientificname">Scientific Name</span>
+      <span tal:content="itemmd/rows">Number of points</span></p>
     </div>
     </tal:block>
-    <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+    
+    <input type="hidden" value="" class="required" name="form.widgets.empty" data-error-message="A dataset must be selected."
            tal:condition="not:view/value"
            tal:attributes="name string:${view/name}.empty" />
   </div>
+  <span class="loader-container" tal:condition="not:view/value">
+    <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
+  </span>
+  <a id="fieldname-popup" href="#" class="btn btn-primary"
+     tal:attributes="id string:${view/field/__name__}-popup">
+     <i class="icon icon-white icon-plus-sign"></i> Select A Dataset
+  </a>
 </html>

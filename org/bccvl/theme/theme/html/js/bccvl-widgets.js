@@ -70,10 +70,13 @@ define(
 
         // reload widget via ajax
         function reload_widget(params) {
+            $('#'+settings.widgetid+'-selected').parent().find('span.loader-container img.loader').show(0);
             $('#' + settings.widgetid + '-selected').load(
                 settings.widgeturl + ' ' + settings.widgetelement,
                 params
-            );
+            , function(){
+                $('#'+settings.widgetid+'-selected').parent().find('span.loader-container img.loader').hide();
+            });
         };
 
         // clear modal on close
@@ -165,10 +168,13 @@ define(
 
         // reload widget via ajax
         function reload_widget(params) {
+            $('#'+settings.widgetid+'-selected').parent().find('span.loader-container img.loader').show(0);
             $('#' + settings.widgetid + '-selected').load(
                 settings.widgeturl + ' ' + settings.widgetelement,
                 params
-            );
+            , function(){
+                $('#'+settings.widgetid+'-selected').parent().find('span.loader-container img.loader').hide();
+            });
         };
 
         // return currently selected datasets and layers

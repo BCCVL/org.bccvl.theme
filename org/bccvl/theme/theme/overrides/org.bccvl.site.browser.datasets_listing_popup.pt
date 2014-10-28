@@ -33,7 +33,7 @@
           tal:attributes="action context_state/current_base_url">
       <div class="row-fluid">
         <div class="span10">
-          <div class="span3">
+          <div class="span3" tal:condition="enable_layers">
             <label for="datasets-filter-resolution">Choose a Resolution to Begin</label>
             <select id="datasets-filter-resolution"
                     name="datasets.filter.resolution">
@@ -90,7 +90,8 @@
         <div class="span2">
           <label for="datasets-filter-source">Apply Filters</label>
           <button class="btn btn-block" type="submit">Show Layers!</button>
-          <p><small>Select multiple layers by <strong>holding CTRL (CMD on Mac)</strong> when clicking on results.</small></p>
+          <p tal:condition="enable_layers"><small>Select multiple layers by <strong>holding CTRL (CMD on Mac)</strong> when clicking on results.</small></p>
+          <p tal:condition="not:enable_layers"><small>Only <strong>one dataset</strong> can be selected here.</small></p>
         </div>
       </div>
 

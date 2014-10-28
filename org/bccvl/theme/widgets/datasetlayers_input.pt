@@ -5,8 +5,6 @@
       tal:omit-tag="">
   <script type="text/javascript"
           tal:content="structure view/js"></script>
-  <a id="fieldname-popup" href="#" class="btn btn-primary"
-     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select Available Datasets</a>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
     <tal:repeat tal:repeat="item view/items">
@@ -22,17 +20,18 @@
                tal:attributes="value layer/layer;
                                name string:${view/name}.layer.${index};
                                "/>
-        <a class="btn btn-mini" href="#"><i class="icon-remove"></i></a>
-        <span tal:content="brain/Title">Dataset</span>
-        <span tal:content="layer/label">Layer</span>
-        <a class="fine bccvl-auto-viz"
+        <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
+        <a class="fine bccvl-auto-viz btn btn-primary pull-right"
            title="preview this dataset"
            data-viz-id="vizurl"
            data-uuid="uuid"
            tal:attributes="data-viz-id item/vizurl;
                            data-uuid brain/UID;">
-          <i class="icon-eye-open icon-link"></i>
+          <i class="icon-eye-open icon-link icon-white"></i>
         </a>
+        <p><strong><span tal:content="brain/Title">Dataset</span></strong>
+        <span tal:content="layer/label">Layer</span>
+        </p>
 
         <!-- TODO: should this one be outside of the div here?
                    need to update load script to fetch it as well
@@ -43,8 +42,13 @@
                                name string:${view/name}.count"/>
       </div>
     </tal:repeat>
-    <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+    <input type="hidden" value="" class="required" name="form.widgets.empty" data-error-message="A dataset must be selected."
                 tal:condition="not:view/value"
                 tal:attributes="name string:${view/name}.empty" />
   </div>
+  <span class="loader-container" tal:condition="not:view/value">
+    <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
+  </span>
+  <a id="fieldname-popup" href="#" class="btn btn-primary"
+     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select Available Datasets</a>
 </html>
