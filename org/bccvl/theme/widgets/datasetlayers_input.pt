@@ -7,6 +7,10 @@
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
+    <div class="alert alert-block"
+         tal:condition="python: len(view.resolutions()) > 1">
+      <p> Warning: layers with different resolutinos selected.</p>
+    </div>
     <tal:repeat tal:repeat="item view/items">
       <div class="selecteditem"
            tal:define="layer item/layer;
