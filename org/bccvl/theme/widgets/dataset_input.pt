@@ -37,8 +37,9 @@
     </tal:block>
     <div class="selecteditem"
          tal:condition="not:view/value">
-      <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+      <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
              tal:attributes="name string:${view/name}.empty;
+                             required view/required;
                              id view/id;"/>
     </div>
   </div>
