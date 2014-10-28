@@ -9,7 +9,7 @@
        tal:attributes="id string:${view/id}-selected">
     <div class="alert alert-block"
          tal:condition="python: len(view.resolutions()) > 1">
-      <p> Warning: layers with different resolutinos selected.</p>
+      <p> Warning: layers with different resolutions selected.</p>
     </div>
     <tal:repeat tal:repeat="item view/items">
       <div class="selecteditem"
@@ -35,6 +35,7 @@
         </a>
         <p><strong><span tal:content="brain/Title">Dataset</span></strong>
         <span tal:content="layer/label">Layer</span>
+        <span tal:content="item/resolution/title">Resolution title</span>
         </p>
 
       </div>
