@@ -83,6 +83,8 @@ define(
 
         // reload widget via ajax
         function reload_widget(params) {
+            // add ajax_load parameter
+            params.push({name: 'ajax_load', value: 1});
             $('#' + settings.widgetid + '-selected').load(
                 settings.widgeturl + ' ' + settings.widgetelement,
                 params
@@ -104,7 +106,7 @@ define(
             $modal.modal('hide');
             if ($selected.length) {
                 // fetch html for widget
-                var params = [{name: 'ajax_load', value: 1}];
+                var params = [];
                 $.each(uuid, function(index, value){
                     params.push({name: settings.widgetname, value: value});
                 });
@@ -115,7 +117,7 @@ define(
         // allow user to remove selected elements
         $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
             event.preventDefault();
-            reload_widget();
+            reload_widget([]);
         });
 
     };
@@ -192,6 +194,8 @@ define(
 
         // reload widget via ajax
         function reload_widget(params) {
+            // add ajax_load parameter
+            params.push({name: 'ajax_load', value: 1});
             $('#' + settings.widgetid + '-selected').load(
                 settings.widgeturl + ' ' + settings.widgetelement,
                 params
@@ -247,8 +251,6 @@ define(
                 });
                 // add count parameter
                 params.push({name: settings.widgetname + '.count', value: count});
-                // add ajax_load parameter
-                params.push({name: 'ajax_load', value: 1});
                 // fetch html for widget
                 reload_widget(params);
             }
@@ -261,8 +263,6 @@ define(
             var params = get_current_selection();
             // add count parameter
             params.push({name: settings.widgetname + '.count', value: params.length});
-            // add ajax_load parameter
-            params.push({name: 'ajax_load', value: 1});
             // fetch html for widget
             reload_widget(params);
         });
