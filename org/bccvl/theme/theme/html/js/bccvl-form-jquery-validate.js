@@ -30,6 +30,7 @@ define(
 
         // nominate form, init validate
         var form = $('.bccvl-jqueryvalidate');
+
         // add custom placement/rules
         form.validate({
             // by default hidden fields are ignored, we need to check them.
@@ -107,6 +108,15 @@ define(
                     //alert('There are errors or incomplete fields in the form that need to be addressed before the experiment can begin.');
                 }
             }
+        });
+
+        // use error messages from element attributes (if they exist).
+        form.find('.required[data-error-message]').each(function(){
+            $(this).rules('add', {
+                messages: {
+                    required: $(this).data('errorMessage')
+                }
+            });
         });
 
         $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event){
