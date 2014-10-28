@@ -41,14 +41,14 @@
           <input name="datasets.filter.genre:list" type="hidden"
                  tal:attributes="value genre"
                  tal:repeat="genre python:request.get('datasets.filter.genre')"/>
-          
+
         </div>
         <div class="span3">
           <label for="datasets-filter-source">Filter by Source</label>
           <select id="datasets-filter-source"
                   name="datasets.filter.source:list"
                   multiple="multiple">
-            
+
             <option value="optionvalue"
                     tal:repeat="opt view/source_list"
                     tal:attributes="selected opt/selected;
@@ -59,11 +59,12 @@
         </div>
         <div class="span3"
              tal:condition="enable_layers">
+          <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
           <label for="datasets-filter-layer">Filter by Layers</label>
           <select id="datasets-filter-layer"
                   name="datasets.filter.layer:list"
                   multiple="multiple">
-            
+
             <option value="layerid"
                     tal:repeat="opt view/layer_list"
                     tal:attributes="selected opt/selected;
@@ -71,7 +72,15 @@
                                     value opt/token;"
                     tal:content="opt/label">Layer title</option>
           </select>
-          <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
+          <select id="datasets-filter-resolution"
+                  name="datasets.filter.resolution">
+            <option value="resolutionid"
+                    tal:repeat="opt view/resolution_list"
+                    tal:attributes="selected opt/selected;
+                                    disabled opt/disabled;
+                                    value opt/token;"
+                    tal:content="opt/label">Resolution title</option>
+          </select>
         </div>
         <div class="span3">
           <label for="datasets-filter-source">Apply Filters</label>
@@ -130,7 +139,7 @@
                        "
            tal:repeat="layer python:view.match_selectedlayers(md)">
         <div class="cell">
-          
+
           <p class="lead">
             <img width="16" height="16"
                src="" alt=""
