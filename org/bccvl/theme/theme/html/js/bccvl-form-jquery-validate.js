@@ -79,7 +79,7 @@ define(
                         } else if (typeof $(element).attr('placeholder') !== "undefined"){
                             errorMessage = $(element).attr('placeholder');
                         } else {
-                            errorMessage = "Problem with field."
+                            errorMessage = "Problem with field.";
                         }
                         // add error messages
                         $('#form-errors-panels').append('<p><strong>'+errorMessage+'</strong> ('+$('body a[href="#'+tabId+'"]').text()+' tab)');
@@ -96,7 +96,7 @@ define(
                         // remove completed class and add errors to tab headers
                         $('body a[href="#'+tabId+'"]').removeClass('completed').addClass('error');
                     });
-                    
+
                     // need to add a panel at the top that says number of errors (and tab names maybe?)
                     $('#form-errors-panels').slideDown(500, function(){
                         setTimeout(function(){
@@ -130,7 +130,7 @@ define(
                         $('body a[href="#'+$(this).parents('.tab-pane').attr('id')+'"]').removeClass('completed').addClass('error');
                     }
                 });
-            }
+            };
             $.when( tabCheck() ).done(function(){
                 if (errorsOnTab == false){
                     $('.bccvl-wizardtabs .nav-tabs li.active a[data-toggle="tab"]').removeClass('error').addClass('completed');
