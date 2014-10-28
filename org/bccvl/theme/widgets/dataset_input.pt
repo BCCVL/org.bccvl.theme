@@ -35,8 +35,11 @@
       </a>
     </div>
     </tal:block>
-    <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
-           tal:condition="not:view/value"
-           tal:attributes="name string:${view/name}.empty" />
+    <div class="selecteditem"
+         tal:condition="not:view/value">
+      <input type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+             tal:attributes="name string:${view/name}.empty;
+                             id view/id;"/>
+    </div>
   </div>
 </html>
