@@ -34,7 +34,7 @@
         </p>
 
       </div>
-      <div class="selecteditem"
+      <div class="selecteditem empty"
            tal:condition="repeat/item/end">
         <!-- TODO: should this one be outside of the div here?
              need to update load script to fetch it as well
@@ -46,6 +46,7 @@
                tal:attributes="name string:${view/name}.empty;
                                value python: '1' if view.value else '';
                                required view/required;
+                               class python: 'required' if view.required else '';
                                id view/id" />
       </div>
     </tal:repeat>
@@ -55,6 +56,7 @@
              tal:attributes="name string:${view/name}.empty;
                              value python: '1' if view.value else '';
                              required view/required;
+                             class python: 'required' if view.required else '';
                              id view/id" />
     </div>
   </div>
