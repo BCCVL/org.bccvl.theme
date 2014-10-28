@@ -34,7 +34,7 @@
       <span tal:content="itemmd/rows">Number of points</span></p>
     </div>
     </tal:block>
-    <div class="selecteditem"
+    <div class="selecteditem empty"
          tal:condition="not:view/value">
       <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
              tal:attributes="name string:${view/name}.empty;

@@ -1651,7 +1651,9 @@ img.loader {
     display:none;
     margin:0 auto 1em auto;
 }
-
+.selecteditem.empty {
+    display:none;
+}
 
 
 
