@@ -27,48 +27,57 @@
                   "
       tal:omit-tag="">
 
-
-  <div class="row">
-    <form id="datasets-popup-searchform" action="" method="GET"
+  <div class="row-fluid">
+    <form id="datasets-popup-searchform" action="" method="GET" class="span12"
           tal:define="context_state context/@@plone_context_state"
           tal:attributes="action context_state/current_base_url">
-      <div class="cell span3">
-        <input id="datasets-filter-text"
-               name="datasets.filter.text" type="text"
-               placeholder="Search Datasets" class="input-medium"
-               tal:attributes="value python:request.get('datasets.filter.text')"/>
-        <input name="datasets.filter.genre:list" type="hidden"
-               tal:attributes="value genre"
-               tal:repeat="genre python:request.get('datasets.filter.genre')"/>
-        <button class="btn" type="submit">Go!</button>
-      </div>
-      <div class="cell span3">
-        <select id="datasets-filter-source"
-                name="datasets.filter.source:list"
-                multiple="multiple">
-          <option disabled="disabled">Filter by Source</option>
-          <option value="optionvalue"
-                  tal:repeat="opt view/source_list"
-                  tal:attributes="selected opt/selected;
-                                  disabled opt/disabled;
-                                  value opt/token;"
-                  tal:content="opt/label">Option label</option>
-        </select>
-      </div>
-      <div class="cell span3"
-           tal:condition="enable_layers">
-        <select id="datasets-filter-layer"
-                name="datasets.filter.layer:list"
-                multiple="multiple">
-          <option disabled="disbaled">Filter by Layers</option>
-          <option value="layerid"
-                  tal:repeat="opt view/layer_list"
-                  tal:attributes="selected opt/selected;
-                                  disabled opt/disabled;
-                                  value opt/token;"
-                  tal:content="opt/label">Layer title</option>
-        </select>
-        <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
+      <div class="row-fluid">
+        <div class="span3">
+          <label for="datasets-filter-text">Filter by Keywords</label>
+          <input id="datasets-filter-text"
+                 name="datasets.filter.text" type="text"
+                 placeholder="Enter search terms." class="input-medium"
+                 tal:attributes="value python:request.get('datasets.filter.text')"/>
+          <input name="datasets.filter.genre:list" type="hidden"
+                 tal:attributes="value genre"
+                 tal:repeat="genre python:request.get('datasets.filter.genre')"/>
+          
+        </div>
+        <div class="span3">
+          <label for="datasets-filter-source">Filter by Source</label>
+          <select id="datasets-filter-source"
+                  name="datasets.filter.source:list"
+                  multiple="multiple">
+            
+            <option value="optionvalue"
+                    tal:repeat="opt view/source_list"
+                    tal:attributes="selected opt/selected;
+                                    disabled opt/disabled;
+                                    value opt/token;"
+                    tal:content="opt/label">Option label</option>
+          </select>
+        </div>
+        <div class="span3"
+             tal:condition="enable_layers">
+          <label for="datasets-filter-layer">Filter by Layers</label>
+          <select id="datasets-filter-layer"
+                  name="datasets.filter.layer:list"
+                  multiple="multiple">
+            
+            <option value="layerid"
+                    tal:repeat="opt view/layer_list"
+                    tal:attributes="selected opt/selected;
+                                    disabled opt/disabled;
+                                    value opt/token;"
+                    tal:content="opt/label">Layer title</option>
+          </select>
+          <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
+        </div>
+        <div class="span3">
+          <label for="datasets-filter-source">Apply Filters</label>
+          <button class="btn btn-block" type="submit">Show Layers!</button>
+          <p><small>Select multiple layers by <strong>holding CTRL (CMD on Mac)</strong> when clicking on results.</small></p>
+        </div>
       </div>
 
     </form>
@@ -87,24 +96,23 @@
                        item_modified item/ModificationDate;
                        item_description item/Description;
                        ">
-        <div class="cell span1">
-          <img width="16" height="16"
+        <div class="cell"
+             tal:condition="not:enable_layers">
+          <p>
+            <img width="16" height="16"
                src="" alt=""
                tal:condition="item_icon/url"
                tal:attributes="src item_icon/url;
                                alt item_icon/description;
                                title item_icon/title;
                                width item_icon/width;
-                               height item_icon/height;" />
-        </div>
-        <div class="cell offset1"
-             tal:condition="not:enable_layers">
-          <p tal:content="item_title_or_id">Item Title</p>
+                               height item_icon/height;" />&nbsp;
+            <span tal:content="item_title_or_id">Item Title</span></p>
           <p tal:content="item_description">Item description</p>
-          <p>Creator: <span tal:condition="item_creator"
+          <p><strong>Creator:</strong> <span tal:condition="item_creator"
           tal:define="author python:pas_member.info(item_creator)"
           tal:content="author/name_or_id">Bob Dobalina</span>
-          Modified: <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span>
+          <strong>Modified:</strong> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span>
           </p>
         </div>
       </div>
@@ -121,25 +129,26 @@
                        md python:dataset_tools.metadata(item);
                        "
            tal:repeat="layer python:view.match_selectedlayers(md)">
-        <div class="cell span1">
-          <img width="16" height="16"
+        <div class="cell">
+          
+          <p class="lead">
+            <img width="16" height="16"
                src="" alt=""
                tal:condition="item_icon/url"
                tal:attributes="src item_icon/url;
                                alt item_icon/description;
                                title item_icon/title;
                                width item_icon/width;
-                               height item_icon/height;" />
-        </div>
-        <div class="cell offset1">
-          <p class="lead" tal:content="item_title_or_id">Item Title</p>
-          <p tal:content="item_description">Item description</p>
-          <p tal:content="layer/label">Layer title</p>
-          <p>Creator: <span tal:condition="item_creator"
-          tal:define="author python:pas_member.info(item_creator)"
-          tal:content="author/name_or_id">Bob Dobalina</span>
-          Modified: <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span>
+                               height item_icon/height;" />&nbsp;<span tal:content="item_title_or_id">Item Title</span>
           </p>
+          <p tal:condition="item_description"
+              tal:content="item_description">Item description</p>
+          <p  tal:condition="layer/label"
+              tal:content="layer/label">Layer title</p>
+          <p><strong>Creator:</strong> <span tal:condition="item_creator"
+          tal:define="author python:pas_member.info(item_creator)"
+          tal:content="author/name_or_id">Bob Dobalina</span></p>
+          <p><strong>Modified:</strong> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></p>
         </div>
       </div>
     </tal:repeat>

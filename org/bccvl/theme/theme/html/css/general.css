@@ -8,7 +8,7 @@ body {
 * {
 
 }
-p strong {
+.alert p strong {
     font-size:14px;
 }
 .white-bg {
@@ -1559,8 +1559,73 @@ table.error td {
 .ui-selectee {
     cursor: pointer;
 }
-p.lead.ui-selectee {
+.ui-selectable .datasets-list-entry p.lead.ui-selectee {
     font-size: 1.3em;
+    line-height: 1em;
+    margin-bottom: .3em;
+    display: block;
+    margin-left:0;
+}
+.ui-selectable .datasets-list-entry p {
+    display:inline-block;
+    margin-bottom: 0;
+    font-size: 0.9em;
+    line-height: 1em;
+    margin-right: 1em;
+}
+#datasets-popup-result .datasets-list-entry {
     margin-bottom: .3em;
 }
+#datasets-popup-result .datasets-list-entry.ui-selected {
+    background: rgba(0, 159, 227, .5);
+    color: white;
+    border: 1px solid rgba(0,0,0,.1);
+    
+}
+img.ui-selectee {
+    vertical-align: bottom;
+    line-height: 1em;
+}
 
+#datasets-popup-result .ui-selecting { background: rgba(0, 159, 227, .3); }
+
+div#datasets-popup-result {
+    max-height: 450px;
+    overflow-y: auto;
+    box-shadow: inset 0px -2px 2px rgba(0,0,0,.1);
+}
+.bccvl-experimentdetails .modal .modal-body {
+    padding:0;
+}
+.bccvl-experimentdetails .modal .modal-header {
+    border-bottom: 1px solid rgba(0, 159, 227, .3);
+}
+.bccvl-experimentdetails .modal .modal-body form {
+    padding: 1em;
+    background: rgba(0, 159, 227, .15);
+    margin-bottom: 0;
+    box-shadow: 0px 1px 1px rgba(0,0,0,.15);
+}
+#datasets-popup-result-list {
+    padding:1em;
+}
+#datasets-popup-searchform input,  #datasets-popup-searchform select {
+    width: 100%;
+    margin-bottom: 0;
+}
+#datasets-popup-searchform input {
+    width: 95%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+#datasets-popup-searchform label {
+    font-size:1em;
+    font-family: "OpenSansRegular";
+    color: #009FE3;
+}
+#datasets-popup-searchform small {
+    line-height: 1.3em;
+}
+#datasets-popup-searchform p {
+    margin-top:.5em;
+}
