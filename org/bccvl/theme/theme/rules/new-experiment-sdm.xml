@@ -90,10 +90,6 @@
         <replace css:theme="#formfield-form-widgets-species_absence_dataset"
                  css:content="#formfield-form-widgets-species_absence_dataset"/>"
 
-
-        <!-- The spatial scale -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-spatialscaletable tbody tr td" css:content="#form-widgets-resolution" />
-
         <!-- The rest of this is filled in with AJAX -->
         <replace css:theme="#formfield-form-widgets-environmental_datasets"
                  css:content="#formfield-form-widgets-environmental_datasets"/>"
