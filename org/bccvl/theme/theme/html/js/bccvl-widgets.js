@@ -50,22 +50,35 @@ define(
                 });
         });
 
+        function load_search_results(url, params) {
+            $modal.find(settings.result_selector).load(
+                url + ' ' + settings.result_child_selector, params,
+                // reapply single select events
+                function() {
+                    single_selectable($modal.find(settings.result_child_selector));
+                    // intercept pagination links
+                    $modal.find('div.pagination a').click( function(event) {
+                        event.preventDefault();
+                        load_search_results($(this).attr('href'));
+                    });
+                }
+            );
+        };
+
         // initialise modal when finished loading
         function bind_events_on_modal_content() {
             // hookup events within modal
             $modal.find('form').submit(function(event) {
                 event.preventDefault();
-                $modal.find(settings.result_selector).load(
-                    $(this).attr('action') + ' ' + settings.result_child_selector,
-                    $(this).serialize(),
-                    // reapply single select events
-                    function() {
-                        single_selectable($modal.find(settings.result_child_selector));
-                    }
-                );
+                load_search_results($(this).attr('action'), $(this).serialize());
             });
             // single select on first load
             single_selectable($modal.find(settings.result_child_selector));
+            // intercept pagination links
+            $modal.find('div.pagination a').click( function(event) {
+                event.preventDefault();
+                load_search_results($(this).attr('href'));
+            });
         };
 
         // reload widget via ajax
@@ -145,22 +158,36 @@ define(
                 });
         });
 
+        function load_search_results(url, params) {
+            $modal.find(settings.result_selector).load(
+                url + ' ' + settings.result_child_selector, params,
+                // reapply single select events
+                function() {
+                    // enable selectable
+                    $modal.find(settings.result_child_selector).selectable();
+                    // intercept pagination links
+                    $modal.find('div.pagination a').click( function(event) {
+                        event.preventDefault();
+                        load_search_results($(this).attr('href'));
+                    });
+                }
+            );
+        };
+
         // initialise modal when finished loading
         function bind_events_on_modal_content() {
             // hookup events within modal
             $modal.find('form').submit(function(event) {
                 event.preventDefault();
-                $modal.find(settings.result_selector).load(
-                    $(this).attr('action') + ' ' + settings.result_child_selector,
-                    $(this).serialize(),
-                    // reenable selectable
-                    function() {
-                        $modal.find(settings.result_child_selector).selectable();
-                    }
-                );
+                load_search_results($(this).attr('action'), $(this).serialize());
             });
             // enable selectable
             $modal.find(settings.result_child_selector).selectable();
+            // intercept pagination links
+            $modal.find('div.pagination a').click( function(event) {
+                event.preventDefault();
+                load_search_results($(this).attr('href'));
+            });
         };
 
         // reload widget via ajax
