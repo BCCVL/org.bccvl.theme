@@ -34,10 +34,13 @@
       <span tal:content="itemmd/rows">Number of points</span></p>
     </div>
     </tal:block>
-    
-    <input type="hidden" value="" class="required" name="form.widgets.empty" data-error-message="A dataset must be selected."
-           tal:condition="not:view/value"
-           tal:attributes="name string:${view/name}.empty" />
+    <div class="selecteditem"
+         tal:condition="not:view/value">
+      <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+             tal:attributes="name string:${view/name}.empty;
+                             required view/required;
+                             id view/id;"/>
+    </div>
   </div>
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
