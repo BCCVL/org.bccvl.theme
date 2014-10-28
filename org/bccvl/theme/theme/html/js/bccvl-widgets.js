@@ -25,7 +25,7 @@ define(
             widgetname: 'form.widgets.' + options.field,
             widgetid: 'form-widgets-' + options.field,
             widgeturl: location.origin + location.pathname + '/++widget++' + options.field,
-            widgetelement: 'div.selecteditem',
+            widgetelement: '#form-widgets-' + options.field + '-selected >',
             result_selector: '#datasets-popup-result',
             result_child_selector: '#datasets-popup-result-list'
         }, options );
@@ -137,7 +137,7 @@ define(
             widgetname: 'form.widgets.' + options.field,
             widgetid: 'form-widgets-' + options.field,
             widgeturl: location.origin + location.pathname + '/++widget++' + options.field,
-            widgetelement: 'div.selecteditem',
+            widgetelement: '#form-widgets-' + options.field + '-selected >',
             result_selector: '#datasets-popup-result',
             result_child_selector: '#datasets-popup-result-list'
         }, options );

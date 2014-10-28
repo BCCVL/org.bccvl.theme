@@ -34,7 +34,7 @@
         </p>
 
       </div>
-      <div class="selecteditem empty"
+      <div
            tal:condition="repeat/item/end">
         <!-- TODO: should this one be outside of the div here?
              need to update load script to fetch it as well
@@ -50,7 +50,7 @@
                                id view/id" />
       </div>
     </tal:repeat>
-    <div class="selecteditem empty"
+    <div
          tal:condition="not:view/value">
       <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
              tal:attributes="name string:${view/name}.empty;
