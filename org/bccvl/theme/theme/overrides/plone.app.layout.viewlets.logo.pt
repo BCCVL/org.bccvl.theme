@@ -1,6 +1,8 @@
 <!-- project title -->
 <a id="portal-logo" href="/" class="bccvllinks-home brand"
-   tal:define="root view/navigation_root_url;"
+   tal:define="tools context/@@plone_tools;
+               dashboard python:tools.actions().listActionInfos('user/dashboard');
+               root python: len(dashboard) and dashboard[0]['url'] or view.navigation_root_url;"
    tal:attributes="href root;">
   <img src="images/bccvl_logo_beta.png"
        alt="Biodiversity &amp; Climate Change Virtual Lab"
