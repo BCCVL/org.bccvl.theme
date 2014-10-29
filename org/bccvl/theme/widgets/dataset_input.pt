@@ -30,9 +30,9 @@
         <i class="icon-eye-open icon-link icon-white"></i>
       </a>
       <p><strong><span class="selected-option"
-            tal:content="item/Title">Species</span></strong>
-      <span tal:content="itemmd/scientificname">Scientific Name</span>
-      <span tal:content="itemmd/rows">Number of points</span></p>
+            tal:content="item/Title">Species</span></strong></p>
+      <p><span tal:content="itemmd/scientificname">Scientific Name</span></p>
+      <p>Rows: <span tal:content="itemmd/rows">Number of points</span></p>
     </div>
     </tal:block>
     <div

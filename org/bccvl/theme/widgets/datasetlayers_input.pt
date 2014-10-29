@@ -7,9 +7,11 @@
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname-selected"
        tal:attributes="id string:${view/id}-selected">
-    <div class="alert alert-block"
+    <div class="alert alert-error"
          tal:condition="python: len(view.resolutions()) > 1">
-      <p> Warning: layers with different resolutions selected.</p>
+      <p>WARNING: Selection contains layers with different
+      resolution. To run the experiment, all layers will be scaled
+      down to the lowest resolution in the selected set of layers.</p>
     </div>
     <tal:repeat tal:repeat="item view/items">
       <div class="selecteditem"
@@ -33,11 +35,9 @@
                            data-uuid brain/UID;">
           <i class="icon-eye-open icon-link icon-white"></i>
         </a>
-        <p><strong><span tal:content="brain/Title">Dataset</span></strong>
-        <span tal:content="layer/label">Layer</span>
-        <span tal:content="item/resolution/title">Resolution title</span>
-        </p>
-
+        <p><strong><span tal:content="brain/Title">Dataset</span></strong></p>
+        <p><span tal:content="layer/label">Layer</span></p>
+        <p>Resolution: <span tal:content="item/resolution/title">Resolution title</span></p>
       </div>
       <div
            tal:condition="repeat/item/end">

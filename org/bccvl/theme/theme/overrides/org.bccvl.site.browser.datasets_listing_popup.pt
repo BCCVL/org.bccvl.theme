@@ -89,7 +89,7 @@
         </div>
         <div class="span2">
           <label for="datasets-filter-source">Apply Filters</label>
-          <button class="btn btn-block" type="submit">Show Layers!</button>
+          <button class="btn btn-block" type="submit">Search!</button>
           <p tal:condition="enable_layers"><small>Select multiple layers by <strong>holding CTRL (CMD on Mac)</strong> when clicking on results.</small></p>
           <p tal:condition="not:enable_layers"><small>Only <strong>one dataset</strong> can be selected here.</small></p>
         </div>
