@@ -1,8 +1,9 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visualiser-loading-panel'],
-    function( $      ) {
+define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
+             'js/bccvl-visualiser-loading-panel'],
+            function( $  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         $('.bccvl-occurrence-viz, .bccvl-absence-viz').click(function(){
             renderMap($(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         }); */
-        
+
         // new list layout events
         $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
             event.preventDefault();
@@ -23,7 +24,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
         $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
             event.preventDefault();
             renderMap($(this).data('uuid'),$(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
-        });   
+        });
 
         // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
@@ -33,7 +34,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers', 'js/bccvl-visual
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+            // hack in old style visualiser here
+            var iframe = $(this).closest('.tab-pane, body').find('iframe.bccvl-viz');
+            if (iframe.length != 0) {
+                var vizid = $(this).data('viz-id');
+                require(['js/bccvl-visualiser'], function(bccvl_visualiser){
+                    bccvl_visualiser.visualise(vizid, iframe);
+                });
+            } else {
+                renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+            }
         });
 
         /* Global configuration */
