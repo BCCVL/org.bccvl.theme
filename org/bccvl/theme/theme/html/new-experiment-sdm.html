@@ -23,8 +23,6 @@
 
     </style>
 
-
-    <!-- include portal_url to simplify path referencing -->
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
       window.bccvl || (window.bccvl = {});
@@ -40,6 +38,7 @@
       portal_url = document.URL.split('/').slice(0, -1).join('/');
     </script>
 
+    <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
 
     <!-- this script writes to doc asynchonously, cannot be included via requirejs -->

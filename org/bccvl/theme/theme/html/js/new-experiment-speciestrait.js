@@ -5,7 +5,7 @@ define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-wizard-tabs', 'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils', 'select2',
-     'js/bccvl-form-popover'],
+     'js/bccvl-form-popover', 'js/bccvl-visualiser-map'],
     function($, preview_layout, viz, wiztabs, search, formvalidator) {
 
         $(function() {
@@ -17,10 +17,10 @@ define(
 
             // init the visualiser
             viz.init();
-            
+
             // hook up the wizard buttons
             wiztabs.init();
-            
+
             // hook up the search fields
             search.init();
 
@@ -28,7 +28,7 @@ define(
             // algorithm configuration blocks should be hidden and
             // revealed depending on whether the algorithm is
             // selected.
-            
+
             var $algoCheckboxes = $('input[name="form.widgets.algorithm"]');
             $.each($algoCheckboxes, function(index, checkbox) {
                 var $checkbox = $(checkbox);
@@ -67,8 +67,8 @@ define(
                 // start with all algo config groups hidden.
                 $('.accordion-group[data-function="' + $(this).attr('value') + '"]').hide(0);
             });
-            
+
         });
-    
+
     }
 );
