@@ -54,8 +54,10 @@
 	    <strong>No datasets are available yet.</strong><br/>
 	    Listed here are all the recently uploaded datasets that are available to you, including experiments shared by other people.
 	  </div>
-          <div class="row"
-               tal:repeat="item datasets">
+          <div class="row alert alert-success"
+               tal:repeat="item datasets"
+               tal:attributes="class string:row alert alert-${python:view.get_state_css(item)}">
+            <!-- ds state ... alert-success or alert-error or alert-block -->
             <a href="item_url" tal:attributes="href string:${portal_url}/datasets" tal:content="item/Title">Dataset title</a>
           </div>
 	</div>
@@ -73,8 +75,9 @@
 	    <strong>You have no experiments.</strong><br/>
 	    Listed here are all the recent experiments you've conducted, including experiments shared by other people.
 	  </div>
-          <div class="row"
-               tal:repeat="item experiments">
+          <div class="row alert alert-success"
+               tal:repeat="item experiments"
+               tal:attributes="class string:row alert alert-${python:view.get_state_css(item)}">
             <a href="item_url" tal:attributes="href item/getURL" tal:content="item/Title">Dataset title</a>
           </div>
 	</div>
