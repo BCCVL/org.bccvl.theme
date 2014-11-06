@@ -48,17 +48,19 @@
            tal:define="datasets view/newest_datasets">
 	<h4><strong>Recently Added Datasets</strong></h4>
 	<hr/>
-	<div id="recent-datasets-list">
+	<div id="recent-datasets-list"
+        tal:define="dstools context/@@dataset_tools">
 	  <div class="alert"
                tal:condition="not:datasets">
 	    <strong>No datasets are available yet.</strong><br/>
 	    Listed here are all the recently uploaded datasets that are available to you, including experiments shared by other people.
 	  </div>
-          <div class="row alert alert-success"
+          <div class="dash-dataset"
                tal:repeat="item datasets"
-               tal:attributes="class string:row alert alert-${python:view.get_state_css(item)}">
-            <!-- ds state ... alert-success or alert-error or alert-block -->
-            <a href="item_url" tal:attributes="href string:${portal_url}/datasets" tal:content="item/Title">Dataset title</a>
+               tal:attributes="class string:dash-dataset ${python:view.get_state_css(item)}">
+              <a href="item_url" tal:attributes="href string:${portal_url}/datasets" tal:content="item/Title">Dataset title</a> 
+              <span tal:content="python:dstools.genre_title(item.BCCDataGenre)">Dataset Type</span>
+            
           </div>
 	</div>
         <a class="bccvllinks-datasets btn btn-primary" href="datasets_upload_view" tal:attributes="href string:${portal_url}/datasets_upload_view">Upload A Dataset <i class="icon-chevron-right icon-white"></i></a>
@@ -75,10 +77,21 @@
 	    <strong>You have no experiments.</strong><br/>
 	    Listed here are all the recent experiments you've conducted, including experiments shared by other people.
 	  </div>
-          <div class="row alert alert-success"
-               tal:repeat="item experiments"
-               tal:attributes="class string:row alert alert-${python:view.get_state_css(item)}">
-            <a href="item_url" tal:attributes="href item/getURL" tal:content="item/Title">Dataset title</a>
+          <div class="dash-experiment"
+               tal:repeat="item experiments">
+              <a href="item_url" class="dash-experiment-name" tal:attributes="href item/getURL" tal:content="item/Title">Dataset title</a>
+            <div
+              tal:attributes="class string:dash-experiment-state ${python:view.get_state_css(item)}">
+              <tal:if condition="python:view.get_state_css(item) == 'success'">
+                <i class="fa fa-check"></i><br/>Completed
+              </tal:if>
+              <tal:if condition="python:view.get_state_css(item) == 'info'">
+                <i class="fa fa-clock-o"></i><br/>In Progress
+              </tal:if>
+              <tal:if condition="python:view.get_state_css(item) == 'error'">
+                <i class="fa fa-remove"></i><br/>Failed
+              </tal:if>
+            </div>
           </div>
 	</div>
         <a class="bccvllinks-experiments btn btn-primary" href="experiments" tal:attributes="href string:${portal_url}/experiments">Start a new experiment <i class="icon-chevron-right icon-white"></i></a>

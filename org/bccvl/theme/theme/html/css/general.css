@@ -1583,6 +1583,74 @@ body.home>.white-bg {
 }
 .dashlist h4 {
     margin-bottom:.25em;
+    color:#333;
+}
+.dashlist hr {
+    margin:10px 0;
+}
+.dashlist>div {
+    margin-bottom:1em;
+}
+.dash-experiment, .dash-dataset {
+    display: block;
+    word-break:break-word;
+}
+.dash-dataset {
+    display:block;
+    background:#ecf0f1;
+    padding:.6em 2.5%;
+    margin:2px 0;
+}
+.dash-dataset a {
+    font-size: 1.2em;
+    display:block;
+}
+.dash-experiment a {
+    display:block;
+    background:#ecf0f1;
+    padding:.6em 2.5%;
+    font-size: 1.2em;
+}
+.dash-experiment {
+    margin:2px 0;
+}
+.dash-experiment a {
+    margin:2px 0;
+}
+.dash-experiment a:hover {
+    background:#e1ebee;
+}
+.dash-experiment a.dash-experiment-name {
+    width:75%;
+    padding:.6em 2.5%;
+    display: inline-block;
+    min-height:33px;
+}
+.dash-experiment-state {
+    width: 16%;
+    padding: .6em 2%;
+    display: inline-block;
+    float: right;
+    margin: 2px 0;
+    font-size: 1em;
+    line-height: 1em;
+    text-align: center;
+    min-height:36px;
+}
+.dash-experiment-state i {
+    font-size: 1.5em;
+}
+.dash-experiment-state.success {
+    background:rgba(77,195,69, .35);
+    color:rgba(77,195,69, 1);
+}
+.dash-experiment-state.info {
+    background:rgba(249,178,51, .35);
+    color:rgba(236,132,30, 1);
+}
+.dash-experiment-state.error {
+    background:rgba(231,76,60, .35);
+    color:rgba(231,76,60, 1);
 }
 .filter ul li {
     display: inline-block;
@@ -1719,7 +1787,5 @@ img.loader {
     display:none;
     margin:0 auto 1em auto;
 }
-
-
 
 
