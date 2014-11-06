@@ -33,7 +33,7 @@
                       <tal:block tal:condition="python: 'function' in result.job_params">
                         <p>Algorithm: <tal:replace
                                        tal:replace="result/job_params/function">bioclim</tal:replace></p>
-                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_progress"></tal:replace></p>
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                         <p>Emissions Scenario: <tal:replace
@@ -42,7 +42,7 @@
                                        tal:replace="result/job_params/climate_models">bioclim</tal:replace></p>
                         <p>Year: <tal:replace
                                   tal:replace="result/job_params/year">bioclim</tal:replace></p>
-                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_progress"></tal:replace></p>
                       </tal:block>
                     </td>
                   </tr>
