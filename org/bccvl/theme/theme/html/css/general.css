@@ -11,6 +11,9 @@ body {
 .alert p strong {
     font-size:14px;
 }
+.table {
+    word-break: break-all;
+}
 .white-bg {
     background:#FFF;
 }
