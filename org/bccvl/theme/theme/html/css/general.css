@@ -114,55 +114,120 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', en
 filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .new-experiment-button {
-    position: relative;
-    display:inline-block;
-    border-radius: 100px;
+    position: relative!important;
+    display:inline-block!important;
+    float:none!important;
+    /*border-radius: 100px;
     height: 140px;
-    width: 140px;
+    width: 140px;*/
     text-align: center;
     vertical-align: middle;
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 1.1em;
+    line-height: 1.2em;
     text-indent: 0;
     font-family: "OpenSansSemiBold";
-    background: #f9b233!important;
-    border: 0px!important;
+    /*background: #f9b233!important;*/
+    background: none;
+    border: 2px solid #f9b233;
+    border-radius:5px;
     box-shadow: none!important;
     text-shadow: none;
-    color: #FFF!important;
-    margin: 1em;
+    margin-bottom:.5em;
     text-transform: capitalize;
 }
+.experiment-stm {
+    border-color: #f9b233!important;
+}
+.experiment-stm a {    
+    color:#eca21e!important;
+}
+.experiment-stm a:hover {    
+    background:#f9b233!important;
+}
 .experiment-cce {
-    background: #4dc345!important;
+    border-color: #4dc345!important;
+}
+.experiment-cce a {    
+    color:#4dc345!important;
+}
+.experiment-cce a:hover {    
+    background:#4dc345!important;
 }
 .experiment-bio {
-    background: #009FE3!important;
+    border-color:#009FE3!important;
+}
+.experiment-bio a { 
+    color:#009FE3!important;
+}
+.experiment-bio a:hover { 
+    background:#009FE3!important;
 }
 .experiment-sdm {
-    background: #e74c3c!important;
+    border-color: #e74c3c!important;
+}
+.experiment-sdm a { 
+    color:#e74c3c!important;
+}
+.experiment-sdm a:hover { 
+    background:#e74c3c!important;
 }
 .experiment-ensemble {
-    background: #34495e!important;
+    border-color: #34495e!important;
+}
+.experiment-ensemble a { 
+    color:#34495e!important;
+}
+.experiment-ensemble a:hover { 
+    background:#34495e!important;
 }
 
+.label.label-bio {
+    background-color: #009FE3;
+    color: white;
+    padding: .1em .4em;
+}
+.label.label-sdm {
+    background-color: #e74c3c;
+    color: white;
+    padding: .1em .4em;
+}
+.label.label-stm {
+    background-color: #eca21e;
+    color: white;
+    padding: .1em .4em;
+}
+.label.label-cce {
+    background-color: #4dc345;
+    color: white;
+    padding: .1em .4em;
+}
+.label.label-ensemble {
+    background-color: #34495e;
+    color: white;
+    padding: .1em .4em;
+}
+
+
 .new-experiment-button a {
-    color: #FFF;
     display:block;
     height:100%;
     transition: all linear .1s;
 }
 .new-experiment-button a i {
     display:inline-block;
-    font-size: 1.6em;
+    font-size: 1em;
 }
 .new-experiment-button a:hover {
+    color:white!important;
+}
+
+/*.new-experiment-button a:hover {
     text-decoration: none;
     background-color:rgba(255,255,255,.2)!important;
-}
+}*/
 .new-experiment-button a span {
     display: inline-block;
-    padding: 16px 10px;
+    padding: 0.7em;
 }
 
 .logo-icon {

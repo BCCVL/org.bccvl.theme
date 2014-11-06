@@ -15,27 +15,29 @@
                          getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
                          templateId template/getId">
 
-  <div id="new-experiment-menu"
-       tal:define="actions view/new_experiment_actions">
-    <div class="new-experiment-button experiment-sdm">
-      <a class="bccvllinks-experiment-new"
-         tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i><br/>new Species Distribution Modelling Experiment</span></a>
-    </div>
-    <div class="new-experiment-button experiment-cce">
-      <a class=" bccvllinks-experiment-proj-new"
-         tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New Climate change experiment</span></a>
-    </div>
-    <div class="new-experiment-button experiment-bio">
-      <a class=" bccvllinks-experiment-biodiverse-new"
-         tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New <br/>Biodiverse Experiment</span></a>
-    </div>
-    <div class="new-experiment-button experiment-stm">
-      <a class=" bccvllinks-experiment-speciestrait-new"
-         tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i><br/>New Species Trait Modelling Experiment</span></a>
-    </div>
-    <div class="new-experiment-button experiment-ensemble">
-      <a class=" bccvllinks-experiment-ensemble-new"
-         tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i><br/>New <br/>Ensemble Analysis</span></a>
+  <div class="row">
+    <div id="new-experiment-menu"
+         tal:define="actions view/new_experiment_actions">
+      <div class="new-experiment-button experiment-sdm span2 offset1">
+        <a class="bccvllinks-experiment-new"
+           tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i> new Species Distribution Modelling Experiment</span></a>
+      </div>
+      <div class="new-experiment-button experiment-cce span2">
+        <a class=" bccvllinks-experiment-proj-new"
+           tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i> New Climate change experiment</span></a>
+      </div>
+      <div class="new-experiment-button experiment-bio span2">
+        <a class=" bccvllinks-experiment-biodiverse-new"
+           tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i> New Biodiverse Experiment</span></a>
+      </div>
+      <div class="new-experiment-button experiment-stm span2">
+        <a class=" bccvllinks-experiment-speciestrait-new"
+           tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New Species Trait Modelling Experiment</span></a>
+      </div>
+      <div class="new-experiment-button experiment-ensemble span2">
+        <a class=" bccvllinks-experiment-ensemble-new"
+           tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i> New Ensemble Analysis</span></a>
+      </div>
     </div>
   </div>
 
@@ -72,7 +74,10 @@
                      <p class="bccvl-experiment-summary" tal:content="item/Description" />
                    </div>
                  </td>
-                 <td class="bccvl-table-label"><p tal:content="exp/type" /></td>
+                 <td class="bccvl-table-label">
+                  <p tal:content="exp/type"  class="label"
+                     tal:attributes="class string:label-${exp/type} label;"/>
+                 </td>
                  <td class="bccvl-table-controls">
                    <a tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
                      <i class="icon-chevron-right" title="view status &amp; results"></i>
