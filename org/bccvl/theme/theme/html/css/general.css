@@ -114,72 +114,41 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', en
 filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .new-experiment-button {
-    position: relative!important;
-    display:inline-block!important;
-    float:none!important;
-    /*border-radius: 100px;
-    height: 140px;
-    width: 140px;*/
     text-align: center;
     vertical-align: middle;
     font-size: 1.1em;
     line-height: 1.2em;
     text-indent: 0;
     font-family: "OpenSansSemiBold";
-    /*background: #f9b233!important;*/
-    background: none;
-    border: 2px solid #f9b233;
     border-radius:5px;
     box-shadow: none!important;
     text-shadow: none;
     margin-bottom:.5em;
     text-transform: capitalize;
+    
+}
+.new-experiment-button a {
+    color:white;
+}
+.new-experiment-button a:hover {
+    background:rgba(255,255,255,.35);
 }
 .experiment-stm {
-    border-color: #f9b233!important;
-}
-.experiment-stm a {    
-    color:#eca21e!important;
-}
-.experiment-stm a:hover {    
-    background:#f9b233!important;
+    background: #f9b233!important;
 }
 .experiment-cce {
-    border-color: #4dc345!important;
-}
-.experiment-cce a {    
-    color:#4dc345!important;
-}
-.experiment-cce a:hover {    
-    background:#4dc345!important;
+    background: #4dc345!important;
 }
 .experiment-bio {
-    border-color:#009FE3!important;
-}
-.experiment-bio a { 
-    color:#009FE3!important;
-}
-.experiment-bio a:hover { 
     background:#009FE3!important;
 }
 .experiment-sdm {
-    border-color: #e74c3c!important;
-}
-.experiment-sdm a { 
-    color:#e74c3c!important;
-}
-.experiment-sdm a:hover { 
-    background:#e74c3c!important;
+    background: #e74c3c!important;
 }
 .experiment-ensemble {
-    border-color: #34495e!important;
+    background: #34495e!important;
 }
-.experiment-ensemble a { 
-    color:#34495e!important;
-}
-.experiment-ensemble a:hover { 
-    background:#34495e!important;
-}
+
 
 .label.label-bio {
     background-color: #009FE3;
@@ -216,9 +185,6 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 .new-experiment-button a i {
     display:inline-block;
     font-size: 1em;
-}
-.new-experiment-button a:hover {
-    color:white!important;
 }
 
 /*.new-experiment-button a:hover {
@@ -874,7 +840,7 @@ td.bccvl-table-controls a:hover {
 }
 
 .bccvl-experimenttable tr.headers {
-    background-color: #f5f5f5;
+    color: #009FE3;
 }
 
 .bccvl-experimenttable tr.headers th {
@@ -1631,7 +1597,7 @@ body.home>.white-bg {
     padding: .6em 2%;
     display: inline-block;
     float: right;
-    margin: 2px 0;
+    margin: 4px 0;
     font-size: 1em;
     line-height: 1em;
     text-align: center;
@@ -1788,4 +1754,11 @@ img.loader {
     margin:0 auto 1em auto;
 }
 
-
+.table {
+    border-spacing: 0 2px;
+    border-collapse: separate;
+}
+.table tr td {
+    background: #ecf0f1;
+    border-top: 0;
+}
