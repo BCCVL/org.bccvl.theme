@@ -20,23 +20,23 @@
          tal:define="actions view/new_experiment_actions">
       <div class="new-experiment-button experiment-sdm">
         <a class="bccvllinks-experiment-new"
-           tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i> new Species Distribution Modelling Experiment</span></a>
+           tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i> new</span> Species Distribution Modelling Experiment</a>
       </div>
       <div class="new-experiment-button experiment-cce">
         <a class=" bccvllinks-experiment-proj-new"
-           tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i> New Climate change experiment</span></a>
+           tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Climate change experiment</a>
       </div>
       <div class="new-experiment-button experiment-bio">
         <a class=" bccvllinks-experiment-biodiverse-new"
-           tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i> New Biodiverse Experiment</span></a>
+           tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Biodiverse Experiment</a>
       </div>
       <div class="new-experiment-button experiment-stm">
         <a class=" bccvllinks-experiment-speciestrait-new"
-           tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New Species Trait Modelling Experiment</span></a>
+           tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait Modelling Experiment</a>
       </div>
       <div class="new-experiment-button experiment-ensemble">
         <a class=" bccvllinks-experiment-ensemble-new"
-           tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i> New Ensemble Analysis</span></a>
+           tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i> New</span> Ensemble Analysis</a>
       </div>
     </div>
   </div>

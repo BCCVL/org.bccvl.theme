@@ -13,6 +13,8 @@
     <tal:tabs metal:use-macro="context/datasets_listing_view/datasets_tabs"></tal:tabs>
 
     <div id="searchOccurrence" class="bccvl-search-form form-inline">
+      <h4><strong>Import Dataset Form</strong></h4>
+              <hr/>
         <input name="searchOccurrence_query" type="text"
                class="span8" placeholder="Find more species..."
                autocomplete="off"/>

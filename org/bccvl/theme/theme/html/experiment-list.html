@@ -99,7 +99,7 @@
       <!-- container for main content -->
       <div class="container bccvl-main">
 
-        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
         <div id="breadcrumbs" class="bccvl-breadcrumb row">
           <div class="span12">
 	    <ul class="breadcrumb">
@@ -108,14 +108,20 @@
 	      <li><a class="bccvllinks-experiments">Experiments</a></li>
 	    </ul>
           </div>
-        </div>
+        </div>-->
 
         <!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <section class="bccvl-experimentlist">
 
           <div class="row-fluid">
+            <div class="span12">
+              <h1>View and Run <strong>Experiments</strong></h1>
+            </div>
+          </div>
+          <div class="row-fluid">
             <div class="span4">
-      	      <h3>Run A New Experiment</h3>
+      	      <h4><strong>Run A New Experiment</strong></h4>
+              <hr/>
       	      <p>The BCCVL enables you to conduct five types of experiments to investigate the impact of climate change on biodiversity.</p>
       	      <div class="alert">
       	        <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -127,7 +133,7 @@
     	    <!-- some controls -->
         	    <div id="new-experiment-menu">
         	      <div class="new-experiment-button experiment-sdm">
-        	        <a class=" bccvllinks-experiment-new"><span><i class="fa fa-plus"></i><br/>new Species Distribution Modelling Experiment</span></a>
+        	        <a class=" bccvllinks-experiment-new"><i class="fa fa-plus"></i><br/>new <span>Species Distribution Modelling</span> Experiment</a>
         	      </div>
         	      <div class="new-experiment-button experiment-cce">
         	        <a class=" bccvllinks-experiment-proj-new"><span><i class="fa fa-plus"></i><br/>New Climate change experiment</span></a>
@@ -147,12 +153,15 @@
 
 	    <!-- list of available experiments -->
 	             <div class="span8">
-  	             <h3>Previously Run Experiments</h3>
-                  <div id="experiment-list">
-                        <div class="alert">
-        	          <strong>You have no experiments.</strong><br/>
-        	          Listed here are all the recent experiments you've conducted, including experiments shared by other people.
-        	        </div>
+                <div class="span10 offset1">
+    	             <h4><strong>Previously Run Experiments<strong></h4>
+                   <hr/>
+                    <div id="experiment-list">
+                          <div class="alert">
+          	          <strong>You have no experiments.</strong><br/>
+          	          Listed here are all the recent experiments you've conducted, including experiments shared by other people.
+          	        </div>
+                  </div>
                 </div>
   	           </div>
             </div>

@@ -125,30 +125,56 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     text-shadow: none;
     margin-bottom:.5em;
     text-transform: capitalize;
+    background:#ecf0f1;
     
 }
 .new-experiment-button a {
-    color:white;
-}
-.new-experiment-button a:hover {
-    background:rgba(255,255,255,.35);
-}
-.experiment-stm {
-    background: #f9b233!important;
-}
-.experiment-cce {
-    background: #4dc345!important;
-}
-.experiment-bio {
-    background:#009FE3!important;
-}
-.experiment-sdm {
-    background: #e74c3c!important;
-}
-.experiment-ensemble {
-    background: #34495e!important;
+    border-radius: 5px;
 }
 
+.new-experiment-button a:hover {
+    background:#e1ebee;
+}
+.experiment-stm span {
+    color: #f9b233!important;
+}
+.experiment-cce span {
+    color: #4dc345!important;
+}
+.experiment-bio span{
+    color:#16a085!important;
+}
+.experiment-sdm span{
+    color: #e74c3c!important;
+}
+.experiment-ensemble span {
+    color: #34495e!important;
+}
+.experiment-stm a:hover, .experiment-stm a:hover span {
+    background: #f9b233!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-cce a:hover, .experiment-cce a:hover span {
+    background: #4dc345!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-bio a:hover, .experiment-bio a:hover span {
+    background: #16a085!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-sdm a:hover, .experiment-sdm a:hover span {
+    background: #e74c3c!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-ensemble a:hover, .experiment-ensemble a:hover span {
+    background: #34495e!important;
+    color: white!important;
+    text-decoration: none;
+}
 
 .label.label-bio {
     background-color: #009FE3;
@@ -177,10 +203,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 
-.new-experiment-button a {
+.new-experiment-button a, .new-experiment-button a span {
     display:block;
     height:100%;
-    transition: all linear .1s;
 }
 .new-experiment-button a i {
     display:inline-block;
@@ -191,8 +216,8 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     text-decoration: none;
     background-color:rgba(255,255,255,.2)!important;
 }*/
-.new-experiment-button a span {
-    display: inline-block;
+.new-experiment-button a {
+    display: block;
     padding: 0.7em;
 }
 
@@ -998,7 +1023,9 @@ div.morefilters h4 span.label {
     display: inline-block;
 }
 .folder_listing h3 {
-    font-size: 2.5em;
+    font-size: 1.6em;
+    font-family: "OpenSansSemibold";
+    color:#333;
 }
 .documentByline {
     color:rgba(0,0,0,.5);
@@ -1412,12 +1439,13 @@ body.home>.white-bg {
     font-family: "OpenSansRegular";
 }
 .bccvl-datasetlist-filter {
-    background: rgba(0, 159, 227, .15);
+    background: #ecf0f1;
     color:white;
+    border-radius: 5px;
 }
 .bccvl-datasetlist-filter h4, .bccvl-datasetlist-filter h5 {
     /*color:white;*/
-    font-family: "OpenSansRegular";
+    font-family: "OpenSansSemibold";
     margin-bottom:.5em;
 }
 .filter-bar {
@@ -1464,7 +1492,7 @@ body.home>.white-bg {
     height:2.1em;
 }
 .datasets-list-entry .dropdown-button {
-    background: #e0e0e0;
+    background: rgba(0,0,0,.1);
     display:block;
     padding:.3em;
     margin: 1em -1em -1em -1em;
@@ -1474,14 +1502,13 @@ body.home>.white-bg {
     text-shadow: 0px 1px 1px rgba(0,0,0,.25);
 }
 .datasets-list-entry .dropdown-button:hover {
-    background: rgba(0,0,0,.5);
+    background: rgba(80,150,190,.25);
     text-decoration:none;
 }
 .datasets-list-entry {
     margin-bottom: 1em;
     padding: 1em;
-    background: #f8f8f8;
-    border: 1px solid #e8e8e8;
+    background: #ecf0f1;
 }
 .dataset-list-dropdown {
     margin: 0 -1em -1em -1em;
@@ -1761,4 +1788,17 @@ img.loader {
 .table tr td {
     background: #ecf0f1;
     border-top: 0;
+}
+h4 strong {
+    color:#333;
+}
+hr{
+    margin:10px 0;
+}
+.table.bccvl-experimenttable th {
+    padding-top:4px;
+    padding-bottom:4px;
+}
+.bccvl-kbsearch {
+    margin-top: 1em;
 }
