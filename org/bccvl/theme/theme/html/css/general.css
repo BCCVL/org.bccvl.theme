@@ -126,7 +126,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     margin-bottom:.5em;
     text-transform: capitalize;
     background:#ecf0f1;
-    
+
 }
 .new-experiment-button a {
     border-radius: 5px;
@@ -1614,13 +1614,13 @@ body.home>.white-bg {
     background:#e1ebee;
 }
 .dash-experiment a.dash-experiment-name {
-    width:75%;
+    width:71%;
     padding:.6em 2.5%;
     display: inline-block;
     min-height:33px;
 }
 .dash-experiment-state {
-    width: 16%;
+    width: 20%;
     padding: .6em 2%;
     display: inline-block;
     float: right;
@@ -1629,6 +1629,7 @@ body.home>.white-bg {
     line-height: 1em;
     text-align: center;
     min-height:36px;
+    word-break:initial;
 }
 .dash-experiment-state i {
     font-size: 1.5em;
@@ -1709,7 +1710,7 @@ table.error td {
     background: rgba(0, 159, 227, .5);
     color: white;
     border: 1px solid rgba(0,0,0,.1);
-    
+
 }
 img.ui-selectee {
     vertical-align: bottom;
