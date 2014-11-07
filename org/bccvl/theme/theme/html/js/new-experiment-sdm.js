@@ -19,6 +19,15 @@ define(
 
             $('.bccvllinks-datasets').attr('href', portal_url+'/datasets');
 
+            // update validation rules
+            // TODO: this should probably partly be some annotation on the input elements
+            var el = $('#form-widgets-species_absence_dataset');
+            el.rules('add', {'required': '#form-widgets-species_pseudo_absence_points-0:unchecked'});
+            el = $('#form-widgets-species_number_pseudo_absence_points');
+            el.addClass('required');
+            el.rules('add', {'required': "#form-widgets-species_pseudo_absence_points-0:checked",
+                             'min': 1});
+
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
             // revealed depending on whether the algorithm is
