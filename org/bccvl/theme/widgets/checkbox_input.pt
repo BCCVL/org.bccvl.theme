@@ -9,6 +9,7 @@
              disabled="" readonly="" value="" checked="checked"
              tal:attributes="id item/id;
                              name item/name;
+                             class python: 'required' if view.required else '';
                              data-class view/klass;
                              value item/value;
                              title view/title;
