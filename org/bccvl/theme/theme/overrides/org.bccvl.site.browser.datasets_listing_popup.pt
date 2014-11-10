@@ -36,7 +36,8 @@
           <div class="span3" tal:condition="enable_layers">
             <label for="datasets-filter-resolution">Choose a Resolution to Begin</label>
             <select id="datasets-filter-resolution"
-                    name="datasets.filter.resolution">
+                    name="datasets.filter.resolution:list"
+                    multiple="multiple">
               <option value="resolutionid"
                       tal:repeat="opt view/resolution_list"
                       tal:attributes="selected opt/selected;
