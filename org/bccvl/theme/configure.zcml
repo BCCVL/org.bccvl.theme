@@ -5,26 +5,31 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="org.bccvl.theme">
 
-    <genericsetup:registerProfile
-        name="default"
-        description="Diazo theme for BCCVL based on Sunburst"
-        directory="profiles/default"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        title="BCCVL Diazo Theme"
-        />
+  <subscriber
+      for="ZPublisher.interfaces.IPubStart"
+      handler=".subscriber.pubstart"
+      />
 
-    <plone:static
-        directory="theme"
-        type="theme"
-        />
+  <genericsetup:registerProfile
+      name="default"
+      description="Diazo theme for BCCVL based on Sunburst"
+      directory="profiles/default"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      title="BCCVL Diazo Theme"
+      />
 
-    <browser:resourceDirectory
-        name="bccvl"
-        directory="theme/html"
-    />
+  <plone:static
+      directory="theme"
+      type="theme"
+      />
 
-    <include package=".views"/>
-    <include package=".viewlets"/>
-    <include package=".widgets"/>
+  <browser:resourceDirectory
+      name="bccvl"
+      directory="theme/html"
+      />
+
+  <include package=".views"/>
+  <include package=".viewlets"/>
+  <include package=".widgets"/>
 
 </configure>
