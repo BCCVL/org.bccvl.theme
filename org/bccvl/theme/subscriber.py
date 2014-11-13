@@ -1,5 +1,3 @@
-from plone.app.theming.utils import isThemeEnabled as origIsThemeEnabled
-
 
 def pubstart(event):
 
