@@ -32,9 +32,15 @@
           tal:define="context_state context/@@plone_context_state"
           tal:attributes="action context_state/current_base_url">
       <div class="row-fluid">
-        <div class="span10">
+        <script type="text/javascript">
+          require(['js/bccvl-widgets'], function(bccvl) {
+              bccvl.select_multi('#datasets-filter-resolution');
+          });
+        </script>
+        <div class="span9">
           <div class="span3" tal:condition="enable_layers">
             <label for="datasets-filter-resolution">Choose a Resolution to Begin</label>
+            <i class="fa fa-plus"></i>
             <select id="datasets-filter-resolution"
                     name="datasets.filter.resolution:list"
                     multiple="multiple">
