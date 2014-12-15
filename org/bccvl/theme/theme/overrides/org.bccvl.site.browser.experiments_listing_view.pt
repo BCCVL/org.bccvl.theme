@@ -59,19 +59,26 @@
        <metal:listing use-macro="context/folder_listing/listing">
           <metal:entry fill-slot="entry">
              <tr tal:define="exp python:view.experiment_details(item)">
-               <td style="width: 13%;" tal:content="python: item.created.strftime('%b %d, %Y %I:%M %p')" />
+               <td style="width: 13%;" class="date-time" tal:content="python: item.created.strftime('%d/%m/%y %H:%M')" />
                  <td class="bccvl-table-label">
                    <p tal:attributes="data-target string:#${item_id}">
-                     <tal:experiment_title content="item/Title" />
-                       <i class="taxonomy" tal:content="exp/species_occurrence" />
-                       <small tal:content="exp/functions" />
+                     <strong><tal:experiment_title content="item/Title" /></strong>
+                    <br/>
+                       <span class="taxonomy" tal:content="exp/species_occurrence" />
+                       <em>(<small tal:content="exp/functions" />)</em>
                    </p>
-                   <div tal:attributes="id item_id">
-                     <p class="bccvl-experiment-parameters">
-                       <tal:species_absence content="exp/species_absence" />,
-                       <tal:environmental_layers content="exp/environmental_layers" />
-                     </p>
-                     <p class="bccvl-experiment-summary" tal:content="item/Description" />
+                   <div class="experiment-more-info" tal:attributes="id item_id">
+                    <ul>
+                      <tal:if condition="exp/species_absence">
+                        <li class="bccvl-experiment-parameters" tal:content="exp/species_absence" />
+                      </tal:if>
+                      <tal:if condition="exp/environmental_layers">
+                        <li class="bccvl-experiment-parameters" tal:content="exp/environmental_layers" />
+                      </tal:if>
+                      <tal:if condition="item/Description">
+                        <li class="bccvl-experiment-summary" tal:content="item/Description" />
+                      </tal:if>
+                     </ul>
                    </div>
                  </td>
                  <td class="bccvl-table-label">

@@ -176,32 +176,39 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     text-decoration: none;
 }
 
-.label.label-bio {
+.label.label-BIODIVERSE {
     background-color: #009FE3;
     color: white;
     padding: .1em .4em;
 }
-.label.label-sdm {
+.label.label-SDM {
     background-color: #e74c3c;
     color: white;
     padding: .1em .4em;
 }
-.label.label-stm {
+.label.label-STM {
     background-color: #eca21e;
     color: white;
     padding: .1em .4em;
 }
-.label.label-cce {
+.label.label-CCE {
     background-color: #4dc345;
     color: white;
     padding: .1em .4em;
 }
-.label.label-ensemble {
+.label.label-ENSEMBLE {
     background-color: #34495e;
     color: white;
     padding: .1em .4em;
 }
-
+td.date-time {
+    word-break:normal;
+    line-height: 1.3em;
+}
+.experiment-more-info ul li {
+    line-height: 1.3em;
+    margin-top:.3em;
+}
 
 .new-experiment-button a, .new-experiment-button a span {
     display:block;
@@ -1524,7 +1531,6 @@ body.home>.white-bg {
     display: block;
 }
 .bccvl-table-label p {
-    display: inline-block;
     word-break:break-word;
     margin-right: 1em;
 }
