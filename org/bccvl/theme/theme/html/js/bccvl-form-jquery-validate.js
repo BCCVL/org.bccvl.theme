@@ -28,6 +28,8 @@ define(
             }
         );
 
+        console.log('validation behaviour loaded');
+
         // nominate form, init validate
         var form = $('.bccvl-jqueryvalidate');
 
@@ -53,6 +55,10 @@ define(
             },
             // this is default behaviour
             submitHandler: function(form){
+
+                $(form).find('input[type="submit"], button[type="submit"]').prop('disabled', true);
+                $(form).find('input[type="submit"], button[type="submit"]').prev('.loader').show();
+
                 form.submit();
             },
             // this is where we go back to the first invalid field

@@ -68,6 +68,6 @@
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
-  <a id="fieldname-popup" href="#" class="btn btn-primary"
-     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-white icon-plus-sign"></i> Select Available Datasets</a>
+  <a id="fieldname-popup" href="#" class="btn btn-default"
+     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-plus-sign"></i> Select Available Datasets</a>
 </html>

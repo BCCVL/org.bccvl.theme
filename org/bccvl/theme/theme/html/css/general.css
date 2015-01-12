@@ -218,6 +218,16 @@ td.date-time {
     display:inline-block;
     font-size: 1em;
 }
+div.loader {
+    text-align: center;
+    background-image: url('../images/bccvl-loader.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+}
+
 
 /*.new-experiment-button a:hover {
     text-decoration: none;
