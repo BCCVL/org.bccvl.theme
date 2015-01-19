@@ -56,8 +56,8 @@ define(
             // this is default behaviour
             submitHandler: function(form){
 
-                $(form).find('input[type="submit"], button[type="submit"]').prop('disabled', true);
                 $(form).find('input[type="submit"], button[type="submit"]').prev('.loader').show();
+                $(form).find('input[type="submit"], button[type="submit"]').hide();
 
                 form.submit();
             },
