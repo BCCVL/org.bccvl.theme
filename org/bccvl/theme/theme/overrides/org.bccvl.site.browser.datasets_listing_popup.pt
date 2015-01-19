@@ -120,14 +120,16 @@
         <div class="cell"
              tal:condition="not:enable_layers">
           <p class="lead">
-            <img width="16" height="16"
+            <input type="radio" name="selected-layer"
+               tal:attributes="value string:select-${item/UID}" />
+            <!--<img width="16" height="16"
                src="" alt=""
                tal:condition="item_icon/url"
                tal:attributes="src item_icon/url;
                                alt item_icon/description;
                                title item_icon/title;
                                width item_icon/width;
-                               height item_icon/height;" />&nbsp;
+                               height item_icon/height;" />&nbsp;-->
             <span tal:content="item_title_or_id">Item Title</span></p>
           <p  tal:condition="item_description"
               tal:content="item_description">Item description</p>
@@ -154,14 +156,18 @@
         <div class="cell">
 
           <p class="lead">
-            <img width="16" height="16"
+            <input type="checkbox"
+               tal:attributes="name item/UID;
+                               value string:select-${item/UID};" />
+            <!--<img width="16" height="16"
                src="" alt=""
                tal:condition="item_icon/url"
                tal:attributes="src item_icon/url;
                                alt item_icon/description;
                                title item_icon/title;
                                width item_icon/width;
-                               height item_icon/height;" />&nbsp;<span tal:content="item_title_or_id">Item Title</span>
+                               height item_icon/height;" />&nbsp;-->
+            <span tal:content="item_title_or_id">Item Title</span>
           </p>
           <p tal:condition="item_description"
               tal:content="item_description">Item description</p>

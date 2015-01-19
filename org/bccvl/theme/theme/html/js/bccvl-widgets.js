@@ -79,6 +79,16 @@ define(
                 event.preventDefault();
                 load_search_results($(this).attr('href'));
             });
+            $modal.find('.datasets-list-entry').click(function(event){
+                var radio = $(this).find('input[type="radio"]');
+                radio.prop("checked", !radio.prop('checked'));
+            });
+            $modal.find('.datasets-list-entry').on('click','input[type="radio"]', function(event){
+                // need to prevent double triggering click on div above
+                event.stopImmediatePropagation()
+                $('.datasets-list-entry.ui-selectee').removeClass('ui-selected');
+                $(this).parents('.datasets-list-entry.ui-selectee').toggleClass('ui-selected');
+            });
         };
 
         // reload widget via ajax
@@ -187,11 +197,35 @@ define(
                 load_search_results($(this).attr('action'), $(this).serialize());
             });
             // enable selectable
-            $modal.find(settings.result_child_selector).selectable();
+            $modal.find(settings.result_child_selector).selectable({
+                create: function( event, ui ) {
+                    
+                },
+                selecting: function( event, ui ) {
+                    event.stopPropagation();
+                    //console.log(event.toElement);
+                    //$(event.toElement).toggleClass('ui-selected');
+                }
+
+            });
+
             // intercept pagination links
             $modal.find('div.pagination a').click( function(event) {
                 event.preventDefault();
                 load_search_results($(this).attr('href'));
+            });
+            
+
+            $modal.find('.datasets-list-entry').click(function(event){
+                //$(this).toggleClass('ui-selected');
+                var checkbox = $(this).find('input[type="checkbox"]');
+                checkbox.prop("checked", !checkbox.prop('checked'));
+            });
+            $modal.find('.datasets-list-entry').on('click','input[type="checkbox"]', function(event){
+                // need to prevent double triggering click on div above
+                event.stopImmediatePropagation();
+                //$('.datasets-list-entry.ui-selectee').removeClass('ui-selected');
+                $(this).parents('.datasets-list-entry.ui-selectee').toggleClass('ui-selected');
             });
         };
 
@@ -272,6 +306,7 @@ define(
             // fetch html for widget
             reload_widget(params);
         });
+
 
     };
 

@@ -2,13 +2,13 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'js/bccvl-stretch', 'js/bccvl-visualiser', 'bootstrap'],
-    function( $,        stretch          ,  viz ) {
+    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map', 'bootstrap'],
+    function( $,       viz, vizmap ) {
         // ==============================================================
         var intervalID;
         $(function() {
 
-            stretch.init({ topPad: 60, bottomPad: 10 });
+            //stretch.init({ topPad: 60, bottomPad: 10 });
             viz.init();
 
             // Check to see if the experiment is already completed or not before start polling

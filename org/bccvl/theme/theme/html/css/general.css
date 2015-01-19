@@ -1725,8 +1725,6 @@ table.error td {
 #datasets-popup-result .datasets-list-entry.ui-selected {
     background: rgba(0, 159, 227, .5);
     color: white;
-    border: 1px solid rgba(0,0,0,.1);
-
 }
 img.ui-selectee {
     vertical-align: bottom;
