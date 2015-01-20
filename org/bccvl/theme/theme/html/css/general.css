@@ -1719,6 +1719,10 @@ table.error td {
     line-height: 1em;
     margin-right: 1em;
 }
+.datasets-list-entry input[type="checkbox"], .datasets-list-entry input[type="radio"] {
+    margin-top: .15em;
+    vertical-align: top;
+}
 #datasets-popup-result .datasets-list-entry {
     margin-bottom: .3em;
 }

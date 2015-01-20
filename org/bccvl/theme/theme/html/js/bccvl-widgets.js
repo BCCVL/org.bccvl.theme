@@ -218,6 +218,7 @@ define(
 
             $modal.find('.datasets-list-entry').click(function(event){
                 //$(this).toggleClass('ui-selected');
+                $modal.find('.datasets-list-entry input[type="checkbox"]').prop('checked', false);
                 var checkbox = $(this).find('input[type="checkbox"]');
                 checkbox.prop("checked", !checkbox.prop('checked'));
             });
