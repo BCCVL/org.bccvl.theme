@@ -119,7 +119,7 @@ define(
             });
 
             // allow user to remove selected elements
-            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
+            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem a:has(i.icon-remove)', function(event){
                 event.preventDefault();
                 reload_widget([]);
             });
@@ -264,7 +264,7 @@ define(
             });
 
             // allow user to remove selected elements
-            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event) {
+            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem a:has(i.icon-remove)', function(event) {
                 event.preventDefault();
                 $(this).parents('div.selecteditem').remove();
                 var params = get_current_selection();
