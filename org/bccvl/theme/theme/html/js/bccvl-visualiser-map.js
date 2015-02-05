@@ -2,7 +2,7 @@
 // JS code to initialise the visualiser map
 
 define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel'],
+             'js/bccvl-visualiser-loading-panel', 'prism', 'jquery-csvtotable'],
             function( $  ) {
 
         // REGISTER CLICK EVENT
@@ -34,16 +34,26 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
             event.preventDefault();
-            // hack in old style visualiser here
-            var iframe = $(this).closest('.tab-pane, body').find('iframe.bccvl-viz');
-            if (iframe.length != 0) {
-                var vizid = $(this).data('viz-id');
-                require(['js/bccvl-visualiser'], function(bccvl_visualiser){
-                    bccvl_visualiser.visualise(vizid, iframe);
-                });
-            } else {
-                renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
-            }
+            var type = $(this).data('mimetype');
+
+            if (type == 'image/geotiff'){
+                // hack in old style visualiser here
+                var iframe = $(this).closest('.tab-pane, body').find('iframe.bccvl-viz');
+                if (iframe.length != 0) {
+                    var vizid = $(this).data('viz-id');
+                    require(['js/bccvl-visualiser'], function(bccvl_visualiser){
+                        bccvl_visualiser.visualise(vizid, iframe);
+                    });
+                } else {
+                    renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+                }
+            } else if (type == 'image/png'){
+                renderPng($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+            } else if (type == 'text/csv'){
+                renderCSV($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+            } else if (type == 'text/x-r-transcript' || type ==  'application/json'){
+                renderCode($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+            } 
         });
 
         /* Global configuration */
@@ -57,7 +67,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
 
-        var styleObj = {"minVal":0,"maxVal":100,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:0,g:159,b:227},"endpoint":{r:30,g:77,b:155}};
+        var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
 
         /*  Goal here is to determine minimum and maximum raster values in the map layer,
             dividing it by an arbitrary number of levels.  This is then used to make an array
@@ -241,7 +251,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(layer.name)){
                 var standard_range = 'temperature';
             } else {
-                var standard_range = 'soil';
+                var standard_range = 'probability';
             }
             // Get hex color range and map values
             var rangeArr = generateRangeArr(standard_range, minVal, maxVal, steps);
@@ -265,6 +275,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
                     } else {
                         legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;-&nbsp;'+Math.round(rangeArr[i+1])+'</label>';
+                    }
+                }
+            } else if (standard_range == 'probability') {
+                for (var i = 0; i < (steps+1); i = i+2) {
+                    if (i == (steps)){
+                        legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+rangeArr[i]+'</label>';
+                    } else {
+                        legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+rangeArr[i]+'&nbsp;-&nbsp;'+rangeArr[i+2]+'</label>';
                     }
                 }
             } else {
@@ -294,6 +312,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             var container = $('#'+id);
             if (container.hasClass('olMap'))
                 window.map.destroy();
+
+            // destroy and html from images or text files
+            container.html('').height(container.parents('.tab-pane').height());
 
             window.map;
             var mercator, geographic;
@@ -467,7 +488,60 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             }
         }
 
+        // RENDER PNG IMAGES
+        function renderPng(uuid, url, id){
+            // NEED TO DESTROY ANY EXISTING MAP OR HTML
+            var container = $('#'+id);
+            if (container.hasClass('olMap'))
+                window.map.destroy();
+                container.removeClass('olMap')
 
+            container.height('auto').html('<img src="'+url+'" alt="" />');
+        }
+
+        // RENDER CODE
+        function renderCode(uuid, url, id){
+            // NEED TO DESTROY ANY EXISTING MAP OR HTML
+            var container = $('#'+id);
+            if (container.hasClass('olMap'))
+                window.map.destroy();
+                container.removeClass('olMap');
+
+            $.ajax({
+                url: url, 
+                dataType: 'text',
+                success: function( data ) {
+                    container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>');
+                    Prism.highlightAll();
+                },
+                error: function() {
+                    container.html('<pre>Problem loading data. Please try again later.</pre>');
+                }
+            });
+        }
+
+        // RENDER CSV
+        function renderCSV(uuid, url, id){
+            // NEED TO DESTROY ANY EXISTING MAP OR HTML
+            var container = $('#'+id);
+            if (container.hasClass('olMap'))
+                window.map.destroy();
+                container.removeClass('olMap');
+
+            $.ajax({
+                url: url, 
+                dataType: 'text',
+                success: function( data ) {
+                    container.height('auto').html('').CSVToTable(url,
+                        {
+                            tableClass: 'table table-striped'
+                        });
+                },
+                error: function() {
+                    container.html('<pre>Problem loading data. Please try again later.</pre>');
+                }
+            });
+        }
 
     }
 );

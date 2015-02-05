@@ -22,8 +22,10 @@ requirejs.config({
         'jquery-form':          'jquery-form/jquery.form.min',
         'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
         'jquery-timer':         'jquery-timer/jquery.timer',
+        'jquery-csvtotable':    'jquery-csvtotable/jquery.csvToTable',
         'select2':              'select2/select2.min',
-        'OpenLayers':           'openlayers/OpenLayers'
+        'OpenLayers':           'openlayers/OpenLayers',
+        'prism':                'prism/prism'
     },
     shim: {
         'parsley':              ['jquery'],
