@@ -486,6 +486,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                     }
                 });
             }
+
+            container.addClass('active');
         }
 
         // RENDER PNG IMAGES
@@ -496,7 +498,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 window.map.destroy();
                 container.removeClass('olMap')
 
-            container.height('auto').html('<img src="'+url+'" alt="" />');
+            container.height('auto').html('<img src="'+url+'" alt="" />').addClass('active');
         }
 
         // RENDER CODE
@@ -511,7 +513,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 url: url, 
                 dataType: 'text',
                 success: function( data ) {
-                    container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>');
+                    container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>').addClass('active');
                     Prism.highlightAll();
                 },
                 error: function() {
@@ -538,7 +540,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         });
                 },
                 error: function() {
-                    container.html('<pre>Problem loading data. Please try again later.</pre>');
+                    container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
                 }
             });
         }

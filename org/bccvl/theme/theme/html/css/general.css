@@ -337,10 +337,13 @@ div.loader {
     min-height: 100px;
     position: relative;
     padding:0;
-    background:rgba(0,0,0,.05);
-    border:1px solid rgba(0,0,0,.75);
     height: 100%;
     min-height: 350px;
+    background:rgba(0,0,0,.1);
+}
+
+.bccvl-preview-pane.active {
+    background:none;
 }
 
 .bccvl-preview-pane .empty {
@@ -357,9 +360,13 @@ div.loader {
     right: 0;
     top: 0;
 }
+.bccvl-preview-pane img {
+    margin: 0 auto;
+    display: block;
+}
 
 .bccvl-preview-pane pre {
-    background:none;
+    border-radius: 0px;
     border:none;
 }
 .bccvl-preview-pane .table {
