@@ -25,7 +25,7 @@
               <tbody>
                 <tal:block tal:repeat="result context/@@folderListing">
                   <tr class="info" >
-                    <td colspan="2">
+                    <td>
                       <tal:replace tal:replace="result/Title">Result
                       Title</tal:replace>
                       <!-- FIXME: get a better condition or use
@@ -44,6 +44,14 @@
                                   tal:replace="result/job_params/year">bioclim</tal:replace></p>
                         <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
                       </tal:block>
+                    </td>
+                    <td class="bccvl-table-controls">
+                      <a class="fine"
+                         title="Download this result"
+                         href="#downloadurl"
+                         tal:attributes="href string:${result/getURL}/@@resultdownload;">
+                        <i class="icon-download-alt icon-link"></i>
+                      </a>
                     </td>
                   </tr>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
