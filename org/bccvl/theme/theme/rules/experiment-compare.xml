@@ -4,8 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT RESULTS ========================================= -->
-    <rules css:if-content="#bccvl-experiment-view">
-        <theme href="html/experiment-results.html" />
+    <rules css:if-content="#bccvl-experiment-compare">
+        <theme href="html/experiment-compare.html" />
 
         <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
         <replace
@@ -19,15 +19,10 @@
         <!-- copy page tabs -->
         <replace css:theme="ul.nav-tabs" css:content="ul.nav-tabs"/>
 
-        <!-- insert template status block -->
-        <before css:theme-children=".bccvl-experimentresults" css:content="#experiment_state"/>
-
         <!-- get the results -->
         <replace css:theme=".bccvl-experimentresults table"
                  css:content="#bccvl-experimentresults-table"/>
 
-        <replace css:theme-children=".experiment-details" css:content-children="#fieldset-default"/>
-        <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters"/>
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

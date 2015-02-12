@@ -14,7 +14,7 @@ define(
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
 
-            if ( experimentStatus != 'COMPLETED' && experimentStatus != 'FAILED'){
+            if ( experimentStatus && experimentStatus != 'COMPLETED' && experimentStatus != 'FAILED'){
                 pollExperimentStatus();
                 // Continue to poll until all algorithms are done
                 intervalID = window.setInterval(pollExperimentStatus, 5000);

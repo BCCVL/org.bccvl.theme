@@ -3,6 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
+      tal:define="pc nocall:context/portal_catalog"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="org.bccvl.site">
 <body>
@@ -12,20 +13,58 @@
     <metal:main fill-slot="main">
 
       <ul class="nav nav-tabs">
-	<li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-	<li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-	<li id= "tab-comp"><a href="experiment_compare#tab-compare">Compare</a></li>
+	<li id= "tab-res"> <a href="view#tab-results">Results</a></li>
+	<li id= "tab-det"><a href="view#tab-details">Details</a></li>
+	<li id= "tab-comp" class="active" data-toggle="tab"><a href="#tab-compare">Compare</a></li>
       </ul>
+
 
         <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
 
-        <metal:block use-macro="context/@@experiment-macros/experiment_state"/>
-
-        <div id="bccvl-experiment-view">
-            <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
-            <!-- Algorithm parameter fieldsets -->
-            <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
+        <div id="bccvl-experiment-compare">
             <table id="bccvl-experimentresults-table" class="table table-hover">
+              <thead>
+                <tr><th colspan="2">Experiment Inputs</th></tr>
+              </thead>
+              <tbody>
+                <!-- occurrence/absence dataset -->
+                <tal:block tal:repeat="uuid python:(context.species_occurrence_dataset, context.species_absence_dataset)">
+                  <tr tal:define="result python:pc.searchResults(UID=uuid);
+                                  item python: result[0] if result else nothing;
+                                  item_obj item/getObject|nothing;
+                                  dstools nocall:item_obj/dataset_tools|nothing"
+                      tal:condition="uuid">
+                    <td class="bccvl-table-label"
+                        tal:define="md dstools/metadata">
+                      <p tal:content="item/Title">Item Title</p>
+                      <p tal:content="item/Description">Dataset short description</p>
+                      <p tal:condition="md/rows">rows:<i tal:content="md/rows"></i></p>
+                      <p tal:condition="md/scientificname">species:<i tal:content="md/scientificname"></i></p>
+                    </td>
+                    <td class="bccvl-table-controls"
+                        tal:define="dlinfo dstools/get_download_info;
+                                    downloadurl dlinfo/url;
+                                    visurl python: dlinfo['alturl'][0]">
+                      <a class="bccvl-auto-viz"
+                         title="Preview this file"
+                         data-viz-id="#downloadurl"
+                         data-mimetype="application/octet-tream"
+                         data-uuid="a uuid"
+                         tal:attributes="data-viz-id visurl;
+                                         data-file-url downloadurl;
+                                         data-uuid item/UID;
+                                         data-mimetype item_obj/file/contentType"
+                         tal:condition="python: item_obj.file.contentType not
+                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                        <i class="icon-eye-open icon-link"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tal:block>
+                <!-- TODO: add climate and enviro layers -->
+
+              </tbody>
+
               <thead>
                 <tr><th colspan="2">Experiment Results</th></tr>
               </thead>
@@ -61,7 +100,7 @@
                       </a>
                     </td>
                   </tr>
-                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
+                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(Title='tif');">
                      <tr>
                        <td class="bccvl-table-label"
                            tal:define="itemobj item/getObject;

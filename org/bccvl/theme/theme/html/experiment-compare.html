@@ -197,48 +197,36 @@
 
 	  <!-- tabs -->
 	  <ul class="nav nav-tabs">
-	    <li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-	    <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-	    <li id= "tab-comp"><a href="experiment_compare#tab-compare">Compare</a></li>
+	    <li id= "tab-res" class="active"> <a href="view#tab-results">Results</a></li>
+	    <li id= "tab-det"><a href="view#tab-details">Details</a></li>
+	    <li id= "tab-comp"><a href="#tab-compare" data-toggle="tab">Compare</a></li>
 	  </ul>
 
 	  <div class="tab-content">
-	    <!-- DETAILS TAB-PANE -->
-	    <div class="tab-pane row-fluid" id="tab-details">
-	      <div class="experiment-details span6">
-	      </div>
 
-	      <div class="experiment-configuration span6">
-	      </div>
+	    <!-- Compare TAB-PANE -->
+	    <div class="tab-pane row-fluid active" id="tab-compare">
+	      <div class="span4">
+
+			  <table class="table table-hover">
+			    <thead>
+			      <tr><th colspan="3">
+				Experiment Results
+			      </th></tr>
+			    </thead>
+			    <tbody>
+			    </tbody>
+			  </table>
+		  </div>
+
+			<!-- preview area -->
+			<div class="span8">
+			  <div class="bccvl-preview-pane well">
+			    <iframe class="bccvl-viz" name="viz">
+			    </iframe>
+			  </div>
+			</div>
 	    </div>
-
-	    <!-- RESULTS TAB-PANE -->
-	    <div class="row-fluid tab-pane active" id="tab-results">
-	      	<div>
-			<!-- list of (potential) results -->
-				<div class="span4">
-
-				  <table class="table table-hover">
-				    <thead>
-				      <tr><th colspan="3">
-					Experiment Results
-				      </th></tr>
-				    </thead>
-				    <tbody>
-				    </tbody>
-				  </table>
-				</div>
-
-				<!-- preview area -->
-				<div class="span8">
-				  	<div class="bccvl-preview-pane" id="map1">
-				    <!--<iframe class="bccvl-viz" name="viz">
-				    </iframe>-->
-					</div>
-				</div>
-		    </div>
-		 </div>
-
 	  </div>
 
 	</section>
