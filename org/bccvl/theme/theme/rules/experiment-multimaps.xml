@@ -1,0 +1,30 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- EXPERIMENT RESULTS ========================================= -->
+    <rules css:if-content="#bccvl-experiment-multi">
+        <theme href="html/experiment-multimaps.html" />
+
+        <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
+        <replace
+            css:theme-children=".bccvl-breadcrumb .bccvllinks-experiment-view"
+            css:content-children="#breadcrumbs-current"
+        />
+
+        <!-- remove all mocked status blocks -->
+        <drop css:theme=".bccvl-status-block" />
+
+        <!-- copy page tabs -->
+        <replace css:theme="ul.nav-tabs" css:content="ul.nav-tabs"/>
+
+        <!-- get the results -->
+        <replace css:theme=".bccvl-experimentresults table"
+                 css:content="#bccvl-experimentresults-table"/>
+
+
+        <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    </rules>
+</rules>

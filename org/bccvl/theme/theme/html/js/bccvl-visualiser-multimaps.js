@@ -2,17 +2,18 @@
 // JS code to initialise the visualiser map
 
 define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel', 'prism', 'jquery-csvtotable'],
+             'js/bccvl-visualiser-loading-panel'],
             function( $  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
-        renderBase($('.bccvl-preview-pane:visible').attr('id'));
+        //renderBase($('.bccvl-preview-pane:visible').attr('id'));
 
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
-            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto');
+            $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
+            renderNewMap($(this).data('uuid'),$(this).data('viz-id'), 'minimap_'+$(this).data('uuid'), 'auto');
 
             $(this).next('a.bccvl-remove-viz').show(0);
             $(this).hide(0);
@@ -21,11 +22,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         $('body').on('click', 'a.bccvl-remove-viz', function(event){
             event.preventDefault();
-            map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
-            $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
+            var uuid = $(this).data('uuid');
+            $('#minimap_'+uuid).remove();
+
+            delete window.maps[uuid];
+            
             $(this).prev('a.bccvl-compare-viz').show(0);
             $(this).hide(0);
-            //element.attr('class', '.bccvl-compare-viz').html('<i class="icon-eye-open icon-link"></i>');
+
         });
 
         /* Global configuration */
@@ -39,39 +43,18 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         /* FUNCTIONS FOR CREATING COLOR SPECTRUMS AND CONSTRUCTING XML SLD DOCUMENTS TO PASS TO MAP TILE REQUESTS */
         // -------------------------------------------------------------------------------------------
 
-        var styleArray = [{
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:139,g:208,b:195},"endpoint":{r:18,g:157,b:133}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:203,b:237},"endpoint":{r:47,g:150,b:220}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:198,g:162,b:214},"endpoint":{r:143,g:76,b:176}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:164,b:175},"endpoint":{r:48,g:71,b:94}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:233,g:170,b:129},"endpoint":{r:210,g:96,b:19}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:151,g:229,b:184},"endpoint":{r:45,g:195,b:108}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:248,g:225,b:135},"endpoint":{r:241,g:196,b:15}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:223,g:156,b:149},"endpoint":{r:192,g:57,b:43}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:172,b:236},"endpoint":{r:247,g:108,b:215}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:154,b:154},"endpoint":{r:47,g:47,b:47}
-            }
-        ];
+        var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
 
-        /*  
+        /*  Goal here is to determine minimum and maximum raster values in the map layer,
+            dividing it by an arbitrary number of levels.  This is then used to make an array
+            of thresholds for color values to be associated with.
+        */
+
+        /*  Important to note here that due to the structure of an SLD doc, the number of
+            threshold values must always be one more than the number of desired color levels.
+            The number of color values must then be one greater than the thresholds.
+            SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end
+            result will always have +1 threshold and +2 color values on top of your desired number of colour values.
         */
 
         function generateRangeArr(standard_range, minVal, maxVal, steps){
@@ -293,38 +276,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         }
 
         /* END LEGEND FUNCTION */
-
-        function createLegendBox(id){
-            // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-            $('.olLegend').remove();
-            // Build legend obj
-            var legend = document.createElement('div');
-            legend.className = 'olLegend';
-            $('#'+id+' .olMapViewport').append(legend);
-        }
-
-        createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
-
-        function addLayerLegend(layername, color, uuid){
-            colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-            $('.olLegend').append('<label data-uuid="'+uuid+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
-            $('.olLegend').show(0);
-        }
-
+        window.maps = {};
         // RENDER EMPTY MAP
-        function renderBase(id){
+        function renderNewMap(uuid, url, id, type){
             // CREATE BASE MAP
             // -------------------------------------------------------------------------------------------
 
             // NEED TO DESTROY ANY EXISTING MAP
             var container = $('#'+id);
-            if (container.hasClass('olMap'))
-                window.map.destroy();
+            //if (container.hasClass('olMap'))
+            //    window.map.destroy();
 
             // destroy and html from images or text files
-            container.html('').height(container.parents('.tab-pane').height());
+            //container.html('').height(container.parents('.tab-pane').height());
 
-            window.map;
             var mercator, geographic;
             var loading_panel;
 
@@ -357,114 +322,130 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
             map.addLayers([osm, gmap]);
             //map.addControl(ls);
-            map.zoomToExtent(zoom_bounds);
+            
+            if (window.mapsCenter && window.mapsZoom){
+                map.setCenter(window.mapsCenter, window.mapsZoom, false, false);
+            } else {
+                map.zoomToExtent(zoom_bounds);
+            }
 
             // Remove any existing legends.
             $('.olLegend').remove();
 
-            container.addClass('active');
-        }
-
-        // RENDER DATA LAYERS
-        // -------------------------------------------------------------------------------------------
-        function addNewLayer(uuid, url, id, type){
 
             var responseSuccess = false;
 
-            var numLayers = map.getLayersBy('isBaseLayer', false).length;
+            $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+                responseSuccess = true;
 
-            if (numLayers > 9) {
-                alert('This interface supports a maximum of ten layers, please remove a layer before adding another.');
-            } else {
+                var myLayers = [];
 
-                $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
-                    responseSuccess = true;
-
-                    var myLayers = [];
-                    // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    if ( $.isEmptyObject(data.layers) ) {
-                        //single layer
-                        var layerName;
-                        // TODO: use data.title (needs to be populated)
-                        if(data.filename!=''){
-                            layerName = data.filename;
-                        } else {
-                            layerName = 'Data Overlay';
-                        }
-                        if (type !== 'occurence'){
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layerName+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    SLD_BODY: generateSLD(data.filename, styleArray[numLayers].minVal, styleArray[numLayers].maxVal, styleArray[numLayers].steps, styleArray[numLayers].startpoint, styleArray[numLayers].midpoint, styleArray[numLayers].endpoint),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
-                            var legend = {}; legend.name = data.filename;
-                            addLayerLegend(data.filename, styleArray[numLayers].endpoint, uuid);
-                        } else {
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layerName+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
-                        }
-                        newLayer.setOpacity(0.5);
-                        myLayers.push(newLayer);
+                // check for layers metadata, if none exists then the request is returning a data like a csv file
+                if ( $.isEmptyObject(data.layers) ) {
+                    //single layer
+                    var layerName;
+                    // TODO: use data.title (needs to be populated)
+                    if(data.filename!=''){
+                        layerName = data.filename;
                     } else {
-                        // multiple layers
-                        var i = 0;
-                        $.each( data.layers, function(namespace, layer){
-
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layer.label+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
-                                    SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
-                            //newLayer.setOpacity(0.25);
-                            myLayers.push(newLayer);
-                        });
+                        layerName = 'Data Overlay';
                     }
-
-                    map.addLayers(myLayers);
-
-                    /*var numLayers = map.getLayersBy('isBaseLayer', false).length;
-                    if (numLayers > 0){
-                        $.each(map.getLayersBy('isBaseLayer', false), function(){
-                            $(this)[0].setOpacity(Math.round((0.9/numLayers*100))/100);
-                        });
-                    } */
-                });
-                setTimeout(function() {
-                    if (!responseSuccess) {
-                        alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
+                    if (type !== 'occurence'){
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layerName+'', // Layer Name
+                            (visualiserWMS),    // Layer URL
+                            {
+                                DATA_URL: data.vizurl,   // The data_url the user specified
+                                SLD_BODY: generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png"
+                            },
+                            {
+                                isBaseLayer: false
+                            }
+                        );
+                        var legend = {}; legend.name = data.filename;
+                        //createLegend(legend, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                    } else {
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layerName+'', // Layer Name
+                            (visualiserWMS),    // Layer URL
+                            {
+                                DATA_URL: data.vizurl,   // The data_url the user specified
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png"
+                            },
+                            {
+                                isBaseLayer: false
+                            }
+                        );
                     }
-                }, 5000);
+                    container.append('<label>'+data.filename+'</label>')
+                    newLayer.setOpacity(0.9);
+                    myLayers.push(newLayer);
+                } else {
+                    // multiple layers
+                    var i = 0;
+                    $.each( data.layers, function(namespace, layer){
 
-            }
+                        var newLayer = new OpenLayers.Layer.WMS(
+                            ''+layer.label+'', // Layer Name
+                            (visualiserWMS),    // Layer URL
+                            {
+                                DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
+                                SLD_BODY: generateSLD(layer.filename, layer.min, layer.max, 20),
+                                layers: "DEFAULT",
+                                transparent: "true",
+                                format: "image/png"
+                            },
+                            {
+                                isBaseLayer: false
+                            }
+                        );
+                        //newLayer.setOpacity(0.25);
+                        myLayers.push(newLayer);
+                    });
+                }
+
+                map.addLayers(myLayers);
+
+                var numLayers = map.getLayersBy('isBaseLayer', false).length;
+                if (numLayers > 0){
+                    $.each(map.getLayersBy('isBaseLayer', false), function(){
+                        $(this)[0].setOpacity(Math.round((0.9/numLayers*100))/100);
+                    });
+                } 
+
+                controls = map.getControlsByClass('OpenLayers.Control.Navigation');
+ 
+                for(var i = 0; i < controls.length; ++i)
+                     controls[i].disableZoomWheel();
+
+                window.maps[uuid] = map;
+
+                window.maps[uuid].events.register("moveend", window.maps[uuid], function() { 
+                    var center = window.maps[uuid].getCenter();
+                    var zoom = window.maps[uuid].getZoom();
+                    $.each(window.maps, function(i, otherMap){
+                        otherMap.setCenter(center, zoom, false, false); 
+                    });
+
+                    window.mapsCenter = center;
+                    window.mapsZoom = zoom;
+                }); 
+                
+            });
+            setTimeout(function() {
+                if (!responseSuccess) {
+                    alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
+                }
+            }, 5000);
+            container.addClass('active');
+
+            
+            
         }
 
     }

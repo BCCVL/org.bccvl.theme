@@ -13,6 +13,7 @@
     <xi:include href="rules/experiment-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/experiment-compare.xml" />
+    <xi:include href="rules/experiment-multimaps.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/new-experiment-biodiverse.xml" />

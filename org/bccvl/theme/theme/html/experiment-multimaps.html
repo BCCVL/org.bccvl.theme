@@ -42,9 +42,9 @@
       // set that as a prefix in the requirejs config, but to initially get to that
       // config file, it needs to have the prefix added there too.
       if (local) {
-          require(['js/common.js'], function (common) { require(['js/experiment-results']); require(['js/bccvl-visualiser-compare']); } );
+          require(['js/common.js'], function (common) { require(['js/experiment-results']); require(['js/bccvl-visualiser-multimaps']); } );
       } else {
-          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-results']); require(['js/bccvl-visualiser-compare']); } );
+          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/experiment-results']); require(['js/bccvl-visualiser-multimaps']); } );
       }
     </script>
 
@@ -200,12 +200,13 @@
 	    <li id= "tab-res" class="active"> <a href="view#tab-results">Results</a></li>
 	    <li id= "tab-det"><a href="view#tab-details">Details</a></li>
 	    <li id= "tab-comp"><a href="#tab-compare" data-toggle="tab">Compare</a></li>
+	    <li id= "tab-multi"><a href="#tab-multi" data-toggle="tab">Multimaps</a></li>
 	  </ul>
 
 	  <div class="tab-content">
 
-	    <!-- Compare TAB-PANE -->
-	    <div class="tab-pane row-fluid active" id="tab-compare">
+	    <!-- MULTIMAPS TAB-PANE -->
+	    <div class="tab-pane row-fluid active" id="tab-multi">
 	      <div class="span4">
 
 			  <table class="table table-hover">
@@ -221,7 +222,7 @@
 
 			<!-- preview area -->
 			<div class="span8">
-			  	<div class="bccvl-preview-pane" id="map1">
+			  	<div class="bccvl-preview-pane multimaps">
 				</div>
 			</div>
 	    </div>
