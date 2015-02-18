@@ -390,10 +390,18 @@ div.loader {
 .bccvl-preview-pane .minimap {
     position: relative;
     height: 200px;
-    width: 30%;
+    width: 32%;
     display: inline-block;
-    margin-right: 5%!important;
-    margin-bottom:3em!important;
+    margin-right: 2%!important;
+    margin-bottom:3.4em!important;
+}
+.bccvl-preview-pane .minimap label {
+    background: rgba(0,0,0,.5);
+    color: white;
+    border-radius: 0px 0px 4px 4px;
+    text-align: center;
+    padding: .3em;
+    text-overflow: ellipsis;
 }
 #tab-compare .olLegend i {
     opacity:1!important;

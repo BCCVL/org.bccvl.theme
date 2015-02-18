@@ -13,9 +13,10 @@
     <metal:main fill-slot="main">
 
       <ul class="nav nav-tabs">
-	<li id= "tab-res"> <a href="view#tab-results">Results</a></li>
-	<li id= "tab-det"><a href="view#tab-details">Details</a></li>
-	<li id= "tab-comp" class="active" data-toggle="tab"><a href="#tab-compare">Compare</a></li>
+	      <li id= "tab-res"> <a href="#tab-results" data-toggle="tab">Results</a></li>
+        <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+        <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay</a></li>
+        <li id= "tab-comp" class="active"><a href="experiment_compare#tab-comp">Compare</a></li>
       </ul>
 
 

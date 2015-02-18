@@ -13,16 +13,16 @@
     <metal:main fill-slot="main">
 
       <ul class="nav nav-tabs">
-	<li id= "tab-res"> <a href="view#tab-results">Results</a></li>
-	<li id= "tab-det"><a href="view#tab-details">Details</a></li>
-	<li id= "tab-comp" data-toggle="tab"><a href="#tab-compare">Compare</a></li>
-  <li id= "tab-multi" class="active" data-toggle="tab"><a href="#tab-multi">Multimaps</a></li>
+      	<li id= "tab-res"> <a href="#tab-results" data-toggle="tab">Results</a></li>
+        <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+        <li id= "tab-overlay" class="active"><a href="experiment_overlay#tab-overlay">Overlay</a></li>
+        <li id= "tab-comp"><a href="experiment_compare#tab-comp">Compare</a></li>
       </ul>
 
 
         <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
 
-        <div id="bccvl-experiment-multi">
+        <div id="bccvl-experiment-overlay">
             <table id="bccvl-experimentresults-table" class="table table-hover compare-table">
               <thead>
                 <tr><th colspan="2">Experiment Inputs</th></tr>

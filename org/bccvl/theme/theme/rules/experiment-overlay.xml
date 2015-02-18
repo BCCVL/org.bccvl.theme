@@ -4,8 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT RESULTS ========================================= -->
-    <rules css:if-content="#bccvl-experiment-multi">
-        <theme href="html/experiment-multimaps.html" />
+    <rules css:if-content="#bccvl-experiment-overlay">
+        <theme href="html/experiment-overlay.html" />
 
         <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
         <replace
