@@ -33,23 +33,23 @@
                 <tal:block tal:repeat="result context/@@folderListing">
                   <tr class="info" >
                     <td>
-                      <tal:replace tal:replace="result/Title">Result
-                      Title</tal:replace>
+                      <p class="lead"><tal:replace tal:replace="result/Title">Result
+                      Title</tal:replace></p>
                       <!-- FIXME: get a better condition or use
                            adapters -->
                       <tal:block tal:condition="python: 'function' in result.job_params">
-                        <p>Algorithm: <tal:replace
-                                       tal:replace="result/job_params/function">bioclim</tal:replace></p>
-                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                        <p><span>Algorithm: <tal:replace
+                                       tal:replace="result/job_params/function">bioclim</tal:replace></span>
+                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
-                        <p>Emissions Scenario: <tal:replace
-                                       tal:replace="result/job_params/emission_scenario">bioclim</tal:replace></p>
-                        <p>Circulation Model: <tal:replace
-                                       tal:replace="result/job_params/climate_models">bioclim</tal:replace></p>
-                        <p>Year: <tal:replace
-                                  tal:replace="result/job_params/year">bioclim</tal:replace></p>
-                        <p>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></p>
+                        <p><span>Emissions Scenario: <tal:replace
+                                       tal:replace="result/job_params/emission_scenario">bioclim</tal:replace></span>
+                        <span>Circulation Model: <tal:replace
+                                       tal:replace="result/job_params/climate_models">bioclim</tal:replace></span>
+                        <span>Year: <tal:replace
+                                  tal:replace="result/job_params/year">bioclim</tal:replace></span>
+                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                       </tal:block>
                     </td>
                     <td class="bccvl-table-controls">
@@ -66,13 +66,13 @@
                        <td class="bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
-                         <p tal:content="item/Title">Item Title</p>
-                         <p tal:content="item/Description">Dataset short description</p>
-                         <p tal:condition="md/rows">rows:<i tal:content="md/rows"></i></p>
-                         <p tal:condition="md/scientificname">species:<i tal:content="md/scientificname"></i></p>
+                         <p class="lead" tal:content="item/Title">Item Title</p>
+                         <p><span tal:content="item/Description">Dataset short description</span>
+                         <span tal:condition="md/rows">rows:<i tal:content="md/rows"></i></span>
+                         <span tal:condition="md/scientificname">species:<i tal:content="md/scientificname"></i></span>
                          <!-- <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p> -->
                          <!-- <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p> -->
-                         <p tal:condition="md/resolution">resolution:<i tal:content="md/resolution"></i></p>
+                         <span tal:condition="md/resolution">resolution:<i tal:content="md/resolution"></i></span></p>
                          <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
 
                        </td>
