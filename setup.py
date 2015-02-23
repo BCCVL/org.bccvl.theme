@@ -32,6 +32,8 @@ setup(name='org.bccvl.theme',
           'setuptools',
           'plone.app.theming',
           'plone.app.themingplugins',
+          # TODO: why do I need to depend on this as it is required for theme preview?
+          'cssselect',
       ],
       entry_points="""
       # -*- Entry points: -*-

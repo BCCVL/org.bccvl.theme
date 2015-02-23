@@ -2,20 +2,31 @@ define(
     ['jquery', 'jquery-ui'],
     function($) {
 
-        // helper to enforce single selection for jquery-ui selectable
-        function single_selectable($elements) {
-            $elements.selectable({
-                selected: function(event, ui) {
-                    $(ui.selected).addClass("ui-selected")
-                        .siblings()
-                        .removeClass("ui-selected");
-                }
+        // helper function for selectable behaviour
+        function selectable($elements) {
+            $elements.click(function(event) {
+                // get parent row div
+                var $row = $(event.target).closest('div.row');
+                // get input element (radio / checkbox)
+                var $input = $row.find('input');
+                // new state for input element
+                if (! $input.is(event.target)) {
+                    // if click was on input element checked state
+                    // has already been set
+                    var setchecked = ! $input.prop('checked');
+                    // apply new state
+                    $input.prop('checked', setchecked);
+                };
+                // update row class according to new checked state
+                $row.parent().find('div.row:has(input:checked)').addClass("ui-selected");
+                $row.parent().find('div.row:has(input:not(:checked))').removeClass("ui-selected");
             });
         }
 
-
         // single select widget
         var select_dataset = function($element, options) {
+
+            // required options: field, genre
 
             // TODO: document settings
             var settings = $.extend({
@@ -55,7 +66,7 @@ define(
                     url + ' ' + settings.result_child_selector, params,
                     // reapply single select events
                     function() {
-                        single_selectable($modal.find(settings.result_child_selector));
+                        selectable($modal.find(settings.result_child_selector));
                         // intercept pagination links
                         $modal.find('div.pagination a').click( function(event) {
                             event.preventDefault();
@@ -73,7 +84,7 @@ define(
                     load_search_results($(this).attr('action'), $(this).serialize());
                 });
                 // single select on first load
-                single_selectable($modal.find(settings.result_child_selector));
+                selectable($modal.find(settings.result_child_selector));
                 // intercept pagination links
                 $modal.find('div.pagination a').click( function(event) {
                     event.preventDefault();
@@ -91,8 +102,7 @@ define(
                     params
                     , function(){
                         $('#'+settings.widgetid+'-selected').parent().find('span.loader-container img.loader').hide();
-                    }
-                );
+                    });
             };
 
             // clear modal on close
@@ -119,7 +129,7 @@ define(
             });
 
             // allow user to remove selected elements
-            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem a:has(i.icon-remove)', function(event){
+            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
                 event.preventDefault();
                 reload_widget([]);
             });
@@ -188,7 +198,7 @@ define(
                     load_search_results($(this).attr('action'), $(this).serialize());
                 });
                 // enable selectable
-                $modal.find(settings.result_child_selector).selectable();
+                selectable($modal.find(settings.result_child_selector));
                 // intercept pagination links
                 $modal.find('div.pagination a').click( function(event) {
                     event.preventDefault();
@@ -264,7 +274,7 @@ define(
             });
 
             // allow user to remove selected elements
-            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem a:has(i.icon-remove)', function(event) {
+            $('div[data-fieldname="' + settings.widgetname + '"]').on('click', 'div.selecteditem i.icon-remove', function(event){
                 event.preventDefault();
                 $(this).parents('div.selecteditem').remove();
                 var params = get_current_selection();
@@ -273,44 +283,6 @@ define(
                 // fetch html for widget
                 reload_widget(params);
             });
-
-        };
-
-        // turn select box into potentially nice multiselect
-        var select_multi = function(select, options) {
-            // TODO: best would be if the widget would have a wrapper element around everything
-            //       and the code in here finds all controller elements and hooks up events accordingly
-
-            var $select = $(select);
-            var $i = $select.prev('i');
-            var $ul = $select.next('ul');
-
-            var settings = $.extend({
-                // These are the defaults.
-                name: $select.attr('name')
-            }, options );
-
-            // use current selection in combobox and add input element to list
-            function add_selection(event) {
-                if ($ul.length == 0) {
-                    $select.after("<ul></ul>");
-                    $ul = $select.next('ul');
-                }
-                if ($ul.find('input[value="' + $select.val() + '"]').length == 0)
-                    $ul.append('<li>' +
-                               '<input type="hidden" name="' + settings.name + '" value="' +
-                               $select.val() + '" /> ' +
-                               $select.find('option:selected').text() +
-                               '<a onclick="$(this).parent().remove();" class="btn pull-right" href="#"><i class="icon-remove"></i></a></li>');
-            };
-            // remove name attribute on original select
-            // and disable multiselect to get a combobox
-            $select.removeAttr('name multiple');
-
-            // hook up events
-            $i.click(add_selection);
-            $select.change(add_selection);
-
         };
 
         return ({
@@ -319,4 +291,5 @@ define(
             select_multi: select_multi
         });
 
-});
+    }
+);
