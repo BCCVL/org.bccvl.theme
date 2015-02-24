@@ -64,13 +64,6 @@
 
     <z3c:widgetTemplate
         mode="input"
-        widget="org.bccvl.site.widgets.interfaces.IDatasetsMultiSelectWidget"
-        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="datasetsmultiselect_input.pt"
-        />
-
-    <z3c:widgetTemplate
-        mode="input"
         widget="z3c.form.interfaces.IFileWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="file_input.pt"
