@@ -61,7 +61,7 @@
             <div class="filter">
               <h4>Genre</h4>
               <ul id="datasets-filter-genre" name="datasets-filter-genre-list">
-                <li tal:repeat="opt view/genre_list">
+                <li tal:repeat="opt view/dstools/genre_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -78,7 +78,7 @@
             <div class="filter">
               <h4>Resolution</h4>
               <ul id="datasets-filter-resolution" name="datasets-filter-resolution-list">
-                <li tal:repeat="opt view/resolution_list">
+                <li tal:repeat="opt view/dstools/resolution_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -95,7 +95,7 @@
             <div class="filter">
               <h4>Data Source</h4>
               <ul id="datasets-filter-resolution" name="datasets-filter-source-list">
-                <li tal:repeat="opt view/source_list">
+                <li tal:repeat="opt view/dstools/source_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -125,7 +125,6 @@
                        normalizeString nocall: context/plone_utils/normalizeString;
                        toLocalizedTime nocall: context/@@plone/toLocalizedTime;
                        site_properties context/portal_properties/site_properties;
-                       dataset_tools nocall:context/@@dataset_tools;
                        isAnon context/@@plone_portal_state/anonymous;
                        show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
 
@@ -161,7 +160,7 @@
                                     item_type item/portal_type;
                                     item_type_class python:'contenttype-' + normalizeString(item_type);
                                     item_genre item/BCCDataGenre;
-                                    item_genre_title python:dataset_tools.genre_title(item['BCCDataGenre']);
+                                    item_genre_title python:view.dstools.genre_title(item['BCCDataGenre']);
                                     item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
                                     item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                     use_view_action site_properties/typesUseViewActionInListings|python:();
