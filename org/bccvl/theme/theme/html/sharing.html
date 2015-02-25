@@ -15,8 +15,23 @@
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
 
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv'
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/'
+      };
+
+      local = window.location.protocol == 'file:';
+      portal_url = document.URL.split('/').slice(0, -1).join('/');
+    </script>
     <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-    <script src="lib/require/require.js"></script>
+    <script src="lib/require/require.js" type="text/javascript"></script>
+    <script src="js/common.js" type="text/javascript"></script>
 
   </head>
 

@@ -16,9 +16,6 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
-    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
-    <script src="lib/require/require.js" type="text/javascript"></script>
-
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
       window.bccvl || (window.bccvl = {});
@@ -31,21 +28,15 @@
       };
 
       local = window.location.protocol == 'file:';
-
+      portal_url = document.URL.split('/').slice(0, -1).join('/');
     </script>
 
-    <script id="bccvl-lookups" type="text/javascript"></script>
-
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
+    <script src="js/common.js" type="text/javascript"></script>
+    <!-- include main js -->
     <script type="text/javascript">
-      // require is a bit annoying to kick off when it's running in a plone/diazo page.
-      // Plone/diazo adds ++theme++theme.name to the start of theme file URLs.  We can
-      // set that as a prefix in the requirejs config, but to initially get to that
-      // config file, it needs to have the prefix added there too.
-      if (local) {
-          require(['js/common.js'], function (common) { require(['js/new-experiment-biodiverse']); } );
-      } else {
-          require([portal_url + '/++resource++bccvl/js/common.js'], function (common) { require(['js/new-experiment-biodiverse']); } );
-      }
+      require(['js/experiment-biodiverse']);
     </script>
 
     <script id="google-analytics"></script>

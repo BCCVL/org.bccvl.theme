@@ -24,6 +24,8 @@
 
     </style>
 
+    <!-- include portal_url to simplify path referencing -->
+    <script src="../plone_javascript_variables.js"></script>
 
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
@@ -39,22 +41,15 @@
       local = window.location.protocol == 'file:';
       portal_url = document.URL.split('/').slice(0, -1).join('/');
     </script>
-
-    <!-- include portal_url to simplify path referencing -->
-    <script src="../plone_javascript_variables.js" type="text/javascript"></script>
-
-    <!-- load requirejs -->
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
     <script src="lib/require/require.js" type="text/javascript"></script>
-    <!-- configue requirejs ... if insite plone: data-main= portal_url + '/++resource++bccvl/js/common.js -->
     <script src="js/common.js" type="text/javascript"></script>
-
-
+    <!-- include main js -->
     <script type="text/javascript">
       require(['js/new-experiment-speciestrait']);
     </script>
 
-    <script id="google-analytics">
-    </script>
+    <script id="google-analytics"></script>
 
   </head>
 
