@@ -40,8 +40,8 @@
                       <p class="lead" tal:content="item/Title">Item Title</p>
                       <p><span tal:condition="item/Description"
                         tal:content="item/Description">Dataset short description</span>
-                      <span tal:condition="md/rows">Rows: <i tal:content="md/rows"></i></span>
-                      <span tal:condition="md/scientificname">Species: <i tal:content="md/scientificname"></i></span></p>
+                      <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
+                      <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span></p>
                     </td>
                     <td class="bccvl-table-controls"
                         tal:define="dlinfo dstools/get_download_info;
@@ -108,11 +108,11 @@
                                        md itemobj/dataset_tools/metadata">
                          <p><strong><span tal:content="item/Title">Item Title</span></strong></p>
                          <p><span tal:content="item/Description">Dataset short description</span>
-                         <span tal:condition="md/rows">Rows: <i tal:content="md/rows"></i></span>
-                         <span tal:condition="md/scientificname">Species: <i tal:content="md/scientificname"></i></span>
+                         <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
+                         <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
                          <!-- <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p> -->
                          <!-- <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p> -->
-                         <span tal:condition="md/resolution">Resolution: <i tal:content="md/resolution"></i></span></p>
+                         <span tal:condition="md/resolution|nothing">Resolution: <i tal:content="md/resolution"></i></span></p>
                          <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
 
                        </td>
