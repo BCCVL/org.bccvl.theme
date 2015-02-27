@@ -43,10 +43,11 @@
                         <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
+                        <!-- TODO: species in job_params/species_distribution_models -->
                         <p><span>Emissions Scenario: <tal:replace
-                                       tal:replace="result/job_params/emission_scenario">bioclim</tal:replace></span>
+                                       tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
                         <span>Circulation Model: <tal:replace
-                                       tal:replace="result/job_params/climate_models">bioclim</tal:replace></span>
+                                       tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
                         <span>Year: <tal:replace
                                   tal:replace="result/job_params/year">bioclim</tal:replace></span>
                         <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
