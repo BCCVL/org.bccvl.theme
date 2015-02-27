@@ -20,6 +20,8 @@
         <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
+        <replace css:theme="#widget-experiment_type" css:content="#formfield-form-widgets-experiment_type"/>
+        <replace css:theme="#widget-datasets" css:content="#formfield-form-widgets-datasets"/>
     </rules>
 
 </rules>

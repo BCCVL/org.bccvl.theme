@@ -20,7 +20,8 @@
         <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
-
+        <!-- copy dateset selection widget -->
+        <replace css:theme="#widget-projection" css:content="#formfield-form-widgets-projection" />
         <!-- Configuration page -->
         <!-- Cluster Size -->
         <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-clustersizetable tbody tr td" css:content="#form-widgets-cluster_size" />

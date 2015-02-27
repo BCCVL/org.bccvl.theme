@@ -27,20 +27,23 @@
             not the option's name.
         -->
 
-        <replace css:theme="table.bccvl-sdmtable" css:content="table.bccvl-datasetstable" />
+        <!-- <replace css:theme="table.bccvl-sdmtable" css:content="table.bccvl-datasetstable" /> -->
+        <replace css:theme="#widget-species_distribution_models" css:content="#formfield-form-widgets-species_distribution_models" />
+
+        <replace css:theme="#widget-future_climate_datasets" css:content="#formfield-form-widgets-future_climate_datasets"/>
 
         <!-- hook in the years -->
         <drop css:theme=".test-content"/>
-        <replace css:theme-children="table.bccvl-yearstable"
-               css:content-children="#form-widgets-years"/>
+        <!-- <replace css:theme-children="table.bccvl-yearstable" -->
+        <!--        css:content-children="#form-widgets-years"/> -->
 
         <!-- hook in the emission scenarios -->
         <!-- TODO: this table is terrible -->
-        <replace css:theme-children="table.bccvl-emissionscenariostable"
-               css:content-children="#form-widgets-emission_scenarios"/>
+        <!-- <replace css:theme-children="table.bccvl-emissionscenariostable" -->
+        <!--        css:content-children="#form-widgets-emission_scenarios"/> -->
         <!-- hook in the climate models -->
-        <replace css:theme-children="table.bccvl-climatemodelstable"
-               css:content-children="#form-widgets-climate_models"/>
+        <!-- <replace css:theme-children="table.bccvl-climatemodelstable" -->
+        <!--        css:content-children="#form-widgets-climate_models"/> -->
 
     </rules>
 

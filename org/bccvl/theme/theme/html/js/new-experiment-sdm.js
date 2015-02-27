@@ -4,16 +4,15 @@
 //
 define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
-     'js/bccvl-visualiser-map', 'OpenLayers', 'js/bccvl-wizard-tabs',
-     'js/bccvl-dimension-equation', 'js/bccvl-search', 'js/bccvl-form-jquery-validate',
+     'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
+     'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover'],
-    function($, preview_layout,  viz, vizmap, openlayers, wiztabs, dimensions, search, formvalidator, popover ) {
+    function($, preview_layout, viz, vizmap, wiztabs, search, formvalidator, popover ) {
 
         // ==============================================================
         $(function() {
 
             viz.init();             // init the visualiser
-            dimensions.init();      // init the dimension chooser thingy
             wiztabs.init();         // hook up the wizard buttons
             search.init();          // hook up the search fields
 
@@ -21,9 +20,10 @@ define(
 
             // update validation rules
             // TODO: this should probably partly be some annotation on the input elements
-            var el = $('#form-widgets-species_absence_dataset');
-            el.rules('add', {'required': '#form-widgets-species_pseudo_absence_points-0:unchecked'});
-            el = $('#form-widgets-species_number_pseudo_absence_points');
+            // FIXME: the element doesn't exist on page load.
+            //var el = $('[name="form-widgets-species_absence_dataset"]');
+            //el.rules('add', {'required': '#form-widgets-species_pseudo_absence_points-0:unchecked'});
+            var el = $('#form-widgets-species_number_pseudo_absence_points');
             el.rules('add', {'required': "#form-widgets-species_pseudo_absence_points-0:checked",
                              'min': 1});
 
