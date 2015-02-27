@@ -3,10 +3,23 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
+  <div id="fieldname-modal" class="modal large hide fade" tabindex="-1" role="dialog"
+       tal:attributes="id string:${view/field/__name__}-modal">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel"
+          tal:content="string:Select ${view/label}">Select a species occurrence dataset</h3>
+    </div>
+    <div id="modal-body" class="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Add Layers</button>
+    </div>
+  </div>
   <script type="text/javascript"
           tal:content="structure view/js"></script>
-  <div id="form-widgets-fieldname-selected"
-       tal:attributes="id string:${view/id}-selected">
+  <div id="form-widgets-fieldname"
+       tal:attributes="id string:${view/id}">
     <div class="alert alert-error"
          tal:condition="python: len(view.resolutions()) > 1">
       <p>WARNING: Selection contains layers with different
@@ -23,7 +36,7 @@
                                name string:${view/name}.dataset.${index};
                                "/>
         <input type="hidden" value="" name="form.widgets.fieldname.layer.0"
-               tal:attributes="value layer/layer;
+               tal:attributes="value layer/token;
                                name string:${view/name}.layer.${index};
                                "/>
         <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
@@ -31,16 +44,19 @@
            title="preview this dataset"
            data-viz-id="vizurl"
            data-uuid="uuid"
+           data-mimetype="application/octet-stream"
+           data-viz-layer="path/in/zip"
            tal:attributes="data-viz-id item/vizurl;
-                           data-uuid brain/UID;">
+                           data-uuid brain/UID;
+                           data-mimetype item/mimetype;
+                           data-viz-layer item/vizlayer;">
           <i class="icon-eye-open icon-link icon-white"></i>
         </a>
         <p><strong><span tal:content="brain/Title">Dataset</span></strong></p>
-        <p><span tal:content="layer/label">Layer</span></p>
+        <p><span tal:content="layer/title">Layer</span></p>
         <p>Resolution: <span tal:content="item/resolution/title">Resolution title</span></p>
       </div>
-      <div
-           tal:condition="repeat/item/end">
+      <div tal:condition="repeat/item/end">
         <!-- TODO: should this one be outside of the div here?
              need to update load script to fetch it as well
              though -->
@@ -51,8 +67,7 @@
                tal:attributes="name string:${view/name}.empty;
                                value python: '1' if view.value else '';
                                required view/required;
-                               class python: 'required' if view.required else '';
-                               id view/id" />
+                               class python: 'required' if view.required else '';"/>
       </div>
     </tal:repeat>
     <div
@@ -61,8 +76,7 @@
              tal:attributes="name string:${view/name}.empty;
                              value python: '1' if view.value else '';
                              required view/required;
-                             class python: 'required' if view.required else '';
-                             id view/id" />
+                             class python: 'required' if view.required else '';"/>
     </div>
   </div>
   <span class="loader-container" tal:condition="not:view/value">

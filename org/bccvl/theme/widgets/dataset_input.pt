@@ -1,11 +1,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       tal:omit-tag="">
+  <div id="fieldname-modal" class="modal large hide fade" tabindex="-1" role="dialog"
+       tal:attributes="id string:${view/field/__name__}-modal">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel"
+          tal:content="string:Select ${view/label}">Select a species occurrence dataset</h3>
+    </div>
+    <div id="modal-body" class="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button class="btn btn-primary">Save changes</button>
+    </div>
+  </div>
   <script type="text/javascript"
           tal:content="structure view/js"></script>
-
-  <div id="form-widgets-fieldname-selected"
-       tal:attributes="id string:${view/id}-selected">
+  <div id="form-widgets-fieldname"
+       tal:attributes="id string:${view/id}">
     <tal:block tal:define="item view/item"
                tal:condition="python: view.value and item">
     <div class="selecteditem"
@@ -16,7 +28,6 @@
       <input type="hidden" value="" name="form.widgets.fieldname"
              tal:attributes="value view/value;
                              name view/name;
-                             id view/id;
                              required view/required;
                              class python: 'required' if view.required else '';
                              "/>
@@ -25,15 +36,23 @@
          title="preview this dataset"
          data-viz-id="vizurl"
          data-uuid="uuid"
+         data-mimetype="application/octet-stream"
+         data-file-url="download url"
          tal:attributes="class string:fine btn pull-right btn-primary ${view/vizclass};
                          data-viz-id python:dlinfo['alturl'][0];
-                         data-uuid item/UID;">
+                         data-file-url dlinfo/url;
+                         data-uuid item/UID;
+                         data-mimetype itemmd/mimetype;">
         <i class="icon-eye-open icon-link icon-white"></i>
       </a>
       <p><strong><span class="selected-option"
             tal:content="item/Title">Species</span></strong></p>
-      <p><span tal:content="itemmd/scientificname">Scientific Name</span></p>
-      <p>Rows: <span tal:content="itemmd/rows">Number of points</span></p>
+      <p tal:condition="itemmd/species/scientificName|nothing">
+        <span tal:content="itemmd/species/scientificName">Scientific Name</span>
+      </p>
+      <p tal:condition="itemmd/rows|nothing">
+        Rows: <span tal:content="itemmd/rows">Number of points</span>
+      </p>
     </div>
     </tal:block>
     <div
@@ -41,8 +60,7 @@
       <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
              tal:attributes="name string:${view/name}.empty;
                              required view/required;
-                             class python: 'required' if view.required else '';
-                             id view/id;"/>
+                             class python: 'required' if view.required else '';"/>
     </div>
   </div>
   <span class="loader-container" tal:condition="not:view/value">

@@ -34,12 +34,12 @@
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         />
 
-  <adapter
-      for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-           org.bccvl.site.widgets.interfaces.IDatasetWidget"
-      provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-      factory=".widgets.JS_WRAPPER_ADAPTER"
-      />
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IDatasetWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
 
     <adapter
         for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
@@ -47,7 +47,35 @@
         provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
         factory=".widgets.JS_WRAPPER_ADAPTER"
         />
+    
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IExperimentSDMWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
 
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IExperimentResultWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
+
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IFutureDatasetsWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
+
+    <adapter
+        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
+             org.bccvl.site.widgets.interfaces.IExperimentResultProjectionWidget"
+        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
+        factory=".widgets.JS_WRAPPER_ADAPTER"
+        />
+    
     <z3c:widgetTemplate
         mode="input"
         widget="org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
@@ -62,6 +90,34 @@
         template="dataset_input.pt"
         />
 
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IExperimentSDMWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="experimentsdm_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IFutureDatasetsWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="futuredatasets_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IExperimentResultProjectionWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="experimentresultprojection_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IExperimentResultWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="experimentresult_input.pt"
+        />
+    
     <z3c:widgetTemplate
         mode="input"
         widget="z3c.form.interfaces.IFileWidget"
