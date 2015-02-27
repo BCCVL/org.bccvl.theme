@@ -44,9 +44,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 renderPng($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/csv'){
                 renderCSV($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (type == 'text/x-r-transcript' || type ==  'application/json'){
+            } else if (type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain') {
                 renderCode($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
-            } 
+            }  
         });
 
         /* Global configuration */
