@@ -13,17 +13,12 @@
                   show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
                   dummy python:request.response.setHeader('X-Theme-Disabled', 'True');
 
-                  item_uuid context/@@uuid;
-                  item python:context.portal_catalog.searchResults(UID=item_uuid)[0];
-
                   dataset_tools nocall:context/@@dataset_tools;
 
                   navigation_root_url context/@@plone_portal_state/navigation_root_url;
 
-                  xitem_id item/getId|item/id;
-                  xitem_type_title item/Type;
-                  xitem_created item/CreationDate;
-                  enable_layers python:request.get('datasets.filter.enable_layers', False);
+                  filters python:request.get('datasets.filters', ());
+                  multiple python:request.get('datasets.multiple', '');
                   "
       tal:omit-tag="">
 
@@ -33,26 +28,32 @@
           tal:attributes="action context_state/current_base_url">
       <div class="row-fluid">
         <script type="text/javascript">
+          // FIXME: this is meant as an alternative multi select widget
           require(['js/bccvl-widgets'], function(bccvl) {
               bccvl.select_multi('#datasets-filter-resolution');
           });
         </script>
+        <input type="hidden" name="datasets.filters:list" value=""
+               tal:attributes="value val"
+               tal:repeat="val filters"/>
+        <input type="hidden" name="datasets.multiple" value=""
+               tal:attributes="value multiple"/>
         <div class="span9">
-          <div class="span3" tal:condition="enable_layers">
+          <div class="span3" tal:condition="python: 'resolution' in filters">
             <label for="datasets-filter-resolution">Choose a Resolution to Begin</label>
             <i class="fa fa-plus"></i>
             <select id="datasets-filter-resolution"
                     name="datasets.filter.resolution:list"
                     multiple="multiple">
               <option value="resolutionid"
-                      tal:repeat="opt view/resolution_list"
+                      tal:repeat="opt view/dstools/resolution_list"
                       tal:attributes="selected opt/selected;
                                       disabled opt/disabled;
                                       value opt/token;"
                       tal:content="opt/label">Resolution title</option>
             </select>
           </div>
-          <div class="span3">
+          <div class="span3" tal:condition="python: 'text' in filters">
             <label for="datasets-filter-text">Filter by Keywords</label>
             <input id="datasets-filter-text"
                    name="datasets.filter.text" type="text"
@@ -63,30 +64,27 @@
                    tal:repeat="genre python:request.get('datasets.filter.genre')"/>
 
           </div>
-          <div class="span3">
+          <div class="span3" tal:condition="python: 'source' in filters">
             <label for="datasets-filter-source">Filter by Source</label>
             <select id="datasets-filter-source"
                     name="datasets.filter.source:list"
                     multiple="multiple">
-
               <option value="optionvalue"
-                      tal:repeat="opt view/source_list"
+                      tal:repeat="opt view/dstools/source_list"
                       tal:attributes="selected opt/selected;
                                       disabled opt/disabled;
                                       value opt/token;"
                       tal:content="opt/label">Option label</option>
             </select>
           </div>
-          <div class="span3"
-               tal:condition="enable_layers">
-            <input name="datasets.filter.enable_layers" type="hidden" value="1"/>
+          <div class="span3" tal:condition="python: 'layer' in filters">
             <label for="datasets-filter-layer">Filter by Layers</label>
             <select id="datasets-filter-layer"
                     name="datasets.filter.layer:list"
                     multiple="multiple">
 
               <option value="layerid"
-                      tal:repeat="opt view/layer_list"
+                      tal:repeat="opt view/dstools/layer_list"
                       tal:attributes="selected opt/selected;
                                       disabled opt/disabled;
                                       value opt/token;"
@@ -97,8 +95,8 @@
         <div class="span2">
           <label for="datasets-filter-source">Apply Filters</label>
           <button class="btn btn-block" type="submit">Search!</button>
-          <p tal:condition="enable_layers"><small>Select multiple layers by <strong>clicking checkboxes</strong> when clicking on results.</small></p>
-          <p tal:condition="not:enable_layers"><small>Only <strong>one dataset</strong> can be selected here.</small></p>
+          <p tal:condition="python: 'layer' in filters"><small>Select multiple layers by <strong>clicking checkboxes</strong> when clicking on results.</small></p>
+          <p tal:condition="python: 'layer' not in filters"><small>Only <strong>one dataset</strong> can be selected here.</small></p>
         </div>
       </div>
 
@@ -115,7 +113,7 @@
       <tal:repeat tal:repeat="item batch">
       <!-- non layered datasets -->
       <div class="datasets-list-entry"
-           tal:condition="not:enable_layers"
+           tal:condition="python: 'layer' not in filters"
            tal:attributes="data-uuid item/UID"
            tal:define="item_title_or_id item/pretty_title_or_id;
                        item_icon python:plone_view.getIcon(item);
@@ -123,19 +121,11 @@
                        item_modified item/ModificationDate;
                        item_description item/Description;
                        ">
-        <div class="cell"
-             tal:condition="not:enable_layers">
+        <div class="cell">
           <p class="lead">
             <input type="radio" name="selected-layer"
-               tal:attributes="value string:select-${item/UID}" />
-            <!--<img width="16" height="16"
-               src="" alt=""
-               tal:condition="item_icon/url"
-               tal:attributes="src item_icon/url;
-                               alt item_icon/description;
-                               title item_icon/title;
-                               width item_icon/width;
-                               height item_icon/height;" />&nbsp;-->
+                   tal:attributes="value string:select-${item/UID};
+                                   type python: 'checkbox' if multiple=='multiple' else 'radio'" />
             <span tal:content="item_title_or_id">Item Title</span></p>
           <p  tal:condition="item_description"
               tal:content="item_description">Item description</p>
@@ -148,9 +138,9 @@
       </div>
       <!-- layered datasets -->
       <div class="datasets-list-entry"
-           tal:condition="enable_layers"
+           tal:condition="python: 'layer' in filters"
            tal:attributes="data-uuid item/UID;
-                           data-layer layer/layer"
+                           data-layer layer/token;"
            tal:define="item_title_or_id item/pretty_title_or_id;
                        item_icon python:plone_view.getIcon(item);
                        item_creator item/Creator;
@@ -165,20 +155,12 @@
             <input type="checkbox"
                tal:attributes="name item/UID;
                                value string:select-${item/UID};" />
-            <!--<img width="16" height="16"
-               src="" alt=""
-               tal:condition="item_icon/url"
-               tal:attributes="src item_icon/url;
-                               alt item_icon/description;
-                               title item_icon/title;
-                               width item_icon/width;
-                               height item_icon/height;" />&nbsp;-->
             <span tal:content="item_title_or_id">Item Title</span>
           </p>
           <p tal:condition="item_description"
               tal:content="item_description">Item description</p>
-          <p  tal:condition="layer/label"
-              tal:content="layer/label">Layer title</p>
+          <p  tal:condition="layer/title"
+              tal:content="layer/title">Layer title</p>
           <p><strong>Creator:</strong> <span tal:condition="item_creator"
           tal:define="author python:pas_member.info(item_creator)"
           tal:content="author/name_or_id">Bob Dobalina</span></p>
