@@ -89,9 +89,6 @@
         local = false;
     </replace>
 
-    <!-- inject bccvl-lookups js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <replace css:content-children="#bccvl-lookups" css:theme-children="#bccvl-lookups" />
-
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
         <xsl:for-each select="//dl[@class='portalMessage error']">
