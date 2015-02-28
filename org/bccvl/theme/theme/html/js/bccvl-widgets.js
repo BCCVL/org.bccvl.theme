@@ -179,14 +179,13 @@ define(
             modal.$element.on('modalapply', function(event) {
                 // get selected element
                 var $selected = modal.get_selected();
-                var uuid = $selected.map(function() { return $(this).attr('data-uuid'); }).get();
                 // we have all the data we need so get rid of the modal
                 modal.close();
                 if ($selected.length) {
                     // fetch html for widget
                     var params = [];
-                    $.each(uuid, function(index, value){
-                        params.push({name: settings.widgetname, value: value});
+                    $.each($selected, function(index, value){
+                        params.push({name: settings.widgetname, value: $(value).attr('data-uuid')});
                     });
                     reload_widget(params);
                 }
@@ -206,10 +205,10 @@ define(
             // reload widget via ajax
             function reload_widget(params) {
                 var $widgetroot = $('#' + settings.widgetid);
-                var $loader = $widgetroot.parent().find('span.loader-container img.loader');
-                $loader.show(0);
                 // add ajax_load parameter
                 params.push({name: 'ajax_load', value: 1});
+                var $loader = $widgetroot.parent().find('span.loader-container img.loader');
+                $loader.show(0);
                 $widgetroot.load(
                     settings.widgeturl + ' #' + settings.widgetid + ' >',
                     params,
@@ -307,10 +306,10 @@ define(
             // reload widget via ajax
             function reload_widget(params) {
                 var $widgetroot = $('#' + settings.widgetid);
-                var $loader = $widgetroot.parent().find('span.loader-container img.loader')
-                $loader.show(0);
                 // add ajax_load parameter
                 params.push({name: 'ajax_load', value: 1});
+                var $loader = $widgetroot.parent().find('span.loader-container img.loader')
+                $loader.show(0);
                 $widgetroot.load(
                     settings.widgeturl + ' #' + settings.widgetid + ' >',
                     params,
@@ -402,9 +401,9 @@ define(
 
             function reload_widget(params) {
                 var $widgetroot = $('#' + settings.widgetid);
+                params.push({name: 'ajax_load', value: 1});
                 var $loader = $widgetroot.parent().find('span.loader-container img.loader');
                 $loader.show(0);                
-                params.push({name: 'ajax_load', value: 1});
                 $widgetroot.load(
                     settings.widgeturl + ' #' + settings.widgetid + ' >',
                     params,
@@ -548,9 +547,9 @@ define(
 
             function reload_widget(params) {
                 var $widgetroot = $('#' + settings.widgetid);
+                params.push({name: 'ajax_load', value: 1});
                 var $loader = $widgetroot.parent().find('span.loader-container img.loader');
                 $loader.show(0);                
-                params.push({name: 'ajax_load', value: 1});
                 $widgetroot.load(
                     settings.widgeturl + ' #' + settings.widgetid + ' >',
                     params,
@@ -558,6 +557,9 @@ define(
                         $loader.hide();
                         // trigger change event when widget has been updated
                         $(this).trigger('widgetChanged');
+                        $.each($(this).find('select'), function(index, elem) {
+                            $(elem).selectize({create: true});
+                        });
                     }
                 );
             };
