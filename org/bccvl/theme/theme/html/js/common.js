@@ -23,6 +23,7 @@ requirejs.config({
         'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
         'jquery-timer':         'jquery-timer/jquery.timer',
         'jquery-csvtotable':    'jquery-csvtotable/jquery.csvToTable',
+        'selectize':            'selectize/selectize.min',        
         'select2':              'select2/select2.min',
         'OpenLayers':           'openlayers/OpenLayers',
         'prism':                'prism/prism'
