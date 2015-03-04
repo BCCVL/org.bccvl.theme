@@ -14,6 +14,7 @@
       <ul class="nav nav-tabs">
 	<li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
 	<li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+        <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay</a></li>
 	<li id= "tab-comp"><a href="experiment_compare#tab-compare">Compare</a></li>
       </ul>
 
