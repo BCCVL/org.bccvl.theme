@@ -29,7 +29,8 @@
               </thead>
               <tbody>
                 <!-- occurrence/absence dataset -->
-                <tal:block tal:repeat="uuid python:(context.species_occurrence_dataset, context.species_absence_dataset)">
+                <tal:block tal:repeat="uuid python:(context.species_occurrence_dataset, context.species_absence_dataset)"
+                           tal:condition="python: context.portal_type=='org.bccvl.content.sdmexperiment'">
                   <tr tal:define="result python:pc.searchResults(UID=uuid);
                                   item python: result[0] if result else nothing;
                                   item_obj item/getObject|nothing;
@@ -84,9 +85,9 @@
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                         <p><span>Emissions Scenario: <tal:replace
-                                       tal:replace="result/job_params/emission_scenario">bioclim</tal:replace></span>
+                                       tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
                         <span>Circulation Model: <tal:replace
-                                       tal:replace="result/job_params/climate_models">bioclim</tal:replace></span>
+                                       tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
                         <span>Year: <tal:replace
                                   tal:replace="result/job_params/year">bioclim</tal:replace></span>
                         <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
