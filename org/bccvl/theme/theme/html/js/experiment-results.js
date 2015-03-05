@@ -19,6 +19,14 @@ define(
                 // Continue to poll until all algorithms are done
                 intervalID = window.setInterval(pollExperimentStatus, 5000);
             }
+
+            // activate correct tab
+            var $urlTab = $('a[href="' + location.hash + '"]');
+            if ($urlTab.length > 0) {
+                $urlTab.tab('show');
+                $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
+                $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
+            }
         });
 
         // Poll /jm/getJobStatus for the status of the experiments
