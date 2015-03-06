@@ -120,6 +120,7 @@
                        item_creator item/Creator;
                        item_modified item/ModificationDate;
                        item_description item/Description;
+                       md python:dataset_tools.metadata(item);
                        ">
         <div class="cell">
           <p class="lead">
@@ -129,6 +130,10 @@
             <span tal:content="item_title_or_id">Item Title</span></p>
           <p  tal:condition="item_description"
               tal:content="item_description">Item description</p>
+          <p tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></p>
+          <p tal:condition="md/emsc|nothing"><small><b>Emmission Scenario: <tal:r tal:replace="md/emsc"></tal:r></b></small></p>
+          <p tal:condition="md/gcm|nothing"><small><b>Global Circulation Model: <tal:r tal:replace="md/gcm"></tal:r></b></small></p>
+          <p tal:condition="md/layers|nothing"><small><b>Layers: <tal:r tal:replace="python: ', '.join(dataset_tools.layer_vocab.getTerm(l).title for l in md['layers'])"></tal:r></b></small></p>          
           <p><strong>Creator:</strong> <span tal:condition="item_creator"
           tal:define="author python:pas_member.info(item_creator)"
           tal:content="author/name_or_id">Bob Dobalina</span>
