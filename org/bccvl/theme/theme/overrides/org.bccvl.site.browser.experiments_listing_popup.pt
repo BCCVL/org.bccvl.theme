@@ -28,6 +28,7 @@
           tal:attributes="action context_state/current_base_url">
       <input type="hidden" name="datasets.multiple" value=""
              tal:attributes="value multiple"/>
+      <input type="hidden" name="datasets.filters:list" value=""
       <input name="datasets.filter.experimenttype:list" type="hidden"
              tal:attributes="value experimenttype"
              tal:repeat="experimenttype
