@@ -59,7 +59,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
 
-
+        var layer_vocab = {};
+                $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
+                    $.each(data, function(index, value) {
+                        layer_vocab[value.token] = value.title;
+                    });
+                });
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function renderMap(uuid, url, id, type, visibleLayer){
@@ -186,7 +191,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         if (typeof visibleLayer !== 'undefined') {
                             if (layer.filename == visibleLayer) {
                                 isVisible = true;
-                                var legend = {}; legend.name = layer.label;
+                                var legend = {}; legend.name = layer_vocab[namespace];
                                 vizcommon.createLegend(legend, id, layer.min, layer.max, 20);
                             } else {
                                 isVisible = false;
@@ -194,7 +199,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         } else {
                             if (i == 1){
                                 isVisible = true;
-                                var legend = {}; legend.name = layer.label;
+                                var legend = {}; legend.name = layer_vocab[namespace];
                                 vizcommon.createLegend(legend, id, layer.min, layer.max, 20);
                             } else {
                                 isVisible = false;
@@ -202,7 +207,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         }
 
                         var newLayer = new OpenLayers.Layer.WMS(
-                            ''+layer.label+'', // Layer Name
+                            ''+layer_vocab[namespace]+'', // Layer Name
                             (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
