@@ -41,6 +41,7 @@
             <div class="span2">Selected</div>
             <div class="span2">Species</div>
             <div class="span1">Resolution</div>
+            <div class="span1">Algorithm</div>
           </div>
           <tal:repeat tal:repeat="model item/models">
             <div class="selectedmodels row-fluid"
@@ -59,6 +60,9 @@
               </div>
               <div class="span1">
                 <span tal:content="python: dstools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
+              </div>
+              <div class="span1">
+                <span tal:content="python: modelobj.__parent__.job_params['function']">Algorithm id</span>
               </div>
             </div>
           </tal:repeat>
