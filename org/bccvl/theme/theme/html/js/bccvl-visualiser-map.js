@@ -46,7 +46,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 renderCSV($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain') {
                 renderCode($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
-            }  
+            } else if (type == 'application/pdf') {
+                renderPDF($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+            }
         });
 
         /* Global configuration */
@@ -308,6 +310,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 }
             });
         }
+
+        function renderPDF(uuid, url, id){
+            // NEED TO DESTROY ANY EXISTING MAP OR HTML
+            var container = $('#'+id);
+            if (container.hasClass('olMap')) {
+                window.map.destroy();
+                container.removeClass('olMap');
+            }
+            container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
+        }                
 
     }
 );
