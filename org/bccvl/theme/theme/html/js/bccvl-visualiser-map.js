@@ -258,10 +258,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         function renderPng(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap'))
+            if (container.hasClass('olMap')) {
                 window.map.destroy();
                 container.removeClass('olMap')
-
+            }
             container.height('auto').html('<img src="'+url+'" alt="" />').addClass('active');
         }
 
@@ -269,10 +269,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         function renderCode(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap'))
+            if (container.hasClass('olMap')) {
                 window.map.destroy();
                 container.removeClass('olMap');
-
+            }
             $.ajax({
                 url: url, 
                 dataType: 'text',
@@ -290,10 +290,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         function renderCSV(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap'))
+            if (container.hasClass('olMap')) {
                 window.map.destroy();
                 container.removeClass('olMap');
-
+            }
             $.ajax({
                 url: url, 
                 dataType: 'text',
