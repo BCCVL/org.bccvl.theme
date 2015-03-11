@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'jquery-ui'],
+    ['jquery', 'jquery-ui', 'select2'],
     function($) {
 
     // helper to enforce single selection for jquery-ui selectable
@@ -27,7 +27,8 @@ define(
             widgeturl: location.origin + location.pathname + '/++widget++' + options.field,
             widgetelement: '#form-widgets-' + options.field + '-selected >',
             result_selector: '#datasets-popup-result',
-            result_child_selector: '#datasets-popup-result-list'
+            result_child_selector: '#datasets-popup-result-list',
+            form_selector: '#datasets-popup-searchform'
         }, options );
 
         // variable names that make more sense
@@ -47,7 +48,17 @@ define(
                 .find('.modal-body')
                 .load(settings.remote + '?' + $.param(paramlist), function() {
                    bind_events_on_modal_content();
+                   $(settings.form_selector).find('select[multiple]').select2({
+                    placeholder: "Begin typing or click to browse ..."
+                   });
+                   $(settings.form_selector).find('select[multiple]').on('change', function(){
+                    $(settings.result_selector).css('max-height', $(settings.form_selector).outerHeight());
+                   });
                 });
+            $modal.on('shown', function(){
+                
+                $(settings.result_selector).css('max-height', $(settings.form_selector).outerHeight());
+            });
         });
 
         function load_search_results(url, params) {
@@ -149,7 +160,8 @@ define(
             widgeturl: location.origin + location.pathname + '/++widget++' + options.field,
             widgetelement: '#form-widgets-' + options.field + '-selected >',
             result_selector: '#datasets-popup-result',
-            result_child_selector: '#datasets-popup-result-list'
+            result_child_selector: '#datasets-popup-result-list',
+            form_selector: '#datasets-popup-searchform'
         }, options );
 
         // variable names that make more sense
@@ -165,12 +177,22 @@ define(
                 paramlist.push({name: 'datasets.filter.genre:list',
                                 value: value});
             });
+
             // bootstrap 2 modal does'n have loaded event so we have to do it ourselves
             $modal.modal('show')
                 .find('.modal-body')
                 .load(settings.remote + '?' + $.param(paramlist), function() {
                    bind_events_on_modal_content();
+                   $(settings.form_selector).find('select[multiple]').select2({
+                    placeholder: "Begin typing or click to browse ..."
+                   });
+                   $(settings.form_selector).find('select[multiple]').on('change', function(){
+                    $(settings.result_selector).css('max-height', $(settings.form_selector).outerHeight());
+                   });
                 });
+            $modal.on('shown', function(){
+                $(settings.result_selector).css('max-height', $(settings.form_selector).outerHeight());
+            });
         });
 
         function load_search_results(url, params) {
