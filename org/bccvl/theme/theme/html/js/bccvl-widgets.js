@@ -82,7 +82,10 @@ define(
                 };
                 // show dialog
                 // bootstrap 2 modal does'n have loaded event so we have to do it ourselves
-                $modal.modal('show');
+                $modal.modal({
+                    backdrop: 'static',
+                    show: true
+                });
                 _load_search_results(settings.remote + '?' + $.param(params));
 
             };
@@ -98,7 +101,6 @@ define(
             };
 
             function _load_search_results(url) {
-
                 $modal.find('.modal-body').load(url, _bind_events_on_modal_content);
             };
             
