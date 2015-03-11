@@ -48,6 +48,10 @@ define(
                 $modal.trigger('modalapply');
             });
 
+            $modal.on('shown', function(){
+                $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
+            });
+            
             function show() {
                 // first gather all request parameters we need
                 var params = [{
@@ -81,10 +85,6 @@ define(
                 $modal.modal('show');
                 _load_search_results(settings.remote + '?' + $.param(params));
 
-                $modal.on('shown', function(){
-                    $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
-                });
-                
             };
 
             function close() {
