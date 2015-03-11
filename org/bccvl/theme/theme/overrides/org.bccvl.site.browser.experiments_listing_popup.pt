@@ -23,6 +23,7 @@
 
 
   <div class="row-fluid">
+    <div class="span3">
     <form id="datasets-popup-searchform" action="" method="GET"
           tal:define="context_state context/@@plone_context_state"
           tal:attributes="action context_state/current_base_url">
@@ -35,8 +36,8 @@
              tal:attributes="value experimenttype"
              tal:repeat="experimenttype
                          python:request.get('datasets.filter.experimenttype')"/>
-      <div class="span9">
-        <div class="span3" tal:condition="python: 'text' in filters">
+      
+        <div class="popup-filter" tal:condition="python: 'text' in filters">
           <label for="datasets-filter-text">Filter by Keywords</label>
           <input id="datasets-filter-text"
                  name="datasets.filter.text" type="text"
@@ -47,17 +48,18 @@
                  tal:repeat="genre python:request.get('datasets.filter.genre')"/>
           
         </div>
-        <div class="span2">
+        <div class="popup-filter">
           <label for="datasets-filter-source">Apply Filters</label>
           <button class="btn btn-block" type="submit">Search!</button>
           <p tal:condition="python: multiple=='multiple'"><small>Select multiple layers by <strong>clicking checkboxes</strong> when clicking on results.</small></p>
           <p tal:condition="python: multiple!='multiple'"><small>Only <strong>one dataset</strong> can be selected here.</small></p>
         </div>
-      </div>
+      
 
     </form>
-  </div>
-  <div id="datasets-popup-result"
+    </div>
+
+  <div id="datasets-popup-result" class="span9"
        tal:define="batch view/experimentslisting">
     <div id="datasets-popup-result-list">
       <div class="row" tal:condition="batch">
@@ -77,36 +79,38 @@
                          exp python:view.experiment_details(item);
                          ">
           <div class="cell">
-            <p class="lead">
+            <h4>
               <input type="radio" name="selected-layer"
                      tal:attributes="value string:select-${item/UID};
                                      type python: 'checkbox' if multiple=='multiple' else 'radio'" />
-              <span tal:content="item_title">Item Title</span>
-              <br/>
+              <strong tal:content="item_title">Item Title</strong>,
               <span class="taxonomy" tal:content="exp/species_occurrence"/>
-              <em>(<small tal:content="exp/functions"/>)</em>
-            </p>
+              <em>(<span tal:content="exp/functions"/>)</em>
+            </h4>
             <tal:if condition="exp/environmental_layers|nothing">
-              <li class="bccvl-experiment-parameters"
-                  tal:repeat="dataset exp/environmental_layers">
+              <dl>
+                <dt class="bccvl-experiment-parameters"
+                  tal:repeat="dataset exp/environmental_layers" >
                 <tal:repl tal:replace="dataset/title"/>
-                <ul>
-                  <li class="bccvl-experiment-parameters"
+                <dd class="bccvl-experiment-parameters"
                       tal:repeat="layer dataset/layers"
-                      tal:content="python: view.dstools.layer_vocab.getTerm(layer).title"></li>
-                </ul>
-              </li>
+                      tal:content="python: view.dstools.layer_vocab.getTerm(layer).title"></dd>
+                </dt>
+              </dl>
             </tal:if>
             <tal:if condition="exp/years|nothing">
-            <li class="bccvl-experiment-parameters" tal:content="exp/years" />                    </tal:if>
-            <tal:if condition="item/Description">
-              <li class="bccvl-experiment-summary" tal:content="item/Description" />
+                <p class="bccvl-experiment-parameters" tal:content="exp/years" />                    
             </tal:if>
-            <p><strong>Creator:</strong><span tal:condition="item_creator"
+            <tal:if condition="item/Description">
+              <p class="bccvl-experiment-summary" tal:content="item/Description" />
+            </tal:if>
+
+            <ul class="inline">
+              <li><strong>Creator:</strong><span tal:condition="item_creator"
             tal:define="author python:pas_member.info(item_creator)"
-            tal:content="author/name_or_id">Bob Dobalina</span>
-            Modified: <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span>
-            </p>
+            tal:content="author/name_or_id"> Bob Dobalina</span></li>
+              <li><strong>Modified:</strong> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></li>
+            </ul>
           </div>
         </div>
       </tal:repeat>
@@ -122,5 +126,6 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </html>

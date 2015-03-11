@@ -1,5 +1,5 @@
 define(
-    ['jquery'],
+    ['jquery','selectize'],
     function($) {
 
         // helper function for selectable behaviour
@@ -36,7 +36,7 @@ define(
             }, options);
             
             // make sure the modal dialog is a top level element on the page
-            $modal.prependTo($('body'));
+            $modal.addClass('new-experiment').prependTo($('body'));
 
             // init modal events
             $modal.on('hidden', _clear);
@@ -80,6 +80,11 @@ define(
                 // bootstrap 2 modal does'n have loaded event so we have to do it ourselves
                 $modal.modal('show');
                 _load_search_results(settings.remote + '?' + $.param(params));
+
+                $modal.on('shown', function(){
+                    $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
+                });
+                
             };
 
             function close() {
@@ -93,6 +98,7 @@ define(
             };
 
             function _load_search_results(url) {
+
                 $modal.find('.modal-body').load(url, _bind_events_on_modal_content);
             };
             
@@ -105,6 +111,14 @@ define(
                 });
                 // apply selectable behaviour to result list
                 selectable($modal.find(settings.result_child_selector));
+
+                $modal.find('select[multiple]').selectize({
+                    plugins: ['remove_button'],
+                    onChange: function(){
+                        $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
+                    }
+                });
+
                 // intercept pagination links
                 $modal.find(settings.pagination_selector).click( function(event) {
                     event.preventDefault();

@@ -1,5 +1,6 @@
 
 @import url('fonts.css');
+
 body {
     background:#333333;
     font-size:13px;
@@ -1762,6 +1763,12 @@ table.error td {
     background: rgba(255,0,0,.1);
     border-top: 1px solid rgba(255,0,0,.1);
 }
+.modal.large.new-experiment {
+      width: 80%; /* responsive width */
+      margin-left: -40%; /* width/2 */
+      left: 50%;
+      overflow-y: initial ;
+  }
 .ui-selectee {
     cursor: pointer;
 }
@@ -1780,62 +1787,79 @@ table.error td {
     margin-right: 1em;
 }
 .datasets-list-entry input[type="checkbox"], .datasets-list-entry input[type="radio"] {
-    margin-top: .15em;
+    margin-top: .25em;
     vertical-align: top;
 }
 #datasets-popup-result .datasets-list-entry {
     margin-bottom: .3em;
+    cursor:pointer;
 }
 #datasets-popup-result .datasets-list-entry.ui-selected {
     background: rgba(0, 159, 227, .5);
     color: white;
 }
+#datasets-popup-result .datasets-list-entry h4 strong {
+    color:#009FE3;
+}
+#datasets-popup-result .datasets-list-entry.ui-selected h4 {
+    color:black;
+}
+#datasets-popup-result .datasets-list-entry dl {
+    margin-bottom:1em;
+}
 img.ui-selectee {
     vertical-align: bottom;
     line-height: 1em;
 }
-
+ul.inline > li, ol.inline > li {
+    padding-right:10px;
+    padding-left:0;
+}
 #datasets-popup-result .ui-selecting { background: rgba(0, 159, 227, .3); }
 
 div#datasets-popup-result {
-    max-height: 450px;
+    max-height: 420px;
     overflow-y: auto;
-    box-shadow: inset 0px -2px 2px rgba(0,0,0,.1);
 }
-.bccvl-experimentdetails .modal .modal-body {
+.new-experiment.modal .modal-body {
     padding:0;
 }
-.bccvl-experimentdetails .modal .modal-header {
-    border-bottom: 1px solid rgba(0, 159, 227, .3);
-}
-.bccvl-experimentdetails .modal .modal-body form {
-    padding: 1em;
+.new-experiment.modal .modal-body form {
+    padding:1em 0;
     background: rgba(0, 159, 227, .15);
     margin-bottom: 0;
-    box-shadow: 0px 1px 1px rgba(0,0,0,.15);
+    min-height: 420px;
 }
 #datasets-popup-result-list {
-    padding:1em;
+    padding-right: 1em;
 }
 #datasets-popup-searchform input,  #datasets-popup-searchform select {
-    width: 100%;
-    margin-bottom: 0;
+    width:auto;
 }
 #datasets-popup-searchform input {
-    width: 95%;
+    /*width: 95%;
     padding-left: 2.5%;
-    padding-right: 2.5%;
+    padding-right: 2.5%;*/
 }
 #datasets-popup-searchform label {
     font-size:1em;
     font-family: "OpenSansRegular";
     color: #009FE3;
 }
+.popup-filter {
+padding: 0 1em;
+}
 #datasets-popup-searchform small {
     line-height: 1.3em;
 }
 #datasets-popup-searchform p {
     margin-top:.5em;
+}
+.datasets-list-entry h4 {
+    margin-top:0;
+}
+.datasets-list-entry ul {
+    margin-bottom:0;    
 }
 .selecteditem {
     padding: .5em;
