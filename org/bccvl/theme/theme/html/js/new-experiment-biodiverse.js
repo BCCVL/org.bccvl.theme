@@ -3,8 +3,7 @@
 //
 define(
     ['jquery', 'js/bccvl-wizard-tabs',
-     'js/bccvl-form-jquery-validate', 'jquery-tablesorter', 'jquery-arrayutils',
-     'selectize'],
+     'js/bccvl-form-jquery-validate', 'jquery-tablesorter', 'jquery-arrayutils'],
     function($, wiztabs, formvalidator) {
 
 	$(function() {
