@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       tal:omit-tag="">
-  <div id="fieldname-modal" class="modal large hide fade" tabindex="-1" role="dialog"
+  <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

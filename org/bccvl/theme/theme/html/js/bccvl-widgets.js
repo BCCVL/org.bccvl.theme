@@ -36,7 +36,7 @@ define(
             }, options);
             
             // make sure the modal dialog is a top level element on the page
-            $modal.addClass('new-experiment').prependTo($('body'));
+            $modal.prependTo($('body'));
 
             // init modal events
             $modal.on('hidden', _clear);

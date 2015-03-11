@@ -3,7 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-  <div id="fieldname-modal" class="modal large hide fade" tabindex="-1" role="dialog"
+  <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
