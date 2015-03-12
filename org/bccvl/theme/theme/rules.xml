@@ -26,6 +26,7 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
     <xi:include href="rules/sharing.xml" />
+    <xi:include href="rules/remove-dataset.xml" />    
     <xi:include href="rules/feedback.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->

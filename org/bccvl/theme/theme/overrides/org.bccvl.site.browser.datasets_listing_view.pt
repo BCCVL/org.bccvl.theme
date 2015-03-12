@@ -224,7 +224,16 @@
                          tal:condition="python: item_editable and item_obj.format == 'application/zip'">
                         <i class="icon-pencil icon-white" title="edit"></i>
                       Edit</a>
+                      <!-- remove dataset -->                    
+
+                      <a class="remove-dataset-btn btn btn-primary btn-small"
+                         tal:attributes="href string:${item_url}/@@remove"
+                         tal:condition="python: item_editable and complete">
+                        <i class="icon-remove icon-white" title="Remove"></i>
+                      Remove</a>
+                      <!-- end remove dataset --> 
                     </div>
+                   
                     <div class="bccvl-list-preview-pane" style="height:500px;"
                          tal:attributes="id string:map-${item/UID}"
                          >

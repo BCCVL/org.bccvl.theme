@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Remove Dataset</title>
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- include portal_url to simplify path referencing -->
+    <script src="../plone_javascript_variables.js"></script>
+
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js"></script>
+
+  </head>
+
+  <body>
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3 class="heading">Remove</h3>
+    </div>
+    <div class="modal-body">
+      <form method="post" id='remove-dataset-confirmation-form'>
+
+
+    <br/>
+
+    <h1><div id="dataset-title" /></h1>
+    <br/>
+
+    <div class="alert alert-danger" role="alert">
+    <div id="message-body" />
+    </div>
+    
+    <div id="content-core" />
+
+    <div class="formControls">
+      <button type="submit" id="form-buttons-remove" name="form.buttons.remove" class="btn btn-primary remove-submit-btn" value="Remove" data-class="button-field">Remove</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+
+
+      <input type="hidden" id="authenticator" />
+
+      </form>
+    </div>
+  </body>
+
+</html>
