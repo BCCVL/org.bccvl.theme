@@ -30,32 +30,35 @@
                                  name string:${view/name}.experiment.${index};"/>
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
           <!-- TODO: show experiment infos -->
-          <p class="experiment-title"
+          <h4 class="experiment-title"
              data-resolution=""
              tal:attributes="data-resolution item/resolution"
-             tal:content="item/title">Experiment Title</p>
+             tal:content="item/title">Experiment Title</h4>
           <!-- List of Datesetss within experiment -->
           <tal:repeat tal:repeat="dataset item/datasets">
-            <div class="selecteddatasets controls-row"
+            <div class="selecteddatasets controls-row row-fluid"
                  tal:define="dsindex repeat/dataset/index;">
-              <input type="checkbox" value="" class="span"
-                     name="form.widgets.fieldname.dataset.0.0.uuid"
-                     tal:attributes="value dataset/uuid;
-                                     name string:${view/name}.dataset.${index}.${dsindex}.uuid;
-                                     checked dataset/selected;"/>
-              <select name="form.widgets.fieldname.dataset.0.0.threshold"
-                      class="span3"
-                      tal:attributes="name string:${view/name}.dataset.${index}.${dsindex}.threshold;">
-                <tal:block tal:repeat="threshold dataset/thresholds">
-                  <option value=""
-                          tal:define="value python:dataset['thresholds'][threshold];
-                                      thlabel dataset/threshold/label|nothing;"
-                          tal:attributes="value threshold;
-                                          selected python:thlabel == threshold"
-                          tal:content="string:${threshold} (${value})"/>
-                </tal:block>
-              </select>
-              <span class="span3" tal:content="dataset/title">Dataset Title</span>
+              <div class="span4">
+                <input type="checkbox" value="" class="span1"
+                       name="form.widgets.fieldname.dataset.0.0.uuid"
+                       tal:attributes="value dataset/uuid;
+                                       name string:${view/name}.dataset.${index}.${dsindex}.uuid;
+                                       checked dataset/selected;"/>
+                <select name="form.widgets.fieldname.dataset.0.0.threshold" class="span11"
+                        tal:attributes="name string:${view/name}.dataset.${index}.${dsindex}.threshold;">
+                  <tal:block tal:repeat="threshold dataset/thresholds">
+                    <option value=""
+                            tal:define="value python:dataset['thresholds'][threshold];
+                                        thlabel dataset/threshold/label|nothing;"
+                            tal:attributes="value threshold;
+                                            selected python:thlabel == threshold"
+                            tal:content="string:${threshold} (${value})"/>
+                  </tal:block>
+                </select>
+              </div>
+              <div class="span3">
+                <p class="lead" tal:content="dataset/title">Dataset Title</p>
+              </div>
             </div>
             <input type="hidden" value="" name="form.widgets.dataset.0.count"
 		   tal:condition="repeat/dataset/end"

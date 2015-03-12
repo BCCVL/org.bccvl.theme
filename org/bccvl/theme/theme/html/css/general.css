@@ -1796,16 +1796,31 @@ table.error td {
 }
 #datasets-popup-result .datasets-list-entry.ui-selected {
     background: rgba(0, 159, 227, .5);
-    color: white;
+    /*color: white;*/
 }
 #datasets-popup-result .datasets-list-entry h4 strong {
     color:#009FE3;
 }
-#datasets-popup-result .datasets-list-entry.ui-selected h4 {
-    color:black;
+
+#datasets-popup-result .datasets-list-entry.ui-selected h4, #datasets-popup-result .datasets-list-entry.ui-selected h4 strong {
+    color:#333;
 }
 #datasets-popup-result .datasets-list-entry dl {
     margin-bottom:1em;
+}
+.selectize-control.multi {
+    margin-bottom:.7em;
+}
+.selectize-control.multi .selectize-input > div {
+    font-size: 12px;
+    margin: 1px!important;
+}
+.selectize-dropdown-content {
+  font-size: 12px;
+  line-height: 1.25em;
+}
+.selectize-input.items.not-full.has-options.has-items, .selectize-control.multi .selectize-input {
+    padding:5px;
 }
 img.ui-selectee {
     vertical-align: bottom;
@@ -1829,6 +1844,8 @@ div#datasets-popup-result {
     background: rgba(0, 159, 227, .15);
     margin-bottom: 0;
     min-height: 420px;
+    max-height: 600px;
+    overflow-y: auto;
 }
 #datasets-popup-result-list {
     padding-right: 1em;
@@ -1836,10 +1853,11 @@ div#datasets-popup-result {
 #datasets-popup-searchform input,  #datasets-popup-searchform select {
     width:auto;
 }
+input#datasets-filter-text {
+    width:94%;
+}
 #datasets-popup-searchform input {
-    /*width: 95%;
-    padding-left: 2.5%;
-    padding-right: 2.5%;*/
+    font-size:12px;
 }
 #datasets-popup-searchform label {
     font-size:1em;
@@ -1868,9 +1886,27 @@ padding: 0 1em;
     margin: 0 0 .75em;
     line-height: 2em;
 }
+.selectedexperiment {
+  padding: .5em;
+}
+.selectedexperiment h4 {
+    font-family: "OpenSansRegular";
+    margin: 0 0 .5em;
+}
+.selecteddatasets.controls-row {
+    margin-bottom:.5em;
+}
+.selecteddatasets.controls-row input[type="checkbox"]{
+   height: 1em;
+  margin-top: .7em; 
+}
+
 .selecteditem p {
     line-height: 1.3em;
     margin: .35em 0 .35em 0;
+}
+.selecteditem p.lead {
+    font-size:16px;
 }
 .selecteditem .btn {
     margin-left:5px;

@@ -114,7 +114,7 @@ define(
                 // apply selectable behaviour to result list
                 selectable($modal.find(settings.result_child_selector));
 
-                $modal.find('select[multiple]').selectize({
+                $modal.find('select[multiple]').attr('placeholder','Type to search, or scroll to browse...').selectize({
                     plugins: ['remove_button'],
                     onChange: function(){
                         $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
