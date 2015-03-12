@@ -24,15 +24,30 @@ define(
                         $(".modal").load(url, function() {
                             // make sure there is no redirect when the form is submitted
                             // also hide and empty the modal
+                            title = $(".modal-body h1").text();
                             var $form = $('.modal form');
 
-                            $form.ajaxForm(function() {
-                                $('.modal').modal('hide');
-                                $('.modal').empty();
+
+                            $form.ajaxForm({
+                                success: function() {
+                                    // $('.modal').modal('hide');
+                                    // $('.modal').empty();
+                                    // $("#content-core").html('Reloading dataset list <img src="' + portal_url + '/++resource++bccvl/images/ajax-loader.gif"></img>');
+
+                                    location.reload();
+                                },
+                                beforeSubmit: function() {
+                                    // $(".modal button").prop('disabled', true);
+                                    $(".modal .close").remove();
+                                    $(".modal button").remove();
+
+                                    $(".modal h1").text("Removing Dataset");
+                                    $(".modal-body h1").html('Removing dataset &ldquo;' + title + '&rdquo;.');
+                                    $(".modal .alert").remove();
+                                    $("#content-core").html('Please Wait <img src="' + portal_url + '/++resource++bccvl/images/ajax-loader.gif"></img>');
+                                }
                             });
 
-                            // bindUserSearch(url);
-                            // legalCheckbox();
                         });
                     }
                 });
