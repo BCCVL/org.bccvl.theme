@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+
+    <body>
+
+        <metal:main fill-slot="main" >
+
+
+        <tal:block>
+            <h1 class="documentFirstHeading"
+                i18n:translate="alert_really_delete">
+                Do you really want to remove this item?
+            </h1>
+        </tal:block>
+
+        <div id="content-core">
+            <ul>
+                <li tal:content="context/@@plone_context_state/object_title" id='dataset-title'>The item title (ID)</li>
+            </ul>
+            <div id='message-body'><strong>Warning:</strong> Removing this dataset will make it unavailble to you and everybody you shared it with. Recently created experiments using this dataset may fail. People will hate you. You're a terrible human being if you do this. Maybe Hamish will even yell at you a little. This is probably not the final version of this message.</div>
+            <form metal:use-macro="context/@@ploneform-macros/titlelessform" />
+        </div>
+
+        </metal:main>
+    </body>
+</html>

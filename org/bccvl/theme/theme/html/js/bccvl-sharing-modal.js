@@ -62,7 +62,7 @@ define(
 		function renderSpinner() {
 			var html = '';
 			html += '<div style="text-align: center;" id="ajax_loader">';
-			html += '<img src="/++resource++bccvl/images/ajax-loader.gif"></img>';
+            html += '<img src="'+portal_url+'/++resource++bccvl/images/ajax-loader.gif"></img>';
 			html += '<p>Loading. Please Wait</p>';
 			html += '</div>';
 			return html;

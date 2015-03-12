@@ -1,0 +1,32 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <rules if-path="@@remove/" >
+        <theme href="html/remove-dataset.html" />
+
+        <replace css:theme=".heading" css:content=".documentFirstHeading" />
+
+        <!-- Drop the search bar -->
+        <!-- <drop content="//div[@id='content-core']/form/div[@class='field'][1]" /> -->
+        <!-- <drop css:content="#sharing-search-button" /> -->
+
+
+
+        <!-- Get the form -->
+        <!-- <replace css:theme-children=".modal-body" content="//div[@id='content-core']/form" /> -->
+        <!-- <replace css:theme="#content-core" css:content="#content-core" /> -->
+        <replace css:theme="#dataset-title" content="//li[@id='dataset-title']/text()" />
+        <replace css:theme="#message-body" css:content="#message-body" />
+
+        <merge attributes="action" css:theme="form" content="//div[@id='content-core']/form" />
+
+        <!-- <replace css:theme="#formControls" css:content=".formControls" /> -->
+
+        <replace css:theme="#authenticator" content="//div[@id='content-core']/form/input[@name='_authenticator']" />
+
+
+    </rules>
+
+</rules>

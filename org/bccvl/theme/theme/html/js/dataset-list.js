@@ -3,9 +3,9 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'OpenLayers',
+     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'OpenLayers',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer'],
-    function($, viz, vizmap, sharing, editmodal) {
+    function($, viz, vizmap, sharing, editmodal, removedataset) {
 
         // ==============================================================
         $(function() {
@@ -13,6 +13,8 @@ define(
             viz.init();
             sharing.init();
             editmodal.init();
+            removedataset.init();
+
 
             $('.bccvl-datasetstable').tablesorter({
                 headers: {
@@ -141,6 +143,7 @@ define(
                     // Wire up visualiser and sharing
                     viz.init();
                     sharing.init();
+                    removedataset.init();
                 }
             });
         };
