@@ -43,6 +43,7 @@
             <select id="datasets-filter-resolution"
                     name="datasets.filter.resolution:list"
                     multiple="multiple">
+              <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
               <option value="resolutionid"
                       tal:repeat="opt view/dstools/resolution_list"
                       tal:attributes="selected opt/selected;
@@ -67,6 +68,7 @@
           <select id="datasets-filter-source"
                   name="datasets.filter.source:list"
                   multiple="multiple">
+            <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
             <option value="optionvalue"
                     tal:repeat="opt view/dstools/source_list"
                     tal:attributes="selected opt/selected;
@@ -80,7 +82,7 @@
           <select id="datasets-filter-layer"
                   name="datasets.filter.layer:list"
                   multiple="multiple">
-
+            <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
             <option value="layerid"
                     tal:repeat="opt view/dstools/layer_list"
                     tal:attributes="selected opt/selected;
