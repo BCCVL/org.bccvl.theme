@@ -25,7 +25,7 @@
       <div class="selecteditem">
         <!-- Experiment block -->
         <div class="selectedexperiment"
-             tal:define="dstools context/@@dataset_tools">
+             tal:define="dataset_tools nocall:context/@@dataset_tools">
           <input type="hidden" value="" name="form.widgets.fieldname"
                  tal:attributes="value item/uuid;
                                  name string:${view/name};"/>
@@ -46,20 +46,20 @@
           <tal:repeat tal:repeat="model item/models">
             <div class="selectedmodels row-fluid"
                  tal:define="modelobj model/item/getObject;
-                             modelmd python:dstools.bccvlmd(modelobj)">
+                             modelmd python:dataset_tools.bccvlmd(modelobj)">
               <div class="span2">
                 <input type="checkbox" value=""
                        name="form.widgets.fieldname.model:list"
                        tal:attributes="value model/uuid;
                                        name string:${view/name}.model:list;
                                        checked model/selected;"/>
-                <span tal:content="python: dstools.genre_title(modelmd['genre'])">Model Title</span>
+                <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
               </div>
               <div class="span2">
                 <span tal:content="modelmd/species/scientificName">Species data</span>
               </div>
               <div class="span1">
-                <span tal:content="python: dstools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
+                <span tal:content="python: dataset_tools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
               </div>
               <div class="span1">
                 <span tal:content="python: modelobj.__parent__.job_params['function']">Algorithm id</span>

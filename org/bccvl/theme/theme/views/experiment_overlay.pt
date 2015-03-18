@@ -34,10 +34,10 @@
                   <tr tal:define="result python:pc.searchResults(UID=uuid);
                                   item python: result[0] if result else nothing;
                                   item_obj item/getObject|nothing;
-                                  dstools nocall:item_obj/dataset_tools|nothing"
+                                  dataset_tools nocall:item_obj/dataset_tools|nothing"
                       tal:condition="uuid">
                     <td class="bccvl-table-label"
-                        tal:define="md dstools/metadata">
+                        tal:define="md dataset_tools/metadata">
                       <p class="lead" tal:content="item/Title">Item Title</p>
                       <p><span tal:condition="item/Description"
                         tal:content="item/Description">Dataset short description</span>
@@ -45,7 +45,7 @@
                       <span tal:condition="md/species/scientificname|nothing">Species: <i tal:content="md/scientificname"></i></span></p>
                     </td>
                     <td class="bccvl-table-controls"
-                        tal:define="dlinfo dstools/get_download_info;
+                        tal:define="dlinfo dataset_tools/get_download_info;
                                     downloadurl dlinfo/url;
                                     visurl python: dlinfo['alturl'][0]">
                       <a class="bccvl-auto-viz"

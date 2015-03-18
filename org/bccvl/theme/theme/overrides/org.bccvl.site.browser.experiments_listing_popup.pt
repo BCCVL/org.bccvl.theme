@@ -94,7 +94,7 @@
                 <tal:repl tal:replace="dataset/title"/>
                 <dd class="bccvl-experiment-parameters"
                       tal:repeat="layer dataset/layers"
-                      tal:content="python: view.dstools.layer_vocab.getTerm(layer).title"></dd>
+                      tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title"></dd>
                 </dt>
               </dl>
             </tal:if>

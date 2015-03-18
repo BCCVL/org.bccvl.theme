@@ -49,7 +49,7 @@
 	<h4><strong>Recently Added Datasets</strong></h4>
 	<hr/>
 	<div id="recent-datasets-list"
-        tal:define="dstools context/@@dataset_tools">
+        tal:define="dataset_tools nocall:context/@@dataset_tools">
 	  <div class="alert"
                tal:condition="not:datasets">
 	    <strong>No datasets are available yet.</strong><br/>
@@ -59,7 +59,7 @@
                tal:repeat="item datasets"
                tal:attributes="class string:dash-dataset ${python:view.get_state_css(item)}">
               <a href="item_url" tal:attributes="href string:${portal_url}/datasets" tal:content="item/Title">Dataset title</a> 
-              <span tal:content="python:dstools.genre_title(item.BCCDataGenre)">Dataset Type</span>
+              <span tal:content="python:dataset_tools.genre_title(item.BCCDataGenre)">Dataset Type</span>
             
           </div>
 	</div>

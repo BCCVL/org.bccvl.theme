@@ -45,7 +45,7 @@
                     multiple="multiple">
               <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
               <option value="resolutionid"
-                      tal:repeat="opt view/dstools/resolution_list"
+                      tal:repeat="opt dataset_tools/resolution_list"
                       tal:attributes="selected opt/selected;
                                       disabled opt/disabled;
                                       value opt/token;"
@@ -70,7 +70,7 @@
                   multiple="multiple">
             <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
             <option value="optionvalue"
-                    tal:repeat="opt view/dstools/source_list"
+                    tal:repeat="opt dataset_tools/source_list"
                     tal:attributes="selected opt/selected;
                                     disabled opt/disabled;
                                     value opt/token;"
@@ -84,7 +84,7 @@
                   multiple="multiple">
             <option disabled="disabled" value="">Type to search, or scroll to browse...</option>
             <option value="layerid"
-                    tal:repeat="opt view/dstools/layer_list"
+                    tal:repeat="opt dataset_tools/layer_list"
                     tal:attributes="selected opt/selected;
                                     disabled opt/disabled;
                                     value opt/token;"

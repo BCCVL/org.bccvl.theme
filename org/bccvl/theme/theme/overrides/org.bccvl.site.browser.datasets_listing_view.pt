@@ -3,6 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
+      tal:define="dataset_tools nocall:context/@@dataset_tools;"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
   <head>
@@ -61,7 +62,7 @@
             <div class="filter">
               <h4>Genre</h4>
               <ul id="datasets-filter-genre" name="datasets-filter-genre-list">
-                <li tal:repeat="opt view/dstools/genre_list">
+                <li tal:repeat="opt dataset_tools/genre_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -78,7 +79,7 @@
             <div class="filter">
               <h4>Resolution</h4>
               <ul id="datasets-filter-resolution" name="datasets-filter-resolution-list">
-                <li tal:repeat="opt view/dstools/resolution_list">
+                <li tal:repeat="opt dataset_tools/resolution_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -95,7 +96,7 @@
             <div class="filter">
               <h4>Data Source</h4>
               <ul id="datasets-filter-resolution" name="datasets-filter-source-list">
-                <li tal:repeat="opt view/dstools/source_list">
+                <li tal:repeat="opt dataset_tools/source_list">
                   <label class="filter-option"
                          tal:attributes="for string:checkbox-${opt/token};
                                          class opt/selected;">
@@ -160,7 +161,7 @@
                                     item_type item/portal_type;
                                     item_type_class python:'contenttype-' + normalizeString(item_type);
                                     item_genre item/BCCDataGenre;
-                                    item_genre_title python:view.dstools.genre_title(item['BCCDataGenre']);
+                                    item_genre_title python:dataset_tools.genre_title(item['BCCDataGenre']);
                                     item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
                                     item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                                     use_view_action site_properties/typesUseViewActionInListings|python:();
@@ -178,7 +179,7 @@
                   <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
                   <!-- <p tal:condition="md/width"><small><b>size:</b> <tal:r tal:replace="md/width"></tal:r>x<tal:r tal:replace="md/height"></tal:r></small></p> -->
                   <!-- <p tal:condition="md/min"><small><b>min/max:</b> <tal:r tal:replace="md/min"></tal:r>/<tal:r tal:replace="md/max"></tal:r></small></p> -->
-                  <p tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: view.dstools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></p>
+                  <p tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></p>
                   <!-- <p tal:condition="md/crs"><small><b>crs:</b> <tal:r tal:replace="md/crs"></tal:r></small></p> -->
                   <p><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
                   <!-- <p><small><b>Source:</b> ALA import</small></p> -->

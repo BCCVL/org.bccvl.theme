@@ -3,6 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
+      tal:define="dataset_tools nocall:context/@@dataset_tools;"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
@@ -79,7 +80,7 @@
                           <ul>
                             <li class="bccvl-experiment-parameters"
                                 tal:repeat="layer dataset/layers"
-                                tal:content="python: view.dstools.layer_vocab.getTerm(layer).title"></li>
+                                tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title"></li>
                           </ul>
                         </li>
                       </tal:if>
