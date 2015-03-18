@@ -27,12 +27,6 @@
       <form id="datasets-popup-searchform" action="" method="GET" class="span12"
           tal:define="context_state context/@@plone_context_state"
           tal:attributes="action context_state/current_base_url">
-        <script type="text/javascript">
-          // FIXME: this is meant as an alternative multi select widget
-          require(['js/bccvl-widgets'], function(bccvl) {
-              //bccvl.select_multi('#datasets-filter-resolution');
-          });
-        </script>
         <input type="hidden" name="datasets.filters:list" value=""
                tal:attributes="value val"
                tal:repeat="val filters"/>
