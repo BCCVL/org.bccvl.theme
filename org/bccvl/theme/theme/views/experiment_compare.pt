@@ -57,7 +57,7 @@
                                          data-file-url downloadurl;
                                          data-uuid item/UID;
                                          data-mimetype item_obj/file/contentType"
-                         tal:condition="python: item_obj.file.contentType not
+                         tal:condition="python: item_obj.file and item_obj.file.contentType not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link"></i>
                       </a>
