@@ -48,15 +48,17 @@
                         tal:define="dlinfo dataset_tools/get_download_info;
                                     downloadurl dlinfo/url;
                                     visurl python: dlinfo['alturl'][0]">
-                      <a class="bccvl-auto-viz"
+                      <a class="bccvl-compare-viz"
                          title="Preview this file"
                          data-viz-id="#downloadurl"
+                         data-viz-type="occurrence"
                          data-mimetype="application/octet-tream"
                          data-uuid="a uuid"
                          tal:attributes="data-viz-id visurl;
                                          data-file-url downloadurl;
                                          data-uuid item/UID;
-                                         data-mimetype item_obj/file/contentType"
+                                         data-mimetype item/Format;
+                                         data-layername item/Title;"
                          tal:condition="python: item_obj.file and item_obj.file.contentType not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link"></i>
@@ -133,6 +135,7 @@
                          <a class="bccvl-compare-viz"
                             title="Preview this file"
                             data-viz-id="#downloadurl"
+                            data-viz-type="auto"
                             data-mimetype="application/octet-tream"
                             data-uuid="a uuid"
                             tal:attributes="data-viz-id visurl;
