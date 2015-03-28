@@ -14,8 +14,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
             renderNewMap($(this).data('uuid'),$(this).data('viz-id'), 'minimap_'+$(this).data('uuid'), 'auto');
-            $(this).next('a.bccvl-remove-viz').show(0);
-            $(this).hide(0);
+            $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
+            $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
 
         $('body').on('click', 'a.bccvl-remove-viz', function(event){
@@ -23,9 +23,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             var uuid = $(this).data('uuid');
             $('#minimap_'+uuid).remove();
             delete window.maps[uuid];  
-            $(this).prev('a.bccvl-compare-viz').show(0);
-            $(this).hide(0);
-
+            $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
+            $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
 
         /* Global configuration */

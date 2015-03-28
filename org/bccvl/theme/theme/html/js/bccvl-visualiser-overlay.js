@@ -13,16 +13,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             addNewLayer($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto');
-            $(this).next('a.bccvl-remove-viz').show(0);
-            $(this).hide(0);
+            $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
+            $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
 
         $('body').on('click', 'a.bccvl-remove-viz', function(event){
             event.preventDefault();
             map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
             $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
-            $(this).prev('a.bccvl-compare-viz').show(0);
-            $(this).hide(0);
+            $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
+            $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
 
         /* Global configuration */

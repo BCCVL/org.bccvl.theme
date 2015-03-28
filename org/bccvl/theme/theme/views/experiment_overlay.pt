@@ -144,21 +144,6 @@
                                            in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                             <i class="icon-eye-open icon-link"></i>
                          </a>
-                         <a class="bccvl-remove-viz"
-                            title="Remove this layer from map."
-                            style="display:none;"
-                            data-viz-id="#downloadurl"
-                            data-mimetype="application/octet-tream"
-                            data-uuid="a uuid"
-                            tal:attributes="data-viz-id visurl;
-                                            data-file-url downloadurl;
-                                            data-uuid item/UID;
-                                            data-mimetype item/Format;
-                                            data-layername item/Title"
-                            tal:condition="python: item.Format() not
-                                           in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                            <i class="icon-eye-close icon-link"></i>
-                         </a>
 
                        </td>
                      </tr>
