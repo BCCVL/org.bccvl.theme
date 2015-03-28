@@ -12,7 +12,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
-            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto');
+            var viztype = $(this).data('viz-type') || 'auto';
+            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
@@ -135,7 +136,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function addNewLayer(uuid, url, id, type){
+        function addNewLayer(uuid, url, id, type, layerName){
 
             var responseSuccess = false;
 

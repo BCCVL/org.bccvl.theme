@@ -13,7 +13,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
-            renderNewMap($(this).data('uuid'),$(this).data('viz-id'), 'minimap_'+$(this).data('uuid'), 'auto');
+            var viztype = $(this).data('viz-type') || 'auto';
+            renderNewMap($(this).data('uuid'),$(this).data('viz-id'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
@@ -40,7 +41,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         
         window.maps = {};
         // RENDER EMPTY MAP
-        function renderNewMap(uuid, url, id, type){
+                function renderNewMap(uuid, url, id, type, layerName){
             // CREATE BASE MAP
             // -------------------------------------------------------------------------------------------
 
