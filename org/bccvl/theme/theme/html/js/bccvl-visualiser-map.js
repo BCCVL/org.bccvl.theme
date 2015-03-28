@@ -137,11 +137,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 responseSuccess = true;
 
                 var myLayers = [];
+                var layerName;
 
                 // check for layers metadata, if none exists then the request is returning a data like a csv file
                 if ( $.isEmptyObject(data.layers) ) {
-                    //single layer
-                    var layerName;
+                    // single layer
                     // TODO: use data.title (needs to be populated)
                     if(data.description!=''){
                         layerName = data.description;
@@ -185,7 +185,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                     // multiple layers
                     var i = 0;
                     $.each( data.layers, function(namespace, layer){
-
+                        layerName = layer_vocab[namespace] || namespace;
                         // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
                         i += 1;
                         var isVisible;
@@ -193,7 +193,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         if (typeof visibleLayer !== 'undefined') {
                             if (layer.filename == visibleLayer) {
                                 isVisible = true;
-                                var legend = {}; legend.name = layer_vocab[namespace];
+                                var legend = {}; legend.name = layerName;
                                 vizcommon.createLegend(legend, id, layer.min, layer.max, 20);
                             } else {
                                 isVisible = false;
@@ -201,7 +201,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         } else {
                             if (i == 1){
                                 isVisible = true;
-                                var legend = {}; legend.name = layer_vocab[namespace];
+                                var legend = {}; legend.name = layerName;
                                 vizcommon.createLegend(legend, id, layer.min, layer.max, 20);
                             } else {
                                 isVisible = false;
@@ -209,7 +209,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         }
 
                         var newLayer = new OpenLayers.Layer.WMS(
-                            ''+layer_vocab[namespace]+'', // Layer Name
+                            '' + layerName + '', // Layer Name
                             (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified

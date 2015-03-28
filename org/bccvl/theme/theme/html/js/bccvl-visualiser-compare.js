@@ -36,6 +36,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
 
+        var layer_vocab = {};
+                $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
+                    $.each(data, function(index, value) {
+                        layer_vocab[value.token] = value.title;
+                    });
+                });
+                
         var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
 
         
@@ -95,7 +102,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             // Remove any existing legends.
             $('.olLegend').remove();
 
-
             var responseSuccess = false;
 
             $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
@@ -106,14 +112,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 // check for layers metadata, if none exists then the request is returning a data like a csv file
                 if ( $.isEmptyObject(data.layers) ) {
                     //single layer
-                    var layerName;
                     // TODO: use data.title (needs to be populated)
-                    if(data.filename!=''){
-                        layerName = data.filename;
-                    } else {
-                        layerName = 'Data Overlay';
+                    if (!layerName) {
+                        if(data.filename!=''){
+                            layerName = data.filename;
+                        } else {
+                            layerName = 'Data Overlay';
+                        }
                     }
-                    if (type !== 'occurence'){
+                    if (type !== 'occurrence'){
                         var newLayer = new OpenLayers.Layer.WMS(
                             ''+layerName+'', // Layer Name
                             (visualiserWMS),    // Layer URL
@@ -145,16 +152,17 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             }
                         );
                     }
-                    container.append('<label>'+data.filename+'</label>')
+                    container.append('<label>'+layerName+'</label>')
                     newLayer.setOpacity(0.9);
                     myLayers.push(newLayer);
                 } else {
                     // multiple layers
                     var i = 0;
                     $.each( data.layers, function(namespace, layer){
+                        layerName = layer_vocab[namespace] || namespace;
 
                         var newLayer = new OpenLayers.Layer.WMS(
-                            ''+layer.label+'', // Layer Name
+                            ''+layerName+'', // Layer Name
                             (visualiserWMS),    // Layer URL
                             {
                                 DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
@@ -167,6 +175,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                 isBaseLayer: false
                             }
                         );
+                        container.append('<label>'+layerName+'</label>')
                         //newLayer.setOpacity(0.25);
                         myLayers.push(newLayer);
                     });
