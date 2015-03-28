@@ -197,15 +197,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
                 window.maps[uuid] = map;
 
-                window.maps[uuid].events.register("moveend", window.maps[uuid], function() { 
-                    var center = window.maps[uuid].getCenter();
-                    var zoom = window.maps[uuid].getZoom();
-                    $.each(window.maps, function(i, otherMap){
-                        otherMap.setCenter(center, zoom, false, false); 
-                    });
+                var is_syncing = false;
+                window.maps[uuid].events.register("moveend", window.maps[uuid], function(event) {
+                    if (!is_syncing) {
+                        is_syncing = true;
+                        var center = window.maps[uuid].getCenter();
+                        var zoom = window.maps[uuid].getZoom();
+                        $.each(window.maps, function(i, otherMap){
+                            otherMap.setCenter(center, zoom, false, false); 
+                        });
 
-                    window.mapsCenter = center;
-                    window.mapsZoom = zoom;
+                        window.mapsCenter = center;
+                        window.mapsZoom = zoom;
+                        is_syncing = false;
+                    }
                 }); 
                 
             });
