@@ -31,7 +31,7 @@
                              required view/required;
                              class python: 'required' if view.required else '';
                              "/>
-      <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
+      <a class="btn pull-right removeitem" href="#"><i class="icon-remove"></i></a>
       <a class="fine bccvl-occurrence-viz btn pull-right btn-primary"
          title="preview this dataset"
          data-viz-id="vizurl"
@@ -59,7 +59,7 @@
            tal:attributes="name string:${view/name}.empty;
                            required view/required;
                            value python: '1' if view.value else '';
-                           class python: 'required' if view.required else '';"/>
+                           class python: 'required empty-check' if view.required else 'empty-check';"/>
   </div>
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>

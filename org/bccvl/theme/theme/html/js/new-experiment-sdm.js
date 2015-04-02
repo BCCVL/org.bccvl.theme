@@ -23,9 +23,12 @@ define(
             // FIXME: the element doesn't exist on page load.
             //var el = $('[name="form-widgets-species_absence_dataset"]');
             //el.rules('add', {'required': '#form-widgets-species_pseudo_absence_points-0:unchecked'});
-            var el = $('#form-widgets-species_number_pseudo_absence_points');
-            el.rules('add', {'required': "#form-widgets-species_pseudo_absence_points-0:checked",
-                             'min': 1});
+            /*var el = $('#form-widgets-species_number_pseudo_absence_points');
+            el.rules('add', 
+                {'required': "#form-widgets-species_pseudo_absence_points-0:checked",
+                             'min': 1}
+            );*/
+
 
 
             // -- hook up algo config -------------------------------
