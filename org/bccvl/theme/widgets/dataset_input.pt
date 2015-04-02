@@ -55,13 +55,11 @@
       </p>
     </div>
     </tal:block>
-    <div
-         tal:condition="not:view/value">
-      <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
-             tal:attributes="name string:${view/name}.empty;
-                             required view/required;
-                             class python: 'required' if view.required else '';"/>
-    </div>
+    <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+           tal:attributes="name string:${view/name}.empty;
+                           required view/required;
+                           value python: '1' if view.value else '';
+                           class python: 'required' if view.required else '';"/>
   </div>
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
