@@ -1928,6 +1928,10 @@ img.loader {
     background: #ecf0f1;
     border-top: 0;
 }
+.table tr.selectedmodels td {
+  background: none;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
 h4 strong {
     color:#333;
 }

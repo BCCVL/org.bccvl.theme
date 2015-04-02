@@ -31,43 +31,49 @@
                                  name string:${view/name};"/>
           <!-- TODO: show experiment infos -->
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>          
-          <p class="experiment-title"
+          <h4 class="experiment-title"
              data-layers="" data-resolution=""
              tal:attributes="data-layers python:','.join(item['layers']);
                              data-resolution item/resolution"
-             tal:content="item/title">Experiment Title</p>
+             tal:content="item/title">Experiment Title</h4>
           <!-- List of Models within experiment -->
-          <div class="row-fluid">
-            <div class="span2">Selected</div>
-            <div class="span2">Species</div>
-            <div class="span1">Resolution</div>
-            <div class="span1">Algorithm</div>
-          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th colspan="2">Selected</th>
+                <th>Species</th>
+                <th>Resolution</th>
+                <th>Algorithm</th>
+              </tr>
+            </thead>
+            <tbody>
           <tal:repeat tal:repeat="model item/models">
-            <div class="selectedmodels row-fluid"
+            <tr class="selectedmodels row-fluid"
                  tal:define="modelobj model/item/getObject;
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
-              <div class="span2">
+              <td>
                 <input type="checkbox" value=""
                        name="form.widgets.fieldname.model:list"
                        tal:attributes="value model/uuid;
                                        name string:${view/name}.model:list;
-                                       checked model/selected;"/>
+                                       checked model/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
-              </div>
-              <div class="span2">
+              </td>
+              <td>
                 <span tal:content="modelmd/species/scientificName">Species data</span>
-              </div>
-              <div class="span1">
+              </td>
+              <td>
                 <span tal:content="python: dataset_tools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
-              </div>
-              <div class="span1">
+              </td>
+              <td>
                 <span tal:content="python: modelobj.__parent__.job_params['function']">Algorithm id</span>
-              </div>
-            </div>
+              </td>
+            </tr>
           </tal:repeat>
-        </div>
+        </tbody>
+      </table>
       </div>
+    </div>
     </tal:block>
     <div tal:condition="not:view/value">
       <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."

@@ -176,8 +176,8 @@
       <div class="span12" style="margin-top:1em;"
            tal:condition="not:batch">
             <div class="alert alert-warning">
-              <p><strong>No datasets match the resolution and filters above.</strong></p>
-              <p>Try selecting a different resolution. You can also expand filters by holding CTRL (CMD on Mac) and selecting more in the same list.</p>
+              <p><strong>No datasets match the required resolution and filters.</strong></p>
+              <p>Try selecting a different resolution. You can also expand filters by selecting more in the same list.</p>
             </div>
       </div>
       </div>
