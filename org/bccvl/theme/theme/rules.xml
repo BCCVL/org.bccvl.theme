@@ -48,7 +48,6 @@
                       @@caching-controlpanel-import/
                       @@caching-controlpanel-purge/
                       @@caching-controlpanel-ramcache/
-                      @@dexteritymembrane-settings/
                       @@indexing-controlpanel/
                       @@mail-controlpanel/
                       @@maintenance-controlpanel/
