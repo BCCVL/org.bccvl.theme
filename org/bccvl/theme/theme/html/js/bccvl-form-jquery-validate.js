@@ -127,6 +127,9 @@ define(
 
         form.find('#form-widgets-species_pseudo_absence_points-0').on('change',function(){
             $('#form-widgets-species_absence_dataset input').toggleClass('required');
+            if ($('#form-widgets-species_absence_dataset input').attr('required'))
+                $('#form-widgets-species_absence_dataset input').removeAttr('required');
+            else $('#form-widgets-species_absence_dataset input').attr('required');
         });
 
         $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event){

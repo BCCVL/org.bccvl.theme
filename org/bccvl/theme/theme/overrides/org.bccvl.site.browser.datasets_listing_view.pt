@@ -207,15 +207,15 @@
                           <i class="icon-circle-arrow-down icon-white" title="download"></i>
                         Download Data</a>
                       </tal:block>
-                      <a class="dataset-info-btn btn btn-primary btn-small" href="#" target="_blank"
+                      <a class="dataset-info-btn btn btn-info btn-small" href="#" target="_blank"
                          tal:attributes="href string:${item_url}/details">
                         <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
                       More Info</a>
-                      <a class="sharing-btn btn btn-primary btn-small" href="#"
+                      <a class="sharing-btn btn btn-info btn-small" href="#"
                          tal:attributes="href action/url"
                          tal:condition="python: complete and action.get('available')"
                          tal:define="action item_obj/dataset_tools/local_roles_action;">
-                        <i class="icon-share icon-white" title="Sharing Options"
+                        <i class="fa fa-share-alt icon-white" title="Sharing Options"
                            tal:attributes="title action/title"></i>
                       Sharing</a>
 
@@ -227,7 +227,7 @@
                       Edit</a>
                       <!-- remove dataset -->                    
 
-                      <a class="remove-dataset-btn btn btn-primary btn-small"
+                      <a class="remove-dataset-btn btn btn-warning btn-small"
                          tal:attributes="href string:${item_url}/@@remove"
                          tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
                         <i class="icon-remove icon-white" title="Remove"></i>

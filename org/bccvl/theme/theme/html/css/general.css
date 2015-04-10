@@ -1,5 +1,6 @@
 
 @import url('fonts.css');
+@import url('../lib/fontawesome/css/font-awesome.min.css');
 
 body {
     background:#333333;
@@ -58,6 +59,7 @@ a.active, a.active:hover {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     padding-left: 5px;
 padding-right: 5px;
+  word-break: normal;
 }
 .btn-primary {
     color: #ffffff!important;
@@ -113,6 +115,21 @@ border-color: #2f96b4 #2f96b4 #1f6377 !important;
 border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25) !important;
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2f96b4', GradientType=0);
 filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.btn-warning {
+  color: #ffffff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+  background-color: #faa732;
+  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+  background-image: linear-gradient(to bottom, #fbb450, #f89406);
+  background-repeat: repeat-x;
+  border-color: #f89406 #f89406 #ad6704 !important;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .new-experiment-button {
     text-align: center;
@@ -180,27 +197,27 @@ filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 .label.label-BIODIVERSE {
     background-color: #009FE3;
     color: white;
-    padding: .1em .4em;
+    padding: 4px 5px 2px 4px;
 }
 .label.label-SDM {
     background-color: #e74c3c;
     color: white;
-    padding: .1em .4em;
+    padding: 4px 5px 2px 4px;
 }
 .label.label-STM {
     background-color: #eca21e;
     color: white;
-    padding: .1em .4em;
+    padding: 4px 5px 2px 4px;
 }
-.label.label-CCE {
+.label.label-PROJECTION {
     background-color: #4dc345;
     color: white;
-    padding: .1em .4em;
+    padding: 4px 5px 2px 4px;
 }
 .label.label-ENSEMBLE {
     background-color: #34495e;
     color: white;
-    padding: .1em .4em;
+    padding: 4px 5px 2px 4px;
 }
 td.date-time {
     word-break:normal;
@@ -230,10 +247,9 @@ div.loader {
 }
 
 
-/*.new-experiment-button a:hover {
+.new-experiment-button a:focus, .new-experiment-button a:visited {
     text-decoration: none;
-    background-color:rgba(255,255,255,.2)!important;
-}*/
+}
 .new-experiment-button a {
     display: block;
     padding: 0.7em;
@@ -864,14 +880,23 @@ td.bccvl-table-controls {
     text-align: right;
 }
 td.bccvl-table-controls a {
-    border-radius: 4px;
-    display: inline-block;
-    padding: 3px
+  border-radius: 4px;
+  display: block;
+  padding: 2px 0 0 0;
+  min-width: 60px;
+  font-size: 1em;
+  margin-bottom: .5em;
 }
-td.bccvl-table-controls a:hover {
+#bccvl-experimentresults-table td.bccvl-table-controls a.btn {
+  display: inline-block;
+  width: 20px;
+  min-width: 20px;
+  padding: 3px;
+}
+/*td.bccvl-table-controls a:hover {
     box-shadow: 0 0 1px 1px rgba(0,0,0,.25);
     background:#FFF;
-}
+}*/
 
 .bccvl-table-label h1 {
     font-size: inherit;
@@ -1853,9 +1878,9 @@ div#datasets-popup-result {
 #datasets-popup-searchform input,  #datasets-popup-searchform select {
     width:auto;
 }
-input#datasets-filter-text {
+/*input#datasets-filter-text {
     width:94%;
-}
+}*/
 #datasets-popup-searchform input {
     font-size:12px;
 }
@@ -1944,4 +1969,7 @@ hr{
 }
 .bccvl-kbsearch {
     margin-top: 1em;
+}
+.btn .fa {
+    font-size:.9em;
 }

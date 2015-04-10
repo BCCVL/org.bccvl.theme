@@ -48,7 +48,7 @@
                         tal:define="dlinfo dataset_tools/get_download_info;
                                     downloadurl dlinfo/url;
                                     visurl python: dlinfo['alturl'][0]">
-                      <a class="bccvl-compare-viz"
+                      <a class="bccvl-compare-viz btn btn-primary"
                          title="Preview this file"
                          data-viz-id="#downloadurl"
                          data-viz-type="occurrence"
@@ -61,7 +61,7 @@
                                          data-layername item/Title;"
                          tal:condition="python: item_obj.file and item_obj.file.contentType not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                        <i class="icon-eye-open icon-link"></i>
+                        <i class="icon-eye-open icon-link icon-white"></i>
                       </a>
                     </td>
                   </tr>
@@ -125,14 +125,14 @@
                                        downloadurl dlinfo/url;
                                        visurl python: dlinfo['alturl'][0]">
 
-                         <a class="fine"
+                         <a class="fine btn btn-info"
                             title="Download this file"
                             href="#downloadurl"
                             tal:attributes="href downloadurl;
                                             data-friendlyname string:a_experimentoutput_${item/file/filename}">
-                            <i class="icon-download-alt icon-link"></i>
+                            <i class="icon-download-alt icon-link icon-white"></i>
                          </a>
-                         <a class="bccvl-compare-viz"
+                         <a class="bccvl-compare-viz btn btn-primary"
                             title="Preview this file"
                             data-viz-id="#downloadurl"
                             data-viz-type="auto"
@@ -142,10 +142,11 @@
                                             data-file-url downloadurl;
                                             data-uuid item/UID;
                                             data-mimetype item/Format;
-                                            data-layername item/Title"
+                                            data-layername item/Title;
+                                            data-algorithm result/job_params/function|nothing"
                             tal:condition="python: item.Format() not
                                            in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                            <i class="icon-eye-open icon-link"></i>
+                            <i class="icon-eye-open icon-link icon-white"></i>
                          </a>
 
                        </td>
