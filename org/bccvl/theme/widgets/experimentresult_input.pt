@@ -19,6 +19,7 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
+       tal:define="dataset_tools context/@@dataset_tools"
        tal:attributes="id string:${view/id}">
     <tal:block tal:repeat="item view/items"
                tal:condition="view/value">
@@ -30,21 +31,74 @@
                                  name string:${view/name}.experiment.${index};"/>
           <!-- TODO: show experiment infos -->
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
-          <p class="experiment-title"
+          <h4 class="experiment-title"
              data-resolution=""
              tal:attributes="data-resolution item/resolution"
-             tal:content="item/title">Experiment Title</p>
-          <!-- List of Datesetss within experiment -->
-          <tal:repeat tal:repeat="model item/datasets">
-            <div class="selectedmodels">
-              <input type="checkbox" value=""
-                     name="form.widgets.fieldname.dataset.0:list"
-                     tal:attributes="value model/uuid;
-                                     name string:${view/name}.dataset.${index}:list;
-                                     checked model/selected;"/>
-              <span tal:content="model/title">Model Title</span>
-            </div>
-          </tal:repeat>
+             tal:content="item/title">Experiment Title</h4>
+          <!-- List of Datesets within experiment -->
+          <table class="table"
+                 tal:define="item_type item/brain/portal_type;
+                             is_sdm python: item_type == 'org.bccvl.content.sdmexperiment';
+                             is_cc python: item_type == 'org.bccvl.content.projectionexperiment';
+                             is_bd python: item_type == 'org.bccvl.content.biodiverseexperiment'">            
+            <thead>
+              <tr>
+                <th colspan="2">Selected</th>
+                <th tal:condition="not: is_bd">Species</th>
+                <th tal:condition="not: is_bd">Resolution</th>
+                <th tal:condition="is_sdm">Algorithm</th>
+                <th tal:condition="is_cc">GCM</th>
+                <th tal:condition="is_cc">Emission Sc.</th>
+                <th tal:condition="is_cc">Year</th>
+                <th tal:condition="not: is_bd">Layers</th>
+                <th tal:condition="is_bd">Genre</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:repeat tal:repeat="model item/datasets">
+                <tr class="selectedmodels row-fluid">
+                  <td>
+                    <input type="checkbox" value="" class="span1"
+                           name="form.widgets.fieldname.dataset.0:list"
+                           tal:attributes="value model/uuid;
+                                           name string:${view/name}.dataset.${index}:list;
+                                           checked model/selected;"/>
+                  </td>
+                  <td tal:condition="not: is_bd">
+                    <span tal:content="model/md/species/scientificName">Species data</span>
+                  </td>
+                  <td tal:condition="not: is_bd">
+                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(model['md']['resolution']).title">Resolution data</span>
+                  </td>
+                  <td tal:condition="is_sdm">
+                    <span tal:content="python: model['obj'].__parent__.job_params['function']">Algorithm id</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(model['md']['gcm']).title">GCM</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(model['md']['emsc']).title">EMSC</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.format_period(model['md']['temporal'])">Year</span>
+                  </td>
+                  <td tal:condition="not: is_bd">
+                    <ul>
+                      <li tal:repeat="layer model/md/layers_used"
+                          tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title">Layer title</li>
+                    </ul>
+                  </td>                                       
+                  <td tal:condition="is_bd">
+                    <span tal:content="python: dataset_tools.genre_vocab.getTerm(model['md']['genre']).title">EMSC</span>
+                  </td>
+                </tr>
+              </tal:repeat>
+              <tr class="selectedmodels row-fluid"
+                  tal:condition="not: item/datasets">
+                <td colspan="5"><span>No datasets available within this experiment</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <input type="hidden" value="" name="form.widgets.name.count"
