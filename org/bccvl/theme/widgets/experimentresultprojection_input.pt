@@ -19,7 +19,8 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
-       tal:attributes="id string:${view/id}">
+       tal:attributes="id string:${view/id}"
+       tal:define="dataset_tools nocall:context/@@dataset_tools">
     <tal:repeat tal:repeat="item view/items"
                 tal:condition="view/value">
       <div class="selecteditem"
@@ -35,36 +36,80 @@
              tal:attributes="data-resolution item/resolution"
              tal:content="item/title">Experiment Title</h4>
           <!-- List of Datesetss within experiment -->
-          <tal:repeat tal:repeat="dataset item/datasets">
-            <div class="selecteddatasets controls-row row-fluid"
-                 tal:define="dsindex repeat/dataset/index;">
-              <div class="span4">
-                <input type="checkbox" value="" class="span1"
-                       name="form.widgets.fieldname.dataset.0.0.uuid"
-                       tal:attributes="value dataset/uuid;
-                                       name string:${view/name}.dataset.${index}.${dsindex}.uuid;
-                                       checked dataset/selected;"/>
-                <select name="form.widgets.fieldname.dataset.0.0.threshold" class="span11"
-                        tal:attributes="name string:${view/name}.dataset.${index}.${dsindex}.threshold;">
-                  <tal:block tal:repeat="threshold dataset/thresholds">
-                    <option value=""
-                            tal:define="value python:dataset['thresholds'][threshold];
-                                        thlabel dataset/threshold/label|nothing;"
-                            tal:attributes="value threshold;
-                                            selected python:thlabel == threshold"
-                            tal:content="string:${threshold} (${value})"/>
-                  </tal:block>
-                </select>
-              </div>
-              <div class="span3">
-                <p class="lead" tal:content="dataset/title">Dataset Title</p>
-              </div>
-            </div>
-            <input type="hidden" value="" name="form.widgets.dataset.0.count"
-		   tal:condition="repeat/dataset/end"
-                   tal:attributes="value repeat/dataset/number;
-                                   name string:${view/name}.dataset.${index}.count;"/>
-          </tal:repeat>
+          <table class="table"
+                 tal:define="item_type item/brain/portal_type;
+                             is_sdm python: item_type == 'org.bccvl.content.sdmexperiment';
+                             is_cc python: item_type == 'org.bccvl.content.projectionexperiment'">
+            <thead>
+              <tr>
+                <th colspan="2">Selected</th>
+                <th>Species</th>
+                <th>Resolution</th>
+                <th>Threshold</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th tal:condition="is_sdm">Algorithm</th>
+                <th tal:condition="is_cc">GCM</th>
+                <th tal:condition="is_cc">Emission Sc.</th>
+                <th tal:condition="is_cc">Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:repeat tal:repeat="dataset item/datasets">
+                <tr class="selecteddatasets controls-row row-fluid"
+                    tal:define="dsindex repeat/dataset/index">
+                  <td>
+                    <input type="checkbox" value="" class="span1"
+                           name="form.widgets.fieldname.dataset.0.0.uuid"
+                           tal:attributes="value dataset/uuid;
+                                           name string:${view/name}.dataset.${index}.${dsindex}.uuid;
+                                           checked dataset/selected;"/>
+                  </td>
+                  <td>
+                    <span tal:content="dataset/md/species/scientificName">Species data</span>
+                  </td>
+                  <td>
+                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(dataset['md']['resolution']).title">Resolution data</span>
+                  </td>
+                  <td>
+                    <select name="form.widgets.fieldname.dataset.0.0.threshold"
+                            tal:attributes="name string:${view/name}.dataset.${index}.${dsindex}.threshold;">
+                      <tal:block tal:repeat="threshold dataset/thresholds">
+                        <option value=""
+                                tal:define="value python:dataset['thresholds'][threshold];
+                                            thlabel dataset/threshold/label|nothing;"
+                                tal:attributes="value threshold;
+                                                selected python:thlabel == threshold"
+                                tal:content="string:${threshold} (${value})"/>
+                      </tal:block>
+                    </select>
+                  </td>
+                  <td>
+                    <span tal:content="dataset/layermd/min">Min</span>
+                  </td>
+                  <td>
+                    <span tal:content="dataset/layermd/max">Max</span>
+                  </td>
+                  <td tal:condition="is_sdm">
+                    <span tal:content="python: dataset['obj'].__parent__.job_params['function']">Algorithm id</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(dataset['md']['gcm']).title">GCM</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(dataset['md']['emsc']).title">EMSC</span>
+                  </td>
+                  <td tal:condition="is_cc">
+                    <span tal:content="python: dataset_tools.format_period(dataset['md']['temporal'])">Year</span>
+                  </td>
+                </tr>
+              </tal:repeat>
+            </tbody>
+          </table>
+          <input type="hidden" value="" name="form.widgets.dataset.0.count"
+		 tal:condition="repeat/dataset/end"
+                 tal:attributes="value repeat/dataset/number;
+                                 name string:${view/name}.dataset.${index}.count;"/>
         </div>
       </div>
       <input type="hidden" value="" name="form.widgets.name.count"
