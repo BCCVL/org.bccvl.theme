@@ -1975,6 +1975,11 @@ img.loader {
   background: none;
   border-top: 1px solid rgba(0,0,0,.1);
 }
+
+.table tr.selecteddatasets td {
+  background: none;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
 h4 strong {
     color:#333;
 }
