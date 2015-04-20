@@ -59,7 +59,7 @@
                 <tr class="selecteddatasets controls-row row-fluid"
                     tal:define="dsindex repeat/dataset/index">
                   <td>
-                    <input type="checkbox" value="" class="span1"
+                    <input type="checkbox" value=""
                            name="form.widgets.fieldname.dataset.0.0.uuid"
                            tal:attributes="value dataset/uuid;
                                            name string:${view/name}.dataset.${index}.${dsindex}.uuid;
