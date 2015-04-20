@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
+    ['jquery', 'bootstrap', 'jquery-tablesorter'],
     function($) {
 
         return {
@@ -9,11 +9,11 @@ define(
                     e.preventDefault();
 
                     var url = $(this).attr('href');
-
+                    
                     if (url.indexOf('#') == 0) {
                         $(url).modal('open');
                     } else {
-
+                        
                         // Show the modal
                         $('.modal').modal({
                             backdrop: 'static'
@@ -24,20 +24,20 @@ define(
 
                         // AJAX load the form - which takes some time.
                         $.get(url, function(data) {
-                            $('.modal').html(data);
-
-                            $('#user-group-sharing').addClass('table');
-                            $('#sharing-save-button').addClass('btn btn-primary');
-                            $('.standalone').addClass('btn btn-danger');
-                            $('.standalone').attr('data-dismiss', 'modal');
-
+                            var $modal = $('.modal');
+                            $modal.html(data);
                             // make sure there is no redirect when the form is submitted
                             // also hide and empty the modal
                             var $form = $('.modal form');
 
-                            $form.ajaxForm(function() {
-                                $('.modal').modal('hide');
-                                $('.modal').empty();
+                            $form.submit(function(event) {
+                                event.preventDefault();
+                                $.post($form.attr('action'),
+                                       $form.serialize(),
+                                       function(data, status, jqxhr) {
+                                           $modal.modal('hide');
+                                           $modal.empty();
+                                       });
                             });
 
                             bindUserSearch(url);
@@ -49,12 +49,12 @@ define(
                 // when the modal is shown
                 $('.modal').on('show', function() {
                     $('.modal-body').scrollTop(0);
-                    $("body").addClass("modal-open");
+                    //$("body").addClass("modal-open");
                 });
 
-                $('.modal').on('hidden', function() {
-                    $("body").removeClass("modal-open");
-                });
+                // $('.modal').on('hidden', function() {
+                //     $("body").removeClass("modal-open");
+                // });
 
             }
         };

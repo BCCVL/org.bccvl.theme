@@ -3,29 +3,8 @@
     xmlns:css="http://namespaces.plone.org/diazo/css"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<rules if-path="@@sharing/" >
-	    <theme href="html/sharing.html" />
-
-	    <replace css:theme=".heading" css:content=".documentFirstHeading" />
-
-	    <!-- Drop the search bar -->
-	    <!-- <drop content="//div[@id='content-core']/form/div[@class='field'][1]" /> -->
-	    <!-- <drop css:content="#sharing-search-button" /> -->
-
-
-
-	    <!-- Get the form -->
-	    <!-- <replace css:theme-children=".modal-body" content="//div[@id='content-core']/form" /> -->
-	    <merge attributes="action" css:theme="form" content="//div[@id='content-core']/form" />
-
-	    <replace css:theme="#search-box" content="//div[@id='content-core']/form/div[@class='field'][1]" />
-
-	    <replace css:theme="#user-group-sharing-container" content="//div[@id='content-core']/form/div[@id='user-group-sharing-container']" />
-
-	    <replace css:theme="#field-inherit" content="//div[@id='content-core']/form/div[@id='field-inherit']" />
-
-		<replace css:theme="#authenticator" content="//div[@id='content-core']/form/input[@name='_authenticator']" />
-
-	</rules>
+  <rules if-path="@@sharing/" >
+    <notheme />
+  </rules>
 
 </rules>
