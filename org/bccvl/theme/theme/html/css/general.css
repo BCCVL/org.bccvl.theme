@@ -1,6 +1,9 @@
 
 @import url('fonts.css');
 @import url('../lib/fontawesome/css/font-awesome.min.css');
+@import url('../lib/ol3/ol.css');
+@import url('../lib/ol3/layerswitcher/ol3-layerswitcher.css');
+@import url('../lib/ol3/additional.css');
 
 body {
     background:#333333;

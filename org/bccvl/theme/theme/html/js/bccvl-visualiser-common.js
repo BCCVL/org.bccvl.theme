@@ -1,8 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel'],
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
             function( $  ) {
 
                 var bccvl_common = {
@@ -228,8 +227,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                 }
                             }
                         }
+                        console.log($('#'+id+' .ol-viewport'));
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-                        $('#'+id+' .olMapViewport').append(legend);
+                        $('#'+id+' .ol-viewport').append(legend);
                     }
 
                 }

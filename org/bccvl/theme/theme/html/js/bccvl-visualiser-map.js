@@ -1,9 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
-            function( $, preview, openLayers, LoadingPanel, vizcommon  ) {
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
+            function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -79,39 +78,71 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             if (container.hasClass('olMap'))
                 window.map.destroy();
 
-            // destroy and html from images or text files
+            // destroy any html from images or text files
             container.html('').height(container.parents('.tab-pane').height());
 
             window.map;
-            var mercator, geographic;
-            var loading_panel;
+            //var mercator, geographic;
+            //var loading_panel;
 
             // DecLat, DecLng
-            geographic = new OpenLayers.Projection("EPSG:4326");
+            //geographic = new OpenLayers.Projection("EPSG:4326");
+            //var geographic = new ol.proj.Projection({ code: 'EPSG:4326' });
+            //ol.proj.addProjection(geographic);
 
             // Spherical Meters
             // The official name for the 900913 (google) projection
-            mercator = new OpenLayers.Projection("EPSG:3857");
+            //mercator = new OpenLayers.Projection("EPSG:3857");
+            //var mercator = new ol.proj.Projection({ code: 'EPSG:4326' });
+            //ol.proj.addProjection(mercator);
 
             // Australia Bounds
-            australia_bounds = new OpenLayers.Bounds();
-            australia_bounds.extend(new OpenLayers.LonLat(111,-10));
-            australia_bounds.extend(new OpenLayers.LonLat(152,-44));
-            australia_bounds = australia_bounds.transform(geographic, mercator);
-            var zoom_bounds = australia_bounds;
+            australia_bounds = new ol.extent.boundingExtent([111,-10,152,-44]);
+            //australia_bounds.extend(new OpenLayers.LonLat(111,-10));
+            //australia_bounds.extend(new OpenLayers.LonLat(152,-44));
+            //australia_bounds = australia_bounds.transform(geographic, mercator);
+            //var zoom_bounds = australia_bounds;
 
-            map = new OpenLayers.Map(id, {
-                projection: mercator,
-                eventListeners: {
-                    "changelayer": mapLayerChanged
-                }
+            var visLayers = new ol.layer.Group({
+                title: 'Layers',
+                layers: [
+                ]
             });
 
-            loading_panel = new OpenLayers.Control.LoadingPanel();
-            map.addControl(loading_panel);
+            map = new ol.Map({
+                target: id,
+                layers: [
+                    new ol.layer.Group({
+                        'title': 'Base maps',
+                        layers: [
+                            new ol.layer.Tile({
+                                source: new ol.source.OSM()
+                            }),
+                        ],
+                    }),
+                    visLayers
+                ],
+                view: new ol.View({
+                  center: ol.proj.transform([132.08, -23.07], 'EPSG:4326', 'EPSG:3857'),
+                  zoom: 4
+                })
+                /*eventListeners: {
+                    "changelayer": mapLayerChanged
+                }*/
+            });
+
+            map.getView().fitExtent(australia_bounds, map.getSize());
+
+            var layerSwitcher = new ol.control.LayerSwitcher({
+                tipLabel: 'Layers' // Optional label for button
+            });
+            map.addControl(layerSwitcher);
+
+            //loading_panel = new OpenLayers.Control.LoadingPanel();
+            //map.addControl(loading_panel);
 
             // Base layers
-            var osm = new OpenLayers.Layer.OSM();
+            /*var osm = new OpenLayers.Layer.OSM();
             var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
 
             var ls = new OpenLayers.Control.LayerSwitcher();
@@ -129,14 +160,18 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 map.removeLayer(dataLayers[i]);
             });
             // Remove any existing legends.
-            $('.olLegend').remove();
+            $('.olLegend').remove();*/
 
             var responseSuccess = false;
 
             $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
                 responseSuccess = true;
 
-                var myLayers = [];
+                /*var visLayers = new ol.layer.Group({
+                    title: 'Layers',
+                    layers: [
+                    ]
+                });*/
                 var layerName;
 
                 // check for layers metadata, if none exists then the request is returning a data like a csv file
@@ -148,41 +183,41 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                     } else {
                         layerName = 'Data Overlay';
                     }
+                    var newLayer;
                     if (type !== 'occurence'){
-                        var newLayer = new OpenLayers.Layer.WMS(
-                            ''+layerName+'', // Layer Name
-                            (visualiserWMS),    // Layer URL
-                            {
-                                DATA_URL: data.vizurl,   // The data_url the user specified
-                                SLD_BODY: vizcommon.generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
-                                layers: "DEFAULT",
-                                transparent: "true",
-                                format: "image/png"
-                            },
-                            {
-                                isBaseLayer: false
-                            }
-                        );
+                        newLayer = new ol.layer.Tile({
+                            title: layerName,
+                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                url: visualiserWMS,
+                                params: {
+                                    DATA_URL: data.vizurl,   // The data_url the user specified
+                                    SLD_BODY: vizcommon.generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
+                                    layers: "DEFAULT",
+                                    transparent: "true",
+                                    format: "image/png"
+                                }
+                            }))
+                        });
                         var legend = {}; legend.name = data.filename;
                         vizcommon.createLegend(legend, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
                     } else {
-                        var newLayer = new OpenLayers.Layer.WMS(
-                            ''+layerName+'', // Layer Name
-                            (visualiserWMS),    // Layer URL
-                            {
-                                DATA_URL: data.vizurl,   // The data_url the user specified
-                                layers: "DEFAULT",
-                                transparent: "true",
-                                format: "image/png"
-                            },
-                            {
-                                isBaseLayer: false
-                            }
-                        );
+                        newLayer = new ol.layer.Tile({
+                            title: layerName,
+                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                url: visualiserWMS,
+                                params: {
+                                    DATA_URL: data.vizurl,   // The data_url the user specified
+                                    layers: "DEFAULT",
+                                    transparent: "true",
+                                    format: "image/png"
+                                }
+                            }))
+                        });
                     }
-                    myLayers.push(newLayer);
+                    visLayers.getLayers().push(newLayer);
                 } else {
                     // multiple layers
+
                     var i = 0;
                     $.each( data.layers, function(namespace, layer){
                         layerName = layer_vocab[namespace] || namespace;
@@ -208,26 +243,27 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             }
                         }
 
-                        var newLayer = new OpenLayers.Layer.WMS(
-                            '' + layerName + '', // Layer Name
-                            (visualiserWMS),    // Layer URL
-                            {
-                                DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
-                                SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
-                                layers: "DEFAULT",
-                                transparent: "true",
-                                format: "image/png"
-                            },
-                            {
-                                isBaseLayer: false,
-                                visibility: isVisible
-                            }
-                        );
-                        myLayers.push(newLayer);
+                        var newLayer = new ol.layer.Tile({
+                            title: layerName,
+                            visible: isVisible,
+                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                url: visualiserWMS,
+                                params: {
+                                    DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
+                                    SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
+                                    layers: "DEFAULT",
+                                    transparent: "true",
+                                    format: "image/png"
+                                },
+                            }))
+                        });
+                        visLayers.getLayers().push(newLayer);
                     });
                 }
 
-                map.addLayers(myLayers);
+                //map.addLayers(visLayers);
+                layerSwitcher.renderPanel();
+                layerSwitcher.showPanel();
             });
             setTimeout(function() {
                 if (!responseSuccess) {
