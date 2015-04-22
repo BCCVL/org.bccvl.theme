@@ -46,7 +46,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:139,g:208,b:195},"endpoint":{r:18,g:157,b:133}
             },
             {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:203,b:237},"endpoint":{r:47,g:150,b:220}
+                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:233,g:170,b:129},"endpoint":{r:210,g:96,b:19}
+            },
+            {
+                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:172,b:236},"endpoint":{r:247,g:108,b:215}
+            },
+            {
+                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:248,g:225,b:135},"endpoint":{r:241,g:196,b:15}
             },
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:198,g:162,b:214},"endpoint":{r:143,g:76,b:176}
@@ -54,20 +60,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:164,b:175},"endpoint":{r:48,g:71,b:94}
             },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:233,g:170,b:129},"endpoint":{r:210,g:96,b:19}
-            },
+            
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:151,g:229,b:184},"endpoint":{r:45,g:195,b:108}
             },
             {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:248,g:225,b:135},"endpoint":{r:241,g:196,b:15}
+                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:203,b:237},"endpoint":{r:47,g:150,b:220}
             },
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:223,g:156,b:149},"endpoint":{r:192,g:57,b:43}
-            },
-            {
-                "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:172,b:236},"endpoint":{r:247,g:108,b:215}
             },
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:154,b:154},"endpoint":{r:47,g:47,b:47}
@@ -85,10 +86,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
 
-        function addLayerLegend(layername, color, uuid){
-            colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-            $('.olLegend').append('<label data-uuid="'+uuid+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
-            $('.olLegend').show(0);
+        function addLayerLegend(layername, color, uuid){  
+            if (color == 'occurrence'){
+                $('.olLegend').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
+                $('.olLegend').show(0);
+            } else {
+                colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
+                $('.olLegend').append('<label data-uuid="'+uuid+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
+                $('.olLegend').show(0);
+            }
         }
 
         // RENDER EMPTY MAP
@@ -155,12 +161,23 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             } else {
 
                 $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+                    
                     responseSuccess = true;
+
+                    // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
+                    var layers = data.layers;
+                    var layersInSet=0;
+                    for(var key in layers) {
+                        if(layers.hasOwnProperty(key)){
+                            layersInSet++;
+                        }
+                    }
                     
                     var myLayers = [];
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    if ( $.isEmptyObject(data.layers) ) {
+                    if ( layersInSet == 1 || $.isEmptyObject(data.layers) ) {
                         //single layer
+                        
                         // TODO: use data.title (needs to be populated)
                         if(!layerName) {
                             if( data.filename!=''){
@@ -201,14 +218,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                 }
                             );
                             var legend = {}; legend.name = layerName;
-                            addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);                            
+                            addLayerLegend(layerName, 'occurrence', uuid);                            
                         }
-                        newLayer.setOpacity(0.5);
+                        newLayer.setOpacity(1);
                         myLayers.push(newLayer);
                     } else {
                         // multiple layers
                         var i = 0;
+
                         $.each( data.layers, function(namespace, layer){
+
                             layerName = layer_vocab[namespace] || namespace;
 
                             var newLayer = new OpenLayers.Layer.WMS(

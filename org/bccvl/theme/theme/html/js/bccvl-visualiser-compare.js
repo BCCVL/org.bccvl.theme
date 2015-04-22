@@ -105,10 +105,18 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
                 responseSuccess = true;
 
+                // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
+                var layers = data.layers;
+                var layersInSet=0;
+                for(var key in layers) {
+                    if(layers.hasOwnProperty(key)){
+                        layersInSet++;
+                    }
+                }
+                
                 var myLayers = [];
-
                 // check for layers metadata, if none exists then the request is returning a data like a csv file
-                if ( $.isEmptyObject(data.layers) ) {
+                if ( layersInSet == 1 || $.isEmptyObject(data.layers) ) {
                     //single layer
                     // TODO: use data.title (needs to be populated)
                     if (!layerName) {
