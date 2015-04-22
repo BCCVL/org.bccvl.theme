@@ -227,7 +227,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 }
                             }
                         }
-                        console.log($('#'+id+' .ol-viewport'));
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
                         $('#'+id+' .ol-viewport').append(legend);
                     }

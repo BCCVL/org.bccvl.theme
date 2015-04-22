@@ -97,7 +97,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             //ol.proj.addProjection(mercator);
 
             // Australia Bounds
-            australia_bounds = new ol.extent.boundingExtent([111,-10,152,-44]);
+            australia_bounds = new ol.extent.boundingExtent([111,-10],[152,-44]);
+            // ^^ THAT SHOULD PROBABLY BE FOUR COMPLETE COORDINATES
             //australia_bounds.extend(new OpenLayers.LonLat(111,-10));
             //australia_bounds.extend(new OpenLayers.LonLat(152,-44));
             //australia_bounds = australia_bounds.transform(geographic, mercator);
@@ -123,7 +124,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     visLayers
                 ],
                 view: new ol.View({
-                  center: ol.proj.transform([132.08, -23.07], 'EPSG:4326', 'EPSG:3857'),
+                  center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
                   zoom: 4
                 })
                 /*eventListeners: {
