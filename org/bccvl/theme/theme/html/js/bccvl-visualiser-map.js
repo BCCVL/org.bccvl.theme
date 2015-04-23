@@ -97,7 +97,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             //ol.proj.addProjection(mercator);
 
             // Australia Bounds
-            australia_bounds = new ol.extent.boundingExtent([111,-10],[152,-44]);
+            
+            var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
+            var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
+            australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
             // ^^ THAT SHOULD PROBABLY BE FOUR COMPLETE COORDINATES
             //australia_bounds.extend(new OpenLayers.LonLat(111,-10));
             //australia_bounds.extend(new OpenLayers.LonLat(152,-44));
@@ -117,8 +120,17 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         'title': 'Base maps',
                         layers: [
                             new ol.layer.Tile({
+                                title: 'OSM',
+                                type: 'base',
+                                visible: true,
                                 source: new ol.source.OSM()
                             }),
+                            new ol.layer.Tile({
+                                title: 'Satellite',
+                                type: 'base',
+                                visible: false,
+                                source: new ol.source.MapQuest({layer: 'sat'})
+                            })
                         ],
                     }),
                     visLayers
@@ -132,10 +144,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 }*/
             });
 
+            
+            visLayers.on('change:visible', function(e){
+                console.log('layergroup change visible');
+            });
+            visLayers.on('change:layers', function(e){
+                console.log('layergroup change layer');
+            });
+
+
+
             map.getView().fitExtent(australia_bounds, map.getSize());
 
             var layerSwitcher = new ol.control.LayerSwitcher({
-                tipLabel: 'Layers' // Optional label for button
+                toggleOpen: true,
+                singleVisibleOverlay: true
             });
             map.addControl(layerSwitcher);
 
@@ -188,6 +211,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     if (type !== 'occurence'){
                         newLayer = new ol.layer.Tile({
                             title: layerName,
+                            type: 'wms',
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
                                 params: {
@@ -204,6 +228,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     } else {
                         newLayer = new ol.layer.Tile({
                             title: layerName,
+                            type: 'wms',
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
                                 params: {
@@ -246,6 +271,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                         var newLayer = new ol.layer.Tile({
                             title: layerName,
+                            type: 'wms',
                             visible: isVisible,
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
@@ -265,6 +291,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 //map.addLayers(visLayers);
                 layerSwitcher.renderPanel();
                 layerSwitcher.showPanel();
+
+                visLayers.on('change', function(e){
+                    mapLayerChanged(e, visLayers);
+                });
             });
             setTimeout(function() {
                 if (!responseSuccess) {
@@ -272,9 +302,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 }
             }, 5000);
 
+
             // eventListener which only allows one overlay to displayed at a time
-            function mapLayerChanged(event) {
-                ls.dataLayers.forEach(function(dataLayer) {
+            function mapLayerChanged(e, layergroup) {
+                //console.log(e);
+                //var layers = map.getLayers().getArray();
+                //console.log(layergroup.getLayers());
+
+                layergroup.getLayers().forEach(function(layer, i) {
+                    if ( layer.getVisible() ) {
+                        console.log(layer);
+                    }
+                });
+                //console.log(overlays);
+                /*ls.dataLayers.forEach(function(dataLayer) {
                     if (dataLayer.layer.name == event.layer.name && event.layer.visibility) {
                         dataLayer.layer.visibility = true;
                         dataLayer.layer.display(true);
@@ -287,7 +328,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         dataLayer.layer.visibility = false;
                         dataLayer.layer.display(false);
                     }
-                });
+                });*/
             }
 
             container.addClass('active');

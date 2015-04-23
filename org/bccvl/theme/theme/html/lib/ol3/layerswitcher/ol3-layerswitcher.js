@@ -19,6 +19,7 @@ define(     ['jquery', 'openlayers3'],
 
             this.mapListeners = [];
 
+            
             this.hiddenClassName = 'ol-unselectable ol-control layer-switcher';
             this.shownClassName = this.hiddenClassName + ' shown';
 
@@ -35,25 +36,32 @@ define(     ['jquery', 'openlayers3'],
 
             var this_ = this;
 
-            /*element.onmouseover = function(e) {
-                this_.showPanel();
-            };*/
+            if (options.singleVisibleOverlay) {
+                this.singleViewOnly = true;
+            }
 
-            button.onclick = function(e) {
-                if ( this_.element.className.indexOf('shown') > 0){
-                    this_.hidePanel();
-                } else {
+            if (options.toggleOpen){
+                button.onclick = function(e) {
+                    if ( this_.element.className.indexOf('shown') > 0){
+                        this_.hidePanel();
+                    } else {
+                        this_.showPanel();
+                    }
+                };
+            } else {
+                element.onmouseover = function(e) {
+                    this_.showPanel();
+                };
+                button.onclick = function(e) {
                     this_.showPanel();
                 }
-                
-            };
-
-            /*element.onmouseout = function(e) {
-                e = e || window.event;
-                if (!element.contains(e.toElement)) {
-                    this_.hidePanel();
-                }
-            };*/
+                element.onmouseout = function(e) {
+                    e = e || window.event;
+                    if (!element.contains(e.toElement)) {
+                        this_.hidePanel();
+                    }
+                };
+            }
 
             ol.control.Control.call(this, {
                 element: element,
@@ -142,8 +150,20 @@ define(     ['jquery', 'openlayers3'],
          * @private
          * @param {ol.layer.Base} The layer whos visibility will be toggled.
          */
-        ol.control.LayerSwitcher.prototype.setVisible_ = function(lyr, visible) {
+        ol.control.LayerSwitcher.prototype.setVisible_ = function(lyr, visible, singleOverlay) {
+
             var map = this.getMap();
+
+            if (singleOverlay) {
+                if( lyr.get('type') !== 'base') {
+                    ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {
+                        if (l.get('type') == 'wms') {
+                            l.setVisible(false);
+                        }
+                    });
+                }
+            }
+            
             lyr.setVisible(visible);
             if (visible && lyr.get('type') === 'base') {
                 // Hide all other base layers regardless of grouping
@@ -188,14 +208,25 @@ define(     ['jquery', 'openlayers3'],
                 if (lyr.get('type') === 'base') {
                     input.type = 'radio';
                     input.name = 'base';
+                } else if (this.singleViewOnly){
+                    input.type = 'radio';
+                    input.name = 'layers';
                 } else {
                     input.type = 'checkbox';
                 }
                 input.id = lyrId;
                 input.checked = lyr.get('visible');
-                input.onchange = function(e) {
-                    this_.setVisible_(lyr, e.target.checked);
-                };
+                if (this.singleViewOnly){
+                    //console.log(this_);
+                    input.onchange = function(e) {
+                        this_.setVisible_(lyr, e.target.checked, true);
+                    };
+                } else {
+                    input.onchange = function(e) {
+                        this_.setVisible_(lyr, e.target.checked);
+                    };
+                }
+                
                 li.appendChild(input);
 
                 label.htmlFor = lyrId;
