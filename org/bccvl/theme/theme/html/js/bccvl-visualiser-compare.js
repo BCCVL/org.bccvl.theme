@@ -2,7 +2,8 @@
 // JS code to initialise the visualiser map
 
 define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel', 'js/bccvl-visualiser-common'],
+             'js/bccvl-visualiser-loading-panel', 'js/bccvl-visualiser-common',
+             'jquery-xmlrpc'],
             function( $, preview, openLayers, LoadingPanel, vizcommon ) {
 
         // REGISTER CLICK EVENT
@@ -102,7 +103,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
             var responseSuccess = false;
 
-            $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+            $.xmlrpc({
+                url: dmurl,
+                params: {'datasetid': uuid},
+                success: function(data, status, jqXHR) {
+                    //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+                    // xmlrpc returns an array of results
+                    data = data[0];
                 responseSuccess = true;
 
                 // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
@@ -228,7 +235,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                     }
                 }); 
                 
-            });
+            }});
             setTimeout(function() {
                 if (!responseSuccess) {
                     alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
