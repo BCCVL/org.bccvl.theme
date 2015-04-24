@@ -298,8 +298,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         }
                     });
                 });
-                
-                vizcommon.exportAsImage(id);
+
+                console.log(data);
+
+                vizcommon.exportAsImage(id, map, currentLayers);
 
             });
             setTimeout(function() {
