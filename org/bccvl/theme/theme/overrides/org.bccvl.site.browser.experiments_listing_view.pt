@@ -110,6 +110,18 @@
                                   action item_obj/dataset_tools/local_roles_action;">
                      Share <i class="fa fa-share-alt" title="Share Results"></i>
                    </a>
+
+                   <a class="btn btn-warning" href='#'
+                      tal:define="item_obj item/getObject"
+                      tal:attributes="data-friendlyname string:removing_${item/Title}; 
+                                      disabled python: None if item_obj.is_deletable else 'disabled';
+                                      title python: None if item_obj.is_deletable else 'Experiment is used as input data for another experiment.';
+                                      data-toggle python: None if item_obj.is_deletable else 'tooltip'"
+                      data-placement="right">                      
+                     Delete <i class="fa fa-times" title="Remove Experiment"></i>
+                   </a>
+
+
                  </td>
              </tr>
           </metal:entry>
