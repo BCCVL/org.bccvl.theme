@@ -235,7 +235,7 @@
                       <!-- end remove dataset --> 
                     </div>
                    
-                    <div class="bccvl-list-preview-pane" style="height:500px;"
+                    <div class="bccvl-list-preview-pane" 
                          tal:attributes="id string:map-${item/UID}"
                          >
                     </div>

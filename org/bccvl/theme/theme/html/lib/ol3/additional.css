@@ -201,7 +201,7 @@ div.olControlAttribution {
       height: 20px;
       background-color: rgba(0,60,136,.5);
       background-image: none;
-      font-family: "OpenSansLight";
+      font-family: "OpenSansRegular";
       color:white;
       font-size:0.9em;
       padding-left:5px;
@@ -213,4 +213,16 @@ div.olControlAttribution {
     color:white;
     background-color: rgba(0,60,136,.7);
 }
-
+.ol-full-screen {
+    left: 3em;
+    right: inherit;
+}
+.ol-full-screen button { 
+    font-family: "FontAwesome";
+}
+.ol-full-screen button.ol-full-screen-false:before {
+    content: "\F065";
+}
+.ol-full-screen button.ol-full-screen-true:before {
+    content: "\F00d";
+}

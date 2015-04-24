@@ -131,17 +131,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                   center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
                   zoom: 4
                 })
-                /*eventListeners: {
-                    "changelayer": mapLayerChanged
-                }*/
-            });
-
-            
-            visLayers.on('change:visible', function(e){
-                console.log('layergroup change visible');
-            });
-            visLayers.on('change:layers', function(e){
-                console.log('layergroup change layer');
             });
 
 
@@ -155,6 +144,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             map.addControl(layerSwitcher);
 
+
+            var fullScreenToggle = new ol.control.FullScreen();
+            map.addControl(fullScreenToggle);
+            // remove crappy unicode icon so fontawesome can get in
+            $('#'+id+' button.ol-full-screen-false').html('');
 
             //loading_panel = new OpenLayers.Control.LoadingPanel();
             //map.addControl(loading_panel);

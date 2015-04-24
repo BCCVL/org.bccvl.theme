@@ -1644,6 +1644,9 @@ body.home>.white-bg {
 }
 .bccvl-list-preview-pane {
     background:rgba(0,0,0,.05);
+    height:100%;
+    width:100%;
+    min-height: 500px;
 }
 .bccvl-table-label p.lead {
     display: block;
