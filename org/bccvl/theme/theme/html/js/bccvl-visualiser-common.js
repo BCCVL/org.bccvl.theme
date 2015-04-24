@@ -2,7 +2,7 @@
 // JS code to initialise the visualiser map
 
 define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
-            function( $  ) {
+            function( $, layout, ol  ) {
 
                 var bccvl_common = {
 
@@ -173,6 +173,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     },
 
                     createLegend: function(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
+
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
                         $('.olLegend').remove();
 
@@ -229,6 +230,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         }
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
                         $('#'+id+' .ol-viewport').append(legend);
+                    },
+
+                    exportAsImage: function(id){
+
+                        $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+
+                        $('#'+id+' a.export-map').click(function(e){
+                            map.once('postcompose', function(event) {
+                                var canvas = event.context.canvas;
+                                $('#'+id+' a.export-map').attr('href', canvas.toDataURL('image/png'));
+                            });
+                            map.renderSync();
+                        });
+
+
                     }
 
                 }

@@ -1,6 +1,6 @@
 
-define(     ['jquery', 'openlayers3'],
-            function( $, ol ) {
+define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
+            function( $, ol, vizcommon ) {
 
         /**
          * OpenLayers 3 Layer Switcher Control.
@@ -10,6 +10,10 @@ define(     ['jquery', 'openlayers3'],
          * @param {Object} opt_options Control options, extends olx.control.ControlOptions adding:
          *                              **`tipLabel`** `String` - the button tooltip.
          */
+
+
+         // modifications by Sam Wolski, Griffith University eRSAD
+         // Apr 2015
         ol.control.LayerSwitcher = function(opt_options) {
 
             var options = opt_options || {};
@@ -154,10 +158,11 @@ define(     ['jquery', 'openlayers3'],
 
             var map = this.getMap();
 
+            // if its a single layer map, as set in the options, only allow one visible layer
             if (singleOverlay) {
                 if( lyr.get('type') !== 'base') {
                     ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {
-                        if (l.get('type') == 'wms') {
+                        if (l.get('type') == 'wms' || l.get('type') == 'wms-occurence') {
                             l.setVisible(false);
                         }
                     });
@@ -165,6 +170,13 @@ define(     ['jquery', 'openlayers3'],
             }
             
             lyr.setVisible(visible);
+
+            /* trigger a new legend
+            if( lyr.get('type') !== 'base') {
+                console.log(lyr);
+                //vizcommon.createLegend();
+            }*/
+
             if (visible && lyr.get('type') === 'base') {
                 // Hide all other base layers regardless of grouping
                 ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {

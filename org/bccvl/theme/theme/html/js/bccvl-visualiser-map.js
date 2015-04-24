@@ -87,25 +87,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             // DecLat, DecLng
             //geographic = new OpenLayers.Projection("EPSG:4326");
-            //var geographic = new ol.proj.Projection({ code: 'EPSG:4326' });
-            //ol.proj.addProjection(geographic);
 
             // Spherical Meters
             // The official name for the 900913 (google) projection
-            //mercator = new OpenLayers.Projection("EPSG:3857");
-            //var mercator = new ol.proj.Projection({ code: 'EPSG:4326' });
-            //ol.proj.addProjection(mercator);
 
             // Australia Bounds
             
             var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
             var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
             australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
-            // ^^ THAT SHOULD PROBABLY BE FOUR COMPLETE COORDINATES
-            //australia_bounds.extend(new OpenLayers.LonLat(111,-10));
-            //australia_bounds.extend(new OpenLayers.LonLat(152,-44));
-            //australia_bounds = australia_bounds.transform(geographic, mercator);
-            //var zoom_bounds = australia_bounds;
+
 
             var visLayers = new ol.layer.Group({
                 title: 'Layers',
@@ -122,6 +113,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             new ol.layer.Tile({
                                 title: 'OSM',
                                 type: 'base',
+                                preload: 10,
                                 visible: true,
                                 source: new ol.source.OSM()
                             }),
@@ -160,7 +152,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 toggleOpen: true,
                 singleVisibleOverlay: true
             });
+
             map.addControl(layerSwitcher);
+
 
             //loading_panel = new OpenLayers.Control.LoadingPanel();
             //map.addControl(loading_panel);
@@ -212,6 +206,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         newLayer = new ol.layer.Tile({
                             title: layerName,
                             type: 'wms',
+                            preload: 10,
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
                                 params: {
@@ -228,7 +223,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     } else {
                         newLayer = new ol.layer.Tile({
                             title: layerName,
-                            type: 'wms',
+                            type: 'wms-occurence',
+                            preload: 10,
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
                                 params: {
@@ -273,6 +269,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             title: layerName,
                             type: 'wms',
                             visible: isVisible,
+                            preload: 10,
                             source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                 url: visualiserWMS,
                                 params: {
@@ -288,13 +285,22 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     });
                 }
 
-                //map.addLayers(visLayers);
                 layerSwitcher.renderPanel();
                 layerSwitcher.showPanel();
 
-                visLayers.on('change', function(e){
-                    mapLayerChanged(e, visLayers);
+                var currentLayers = visLayers.getLayers().getArray();
+
+                $.each(currentLayers, function(i, lyr){
+                    lyr.on('change:visible', function(e){
+                        if (lyr.getVisible()){
+                            var legend = {}; legend.name = lyr.get('title');
+                            vizcommon.createLegend(legend, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+                        }
+                    });
                 });
+                
+                vizcommon.exportAsImage(id);
+
             });
             setTimeout(function() {
                 if (!responseSuccess) {
@@ -302,34 +308,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 }
             }, 5000);
 
-
-            // eventListener which only allows one overlay to displayed at a time
-            function mapLayerChanged(e, layergroup) {
-                //console.log(e);
-                //var layers = map.getLayers().getArray();
-                //console.log(layergroup.getLayers());
-
-                layergroup.getLayers().forEach(function(layer, i) {
-                    if ( layer.getVisible() ) {
-                        console.log(layer);
-                    }
-                });
-                //console.log(overlays);
-                /*ls.dataLayers.forEach(function(dataLayer) {
-                    if (dataLayer.layer.name == event.layer.name && event.layer.visibility) {
-                        dataLayer.layer.visibility = true;
-                        dataLayer.layer.display(true);
-                        // create a legend if type requires it
-                        if (type != 'occurence'){
-                            vizcommon.createLegend(dataLayer.layer, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
-                        }
-                    }
-                    else {
-                        dataLayer.layer.visibility = false;
-                        dataLayer.layer.display(false);
-                    }
-                });*/
-            }
 
             container.addClass('active');
         }

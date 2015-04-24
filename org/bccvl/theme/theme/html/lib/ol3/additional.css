@@ -87,7 +87,8 @@
 .layer-switcher .panel label {
     color: white!important;
     font-family: "OpenSansLight"!important;
-    font-size:0.9em!important;   
+    font-size:0.9em!important; 
+    line-height: 1.25em; 
 }
 
 .layer-switcher ul {
@@ -192,3 +193,24 @@ div.olControlAttribution {
     width: 90%;
     margin-top: 6px;
 }
+
+.export-map {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      height: 20px;
+      background-color: rgba(0,60,136,.5);
+      background-image: none;
+      font-family: "OpenSansLight";
+      color:white;
+      font-size:0.9em;
+      padding-left:5px;
+      padding-right:5px;
+      border-radius:2px;
+}
+.export-map:hover, .export-map:focus {
+    text-decoration: none;
+    color:white;
+    background-color: rgba(0,60,136,.7);
+}
+
