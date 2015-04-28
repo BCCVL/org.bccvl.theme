@@ -63,7 +63,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             var colorArr = [];
 
                             if (midpoint != null){
-                                // White to blue spectrum
+                                // White to red spectrum
                                 if (startpoint==undefined) {
                                     var startpoint = {};
                                         startpoint.r = 255;
@@ -72,14 +72,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 }
                                 if (midpoint==undefined) {
                                     var midpoint = {};
-                                        midpoint.r = 195;
-                                        midpoint.g = 120;
-                                        midpoint.b = 13;
+                                        midpoint.r = 255;
+                                        midpoint.g = 77;
+                                        midpoint.b = 30;
                                 }
                                 if (endpoint==undefined) {
                                     var endpoint = {};
-                                        endpoint.r = 75;
-                                        endpoint.g = 48;
+                                        endpoint.r = 230;
+                                        endpoint.g = 0;
                                         endpoint.b = 0;
                                 }
 
@@ -113,7 +113,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                     colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                                 }
                             } else {
-                                // White to blue spectrum
+                                // White to red spectrum
                                 if (startpoint==undefined) {
                                     var startpoint = {};
                                         startpoint.r = 255;
@@ -122,9 +122,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 }
                                 if (endpoint==undefined) {
                                     var endpoint = {};
-                                        endpoint.r = 30;
-                                        endpoint.g = 77;
-                                        endpoint.b = 155;
+                                        endpoint.r = 230;
+                                        endpoint.g = 0;
+                                        endpoint.b = 0;
                                 }
 
                                 for (var i = 0; i < (steps+2); i++) {
@@ -238,7 +238,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                         $('#'+id+' a.export-map').click(function(e){
                             var visible = [];
-                            $.each(currentLayers, function(i, lyr){
+
+                            // use more current layer list if it exists
+                            if (map.currentLayers !== undefined){
+                                layers = map.currentLayers;
+                                console.log('using window object');
+                            } else {
+                                layers = currentLayers
+                            }
+                            
+                            $.each(layers, function(i, lyr){
                                 if (lyr.getVisible()) {
                                     visible.push(lyr.get('title'));
                                 }
@@ -249,10 +258,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             // add visible layers into filename
                             imageTitle += ' -- '+visible.join(", "); 
                             // append filename
-                            $('#'+id+' a.export-map').attr('download', imageTitle);
+                            $('#'+id+' a.export-map').attr('download', imageTitle+'.png');
 
                             map.once('postcompose', function(event) {
                                 var canvas = event.context.canvas;
+                                /* This works but has bugs
+                                console.log(canvas);
+                                canvas.height = 1000;
+                                canvas.width = 1000;*/
                                 $('#'+id+' a.export-map').attr('href', canvas.toDataURL('image/png'));
                             });
                             map.renderSync();

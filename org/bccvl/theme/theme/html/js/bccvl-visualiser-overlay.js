@@ -1,9 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
-            function( $, preview, openLayers, LoadingPanel, vizcommon ) {
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
+            function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -20,7 +19,16 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
         $('body').on('click', 'a.bccvl-remove-viz', function(event){
             event.preventDefault();
-            map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
+
+            var layerTitle = $(this).data('layername');
+
+            map.getLayers().forEach(function (lyr) {
+                if ( lyr.get('title') == layerTitle){
+                    map.removeLayer(lyr);
+                }          
+            });
+
+            //map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
             $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
@@ -59,8 +67,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             },
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:154,g:164,b:175},"endpoint":{r:48,g:71,b:94}
-            },
-            
+            },  
             {
                 "minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:151,g:229,b:184},"endpoint":{r:45,g:195,b:108}
             },
@@ -81,7 +88,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             // Build legend obj
             var legend = document.createElement('div');
             legend.className = 'olLegend';
-            $('#'+id+' .olMapViewport').append(legend);
+            $('#'+id+' .ol-viewport').append(legend);
         }
 
         createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
@@ -107,45 +114,75 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             if (container.hasClass('olMap'))
                 window.map.destroy();
 
-            // destroy and html from images or text files
-            container.html('').height(container.parents('.tab-pane').height());
+            // destroy any html from images or text files
+            container.html('');
 
             window.map;
-            var mercator, geographic;
-            var loading_panel;
+            //var mercator, geographic;
+            //var loading_panel;
 
             // DecLat, DecLng
-            geographic = new OpenLayers.Projection("EPSG:4326");
+            //geographic = new OpenLayers.Projection("EPSG:4326");
 
             // Spherical Meters
             // The official name for the 900913 (google) projection
-            mercator = new OpenLayers.Projection("EPSG:3857");
 
             // Australia Bounds
-            australia_bounds = new OpenLayers.Bounds();
-            australia_bounds.extend(new OpenLayers.LonLat(111,-10));
-            australia_bounds.extend(new OpenLayers.LonLat(152,-44));
-            australia_bounds = australia_bounds.transform(geographic, mercator);
-            var zoom_bounds = australia_bounds;
+            
+            var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
+            var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
+            australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
 
-            map = new OpenLayers.Map(id, {
-                projection: mercator
+            map = new ol.Map({
+                target: id,
+                layers: [
+                    new ol.layer.Group({
+                        'title': 'Base maps',
+                        layers: [
+                            new ol.layer.Tile({
+                                title: 'OSM',
+                                type: 'base',
+                                preload: 10,
+                                visible: true,
+                                source: new ol.source.OSM()
+                            }),
+                            new ol.layer.Tile({
+                                title: 'Satellite',
+                                type: 'base',
+                                visible: false,
+                                source: new ol.source.MapQuest({layer: 'sat'})
+                            })
+                        ],
+                    })
+                ],
+                view: new ol.View({
+                  center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
+                  zoom: 4
+                })
             });
 
-            loading_panel = new OpenLayers.Control.LoadingPanel();
-            map.addControl(loading_panel);
+            map.getView().fitExtent(australia_bounds, map.getSize());
 
-            // Base layers
-            var osm = new OpenLayers.Layer.OSM();
-            var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
-
-            map.addLayers([osm, gmap]);
-            map.zoomToExtent(zoom_bounds);
-
-            // Remove any existing legends.
-            $('.olLegend').remove();
+            var fullScreenToggle = new ol.control.FullScreen();
+            map.addControl(fullScreenToggle);
+            // remove crappy unicode icon so fontawesome can get in
+            $('#'+id+' button.ol-full-screen-false').html('');
 
             container.addClass('active');
+
+            vizcommon.exportAsImage(id, map, currentLayers());
+        }
+
+        function currentLayers(){
+            var layers = []; 
+
+            map.getLayers().forEach(function (lyr) {
+                if (lyr.get('type') !== 'base' && lyr.get('type') !== undefined){
+                    layers.push(lyr);
+                }
+            });
+            
+            return layers;
         }
 
         // RENDER DATA LAYERS
@@ -154,7 +191,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
             var responseSuccess = false;
 
-            var numLayers = map.getLayersBy('isBaseLayer', false).length;
+            //var numLayers = map.getLayersBy('isBaseLayer', false).length;
+            var numLayers = currentLayers().length;
+
+            //onsole.log(numLayers)
 
             if (numLayers > 9) {
                 alert('This interface supports a maximum of ten layers, please remove a layer before adding another.');
@@ -173,7 +213,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         }
                     }
                     
-                    var myLayers = [];
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ( layersInSet == 1 || $.isEmptyObject(data.layers) ) {
                         //single layer
@@ -187,41 +226,43 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             }
                         }
                         if (type !== 'occurrence'){
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layerName+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    SLD_BODY: vizcommon.generateSLD(data.filename, styleArray[numLayers].minVal, styleArray[numLayers].maxVal, styleArray[numLayers].steps, styleArray[numLayers].startpoint, styleArray[numLayers].midpoint, styleArray[numLayers].endpoint),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
-                            var legend = {}; legend.name = layerName;
+                            newLayer = new ol.layer.Tile({
+                                title: layerName,
+                                type: 'wms',
+                                preload: 10,
+                                source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                    url: visualiserWMS,
+                                    params: {
+                                        DATA_URL: data.vizurl,   // The data_url the user specified
+                                        SLD_BODY: vizcommon.generateSLD(data.filename, styleArray[numLayers].minVal, styleArray[numLayers].maxVal, styleArray[numLayers].steps, styleArray[numLayers].startpoint, styleArray[numLayers].midpoint, styleArray[numLayers].endpoint),
+                                        layers: "DEFAULT",
+                                        transparent: "true",
+                                        format: "image/png"
+                                    }
+                                }))
+                            });
+                            var legend = {}; legend.name = data.filename;
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);
                         } else {
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layerName+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
+                             newLayer = new ol.layer.Tile({
+                                title: layerName,
+                                type: 'wms-occurence',
+                                preload: 10,
+                                source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                    url: visualiserWMS,
+                                    params: {
+                                        DATA_URL: data.vizurl,   // The data_url the user specified
+                                        layers: "DEFAULT",
+                                        transparent: "true",
+                                        format: "image/png"
+                                    }
+                                }))
+                            });
                             var legend = {}; legend.name = layerName;
                             addLayerLegend(layerName, 'occurrence', uuid);                            
                         }
                         newLayer.setOpacity(1);
-                        myLayers.push(newLayer);
+                        map.addLayer(newLayer);
                     } else {
                         // multiple layers
                         var i = 0;
@@ -230,28 +271,30 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
 
                             layerName = layer_vocab[namespace] || namespace;
 
-                            var newLayer = new OpenLayers.Layer.WMS(
-                                ''+layerName+'', // Layer Name
-                                (visualiserWMS),    // Layer URL
-                                {
-                                    DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
-                                    SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                                {
-                                    isBaseLayer: false
-                                }
-                            );
+                            var newLayer = new ol.layer.Tile({
+                                title: layerName,
+                                type: 'wms-occurence',
+                                preload: 10,
+                                source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                        url: visualiserWMS,
+                                        params: {
+                                        DATA_URL: data.vizurl,   // The data_url the user specified
+                                        SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
+                                        layers: "DEFAULT",
+                                        transparent: "true",
+                                        format: "image/png"
+                                    }
+                                }))
+                            });
                             var legend = {}; legend.name = layerName;
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);                            
                             //newLayer.setOpacity(0.25);
-                            myLayers.push(newLayer);
+
+                            map.addLayer(newLayer);
                         });
                     }
 
-                    map.addLayers(myLayers);
+                    //map.addLayers(myLayers);
 
                     /* Code to assign averaged opacity between layers, not currently in use.
 
@@ -261,6 +304,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             $(this)[0].setOpacity(Math.round((0.9/numLayers*100))/100);
                         });
                     } */
+                    // update list of real layers
+                    map.currentLayers = currentLayers();
+                    map.render();
                 });
                 setTimeout(function() {
                     if (!responseSuccess) {
