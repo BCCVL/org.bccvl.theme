@@ -379,6 +379,7 @@ div.loader {
     min-height: 500px;
     background:rgba(0,0,0,.1);
     max-height: 800px;
+    width:100%;
 }
 
 .bccvl-preview-pane.active, .bccvl-preview-pane.multimaps {
@@ -440,6 +441,7 @@ div.loader {
     border-radius: 0px 0px 4px 4px;
     text-align: center;
     padding: .3em;
+    font-size: 0.95em;
     text-overflow: ellipsis;
 }
 #tab-compare .olLegend i {

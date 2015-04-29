@@ -30,8 +30,9 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
             var element = document.createElement('div');
             element.className = this.hiddenClassName;
 
-            var button = document.createElement('button');
+            var button = document.createElement('a');
             button.setAttribute('title', tipLabel);
+            button.className = 'ol-button';
             element.appendChild(button);
 
             this.panel = document.createElement('div');

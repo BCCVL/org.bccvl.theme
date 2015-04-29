@@ -28,6 +28,23 @@
 
 
 /*  Openlayers styles */
+.ol-control a.ol-button {
+  display: block;
+  margin: 1px;
+  padding: 0;
+  color: #fff;
+  font-size: 1.14em;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  height: 1.375em;
+  width: 1.375em;
+  background-color: #7b98bc;
+  background-color: rgba(0,60,136,.5);
+  border: none;
+  border-radius: 2px;
+  cursor:pointer;
+}
 .layer-switcher {
     top:0;
     right:0;
@@ -39,17 +56,17 @@
     height: 100%;
     overflow-y: auto;
 }
-.layer-switcher button:focus, .layer-switcher button:hover {
+.layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
     background-color: rgba(0,60,136,.7);
     outline:none;
 }
-.layer-switcher.shown button:focus {
+.layer-switcher.shown a.ol-button:focus {
     background-color: rgba(255,255,255,.35);
 }
-.layer-switcher.shown button:hover {
+.layer-switcher.shown a.ol-button:hover {
     background-color: rgba(255,255,255,.6);
 }
-.layer-switcher button {
+.layer-switcher a.ol-button {
     position: absolute;
     right: 8px;
     top: 8px;
@@ -59,10 +76,10 @@
     background-image: none;
     font-family: "FontAwesome";
 }
-.layer-switcher button:before {
+.layer-switcher a.ol-button:before {
     content: "\F0C9";
 }
-.layer-switcher.shown button {
+.layer-switcher.shown a.ol-button {
     background-color: rgba(255,255,255,.35);
     border:none;
 }
@@ -225,4 +242,40 @@ div.olControlAttribution {
 }
 .ol-full-screen button.ol-full-screen-true:before {
     content: "\F00d";
+}
+.minimap:-moz-full-screen,.bccvl-preview-pane.active:-moz-full-screen, .map:-moz-full-screen {
+  height: 100%!important;
+  width: 100%!important;
+  position: absolute!important;
+  min-height:none!important;
+  max-height:none!important;
+  top: 0;
+  left: 0;
+}
+.minimap:-webkit-full-screen,.bccvl-preview-pane.active:-webkit-full-screen, map:-webkit-full-screen {
+  height: 100%!important;
+  width: 100%!important;
+   min-height:none!important;
+  max-height:none!important;
+  position: absolute!important;
+  top: 0;
+  left: 0;
+}
+.minimap:-ms-fullscreen,.bccvl-preview-pane.active:-ms-fullscreen, .map:-ms-fullscreen {
+  height: 100%!important;
+  width: 100%!important;
+   min-height:none!important;
+  max-height:none!important;
+  position: absolute!important;
+  top: 0;
+  left: 0;
+}
+.minimap:fullscreen,.bccvl-preview-pane.active:-fullscreen, .map:fullscreen {
+  height: 100%!important;
+  width: 100%!important;
+   min-height:none!important;
+  max-height:none!important;
+  position: absolute!important;
+  top: 0;
+  left: 0;
 }

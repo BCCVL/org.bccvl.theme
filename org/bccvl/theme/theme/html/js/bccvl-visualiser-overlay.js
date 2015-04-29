@@ -1,7 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
@@ -22,11 +22,17 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             var layerTitle = $(this).data('layername');
 
-            map.getLayers().forEach(function (lyr) {
+            visLayers.getLayers().forEach(function (lyr) {
+                if ( lyr.get('title') == layerTitle){
+                    visLayers.getLayers().remove(lyr);
+                }          
+            })
+
+            /*map.getLayers().forEach(function (lyr) {
                 if ( lyr.get('title') == layerTitle){
                     map.removeLayer(lyr);
                 }          
-            });
+            })*/;
 
             //map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
             $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
@@ -118,6 +124,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             container.html('');
 
             window.map;
+            window.visLayers;
             //var mercator, geographic;
             //var loading_panel;
 
@@ -133,6 +140,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
             australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
 
+            visLayers = new ol.layer.Group({
+                title: 'Layers',
+                layers: [
+                ]
+            });
+
             map = new ol.Map({
                 target: id,
                 layers: [
@@ -146,14 +159,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 visible: true,
                                 source: new ol.source.OSM()
                             }),
-                            new ol.layer.Tile({
+                            /*new ol.layer.Tile({
                                 title: 'Satellite',
                                 type: 'base',
                                 visible: false,
                                 source: new ol.source.MapQuest({layer: 'sat'})
-                            })
+                            })*/
                         ],
-                    })
+                    }),
+                    visLayers
                 ],
                 view: new ol.View({
                   center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
@@ -170,10 +184,10 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             container.addClass('active');
 
-            vizcommon.exportAsImage(id, map, currentLayers());
+            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray());
         }
 
-        function currentLayers(){
+        /*function currentLayers(){
             var layers = []; 
 
             map.getLayers().forEach(function (lyr) {
@@ -183,7 +197,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             });
             
             return layers;
-        }
+        }*/
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
@@ -192,8 +206,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             var responseSuccess = false;
 
             //var numLayers = map.getLayersBy('isBaseLayer', false).length;
-            var numLayers = currentLayers().length;
-
+            var numLayers = visLayers.getLayers().getArray().length;
+            console.log(numLayers)
             //onsole.log(numLayers)
 
             if (numLayers > 9) {
@@ -262,7 +276,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             addLayerLegend(layerName, 'occurrence', uuid);                            
                         }
                         newLayer.setOpacity(1);
-                        map.addLayer(newLayer);
+                        visLayers.getLayers().push(newLayer);
+                        //map.addLayer(newLayer);
                     } else {
                         // multiple layers
                         var i = 0;
@@ -273,7 +288,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                             var newLayer = new ol.layer.Tile({
                                 title: layerName,
-                                type: 'wms-occurence',
+                                type: 'wms',
                                 preload: 10,
                                 source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                                         url: visualiserWMS,
@@ -289,8 +304,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             var legend = {}; legend.name = layerName;
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);                            
                             //newLayer.setOpacity(0.25);
-
-                            map.addLayer(newLayer);
+                            visLayers.getLayers().push(newLayer);
+                            //map.addLayer(newLayer);
                         });
                     }
 
@@ -305,7 +320,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         });
                     } */
                     // update list of real layers
-                    map.currentLayers = currentLayers();
+                    //map.currentLayers = currentLayers();
                     map.render();
                 });
                 setTimeout(function() {
