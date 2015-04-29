@@ -1,7 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common'],
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
@@ -119,7 +119,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             var responseSuccess = false;
 
-            $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+            $.xmlrpc({
+                url: dmurl,
+                params: {'datasetid': uuid},
+                success: function(data, status, jqXHR) {
+                    //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+                    // xmlrpc returns an array of results
+                    data = data[0];
                 responseSuccess = true;
 
                 // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
@@ -251,8 +257,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         is_syncing = false;
                     }
                 });*/ 
-                
-            });
+
+            }});
+
             function bindMaps(){
                 var leader = window.maps[0];
                 $.each(window.maps, function(i, map){
@@ -261,6 +268,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     }
                 });
             }
+            
             setTimeout(function() {
                 if (!responseSuccess) {
                     alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");

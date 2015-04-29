@@ -1,7 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable'],
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable', 'jquery-xmlrpc'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
@@ -176,7 +176,12 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             var responseSuccess = false;
 
-            $.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+            $.xmlrpc({
+                url: dmurl,
+                params: {'datasetid': uuid},
+                success: function(data, status, jqXHR) {
+                    // xmlrpc returns an array of results
+                    data = data[0];
                 responseSuccess = true;
 
                 /*var visLayers = new ol.layer.Group({
@@ -295,7 +300,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                 vizcommon.exportAsImage(id, map, currentLayers);
 
-            });
+            }});
+
             setTimeout(function() {
                 if (!responseSuccess) {
                     alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");

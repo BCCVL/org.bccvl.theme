@@ -6,7 +6,7 @@ define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
-     'js/bccvl-form-popover'],
+     'js/bccvl-form-popover', 'jquery-xmlrpc'],
     function($, preview_layout, viz, vizmap, wiztabs, search, formvalidator, popover ) {
 
         // ==============================================================
@@ -199,8 +199,10 @@ define(
                                 $layerRows.fadeIn();
                             } else {
                                 // fetch metadata for this dataset, to see what env layers it holds
-                                var layerReq = $.ajax({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
+                                var layerReq = $.xmlrpc({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
                                 layerReq.done( function(list) {
+                                    // xmlrpc returns list of results
+                                    list = list[0];
                                     if (Object.keys(list.layers).length) {
                                         // collect layers by name (for sorting them)
                                         var layerNames = [];
