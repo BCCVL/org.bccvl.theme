@@ -18,6 +18,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         result will always have +1 threshold and +2 color values on top of your desired number of colour values.
                     */
 
+                    commonAjaxSetup: function(){
+                        $.ajaxSetup({
+                          timeout: 5000,
+                          error: function(jqXHR, textStatus, errorThrown){
+                            console.log('Error on map: '+textStatus);
+                            if (textStatus ==  'timeout'){
+                                alert("The map request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
+                            }
+                          }
+                        });
+
+                    },
+
+
                     generateRangeArr: function(standard_range, minVal, maxVal, steps){
 
                         if (standard_range == 'rainfall'){
@@ -242,7 +256,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             // use more current layer list if it exists
                             if (map.currentLayers !== undefined){
                                 layers = map.currentLayers;
-                                console.log('using window object');
                             } else {
                                 layers = currentLayers
                             }
@@ -262,10 +275,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                             map.once('postcompose', function(event) {
                                 var canvas = event.context.canvas;
-                                /* This works but has bugs
-                                console.log(canvas);
-                                canvas.height = 1000;
-                                canvas.width = 1000;*/
                                 $('#'+id+' a.export-map').attr('href', canvas.toDataURL('image/png'));
                             });
                             map.renderSync();

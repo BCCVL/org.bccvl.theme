@@ -4,6 +4,9 @@
 define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable', 'jquery-xmlrpc'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
+        // Bring in generic visualiser error handling of timeouts
+        vizcommon.commonAjaxSetup();
+
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -79,17 +82,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 window.map.destroy();
 
             // destroy any html from images or text files
-            container.html('').height(container.parents('.tab-pane').height());
+            //container.html('').height(container.parents('.tab-pane').height());
 
             window.map;
-            //var mercator, geographic;
-            //var loading_panel;
-
-            // DecLat, DecLng
-            //geographic = new OpenLayers.Projection("EPSG:4326");
-
-            // Spherical Meters
-            // The official name for the 900913 (google) projection
 
             // Australia Bounds
             
@@ -150,45 +145,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             // remove crappy unicode icon so fontawesome can get in
             $('#'+id+' button.ol-full-screen-false').html('');
 
-            //loading_panel = new OpenLayers.Control.LoadingPanel();
-            //map.addControl(loading_panel);
-
-            // Base layers
-            /*var osm = new OpenLayers.Layer.OSM();
-            var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
-
-            var ls = new OpenLayers.Control.LayerSwitcher();
-
-            map.addLayers([osm, gmap]);
-            map.addControl(ls);
-            map.zoomToExtent(zoom_bounds);
-
-            // Make the layer switcher open by default
-            ls.maximizeControl();
-
-            // Remove all the existing data layers, keep the baselayers and map.
-            var dataLayers = map.getLayersBy('isBaseLayer', false);
-            $.each(dataLayers, function(i){
-                map.removeLayer(dataLayers[i]);
-            });
-            // Remove any existing legends.
-            $('.olLegend').remove();*/
-
-            var responseSuccess = false;
-
             $.xmlrpc({
                 url: dmurl,
                 params: {'datasetid': uuid},
                 success: function(data, status, jqXHR) {
-                    // xmlrpc returns an array of results
-                    data = data[0];
+                // xmlrpc returns an array of results
+                data = data[0];
                 responseSuccess = true;
 
-                /*var visLayers = new ol.layer.Group({
-                    title: 'Layers',
-                    layers: [
-                    ]
-                });*/
                 var layerName;
 
                 // check for layers metadata, if none exists then the request is returning a data like a csv file
@@ -301,13 +265,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 vizcommon.exportAsImage(id, map, currentLayers);
 
             }});
-
-            setTimeout(function() {
-                if (!responseSuccess) {
-                    alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
-                }
-            }, 5000);
-
 
             container.addClass('active');
         }

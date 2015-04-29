@@ -4,6 +4,9 @@
 define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
+        // Bring in generic visualiser error handling of timeouts
+        vizcommon.commonAjaxSetup();
+
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -26,15 +29,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 if ( lyr.get('title') == layerTitle){
                     visLayers.getLayers().remove(lyr);
                 }          
-            })
+            });
 
-            /*map.getLayers().forEach(function (lyr) {
-                if ( lyr.get('title') == layerTitle){
-                    map.removeLayer(lyr);
-                }          
-            })*/;
-
-            //map.removeLayer(map.getLayersByName($(this).data('layername'))[0]);
             $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
@@ -125,16 +121,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             window.map;
             window.visLayers;
-            //var mercator, geographic;
-            //var loading_panel;
-
-            // DecLat, DecLng
-            //geographic = new OpenLayers.Projection("EPSG:4326");
-
-            // Spherical Meters
-            // The official name for the 900913 (google) projection
-
-            // Australia Bounds
             
             var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
             var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
@@ -187,28 +173,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray());
         }
 
-        /*function currentLayers(){
-            var layers = []; 
-
-            map.getLayers().forEach(function (lyr) {
-                if (lyr.get('type') !== 'base' && lyr.get('type') !== undefined){
-                    layers.push(lyr);
-                }
-            });
-            
-            return layers;
-        }*/
-
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function addNewLayer(uuid, url, id, type, layerName){
 
-            var responseSuccess = false;
-
-            //var numLayers = map.getLayersBy('isBaseLayer', false).length;
             var numLayers = visLayers.getLayers().getArray().length;
-            console.log(numLayers)
-            //onsole.log(numLayers)
 
             if (numLayers > 9) {
                 alert('This interface supports a maximum of ten layers, please remove a layer before adding another.');
@@ -218,8 +187,8 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     url: dmurl,
                     params: {'datasetid': uuid},
                     success: function(data, status, jqXHR) {
-                        // xmlrpc returns an array of results
-                        data = data[0];
+                    // xmlrpc returns an array of results
+                    data = data[0];
                     responseSuccess = true;
 
                     // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
@@ -281,7 +250,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         }
                         newLayer.setOpacity(1);
                         visLayers.getLayers().push(newLayer);
-                        //map.addLayer(newLayer);
+
                     } else {
                         // multiple layers
                         var i = 0;
@@ -307,32 +276,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             });
                             var legend = {}; legend.name = layerName;
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);                            
-                            //newLayer.setOpacity(0.25);
+
                             visLayers.getLayers().push(newLayer);
-                            //map.addLayer(newLayer);
+
                         });
                     }
-
-                    //map.addLayers(myLayers);
-
-                    /* Code to assign averaged opacity between layers, not currently in use.
-
-                    var numLayers = map.getLayersBy('isBaseLayer', false).length;
-                    if (numLayers > 0){
-                        $.each(map.getLayersBy('isBaseLayer', false), function(){
-                            $(this)[0].setOpacity(Math.round((0.9/numLayers*100))/100);
-                        });
-                    } */
-                    // update list of real layers
-                    //map.currentLayers = currentLayers();
                     map.render();
                 }});
-
-                setTimeout(function() {
-                    if (!responseSuccess) {
-                        alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
-                    }
-                }, 5000);
 
             }
         }

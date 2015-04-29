@@ -4,6 +4,9 @@
 define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
             function( $, preview, ol, layerswitcher, vizcommon  ) {
 
+        // Bring in generic visualiser error handling of timeouts
+        vizcommon.commonAjaxSetup();
+
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -117,15 +120,13 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
             // Remove any existing legends.
             $('.olLegend').remove();
 
-            var responseSuccess = false;
-
             $.xmlrpc({
                 url: dmurl,
                 params: {'datasetid': uuid},
                 success: function(data, status, jqXHR) {
-                    //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
-                    // xmlrpc returns an array of results
-                    data = data[0];
+                //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
+                // xmlrpc returns an array of results
+                data = data[0];
                 responseSuccess = true;
 
                 // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
@@ -166,7 +167,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             }))
                         });
                         var legend = {}; legend.name = data.filename;
-                        //createLegend(legend, id, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint);
+
                     } else {
                         newLayer = new ol.layer.Tile({
                             title: layerName,
@@ -217,46 +218,17 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         } else {
                             container.append('<label>'+layerName+'<br/></label>');
                         }
-                        //newLayer.setOpacity(0.25);
+
                         visLayers.getLayers().push(newLayer);
                     });
                 }
 
-                //map.addLayers(myLayers);
-
                 var numLayers = visLayers.getLayers().getArray().length;
-                /*if (numLayers > 0){
-                    $.each(map.getLayersBy('isBaseLayer', false), function(){
-                        $(this)[0].setOpacity(Math.round((0.9/numLayers*100))/100);
-                    });
-                } 
-
-                controls = map.getControlsByClass('OpenLayers.Control.Navigation');
- 
-                for(var i = 0; i < controls.length; ++i)
-                     controls[i].disableZoomWheel();*/
 
                 map.uuid = uuid;
                 window.maps.push(map);
 
-
                 bindMaps();
-                /*var is_syncing = false;
-                window.maps[uuid].events.register("moveend", window.maps[uuid], function(event) {
-                    if (!is_syncing) {
-                        is_syncing = true;
-                        var center = window.maps[uuid].getCenter();
-                        var zoom = window.maps[uuid].getZoom();
-                        $.each(window.maps, function(i, otherMap){
-                            otherMap.setCenter(center)
-                            otherMap.setZoom(zoom); 
-                        });
-
-                        window.mapsCenter = center;
-                        window.mapsZoom = zoom;
-                        is_syncing = false;
-                    }
-                });*/ 
 
             }});
 
@@ -268,12 +240,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     }
                 });
             }
-            
-            setTimeout(function() {
-                if (!responseSuccess) {
-                    alert("Could not find metadata for layer. There may be a problem with the dataset. Try again later, or re-upload the dataset.");
-                }
-            }, 5000);
             container.addClass('active');
             
         }
