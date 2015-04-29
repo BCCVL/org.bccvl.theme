@@ -170,7 +170,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             container.addClass('active');
 
-            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray());
+            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray(), 'Overlay');
         }
 
         // RENDER DATA LAYERS
@@ -189,7 +189,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
-                    responseSuccess = true;
 
                     // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
                     var layers = data.layers;

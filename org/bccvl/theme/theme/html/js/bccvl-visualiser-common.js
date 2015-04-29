@@ -246,7 +246,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         $('#'+id+' .ol-viewport').append(legend);
                     },
 
-                    exportAsImage: function(id, map, currentLayers){
+                    exportAsImage: function(id, map, currentLayers, mapTitle){
 
                         $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
 
@@ -267,7 +267,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             });
 
                             // need to add a map/dataset title here, instead of 'MAP'
-                            var imageTitle = 'BCCVL -- '+' MapTitle';
+                            var imageTitle = 'BCCVL -- '+ mapTitle;
                             // add visible layers into filename
                             imageTitle += ' -- '+visible.join(", "); 
                             // append filename

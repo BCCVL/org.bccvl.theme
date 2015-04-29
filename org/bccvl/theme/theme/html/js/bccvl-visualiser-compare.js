@@ -109,7 +109,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             container.addClass('active');
 
-            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray());
+            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray(), 'Side-by-side');
             
             if (window.mapsCenter && window.mapsZoom){
                 map.setCenter(window.mapsCenter, window.mapsZoom, false, false);
@@ -127,7 +127,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
                 // xmlrpc returns an array of results
                 data = data[0];
-                responseSuccess = true;
 
                 // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
                 var layers = data.layers;
