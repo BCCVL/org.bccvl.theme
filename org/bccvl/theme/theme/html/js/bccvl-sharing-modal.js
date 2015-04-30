@@ -32,8 +32,12 @@ define(
 
                             $form.submit(function(event) {
                                 event.preventDefault();
+                                var btn = $form.find(':submit')[0];
+                                var formdata = $form.serializeArray();
+                                formdata.push({name: btn.name,
+                                               value: btn.value});
                                 $.post($form.attr('action'),
-                                       $form.serialize(),
+                                       formdata,
                                        function(data, status, jqxhr) {
                                            $modal.modal('hide');
                                            $modal.empty();
