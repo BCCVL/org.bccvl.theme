@@ -32,7 +32,7 @@ define(
 
                             $form.submit(function(event) {
                                 event.preventDefault();
-                                var btn = $form.find(':submit')[0];
+                                var btn = $form.find('#sharing-save-button')[0];
                                 var formdata = $form.serializeArray();
                                 formdata.push({name: btn.name,
                                                value: btn.value});
