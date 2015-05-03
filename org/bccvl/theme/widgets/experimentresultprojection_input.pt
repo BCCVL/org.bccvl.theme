@@ -104,6 +104,10 @@
                   </td>
                 </tr>
               </tal:repeat>
+              <tr class="selectedmodels row-fluid"
+                  tal:condition="not: item/datasets">
+                <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
+              </tr>
             </tbody>
           </table>
           <input type="hidden" value="" name="form.widgets.dataset.0.count"
