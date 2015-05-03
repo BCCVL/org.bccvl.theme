@@ -136,7 +136,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
             $.xmlrpc({
                 url: dmurl,
                 params: {'datasetid': uuid},
-                succss: function(data, status, jqXHR) {
+                success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
                 responseSuccess = true;
