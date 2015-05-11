@@ -28,7 +28,6 @@
     <xi:include href="rules/sharing.xml" />
     <xi:include href="rules/remove-dataset.xml" />    
     <xi:include href="rules/feedback.xml" />
-    <xi:include href="rules/statistics.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
