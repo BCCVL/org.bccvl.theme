@@ -20,11 +20,32 @@
     <script src="lib/require/require.js" type="text/javascript"></script>
     <script src="js/common.js" type="text/javascript"></script>
     <!-- include main js -->
-    <script type="text/javascript">
-      require(['js/dashboard']);
-    </script>
+    <!--<script type="text/javascript">-->
+      <!--require(['lib/dashboard']);-->
+    <!--</script>-->
 
     <script id="google-analytics"></script>
+
+    <script 
+        type="text/plain" 
+        src="/lib/excellentexport/excellentexport.min.js" 
+    ></script>
+    <style>
+      .stats_header {
+          text-align: center;
+          background-color: black;
+          color: white;
+      }
+      .stats td {
+          padding: 0 10px 0 10px;
+      }
+      .tally {
+          border-top: 1px solid black;
+      }
+      .blank_row {
+          height: 10px;
+      }
+    </style>
 
   </head>
 
