@@ -2,7 +2,7 @@
 <div id="user-menu" class="btn-group pull-right">
   <tal:block condition="not: view/anonymous">
     <a class="btn dropdown-toggle fine" data-toggle="dropdown">
-      <i class="icon-user"></i> <span class="bccvl-username" tal:content="view/user_name">unknown user</span> <i class="caret"></i>
+      <i class="fa fa-user"></i> <span class="bccvl-username" tal:content="view/user_name">unknown user</span> <i class="caret"></i>
     </a>
     <ul class="dropdown-menu">
       <tal:actions tal:repeat="action view/user_actions">
@@ -12,7 +12,7 @@
              tal:attributes="href action/url;
                              traget action/link_target|nothing;
                              class string:bccvllinks-${action/id};">
-            <i class="icon-eye-open"
+            <i class="fa fa-eye"
                tal:attributes="class action/icon_class"></i>
             <tal:r tal:replace="action/title">Action title</tal:r>
           </a>

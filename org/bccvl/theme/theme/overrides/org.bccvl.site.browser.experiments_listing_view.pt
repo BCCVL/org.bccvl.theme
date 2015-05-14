@@ -85,7 +85,8 @@
                         </li>
                       </tal:if>
                       <tal:if condition="exp/years|nothing">
-                          <li class="bccvl-experiment-parameters" tal:content="exp/years" />                    </tal:if>
+                        <li class="bccvl-experiment-parameters" tal:content="exp/years" />
+                      </tal:if>
                       <tal:if condition="item/Description">
                         <li class="bccvl-experiment-summary" tal:content="item/Description" />
                       </tal:if>
