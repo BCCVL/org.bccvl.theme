@@ -16,26 +16,34 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv',
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/',
+      };
+
+      local = window.location.protocol == 'file:';
+      portal_url = document.URL.split('/').slice(0, -1).join('/');
+    </script>    
     <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
     <script src="lib/require/require.js" type="text/javascript"></script>
-    <!--<script src="js/common.js" type="text/javascript"></script>-->
-    <!-- include main js -->
-    <!--<script type="text/javascript">-->
-      <!--require(['lib/dashboard']);-->
-    <!--</script>-->
+    <script src="js/common.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      require(['jquery', 'bootstrap']);
+    </script>
 
     <script id="google-analytics"></script>
 
     <script 
-        type="text/plain" 
+        type="text/javascript" 
         src="lib/excellentexport/excellentexport.js" 
     ></script>
-    <style>
-      #statistics {
-          width: 400px;
-          margin-left: auto;
-          margin-right: auto;
-      }
+    <style type="text/css">
       .stats_header {
           text-align: center;
           background-color: black;
