@@ -18,7 +18,7 @@
     <script src="../plone_javascript_variables.js" type="text/javascript"></script>
     <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
     <script src="lib/require/require.js" type="text/javascript"></script>
-    <script src="js/common.js" type="text/javascript"></script>
+    <!--<script src="js/common.js" type="text/javascript"></script>-->
     <!-- include main js -->
     <!--<script type="text/javascript">-->
       <!--require(['lib/dashboard']);-->
@@ -28,9 +28,14 @@
 
     <script 
         type="text/plain" 
-        src="lib/excellentexport/excellentexport.min.js" 
+        src="lib/excellentexport/excellentexport.js" 
     ></script>
     <style>
+      #statistics {
+          width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+      }
       .stats_header {
           text-align: center;
           background-color: black;
