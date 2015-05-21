@@ -62,6 +62,7 @@
                            name="form.widgets.fieldname.dataset.0:list"
                            tal:attributes="value model/uuid;
                                            name string:${view/name}.dataset.${index}:list;
+                                           required view/required;
                                            checked model/selected;"/>
                   </td>
                   <td tal:condition="not: is_bd">
@@ -95,7 +96,7 @@
               </tal:repeat>
               <tr class="selectedmodels row-fluid"
                   tal:condition="not: item/datasets">
-                <td colspan="5"><span>No datasets available within this experiment</span></td>
+                <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
               </tr>
             </tbody>
           </table>

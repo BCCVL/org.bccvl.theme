@@ -25,7 +25,7 @@
       <!--        tal:attributes="name string:${view/name}-empty-marker" /> -->
       <span class="label" tal:content="structure item/label">Label</span>
       <a class="search" target="_blank" href="searchurl"
-         tal:attributes="href string:${portal_url}/@@search?Subject=${python: ' '.join(item['subject'])}">
+         tal:attributes="href string:${portal_url}/@@search?Subject=${python: ' '.join(item['subject'])}&path=/bccvl/knowledgebase">
         <i class="icon-info-sign" title="more information"></i>
       </a>
     </label>

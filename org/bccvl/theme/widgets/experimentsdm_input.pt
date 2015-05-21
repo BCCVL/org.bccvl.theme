@@ -56,6 +56,7 @@
                        name="form.widgets.fieldname.model:list"
                        tal:attributes="value model/uuid;
                                        name string:${view/name}.model:list;
+                                       required view/required;
                                        checked model/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
               </td>
@@ -70,6 +71,10 @@
               </td>
             </tr>
           </tal:repeat>
+          <tr class="selectedmodels row-fluid"
+              tal:condition="not: item/models">
+            <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
+          </tr>
         </tbody>
       </table>
       </div>
