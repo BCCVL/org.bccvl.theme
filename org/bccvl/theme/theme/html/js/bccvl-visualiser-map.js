@@ -78,8 +78,11 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             // NEED TO DESTROY ANY EXISTING MAP
             var container = $('#'+id);
-            if (container.hasClass('olMap'))
-                window.map.destroy();
+            if (container.hasClass('active'))
+                container.empty();
+                delete window.map;
+                //window.map.destroy();
+
 
             // destroy any html from images or text files
             //container.html('').height(container.parents('.tab-pane').height());

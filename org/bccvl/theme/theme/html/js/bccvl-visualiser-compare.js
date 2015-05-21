@@ -59,6 +59,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             // NEED TO DESTROY ANY EXISTING MAP
             var container = $('#'+id);
+            if (container.hasClass('active'))
+                container.empty();
+                $.each(window.maps, function(i, map){
+                    if (map.uuid == uuid){
+                        delete $(this);
+                    }
+                });
+
         
             var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
             var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
