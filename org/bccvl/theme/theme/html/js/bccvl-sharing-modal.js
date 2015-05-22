@@ -56,9 +56,9 @@ define(
                     //$("body").addClass("modal-open");
                 });
 
-                // $('.modal').on('hidden', function() {
-                //     $("body").removeClass("modal-open");
-                // });
+                $('.modal').on('hidden', function() {
+                     $('.modal').empty();
+                });
 
             }
         };
@@ -66,8 +66,7 @@ define(
         function renderSpinner() {
             var html = '';
             html += '<div style="text-align: center;" id="ajax_loader">';
-            html += '<img src="' + portal_url + '/++resource++bccvl/images/ajax-loader.gif"></img>';
-            html += '<p>Loading. Please Wait</p>';
+            html += '<img src="' + portal_url + '/++resource++bccvl/images/bccvl-loader.gif" style="margin:4em 0;"></img>';
             html += '</div>';
             return html;
         }

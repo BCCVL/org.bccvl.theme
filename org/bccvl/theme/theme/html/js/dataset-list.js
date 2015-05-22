@@ -112,7 +112,7 @@ define(
             $('body').on('click', '.dataset-info-btn', function(event){
                 event.preventDefault();
                 var requestUrl = $(this).attr('href');
-                $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
+                $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
                 $.ajax(requestUrl)
                     .done(function(data){
                         console.log(data);
@@ -129,7 +129,7 @@ define(
                     });
                 $('#dataset-meta-modal').modal();
                 $('#dataset-meta-modal').on('hidden', function(){
-                    $('#dataset-meta-modal .modal-body').html('<span class="loading-gif"></span>');
+                    $('#dataset-meta-modal').remove();
                 });
             });
 
