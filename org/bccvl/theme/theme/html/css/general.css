@@ -1543,6 +1543,16 @@ iframe.homepage {
 body.home>.white-bg {
     padding-bottom: 1em;
 }
+@media only screen and (max-height: 600px) {
+    .modal-body {
+        max-height:300px;
+    }
+}
+@media only screen and (min-height: 501px) {
+    .modal-body {
+        max-height:60%;
+    }
+}
 .modal-body span.loading-gif {
     text-align: center;
     background-image: url('../lib/openlayers/img/Preloader_2.gif');
