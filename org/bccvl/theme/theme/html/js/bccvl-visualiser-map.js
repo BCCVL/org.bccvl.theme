@@ -229,23 +229,45 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 isVisible = false;
                             }
                         }
+                        console.log(layer);
 
-                        var newLayer = new ol.layer.Tile({
-                            title: layerName,
-                            type: 'wms',
-                            visible: isVisible,
-                            preload: 10,
-                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                                url: visualiserWMS,
-                                params: {
-                                    DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
-                                    SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                },
-                            }))
-                        });
+                        if (layer.datatype == 'continuous'){
+                            console.log('probability');
+                            var newLayer = new ol.layer.Tile({
+                                title: layerName,
+                                type: 'wms',
+                                visible: isVisible,
+                                preload: 10,
+                                source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                    url: visualiserWMS,
+                                    params: {
+                                        DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
+                                        SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20, null, null, null, layer.datatype),
+                                        layers: "DEFAULT",
+                                        transparent: "true",
+                                        format: "image/png"
+                                    },
+                                }))
+                            });
+                        } else {
+                            var newLayer = new ol.layer.Tile({
+                                title: layerName,
+                                type: 'wms',
+                                visible: isVisible,
+                                preload: 10,
+                                source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                                    url: visualiserWMS,
+                                    params: {
+                                        DATA_URL: data.vizurl + ('filename' in layer ? '#' + layer.filename : ''),  // The data_url the user specified
+                                        SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
+                                        layers: "DEFAULT",
+                                        transparent: "true",
+                                        format: "image/png"
+                                    },
+                                }))
+                            });
+                        }
+                        
                         visLayers.getLayers().push(newLayer);
                     });
                 }

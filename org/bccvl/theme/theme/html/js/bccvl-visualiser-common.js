@@ -40,6 +40,18 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         } else if (standard_range == 'temperature') {
                             // temperature BOM standard range
                             var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
+                        } else if (standard_range == 'probability') {
+
+                            if (maxVal <= 1){
+                                var rangeArr = [0,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00];
+                            } else if (maxVal <= 10){
+                                var rangeArr = [0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10];
+                            } else if (maxVal <= 100){
+                                var rangeArr = [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100];
+                            } else if (maxVal <= 1000){
+                                var rangeArr = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
+                            }
+
                         } else {
                             // dummy max and min values, eventually replaced with relative-to-layer values
                             if (minVal==undefined) minVal = 0;
@@ -64,6 +76,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         } else if (standard_range == 'temperature') {
                             // temperature BOM standard colours
                             var colorArr = ['#13a7ce','#0eb9d2','#54c5d2','#87d2d1','#b1e0d3','#c6e6d3','#d8eed4','#ecf6d5','#fefed7','#fef5bd','#fdea9b','#fcd78b','#fdc775','#f8a95b','#f58e41','#f3713e'];
+                        } else if (standard_range == 'probability') {
+                            // basic prob spectrum
+                            var colorArr = ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
                         } else {
                             // utility functions to convert RGB values into hex values for SLD styling.
                             function byte2Hex(n) {
@@ -159,13 +174,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         return colorArr;
                     },
 
-                    generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint ) {
+                    generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype ) {
                         var standard_range;
 
                         if(/bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(filename)){
                             var standard_range = 'rainfall';
                         } else if(/bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(filename)){
                             var standard_range = 'temperature';
+                        } else if(layertype == 'continuous') {
+                            var standard_range = 'probability';
                         } else {
                             var standard_range = 'soil';
                         }
