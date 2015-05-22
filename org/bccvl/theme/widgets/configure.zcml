@@ -43,7 +43,7 @@
 
     <adapter
         for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
+             org.bccvl.site.widgets.interfaces.IDatasetDictWidget"
         provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
         factory=".widgets.JS_WRAPPER_ADAPTER"
         />
@@ -78,16 +78,16 @@
     
     <z3c:widgetTemplate
         mode="input"
-        widget="org.bccvl.site.widgets.interfaces.IDatasetLayersWidget"
+        widget="org.bccvl.site.widgets.interfaces.IDatasetWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="datasetlayers_input.pt"
+        template="dataset_input.pt"
         />
 
     <z3c:widgetTemplate
         mode="input"
-        widget="org.bccvl.site.widgets.interfaces.IDatasetWidget"
+        widget="org.bccvl.site.widgets.interfaces.IDatasetDictWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="dataset_input.pt"
+        template="datasetdict_input.pt"
         />
 
     <z3c:widgetTemplate

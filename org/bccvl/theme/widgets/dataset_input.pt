@@ -18,16 +18,15 @@
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
        tal:attributes="id string:${view/id}">
-    <tal:block tal:define="item view/item"
-               tal:condition="python: view.value and item">
+    <tal:block tal:repeat="item view/items">
     <div class="selecteditem"
          tal:define="itemob item/getObject;
                      dstool itemob/@@dataset_tools;
                      itemmd dstool/metadata;
                      dlinfo dstool/get_download_info;">
-      <input type="hidden" value="" name="form.widgets.fieldname"
-             tal:attributes="value view/value;
-                             name view/name;
+      <input type="hidden" value="" name="form.widgets.fieldname:list"
+             tal:attributes="value item/UID;
+                             name string:${view/name}:list;
                              required view/required;
                              class python: 'required' if view.required else '';
                              "/>
