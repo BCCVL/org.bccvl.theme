@@ -14,7 +14,7 @@
         tal:attributes="for widget/id"
         tal:condition="not:hidden"
         tal:content="widget/label">label</label>
-    <i class="icon-info-sign pull-left" data-title="label"
+    <i class="fa fa-info-circle pull-left" data-title="label"
        data-content="field description"
        data-toggle="popover"
        tal:condition="python: not hidden and widget.field.description"
