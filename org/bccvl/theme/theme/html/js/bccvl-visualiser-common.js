@@ -1,9 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
-             'js/bccvl-visualiser-loading-panel'],
-            function( $  ) {
+define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
+            function( $, layout, ol  ) {
 
                 var bccvl_common = {
 
@@ -18,6 +17,20 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                         SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end
                         result will always have +1 threshold and +2 color values on top of your desired number of colour values.
                     */
+
+                    commonAjaxSetup: function(){
+                        $.ajaxSetup({
+                          timeout: 5000,
+                          error: function(jqXHR, textStatus, errorThrown){
+                            console.log('Error on map: '+textStatus);
+                            if (textStatus ==  'timeout'){
+                                alert("The map request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
+                            }
+                          }
+                        });
+
+                    },
+
 
                     generateRangeArr: function(standard_range, minVal, maxVal, steps){
 
@@ -64,7 +77,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             var colorArr = [];
 
                             if (midpoint != null){
-                                // White to blue spectrum
+                                // White to red spectrum
                                 if (startpoint==undefined) {
                                     var startpoint = {};
                                         startpoint.r = 255;
@@ -73,14 +86,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                 }
                                 if (midpoint==undefined) {
                                     var midpoint = {};
-                                        midpoint.r = 195;
-                                        midpoint.g = 120;
-                                        midpoint.b = 13;
+                                        midpoint.r = 255;
+                                        midpoint.g = 77;
+                                        midpoint.b = 30;
                                 }
                                 if (endpoint==undefined) {
                                     var endpoint = {};
-                                        endpoint.r = 75;
-                                        endpoint.g = 48;
+                                        endpoint.r = 230;
+                                        endpoint.g = 0;
                                         endpoint.b = 0;
                                 }
 
@@ -114,7 +127,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                     colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                                 }
                             } else {
-                                // White to blue spectrum
+                                // White to red spectrum
                                 if (startpoint==undefined) {
                                     var startpoint = {};
                                         startpoint.r = 255;
@@ -123,9 +136,9 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                                 }
                                 if (endpoint==undefined) {
                                     var endpoint = {};
-                                        endpoint.r = 30;
-                                        endpoint.g = 77;
-                                        endpoint.b = 155;
+                                        endpoint.r = 230;
+                                        endpoint.g = 0;
+                                        endpoint.b = 0;
                                 }
 
                                 for (var i = 0; i < (steps+2); i++) {
@@ -174,6 +187,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                     },
 
                     createLegend: function(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
+
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
                         $('.olLegend').remove();
 
@@ -229,7 +243,44 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'OpenLayers',
                             }
                         }
                         // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-                        $('#'+id+' .olMapViewport').append(legend);
+                        $('#'+id+' .ol-viewport').append(legend);
+                    },
+
+                    exportAsImage: function(id, map, currentLayers, mapTitle){
+
+                        $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+
+                        $('#'+id+' a.export-map').click(function(e){
+                            var visible = [];
+
+                            // use more current layer list if it exists
+                            if (map.currentLayers !== undefined){
+                                layers = map.currentLayers;
+                            } else {
+                                layers = currentLayers
+                            }
+                            
+                            $.each(layers, function(i, lyr){
+                                if (lyr.getVisible()) {
+                                    visible.push(lyr.get('title'));
+                                }
+                            });
+
+                            // need to add a map/dataset title here, instead of 'MAP'
+                            var imageTitle = 'BCCVL -- '+ mapTitle;
+                            // add visible layers into filename
+                            imageTitle += ' -- '+visible.join(", "); 
+                            // append filename
+                            $('#'+id+' a.export-map').attr('download', imageTitle+'.png');
+
+                            map.once('postcompose', function(event) {
+                                var canvas = event.context.canvas;
+                                $('#'+id+' a.export-map').attr('href', canvas.toDataURL('image/png'));
+                            });
+                            map.renderSync();
+                        });
+
+
                     }
 
                 }

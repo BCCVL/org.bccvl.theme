@@ -26,6 +26,8 @@ requirejs.config({
         'selectize':            'selectize/selectize.min',        
         'select2':              'select2/select2.min',
         'OpenLayers':           'openlayers/OpenLayers',
+        'openlayers3':          'ol3/ol',
+        'ol3-layerswitcher':    'ol3/layerswitcher/ol3-layerswitcher',
         'prism':                'prism/prism'
     },
     shim: {
