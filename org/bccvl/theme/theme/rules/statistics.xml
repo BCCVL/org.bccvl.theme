@@ -8,8 +8,11 @@
 
         <theme href="html/statistics.html" />
 
-        <replace css:theme=".bccvl-main"
-                 css:content="#content"/>
+        <replace css:theme-children="#stats_col1"
+                 css:content-children="#stats_col1"/>
+
+        <replace css:theme-children="#userlist_col1"
+                 css:content-children="#userlist_col1"/>
 
     </rules>
 </rules>

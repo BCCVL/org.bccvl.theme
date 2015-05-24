@@ -44,10 +44,10 @@
         src="lib/excellentexport/excellentexport.js" 
     ></script>
     <style type="text/css">
-      #statistics {
-          margin-left: auto;
-      }        
       .stats_header {
+          text-align: center;
+      }
+      .stats th {
           text-align: center;
       }
       .stats td {
@@ -59,11 +59,16 @@
       .blank_row {
           height: 10px;
       }
+      .button-col .btn {
+          margin: 10px;
+          display: block;
+          max-width: 100%;
+      }
     </style>
 
   </head>
 
-  <body class="dashboard">
+  <body class="statistics">
     <div class="white-bg">
       <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
@@ -111,12 +116,33 @@
       <!-- container for main content -->
       <div class="container bccvl-main">
 
-
-	  </div><!-- end of main content container -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#stats_tab" data-toggle="tab">Statistics</a></li>
+          <li><a href="#userlist_tab" data-toggle="tab">User list</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="stats_tab">
+            <div class="span6" id="stats_col1">
+            </div>
+            <div class="span2 button-col" id="stats_col2">
+              <a class="btn btn-primary" download="bccvl-stats.csv" href="#" onclick="return ExcellentExport.csv(this, 'statistics');">Export to CSV&nbsp;<i class="fa fa-chevron-down"></i></a>
+              <a class="btn btn-primary" download="bccvl-stats.xsl" href="#" onclick="return ExcellentExport.excel(this, 'userlist', 'BCCVL user list');">Export to Excel&nbsp;<i class="fa fa-chevron-down"></i></a>
+            </div>
+          </div>
+          <div class="tab-pane" id="userlist_tab">
+            <div class="span6" id="userlist_col1">
+            </div>
+            <div class="span2 button-col" id="userlist_col2">
+              <a class="btn btn-primary" download="bccvl-stats.csv" href="#" onclick="return ExcellentExport.csv(this, 'userlist');">Export to CSV&nbsp;<i class="fa fa-chevron-down"></i></a>
+              <a class="btn btn-primary" download="bccvl-stats.xsl" href="#" onclick="return ExcellentExport.excel(this, 'userlist', 'BCCVL user list');">Export to Excel&nbsp;<i class="fa fa-chevron-down"></i></a>
+          </div>
+        </div>
+      </div><!-- end of main content container -->
       </div>
-      <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <footer id="portal-footer">
-      </footer>
+    </div>
+    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <footer id="portal-footer">
+    </footer>
 
-    </body>
+  </body>
 </html>
