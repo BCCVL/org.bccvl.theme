@@ -59,6 +59,11 @@
       .blank_row {
           height: 10px;
       }
+      table#userlist {
+          table-layout: fixed;
+          word-wrap: break-word;
+          width: 100%;
+      }
       .button-col .btn {
           margin: 10px;
           display: block;
@@ -130,7 +135,7 @@
             </div>
           </div>
           <div class="tab-pane" id="userlist_tab">
-            <div class="span6" id="userlist_col1">
+            <div class="span9" id="userlist_col1">
             </div>
             <div class="span2 button-col" id="userlist_col2">
               <a class="btn btn-primary" download="bccvl-stats.csv" href="#" onclick="return ExcellentExport.csv(this, 'userlist');">Export to CSV&nbsp;<i class="fa fa-chevron-down"></i></a>
