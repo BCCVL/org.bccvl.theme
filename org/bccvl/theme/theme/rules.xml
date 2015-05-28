@@ -26,7 +26,7 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
     <xi:include href="rules/sharing.xml" />
-    <xi:include href="rules/remove-dataset.xml" />    
+    <xi:include href="rules/remove-item.xml" />    
     <xi:include href="rules/feedback.xml" />
     <xi:include href="rules/statistics.xml" />
 

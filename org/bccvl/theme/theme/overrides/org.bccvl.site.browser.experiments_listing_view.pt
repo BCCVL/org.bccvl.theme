@@ -3,7 +3,8 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      tal:define="dataset_tools nocall:context/@@dataset_tools;"
+      tal:define="dataset_tools nocall:context/@@dataset_tools;
+                  experiment_tools nocall:context/@@experiment_tools;"      
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
@@ -111,12 +112,17 @@
                      Share <i class="fa fa-share-alt" title="Share Results"></i>
                    </a>
 
-                   <a class="btn btn-warning" href='#'
+                   <a class="btn btn-warning remove-experiment-btn" 
                       tal:define="item_obj item/getObject"
+                      tal:condition="item_obj/experiment_tools/can_modify"
                       tal:attributes="data-friendlyname string:removing_${item/Title}; 
-                                      disabled python: None if item_obj.is_deletable else 'disabled';
-                                      title python: None if item_obj.is_deletable else 'Experiment is used as input data for another experiment.';
-                                      data-toggle python: None if item_obj.is_deletable else 'tooltip'"
+                                      disabled python: 'disabled' if experiment_tools.check_if_used(item_obj) else None;
+                                      title python: 'Experiment is used as input data for:<br>'
+                                        +',<br>'.join(map(lambda x: '<i>&#8220;'+x+'&#8221;</i>', experiment_tools.get_depending_experiment_titles(item_obj)))
+                                        if experiment_tools.check_if_used(item_obj) else None ;     
+                                      data-html python: 'true' if experiment_tools.check_if_used(item_obj) else None;
+                                      data-toggle python: 'tooltip' if experiment_tools.check_if_used(item_obj) else None;
+                                      href string:${item_url}/@@remove"
                       data-placement="right">                      
                      Delete <i class="fa fa-times" title="Remove Experiment"></i>
                    </a>

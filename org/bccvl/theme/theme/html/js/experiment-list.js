@@ -2,11 +2,12 @@
 // main JS for the experiment list page.
 //
 define(
-    ['jquery', 'js/bccvl-sharing-modal', 'bootstrap', 'jquery-tablesorter'],
-    function($, sharing) {
+    ['jquery', 'js/bccvl-sharing-modal', 'js/bccvl-remove-experiment-modal', 'bootstrap', 'jquery-tablesorter'],
+    function($, sharing, removeexperiment) {
         // ==============================================================
         $(function() {
             sharing.init();
+            removeexperiment.init();
             $('.bccvl-experimenttable').tablesorter({
                 headers: {
                     4: {
