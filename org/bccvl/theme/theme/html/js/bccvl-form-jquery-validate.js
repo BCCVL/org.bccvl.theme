@@ -25,6 +25,9 @@ define(
         jQuery.validator.addClassRules(
             'number', {
                 number: true
+            },
+            'require_one_from_set', {
+                require_from_group: [1, ".require_one_from_set"]
             }
         );
 

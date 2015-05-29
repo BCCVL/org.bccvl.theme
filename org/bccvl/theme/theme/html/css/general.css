@@ -1949,6 +1949,20 @@ padding: 0 1em;
     margin: 0 0 .75em;
     line-height: 2em;
 }
+.selecteditem ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+.selecteditem ul li {
+  line-height: 1em;
+  margin: .5em 0 .75em 0;
+  padding-left: 25px;
+  text-indent: -25px;
+  padding-right: 10px;
+}
+.selecteditem ul li input[type="checkbox"]{
+    margin: 0 .5em;
+}
 .selectedexperiment {
   padding: .5em;
 }

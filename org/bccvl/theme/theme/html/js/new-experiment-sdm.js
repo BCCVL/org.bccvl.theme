@@ -100,6 +100,15 @@ define(
                 $('table.bccvl-environmentaldatatable').find('tr.info[data-resolution="'+$(this).val()+'"]').removeClass('disabled bccvl-envgroup');
             });
 
+            $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', true);
+            });
+
+            $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-none', function(){
+                // for some reason we have to remove the property as well to get the html to update in chrome, though the UI works fine
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', false).removeAttr('checked');
+            });
+
             // -- layer selection -----------------------------------
 
             var $envTable = $('table.bccvl-environmentaldatatable');

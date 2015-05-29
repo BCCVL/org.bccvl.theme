@@ -46,12 +46,12 @@
         </a>
         <p><strong><span tal:content="item/title">Dataset</span></strong></p>
         <!-- <p>Resolution: <span tal:content="item/resolution/title">Resolution title</span></p> -->
-        <ul>
+        <p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>
+        <ul class="form.widgets.fieldname.list">
           <li tal:repeat="subitem item/subitems">
-            <input type="checkbox" value="" name="form.widgets.fieldname.0.item:list"
+            <input type="checkbox" class="require_one_from_set" checked="true" value=""
                    tal:attributes="value subitem/id;
-                                   name string:${view/name}.item.${index}.item:list;
-                                   checked subitem/selected;"/>
+                                   name string:${view/name}.item.${index}.item:list;"/>
             <span tal:content="subitem/title">Layer</span>            
           </li>
         </ul>
