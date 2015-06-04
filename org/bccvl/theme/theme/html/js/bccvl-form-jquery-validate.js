@@ -39,11 +39,14 @@ define(
             // by default hidden fields are ignored, we need to check them.
             ignore: "",
             // custom errors
-            errorPlacement: function(error, element){
+            errorPlacement: function(error, element){;
                 // drop error labels for radio fields after the table
                 if (element.parents('table').length > 0) {
                     element.parents('table').addClass('error');
                     error.insertAfter(element.parents('table'));
+                } else if (element.hasClass('require-from-group') && element.parents('div').hasClass('selecteditem')) {
+                    element.parents('div.selecteditem').addClass('error');
+                    error.insertBefore(element.parents('div.selecteditem'));
                 } else {
                     error.insertAfter(element);
                 }
@@ -52,6 +55,8 @@ define(
                 // remove error class from tables once the fields validate.
                 if ($(element).parents('table').length > 0) {
                     $(element).parents('table').removeClass('error');
+                } else if ($(element).hasClass('require-from-group') && $(element).parents('div').hasClass('selecteditem')) {
+                    $(element).parents('div.selecteditem').removeClass('error');
                 }
             },
             // this is default behaviour

@@ -108,7 +108,6 @@ define(
                 // for some reason we have to remove the property as well to get the html to update in chrome, though the UI works fine
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
                     $(this).prop('checked', false);
-                    console.log($(this).is(':checked'));
                 });
                     
             });

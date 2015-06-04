@@ -1949,6 +1949,9 @@ padding: 0 1em;
     margin: 0 0 .75em;
     line-height: 2em;
 }
+.selecteditem.error {
+    background: #f2dede;
+}
 .selecteditem ul {
     list-style-type: none;
     margin-left: 0;
