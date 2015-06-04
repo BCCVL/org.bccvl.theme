@@ -20,7 +20,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
                     commonAjaxSetup: function(){
                         $.ajaxSetup({
-                          timeout: 5000,
+                          timeout: 10000,
                           error: function(jqXHR, textStatus, errorThrown){
                             console.log('Error on map: '+textStatus);
                             if (textStatus ==  'timeout'){

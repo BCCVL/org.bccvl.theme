@@ -101,12 +101,16 @@ define(
             });
 
             $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){
-                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', true);
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
             });
 
             $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-none', function(){
                 // for some reason we have to remove the property as well to get the html to update in chrome, though the UI works fine
-                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', false).removeAttr('checked');
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
+                    $(this).prop('checked', false);
+                    console.log($(this).is(':checked'));
+                });
+                    
             });
 
             // -- layer selection -----------------------------------

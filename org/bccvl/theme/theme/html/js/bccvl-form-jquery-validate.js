@@ -22,14 +22,12 @@ define(
         });
 
         // add common class rules
-        jQuery.validator.addClassRules(
-            'number', {
+        jQuery.validator.addClassRules({
+            "number": {
                 number: true
-            },
-            'require_one_from_set', {
-                require_from_group: [1, ".require_one_from_set"]
             }
-        );
+        });
+
 
         console.log('validation behaviour loaded');
 
@@ -58,6 +56,10 @@ define(
             },
             // this is default behaviour
             submitHandler: function(form){
+
+                form.find('.require-from-group').each(function(){
+                    console.log($(this).valid());
+                });
 
                 $(form).find('input[type="submit"], button[type="submit"]').prev('.loader').show();
                 $(form).find('input[type="submit"], button[type="submit"]').hide();
@@ -119,6 +121,20 @@ define(
             }
         });
 
+        form.on('widgetChanged', function(){
+            form.find('.require-from-group').each(function(){
+                $(this).rules('add', {
+                    required: true,
+                    minlength: 1,
+                    messages: {
+                        required: 'You must select at least one dataset layer.'
+                    }
+                });
+            });             
+        });
+
+           
+
         // use error messages from element attributes (if they exist).
         form.find('.required[data-error-message]').each(function(){
             $(this).rules('add', {
@@ -140,7 +156,7 @@ define(
             // seems to fail if it can't find a required field, iterate without calling the script to prevent this.
             var errorsOnTab = false;
             var tabCheck = function(){
-                $('fieldset.tab:visible').find('.required').each(function(){
+                $('fieldset.tab:visible').find('.required, .require-from-group').each(function(){
                     if ( $(this).valid() != true ){
                         errorsOnTab = true;
                         $('body a[href="#'+$(this).parents('.tab-pane').attr('id')+'"]').removeClass('completed').addClass('error');
