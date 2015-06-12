@@ -6,7 +6,7 @@
     <!-- USER DETAILS PAGE ============================================ -->
 
     <rules if-path="@@personal-information/">
-        <theme href="html/user-details.html" />
+        <theme href="html/personal-information.html" />
 
 
         <!-- add bootstrap classes to content form -->
