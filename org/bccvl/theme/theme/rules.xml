@@ -23,6 +23,8 @@
     <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
+    <xi:include href="rules/user-details.xml" />
+    <xi:include href="rules/user-preferences.xml" />
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
     <xi:include href="rules/sharing.xml" />

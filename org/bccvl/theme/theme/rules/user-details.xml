@@ -1,0 +1,45 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- USER DETAILS PAGE ============================================ -->
+
+    <rules if-path="@@personal-information/">
+        <theme href="html/user-details.html" />
+
+
+        <replace content="form/@class[contains(., 'edit-form')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> form form-horizontal plone-to-bootstrap-form</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'field')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> control-group</xsl:attribute>
+        </replace>
+        <replace content="form/fieldset/div/img">
+         <xsl:copy>
+           <xsl:attribute name="class">profile-thumb</xsl:attribute>
+           <xsl:copy-of select="@*" />
+           <xsl:apply-templates />
+         </xsl:copy>
+       </replace>
+        <replace content="input/@class[contains(., 'context')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> btn</xsl:attribute>
+        </replace>
+        <replace content="id('form.actions.save')/@class">
+           <xsl:attribute name="class"><xsl:value-of select="."/> btn btn-primary</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'widget')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> controls</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'formControls')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> form-actions</xsl:attribute>
+        </replace>
+
+        <copy attributes="href" css:theme=".bccvllinks-personalpref" css:content="#contentview-user_data-personal-preferences a" />
+
+
+        <replace css:theme-children="div#user-info-form" css:content-children="div#content-core" />
+
+    </rules>
+
+</rules>

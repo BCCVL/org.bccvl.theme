@@ -2033,3 +2033,58 @@ hr{
 .btn .fa {
     font-size:.9em;
 }
+form.plone-to-bootstrap-form {
+    margin-top:1em;
+}
+form.plone-to-bootstrap-form input, form.plone-to-bootstrap-form textarea, form.plone-to-bootstrap-form select {
+    width:100%;
+    max-height:180px;
+}
+form.plone-to-bootstrap-form input[type="submit"], form.plone-to-bootstrap-form input[type="checkbox"], form.plone-to-bootstrap-form input[type="radio"] {
+    width:auto;
+}
+form.plone-to-bootstrap-form input[type="checkbox"], form.plone-to-bootstrap-form input[type="submit"] {
+    margin:0 10px 0 0;
+}
+/*form.plone-to-bootstrap-form .controls {
+    margin-left:250px;
+}*/
+form.plone-to-bootstrap-form span.fieldRequired {
+    color:red;
+    font-size:0.9em;
+    display:inline-block;
+    clear:left;
+    float:left;
+}
+form.plone-to-bootstrap-form label { 
+    display:inline-block;
+}
+form.plone-to-bootstrap-form .field>label {
+    display:inline-block;
+    float:left;
+    font-weight:600;
+    max-width:170px;
+    margin-right:20px;
+    text-align: left;
+}
+
+form.plone-to-bootstrap-form .formHelp {
+    font-size:0.9;
+    display:inline-block;
+    float:left;
+    clear:left;
+     max-width:170px;
+}
+form.plone-to-bootstrap-form .profile-thumb {
+    margin:-20px 10px 10px;
+}
+form.plone-to-bootstrap-form .widget label {
+  font-weight: bold;
+  max-width: none;
+  margin: -16px 20px 0 20px;
+}
+form.plone-to-bootstrap-form .widget label span {
+  font-weight: normal;
+  font-size: 0.9em;
+  max-width: none;
+}
