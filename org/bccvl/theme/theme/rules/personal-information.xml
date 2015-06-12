@@ -8,7 +8,6 @@
     <rules if-path="@@personal-information/">
         <theme href="html/personal-information.html" />
 
-
         <!-- add bootstrap classes to content form -->
         <replace content="form/@class[contains(., 'edit-form')]">
            <xsl:attribute name="class"><xsl:value-of select="."/> form form-horizontal plone-to-bootstrap-form</xsl:attribute>
@@ -43,9 +42,9 @@
         <copy attributes="href" css:theme=".bccvllinks-personalpref" css:content="#contentview-user_data-personal-preferences a" css:if-content=""/>
         <drop theme="//li[a/@class='bccvllinks-personalpref']" css:if-not-content="#contentview-user_data-personal-preferences"/>
         <copy attributes="href" css:theme=".bccvllinks-oauthpref" css:content="#contentview-user_data-oauth-preferences a" css:if-content=""/>
-        <drop theme="li[a/@class='bccvllinks-oauthpref']" css:if-not-content="#contentview-user_data-oauth-preferences"/>
+        <drop theme="//li[a/@class='bccvllinks-oauthpref']" css:if-not-content="#contentview-user_data-oauth-preferences"/>
         <copy attributes="href" css:theme=".bccvllinks-changepassword" css:content="#contentview-user_data-change-password a" css:if-content=""/>
-        <drop theme="li[a/@class='bccvllinks-changepassword']" css:if-not-content="#contentview-user_data-change-password"/>
+        <drop theme="//li[a/@class='bccvllinks-changepassword']" css:if-not-content="#contentview-user_data-change-password"/>
 
         <!-- page content -->
         <replace css:theme-children="div#user-info-form" css:content-children="div#content-core" />
