@@ -63,7 +63,7 @@
                       </a>
                     </td>
                   </tr>
-                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')()">
+                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
                      <tr>
                        <td class="bccvl-table-label"
                            tal:define="itemobj item/getObject;
