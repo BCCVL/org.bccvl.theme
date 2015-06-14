@@ -127,12 +127,6 @@
 
     <z3c:widgetTemplate
         mode="input"
-        widget="gu.plone.rdf.interfaces.IDateWidget"
-        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
-        template="date_input.pt" />
-
-    <z3c:widgetTemplate
-        mode="input"
         widget="z3c.form.interfaces.ISubmitWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="submit_input.pt"
