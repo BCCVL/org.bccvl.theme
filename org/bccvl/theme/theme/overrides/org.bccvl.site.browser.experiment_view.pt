@@ -61,6 +61,12 @@
                          tal:attributes="href string:${result/getURL}/@@resultdownload;">
                         <i class="icon-download-alt icon-link"></i>
                       </a>
+                      <a class="fine"
+                         title="Export to Figshare"
+                         href="#exporturl"
+                         tal:attributes="href string:${result/getURL}/@@export_result?serviceid=figshare">
+                        <i class="icon-upload icon-link"></i>
+                      </a>
                     </td>
                   </tr>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
