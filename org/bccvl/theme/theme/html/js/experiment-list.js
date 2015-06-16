@@ -2,34 +2,39 @@
 // main JS for the experiment list page.
 //
 define(
-    ['jquery', 'js/bccvl-sharing-modal', 'bootstrap', 'jquery-tablesorter'],
-    function($, sharing) {
+    ['jquery', 'js/bccvl-sharing-modal', 'js/bccvl-remove-experiment-modal', 'bootstrap', 'jquery-tablesorter'],
+    function($, sharing, removeexperiment) {
         // ==============================================================
         $(function() {
             sharing.init();
+            removeexperiment.init();
             $('.bccvl-experimenttable').tablesorter({
                 headers: {
-                    4: { sorter: false } // should be link column
+                    4: {
+                        sorter: false
+                    } // should be link column
                 }
             });
-            $('.bccvl-experimenttable .experiment-more-info').hide(0, function(){
+            $('.bccvl-experimenttable .experiment-more-info').hide(0, function() {
                 $(this).after('<p><a href="javascript:void(0)" class="more-info show-info">More Info<i class="fa fa-angle-down" style="margin-left:.2em;"></i></a></p>');
             });
-            $('.bccvl-experimenttable').on('click', '.more-info.show-info', function(){
+            $('.bccvl-experimenttable').on('click', '.more-info.show-info', function() {
                 var button = $(this);
-                button.parents('td').find('.experiment-more-info').slideDown(300, function(){
+                button.parents('td').find('.experiment-more-info').slideDown(300, function() {
                     button.html('Hide<i class="fa fa-angle-up" style="margin-left:.2em;"></i>');
                     button.addClass('hide-info').removeClass('show-info');
                 });
             });
-            $('.bccvl-experimenttable').on('click', '.more-info.hide-info', function(){
+            $('.bccvl-experimenttable').on('click', '.more-info.hide-info', function() {
                 var button = $(this);
-                button.parents('td').find('.experiment-more-info').slideUp(300, function(){
+                button.parents('td').find('.experiment-more-info').slideUp(300, function() {
                     button.html('More Info<i class="fa fa-angle-down" style="margin-left:.2em;"></i>');
                     button.addClass('show-info').removeClass('hide-info');
                 });
             });
-
+            $(function() {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
             console.log('page behaviour loaded.');
         });
         // ==============================================================
