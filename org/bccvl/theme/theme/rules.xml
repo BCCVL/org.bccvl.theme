@@ -76,7 +76,8 @@
                       prefs_install_products_form/
                       portal_registry
                       delete_confirmation/
-                      @@plone-upgrade/" />
+                      @@plone-upgrade/
+                      @@oauth-controlpanel/" />
 
      <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
