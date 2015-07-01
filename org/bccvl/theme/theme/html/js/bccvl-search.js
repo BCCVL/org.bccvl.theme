@@ -443,13 +443,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         switch (action) {
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
-                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"> Import to BCCVL</i></a>';
+                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i> Import to BCCVL</a>';
                                 $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'viz': // visualise
-                                var html = '<a class="fine" href="' + actionParam + '" target="_blank" class="view-dataset-external btn btn-mini btn-default">';
-                                html += '<i class="icon-eye-open icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i> Preview (offsite)</a>';
+                                var html = '<a class="fine view-dataset-external btn btn-mini btn-default" href="' + actionParam + '" target="_blank">';
+                                html += '<i class="fa fa-eye icon-link" data-friendlyname="icon_viz_' + item.friendlyname + '"></i> Preview (offsite)</a>';
                                 $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
