@@ -38,7 +38,7 @@ requirejs.config({
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
         'jquery-timer':         ['jquery'],
-        'select2':              ['jquery']
+        'select2':              ['jquery'], 
     }
 });
 
