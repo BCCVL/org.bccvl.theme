@@ -123,7 +123,7 @@
                                       data-html python: 'true' if experiment_tools.check_if_used(item_obj) else None;
                                       data-toggle python: 'tooltip' if experiment_tools.check_if_used(item_obj) else None;
                                       href python: item_url+'/@@remove' if not experiment_tools.check_if_used(item_obj) else None"
-                      data-placement="right">                      
+                      data-placement="top">                      
                      Delete <i class="fa fa-times" title="Remove Experiment"></i>
                    </a>
 
