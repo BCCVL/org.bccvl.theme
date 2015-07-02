@@ -903,11 +903,12 @@ td.bccvl-table-controls {
     text-align: right;
 }
 td.bccvl-table-controls a {
-  display: block;
+  display: inline-block;
   font-size: 1em;
-  margin-bottom: .5em;
+  margin-bottom: .4em;
   border-width: 1px;
   border-style: solid;
+  padding: .1em .4em;
 }
 td.bccvl-table-controls a.btn:hover {
     text-decoration: none;

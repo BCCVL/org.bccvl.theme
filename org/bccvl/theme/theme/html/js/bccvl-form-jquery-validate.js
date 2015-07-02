@@ -153,13 +153,13 @@ define(
         });
 
         form.find('#form-widgets-species_pseudo_absence_points-0').on('change',function(){
-            $('#form-widgets-species_absence_dataset input').toggleClass('required');
             if ($('#form-widgets-species_absence_dataset input').attr('required'))
-                $('#form-widgets-species_absence_dataset input').removeAttr('required');
-            else $('#form-widgets-species_absence_dataset input').attr('required');
+                $('#form-widgets-species_absence_dataset input').removeAttr('required').removeClass('required error').valid();
+            else 
+                $('#form-widgets-species_absence_dataset input').attr('required', true).addClass('required').valid();
         });
 
-        $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event){
+        $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event, form){
             event.preventDefault();
             // seems to fail if it can't find a required field, iterate without calling the script to prevent this.
             var errorsOnTab = false;
