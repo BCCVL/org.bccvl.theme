@@ -863,12 +863,10 @@ div.random-absences-settings label.horizontal span.formHelp {
 .bccvl-searchform-results {
     margin: 10px 0;
     display: none;
-    padding: 5px;
     border-radius: 2px;
     margin: 10px 0;
 }
 .bccvl-searchform-results.bccvl-search-active {
-    background: rgba(0, 153, 64, 0.5);
     display: block;
 }
 
@@ -905,12 +903,14 @@ td.bccvl-table-controls {
     text-align: right;
 }
 td.bccvl-table-controls a {
-  border-radius: 4px;
   display: block;
-  padding: 2px 0 0 0;
-  min-width: 60px;
   font-size: 1em;
   margin-bottom: .5em;
+  border-width: 1px;
+  border-style: solid;
+}
+td.bccvl-table-controls a.btn:hover {
+    text-decoration: none;
 }
 #bccvl-experimentresults-table td.bccvl-table-controls a.btn {
   display: inline-block;

@@ -113,6 +113,9 @@ define(
                         $('body a[href="#'+tabId+'"]').removeClass('completed').addClass('error');
                     });
 
+                    // Throw an event for google analytics
+                    $('.bccvl-flashmessages').trigger('validationError');
+
                     // need to add a panel at the top that says number of errors (and tab names maybe?)
                     $('#form-errors-panels').slideDown(500, function(){
                         setTimeout(function(){

@@ -99,7 +99,7 @@
                      tal:attributes="class string:label-${exp/type} label;"/>
                  </td>
                  <td class="bccvl-table-controls">
-                   <a class="btn btn-primary" tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
+                   <a class="btn btn-primary experiment-view-btn" tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
                      View <i class="fa fa-chevron-right" title="view status &amp; results"></i>
                    </a>
                    

@@ -203,7 +203,7 @@
                           <i class="icon-eye-open icon-link icon-white" title="preview"></i>
                         Preview</a>
                         <a href="#"
-                           tal:attributes="href dlinfo/url" class="btn btn-primary btn-small">
+                           tal:attributes="href dlinfo/url" class="btn btn-primary btn-small dataset-download-btn">
                           <i class="icon-circle-arrow-down icon-white" title="download"></i>
                         Download Data</a>
                       </tal:block>
@@ -240,7 +240,7 @@
                          >
                     </div>
                   </div>
-                  <a class="dropdown-button" href="javascript:void(0)" onClick="_gaq.push(['_trackEvent', 'View Dataset', 'Dropdown button']);">
+                  <a class="dropdown-button" href="javascript:void(0)">
                     Details <i class="icon-chevron-down icon-white"></i>
                     <!-- TODO: helper method or customisable dict? or agree on classes? -->
                     <tal:block
