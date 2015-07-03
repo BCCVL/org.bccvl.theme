@@ -4,13 +4,30 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
-      i18n:domain="org.bccvl.site">
+      i18n:domain="org.bccvl.site"
+      tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+      >
 <body>
     <!--<metal:slot metal:fill-slot="header" i18n:domain="cmf_default">-->
       <!--<h1 tal:content="view/label">View Title</h1>-->
     <!--</metal:slot>-->
     <metal:main fill-slot="main">
 
+      <div id="oauth-select-modal" class="modal large hide fade" tabindex="-1" role="dialog">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3>Select an export service</h3>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <a class="btn" href="#"
+             tal:attributes="href string:${navigation_root_url}/@@oauth-preferences">Preferences</a>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button class="btn btn-primary">Export</button>
+        </div>
+      </div>
+      
       <ul class="nav nav-tabs">
 	<li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
 	<li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
@@ -59,13 +76,15 @@
                          title="Download this result"
                          href="#downloadurl"
                          tal:attributes="href string:${result/getURL}/@@resultdownload;">
-                        <i class="icon-download-alt icon-link"></i>
+                        <i classfile="fa fa-cloud-download icon-link"></i>
                       </a>
                       <a class="fine"
-                         title="Export to Figshare"
+                         title="Export this result"
                          href="#exporturl"
-                         tal:attributes="href string:${result/getURL}/@@export_result?serviceid=figshare">
-                        <i class="icon-upload icon-link"></i>
+                         data-toggle="modal"
+                         data-target="#oauth-select-modal"
+                         tal:attributes="href string:${result/getURL}/@@oauthselect?ajax_load=1">
+                        <i class="fa fa-cloud-upload icon-link"></i>
                       </a>
                     </td>
                   </tr>

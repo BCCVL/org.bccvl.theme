@@ -11,7 +11,10 @@
         <replace
             css:theme-children=".bccvl-breadcrumb .bccvllinks-experiment-view"
             css:content-children="#breadcrumbs-current"
-        />
+            />
+
+        <!-- copy oauth select modal -->
+        <before css:theme-children="body" css:content="#oauth-select-modal"/>
 
         <!-- remove all mocked status blocks -->
         <drop css:theme=".bccvl-status-block" />
