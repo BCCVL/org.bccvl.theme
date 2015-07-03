@@ -73,17 +73,17 @@
                       </tal:block>
                     </td>
                     <td class="bccvl-table-controls">
-                      <a class="fine"
-                         title="Download this result"
-                         href="#downloadurl"
-                         tal:attributes="href string:${result/getURL}/@@resultdownload;">
-                        <i classfile="fa fa-cloud-download icon-link"></i>
-                      </a>
-                      <a class="fine btn btn-inverse export-btn"
+                      <a class="fine btn btn-mini btn-inverse export-btn"
                          title="Export this result"
                          href="#exporturl"
                          tal:attributes="href string:${result/getURL}/@@oauthselect?ajax_load=1">
                         <i class="fa fa-cloud-upload icon-link"></i> Export
+                      </a>
+                      <a class="fine btn btn-mini btn-info download-btn"
+                         title="Download this result"
+                         href="#downloadurl"
+                         tal:attributes="href string:${result/getURL}/@@resultdownload;">
+                        <i class="fa fa-download icon-link"></i> Download
                       </a>
                     </td>
                   </tr>

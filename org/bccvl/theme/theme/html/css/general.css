@@ -935,10 +935,13 @@ td.bccvl-table-controls a.btn:hover {
   min-width: 20px;
   padding: 3px;
 }
-#bccvl-experimentresults-table td.bccvl-table-controls a.export-btn {
-    min-width: 60px;
+#bccvl-experimentresults-table td.bccvl-table-controls a.export-btn, #bccvl-experimentresults-table td.bccvl-table-controls a.download-btn {
+    min-width: 80px;
     display: inline-block;
     padding: 1px 3px;
+}
+#bccvl-experimentresults-table td.bccvl-table-controls a i {
+  vertical-align: baseline;
 }
 
 /*td.bccvl-table-controls a:hover {
