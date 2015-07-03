@@ -27,6 +27,53 @@ define(
                 $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
                 $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
             }
+
+
+            
+
+            $('a.export-btn').click( function(event ) {
+                event.preventDefault();
+                
+                var url = $(this).attr('href');
+                console.log(url);
+                $('#oauth-select-modal').modal();
+
+                $.ajax( url )
+                  .done(function(data) {
+                    console.log(data);
+                    if (data.length <= 0) {
+                        // this is also a fail
+                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
+                    } else {
+                        $('#oauth-select-modal').find('.modal-body').html(data);
+                    }
+                  })
+                  .fail(function(jqXHR, textStatus) {
+                    if (status == "timeout"){
+                        console.log('request for oauths timed out.')
+                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>Authorisations request timed out.</strong></p><p>Please try again later, or Click the <strong>Manage Authorisations</strong> button below to manage your authorisations.</p></div>');
+                    } else {
+                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
+                  
+                    }
+                    })
+                  .always(function() {
+                    console.log('oauth modal triggered');
+                  });
+
+                /*.load(url, function (response, status, xhr) {
+                    if (status == "success") {
+                        $('#oauth-select-modal').find('.modal-body').html(response);
+                        console.log('when does this run?');
+                    } else if (status == "error"){
+                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
+                    }
+                });*/
+            });
+
+            $('#oauth-select-modal').on('hidden', function(){
+                $('#oauth-select-modal .modal-body').html('');
+            });
         });
 
         // Poll /jm/getJobStatus for the status of the experiments

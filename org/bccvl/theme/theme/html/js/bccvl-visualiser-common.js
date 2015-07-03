@@ -24,7 +24,7 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                           error: function(jqXHR, textStatus, errorThrown){
                             console.log('Error on map: '+textStatus);
                             if (textStatus ==  'timeout'){
-                                alert("The map request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
+                                alert("The request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
                             }
                           }
                         });

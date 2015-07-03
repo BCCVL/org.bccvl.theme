@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       tal:omit-tag=""
       >
-  <div class="row" tal:repeat="item view/services">
+  <div tal:repeat="item view/services">
     <tal:block tal:condition="item/hasToken">
       <!-- TODO: icon -->
       <div tal:content="item/config/title">

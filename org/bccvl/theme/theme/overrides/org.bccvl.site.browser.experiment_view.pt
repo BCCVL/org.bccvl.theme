@@ -16,14 +16,15 @@
       <div id="oauth-select-modal" class="modal large hide fade" tabindex="-1" role="dialog">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3>Select an export service</h3>
+          <h3>Select an Export Service</h3>
         </div>
         <div class="modal-body">
+          <span class="loading-gif"></span>
+          
         </div>
         <div class="modal-footer">
           <a class="btn" href="#"
-             tal:attributes="href string:${navigation_root_url}/@@oauth-preferences">Preferences</a>
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+             tal:attributes="href string:${navigation_root_url}/@@oauth-preferences" target="_blank"><i class="fa fa-gear"></i> Manage Authorisations</a>
           <button class="btn btn-primary">Export</button>
         </div>
       </div>
@@ -78,13 +79,11 @@
                          tal:attributes="href string:${result/getURL}/@@resultdownload;">
                         <i classfile="fa fa-cloud-download icon-link"></i>
                       </a>
-                      <a class="fine"
+                      <a class="fine btn btn-inverse export-btn"
                          title="Export this result"
                          href="#exporturl"
-                         data-toggle="modal"
-                         data-target="#oauth-select-modal"
                          tal:attributes="href string:${result/getURL}/@@oauthselect?ajax_load=1">
-                        <i class="fa fa-cloud-upload icon-link"></i>
+                        <i class="fa fa-cloud-upload icon-link"></i> Export
                       </a>
                     </td>
                   </tr>

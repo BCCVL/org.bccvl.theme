@@ -105,10 +105,10 @@
                     <td tal:content="oauth/config/id"></td>
                     <td tal:content="oauth/validate"></td>
                     <td>
-                      <a class="btn btn-mini btn-primary" href="#" tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize">Authorise</a>
+                      <a class="btn btn-mini btn-primary" href="#" tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize"><i class="fa fa-check"></i> Authorise</a>
                     </td>
                     <td>
-                      <a class="btn btn-mini" href="#" tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken">Revoke</a></td>
+                      <a class="btn btn-mini btn-danger" href="#" tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken"><i class="fa fa-times"></i> Revoke</a></td>
                   </tr>
                 </tbody>
               </table>

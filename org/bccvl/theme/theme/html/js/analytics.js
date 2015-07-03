@@ -34,7 +34,6 @@ require(['jquery'], function($) {
         // TO DO: Get rid of query keys, send only values
         if ($('section.bccvl-datasetlist').length > 0  && $('section.bccvl-datasetlist').find('.datasets-list-entry').length <= 0) {
             // send event for no results
-            console.log(window.location.href.slice(window.location.href.indexOf('?') + 1).split('&').join(' '));
             var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&').join(' ');
             _gaq.push(['_trackEvent', 'Datasets Browse Interface', 'No Results', query ]);
         }
@@ -129,8 +128,22 @@ require(['jquery'], function($) {
 
         // Generic events to track
         $('.bccvl-main').on('click', 'a.export-map', function(){
-            console.log($(this).attr('download') );
              _gaq.push(['_trackEvent', 'Map Interaction', 'Image Export', $(this).attr('download') ]);
+        });
+
+        // login events
+        $('#portal-nav').on('click', '.bccvllinks-login', function(){
+             _gaq.push(['_trackEvent', 'Main Nav', 'Login Button' ]);
+        });
+
+        // Dashboard events
+        $('.bccvl-dashboardlists').on('click', '.bccvllinks-datasets', function(){
+            var label = $(this).text();
+             _gaq.push(['_trackEvent', 'Dashboard', 'Exit to datasets', label ]);
+        });
+        $('.bccvl-dashboardlists').on('click', '.bccvllinks-experiments', function(){
+            var label = $(this).text();
+             _gaq.push(['_trackEvent', 'Dashboard', 'Exit to experiments', label ]);
         });
 
     });
