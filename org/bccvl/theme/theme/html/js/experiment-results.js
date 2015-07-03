@@ -38,37 +38,24 @@ define(
                 console.log(url);
                 $('#oauth-select-modal').modal();
 
-                $.ajax( url )
+                $.ajax( {
+                    url: url,
+                    timeout: 15000
+                  })
                   .done(function(data) {
-                    console.log(data);
-                    if (data.length <= 0) {
-                        // this is also a fail
-                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
-                    } else {
                         $('#oauth-select-modal').find('.modal-body').html(data);
-                    }
                   })
                   .fail(function(jqXHR, textStatus) {
-                    if (status == "timeout"){
+                    if (textStatus == "timeout"){
                         console.log('request for oauths timed out.')
-                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>Authorisations request timed out.</strong></p><p>Please try again later, or Click the <strong>Manage Authorisations</strong> button below to manage your authorisations.</p></div>');
                     } else {
-                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
-                  
+                        console.log(textStatus);
+                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</p>');
                     }
                     })
                   .always(function() {
                     console.log('oauth modal triggered');
                   });
-
-                /*.load(url, function (response, status, xhr) {
-                    if (status == "success") {
-                        $('#oauth-select-modal').find('.modal-body').html(response);
-                        console.log('when does this run?');
-                    } else if (status == "error"){
-                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>No authorisations for export services found!</strong></p><p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p></div>');
-                    }
-                });*/
             });
 
             $('#oauth-select-modal').on('hidden', function(){

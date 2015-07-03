@@ -95,27 +95,22 @@
                 <thead>
                   <tr>
                     <th>Oauth provider</th>
-                    <th>State</th>
-                    <th>Authorise</th>
-                    <th>Revoke</th>
+                    <th>Authorise / Revoke</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr tal:repeat="oauth view/services">
                     <tal:block tal:define="valid oauth/validate">
                       <td tal:content="oauth/config/id"></td>
-                      <td tal:content="valid"></td>
                       <td>
                         <a class="btn btn-mini btn-primary" href="#"
                            tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize;
                                            class string:btn btn-mini btn-primary${python: ' disabled' if valid else ''};
-                                           disabled valid;">Authorise</a>
-                      </td>
-                      <td>
+                                           disabled valid;"><i class="fa fa-check"></i> Authorise</a>
                         <a class="btn btn-mini btn-danger" href="#"
                            tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken;
                                            class string:btn btn-mini btn-danger${python: ' disabled' if not valid else ''};
-                                           disabled not:valid;">Revoke</a></td>
+                                           disabled not:valid;"><i class="fa fa-times"></i> Revoke</a></td>
                     </tal:block>
                   </tr>
                 </tbody>

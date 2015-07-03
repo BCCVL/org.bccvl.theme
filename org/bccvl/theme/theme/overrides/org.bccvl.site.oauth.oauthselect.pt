@@ -9,5 +9,9 @@
         Figshare
       </div>
     </tal:block>
+    <div class="alert alert-warning">
+      <p><strong>No authorisations for export services found!</strong></p>
+      <p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p>
+    </div>
   </div>
 </html>
