@@ -35,31 +35,38 @@ define(
                 event.preventDefault();
                 
                 var url = $(this).attr('href');
+                var $modal = $('#oauth-select-modal');
                 console.log(url);
-                $('#oauth-select-modal').modal();
+                $modal.modal();
 
                 $.ajax( {
                     url: url,
-                    timeout: 15000
+                    timeout: 15000,
+                    context: $modal.context, // make this available in callbacks
+                    beforeSend: function( xhr ) {
+                        $(this).find('.spinner').show();
+                    },                    
                   })
                   .done(function(data) {
-                        $('#oauth-select-modal').find('.modal-body').html(data);
+                      $(this).find('.modal-content').html(data);
                   })
                   .fail(function(jqXHR, textStatus) {
                     if (textStatus == "timeout"){
                         console.log('request for oauths timed out.')
                     } else {
                         console.log(textStatus);
-                        $('#oauth-select-modal').find('.modal-body').html('<div class="alert alert-warning"><p><strong>Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</p>');
+                        $('#oauth-select-modal').find('.modal-content').html('<div class="alert alert-warning"><p><strong>Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</p>');
                     }
-                    })
+                  })
                   .always(function() {
-                    console.log('oauth modal triggered');
+                      console.log('oauth modal triggered');
+                      $(this).find('.spinner').hide();
                   });
             });
 
             $('#oauth-select-modal').on('hidden', function(){
-                $('#oauth-select-modal .modal-body').html('');
+                $(this).removeData('modal');
+                $(this).find('.modal-content').empty();
             });
         });
 
