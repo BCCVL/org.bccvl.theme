@@ -63,7 +63,7 @@
             
           </div>
 	</div>
-        <a class="bccvllinks-datasets btn btn-primary" href="datasets_upload_view" tal:attributes="href string:${portal_url}/datasets_upload_view">Upload A Dataset <i class="icon-chevron-right icon-white"></i></a>
+        <a class="bccvllinks-datasets btn btn-primary" href="datasets_upload_view" tal:attributes="href string:${portal_url}/datasets/datasets_upload_view">Upload A Dataset <i class="icon-chevron-right icon-white"></i></a>
         <a class="bccvllinks-datasets" href="datasets" tal:attributes="href string:${portal_url}/datasets" style="float:right;">View All My Datasets</a>
       </div>
 
