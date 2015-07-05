@@ -19,13 +19,13 @@
           <h3>Select an Export Service</h3>
         </div>
         <div class="modal-body">
-          <span class="loading-gif"></span>
-          
+          <span class="loading-gif spinner"></span>
+          <div class="modal-content">
+          </div>
         </div>
         <div class="modal-footer">
           <a class="btn" href="#"
              tal:attributes="href string:${navigation_root_url}/@@oauth-preferences" target="_blank"><i class="fa fa-gear"></i> Manage Authorisations</a>
-          <button class="btn btn-primary">Export</button>
         </div>
       </div>
       
