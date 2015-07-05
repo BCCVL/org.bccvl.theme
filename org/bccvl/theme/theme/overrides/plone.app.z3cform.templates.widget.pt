@@ -17,7 +17,7 @@
     <i class="fa fa-info-circle pull-left" data-title="label"
        data-content="field description"
        data-toggle="popover"
-       tal:condition="python: not hidden and widget.field.description"
+       tal:condition="python: widget.mode == 'input' and widget.field.description"
        tal:attributes="data-title widget/label;
                        data-content widget/field/description"></i>
     <div class="controls">
