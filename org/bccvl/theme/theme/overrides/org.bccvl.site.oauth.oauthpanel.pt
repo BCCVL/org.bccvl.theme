@@ -94,7 +94,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Oauth provider</th>
+                    <th>Service</th>
                     <th>Authorise / Revoke</th>
                   </tr>
                 </thead>
