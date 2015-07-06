@@ -915,6 +915,7 @@ thead th {
 
 td.bccvl-table-controls {
     text-align: right;
+    min-width:80px;
 }
 td.bccvl-table-controls a {
   display: inline-block;
@@ -939,6 +940,22 @@ td.bccvl-table-controls a.btn:hover {
     min-width: 80px;
     display: inline-block;
     padding: 1px 3px;
+}
+a.figshare-export-link {
+    background-image: url("++resource++bccvl/images/figshare-main-new.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 180px;
+  height: 60px;
+  display: inline-block;
+  padding: 1em;
+  border: 3px solid rgba(0,0,0,.1);
+  text-indent: -9999px;
+  overflow: hidden;
+  transition: all .15s ease-in;
+}
+a.figshare-export-link:hover {
+    border-color: #009FE3;
 }
 #bccvl-experimentresults-table td.bccvl-table-controls a i {
   vertical-align: baseline;

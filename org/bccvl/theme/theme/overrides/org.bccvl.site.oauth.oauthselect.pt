@@ -6,7 +6,7 @@
   <div tal:repeat="item services">
     <!-- TODO: icon -->
     <div>
-      <a href="#"
+      <a href="#" class="figshare-export-link" title="Export these experiment results to Figshare."
          tal:attributes="href string:${context/absolute_url}/@@export_result?serviceid=figshare"
          tal:content="item/config/title">
         Figshare
