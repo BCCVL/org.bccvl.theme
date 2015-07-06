@@ -8,7 +8,8 @@
       tal:define="pas_member context/@@pas_member;
                   userinfo pas_member/info;
                   portal_state context/@@plone_portal_state;
-                  root_url portal_state/navigation_root_url;">
+                  root_url portal_state/navigation_root_url;
+                  exp_tools context/experiment_tools;">
 
   <metal:block fill-slot="content"> <!-- body (header, main) -->
 
@@ -57,7 +58,7 @@
 	  </div>
           <div class="dash-dataset"
                tal:repeat="item datasets"
-               tal:attributes="class string:dash-dataset ${python:view.get_state_css(item)}">
+               tal:attributes="class string:dash-dataset ${python:exp_tools.get_state_css(item)}">
               <a href="item_url" tal:attributes="href string:${portal_url}/datasets" tal:content="item/Title">Dataset title</a> 
               <span tal:content="python:dataset_tools.genre_title(item.BCCDataGenre)">Dataset Type</span>
             
@@ -80,15 +81,16 @@
           <div class="dash-experiment"
                tal:repeat="item experiments">
               <a href="item_url" class="dash-experiment-name" tal:attributes="href item/getURL" tal:content="item/Title">Dataset title</a>
-            <div
-              tal:attributes="class string:dash-experiment-state ${python:view.get_state_css(item)}">
-              <tal:if condition="python:view.get_state_css(item) == 'success'">
+              <div
+                  tal:define="class_state python:exp_tools.get_state_css(item)"
+                  tal:attributes="class string:dash-experiment-state ${class_state}">
+              <tal:if condition="python:class_state == 'success'">
                 <i class="fa fa-check"></i><br/>Completed
               </tal:if>
-              <tal:if condition="python:view.get_state_css(item) == 'info'">
+              <tal:if condition="python:class_state == 'info'">
                 <i class="fa fa-clock-o"></i><br/>In Progress
               </tal:if>
-              <tal:if condition="python:view.get_state_css(item) == 'error'">
+              <tal:if condition="python:class_state == 'error'">
                 <i class="fa fa-remove"></i><br/>Failed
               </tal:if>
             </div>
