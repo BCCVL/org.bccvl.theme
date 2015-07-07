@@ -98,13 +98,27 @@
 
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
-        <xsl:for-each select="//dl[@class='portalMessage error']">
-            <dl class="bccvl-flashmessage bccvl-flashmessage-error alert alert-block alert-error">
-                <dt class="label label-important"><xsl:value-of select="./dt" /></dt>
-                <xsl:copy-of select="./dd" />
-                <xsl:copy-of select="following-sibling::div[@class='field error']"/>
-            </dl>
-        </xsl:for-each>
+      <xsl:for-each select="//dl[contains(@class,'portalMessage') and not (@id = 'kssPortalMessage')]">
+        <!-- warning, error, info -->
+        <xsl:variable name="msgtype">
+          <xsl:choose>
+            <xsl:when test="contains(@class, 'error')">
+              <xsl:value-of select="'danger'"/>
+            </xsl:when>
+            <xsl:when test="contains(@class, 'warning')">
+              <xsl:value-of select="'warning'"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="'success'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <div class="row-fluid bccvl-flashmessage bccvl-flashmessage-{$msgtype} alert alert-block alert-{$msgtype}">
+          <p>
+            <xsl:copy-of select="./dd/child::node()" />  
+          </p>
+        </div>
+      </xsl:for-each>
     </replace>
 
     <!-- Site Header ~~~~~~~~~~~~~~~~~~~~~~~~~ -->
