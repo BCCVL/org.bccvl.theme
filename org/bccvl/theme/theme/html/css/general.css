@@ -679,8 +679,8 @@ body.modal-open {
 
 .bccvl-flashmessage {
     display: block;
-    padding: 0;
-    margin: 0 0 2em;
+    padding: 0 1em;
+    margin: 0 0 1em;
 }
 
 .bccvl-flashmessage dt, .bccvl-flashmessage dd {
@@ -1841,6 +1841,7 @@ body.home>.white-bg {
 }
 .bccvl-flashmessages p {
     margin: .5em 0;
+    text-align: center;
 }
 .bccvl-flashmessages p strong {
     font-size: 1em;
