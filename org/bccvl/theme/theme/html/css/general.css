@@ -229,7 +229,9 @@ color: #ffffff!important;
     color: white!important;
     text-decoration: none;
 }
-
+p.label {
+      display: inline-block;
+}
 .label.label-BIODIVERSE {
     background-color: #009FE3;
     color: white;
@@ -926,6 +928,8 @@ td.bccvl-table-controls a {
 td.bccvl-table-controls a.btn {
   border-width: 1px;
   border-style: solid;
+  float:right;
+  clear:right;
 }
 td.bccvl-table-controls a.btn:hover {
     text-decoration: none;
@@ -997,13 +1001,35 @@ a.figshare-export-link:hover {
     color: #666;
     /*text-shadow: 0 1px 0 white, 0 -1px 0 black;*/
 }
-
+.bccvl-experimenttable td {
+    padding:12px;
+}
+.bccvl-experimenttable ul {
+    list-style-type: none;
+    margin-left: 1em;
+}
+.bccvl-experimenttable ul li {
+  line-height: 1.2em;
+  margin-bottom: .5em;
+  word-break: normal;
+}
+.bccvl-experimenttable ul ul {
+  list-style-type: initial;
+  margin-left: 2em;
+}
+.bccvl-experimenttable h5 {
+  font-family: sans-serif;
+  font-size: 1.2em;
+  font-weight: normal;
+  color: #222;
+  margin: 0 0 1em 0;
+}
 .bccvl-experimenttable th span {
     display: inline-block;
     width: 14px;
     height: 14px;
     margin-left: 6px;
-    margin-top: 5px;
+    margin-top: 3px;
     line-height: 14px;
     vertical-align: text-top;
     background-image: url("++resource++bccvl/lib/bootstrap/img/glyphicons-halflings.png");
@@ -1023,6 +1049,7 @@ a.figshare-export-link:hover {
 
 .bccvl-experimenttable tr.headers th {
     cursor: pointer;
+    min-width: 50px;
 }
 
 td.bccvl-full-list {
@@ -1802,7 +1829,7 @@ body.home>.white-bg {
     display: inline-block;
     min-height:33px;
 }
-.dash-experiment-state {
+.dash.experiment-state {
     width: 20%;
     padding: .6em 2%;
     display: inline-block;
@@ -1814,18 +1841,25 @@ body.home>.white-bg {
     min-height:36px;
     word-break:initial;
 }
-.dash-experiment-state i {
+.experiment-state, td.experiment-state {
+    font-size: 1.1em;
+    line-height: 1em;
+    text-align: center;
+    /*min-height:36px;*/
+    word-break:initial;
+}
+.experiment-state i {
     font-size: 1.5em;
 }
-.dash-experiment-state.success {
+.experiment-state.success {
     background:rgba(77,195,69, .35);
     color:rgba(77,195,69, 1);
 }
-.dash-experiment-state.info {
+.experiment-state.info {
     background:rgba(249,178,51, .35);
     color:rgba(236,132,30, 1);
 }
-.dash-experiment-state.error {
+.experiment-state.error {
     background:rgba(231,76,60, .35);
     color:rgba(231,76,60, 1);
 }
@@ -2070,6 +2104,9 @@ hr{
 .table.bccvl-experimenttable th {
     padding-top:4px;
     padding-bottom:4px;
+}
+.bccvl-experimenttable.table {
+  border-spacing: 0 6px;
 }
 .bccvl-kbsearch {
     margin-top: 1em;

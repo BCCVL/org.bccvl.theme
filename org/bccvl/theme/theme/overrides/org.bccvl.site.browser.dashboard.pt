@@ -83,7 +83,7 @@
               <a href="item_url" class="dash-experiment-name" tal:attributes="href item/getURL" tal:content="item/Title">Dataset title</a>
               <div
                   tal:define="class_state python:exp_tools.get_state_css(item)"
-                  tal:attributes="class string:dash-experiment-state ${class_state}">
+                  tal:attributes="class string:dash experiment-state ${class_state}">
               <tal:if condition="python:class_state == 'success'">
                 <i class="fa fa-check"></i><br/>Completed
               </tal:if>

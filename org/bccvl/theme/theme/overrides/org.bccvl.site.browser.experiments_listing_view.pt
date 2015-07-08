@@ -49,12 +49,11 @@
   <tal:define define="contentFilter view/contentFilter;
                       limit_display request/limit_display|python:100">
     <div id="experiment-list">
-      <table class="table table-hover bccvl-experimenttable">
+      <table class="table bccvl-experimenttable">
         <thead>
           <tr class="headers">
-            <th class="header headerSortUp">Date<span /></th>
             <th>Experiment<span /></th>
-            <th>Type<span /></th>
+            <th class="header headerSortUp">Started<span /></th>
             <th />
           </tr>
         </thead>
@@ -63,27 +62,28 @@
           <metal:entry fill-slot="entry">
             <tr tal:define="exp python:view.experiment_details(item);
                             class_state python:experiment_tools.get_state_css(item)">
-               <td style="width: 13%;" class="date-time" tal:content="python: item.created.strftime('%d/%m/%y %H:%M')" />
+               
                  <td class="bccvl-table-label">
-                   <p tal:attributes="data-target string:#${item_id}">
-                     <strong><tal:experiment_title content="item/Title" /></strong>
-                    <br/>
-                       <span class="taxonomy" tal:content="exp/species_occurrence" />
-                       <em>(<small tal:content="exp/functions" />)</em>
+                  <div tal:attributes="data-target string:#${item_id}">
+                   <h5><tal:experiment_title content="item/Title" /> <span tal:content="exp/type"  class="label"
+                     tal:attributes="class string:label-${exp/type} label;"/></h5>
+                   <ul>
+                    <li><strong>Taxonomy:</strong> <span class="taxonomy" tal:content="exp/species_occurrence" /></li>
+                    <li><strong>Algorithms:</strong> <span tal:content="exp/functions" />)</li>
                        <tal:if condition="item/Creator"
                                define="author python:pas_member.info(item_creator)">
-                         <br/>
-                         <span><small><b>Owner:</b> <tal:r tal:replace="author/name_or_id"></tal:r></small></span>
+                         <li><span><strong>Owner:</strong> <tal:r tal:replace="author/name_or_id"></tal:r></span></li>
                       </tal:if>
-                   </p>
+                  </ul>
                    <div class="experiment-more-info" tal:attributes="id item_id">
                     <ul>
                       <tal:if condition="exp/species_absence">
-                        <li class="bccvl-experiment-parameters" tal:content="exp/species_absence" />
+                        <li class="bccvl-experiment-parameters"><strong>Parameters:</strong> <span tal:content="exp/species_absence" /></li>
                       </tal:if>
                       <tal:if condition="exp/environmental_layers|nothing">
                         <li class="bccvl-experiment-parameters"
                             tal:repeat="dataset exp/environmental_layers">
+                            <strong>Layers:</strong> <br/>
                             <tal:repl tal:replace="dataset/title"/>
                           <ul>
                             <li class="bccvl-experiment-parameters"
@@ -101,25 +101,23 @@
                      </ul>
                    </div>
                  </td>
-                 <td class="bccvl-table-label">
-                  <p tal:content="exp/type"  class="label"
-                     tal:attributes="class string:label-${exp/type} label;"/>
-                 </td>
+                 <td style="width: 13%;" class="date-time" tal:content="python: item.created.strftime('%d/%m/%y %H:%M')" />
+
                  <td class="bccvl-table-controls">
                    <a class="btn btn-primary experiment-view-btn" tal:attributes="href item_url; data-friendlyname string:a_experiment_${item/Title}">
                      View <i class="fa fa-chevron-right" title="view status &amp; results"></i>
                    </a>
                    
-                   <a class="sharing-btn btn btn-info"
+                   <a class="sharing-btn btn btn-default"
                       tal:attributes="href action/url;
                                       data-friendlyname string:sharing_${item/Title}"
                       tal:condition="python: action.get('available')"
                       tal:define="item_obj item/getObject;
                                   action item_obj/dataset_tools/local_roles_action;">
-                     Share <i class="fa fa-share-alt" title="Share Results"></i>
+                     Share <i class="fa fa-share-alt" style="color:#4aa3df;" title="Share Results"></i>
                    </a>
 
-                   <a class="btn btn-warning remove-experiment-btn"
+                   <a class="btn btn-default remove-experiment-btn"
                       tal:define="item_obj item/getObject"
                       tal:condition="item_obj/experiment_tools/can_modify"
                       tal:attributes="data-friendlyname string:removing_${item/Title};
@@ -131,10 +129,19 @@
                                       data-toggle python: 'tooltip' if experiment_tools.check_if_used(item_obj) else None;
                                       href python: item_url+'/@@remove' if not experiment_tools.check_if_used(item_obj) else None"
                       data-placement="top">                      
-                     Delete <i class="fa fa-times" title="Remove Experiment"></i>
+                     Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>
-
-
+                 </td>
+                 <td tal:attributes="class string:experiment-state ${class_state}">
+                  <tal:if condition="python:class_state == 'success'">
+                    <i class="fa fa-check"></i><br/>Completed
+                  </tal:if>
+                  <tal:if condition="python:class_state == 'info'">
+                    <i class="fa fa-clock-o"></i><br/>In Progress
+                  </tal:if>
+                  <tal:if condition="python:class_state == 'error'">
+                    <i class="fa fa-remove"></i><br/>Failed
+                  </tal:if>
                  </td>
              </tr>
           </metal:entry>
