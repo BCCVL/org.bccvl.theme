@@ -69,7 +69,7 @@
                      tal:attributes="class string:label-${exp/type} label;"/></h5>
                    <ul>
                     <li><strong>Taxonomy:</strong> <span class="taxonomy" tal:content="exp/species_occurrence" /></li>
-                    <li><strong>Algorithms:</strong> <span tal:content="exp/functions" />)</li>
+                    <li><strong>Algorithms:</strong> <span tal:content="exp/functions" /></li>
                        <tal:if condition="item/Creator"
                                define="author python:pas_member.info(item_creator)">
                          <li><span><strong>Owner:</strong> <tal:r tal:replace="author/name_or_id"></tal:r></span></li>
