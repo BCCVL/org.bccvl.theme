@@ -140,7 +140,7 @@
                     <i class="fa fa-clock-o"></i><br/>In Progress
                   </tal:if>
                   <tal:if condition="python:class_state == 'error'">
-                    <i class="fa fa-remove"></i><br/>Failed
+                    <i class="fa fa-times"></i><br/>Failed
                   </tal:if>
                  </td>
              </tr>
