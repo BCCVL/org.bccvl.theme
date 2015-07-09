@@ -1049,7 +1049,7 @@ a.figshare-export-link:hover {
 
 .bccvl-experimenttable tr.headers th {
     cursor: pointer;
-    min-width: 50px;
+    min-width: 70px;
 }
 
 td.bccvl-full-list {
