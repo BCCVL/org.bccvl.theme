@@ -68,18 +68,25 @@
                    <h5><tal:experiment_title content="item/Title" /> <span tal:content="exp/type"  class="label"
                      tal:attributes="class string:label-${exp/type} label;"/></h5>
                    <ul>
-                    <li><strong>Taxonomy:</strong> <span class="taxonomy" tal:content="exp/species_occurrence" /></li>
+                    <li>
+                      <strong>Input Datasets:</strong> 
+                        <ul>
+                          <li><span class="taxonomy" tal:content="exp/species_occurrence" /></li>
+                          <tal:if condition="exp/species_absence">
+                          <li>
+                            <span class="bccvl-experiment-parameters" tal:content="exp/species_absence" />
+                          </li>
+                          </tal:if>
+                    </li>
                     <li><strong>Algorithms:</strong> <span tal:content="exp/functions" /></li>
                        <tal:if condition="item/Creator"
                                define="author python:pas_member.info(item_creator)">
                          <li><span><strong>Owner:</strong> <tal:r tal:replace="author/name_or_id"></tal:r></span></li>
                       </tal:if>
                   </ul>
+                  <tal:if condition="python: exp.get('environmental_layers') or exp.get('years') or item.Description">
                    <div class="experiment-more-info" tal:attributes="id item_id">
                     <ul>
-                      <tal:if condition="exp/species_absence">
-                        <li class="bccvl-experiment-parameters"><strong>Parameters:</strong> <span tal:content="exp/species_absence" /></li>
-                      </tal:if>
                       <tal:if condition="exp/environmental_layers|nothing">
                         <li class="bccvl-experiment-parameters"
                             tal:repeat="dataset exp/environmental_layers">
@@ -100,6 +107,7 @@
                       </tal:if>
                      </ul>
                    </div>
+                   </tal:if>
                  </td>
                  <td style="width: 13%;" class="date-time" tal:content="python: item.created.strftime('%d/%m/%y %H:%M')" />
 
