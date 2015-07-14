@@ -295,6 +295,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     });
                     map.renderSync();
                 });
+            },
+
+            roundUpToNearestMagnitude: function(x) {
+                // Round x to next order of magnitude
+                var y = Math.pow(10, Math.ceil(Math.log10(x))) ;
+                // if y is 0 or NaN set it to 1
+                if (! y) {
+                    y = 1;
+                }
             }
 
         }

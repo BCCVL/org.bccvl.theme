@@ -47,9 +47,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                         layer_vocab[value.token] = value.title;
                     });
                 });
-                
-        var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:77,b:30},"endpoint":{r:230,g:0,b:0}};
-
         
         window.maps = [];
         // RENDER EMPTY MAP
@@ -157,6 +154,19 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                             layerName = 'Data Overlay';
                         }
                     }
+                    
+                    // Get style object max value form layer metadata
+                    var maxVal;
+                    try {
+                        // Round max value to next order of magnitude
+                        maxVal = vizcommon.roundUpToNearestMagnitude(data.layers[data.title].max);
+                    } catch (e) {
+                        // We end up here in case there is no layer metadata at all
+                        // fall back to default coloring
+                        maxVal = 1;
+                    }
+                    var styleObj = {"minVal":0,"maxVal":maxVal,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:77,b:30},"endpoint":{r:230,g:0,b:0}};
+
                     if (type !== 'occurrence'){
                         newLayer = new ol.layer.Tile({
                             title: layerName,

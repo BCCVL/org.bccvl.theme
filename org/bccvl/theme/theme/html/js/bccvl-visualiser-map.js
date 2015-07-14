@@ -63,8 +63,6 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
 
-        var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
-
         var layer_vocab = {};
                 $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
                     $.each(data, function(index, value) {
@@ -168,6 +166,19 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                     } else {
                         layerName = 'Data Overlay';
                     }
+
+                    // Get style object max value form layer metadata
+                    var maxVal;
+                    try {
+                        // Round max value to next order of magnitude
+                        maxVal = vizcommon.roundUpToNearestMagnitude(data.layers[data.title].max);
+                    } catch (e) {
+                        // We end up here in case there is no layer metadata at all
+                        // fall back to default coloring
+                        maxVal = 1;
+                    }
+                    var styleObj = {"minVal":0,"maxVal":maxVal,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:231,g:76,b:60},"endpoint":{r:192,g:57,b:43}};
+
                     var newLayer;
                     if (type !== 'occurence'){
                         newLayer = new ol.layer.Tile({
