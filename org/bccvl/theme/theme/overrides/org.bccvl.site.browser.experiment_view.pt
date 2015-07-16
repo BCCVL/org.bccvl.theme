@@ -46,33 +46,48 @@
             <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
             <!-- Algorithm parameter fieldsets -->
             <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
-            <table id="bccvl-experimentresults-table" class="table table-hover">
-              <thead>
-                <tr><th colspan="2">Experiment Results</th></tr>
-              </thead>
-              <tbody>
+              
                 <tal:block tal:repeat="result context/@@folderListing">
-                  <tr class="info" >
+                <table id="bccvl-experimentresults-table" class="table bccvl-experimenttable">
+                  <thead>
+                  <tr tal:attributes="class result/@@dataset_tools/job_state|string:info">
                     <td>
-                      <p class="lead"><tal:replace tal:replace="result/Title">Result
-                      Title</tal:replace></p>
+                      <h5><tal:replace tal:replace="result/Title">Result
+                      Title</tal:replace></h5>
                       <!-- FIXME: get a better condition or use
                            adapters -->
+                      <ul>
                       <tal:block tal:condition="python: 'function' in result.job_params">
-                        <p><span>Algorithm: <tal:replace
-                                       tal:replace="result/job_params/function">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                      
+                        <li tal:condition="result/job_params/function">
+                          <strong>Algorithm: </strong>
+                          <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
+                        </li>
+                        <li tal:condition="result/@@dataset_tools/job_state">
+                          <strong>State: </strong>
+                          <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                        </li>
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                         <!-- TODO: species in job_params/species_distribution_models -->
-                        <p><span>Emissions Scenario: <tal:replace
-                                       tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
-                        <span>Circulation Model: <tal:replace
-                                       tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
-                        <span>Year: <tal:replace
-                                  tal:replace="result/job_params/year">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                        <li>
+                          <strong>Emissions Scenario: </strong>
+                          <tal:replace tal:replace="result/job_params/emsc">bioclim</tal:replace>
+                        </li>
+                        <li>
+                          <strong>Circulation Model: </strong>
+                          <tal:replace tal:replace="result/job_params/gcm">bioclim</tal:replace>
+                        </li>
+                        <li>
+                          <strong>Year: </strong>
+                          <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
+                        </li>
+                        <li>
+                          <strong>State: </strong>
+                          <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                        </li>
                       </tal:block>
+                      </ul>
                     </td>
                     <td class="bccvl-table-controls">
                       <a class="fine btn btn-mini btn-inverse export-btn"
@@ -89,6 +104,8 @@
                       </a>
                     </td>
                   </tr>
+                  <thead>
+                  <tbody>
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
                      <tr>
                        <td class="bccvl-table-label"
@@ -133,9 +150,10 @@
                        </td>
                      </tr>
                   </tal:block>
+                  </tbody>
+                </table>
                 </tal:block>
-              </tbody>
-            </table>
+              
         </div>
     </metal:main>
 

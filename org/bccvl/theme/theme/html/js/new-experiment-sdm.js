@@ -109,7 +109,14 @@ define(
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
                     $(this).prop('checked', false);
                 });
-                    
+            });
+
+            $('#tab-config').on('click', 'a.select-all', function(){
+                $(this).parents('table').find('tbody input[type="checkbox"]:not(:checked)').trigger('click');
+            });
+
+            $('#tab-config').on('click', 'a.select-none', function(){
+                $(this).parents('table').find('tbody input[type="checkbox"]:checked').trigger('click');  
             });
 
             // -- layer selection -----------------------------------

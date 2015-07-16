@@ -14,7 +14,7 @@
 
     
     <!-- <replace css:theme-children="#error-message" content="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()"/>   -->
-    <replace css:theme-children="#notice-placehoder">
+    <replace css:theme-children="#notice-placeholder">
       <xsl:if test="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()">
         <div class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">×</button>
@@ -28,7 +28,7 @@
       <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
       <replace css:theme="#site-login" css:content="#fieldset-site-login" />
 
-      <replace css:theme-children="#notice-placehoder">
+      <replace css:theme-children="#notice-placeholder">
           <div class="alert alert-error">
           <button type="button" class="close" data-dismiss="alert">×</button>
           <strong>Please login to use BCCVL.</strong>

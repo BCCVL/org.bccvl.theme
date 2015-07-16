@@ -113,7 +113,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <div class="row-fluid bccvl-flashmessage bccvl-flashmessage-{$msgtype} alert alert-block alert-{$msgtype}">
+        <div class="bccvl-flashmessage bccvl-flashmessage-{$msgtype} alert alert-block alert-{$msgtype}">
           <p>
             <xsl:copy-of select="./dd/child::node()" />  
           </p>
