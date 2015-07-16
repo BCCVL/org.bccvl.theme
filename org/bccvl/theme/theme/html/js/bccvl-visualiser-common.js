@@ -2,7 +2,12 @@
 // JS code to initialise the visualiser map
 
 define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
-    function( $, layout, ol  ) {
+   function( $, layout, ol  ) {
+
+        // visualiser base url
+        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
+        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
+           
 
         var bccvl_common = {
 
@@ -17,7 +22,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end
                 result will always have +1 threshold and +2 color values on top of your desired number of colour values.
             */
-            
+
+            // TODO: make this local to have better timeout error messages and avoid too short timeouts on some ajax calls
             commonAjaxSetup: function(){
                 $.ajaxSetup({
                     timeout: 10000,
@@ -172,18 +178,27 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 }
                 return colorArr;
             },
+
+            getStandardRange: function(name, layertype) {
+                var standard_range;
+                if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(name)){
+                    standard_range = 'rainfall';
+                } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(name)){
+                    standard_range = 'temperature';
+                } else if(layertype == 'continuous') {
+                    standard_range = 'probability';
+                } else {
+                    standard_range = 'soil';
+                }
+                return standard_range;
+            },
             
             generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype ) {
                 var standard_range;
-                
-                if(/bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(filename)){
-                    var standard_range = 'rainfall';
-                } else if(/bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(filename)){
-                    var standard_range = 'temperature';
-                } else if(layertype == 'continuous') {
-                    var standard_range = 'probability';
+                if (startpoint || midpoint || endpoint ) {
+                    standard_range = "custom";
                 } else {
-                    var standard_range = 'soil';
+                    standard_range = bccvl_common.getStandardRange(filename, layertype);
                 }
                 
                 var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
@@ -203,19 +218,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             },
 
             createLegend: function(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
+                // create a legend for given values
+                var standard_range = bccvl_common.getStandardRange(layer.id, layer.type);
                 
-                // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-                $('.olLegend').remove();
-                
-                var standard_range;
-                
-                if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(layer.name)){
-                    var standard_range = 'rainfall';
-                } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(layer.name)){
-                    var standard_range = 'temperature';
-                } else {
-                    var standard_range = 'probability';
-                }
                 // Get hex color range and map values
                 var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
                 var colorArr = bccvl_common.generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
@@ -258,43 +263,41 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                         }
                     }
                 }
-                // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
-                $('#'+id+' .ol-viewport').append(legend);
+                return legend;
             },
 
-            exportAsImage: function(id, map, currentLayers, mapTitle){
-                
-                $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-                
-                $('#'+id+' a.export-map').click(function(e){
-                    var visible = [];
-                    
-                    // use more current layer list if it exists
-                    if (map.currentLayers !== undefined){
-                        layers = map.currentLayers;
-                    } else {
-                        layers = currentLayers
+            exportAsImage: function(e) {
+                var map = e.data.map;
+                var mapTitle = e.data.mapTitle;
+
+                var visible = [];
+
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Group) {
+                        // iterate over layers within group
+                        lgr.getLayers().forEach(function(lyr) {
+                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                                // only look at visible non base layers
+                                // collect titles for visible layers
+                                visible.push(lyr.get('title'));
+                            }
+                        });
                     }
-                    
-                    $.each(layers, function(i, lyr){
-                        if (lyr.getVisible()) {
-                            visible.push(lyr.get('title'));
-                        }
-                    });
-                    
-                    // need to add a map/dataset title here, instead of 'MAP'
-                    var imageTitle = 'BCCVL -- '+ mapTitle;
-                    // add visible layers into filename
-                    imageTitle += ' -- '+visible.join(", "); 
-                    // append filename
-                    $('#'+id+' a.export-map').attr('download', imageTitle+'.png');
-                    
-                    map.once('postcompose', function(event) {
-                        var canvas = event.context.canvas;
-                        $('#'+id+' a.export-map').attr('href', canvas.toDataURL('image/png'));
-                    });
-                    map.renderSync();
                 });
+                    
+                // need to add a map/dataset title here, instead of 'MAP'
+                var imageTitle = 'BCCVL -- ' + mapTitle;
+                // add visible layers into filename
+                imageTitle += ' -- ' + visible.join(", "); 
+                // append filename
+                $(e.target).attr('download', imageTitle+'.png');
+                    
+                map.once('postcompose', function(event) {
+                    var canvas = event.context.canvas;
+                    $(e.target).attr('href', canvas.toDataURL('image/png'));
+                });
+                map.renderSync();
             },
 
             roundUpToNearestMagnitude: function(x) {
@@ -304,9 +307,53 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 if (! y) {
                     y = 1;
                 }
+                return y;
+            },
+
+            // create new OL layer from layer metadata data object
+            createLayer: function(data, layer, title, type, visible, styleObj, legend) {
+                // data ... dataset metadata
+                // layer ... layer metadata
+                // title ... display title
+                // type ... 'wms', 'wms-occurrence', ...
+                // visible ...
+                // legend ... a dom node to use as legend
+                var wms_params = {
+                    "layers": "DEFAULT",
+                    "transparent": "true",
+                    "format": "image/png"
+                };
+                if (type != "wms-occurrence") {
+                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype);
+                }
+                if (data.mimetype == "application/zip") {
+                    wms_params['DATA_URL'] = data.vizurl + ('filename' in layer ? '#' + layer.filename : '');  // The data_url the user specified
+                } else {
+                    wms_params['DATA_URL'] = data.vizurl;  // The data_url the user specified
+                }
+                
+                var newLayer = new ol.layer.Tile({
+                    // OL3 layer attributes
+                    visible: visible,
+                    preload: 10,
+                    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                        url: visualiserWMS,
+                        params: wms_params
+                    })),
+                    // layer switcher attributes
+                    title: title,
+                    type: type, // 'base', 'wms', 'wms-occurrence', 'layers'?
+                    // custom data on OL layer object                
+                    bccvl: { 
+                        data: data,
+                        layer: layer, // layer metadata
+                        legend: legend
+                    }
+                });
+                return newLayer;
             }
 
-        }
+        };
         return bccvl_common;
     }
 );
