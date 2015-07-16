@@ -112,11 +112,11 @@ define(
             });
 
             $('#tab-config').on('click', 'a.select-all', function(){
-                $(this).parents('table').find('tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
             });
 
             $('#tab-config').on('click', 'a.select-none', function(){
-                $(this).parents('table').find('tbody input[type="checkbox"]:checked').trigger('click');  
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
             // -- layer selection -----------------------------------
