@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
-            function( $, preview, ol, layerswitcher, vizcommon  ) {
+define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
+    function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         // Bring in generic visualiser error handling of timeouts
         vizcommon.commonAjaxSetup();
@@ -41,17 +41,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
 
-        var layer_vocab = {};
-                $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
-                    $.each(data, function(index, value) {
-                        layer_vocab[value.token] = value.title;
-                    });
-                });
-                
-        var styleObj = {"minVal":0,"maxVal":1,"steps":20,"startpoint":{r:255,g:255,b:255},"midpoint":{r:255,g:77,b:30},"endpoint":{r:230,g:0,b:0}};
-
+        var maps = [];
+        var mapsCenter;
+        var mapsZoom;
+        // Australia Bounds
+        var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
+        var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
+        var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
         
-        window.maps = [];
+        var layer_vocab = {};
+        $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
+            $.each(data, function(index, value) {
+                layer_vocab[value.token] = value.title;
+            });
+        });
+        
         // RENDER EMPTY MAP
         function renderNewMap(uuid, url, id, type, layerName, algorithm){
             // CREATE BASE MAP
@@ -59,26 +63,21 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             // NEED TO DESTROY ANY EXISTING MAP
             var container = $('#'+id);
-            if (container.hasClass('active'))
+            if (container.hasClass('active')) {
                 container.empty();
-                $.each(window.maps, function(i, map){
+                $.each(maps, function(i, map){
                     if (map.uuid == uuid){
                         delete $(this);
                     }
                 });
-
-        
-            var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
-            var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
-            australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
-
-            visLayers = new ol.layer.Group({
+            }
+            
+            var visLayers = new ol.layer.Group({
                 title: 'Layers',
-                layers: [
-                ]
+                layers: []
             });
-
-            map = new ol.Map({
+            
+            var map = new ol.Map({
                 target: id,
                 layers: [
                     new ol.layer.Group({
@@ -91,14 +90,14 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                                 preload: 10,
                                 visible: true,
                                 source: new ol.source.OSM()
-                            }),
+                            })
                             /*new ol.layer.Tile({
                                 title: 'Satellite',
                                 type: 'base',
                                 visible: false,
                                 source: new ol.source.MapQuest({layer: 'sat'})
                             })*/
-                        ],
+                        ]
                     }),
                     visLayers
                 ],
@@ -117,10 +116,15 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
 
             container.addClass('active');
 
-            vizcommon.exportAsImage(id, map, visLayers.getLayers().getArray(), 'Side-by-side');
+            // hook up exportAsImage
+            $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+            $('#'+id+' a.export-map').click(
+                { map: map,
+                  mapTitle: 'Side-by-side'
+                }, vizcommon.exportAsImage);
             
-            if (window.mapsCenter && window.mapsZoom){
-                map.setCenter(window.mapsCenter, window.mapsZoom, false, false);
+            if (mapsCenter && mapsZoom){
+                map.setCenter(mapsCenter, mapsZoom, false, false);
             } else {
                 map.getView().fitExtent(australia_bounds, map.getSize());
             }
@@ -132,124 +136,65 @@ define(     ['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitc
                 url: dmurl,
                 params: {'datasetid': uuid},
                 success: function(data, status, jqXHR) {
-                //$.getJSON(dmurl, {'datasetid': uuid}, function( data ) {
-                // xmlrpc returns an array of results
-                data = data[0];
+                    // xmlrpc returns an array of results
+                    data = data[0];
 
-                // Get number of layers in request, there are faster methods to do this, but this one is the most compatible
-                var layers = data.layers;
-                var layersInSet=0;
-                for(var key in layers) {
-                    if(layers.hasOwnProperty(key)){
-                        layersInSet++;
-                    }
-                }
-                
-                var myLayers = [];
-                // check for layers metadata, if none exists then the request is returning a data like a csv file
-                if ( layersInSet == 1 || $.isEmptyObject(data.layers) ) {
-                    //single layer
-                    // TODO: use data.title (needs to be populated)
-                    if (!layerName) {
-                        if(data.filename!=''){
-                            layerName = data.filename;
-                        } else {
-                            layerName = 'Data Overlay';
-                        }
-                    }
-                    if (type !== 'occurrence'){
-                        newLayer = new ol.layer.Tile({
-                            title: layerName,
-                            type: 'wms',
-                            preload: 10,
-                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                                url: visualiserWMS,
-                                params: {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    SLD_BODY: vizcommon.generateSLD(data.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                }
-                            }))
-                        });
-                        var legend = {}; legend.name = data.filename;
-
-                    } else {
-                        newLayer = new ol.layer.Tile({
-                            title: layerName,
-                            type: 'wms-occurence',
-                            preload: 10,
-                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                                url: visualiserWMS,
-                                params: {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                }
-                            }))
-                        });
-                    }
-                    if (typeof algorithm != "undefined") {
-                        container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
-                    } else {
-                        container.append('<label>'+layerName+'<br/></label>');
-                    }
-                    
-                    newLayer.setOpacity(0.9);
-                    visLayers.getLayers().push(newLayer);
-                } else {
-                    // multiple layers
-                    var i = 0;
-                    $.each( data.layers, function(namespace, layer){
-                        layerName = layer_vocab[namespace] || namespace;
-
-                        var newLayer = new ol.layer.Tile({
-                            title: layerName,
-                            type: 'wms',
-                            preload: 10,
-                            source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                                    url: visualiserWMS,
-                                    params: {
-                                    DATA_URL: data.vizurl,   // The data_url the user specified
-                                    SLD_BODY: vizcommon.generateSLD(layer.filename, layer.min, layer.max, 20),
-                                    layers: "DEFAULT",
-                                    transparent: "true",
-                                    format: "image/png"
-                                }
-                            }))
-                        });
+                    // check for layers metadata, if none exists then the request is returning a data like a csv file
+                    if ($.isEmptyObject(data.layers)) {
+                        // occurrence data
+                        // TODO: use data.title (needs to be populated)
+                        layerName = layerName || data.filename || 'Data Overlay';
+                        
+                        var newLayer = vizcommon.createLayer(data, data, layerName, 'wms-occurrence', true);
                         if (typeof algorithm != "undefined") {
                             container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
                         } else {
                             container.append('<label>'+layerName+'<br/></label>');
                         }
 
+                        newLayer.setOpacity(0.9);
                         visLayers.getLayers().push(newLayer);
-                    });
-                }
+                    } else {
+                        // raster data
+                        $.each( data.layers, function(layerid, layer){
+                            layerName = layer_vocab[layer.layer] || layer.layer || layer.filename;
+                            var max = vizcommon.roundUpToNearestMagnitude(layer.max);
+                            var styleObj = {
+                                minVal: 0, // TODO: mahal has negative min value?
+                                maxVal: max,
+                                steps: 20,
+                                startpoint: null,
+                                midpoint: null,
+                                endpoint: null
+                            };
+                            var newLayer = vizcommon.createLayer(data, layer, layerName, 'wms', true, styleObj);
 
-                var numLayers = visLayers.getLayers().getArray().length;
+                            if (typeof algorithm != "undefined") {
+                                container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
+                            } else {
+                                container.append('<label>'+layerName+'<br/></label>');
+                            }
 
-                map.uuid = uuid;
-                window.maps.push(map);
+                            visLayers.getLayers().push(newLayer);
+                        });
+                    }
+                    map.uuid = uuid;
+                    maps.push(map);
 
-                bindMaps();
-
-            }});
+                    bindMaps();
+                    
+                }});
 
             function bindMaps(){
-                var leader = window.maps[0];
-                $.each(window.maps, function(i, map){
+                var leader = maps[0];
+                $.each(maps, function(i, map){
                     if (i>0){
                         map.bindTo('view', leader);
                     }
                 });
             }
-            container.addClass('active');
             
         }
-
+        
     }
 );

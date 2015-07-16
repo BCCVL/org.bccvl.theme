@@ -163,7 +163,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
             if (singleOverlay) {
                 if( lyr.get('type') !== 'base') {
                     ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {
-                        if (l.get('type') == 'wms' || l.get('type') == 'wms-occurence') {
+                        if (l.get('type') == 'wms' || l.get('type') == 'wms-occurrence') {
                             l.setVisible(false);
                         }
                     });
