@@ -23,7 +23,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             event.preventDefault();
             var uuid = $(this).data('uuid');
             $('#minimap_'+uuid).remove();
-            $.each(window.maps, function(i, map){
+            $.each(maps, function(i, map){
                 if (map.uuid == uuid){
                     delete $(this);
                 }
@@ -145,7 +145,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         // TODO: use data.title (needs to be populated)
                         layerName = layerName || data.filename || 'Data Overlay';
                         
-                        var newLayer = vizcommon.createLayer(data, data, layerName, 'wms-occurrence', true);
+                        var newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
                         if (typeof algorithm != "undefined") {
                             container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
                         } else {
@@ -167,7 +167,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 midpoint: null,
                                 endpoint: null
                             };
-                            var newLayer = vizcommon.createLayer(data, layer, layerName, 'wms', true, styleObj);
+                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
 
                             if (typeof algorithm != "undefined") {
                                 container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
