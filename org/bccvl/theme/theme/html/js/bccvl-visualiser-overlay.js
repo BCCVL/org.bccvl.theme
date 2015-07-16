@@ -240,7 +240,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             layerName = layer_vocab[layer.layer] || layer.layer || layer.filename;
                             // TODO: double check ... we should only have probability rasters here
                             var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                            var styleObj = $.extend({maxVal: max}, styleArray[numLayers]);
+                            var styleObj = $.extend({}, styleArray[numLayers]);
+                            styleObj.maxVal = max;
                             var newLayer = vizcommon.createLayer(data, layer, layerName, 'wms', true, styleObj);
 
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);
