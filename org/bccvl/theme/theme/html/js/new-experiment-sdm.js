@@ -119,6 +119,14 @@ define(
                 $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
+
+            // -- set psuedo absence to match an occurence selection.
+
+            $('.bccvl-new-sdm').on('widgetChanged', function(e, rows){
+                if (rows) 
+                    $('#form-widgets-species_number_pseudo_absence_points').val(rows);
+            });
+
             // -- layer selection -----------------------------------
 
             var $envTable = $('table.bccvl-environmentaldatatable');

@@ -246,8 +246,10 @@ define(
                     params,
                     function(text, status, xhr) {
                         $loader.hide();
+                        // TO DO, pass some metadata in with the HTML response instead.
+                        var rows = $(text).find('.dataset-rows').data('rows');
                         // trigger change event on widget update                        
-                        $(this).trigger('widgetChanged');
+                        $(this).trigger('widgetChanged', [rows]);
                     }
                 );
             };
