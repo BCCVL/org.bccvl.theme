@@ -128,7 +128,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             });
 
             // zoom to Australia
-            map.getView().fitExtent(australia_bounds, map.getSize());
+            map.getView().fit(australia_bounds, map.getSize());
 
             // add layerswitcher
             var layerSwitcher = new ol.control.LayerSwitcher({

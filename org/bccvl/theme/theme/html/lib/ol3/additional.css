@@ -59,10 +59,13 @@
     padding: 10px 10px 0px 0px;
 }
 .layer-switcher.shown {
-    pointer-events: auto;
     width:30%;
-    height:100%;
+    height:auto;
+    max-height: 100%;
     padding:0;
+}
+.layer-switcher * {
+    pointer-events: auto;
 }
 .layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
     background-color: rgba(0,60,136,.7);
@@ -126,6 +129,11 @@
 }
 .baseLbl, .dataLbl {
     font-weight: 500;
+}
+.datasets-list-entry .layer-switcher input[type="radio"], .layer-switcher input[type="radio"]{
+    display: inline;
+    float: left;
+    margin: 0 .3em 0 0;
 }
 
 .dataLayersDiv input.olButton, .baseLayersDiv input.olButton {

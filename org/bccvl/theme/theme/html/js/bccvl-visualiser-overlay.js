@@ -184,7 +184,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 })
             });
 
-            map.getView().fitExtent(australia_bounds, map.getSize());
+            map.getView().fit(australia_bounds, map.getSize());
 
             var fullScreenToggle = new ol.control.FullScreen();
             map.addControl(fullScreenToggle);

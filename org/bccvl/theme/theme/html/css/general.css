@@ -929,6 +929,7 @@ td.bccvl-table-controls a.btn {
   border-width: 1px;
   border-style: solid;
   float:right;
+  clear:right;
   margin-left: .3em;
 }
 td.bccvl-table-controls a.btn:hover {

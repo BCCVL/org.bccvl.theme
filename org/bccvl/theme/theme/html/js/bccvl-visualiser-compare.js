@@ -107,7 +107,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 })
             });
 
-            map.getView().fitExtent(australia_bounds, map.getSize());
+            map.getView().fit(australia_bounds, map.getSize());
 
             var fullScreenToggle = new ol.control.FullScreen();
             map.addControl(fullScreenToggle);
@@ -126,7 +126,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             if (mapsCenter && mapsZoom){
                 map.setCenter(mapsCenter, mapsZoom, false, false);
             } else {
-                map.getView().fitExtent(australia_bounds, map.getSize());
+                map.getView().fit(australia_bounds, map.getSize());
             }
 
             // Remove any existing legends.
@@ -189,7 +189,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var leader = maps[0];
                 $.each(maps, function(i, map){
                     if (i>0){
-                        map.bindTo('view', leader);
+                        // BindTo removed somewhere between OL3.4.x and OL3.7.0
+                        //map.bindTo('view', leader);
+                        map.setView(leader.getView());
                     }
                 });
             }
