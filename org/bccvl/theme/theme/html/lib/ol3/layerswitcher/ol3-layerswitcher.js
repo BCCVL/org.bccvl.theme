@@ -211,6 +211,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 label.innerHTML = lyrTitle;
                 li.appendChild(label);
                 var ul = document.createElement('ul');
+                ul.className = 'layers';
                 li.appendChild(ul);
 
                 this.renderLayers_(lyr, ul);
@@ -228,6 +229,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                     input.type = 'checkbox';
                 }
                 input.id = lyrId;
+
                 input.checked = lyr.get('visible');
                 if (this.singleViewOnly){
                     //console.log(this_);
@@ -241,6 +243,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 }
                 
                 li.appendChild(input);
+                li.dataset.filename = lyrId;
 
                 label.htmlFor = lyrId;
                 label.innerHTML = lyrTitle;
@@ -260,10 +263,24 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
          */
         ol.control.LayerSwitcher.prototype.renderLayers_ = function(lyr, elm) {
             var lyrs = lyr.getLayers().getArray().slice().reverse();
+
+            // sort function
+            function sort_li(a, b){
+                return ($(b).data('filename')) < ($(a).data('filename')) ? 1 : -1;    
+            }
+
             for (var i = 0, l; i < lyrs.length; i++) {
                 l = lyrs[i];
+
                 if (l.get('title')) {
                     elm.appendChild(this.renderLayer_(l, i));
+
+                    // alphabetically sorting the render requests based on the data of nested objects significantly deep,
+                    // here we're letting the request pass through as normal, then alphabetising the list items afterwards
+                    // (with a handy function to help with numerical values).
+                    if( $(elm).hasClass('layers') ) {
+                        $(elm).find('li').sort(sort_li).appendTo($(elm));
+                    }
                 }
             }
         };
