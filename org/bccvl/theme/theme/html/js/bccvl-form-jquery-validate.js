@@ -62,10 +62,6 @@ define(
             // this is default behaviour
             submitHandler: function(form){
 
-                form.find('.require-from-group').each(function(){
-                    console.log($(this).valid());
-                });
-
                 $(form).find('input[type="submit"], button[type="submit"]').prev('.loader').show();
                 $(form).find('input[type="submit"], button[type="submit"]').hide();
 
@@ -151,6 +147,12 @@ define(
                 }
             });
         });
+
+        // remove required tag from hidden field if the checkbox is set on page load
+        // only happens when a user gets redirected to a pre-populated form
+        if (form.find('#form-widgets-species_pseudo_absence_points-0').is(':checked')){
+            $('#form-widgets-species_absence_dataset input').removeAttr('required');
+        }
 
         form.find('#form-widgets-species_pseudo_absence_points-0').on('change',function(){
             if ($('#form-widgets-species_absence_dataset input').attr('required'))

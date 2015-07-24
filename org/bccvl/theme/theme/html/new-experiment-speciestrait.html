@@ -102,25 +102,6 @@
       <!-- container for main content -->
       <div class="container bccvl-main">
 
-
-        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <div id="breadcrumbs" class="bccvl-breadcrumb row-fluid">
-          <div class="span12">
-            <ul class="breadcrumb">
-              <li><a  class="bccvllinks-home icon-home"></a></li>
-              <li class="separator icon-chevron-right"></li>
-              <li><a class="bccvllinks-experiments">Experiments</a></li>
-              <li class="separator icon-chevron-right"></li>
-              <li>New Species Trait Model Experiment</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="alert" >
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>This experiment type is still under development.</strong>
-        </div>
-
         <!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <section class="bccvl-flashmessages">
         </section>
@@ -143,7 +124,13 @@
 
           <form class="bccvl-jqueryvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
-            <h3>New Species Trait Modelling Experiment.</h3>
+            <h1>New <strong>Species Trait Modelling</strong> Experiment</h1>
+
+            <div class="alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>This experiment type is still under development.</strong>
+            </div>
+
             <!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
             <!-- tabs -->
@@ -154,8 +141,8 @@
               </div>
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
-                <li><a href="#tab-configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#tab-source-datasets" data-toggle="tab">Input Datasets</a></li>
+                <li><a href="#tab-configuration" data-toggle="tab">Configuration</a></li>
                 <li><a href="#tab-review" data-toggle="tab">Run</a></li>
               </ul>
             </div>
@@ -185,6 +172,32 @@
                 </fieldset>
               </div>
 
+
+              <!-- page: source datasets  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+              <div class="tab-pane active" id="tab-source-datasets">
+                <fieldset class="tab">
+                  <div class="row-fluid">
+                    <p class="span12 bccvl-tab-description">
+                      Select the input datasets.
+                    </p>
+                  </div>
+
+                  <div class="row-fluid bccvl-stretch-parent">
+                    <!-- list of available data -->
+                    <div class="span4">
+                      <div id="formfield-form-widgets-data_table">
+                      </div>
+
+                    </div>
+
+                    <!-- preview area -->
+                    <div class="span8">
+                      <div class="bccvl-preview-pane" id="map1">
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
 
               <!-- page: configuration  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-configuration">
@@ -240,33 +253,6 @@
                     </div>
 
                     <div class="bccvl-algoconfig span8" id="algoConfig">
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
-
-
-              <!-- page: source datasets  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
-              <div class="tab-pane active" id="tab-source-datasets">
-                <fieldset class="tab">
-                  <div class="row-fluid">
-                    <p class="span12 bccvl-tab-description">
-                      Select the input datasets.
-                    </p>
-                  </div>
-
-                  <div class="row-fluid bccvl-stretch-parent">
-                    <!-- list of available data -->
-                    <div class="span4">
-                      <div id="formfield-form-widgets-data_table">
-                      </div>
-
-                    </div>
-
-                    <!-- preview area -->
-                    <div class="span8">
-                      <div class="bccvl-preview-pane" id="map1">
-                      </div>
                     </div>
                   </div>
                 </fieldset>

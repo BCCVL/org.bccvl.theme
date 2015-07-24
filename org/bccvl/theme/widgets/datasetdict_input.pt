@@ -51,8 +51,10 @@
           <li tal:repeat="subitem item/subitems">
             <input type="checkbox" class="require-from-group" checked="checked" value=""
                    tal:attributes="value subitem/id;
-                                   name string:${view/name}.item.${index}.item:list;"/>
-            <span tal:content="subitem/title">Layer</span>            
+                                   name string:${view/name}.item.${index}.item:list;
+                                   id subitem/title;"/>
+            <label  tal:attributes="for subitem/title;"
+                    tal:content="subitem/title">Layer</label>            
           </li>
         </ul>
       </div>

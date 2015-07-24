@@ -91,29 +91,6 @@
       <!-- container for main content -->
       <div class="container bccvl-main">
 
-        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <div id="breadcrumbs" class="bccvl-breadcrumb row-fluid">
-          <div class="span12">
-            <ul class="breadcrumb">
-              <li><a  class="bccvllinks-home icon-home"></a></li>
-              <li class="separator icon-chevron-right"></li>
-              <li><a class="bccvllinks-experiments">Experiments</a></li>
-              <li class="separator icon-chevron-right"></li>
-              <li>New Ensemble Analysis</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="alert" >
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Do you have a dataset you would like to see available in the BCCVL?</strong> - <a href="http://www.bccvl.org.au/contact-us/" target="_blank">Contact us</a> and we’ll try and make it happen.
-        </div>
-
-        <div class="alert" >
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>This experiment type is still under development.</strong>
-        </div>
-
         <!-- notifications from plone ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <section class="bccvl-flashmessages">
         </section>
@@ -123,7 +100,17 @@
         <section class="bccvl-experimentdetails bccvl-new-ensemble tabbable">
           <form class="bccvl-jqueryvalidate" id="experimentSetup" method="post" novalidate="novalidate" autocomplete="on" action="" enctype="text/plain">
 
-            <h3>New Ensemble Analysis.</h3>
+            <h1>New <strong>Ensemble Analysis<strong></h1>
+
+            <div class="alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Do you have a dataset you would like to see available in the BCCVL?</strong> - <a href="http://www.bccvl.org.au/contact-us/" target="_blank">Contact us</a> and we’ll try and make it happen.
+            </div>
+
+            <div class="alert" >
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>This experiment type is still under development.</strong>
+            </div>
             <!-- the experiment form wizardy tabs, with the prev/next buttons -->
 
             <!-- tabs -->

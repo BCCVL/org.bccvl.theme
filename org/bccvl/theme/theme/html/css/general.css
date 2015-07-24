@@ -1746,9 +1746,13 @@ body.home>.white-bg {
     word-break:break-word;
     margin-right: 1em;
 }
+.bccvl-experimentdetails h1 {
+    font-size:2.5em;
+}
 .bccvl-experimentdetails h3 {
     color:#555;
     margin-top:0;
+    font-size:1.6em;
 }
 .bccvl-datasetlist-filter .hidden-options {
     display:none;
@@ -2058,8 +2062,14 @@ padding: 0 1em;
   text-indent: -25px;
   padding-right: 10px;
 }
+.selecteditem ul li label {
+    display: inline;
+    font-size: 0.9em;
+    line-height: 1em;
+}
 .selecteditem ul li input[type="checkbox"]{
-    margin: 0 .5em;
+    margin: 1px .5em;
+    vertical-align: top;
 }
 .selectedexperiment {
   padding: .5em;
