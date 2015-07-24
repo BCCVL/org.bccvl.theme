@@ -351,9 +351,112 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     }
                 });
                 return newLayer;
+            },
+
+            getPointInfo: function(evt){
+                // PARAM            REQURIED    DESC
+                // Service          Yes         Service name. Value is WMS.
+                // version          Yes         Service version. Value is one of 1.0.0, 1.1.0, 1.1.1, 1.3.
+                // request          Yes         Operation name. Value is GetFeatureInfo.
+                // layers           Yes         See GetMap
+                // styles           Yes         See GetMap
+                // srs or crs       Yes         See GetMap
+                // bbox             Yes         See GetMap
+                // width            Yes         See GetMap
+                // height           Yes         See GetMap
+                // query_layers     Yes         Comma-separated list of one or more layers to query.
+                // info_format      No          Format for the feature information response. See below for values.
+                // feature_count    No          Maximum number of features to return. Default is 1.
+                // x or i           Yes         X ordinate of query point on map, in pixels. 0 is left side. i is the parameter key used in WMS 1.3.0.
+                // y or j           Yes         Y ordinate of query point on map, in pixels. 0 is the top. j is the parameter key used in WMS 1.3.0.
+                // exceptions       No          Format in which to report exceptions. The default value is application/vnd.ogc.se_xml.
+
+
+                // get back to familiar object names.
+                var map = evt.map;
+                var view = map.getView();
+                var layer; 
+
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Group) {
+                        // iterate over layers within group
+                        lgr.getLayers().forEach(function(lyr) {
+                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                                // only look at visible non base layers
+                                // collect titles for visible layers
+                                layer = lyr;
+                            }
+                        });
+                    }
+                });
+
+                /*console.log(visualiserWMS);
+
+                var testLayer = new ol.layer.Tile({
+                    title: 'TEST',
+                    source: new ol.source.TileWMS({
+                        url: ' https://192.168.100.200/_visualiser/api/wms/1/wms',
+                        params: {
+                            "DATA_URL": "http://127.0.0.1:8201/bccvl/datasets/environmental/mini_current_50to00_.3/@…file/mini_current_50to00_.3.zip#mini_current_50to00_.3/data/bioclim_04.tif",
+                            "layers": "DEFAULT",
+                            "transparent": "true",
+                            "format": "image/png"
+                        }
+                    })
+                });
+
+                
+
+                https://demo.bccvl.org.au/_visualiser/api/wms/1/wms?
+                SERVICE=WMS&
+                VERSION=1.3.0&
+                REQUEST=GetFeatureInfo&
+                layers=DEFAULT&
+                DATA_URL=https%3A%2F%2Fswift.rc.nectar.org.au%3A8888%2Fv1%2FAUTH_0bc40c2c2ff94a0b9404e6f960ae5677%2Faustralia_5km%2Fcurrent.zip%23current%2Fdata%2Fbioclim_16.tif&
+                CRS=EPSG%3A3857&
+                STYLES=&WIDTH=256&HEIGHT=256&BBOX=15028131.257091936%2C-5009377.085697312%2C17532819.79994059%2C-2504688.5428486564&query_layers=DEFAULT&x=0&y=0
+
+                */
+
+                // http://127.0.0.1:8201/bccvl/datasets/environmental/mini_current_50to00_.3/@…47.66422843%2C-3757032.814272985%2C17532819.799940594%2C-3130860.678560821
+
+               var url = layer
+                        .getSource()
+                        .getGetFeatureInfoUrl(
+                            evt.coordinate,
+                            evt.map.getView().getResolution(),
+                            evt.map.getView().getProjection(),
+                            {
+                                'INFO_FORMAT': 'text/plain',
+                                'QUERY_LAYERS': 'DEFAULT'
+                            }
+                        );
+
+                // add host to request, it can't seem to get it from the obj
+                url = 'https://192.168.100.200'+ url;
+                console.log(url);
+
+                $.get(url, function (data) {
+                    console.log(data);
+                });
+
+                
+                //return info;
             }
 
         };
         return bccvl_common;
     }
 );
+
+
+
+
+
+
+
+
+
+
+

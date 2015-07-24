@@ -141,6 +141,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // add fullscreen toggle control
             var fullScreenToggle = new ol.control.FullScreen();
             map.addControl(fullScreenToggle);
+
             
             // remove crappy unicode icon so fontawesome can get in
             $('#'+id+' button.ol-full-screen-false').html('');
@@ -243,6 +244,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         { map: map,
                           mapTitle: data.title
                         }, vizcommon.exportAsImage);
+
+                    // add click control for point return
+                    map.on('singleclick', function(evt){
+                        vizcommon.getPointInfo(evt);
+                    });
 
                 }});
 
