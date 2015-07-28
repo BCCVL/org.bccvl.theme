@@ -30,7 +30,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     error: function(jqXHR, textStatus, errorThrown){
                         console.log('Error on map: '+textStatus);
                         if (textStatus ==  'timeout'){
-                            alert("The request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
+                            console.log("The request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
                         }
                     }
                 });
@@ -337,8 +337,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     visible: visible,
                     preload: 10,
                     source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                        url: visualiserWMS,
-                        params: wms_params
+                         url: visualiserWMS,
+                         params: wms_params,
+                         serverType: ol.source.wms.ServerType.MAPSERVER
                     })),
                     // layer switcher attributes
                     title: title,
@@ -374,6 +375,48 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
 
                 // get back to familiar object names.
                 var map = evt.map;
+
+                // remove any existing popups or overlays 
+                // (this might need to be tightened if we include different types in future)
+                map.getOverlays().forEach(function(overlay) {
+                    overlay.setPosition(undefined);
+                    map.removeOverlay(overlay); 
+                });
+
+                var container = $(map.viewport_.parentElement);
+
+                var popupContainer = $('<div />', { 'class': 'ol-popup' });
+                var popupContent = $('<div />', { 'class': 'ol-popup-content' });
+                var popupCloser = $('<a />', { 'class': 'ol-popup-closer', href: '#' });
+
+                    popupContainer.append(popupCloser, popupContent);
+                    container.append(popupContainer);
+
+                /**
+                 * Add a click handler to hide the popup.
+                 * @return {boolean} Don't follow the href.
+                 */
+                popupCloser.on('click', function() {
+                  popup.setPosition(undefined);
+                  popupCloser.blur();
+                  return false;
+                });
+
+                /**
+                 * Create an overlay to anchor the popup to the map.
+                 */
+                var popup = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
+                  element: popupContainer,
+                  autoPan: true,
+                  autoPanAnimation: {
+                    duration: 250
+                  }
+                }));
+
+                    
+                /**
+                 * Get info about map and current view
+                 */
                 var view = map.getView();
                 var layer; 
 
@@ -391,54 +434,78 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     }
                 });
 
-                /*console.log(visualiserWMS);
+                /**
+                 * Setup parser to deal with response
+                 */
+                var parser = new ol.format.WMSGetFeatureInfo();
 
-                var testLayer = new ol.layer.Tile({
-                    title: 'TEST',
-                    source: new ol.source.TileWMS({
-                        url: ' https://192.168.100.200/_visualiser/api/wms/1/wms',
-                        params: {
-                            "DATA_URL": "http://127.0.0.1:8201/bccvl/datasets/environmental/mini_current_50to00_.3/@…file/mini_current_50to00_.3.zip#mini_current_50to00_.3/data/bioclim_04.tif",
-                            "layers": "DEFAULT",
-                            "transparent": "true",
-                            "format": "image/png"
-                        }
-                    })
-                });
-
-                
-
-                https://demo.bccvl.org.au/_visualiser/api/wms/1/wms?
-                SERVICE=WMS&
-                VERSION=1.3.0&
-                REQUEST=GetFeatureInfo&
-                layers=DEFAULT&
-                DATA_URL=https%3A%2F%2Fswift.rc.nectar.org.au%3A8888%2Fv1%2FAUTH_0bc40c2c2ff94a0b9404e6f960ae5677%2Faustralia_5km%2Fcurrent.zip%23current%2Fdata%2Fbioclim_16.tif&
-                CRS=EPSG%3A3857&
-                STYLES=&WIDTH=256&HEIGHT=256&BBOX=15028131.257091936%2C-5009377.085697312%2C17532819.79994059%2C-2504688.5428486564&query_layers=DEFAULT&x=0&y=0
-
-                */
-
-                // http://127.0.0.1:8201/bccvl/datasets/environmental/mini_current_50to00_.3/@…47.66422843%2C-3757032.814272985%2C17532819.799940594%2C-3130860.678560821
-
-               var url = layer
+                /**
+                 * Build request
+                 */
+                var request = layer
                         .getSource()
                         .getGetFeatureInfoUrl(
                             evt.coordinate,
                             evt.map.getView().getResolution(),
                             evt.map.getView().getProjection(),
                             {
-                                'INFO_FORMAT': 'text/plain',
+                                'INFO_FORMAT': 'application/vnd.ogc.gml',
                                 'QUERY_LAYERS': 'DEFAULT'
                             }
                         );
 
-                // add host to request, it can't seem to get it from the obj
-                url = 'https://192.168.100.200'+ url;
-                console.log(url);
-
-                $.get(url, function (data) {
+                /**
+                 * Perform request, and functions after response
+                 */
+                $.get(request, function (data) {
                     console.log(data);
+
+                    var features = parser.readFeatures(data);
+
+                    var content = [];
+                    if(features.length > 0) {
+
+                        $.each(features, function(i, feature){
+                            content[i] = feature.getProperties();
+                        });
+
+                    } else {
+                        content.push({"empty": "No data for this location."});
+                    }
+
+                    $.each(content, function(i, obj){
+                        // setup location
+                        if (obj['lat'] && obj['lon']){
+                            // to do: round to reasonable number of decimal places
+                            obj['location'] = obj['lat']+', '+obj['lon'];
+                        } else if (obj['x'] && obj['y']){
+                            // to do: pull the 'from' projection from the gml response
+                            // to do: round to reasonable number of decimal places
+                            // to do: split and join for consistency
+                            obj['location'] = ol.proj.transform([obj['x'], obj['y']], 'EPSG:3857', 'EPSG:4326');
+                        }
+                        // append location, if it exists
+                        if (obj['location']) 
+                            popupContent.prepend('<p><strong>Location:</strong> '+obj['location']+'<p>');
+                        
+                        // append species, if it exists
+                        if (obj['species']) 
+                            popupContent.append('<p><strong>Species:</strong> '+obj['species']+'</p>');
+                        
+                        // append value, if it exists
+                        if (obj['value_0'])
+                            popupContent.append('<p><strong>Value:</strong> '+obj['value_0']+'</p>');
+
+                        // if empty, say 'no data'
+                        if (obj['empty'])
+                            popupContent.append('<p>'+obj['empty']+'</p>');
+
+                    });
+
+                    map.addOverlay(popup);
+
+                    popup.setPosition(evt.coordinate);
+
                 });
 
                 

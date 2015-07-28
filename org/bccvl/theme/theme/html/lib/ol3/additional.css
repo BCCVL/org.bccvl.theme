@@ -296,3 +296,51 @@ div.olControlAttribution {
   top: 0;
   left: 0;
 }
+
+.ol-popup {
+  position: absolute;
+  background-color: rgba(0,0,0,0.7);
+  padding: 16px 14px 8px 8px;
+  bottom: 7px;
+  left: -14px;
+}
+.ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.ol-popup:after {
+  border-top-color: rgba(0,0,0,0);
+  border-width: 5px;
+  left: 14px;
+  margin-left: -5px;
+}
+.ol-popup:before {
+  border-top-color: rgba(0,0,0,.7);
+  border-width: 6px;
+  left: 14px;
+  margin-left: -6px;
+}
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  color:white;
+  top: 2px;
+  right: 6px;
+}
+.ol-popup-closer:after {
+  content: "✖";
+}
+.ol-popup-closer:hover {
+  color:rgba(255,255,255,.5);
+}
+.ol-popup-content p {
+    color: white;
+    font-size: 0.9em;
+    line-height: 1.1em;
+    margin-bottom:.2em;
+}
