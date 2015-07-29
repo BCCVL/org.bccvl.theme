@@ -250,6 +250,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         vizcommon.getPointInfo(evt);
                     });
 
+                    map.on('pointermove', function(evt) {
+                        vizcommon.hoverHandler(evt);
+                    });
+
                 }});
 
             container.addClass('active');

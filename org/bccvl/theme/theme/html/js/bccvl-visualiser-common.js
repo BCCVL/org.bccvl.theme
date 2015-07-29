@@ -371,7 +371,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 // x or i           Yes         X ordinate of query point on map, in pixels. 0 is left side. i is the parameter key used in WMS 1.3.0.
                 // y or j           Yes         Y ordinate of query point on map, in pixels. 0 is the top. j is the parameter key used in WMS 1.3.0.
                 // exceptions       No          Format in which to report exceptions. The default value is application/vnd.ogc.se_xml.
-
+                
+                // check for any current requests and kill
+                if (get)
+                    get.abort();
 
                 // get back to familiar object names.
                 var map = evt.map;
@@ -418,6 +421,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                  * Get info about map and current view
                  */
                 var view = map.getView();
+                var viewProj = view.getProjection();
                 var layer; 
 
                 map.getLayers().forEach(function(lgr) {
@@ -457,8 +461,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 /**
                  * Perform request, and functions after response
                  */
-                $.get(request, function (data) {
-                    console.log(data);
+                var get = $.get(request, function (data) {
 
                     var features = parser.readFeatures(data);
 
@@ -476,13 +479,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     $.each(content, function(i, obj){
                         // setup location
                         if (obj['lat'] && obj['lon']){
-                            // to do: round to reasonable number of decimal places
-                            obj['location'] = obj['lat']+', '+obj['lon'];
+                            // round to reasonable number of decimal places
+                            var lat = Math.round((obj['lat']*10000)) / 10000;
+                            var lon = Math.round((obj['lon']*10000)) / 10000;
+                            obj['location'] = lat+', '+lon;
                         } else if (obj['x'] && obj['y']){
-                            // to do: pull the 'from' projection from the gml response
-                            // to do: round to reasonable number of decimal places
-                            // to do: split and join for consistency
-                            obj['location'] = ol.proj.transform([obj['x'], obj['y']], 'EPSG:3857', 'EPSG:4326');
+                            // projection pulled from view obj above
+                            // split and join for consistency
+                            var coords = ol.proj.transform([obj['x'], obj['y']], viewProj.code_, 'EPSG:4326');
+                            // round to reasonable number of decimal places
+                            var lat = Math.round((coords[0]*10000)) / 10000;
+                            var lon = Math.round((coords[1]*10000)) / 10000;
+                            obj['location'] = lat+', '+lon;
                         }
                         // append location, if it exists
                         if (obj['location']) 
@@ -508,10 +516,27 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
 
                 });
 
-                
-                //return info;
-            }
+            },
 
+            hoverHandler: function(evt){
+                var map = evt.map;
+                if (evt.dragging) {
+                    return;
+                }
+                var pixel = map.getEventPixel(evt.originalEvent);
+                var hit = map.forEachLayerAtPixel(pixel, function(layer) {
+                    return true;
+                },
+                    this,
+                    function(layer){
+                        if (layer.get('type') != 'base')
+                            return true;
+                    }
+
+                );
+                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+
+            }
         };
         return bccvl_common;
     }
