@@ -339,7 +339,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
                          url: visualiserWMS,
                          params: wms_params,
-                         serverType: ol.source.wms.ServerType.MAPSERVER
+                         serverType: 'mapserver'
                     })),
                     // layer switcher attributes
                     title: title,
@@ -386,7 +386,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     map.removeOverlay(overlay); 
                 });
 
-                var container = $(map.viewport_.parentElement);
+                var container = $('#'+map.getTarget());
 
                 var popupContainer = $('<div />', { 'class': 'ol-popup' });
                 var popupContent = $('<div />', { 'class': 'ol-popup-content' });
@@ -409,7 +409,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                  * Create an overlay to anchor the popup to the map.
                  */
                 var popup = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
-                  element: popupContainer,
+                  // have to target the dom node inside the jquery obj
+                  element: popupContainer[0],
                   autoPan: true,
                   autoPanAnimation: {
                     duration: 250
@@ -486,7 +487,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                         } else if (obj['x'] && obj['y']){
                             // projection pulled from view obj above
                             // split and join for consistency
-                            var coords = ol.proj.transform([obj['x'], obj['y']], viewProj.code_, 'EPSG:4326');
+                            var coords = ol.proj.transform([obj['x'], obj['y']], viewProj.getCode(), 'EPSG:4326');
                             // round to reasonable number of decimal places
                             var lat = Math.round((coords[0]*10000)) / 10000;
                             var lon = Math.round((coords[1]*10000)) / 10000;
