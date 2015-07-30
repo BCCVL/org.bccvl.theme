@@ -10,6 +10,7 @@
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/dataset-import.xml" />
+    <xi:include href="rules/dataset-collections.xml" />
     <xi:include href="rules/experiment-list.xml" />
     <xi:include href="rules/experiment-results.xml" />
     <xi:include href="rules/experiment-overlay.xml" />

@@ -1,0 +1,18 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- DATASET LIST ============================================ -->
+    <rules if-path="datasets_collection_list/" >
+
+      <theme href="html/dataset-collections.html" />
+
+      <!-- Datasets sub navigation
+      <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/> -->
+
+      <!-- Dataset Table -->
+      <replace css:theme-children="#datasets-collection-listing" css:content-children="#datasets-collection-listing" />
+
+    </rules>
+</rules>

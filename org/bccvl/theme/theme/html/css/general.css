@@ -1664,6 +1664,33 @@ body.home>.white-bg {
     font-family: "OpenSansSemibold";
     margin-bottom:.5em;
 }
+.bccvl-dataset-collection {
+    background: #ecf0f1;
+    color:white;
+    border-radius: 5px;
+    margin-bottom:1.5em;
+}
+.bccvl-dataset-collection .collection-info {
+    padding: .35em 20px 20px;
+    line-height: 1em;
+}
+.bccvl-dataset-collection .collection-info h3 {
+    line-height: 1.1em;
+    font-size: 1.6em;
+    font-family: "OpenSansRegular"
+}
+.bccvl-dataset-collection .collection-info p {
+    margin:1em 0;
+}
+.bccvl-datasetcollections section.listing {
+    display: block;
+    clear: left;
+}
+.bccvl-datasetcollections h2 {
+    font-family: "OpenSansSemibold";
+    color: #333;
+    font-size: 1.5em;
+}
 .filter-bar {
     padding: 1.5em 1.5em .5em 1.5em;
 }
