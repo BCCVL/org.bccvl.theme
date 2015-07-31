@@ -159,6 +159,13 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
 
             var map = this.getMap();
 
+            // remove any existing popups or overlays 
+                
+            map.getOverlays().forEach(function(overlay) {
+                overlay.setPosition(undefined);
+                map.removeOverlay(overlay); 
+            });
+
             // if its a single layer map, as set in the options, only allow one visible layer
             if (singleOverlay) {
                 if( lyr.get('type') !== 'base') {

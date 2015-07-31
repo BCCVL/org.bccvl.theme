@@ -4,7 +4,7 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize'],
     function($, viz, vizmap, sharing, editmodal, removedataset) {
 
         // ==============================================================
@@ -21,6 +21,19 @@ define(
                     2: { sorter: false } // should be link column
                 },
                 sortList: [[0,1]]
+            });
+
+            /* This is a temporary sorting method, will do it within template later
+            $('select.groupme').each(function(){
+                $(this).find('option').each(function(){
+                    var val = $(this).val();
+                    var type = val.substr(0, val.indexOf('-'));
+                    console.log(type);
+                });
+            });*/
+
+            $('select.selectize').selectize({
+                plugins: ['remove_button']
             });
 
             // duplicate top bar filters as hidden fields in the filters form

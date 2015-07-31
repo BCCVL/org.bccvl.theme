@@ -390,6 +390,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
 
                 var popupContainer = $('<div />', { 'class': 'ol-popup' });
                 var popupContent = $('<div />', { 'class': 'ol-popup-content' });
+                    popupContent.append('<p><em>Requesting data ...</em></p>');
                 var popupCloser = $('<a />', { 'class': 'ol-popup-closer', href: '#' });
 
                     popupContainer.append(popupCloser, popupContent);
@@ -417,6 +418,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                   }
                 }));
 
+                // add popup with 'loading' for long requests
+
+                map.addOverlay(popup);
+
+                popup.setPosition(evt.coordinate);
                     
                 /**
                  * Get info about map and current view
@@ -464,6 +470,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                  */
                 var get = $.get(request, function (data) {
 
+                    popupContent.empty();
+
                     var features = parser.readFeatures(data);
 
                     var content = [];
@@ -510,10 +518,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                             popupContent.append('<p>'+obj['empty']+'</p>');
 
                     });
-
-                    map.addOverlay(popup);
-
-                    popup.setPosition(evt.coordinate);
 
                 });
 

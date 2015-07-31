@@ -1,6 +1,7 @@
 
 @import url('fonts.css');
 @import url('../lib/fontawesome/css/font-awesome.min.css');
+@import url('../lib/selectize/selectize.default.css');
 @import url('../lib/ol3/ol.css');
 @import url('../lib/ol3/layerswitcher/ol3-layerswitcher.css');
 @import url('../lib/ol3/additional.css');
@@ -1699,32 +1700,34 @@ body.home>.white-bg {
     font-size: 1.5em;
 }
 .filter-bar {
-    padding: 1.5em 1.5em .5em 1.5em;
+    padding: 1.5em 1.5em 1em 1.5em;
 }
 .filter {
-    margin:.5em 0;
+    margin:1em 0;
+    padding-bottom:.5em;
     border-bottom: 1px solid rgba(0,0,0,.1);
-}
-.filter:last-of-type {
-    border-bottom: 0px solid rgba(0,0,0,.1);
 }
 .filter ul {
     list-style-type: none;
     padding-left:0;
     margin-left:0;
 }
+.filter ul li {
+    vertical-align: top;
+}
 .filter input[type="checkbox"], .filter label {
     display:inline-block;
 }
 .filter input[type="checkbox"] {
-    margin-right:.4em;
-    margin-top:0;
+    margin: 0 6px 0 0;
 }
 .filter label {
     font-size:1em;
     display:block;
     padding:.2em .5em;
-    margin-bottom:1px;
+    line-height: 1.3em;
+    text-indent: -18px;
+    padding-left: 24px;
 }
 .filter label.True, .filter label:hover {
     background: rgba(0, 159, 227, .65);
