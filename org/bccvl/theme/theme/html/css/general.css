@@ -1674,6 +1674,9 @@ body.home>.white-bg {
     padding: .35em 20px 20px;
     line-height: 1em;
 }
+.bccvl-dataset-collection:nth-child(3n+2) {
+    clear:left;
+}
 .bccvl-dataset-collection .collection-info h3 {
     line-height: 1.1em;
     font-size: 1.6em;
@@ -1681,6 +1684,10 @@ body.home>.white-bg {
 }
 .bccvl-dataset-collection .collection-info p {
     margin:1em 0;
+    line-height:1.2em;
+}
+.bccvl-dataset-collection .collection-info p em {
+    color:rgba(0,0,0,.5);
 }
 .bccvl-datasetcollections section.listing {
     display: block;

@@ -8,8 +8,8 @@
 
       <theme href="html/dataset-collections.html" />
 
-      <!-- Datasets sub navigation
-      <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/> -->
+      <!-- Datasets sub navigation -->
+      <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
 
       <!-- Dataset Table -->
       <replace css:theme-children="#datasets-collection-listing" css:content-children="#datasets-collection-listing" />
