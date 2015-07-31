@@ -111,9 +111,9 @@
                 </optgroup>
               </select>
             </div>
-
-            <a href="#" tal:attributes="href context_state/current_base_url"><i class="fa fa-times-circle" style="margin-right:.4em;"></i>Reset Filters</a>
             <button type="submit" name="datasets.filter.submit" id="datasets-filter-submit" class="btn btn-primary pull-right">Apply Filters <i class="fa fa-chevron-circle-right"></i></button>
+            <a href="#" tal:attributes="href context_state/current_base_url"><i class="fa fa-times-circle" style="margin-right:.4em;"></i>Reset Filters</a>
+            
           </div>
         </form>
       </div>
@@ -147,8 +147,15 @@
 
         <div metal:use-macro="context/batch_macros/macros/navigation" />
 
-        <div class="alert" tal:condition="not: batch">
-          <p>No matches found</p>
+        <div class="alert alert-info" tal:condition="not: batch">
+          <h3>No matching datasets.</h3>
+          <p>To find datasets, enter <strong>search terms</strong> or select dataset <strong>genres</strong>, <strong>sources</strong> or <strong>collections</strong> using the fields in the left menu.</p>
+          <p>If you cannot find a suitable dataset, you can 
+            <a href="#"
+             tal:attributes="href string:${context/absolute_url}/datasets_upload_view">upload your own</a> or you can 
+            <a href="#" 
+             tal:attributes="href string:${context/absolute_url}/datasets_import_view" target="_blank">import datasets</a> available in partnering repositories.
+          </p>
         </div>
 
         <tal:condition tal:condition="batch">
