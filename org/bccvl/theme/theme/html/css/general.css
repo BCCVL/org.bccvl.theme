@@ -2249,3 +2249,7 @@ form.plone-to-bootstrap-form .widget label span {
 #user-info-form {
     padding-top:2em;
 }
+.bccvl-algorithmtable label {
+    color:#0088cc;
+    font-family: "OpenSansRegular";
+}

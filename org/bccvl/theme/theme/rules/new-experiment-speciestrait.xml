@@ -47,7 +47,7 @@
                             <xsl:attribute name="for">
                                 <xsl:value-of select="@id" />
                             </xsl:attribute>
-                            <h1><xsl:copy-of select="string(../span/text())" /></h1>
+                            <xsl:copy-of select="string(../span/text())" />
                         </xsl:element>
                     </td>
                     <td class="bccvl-table-controls">

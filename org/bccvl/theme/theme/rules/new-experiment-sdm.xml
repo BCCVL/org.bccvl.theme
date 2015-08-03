@@ -30,7 +30,7 @@
                   <td class="bccvl-table-label">
                     <xsl:element name="label">
                       <xsl:attribute name="for"><xsl:value-of select="@id"/></xsl:attribute>
-                      <h1><xsl:value-of select="following-sibling::span[@class='label']/text()"/></h1>
+                      <xsl:value-of select="following-sibling::span[@class='label']/text()"/>
                     </xsl:element>
                   </td>
                   <td class="bccvl-table-controls">
