@@ -311,7 +311,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             },
 
             // create new OL layer from layer metadata data object
-            createLayer: function(data, layer, title, type, visible, styleObj, legend) {
+            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend) {
                 // data ... dataset metadata
                 // layer ... layer metadata
                 // title ... display title
@@ -344,7 +344,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     // layer switcher attributes
                     title: title,
                     type: type, // 'base', 'wms', 'wms-occurrence', 'layers'?
-                    // custom data on OL layer object                
+                    // custom data on OL layer object
+                    uuid: uuid,
                     bccvl: { 
                         data: data,
                         layer: layer, // layer metadata

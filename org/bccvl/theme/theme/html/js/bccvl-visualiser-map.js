@@ -162,7 +162,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         // TODO: use data.title (needs to be populated)
                         var layerTitle = data.description || 'Data Overlay';
                         // there is no legend for csv data
-                        var newLayer = vizcommon.createLayer(data, data, layerTitle, 'wms-occurrence', true);
+                        var newLayer = vizcommon.createLayer(uuid, data, data, layerTitle, 'wms-occurrence', true);
                         // add layer to layers group
                         visLayers.getLayers().push(newLayer);
                     } else {
@@ -213,7 +213,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 id, styleObj.minVal, styleObj.maxVal, 20);
                             
                             // create layer
-                            var newLayer = vizcommon.createLayer(data, layer, layerTitle, 'wms', isVisible, styleObj, legend);
+                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend);
                             // add new layer to layer group
                             visLayers.getLayers().push(newLayer);
                             // if layer is visible we have to show legend as well
