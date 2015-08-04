@@ -10,11 +10,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
-        $(function () {
-            renderBase($('.bccvl-preview-pane:visible').attr('id'));
-            createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
-        });
-
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             var viztype = $(this).data('viz-type') || 'auto';
@@ -114,6 +109,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             }
         ];
 
+
+        renderBase($('.bccvl-preview-pane:visible').attr('id'));
+        createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
+        appendBlendControl($('.bccvl-preview-pane:visible').attr('id'));
+
         function createLegendBox(id){
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
             $('.olLegend').remove();
@@ -132,6 +132,42 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $('.olLegend').append('<label data-uuid="'+uuid+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
                 $('.olLegend').show(0);
             }
+        }
+
+        function appendBlendControl(id){
+            $('#'+id+' .ol-viewport .olLegend').append('<label for="blend-mode" class="mode">Mode: </label>'+
+                        '<select id="blend-mode" class="form-control" >'+
+                            '<optgroup label="Common">'+
+                                '<option selected>darken (default)</option>'+
+                                '<option>lighten</option>'+
+                                '<option>source-over</option>'+
+                            '</optgroup>'+
+                            '<optgroup label="Experimental">'+
+                                '<option>source-in</option>'+
+                                '<option>source-out</option>'+
+                                '<option>source-atop</option>'+
+                                '<option>destination-over</option>'+
+                                '<option>destination-in</option>'+
+                                '<option>destination-out</option>'+
+                                '<option>destination-atop</option>'+
+                                '<option>lighter</option>'+
+                                '<option>copy</option>'+
+                                '<option>xor</option>'+
+                                '<option>multiply</option>'+
+                                '<option>screen</option>'+
+                                '<option>overlay</option>'+
+                                '<option>color-dodge</option>'+
+                                '<option>color-burn</option>'+
+                                '<option>hard-light</option>'+
+                                '<option>soft-light</option>'+
+                                '<option>difference</option>'+
+                                '<option>exclusion</option>'+
+                                '<option>hue</option>'+
+                                '<option>saturation</option>'+
+                                '<option>color</option>'+
+                                '<option>luminosity</option>'+
+                            '</optgroup>'+
+                        '</select>');
         }
 
         // RENDER EMPTY MAP
@@ -201,6 +237,58 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 }, vizcommon.exportAsImage);
         }
 
+        // Various helper methods and event handlers
+        /**
+         * This method sets the globalCompositeOperation to the value of the select
+         * field and it is bound to the precompose event of the layers.
+         *
+         * @param {ol.render.Event} evt The render event.
+         */
+        var setBlendModeFromSelect = function(evt) {
+          evt.context.globalCompositeOperation = select.value;
+        };
+
+
+        /**
+         * This method resets the globalCompositeOperation to the default value of
+         * 'source-over' and it is bound to the postcompose event of the layers.
+         *
+         * @param {ol.render.Event} evt The render event.
+         */
+        var resetBlendModeFromSelect = function(evt) {
+          evt.context.globalCompositeOperation = 'darken';
+        };
+
+
+        /**
+         * Bind the pre- and postcompose handlers to the passed layer.
+         *
+         * @param {ol.layer.Vector} layer The layer to bind the handlers to.
+         */
+        var bindLayerListeners = function(layer) {
+          layer.on('precompose', setBlendModeFromSelect);
+          layer.on('postcompose', resetBlendModeFromSelect);
+        };
+
+
+        /**
+         * Unind the pre- and postcompose handlers to the passed layers.
+         *
+         * @param {ol.layer.Vector} layer The layer to unbind the handlers from.
+         */
+        var unbindLayerListeners = function(layer) {
+          layer.un('precompose', setBlendModeFromSelect);
+          layer.un('postcompose', resetBlendModeFromSelect);
+        };
+
+        // Get the form elements and bind the listeners
+        var select = document.getElementById('blend-mode');
+
+        // Rerender map when blend mode changes
+        select.addEventListener('change', function() {
+            map.render();
+        });
+
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function addNewLayer(uuid, url, id, type, layerName){
@@ -218,14 +306,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
-
+                    var newLayer;
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ($.isEmptyObject(data.layers)) {
                         // occurrence data 
                         
                         // TODO: use data.title (needs to be populated)
                         layerName = layerName || data.filename || 'Data Overlay';
-                        var newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
+                        newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
                         addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
@@ -242,7 +330,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             var max = vizcommon.roundUpToNearestMagnitude(layer.max);
                             var styleObj = $.extend({}, styleArray[numLayers]);
                             styleObj.maxVal = max;
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
+                            newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
 
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);
                             
@@ -250,10 +338,16 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             visLayers.getLayers().push(newLayer);
 
                         });
+
+                        bindLayerListeners(newLayer);
                     }
+
                     map.render();
                 }
             });
+
+
+            
         }
     }
 

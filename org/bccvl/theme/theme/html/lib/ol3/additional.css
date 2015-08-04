@@ -205,6 +205,21 @@ div.olControlAttribution {
     margin-bottom: 2px;
     cursor:default;
 }
+.olLegend select {
+    padding: 1px 2px;
+    float: left;
+    font-size: 1em;
+    line-height: 1em;
+    width: 140px;
+    height: 2em;
+}
+.olLegend label.mode {
+    min-width: auto;
+    font-weight: bold;
+    color: rgba(0,0,0,.6);
+    margin-right: 5px;
+    line-height: 1.8em;
+}
 .olControlLayerSwitcher .minimizeDiv {
     background-color: rgba(0, 60, 136, 0.5);
 }

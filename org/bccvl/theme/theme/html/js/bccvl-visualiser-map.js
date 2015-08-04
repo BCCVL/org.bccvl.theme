@@ -97,11 +97,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 layers: []
             });
 
-            // map with base layers
-            map = new ol.Map({
-                target: id,
-                layers: [
-                    new ol.layer.Group({
+            var baseLayers = new ol.layer.Group({
                         'title': 'Base maps',
                         layers: [
                             new ol.layer.Tile({
@@ -118,7 +114,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 source: new ol.source.MapQuest({layer: 'sat'})
                             })
                         ]
-                    }),
+                    })
+
+            // map with base layers
+            map = new ol.Map({
+                target: id,
+                layers: [
+                    baseLayers,
                     visLayers
                 ],
                 view: new ol.View({
@@ -226,14 +228,41 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     layerSwitcher.renderPanel();
                     layerSwitcher.showPanel();
 
+
+                    var compositeModeByBase = function(base){
+                        var canvas = $(map.getViewport()).find('canvas')[0];
+                        var context = canvas.getContext("2d");
+                        if (base.get('title') == 'Satellite'){
+                            context.globalCompositeOperation = "lighten";
+                        } else {
+                            context.globalCompositeOperation = "darken";
+                        }
+                    }
+
+
                     visLayers.getLayers().forEach(function(lyr, idx, arr) {
+
                         lyr.on('change:visible', function(e){
                             if (lyr.getVisible()){
+                                 baseLayers.getLayers().forEach(function(baseLayer) {
+                                    if (baseLayer.getVisible()){
+                                        compositeModeByBase(baseLayer);
+                                    }
+                                });
                                 var bccvl = lyr.get('bccvl');
                                 // remove existing legend
                                 $('.olLegend').remove();
                                 // add new legend to dom tree
                                 $('#'+id+' .ol-viewport').append(bccvl.legend);
+                            }
+                        });
+                    });
+
+
+                    baseLayers.getLayers().forEach(function(baseLayer) {
+                        baseLayer.on('change:visible', function(evt){
+                            if (baseLayer.getVisible()){
+                                compositeModeByBase(baseLayer);
                             }
                         });
                     });
