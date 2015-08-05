@@ -46,72 +46,77 @@
             <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
             <!-- Algorithm parameter fieldsets -->
             <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
-              
+              <div id="bccvl-experimentresults-table" >
                 <tal:block tal:repeat="result context/@@folderListing">
-                <table id="bccvl-experimentresults-table" class="table bccvl-experimenttable">
-                  <thead>
-                  <tr tal:attributes="class result/@@dataset_tools/job_state|string:info">
-                    <td>
-                      <h5><tal:replace tal:replace="result/Title">Result
-                      Title</tal:replace></h5>
-                      <!-- FIXME: get a better condition or use
-                           adapters -->
-                      <ul>
-                      <tal:block tal:condition="python: 'function' in result.job_params">
-                      
-                        <li tal:condition="result/job_params/function">
-                          <strong>Algorithm: </strong>
-                          <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
-                        </li>
-                        <li tal:condition="result/@@dataset_tools/job_state">
-                          <strong>State: </strong>
-                          <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
-                        <!-- TODO: species in job_params/species_distribution_models -->
-                        <li>
-                          <strong>Emissions Scenario: </strong>
-                          <tal:replace tal:replace="result/job_params/emsc">bioclim</tal:replace>
-                        </li>
-                        <li>
-                          <strong>Circulation Model: </strong>
-                          <tal:replace tal:replace="result/job_params/gcm">bioclim</tal:replace>
-                        </li>
-                        <li>
-                          <strong>Year: </strong>
-                          <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
-                        </li>
-                        <li>
-                          <strong>State: </strong>
-                          <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
-                        </li>
-                      </tal:block>
-                      </ul>
-                    </td>
-                    <td class="bccvl-table-controls">
-                      <a class="fine btn btn-mini btn-inverse export-btn"
-                         title="Export this result"
-                         href="#exporturl"
-                         tal:attributes="href string:${result/getURL}/@@oauthselect?ajax_load=1">
-                        <i class="fa fa-cloud-upload icon-link"></i> Export
-                      </a>
-                      <a class="fine btn btn-mini btn-info download-btn"
-                         title="Download this result"
-                         href="#downloadurl"
-                         tal:attributes="href string:${result/getURL}/@@resultdownload;">
-                        <i class="fa fa-download icon-link"></i> Download
-                      </a>
-                    </td>
-                  </tr>
-                  <thead>
-                  <tbody>
+
+                <div class="bccvl-experimenttable-accordion">
+
+                  <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
+                      tal:attributes="data-target string:#${result/getId}-body">
+                    <div tal:attributes="class result/@@dataset_tools/job_state|string:info;">
+                      <div class="bccvl-table-controls">
+                          <a class="fine btn btn-mini btn-inverse export-btn"
+                             title="Export this result"
+                             href="#exporturl"
+                             tal:attributes="href string:${result/getURL}/@@oauthselect?ajax_load=1">
+                            <i class="fa fa-cloud-upload icon-link"></i> Export
+                          </a>
+                          <a class="fine btn btn-mini btn-info download-btn"
+                             title="Download this result"
+                             href="#downloadurl"
+                             tal:attributes="href string:${result/getURL}/@@resultdownload;">
+                            <i class="fa fa-download icon-link"></i> Download
+                          </a>
+                        </div>
+                        <div class="experiment-details">
+                          <h5><tal:replace tal:replace="result/Title">Result
+                          Title</tal:replace></h5>
+                          <!-- FIXME: get a better condition or use
+                               adapters -->
+                          <ul>
+                          <tal:block tal:condition="python: 'function' in result.job_params">
+                          
+                            <li tal:condition="result/job_params/function">
+                              <strong>Algorithm: </strong>
+                              <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
+                            </li>
+                            <li tal:condition="result/@@dataset_tools/job_state">
+                              <strong>State: </strong>
+                              <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                            </li>
+                          </tal:block>
+                          <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
+                            <!-- TODO: species in job_params/species_distribution_models -->
+                            <li>
+                              <strong>Emissions Scenario: </strong>
+                              <tal:replace tal:replace="result/job_params/emsc">bioclim</tal:replace>
+                            </li>
+                            <li>
+                              <strong>Circulation Model: </strong>
+                              <tal:replace tal:replace="result/job_params/gcm">bioclim</tal:replace>
+                            </li>
+                            <li>
+                              <strong>Year: </strong>
+                              <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
+                            </li>
+                            <li>
+                              <strong>State: </strong>
+                              <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                            </li>
+                          </tal:block>
+                          </ul>
+                        </div>
+                        
+                    </div>
+                  </div>
+
+                  <div class="collapse" tal:attributes="id string:${result/getId}-body">
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
-                     <tr>
-                       <td class="bccvl-table-label"
+                    <div class="row-fluid">
+                       <div class="span9 bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
-                         <p class="lead" tal:content="item/Title">Item Title</p>
+                         <p tal:content="item/Title">Item Title</p>
                          <p><span tal:content="item/Description">Dataset short description</span>
                          <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
                          <span tal:condition="md/scientificname|nothing">species:<i tal:content="md/scientificname"></i></span>
@@ -120,8 +125,8 @@
                          <span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span></p>
                          <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
 
-                       </td>
-                       <td class="bccvl-table-controls"
+                       </div>
+                       <div class="bccvl-table-controls span3"
                            tal:define="item_obj item/getObject;
                                        dlinfo item_obj/dataset_tools/get_download_info;
                                        downloadurl dlinfo/url;
@@ -147,11 +152,11 @@
                                            in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                             <i class="icon-eye-open icon-link icon-white"></i>
                          </a>
-                       </td>
-                     </tr>
+                       </div>
+                    </div>
                   </tal:block>
-                  </tbody>
-                </table>
+                  </div> <!-- collapse -->
+                </div>
                 </tal:block>
               
         </div>
