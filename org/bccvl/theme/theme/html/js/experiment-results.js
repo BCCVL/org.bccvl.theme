@@ -27,8 +27,12 @@ define(
                 $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
                 $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
             }
-
-
+            
+            $('.bccvl-experimenttable-accordion').on('hide', function(){
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
+            }).on('show', function(){
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
+            });
             
 
             $('a.export-btn').click( function(event ) {

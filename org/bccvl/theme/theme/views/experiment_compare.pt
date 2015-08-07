@@ -23,28 +23,27 @@
         <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
 
         <div id="bccvl-experiment-compare">
-            <table id="bccvl-experimentresults-table" class="table table-hover compare-table">
-              <thead>
-                <tr><th colspan="2">Experiment Inputs</th></tr>
-              </thead>
-              <tbody>
+            <div id="bccvl-experimentresults-table">
+              <h5 class="results-title">Experiment Inputs</h5>
+              <div class="bccvl-experimenttable-accordion accordion-group">
                 <!-- occurrence/absence dataset -->
                 <tal:block tal:repeat="uuid python:(context.species_occurrence_dataset, context.species_absence_dataset)"
                            tal:condition="python: context.portal_type=='org.bccvl.content.sdmexperiment'">
-                  <tr tal:define="result python:pc.searchResults(UID=uuid);
+                  <div class="row-fluid experiment-result-contents"
+                       tal:define="result python:pc.searchResults(UID=uuid);
                                   item python: result[0] if result else nothing;
                                   item_obj item/getObject|nothing;
                                   dataset_tools nocall:item_obj/dataset_tools|nothing"
                       tal:condition="uuid">
-                    <td class="bccvl-table-label"
+                    <div class="span9 bccvl-table-label"
                         tal:define="md dataset_tools/metadata">
-                      <p class="lead" tal:content="item/Title">Item Title</p>
+                      <h5 tal:content="item/Title">Item Title</h5>
                       <p><span tal:condition="item/Description"
                         tal:content="item/Description">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
                       <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span></p>
-                    </td>
-                    <td class="bccvl-table-controls"
+                    </div>
+                    <div class="bccvl-table-controls span3"
                         tal:define="dlinfo dataset_tools/get_download_info;
                                     downloadurl dlinfo/url;
                                     visurl python: dlinfo['alturl'][0]">
@@ -63,53 +62,62 @@
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>
                       </a>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 </tal:block>
                 <!-- TODO: add climate and enviro layers -->
 
-              </tbody>
+              </div>
 
-              <thead>
-                <tr><th colspan="2">Experiment Results</th></tr>
-              </thead>
-              <tbody>
-                <tal:block tal:repeat="result context/@@folderListing">
-                  <tr class="info" >
-                    <td>
-                      <p class="lead"><tal:replace tal:replace="result/Title">Result
-                      Title</tal:replace></p>
-                      <!-- FIXME: get a better condition or use
-                           adapters -->
-                      <tal:block tal:condition="python: 'function' in result.job_params">
-                        <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
-                      </tal:block>
-                      <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
-                        <p><span>Emissions Scenario: <tal:replace
-                                       tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
-                        <span>Circulation Model: <tal:replace
-                                       tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
-                        <span>Year: <tal:replace
-                                  tal:replace="result/job_params/year">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
-                      </tal:block>
-                    </td>
-                    <td class="bccvl-table-controls">
-                      <a class="fine"
-                         title="Download this result"
-                         href="#downloadurl"
-                         tal:attributes="href string:${result/getURL}/@@resultdownload;">
-                        <i class="icon-download-alt icon-link"></i>
-                      </a>
-                    </td>
-                  </tr>
+              <h5 class="results-title">Visualisable Experiment Results</h5>
+              <tal:block tal:repeat="result context/@@folderListing">
+                <div class="bccvl-experimenttable-accordion accordion-group">
+                  <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
+                      tal:attributes="data-target string:#${result/getId}-body">
+                    <div tal:attributes="class result/@@dataset_tools/job_state|string:info;">
+                      <div class="bccvl-table-controls">
+                        <a class="fine btn btn-mini btn-info download-btn"
+                             title="Download this result"
+                             href="#downloadurl"
+                             tal:attributes="href string:${result/getURL}/@@resultdownload;">
+                            <i class="fa fa-download icon-link"></i> Download
+                          </a>
+                        <a class="fine btn btn-mini btn-default expand-btn"
+                             title="Expand results"
+                             href="javascript:void(0)"
+                             data-toggle="collapse" 
+                             tal:attributes="data-target string:#${result/getId}-body">
+                            <i class="fa fa-chevron-circle-down icon-link"></i> More
+                          </a>
+                      </div>
+                      <div class="experiment-details">
+                        <h5><tal:replace tal:replace="result/Title">Result
+                        Title</tal:replace></h5>
+                        <!-- FIXME: get a better condition or use
+                             adapters -->
+                        <tal:block tal:condition="python: 'function' in result.job_params">
+                          <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span>
+                          <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                        </tal:block>
+                        <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
+                          <p><span>Emissions Scenario: <tal:replace
+                                         tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
+                          <span>Circulation Model: <tal:replace
+                                         tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
+                          <span>Year: <tal:replace
+                                    tal:replace="result/job_params/year">bioclim</tal:replace></span>
+                          <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                        </tal:block>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapse" tal:attributes="id string:${result/getId}-body">
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(Title='tif');">
-                     <tr>
-                       <td class="bccvl-table-label"
+                     <div class="row-fluid experiment-result-contents">
+                       <div class="span9 bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
-                         <p><strong><span tal:content="item/Title">Item Title</span></strong></p>
+                         <h5><span tal:content="item/Title">Item Title</span></h5>
                          <p><span tal:content="item/Description">Dataset short description</span>
                          <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
                          <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
@@ -118,8 +126,8 @@
                          <span tal:condition="md/resolution|nothing">Resolution: <i tal:content="md/resolution"></i></span></p>
                          <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
 
-                       </td>
-                       <td class="bccvl-table-controls" width="20%"
+                       </div>
+                       <div class="bccvl-table-controls span3"
                            tal:define="item_obj item/getObject;
                                        dlinfo item_obj/dataset_tools/get_download_info;
                                        downloadurl dlinfo/url;
@@ -149,12 +157,14 @@
                             <i class="icon-eye-open icon-link icon-white"></i>
                          </a>
 
-                       </td>
-                     </tr>
+                       </div>
+                     </div>
                   </tal:block>
+                  </div><!-- collapse -->
+
+                </div> <!-- accordion-group -->
                 </tal:block>
-              </tbody>
-            </table>
+
         </div>
     </metal:main>
 

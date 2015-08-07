@@ -8,6 +8,7 @@ define(
         $(function() {
             sharing.init();
             removeexperiment.init();
+
             $('.bccvl-experimenttable').tablesorter({
                 headers: {
                     4: {

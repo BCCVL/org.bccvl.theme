@@ -49,7 +49,7 @@
               <div id="bccvl-experimentresults-table" >
                 <tal:block tal:repeat="result context/@@folderListing">
 
-                <div class="bccvl-experimenttable-accordion">
+                <div class="bccvl-experimenttable-accordion accordion-group">
 
                   <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
                       tal:attributes="data-target string:#${result/getId}-body">
@@ -66,6 +66,13 @@
                              href="#downloadurl"
                              tal:attributes="href string:${result/getURL}/@@resultdownload;">
                             <i class="fa fa-download icon-link"></i> Download
+                          </a>
+                          <a class="fine btn btn-mini btn-default expand-btn"
+                             title="Expand results"
+                             href="javascript:void(0)"
+                             data-toggle="collapse" 
+                             tal:attributes="data-target string:#${result/getId}-body">
+                            <i class="fa fa-chevron-circle-down icon-link"></i> More
                           </a>
                         </div>
                         <div class="experiment-details">
@@ -112,11 +119,11 @@
 
                   <div class="collapse" tal:attributes="id string:${result/getId}-body">
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
-                    <div class="row-fluid">
+                    <div class="row-fluid experiment-result-contents">
                        <div class="span9 bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
-                         <p tal:content="item/Title">Item Title</p>
+                         <h5 tal:content="item/Title">Item Title</h5>
                          <p><span tal:content="item/Description">Dataset short description</span>
                          <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
                          <span tal:condition="md/scientificname|nothing">species:<i tal:content="md/scientificname"></i></span>
@@ -156,6 +163,7 @@
                     </div>
                   </tal:block>
                   </div> <!-- collapse -->
+                  
                 </div>
                 </tal:block>
               
