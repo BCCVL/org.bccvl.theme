@@ -35,7 +35,7 @@ define(
             });
 
             $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
-            $("#wrapper-aaf a").attr('onclick','return false;');
+            //$("#wrapper-aaf a").attr('onclick','return false;');
 
             $("#legals-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
@@ -52,7 +52,7 @@ define(
                 }
             });
 
-            $("#wrapper-aaf a").click(function() {
+            $('#wrapper-aaf a:not([target="_blank"])').click(function() {
                 if ( !($("#legals-checkbox:checkbox").is(":checked")) )
                     alert("Please agree to the terms and conditions to login.");
             });
