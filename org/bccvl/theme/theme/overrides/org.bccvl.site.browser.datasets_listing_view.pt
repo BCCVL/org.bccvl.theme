@@ -177,6 +177,7 @@
                                     "
                         metal:define-macro="datasets_listitem">
               <div class="datasets-list-entry"
+                   tal:attributes="data-uuid item/UID"
                    tal:define="md item_obj/dataset_tools/metadata;
                                item_editable item_obj/dataset_tools/can_modify;">
                 <div class="bccvl-table-label"
