@@ -9,8 +9,6 @@ define(
             console.log('login page behaviour loaded.');
             $('.disclaimer.legals').insertBefore('.aaf-logo-link');
 
-            $('#wrapper-basic').append('<p>Need to request an account? <a href="http://www.bccvl.org.au/request-a-local-login-account" target="_blank">Click here.</a></p>');
-
             $('#login-aaf').click(function(e) {
                 $(this).addClass('active');
                 $('#login-basic').removeClass('active');
