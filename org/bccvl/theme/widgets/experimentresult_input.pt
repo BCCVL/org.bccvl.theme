@@ -120,6 +120,6 @@
   </span>
   <a id="fieldname-popup" href="#" class="btn btn-default"
      tal:attributes="id string:${view/field/__name__}-popup">
-     <i class="icon icon-plus-sign"></i> Select SDM Experiment
+     <i class="icon icon-plus-sign"></i> Select Experiment
   </a>
 </html>
