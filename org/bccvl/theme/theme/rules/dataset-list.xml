@@ -12,10 +12,10 @@
       <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
 
       <!-- Search filter -->
-      <replace css:theme="#datasets-filter" css:content="#datasets-filter"/>
+      <replace css:theme="#datasets-filter" css:content="#left-area"/>
 
       <!-- Dataset Table -->
-      <replace css:theme-children="#datasets-listing" css:content-children="#datasets-listing" />
+      <replace css:theme-children="#datasets-listing" css:content-children="#center-area" />
 
     </rules>
 </rules>

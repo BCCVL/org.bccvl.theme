@@ -28,7 +28,8 @@ requirejs.config({
         'OpenLayers':           'openlayers/OpenLayers',
         'openlayers3':          'ol3/ol',
         'ol3-layerswitcher':    'ol3/layerswitcher/ol3-layerswitcher',
-        'prism':                'prism/prism'
+        'prism':                'prism/prism',
+        'resource':             '++resource++'
     },
     shim: {
         'parsley':              ['jquery'],
