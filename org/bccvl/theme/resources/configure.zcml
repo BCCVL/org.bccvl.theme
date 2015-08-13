@@ -1,0 +1,12 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="org.bccvl.theme">
+
+  <browser:resource
+      name="eea.faceted-navigation.js"
+      file="./eea.facetednavigation.view.js"      
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
+
+</configure>
