@@ -381,9 +381,9 @@ Faceted.AjaxLook = {
     var widget = jQuery('#' + wid + '_widget');
     if(widget.length){
       widget.addClass('faceted-widget-loading');
-      if(jQuery.browser.msie){
+      /*if(jQuery.browser.msie){
         widget.addClass('faceted-widget-loading-msie');
-      }
+      }*/
     }
   },
 

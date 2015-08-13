@@ -4,7 +4,7 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize', 'bbq'],
     function($, viz, vizmap, sharing, editmodal, removedataset) {
 
         // ==============================================================
