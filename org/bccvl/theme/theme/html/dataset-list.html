@@ -38,7 +38,7 @@
     <!-- include main js -->
     <script type="text/javascript">
       require(['js/dataset-list']);
-      require(['jquery', 'resource/faceted_view'],
+      require(['jquery', 'faceted_view.js'],
         function(jQuery) {
           jQuery(window).ready(function(evt) {
             Faceted.Load(evt, 'https://bccvl.vm.bccvl.org.au/_debug/bccvl/datasets/');
