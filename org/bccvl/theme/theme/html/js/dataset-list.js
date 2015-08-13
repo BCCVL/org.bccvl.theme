@@ -4,7 +4,17 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize', 'bbq'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize', 'faceted_view.js', 'bbq'],
+
+    function(jQuery) {
+      jQuery(window).ready(function(evt) {
+        Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
+      });
+      jQuery(window).unload(function() {
+        Faceted.Unload();
+      });
+    },
+
     function($, viz, vizmap, sharing, editmodal, removedataset) {
 
         // ==============================================================

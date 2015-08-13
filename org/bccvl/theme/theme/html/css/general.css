@@ -1660,7 +1660,7 @@ body.home>.white-bg {
     color:white;
     border-radius: 5px;
 }
-.bccvl-datasetlist-filter h4, .bccvl-datasetlist-filter h5 {
+.bccvl-datasetlist-filter h4, .bccvl-datasetlist-filter h5, .faceted-widget legend {
     /*color:white;*/
     font-family: "OpenSansSemibold";
     margin-bottom:.5em;
@@ -1699,29 +1699,39 @@ body.home>.white-bg {
     color: #333;
     font-size: 1.5em;
 }
-.filter-bar {
+
+.filter-bar, .faceted-left-column {
     padding: 1.5em 1.5em 1em 1.5em;
 }
-.filter {
+.filter, .faceted-widget {
     margin:1em 0;
     padding-bottom:.5em;
     border-bottom: 1px solid rgba(0,0,0,.1);
 }
-.filter ul {
+.faceted-widget legend {
+    font-size: 1.3em;
+    color: #009FE3;
+    border: 0;
+    line-height: 1em;
+}
+.faceted-widget form {
+    margin:0;
+}
+.filter ul, .faceted-widget ul {
     list-style-type: none;
     padding-left:0;
     margin-left:0;
 }
-.filter ul li {
+.filter ul li, .faceted-widget ul li {
     vertical-align: top;
 }
-.filter input[type="checkbox"], .filter label {
+.filter input[type="checkbox"], .filter label, .faceted-widget label {
     display:inline-block;
 }
-.filter input[type="checkbox"] {
+.filter input[type="checkbox"], .faceted-widget input[type="checkbox"]  {
     margin: 0 6px 0 0;
 }
-.filter label {
+.filter label, .faceted-widget label  {
     font-size:1em;
     display:block;
     padding:.2em .5em;
@@ -1729,7 +1739,7 @@ body.home>.white-bg {
     text-indent: -18px;
     padding-left: 24px;
 }
-.filter label.True, .filter label:hover {
+.filter label.True, .filter label:hover, .faceted-widget label:hover, {
     background: rgba(0, 159, 227, .65);
     border-radius:4px;
     color:white;
@@ -1977,6 +1987,7 @@ table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERRO
     display: inline-block;
     width: 49%;
 }
+
 .bccvl-wizardtabs .nav-tabs li a.completed {
     color:#3baa35;
 }
