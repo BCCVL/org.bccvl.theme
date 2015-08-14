@@ -45,7 +45,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard range
                     var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
-                } else if (standard_range == 'probability') {
+                } else if (standard_range == 'probability' && maxVal <= 1000) {
                     
                     if (maxVal <= 1){
                         var rangeArr = [0,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00];
