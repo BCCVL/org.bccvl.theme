@@ -74,7 +74,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         //        e.g. layer_vocab is required before it is populated?
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
             $.each(data, function(index, value) {
-                layer_vocab[value.token] = value.title;
+                layer_vocab[value.token] = value;
             });
         });
 
@@ -172,7 +172,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             // get title from vocab or use layer identifier
                             // TODO: undefined layers like probability maps don't use a layer identifier, but use a file name as identifier
                             //       maybe generate proper layer id as well?
-                            layerTitle = layer_vocab[layer.layer] || layer.layer || layer.filename;
+                            layerTitle = layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename);
                             // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
                             // if visibleLayer is undefined set first layer visible
                             if (typeof visibleLayer == 'undefined') {
@@ -205,15 +205,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             }
                             // create legend for this layer
                             // TODO: units
+                            var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
                             var legend = vizcommon.createLegend(
                                 { title: layerTitle,
                                   id: layer.layer || layer.filename,
-                                  type: layer.datatype
+                                  type: layer.datatype,
+                                  style: layer_style
                                 },
                                 id, styleObj.minVal, styleObj.maxVal, 20);
                             
                             // create layer
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend);
+                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend, layer_style);
                             // add new layer to layer group
                             visLayers.getLayers().push(newLayer);
                             // if layer is visible we have to show legend as well
