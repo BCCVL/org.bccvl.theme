@@ -52,7 +52,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
             $.each(data, function(index, value) {
-                layer_vocab[value.token] = value.title;
+                layer_vocab[value.token] = value;
             });
         });
         
@@ -157,7 +157,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     } else {
                         // raster data
                         $.each( data.layers, function(layerid, layer){
-                            layerName = layer_vocab[layer.layer] || layer.layer || layer.filename;
+                            layerName = layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename);
+
                             var max = vizcommon.roundUpToNearestMagnitude(layer.max);
                             var styleObj = {
                                 minVal: 0, // TODO: mahal has negative min value?
@@ -167,7 +168,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 midpoint: null,
                                 endpoint: null
                             };
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
+                            var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;                            
+                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj, null, layer_style);
 
                             if (typeof algorithm != "undefined") {
                                 container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');

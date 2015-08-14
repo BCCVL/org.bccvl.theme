@@ -57,7 +57,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
             $.each(data, function(index, value) {
-                layer_vocab[value.token] = value.title;
+                layer_vocab[value.token] = value;
             });
         });
         
@@ -237,12 +237,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         // raster data
                         $.each( data.layers, function(layerid, layer){
 
-                            layerName = layerName || layer_vocab[layer.layer] || layer.layer || layer.filename;
+                            layerName = layerName || (layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename));
+
                             // TODO: double check ... we should only have probability rasters here
                             var max = vizcommon.roundUpToNearestMagnitude(layer.max);
                             var styleObj = $.extend({}, styleArray[numLayers]);
                             styleObj.maxVal = max;
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
+                            var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
+                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj, null, layer_style);
 
                             addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);
                             

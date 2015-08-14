@@ -45,7 +45,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard range
                     var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
-                } else if (standard_range == 'probability') {
+                } else if (standard_range == 'probability' && maxVal <= 1000) {
                     
                     if (maxVal <= 1){
                         var rangeArr = [0,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00];
@@ -179,26 +179,34 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 return colorArr;
             },
 
-            getStandardRange: function(name, layertype) {
+            getStandardRange: function(layer) {
                 var standard_range;
-                if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(name)){
+                if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(layer.id)){
                     standard_range = 'rainfall';
-                } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(name)){
+                } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(layer.id)){
                     standard_range = 'temperature';
-                } else if(layertype == 'continuous') {
+                } else if(layer.style) {
+                    // it's nothing of the above but a defined layer ... so don't use probability
+                    standard_range = 'default';
+                } else if(layer.type == 'continuous') {
                     standard_range = 'probability';
                 } else {
+                    // TODO: categorical data types should not use range, but represent each value as single color
                     standard_range = 'soil';
                 }
                 return standard_range;
             },
             
-            generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype ) {
+            generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
                 var standard_range;
                 if (startpoint || midpoint || endpoint ) {
                     standard_range = "custom";
                 } else {
-                    standard_range = bccvl_common.getStandardRange(filename, layertype);
+                    standard_range = bccvl_common.getStandardRange({
+                        'id': filename,
+                        'type': layertype,
+                        'style': layerstyle
+                    });
                 }
                 
                 var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
@@ -219,7 +227,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
 
             createLegend: function(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
                 // create a legend for given values
-                var standard_range = bccvl_common.getStandardRange(layer.id, layer.type);
+                var standard_range = bccvl_common.getStandardRange(layer);
                 
                 // Get hex color range and map values
                 var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
@@ -311,7 +319,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             },
 
             // create new OL layer from layer metadata data object
-            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend) {
+            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
                 // data ... dataset metadata
                 // layer ... layer metadata
                 // title ... display title
@@ -324,7 +332,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     "format": "image/png"
                 };
                 if (type != "wms-occurrence") {
-                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype);
+                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype, style);
                 }
                 if (data.mimetype == "application/zip") {
                     wms_params['DATA_URL'] = data.vizurl + ('filename' in layer ? '#' + layer.filename : '');  // The data_url the user specified
