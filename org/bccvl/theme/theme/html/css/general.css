@@ -1708,6 +1708,12 @@ body.home>.white-bg {
     padding-bottom:.5em;
     border-bottom: 1px solid rgba(0,0,0,.1);
 }
+.faceted-widget:first-child {
+    margin-top:0;
+}
+.faceted-widget:last-child {
+    border-bottom:0;
+}
 .faceted-widget legend {
     font-size: 1.3em;
     color: #009FE3;
@@ -1733,26 +1739,80 @@ body.home>.white-bg {
 }
 .filter label, .faceted-widget label  {
     font-size:1em;
-    display:block;
     padding:.2em .5em;
     line-height: 1.3em;
     text-indent: -18px;
     padding-left: 24px;
+    vertical-align: top;
 }
-.filter label.True, .filter label:hover, .faceted-widget label:hover, {
+.faceted-widget label.select-field, .faceted-widget label.text-field {
+    display:none;
+}
+.filter label.True, .filter label:hover {
     background: rgba(0, 159, 227, .65);
     border-radius:4px;
     color:white;
 }
-.filter .search-widget {
+.filter .search-widget, .faceted-widget .search-widget {
     width:100%;
+    font-size:0.9em;
 }
-.filter .search-widget input[type="text"] {
+.filter .search-widget input[type="text"], .faceted-widget .search-widget input[type="text"] {
     width:80%;
 }
 .filter .search-widget .btn {
     width:16%;
     height:2.1em;
+}
+.search-widget .btn i {
+    line-height: 1.6em;
+    padding: 0 10px;
+}
+.faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled * {
+    cursor:default;
+    color:#888;
+}
+.faceted-sorting-widget label  {
+    font-size: 1em;
+    color: #333;
+    border: 0;
+    margin: 0;
+    display: inline;
+    padding: 0;
+    text-indent: 0;
+    font-family: "OpenSansSemibold";
+    line-height: 1.6em;
+}
+.faceted-sorting-widget select {
+    font-size: 0.9em;
+    line-height: 1.1em;
+    height:2em;
+}
+.faceted-checkbox-item-disabled input[type="checkbox"] {
+    opacity:0.8;
+}
+.faceted-zero-count-hidden {
+    display:none;
+}
+.faceted-sorting-widget .field {
+    display: inline;
+    background: rgba(0,0,0,.1);
+    padding: 5px 6px 5px 2px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-left: 3px;
+}
+.faceted-sorting-widget .field input[type="checkbox"] {
+    margin: -1px 3px 0 0;
+}
+.faceted-sorting-widget .field label {
+    color:rgba(0,0,0,.6);
+}
+.faceted-results .pagination:first-child ul {
+    margin-top: -3em;
+}
+.faceted-center-column {
+    padding-top:1em;
 }
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
@@ -1812,8 +1872,8 @@ body.home>.white-bg {
     margin-bottom:1em;
 }
 .pagination-centered {
-    float: right;
-    margin: 0 0 1em 0;
+    text-align: right;
+    margin:0;
 }
 .sort-dropdown {
     font-size:1em;
