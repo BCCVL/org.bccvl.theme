@@ -5,7 +5,19 @@
 
   <browser:resource
       name="eea.faceted-navigation.js"
-      file="./eea.facetednavigation.view.js"      
+      file="eea.facetednavigation.view.js"      
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
+
+  <browser:resource
+      name="eea.facetednavigation.widgets.checkbox.view.js"
+      file="eea.facetednavigation.widgets.checkbox.view.js"      
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
+
+  <browser:resource
+      name="eea.facetednavigation.widgets.sorting.view.js"
+      file="eea.facetednavigation.widgets.sorting.view.js"      
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
       />
 

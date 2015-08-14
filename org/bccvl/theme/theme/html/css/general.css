@@ -841,11 +841,15 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     font-weight: bold;
 }
 
-.label, .badge {
+.label {
     display: inline;
     background-color: #FFFFFF;
     color: #000000;
     text-shadow: none;
+}
+
+.badge {
+    display: inline;
 }
 
 .option > label {
@@ -1791,6 +1795,10 @@ body.home>.white-bg {
 .faceted-checkbox-item-disabled input[type="checkbox"] {
     opacity:0.8;
 }
+.faceted-checkbox-item-disabled .badge {
+    opacity:.5;
+    color:white;
+}
 .faceted-zero-count-hidden {
     display:none;
 }
@@ -1810,10 +1818,12 @@ body.home>.white-bg {
 }
 .faceted-results .pagination:first-child ul {
     margin-top: -3em;
+    float:right;
 }
 .faceted-center-column {
     padding-top:1em;
 }
+
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
     display:block;
