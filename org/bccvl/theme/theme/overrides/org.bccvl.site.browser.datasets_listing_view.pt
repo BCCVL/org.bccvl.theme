@@ -13,27 +13,28 @@
 
     <metal:content-core fill-slot="body">
 
-    <ul id="datasets-nav" class="nav nav-tabs" metal:define-macro="datasets_tabs">
+      <ul id="datasets-nav" class="nav nav-tabs" metal:define-macro="datasets_tabs"
+          tal:define="current_view view/__name__">
       <li class="tab-datasetslisting"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_listing_view' else '';"
+            tal:define="selected python: 'active' if current_view == context.getLayout() else '';"
             tal:attributes="class string:tab-datasetslisting ${selected}">
           <a href="#"
              tal:attributes="href string:${context/absolute_url}"><span>Datasets</span></a>
         </li>
         <li class="tab-datasetsimport"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_import_view' else '';"
+            tal:define="selected python: 'active' if current_view == 'datasets_import_view' else '';"
             tal:attributes="class string:tab-datasetsimport ${selected}">
           <a href="#"
              tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Discover Dataset</span></a>
         </li>
         <li class="tab-datasetsupload"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_upload_view' else '';"
+            tal:define="selected python: 'active' if current_view == 'datasets_upload_view' else '';"
             tal:attributes="class string:tab-datasetsupload ${selected}">
           <a href="#"
              tal:attributes="href string:${context/absolute_url}/datasets_upload_view"><span>Upload Dataset</span></a>
         </li>
          <li class="tab-datasetsupload"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_collection_list' else '';"
+            tal:define="selected python: 'active' if current_view == 'datasets_collection_list' else '';"
             tal:attributes="class string:tab-datasetsupload ${selected}">
           <a href="#"
              tal:attributes="href string:${context/absolute_url}/datasets_collection_list"><span>Dataset Collections</span></a>
