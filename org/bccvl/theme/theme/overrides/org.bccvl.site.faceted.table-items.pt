@@ -8,28 +8,27 @@
     <title>Datasets</title>
   </head>
   <body>
+
     <metal:content-core fill-slot="content-core">
       <metal:block define-macro="content-core">
         <div id="datasets-listing" tal:define="
-            folderContents folderContents | python:context.getFolderContents();
-            Batch python:modules['Products.CMFPlone'].Batch;
-            b_start python:request.get('b_start', 0);
-            batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, 100, int(b_start), orphan=2);
-
-            dataset_tools nocall:context/@@dataset_tools;
-            pas_member context/@@pas_member;
-            navigation_root_url context/@@plone_portal_state/navigation_root_url;
-            normalizeString nocall: context/plone_utils/normalizeString;
-            toLocalizedTime nocall: context/@@plone/toLocalizedTime;
-            site_properties context/portal_properties/site_properties;
-            isAnon context/@@plone_portal_state/anonymous;
-            show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
-
-">
+           folderContents folderContents | python:context.getFolderContents();
+           Batch python:modules['Products.CMFPlone'].Batch;
+           b_start python:request.get('b_start', 0);
+           batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, 100, int(b_start), orphan=2);
+           
+           dataset_tools nocall:context/@@dataset_tools;
+           pas_member context/@@pas_member;
+           navigation_root_url context/@@plone_portal_state/navigation_root_url;
+           normalizeString nocall: context/plone_utils/normalizeString;
+           toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+           site_properties context/portal_properties/site_properties;
+           isAnon context/@@plone_portal_state/anonymous;
+           show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
 
           <div metal:use-macro="context/batch_macros/macros/navigation" />
-
-                    <tal:loop tal:repeat="item batch">
+          
+          <tal:loop tal:repeat="item batch">
             <tal:define tal:define="item_title_or_id item/pretty_title_or_id;
                                     item_icon python:plone_view.getIcon(item);
                                     item_creator item/Creator;
@@ -78,7 +77,8 @@
                         Preview</a>
                         <a href="#" class="bccvl-list-auto-viz btn btn-primary btn-small"
                            tal:attributes="data-viz-id python: dlinfo['alturl'][0];
-                                           data-uuid item/UID"                       tal:condition="python: item_obj.format != 'text/csv'">
+                                           data-uuid item/UID"
+                           tal:condition="python: item_obj.format != 'text/csv'">
                           <i class="icon-eye-open icon-link icon-white" title="preview"></i>
                         Preview</a>
                         <a href="#"
@@ -97,7 +97,7 @@
                         <i class="fa fa-share-alt icon-white" title="Sharing Options"
                            tal:attributes="title action/title"></i>
                       Sharing</a>
-
+                      
                       <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
                       <a class="environmentallayers-zip-edit btn btn-primary btn-small"
                          tal:attributes="href string:${item_url}/@@editfilemetadata"
@@ -105,7 +105,7 @@
                         <i class="icon-pencil icon-white" title="edit"></i>
                       Edit</a>
                       <!-- remove dataset -->                    
-
+                      
                       <a class="remove-dataset-btn btn btn-warning btn-small"
                          tal:attributes="href string:${item_url}/@@remove"
                          tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
@@ -113,7 +113,7 @@
                       Remove</a>
                       <!-- end remove dataset --> 
                     </div>
-                   
+                    
                     <div class="bccvl-list-preview-pane" 
                          tal:attributes="id string:map-${item/UID}"
                          >
@@ -136,9 +136,9 @@
                     </tal:block>
                   </a>
                 </div>
-
+                
               </div>
-
+              
             </tal:define>
           </tal:loop>
           <div metal:use-macro="context/batch_macros/macros/navigation" />
