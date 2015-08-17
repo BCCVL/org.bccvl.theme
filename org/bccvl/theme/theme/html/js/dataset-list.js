@@ -4,7 +4,7 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize', 'faceted_view.js', 'bbq'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq'],
 
     function($, viz, vizmap, sharing, editmodal, removedataset) {
 
@@ -50,39 +50,59 @@ define(
                 $(this).clone().appendTo('#datasets-filter-form .hidden-options');
             });*/
 
-            $('.datasets-list-sorting select').change(function(){
-                var selection = $(this).val();
-                $('#datasets-filter-form .hidden-options select.'+$(this).data('field-class')+' option').filter(function(){
-                    return ($(this).val() == selection);
-                }).prop('selected', true);
-                $('#datasets-filter-form').submit();
-            });
+            // No longer needed with new faceted nav product
+            // $('.datasets-list-sorting select').change(function(){
+            //     var selection = $(this).val();
+            //     $('#datasets-filter-form .hidden-options select.'+$(this).data('field-class')+' option').filter(function(){
+            //         return ($(this).val() == selection);
+            //     }).prop('selected', true);
+            //     $('#datasets-filter-form').submit();
+            // });
 
             // Identify datasets that are currently importing.
             // These are the spinner icons.
-            $.each($('i.dataset-import'), function(i, spinner) {
-                var datasetURL = $(spinner).attr('data-url');
-                var pollURL = datasetURL + '/jm/getJobStatus';
-                var completeURL = datasetURL + '/@@datasets_list_item';
+            var datasets_timer = function() {
+                var timer_id = null;
+                var spinner_sel = 'i.dataset-import';
 
-                // Start a timer that does the polling
-                var timer = $.timer(function() {
-                    $.ajax({
-                        url: pollURL,
-                        success: function(status) {
-                            if (status == 'COMPLETED' || status == 'FAILED') {
-                                timer.stop();
-                                // The import is complete, now render the row.
-                                renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
+                function update_dataset_row() {
+                    // poll all active spinners and update dataset row if completed
+                    $.each($(spinner_sel), function(i, spinner) {
+                        var datasetURL = $(spinner).attr('data-url');
+                        var pollURL = datasetURL + '/jm/getJobStatus';
+                        var completeURL = datasetURL + '/@@datasets_list_item';
+                        
+                        // poll status of dataset import
+                        $.ajax({
+                            url: pollURL,
+                            success: function(status) {
+                                if (status == 'COMPLETED' || status == 'FAILED') {
+                                    // The import is complete, now render the row.
+                                    renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
+                                }
                             }
-                        }
+                        });
                     });
+                    // restart timer if there are any spinners left
+                    if ($(spinner_sel).length) {
+                        timer_id = window.setTimeout(update_dataset_row, 5000);
+                    }
+                }
+
+
+                $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(evt) {
+                    console.log('Query SUCCES', evt);
+                    // clear current timeout
+                    if (timer_id) {
+                        window.clearTimeout(timer_id);
+                    }
+                    if ($(spinner_sel).length) {
+                        timer_id = window.setTimeout(update_dataset_row, 5000);
+                    }
                 });
-                timer.set({
-                    time: 5000,
-                    autostart: true
-                });
-            });
+                
+            }();
+            
 
             // Dateset entry dropdown functions
             $('body').on('click', '.dropdown-button', function(event){
