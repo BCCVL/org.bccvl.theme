@@ -1850,7 +1850,7 @@ body.home>.white-bg {
 .preview-dropdown  .datasets-controls {
     margin: .5em 0 1em;
 }
-.bccvl-list-preview-pane {
+.bccvl-list-preview-pane, .bccvl-modal-preview-pane {
     background:rgba(0,0,0,.05);
     height:100%;
     width:100%;

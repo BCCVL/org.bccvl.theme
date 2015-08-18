@@ -13,18 +13,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         // new list layout events
         $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('uuid'), $(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'occurence');
+            render.mapRender($(this).data('uuid'), $(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'occurence');
         });
 
         $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('uuid'),$(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
+            render.mapRender($(this).data('uuid'),$(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
         });
 
         // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
-            renderMap($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+            render.mapRender($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         });
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
@@ -40,7 +40,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         bccvl_visualiser.visualise(vizid, iframe);
                     });
                 } else {
-                    renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+                    render.mapRender($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
                 }
             } else if (type == 'image/png'){
                 renderPng($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
@@ -51,7 +51,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             } else if (type == 'application/pdf') {
                 renderPDF($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'application/zip') {
-                renderMap($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
+                render.mapRender($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
             }
         });
 
@@ -78,187 +78,190 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             });
         });
 
-        // RENDER DATA LAYERS
-        // -------------------------------------------------------------------------------------------
-        function renderMap(uuid, url, id, type, visibleLayer) {
-            // CREATE BASE MAP
+
+        var render = {
+            // RENDER DATA LAYERS
             // -------------------------------------------------------------------------------------------
+            mapRender: function(uuid, url, id, type, visibleLayer) {
+                // CREATE BASE MAP
+                // -------------------------------------------------------------------------------------------
 
-            // NEED TO DESTROY ANY EXISTING MAP
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
+                // NEED TO DESTROY ANY EXISTING MAP
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
 
-            // layer group 
-            var visLayers = new ol.layer.Group({
-                title: 'Layers',
-                layers: []
-            });
+                // layer group 
+                var visLayers = new ol.layer.Group({
+                    title: 'Layers',
+                    layers: []
+                });
 
-            // map with base layers
-            map = new ol.Map({
-                target: id,
-                layers: [
-                    new ol.layer.Group({
-                        'title': 'Base maps',
-                        layers: [
-                            new ol.layer.Tile({
-                                title: 'OSM',
-                                type: 'base',
-                                preload: 10,
-                                visible: true,
-                                source: new ol.source.OSM()
-                            }),
-                            new ol.layer.Tile({
-                                title: 'Satellite',
-                                type: 'base',
-                                visible: false,
-                                source: new ol.source.MapQuest({layer: 'sat'})
-                            })
-                        ]
-                    }),
-                    visLayers
-                ],
-                view: new ol.View({
-                  center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4
-                })
-            });
+                // map with base layers
+                map = new ol.Map({
+                    target: id,
+                    layers: [
+                        new ol.layer.Group({
+                            'title': 'Base maps',
+                            layers: [
+                                new ol.layer.Tile({
+                                    title: 'OSM',
+                                    type: 'base',
+                                    preload: 10,
+                                    visible: true,
+                                    source: new ol.source.OSM()
+                                }),
+                                new ol.layer.Tile({
+                                    title: 'Satellite',
+                                    type: 'base',
+                                    visible: false,
+                                    source: new ol.source.MapQuest({layer: 'sat'})
+                                })
+                            ]
+                        }),
+                        visLayers
+                    ],
+                    view: new ol.View({
+                      center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
+                      zoom: 4
+                    })
+                });
 
-            // zoom to Australia
-            map.getView().fit(australia_bounds, map.getSize());
+                // zoom to Australia
+                map.getView().fit(australia_bounds, map.getSize());
 
-            // add layerswitcher
-            var layerSwitcher = new ol.control.LayerSwitcher({
-                toggleOpen: true,
-                singleVisibleOverlay: true
-            });
+                // add layerswitcher
+                var layerSwitcher = new ol.control.LayerSwitcher({
+                    toggleOpen: true,
+                    singleVisibleOverlay: true
+                });
 
-            map.addControl(layerSwitcher);
+                map.addControl(layerSwitcher);
 
-            // add fullscreen toggle control
-            var fullScreenToggle = new ol.control.FullScreen();
-            map.addControl(fullScreenToggle);
+                // add fullscreen toggle control
+                var fullScreenToggle = new ol.control.FullScreen();
+                map.addControl(fullScreenToggle);
 
-            
-            // remove crappy unicode icon so fontawesome can get in
-            $('#'+id+' button.ol-full-screen-false').html('');
+                
+                // remove crappy unicode icon so fontawesome can get in
+                $('#'+id+' button.ol-full-screen-false').html('');
 
-            // fetch layer metadata and build up map layers
-            $.xmlrpc({
-                url: dmurl,
-                params: {'datasetid': uuid},
-                success: function(data, status, jqXHR) {
-                    // xmlrpc returns an array of results
-                    data = data[0];
-                    
-                    // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    // TODO: alternative check data.mimetype == 'text/csv' or data.genre
-                    //       or use type passed in as parameter
-                    if ($.isEmptyObject(data.layers)) {
-                        // species data  (not a raster)
-                        // TODO: use data.title (needs to be populated)
-                        var layerTitle = data.description || 'Data Overlay';
-                        // there is no legend for csv data
-                        var newLayer = vizcommon.createLayer(uuid, data, data, layerTitle, 'wms-occurrence', true);
-                        // add layer to layers group
-                        visLayers.getLayers().push(newLayer);
-                    } else {
-                        // raster data
-                        // TODO: data.layer could be standard array, as layerid is in layer object as well
-                        $.each( data.layers, function(layerid, layer){
-                            // get title from vocab or use layer identifier
-                            // TODO: undefined layers like probability maps don't use a layer identifier, but use a file name as identifier
-                            //       maybe generate proper layer id as well?
-                            layerTitle = layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename);
-                            // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
-                            // if visibleLayer is undefined set first layer visible
-                            if (typeof visibleLayer == 'undefined') {
-                                visibleLayer = layer.filename;
-                            }
-                            var isVisible = layer.filename == visibleLayer;
-                            // object to hold legend and color ranges
-                            var styleObj;
-                            if (layer.datatype == 'continuous'){
-                                // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
-                                var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                                styleObj = {
-                                    minVal: 0, // TODO: mahal has negative min value?
-                                    maxVal: max,
-                                    steps: 20,
-                                    startpoint: null,
-                                    midpoint: null,
-                                    endpoint: null
-                                };
-                            } else {
-                                // standard raster
-                                styleObj = {
-                                    minVal: layer.min,
-                                    maxVal: layer.max,
-                                    steps: 20,
-                                    startpoint: {r:255,g:255,b:255},
-                                    midpoint: {r:231,g:76,b:60},
-                                    endpoint: {r:192,g:57,b:43}
-                                };
-                            }
-                            // create legend for this layer
-                            // TODO: units
-                            var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
-                            var legend = vizcommon.createLegend(
-                                { title: layerTitle,
-                                  id: layer.layer || layer.filename,
-                                  type: layer.datatype,
-                                  style: layer_style
-                                },
-                                id, styleObj.minVal, styleObj.maxVal, 20);
-                            
-                            // create layer
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend, layer_style);
-                            // add new layer to layer group
+                // fetch layer metadata and build up map layers
+                $.xmlrpc({
+                    url: dmurl,
+                    params: {'datasetid': uuid},
+                    success: function(data, status, jqXHR) {
+                        // xmlrpc returns an array of results
+                        data = data[0];
+                        
+                        // check for layers metadata, if none exists then the request is returning a data like a csv file
+                        // TODO: alternative check data.mimetype == 'text/csv' or data.genre
+                        //       or use type passed in as parameter
+                        if ($.isEmptyObject(data.layers)) {
+                            // species data  (not a raster)
+                            // TODO: use data.title (needs to be populated)
+                            var layerTitle = data.description || 'Data Overlay';
+                            // there is no legend for csv data
+                            var newLayer = vizcommon.createLayer(uuid, data, data, layerTitle, 'wms-occurrence', true);
+                            // add layer to layers group
                             visLayers.getLayers().push(newLayer);
-                            // if layer is visible we have to show legend as well
-                            if (isVisible) {
-                                $('#'+id+' .ol-viewport').append(legend);
-                            }
+                        } else {
+                            // raster data
+                            // TODO: data.layer could be standard array, as layerid is in layer object as well
+                            $.each( data.layers, function(layerid, layer){
+                                // get title from vocab or use layer identifier
+                                // TODO: undefined layers like probability maps don't use a layer identifier, but use a file name as identifier
+                                //       maybe generate proper layer id as well?
+                                layerTitle = layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename);
+                                // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
+                                // if visibleLayer is undefined set first layer visible
+                                if (typeof visibleLayer == 'undefined') {
+                                    visibleLayer = layer.filename;
+                                }
+                                var isVisible = layer.filename == visibleLayer;
+                                // object to hold legend and color ranges
+                                var styleObj;
+                                if (layer.datatype == 'continuous'){
+                                    // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
+                                    var max = vizcommon.roundUpToNearestMagnitude(layer.max);
+                                    styleObj = {
+                                        minVal: 0, // TODO: mahal has negative min value?
+                                        maxVal: max,
+                                        steps: 20,
+                                        startpoint: null,
+                                        midpoint: null,
+                                        endpoint: null
+                                    };
+                                } else {
+                                    // standard raster
+                                    styleObj = {
+                                        minVal: layer.min,
+                                        maxVal: layer.max,
+                                        steps: 20,
+                                        startpoint: {r:255,g:255,b:255},
+                                        midpoint: {r:231,g:76,b:60},
+                                        endpoint: {r:192,g:57,b:43}
+                                    };
+                                }
+                                // create legend for this layer
+                                // TODO: units
+                                var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
+                                var legend = vizcommon.createLegend(
+                                    { title: layerTitle,
+                                      id: layer.layer || layer.filename,
+                                      type: layer.datatype,
+                                      style: layer_style
+                                    },
+                                    id, styleObj.minVal, styleObj.maxVal, 20);
+                                
+                                // create layer
+                                var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend, layer_style);
+                                // add new layer to layer group
+                                visLayers.getLayers().push(newLayer);
+                                // if layer is visible we have to show legend as well
+                                if (isVisible) {
+                                    $('#'+id+' .ol-viewport').append(legend);
+                                }
+                            });
+                        }
+
+                        layerSwitcher.renderPanel();
+                        layerSwitcher.showPanel();
+
+                        visLayers.getLayers().forEach(function(lyr, idx, arr) {
+                            lyr.on('change:visible', function(e){
+                                if (lyr.getVisible()){
+                                    var bccvl = lyr.get('bccvl');
+                                    // remove existing legend
+                                    $('.olLegend').remove();
+                                    // add new legend to dom tree
+                                    $('#'+id+' .ol-viewport').append(bccvl.legend);
+                                }
+                            });
                         });
-                    }
 
-                    layerSwitcher.renderPanel();
-                    layerSwitcher.showPanel();
+                        // hook up exportAsImage
+                        $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+                        $('#'+id+' a.export-map').click(
+                            { map: map,
+                              mapTitle: data.title
+                            }, vizcommon.exportAsImage);
 
-                    visLayers.getLayers().forEach(function(lyr, idx, arr) {
-                        lyr.on('change:visible', function(e){
-                            if (lyr.getVisible()){
-                                var bccvl = lyr.get('bccvl');
-                                // remove existing legend
-                                $('.olLegend').remove();
-                                // add new legend to dom tree
-                                $('#'+id+' .ol-viewport').append(bccvl.legend);
-                            }
+                        // add click control for point return
+                        map.on('singleclick', function(evt){
+                            vizcommon.getPointInfo(evt);
                         });
-                    });
 
-                    // hook up exportAsImage
-                    $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-                    $('#'+id+' a.export-map').click(
-                        { map: map,
-                          mapTitle: data.title
-                        }, vizcommon.exportAsImage);
+                        map.on('pointermove', function(evt) {
+                            vizcommon.hoverHandler(evt);
+                        });
 
-                    // add click control for point return
-                    map.on('singleclick', function(evt){
-                        vizcommon.getPointInfo(evt);
-                    });
+                    }});
 
-                    map.on('pointermove', function(evt) {
-                        vizcommon.hoverHandler(evt);
-                    });
-
-                }});
-
-            container.addClass('active');
+                container.addClass('active');
+            }
         }
 
         // RENDER PNG IMAGES
@@ -324,7 +327,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 container.removeClass('olMap');
             }
             container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
-        }                
+        }         
+
+        return render;       
 
     }
 );

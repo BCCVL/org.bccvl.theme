@@ -81,10 +81,25 @@
                            tal:condition="python: item_obj.format != 'text/csv'">
                           <i class="icon-eye-open icon-link icon-white" title="preview"></i>
                         Preview</a>
+                        <a href="#" class="bccvl-modal-occurrence-viz btn btn-primary btn-small"
+                           tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                           data-uuid item/UID;
+                                           data-title item_title_or_id;"
+                           tal:condition="python: item_obj.format == 'text/csv'">
+                          <i class="fa fa-object-ungroup"></i>
+                        Modal</a>
+                        <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-small"
+                           tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                           data-uuid item/UID;
+                                           data-title item_title_or_id;"
+                           tal:condition="python: item_obj.format != 'text/csv'">
+                         <i class="fa fa-object-ungroup"></i>
+                        Modal</a>
                         <a href="#"
                            tal:attributes="href dlinfo/url" class="btn btn-primary btn-small dataset-download-btn">
                           <i class="icon-circle-arrow-down icon-white" title="download"></i>
                         Download Data</a>
+                        
                       </tal:block>
                       <a class="dataset-info-btn btn btn-info btn-small" href="#" target="_blank"
                          tal:attributes="href string:${item_url}/details">

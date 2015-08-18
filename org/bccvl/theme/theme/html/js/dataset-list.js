@@ -91,7 +91,6 @@ define(
 
 
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(evt) {
-                    console.log('Query SUCCES', evt);
                     // clear current timeout
                     if (timer_id) {
                         window.clearTimeout(timer_id);
@@ -146,6 +145,29 @@ define(
 
                 }
 
+            });
+    
+            // modal preview
+            $('body').on('click', '.bccvl-modal-occurrence-viz, .bccvl-modal-auto-viz', function(event){
+                event.preventDefault();
+                var el = $(this);
+
+                $('body').append('<div class="modal hide fade" id="preview-dataset-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">'+el.data('title')+'</h3></div><div class="modal-body"><span class="loading-gif" style="margin:3m 0;"></span></div></div>');
+
+                $('#preview-dataset-modal').modal();
+
+                $('#preview-dataset-modal').on('shown', function(){
+                    $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
+                    if ($(this).hasClass('bccvl-list-occurrence-viz')){
+                        vizmap.mapRender(el.data('uuid'), el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'occurence');
+                    } else {
+                        vizmap.mapRender(el.data('uuid'),el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
+                    }
+                }); 
+
+                $('#preview-dataset-modal').on('hidden', function(){
+                    $('#preview-dataset-modal').remove();
+                }); 
             });
 
             // Request metadata for datasets
