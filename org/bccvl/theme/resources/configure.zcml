@@ -21,4 +21,10 @@
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
       />
 
+  <browser:resource
+      name="org.bccvl.site.faceted.checkboxtree.view.js"
+      file="org.bccvl.site.faceted.checkboxtree.view.js" 
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
+  
 </configure>
