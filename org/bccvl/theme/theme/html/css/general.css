@@ -1642,7 +1642,7 @@ body.home>.white-bg {
         max-height:60%;
     }
 }
-.modal-body span.loading-gif {
+span.loading-gif {
     text-align: center;
     background-image: url('../lib/openlayers/img/Preloader_2.gif');
     background-repeat: no-repeat;
@@ -1817,13 +1817,42 @@ body.home>.white-bg {
     color:rgba(0,0,0,.6);
 }
 .faceted-results .pagination:first-child ul {
-    margin-top: -3em;
+    margin-top: -5em;
     float:right;
 }
 .faceted-center-column {
     padding-top:1em;
 }
-
+.datasets-table-row h4 {
+    font-family: "OpenSansRegular";
+}
+.datasets-table-row {
+    display: table-row;
+}
+.datasets-table-row > div {
+    display: table-cell;
+}
+.datasets-table-row p:last-child {
+    margin-bottom: 0;
+}
+.datasets-table-row .btn {
+    margin-bottom:.3em;
+}
+.dataset-loading {
+    float: left;
+    margin-right: 3em;
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #009FE3;
+}
+.datasets-table-row .loading-gif {
+    background-image: url('../images/bccvl-loader_trans32.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 32px;
+    width: 32px;
+}
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
     display:block;
