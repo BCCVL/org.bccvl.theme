@@ -1827,7 +1827,7 @@ span.loading-gif {
     font-family: "OpenSansRegular";
 }
 .datasets-table-row {
-    display: table-row;
+
 }
 .datasets-table-row > div {
     display: table-cell;
@@ -1839,12 +1839,24 @@ span.loading-gif {
     margin-bottom:.3em;
 }
 .dataset-loading {
-    float: left;
-    margin-right: 3em;
     font-size: 7px;
     text-transform: uppercase;
     text-align: center;
     color: #009FE3;
+}
+.dataset-error {
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: red;
+}
+.dataset-error i {
+    font-size: 2em;
+    display: inline-block;
+    margin: .7em .5em 0 .5em;
+}
+.datasets-table-row p {
+    line-height: 1.2em
 }
 .datasets-table-row .loading-gif {
     background-image: url('../images/bccvl-loader_trans32.gif');

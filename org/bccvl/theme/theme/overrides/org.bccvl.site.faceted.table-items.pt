@@ -21,10 +21,10 @@
                 <p><strong>Date</strong></p>
               </div>
               <div class="span1">
-                <p><strong>Owner</strong></p>
+                <p><strong>Provider</strong></p>
               </div>
               <div class="span4">
-                <p><strong>Controls</strong></p>
+                <p><strong></strong></p>
               </div>
             </div>
           </div>
@@ -73,27 +73,34 @@
                   <div class="span5">
                   <tal:block
                       tal:define="state item/job_state;
-                                  klass python: 'icon-warning-sign' if state == 'FAILED' else 'dataset-import bccvl-small-spinner';
-                                  klass python: '' if state in (None, 'COMPLETED') else klass;
+                                  klass python: 'failed' if state == 'FAILED' else 'loading';
+                                  klass python: 'completed' if state in (None, 'COMPLETED') else klass;
                                   title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
                                   title python: '' if state in (None, 'COMPLETED') else title;">
-                      <div class="dataset-loading" data-url="" title=""
-                           tal:attributes="data-url item_url;
-                                           class klass;
-                                           title title;"
-                           tal:condition="klass">
-                           <span class="loading-gif"></span>Loading
-                      </div>
-                  
-                  
 
-                  </tal:block>
+                      <div class="dataset-error span2"
+                           tal:condition="python: klass == 'failed'"
+                           tal:attributes="data-url item_url;
+                                           title title;">
+                        <i class="fa fa-warning"></i><br/>Error</div>
+
+                      <div class="dataset-loading span2" 
+                           tal:condition="python: klass == 'loading'"
+                           tal:attributes="data-url item_url;
+                                           title title;">
+                        <span class="loading-gif"></span><br/>Loading</div>
+
+                      <!-- if completed, add nothing -->
                   
-                    <h4 tal:content="item_title_or_id">Pig (Sus scrofa) occurrences</h4>
-                    <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
-                    <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
-                    <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
-                    <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
+                    <div 
+                      tal:attributes="class python: 'span10' if klass in ('loading', 'failed') else 'span12'">
+                      <h4 tal:content="item_title_or_id">Pig (Sus scrofa) occurrences</h4>
+                      <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
+                      <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
+                      <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
+                      <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
+                    </div>
+                    </tal:block>
                   </div>
                   <div class="span2">
                     <p><small><tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
