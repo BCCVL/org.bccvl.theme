@@ -1823,7 +1823,67 @@ body.home>.white-bg {
 .faceted-center-column {
     padding-top:1em;
 }
-
+}
+.datasets-table-row > div {
+    display: table-cell;
+}
+.datasets-table-row p:last-child {
+    margin-bottom: 0;
+}
+.datasets-table-row .btn {
+    margin-bottom:.3em;
+}
+.dataset-loading {
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #009FE3;
+}
+.dataset-error {
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: red;
+}
+.dataset-error i {
+    font-size: 2em;
+    display: inline-block;
+    margin: .7em .5em 0 .5em;
+}
+.datasets-table-row p {
+    line-height: 1.2em
+}
+.datasets-table-row .loading-gif {
+    background-image: url('../images/bccvl-loader_trans32.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 32px;
+    width: 32px;
+}
+.faceted_select {
+    margin-bottom: .75em;
+}
+.faceted-checkboxtree-widget ul {
+    padding-left:3px;   
+    margin-bottom:10px;
+}
+.faceted-checkboxtree-widget ul li label {
+    font-weight: bold;
+}
+.faceted-checkboxtree-widget ul li ul li label {
+    font-weight: normal;
+}
+.faceted-checkboxtree-widget ul li input[type="checkbox"] {
+    margin-top:-1px;
+}
+.faceted-checkboxtree-widget ul li ul {
+    padding-left:1.5em;
+}
+.faceted-checkboxtree-widget.faceted-widget label {
+    padding: 0 0 0 1.5em;
+    line-height: 1em;
+    vertical-align: baseline;
+}
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
     display:block;
