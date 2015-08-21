@@ -94,7 +94,23 @@
                   
                     <div 
                       tal:attributes="class python: 'span10' if klass in ('loading', 'failed') else 'span12'">
-                      <h4 tal:content="item_title_or_id">Pig (Sus scrofa) occurrences</h4>
+                      <h4 tal:define="complete python: item.job_state in ('COMPLETED', None);
+                                      dlinfo item_obj/dataset_tools/get_download_info;">
+
+                                     <a href="#" class="bccvl-modal-occurrence-viz"
+                                         tal:content="item_title_or_id"
+                                         tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                                         data-uuid item/UID;
+                                                         data-title item_title_or_id;"
+                                         tal:condition="python: item_obj.format == 'text/csv'">Title</a>
+                                      <a href="#" class="bccvl-modal-auto-viz"
+                                         tal:content="item_title_or_id"
+                                         tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                                         data-uuid item/UID;
+                                                         data-title item_title_or_id;"
+                                         tal:condition="python: item_obj.format != 'text/csv'">Title</a>
+
+                      </h4>
                       <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
                       <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
                       <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
