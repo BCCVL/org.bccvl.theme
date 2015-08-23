@@ -80,8 +80,11 @@
                   <td tal:condition="is_cc">
                     <span tal:content="python: dataset_tools.emsc_vocab.getTerm(model['md']['emsc']).title">EMSC</span>
                   </td>
-                  <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.format_period(model['md']['temporal'])">Year</span>
+                  <td tal:condition="is_cc"
+                      tal:define="year model/md/year|nothing;
+                                  month model/md/month|nothing">
+                    <span tal:condition="year" tal:content="year">Year</span>
+                    <span tal:condition="month" tal:content="month">Month</span>
                   </td>
                   <td tal:condition="not: is_bd">
                     <ul>
