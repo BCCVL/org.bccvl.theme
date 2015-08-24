@@ -841,11 +841,15 @@ sometimes, and TODO: upgrade when bootstrap 3 is out.
     font-weight: bold;
 }
 
-.label, .badge {
+.label {
     display: inline;
     background-color: #FFFFFF;
     color: #000000;
     text-shadow: none;
+}
+
+.badge {
+    display: inline;
 }
 
 .option > label {
@@ -1660,7 +1664,7 @@ body.home>.white-bg {
     color:white;
     border-radius: 5px;
 }
-.bccvl-datasetlist-filter h4, .bccvl-datasetlist-filter h5 {
+.bccvl-datasetlist-filter h4, .bccvl-datasetlist-filter h5, .faceted-widget legend {
     /*color:white;*/
     font-family: "OpenSansSemibold";
     margin-bottom:.5em;
@@ -1699,50 +1703,186 @@ body.home>.white-bg {
     color: #333;
     font-size: 1.5em;
 }
-.filter-bar {
+
+.filter-bar, .faceted-left-column {
     padding: 1.5em 1.5em 1em 1.5em;
 }
-.filter {
+.filter, .faceted-widget {
     margin:1em 0;
     padding-bottom:.5em;
     border-bottom: 1px solid rgba(0,0,0,.1);
 }
-.filter ul {
+.faceted-widget:first-child {
+    margin-top:0;
+}
+.faceted-widget:last-child {
+    border-bottom:0;
+}
+.faceted-widget legend {
+    font-size: 1.3em;
+    color: #009FE3;
+    border: 0;
+    line-height: 1em;
+}
+.faceted-widget form {
+    margin:0;
+}
+.filter ul, .faceted-widget ul {
     list-style-type: none;
     padding-left:0;
     margin-left:0;
 }
-.filter ul li {
+.filter ul li, .faceted-widget ul li {
     vertical-align: top;
 }
-.filter input[type="checkbox"], .filter label {
+.filter input[type="checkbox"], .filter label, .faceted-widget label {
     display:inline-block;
 }
-.filter input[type="checkbox"] {
+.filter input[type="checkbox"], .faceted-widget input[type="checkbox"]  {
     margin: 0 6px 0 0;
 }
-.filter label {
+.filter label, .faceted-widget label  {
     font-size:1em;
-    display:block;
     padding:.2em .5em;
     line-height: 1.3em;
     text-indent: -18px;
     padding-left: 24px;
+    vertical-align: top;
+}
+.faceted-widget label.select-field, .faceted-widget label.text-field {
+    display:none;
 }
 .filter label.True, .filter label:hover {
     background: rgba(0, 159, 227, .65);
     border-radius:4px;
     color:white;
 }
-.filter .search-widget {
+.filter .search-widget, .faceted-widget .search-widget {
     width:100%;
+    font-size:0.9em;
 }
-.filter .search-widget input[type="text"] {
+.filter .search-widget input[type="text"], .faceted-widget .search-widget input[type="text"] {
     width:80%;
 }
 .filter .search-widget .btn {
     width:16%;
     height:2.1em;
+}
+.search-widget .btn i {
+    line-height: 1.6em;
+    padding: 0 10px;
+}
+.faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled * {
+    cursor:default;
+    color:#888;
+}
+.faceted-sorting-widget label  {
+    font-size: 1em;
+    color: #333;
+    border: 0;
+    margin: 0;
+    display: inline;
+    padding: 0;
+    text-indent: 0;
+    font-family: "OpenSansSemibold";
+    line-height: 1.6em;
+}
+.faceted-sorting-widget select {
+    font-size: 0.9em;
+    line-height: 1.1em;
+    height:2em;
+}
+.faceted-checkbox-item-disabled input[type="checkbox"] {
+    opacity:0.8;
+}
+.faceted-checkbox-item-disabled .badge {
+    opacity:.5;
+    color:white;
+}
+.faceted-zero-count-hidden {
+    display:none;
+}
+.faceted-sorting-widget .field {
+    display: inline;
+    background: rgba(0,0,0,.1);
+    padding: 5px 6px 5px 2px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-left: 3px;
+}
+.faceted-sorting-widget .field input[type="checkbox"] {
+    margin: -1px 3px 0 0;
+}
+.faceted-sorting-widget .field label {
+    color:rgba(0,0,0,.6);
+}
+.faceted-results .pagination:first-child ul {
+    margin-top: -3em;
+    float:right;
+}
+.faceted-center-column {
+    padding-top:1em;
+}
+}
+.datasets-table-row > div {
+    display: table-cell;
+}
+.datasets-table-row p:last-child {
+    margin-bottom: 0;
+}
+.datasets-table-row .btn {
+    margin-bottom:.3em;
+}
+.dataset-loading {
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #009FE3;
+}
+.dataset-error {
+    font-size: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    color: red;
+}
+.dataset-error i {
+    font-size: 2em;
+    display: inline-block;
+    margin: .7em .5em 0 .5em;
+}
+.datasets-table-row p {
+    line-height: 1.2em
+}
+.datasets-table-row .loading-gif {
+    background-image: url('../images/bccvl-loader_trans32.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 32px;
+    width: 32px;
+}
+.faceted_select {
+    margin-bottom: .75em;
+}
+.faceted-checkboxtree-widget ul {
+    padding-left:3px;   
+    margin-bottom:10px;
+}
+.faceted-checkboxtree-widget ul li label {
+    font-weight: bold;
+}
+.faceted-checkboxtree-widget ul li ul li label {
+    font-weight: normal;
+}
+.faceted-checkboxtree-widget ul li input[type="checkbox"] {
+    margin-top:-1px;
+}
+.faceted-checkboxtree-widget ul li ul {
+    padding-left:1.5em;
+}
+.faceted-checkboxtree-widget.faceted-widget label {
+    padding: 0 0 0 1.5em;
+    line-height: 1em;
+    vertical-align: baseline;
 }
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
@@ -1802,8 +1942,8 @@ body.home>.white-bg {
     margin-bottom:1em;
 }
 .pagination-centered {
-    float: right;
-    margin: 0 0 1em 0;
+    text-align: right;
+    margin:0;
 }
 .sort-dropdown {
     font-size:1em;
@@ -1977,6 +2117,7 @@ table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERRO
     display: inline-block;
     width: 49%;
 }
+
 .bccvl-wizardtabs .nav-tabs li a.completed {
     color:#3baa35;
 }
