@@ -70,7 +70,7 @@
                                item_editable item_obj/dataset_tools/can_modify;">
                 <div class="datasets-table-row row-fluid"
                      tal:define="author python:pas_member.info(item_creator)">
-                  <div class="span5">
+                  <div class="span5 dataset-main-info">
                   <tal:block
                       tal:define="state item/job_state;
                                   klass python: 'failed' if state == 'FAILED' else 'loading';
@@ -84,7 +84,7 @@
                                            title title;">
                         <i class="fa fa-warning"></i><br/>Error</div>
 
-                      <div class="dataset-loading span2" 
+                      <div class="dataset-loading dataset-import span2" 
                            tal:condition="python: klass == 'loading'"
                            tal:attributes="data-url item_url;
                                            title title;">

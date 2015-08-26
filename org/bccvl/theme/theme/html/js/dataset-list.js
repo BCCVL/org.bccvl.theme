@@ -63,7 +63,7 @@ define(
             // These are the spinner icons.
             var datasets_timer = function() {
                 var timer_id = null;
-                var spinner_sel = 'i.dataset-import';
+                var spinner_sel = '.dataset-import';
 
                 function update_dataset_row() {
                     // poll all active spinners and update dataset row if completed
