@@ -24,7 +24,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             */
 
             // TODO: make this local to have better timeout error messages and avoid too short timeouts on some ajax calls
-            commonAjaxSetup: function(){
+            // 260815: No longer in use, kept for possible future use.
+            /*commonAjaxSetup: function(){
                 $.ajaxSetup({
                     timeout: 20000,
                     error: function(jqXHR, textStatus, errorThrown){
@@ -35,7 +36,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     }
                 });
                 
-            },
+            },*/
 
             generateRangeArr: function(standard_range, minVal, maxVal, steps){
                 
