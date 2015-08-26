@@ -4,9 +4,6 @@
 define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'prism', 'jquery-csvtotable', 'jquery-xmlrpc'],
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
-        // Bring in generic visualiser error handling of timeouts
-        vizcommon.commonAjaxSetup();
-
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -265,9 +262,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         function renderPng(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap')) {
-                window.map.destroy();
-                container.removeClass('olMap');
+            if (container.hasClass('active')) {
+                container.empty();
+                map = null;
             }
             container.height('auto').html('<img src="'+url+'" alt="" />').addClass('active');
         }
@@ -276,9 +273,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         function renderCode(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap')) {
-                window.map.destroy();
-                container.removeClass('olMap');
+            if (container.hasClass('active')) {
+                container.empty();
+                map = null;
             }
             $.ajax({
                 url: url, 
@@ -297,9 +294,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         function renderCSV(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap')) {
-                window.map.destroy();
-                container.removeClass('olMap');
+            if (container.hasClass('active')) {
+                container.empty();
+                map = null;
             }
             $.ajax({
                 url: url, 
@@ -319,9 +316,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         function renderPDF(uuid, url, id){
             // NEED TO DESTROY ANY EXISTING MAP OR HTML
             var container = $('#'+id);
-            if (container.hasClass('olMap')) {
-                window.map.destroy();
-                container.removeClass('olMap');
+            if (container.hasClass('active')) {
+                container.empty();
+                map = null;
             }
             container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
         }                
