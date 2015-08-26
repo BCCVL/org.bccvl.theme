@@ -1827,7 +1827,6 @@ span.loading-gif {
     font-family: "OpenSansRegular";
 }
 .datasets-table-row {
-
 }
 .datasets-table-row > div {
     display: table-cell;
@@ -1864,6 +1863,30 @@ span.loading-gif {
     background-position: center center;
     height: 32px;
     width: 32px;
+}
+.faceted_select {
+    margin-bottom: .75em;
+}
+.faceted-checkboxtree-widget ul {
+    padding-left:3px;   
+    margin-bottom:10px;
+}
+.faceted-checkboxtree-widget ul li label {
+    font-weight: bold;
+}
+.faceted-checkboxtree-widget ul li ul li label {
+    font-weight: normal;
+}
+.faceted-checkboxtree-widget ul li input[type="checkbox"] {
+    margin-top:-1px;
+}
+.faceted-checkboxtree-widget ul li ul {
+    padding-left:1.5em;
+}
+.faceted-checkboxtree-widget.faceted-widget label {
+    padding: 0 0 0 1.5em;
+    line-height: 1em;
+    vertical-align: baseline;
 }
 .datasets-list-entry .dropdown-button {
     background: rgba(0,0,0,.1);
