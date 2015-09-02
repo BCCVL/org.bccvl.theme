@@ -4,11 +4,11 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
     function($, viz, vizmap, sharing, editmodal, removedataset) {
 
-        $(window).ready(function(evt) {
+        $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
         });
         $(window).unload(function() {
@@ -41,7 +41,28 @@ define(
             });*/
 
             $('select.selectize').selectize({
-                plugins: ['remove_button']
+                plugins: ['remove_button', 'remove_single_button'],
+                render: {
+                    'option': function(data, escape) {
+                        var opt_class="option"
+                        var opt_style="";
+                        if (data.disabled) {
+                            opt_class += " faceted-select-item-disabled";
+                        }
+                        var opt_text = '<div class="' + opt_class + '">' + escape(data[this.settings.labelField]);
+                        if (typeof data.count !== 'undefined') {
+                            opt_text += ' <span class="badge">' + data.count + '</span>';
+                        }
+			return opt_text + '</div>';
+		    },
+                    'item': function(data, escape) {
+                        var item_text = '<div class="item">' + escape(data[this.settings.labelField]);
+                        if (typeof data.count !== 'undefined') {
+                            item_text += ' <span class="badge">' + data.count + '</span>';
+                        }
+                        return item_text + '</div>';
+                    }
+                }
             });
 
             // duplicate top bar filters as hidden fields in the filters form
