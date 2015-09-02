@@ -2219,6 +2219,19 @@ table.error td {
 .selectize-input.items.not-full.has-options.has-items, .selectize-control.multi .selectize-input {
     padding:5px;
 }
+
+/* custom single select remove button */
+.selectize-control.plugin-remove_button [data-value] .remove-single {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 17px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: inherit;
+}
+
 img.ui-selectee {
     vertical-align: bottom;
     line-height: 1em;
