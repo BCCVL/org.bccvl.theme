@@ -16,6 +16,12 @@
       />
 
   <browser:resource
+      name="eea.facetednavigation.widgets.select.view.js"
+      file="eea.facetednavigation.widgets.select.view.js"      
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
+
+  <browser:resource
       name="eea.facetednavigation.widgets.sorting.view.js"
       file="eea.facetednavigation.widgets.sorting.view.js"      
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
