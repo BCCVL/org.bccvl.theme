@@ -14,14 +14,11 @@
         <div class="datasets-table-header row-fluid">
           <div style="padding:0 1em;">
             <div class="datasets-table-header-row row-fluid">
-              <div class="span5">
+              <div class="span7">
                 <p><strong>Title / Info</strong></p>
               </div>
-              <div class="span2">
-                <p><strong>Date</strong></p>
-              </div>
               <div class="span1">
-                <p><strong>Provider</strong></p>
+                <p><strong>Contributorr</strong></p>
               </div>
               <div class="span4">
                 <p><strong></strong></p>
@@ -70,7 +67,7 @@
                                item_editable item_obj/dataset_tools/can_modify;">
                 <div class="datasets-table-row row-fluid"
                      tal:define="author python:pas_member.info(item_creator)">
-                  <div class="span5 dataset-main-info">
+                  <div class="span7 dataset-main-info">
                   <tal:block
                       tal:define="state item/job_state;
                                   klass python: 'failed' if state == 'FAILED' else 'loading';
@@ -117,9 +114,6 @@
                       <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
                     </div>
                     </tal:block>
-                  </div>
-                  <div class="span2">
-                    <p><small><tal:r tal:replace="python:toLocalizedTime(item_modified,long_format=1)">Sep 07, 2014 11:20 PM</tal:r></small></p>
                   </div>
                   <div class="span1">
                     <p><small><tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
