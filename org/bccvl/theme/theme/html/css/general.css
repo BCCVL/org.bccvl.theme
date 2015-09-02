@@ -951,8 +951,20 @@ td.bccvl-table-controls a.btn:hover {
     display: inline-block;
     padding: 1px 3px;
 }
+
 a.figshare-export-link {
     background-image: url("++resource++bccvl/images/figshare-main-new.png");
+}
+
+a.googledrive-export-link {
+    background-image: url("++resource++bccvl/images/googledrive.png");
+}
+
+a.dropbox-export-link {
+    background-image: url("++resource++bccvl/images/dropbox.png");
+}
+
+a.result-export-link {
   background-position: center center;
   background-repeat: no-repeat;
   width: 180px;
@@ -964,7 +976,7 @@ a.figshare-export-link {
   overflow: hidden;
   transition: all .15s ease-in;
 }
-a.figshare-export-link:hover {
+a.result-export-link:hover {
     border-color: #009FE3;
 }
 #bccvl-experimentresults-table td.bccvl-table-controls a i {
