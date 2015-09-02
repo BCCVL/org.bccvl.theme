@@ -1772,9 +1772,10 @@ span.loading-gif {
     line-height: 1.6em;
     padding: 0 10px;
 }
-.faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled * {
+.faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled *, .faceted-select-item-disabled {
     cursor:default;
     color:#888;
+    pointer-events:none;
 }
 .faceted-sorting-widget label  {
     font-size: 1em;
