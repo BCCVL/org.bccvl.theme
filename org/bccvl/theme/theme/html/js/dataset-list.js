@@ -188,7 +188,22 @@ define(
 
                 $('#preview-dataset-modal').on('hidden', function(){
                     $('#preview-dataset-modal').remove();
-                }); 
+                });
+                // setup popover handling in modal
+                $('#preview-dataset-modal .modal-body').popover({
+                    'selector': '[data-toggle="popover"]',
+                    'container': '#preview-dataset-modal', // bug in bootstrap :( only works as data-attribute when using selector
+                    //'container': '#preview-dataset-modal .modal-body',
+                    //'container':  'div.modal-backdrop',
+                    'trigger': 'hover'
+                }).on('shown', function(e) { // prevent events from bubbling up to modal
+                    e.stopPropagation();
+                }).on('hidden', function(e) {
+                    e.stopPropagation();
+                });
+
+
+                
             });
 
             // Request metadata for datasets

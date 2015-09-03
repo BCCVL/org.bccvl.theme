@@ -52,6 +52,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             }
         });
 
+        // setup popover handling for bccvl-preview-pane
+        $('.bccvl-preview-pane').popover({
+            'selector': '[data-toggle="popover"]',
+            'trigger': 'hover'
+        }).on('shown', function(e) { // prevent events from bubbling up to modal
+            e.stopPropagation();
+        }).on('hidden', function(e) {
+            e.stopPropagation();
+        });
+        
+
         /* Global configuration */
         // ----------------------------------------------------------------
         // visualiser base url
@@ -74,7 +85,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 layer_vocab[value.token] = value;
             });
         });
-
 
         var render = {
             // RENDER DATA LAYERS
