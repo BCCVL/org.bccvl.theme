@@ -152,6 +152,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     success: function(data, status, jqXHR) {
                         // xmlrpc returns an array of results
                         data = data[0];
+                        // define local variables
+                        var layerdef;
                         
                         // check for layers metadata, if none exists then the request is returning a data like a csv file
                         // TODO: alternative check data.mimetype == 'text/csv' or data.genre
@@ -159,66 +161,68 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         if ($.isEmptyObject(data.layers)) {
                             // species data  (not a raster)
                             // TODO: use data.title (needs to be populated)
-                            var layerTitle = data.description || 'Data Overlay';
+                            layerdef = {
+                                'title': data.description || 'Data Overlay'
+                            }
                             // there is no legend for csv data
-                            var newLayer = vizcommon.createLayer(uuid, data, data, layerTitle, 'wms-occurrence', true);
+                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
                             // add layer to layers group
                             visLayers.getLayers().push(newLayer);
                         } else {
                             // raster data
                             // TODO: data.layer could be standard array, as layerid is in layer object as well
                             $.each( data.layers, function(layerid, layer){
-                                // get title from vocab or use layer identifier
-                                // TODO: undefined layers like probability maps don't use a layer identifier, but use a file name as identifier
-                                //       maybe generate proper layer id as well?
-                                layerTitle = layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename);
+                                // get layer definition from vocab
+                                layerdef = layer_vocab[layer.layer];
+                                if (typeof layerdef === 'undefined') {
+                                    // We don't have a layerdef so let's create a default fallback
+                                    // TODO: this may happen in case of experiment outputs (i.e. probability maps) ... they don't have a layer identifier, but a file name
+                                    // FIXME: how do I know if it is a probability map or just some undefined layer?
+                                    layerdef = {
+                                        'token': layer.layer,
+                                        'title': layer.layer || layer.filename,
+                                        'unitfull': '',
+                                        'unit': '',
+                                        'type': '',  // unused
+                                        'legend': 'default',
+                                        'tooltip': '',
+                                        'filename': layer.filename
+                                    }
+                                    if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                                        layerdef.legend = 'probability';
+                                        layerdef.unit = 'probability';
+                                    }
+                                } else {
+                                    // make a copy of the original object
+                                    layerdef = $.extend({}, layerdef)
+                                    // for zip files we need the filename associated with the layer
+                                    if (layer.filename) {
+                                        layerdef.filename = layer.filename;
+                                    }
+                                }
+                                // copy datatype into layer def object
+                                layerdef.datatype = layer.datatype;
+                                // add min / max values
+                                // FIXME: this should go away but some datasets return strings instead of numbers
+                                layerdef.min = Number(layer.min);
+                                layerdef.max = Number(layer.max);
                                 // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
                                 // if visibleLayer is undefined set first layer visible
                                 if (typeof visibleLayer == 'undefined') {
                                     visibleLayer = layer.filename;
                                 }
-                                var isVisible = layer.filename == visibleLayer;
+                                layerdef.isVisible = layer.filename == visibleLayer;
                                 // object to hold legend and color ranges
-                                var styleObj;
-                                if (layer.datatype == 'continuous'){
-                                    // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
-                                    var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                                    styleObj = {
-                                        minVal: 0, // TODO: mahal has negative min value?
-                                        maxVal: max,
-                                        steps: 20,
-                                        startpoint: null,
-                                        midpoint: null,
-                                        endpoint: null
-                                    };
-                                } else {
-                                    // standard raster
-                                    styleObj = {
-                                        minVal: layer.min,
-                                        maxVal: layer.max,
-                                        steps: 20,
-                                        startpoint: {r:255,g:255,b:255},
-                                        midpoint: {r:231,g:76,b:60},
-                                        endpoint: {r:192,g:57,b:43}
-                                    };
-                                }
+                                layerdef.style = vizcommon.createStyleObj(layerdef);
                                 // create legend for this layer
-                                // TODO: units
-                                var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
-                                var legend = vizcommon.createLegend(
-                                    { title: layerTitle,
-                                      id: layer.layer || layer.filename,
-                                      type: layer.datatype,
-                                      style: layer_style
-                                    },
-                                    id, styleObj.minVal, styleObj.maxVal, 20);
-                                
+                                var legend = vizcommon.createLegend(layerdef);
                                 // create layer
-                                var newLayer = vizcommon.createLayer(uuid, data, layer, layerTitle, 'wms', isVisible, styleObj, legend, layer_style);
+                                var newLayer = vizcommon.createLayer(layerdef, data, 'wms', legend)
+                                // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
                                 // add new layer to layer group
                                 visLayers.getLayers().push(newLayer);
                                 // if layer is visible we have to show legend as well
-                                if (isVisible) {
+                                if (layerdef.isVisible) {
                                     $('#'+id+' .ol-viewport').append(legend);
                                 }
                             });

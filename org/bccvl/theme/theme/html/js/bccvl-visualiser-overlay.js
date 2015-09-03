@@ -215,14 +215,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
-
+                    // define local variable
+                    var layerdef;
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ($.isEmptyObject(data.layers)) {
                         // occurrence data 
-                        
                         // TODO: use data.title (needs to be populated)
-                        layerName = layerName || data.filename || 'Data Overlay';
-                        var newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
+                        layerdef = {
+                            'title': layerName || data.filename || 'Data Overlay'
+                        };
+
+                        var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
                         addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
@@ -232,18 +235,50 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     } else {
                         // raster data
-                        $.each( data.layers, function(layerid, layer){
+                        $.each(data.layers, function(layerid, layer) {
 
-                            layerName = layerName || (layer_vocab[layer.layer] ? layer_vocab[layer.layer].title : (layer.layer || layer.filename));
+                            layerdef = layer_vocab[layer.layer];
+                            if (typeof layerdef === 'undefined') {
+                                layerdef = {
+                                    'token': layer.layer,
+                                    'title': layer.layer || layer.filename,
+                                    'unitfull': '',
+                                    'unit': '',
+                                    'type': '',  // unused
+                                    'legend': 'default',
+                                    'tooltip': '',
+                                    'filename': layer.filename
+                                }
+                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                                    layerdef.legend = 'probability';
+                                    layerdef.unit = 'probability';
+                                }
+                            } else {
+                                // make a copy of the original object
+                                layerdef = $.extend({}, layerdef)
+                                // for zip files we need the filename associated with the layer
+                                if (layer.filename) {
+                                    layerdef.filename = layer.filename;
+                                }
+                            }
+                            // copy datatype into layer def object
+                            layerdef.datatype = layer.datatype;
+                            // add min / max values
+                            // FIXME: this should go away but some datasets return strings instead of numbers
+                            layerdef.min = Number(layer.min);
+                            layerdef.max = Number(layer.max);
 
-                            // TODO: double check ... we should only have probability rasters here
-                            var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                            var styleObj = $.extend({}, styleArray[numLayers]);
-                            styleObj.maxVal = max;
-                            var layer_style = layer_vocab[layerid] ? layer_vocab[layerid].color : null;
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj, null, layer_style);
+                            // give precedence to passed in layerName
+                            layer.title = layerName || layer.title;
 
-                            addLayerLegend(layerName, styleArray[numLayers].endpoint, uuid);
+                            layerdef.style = vizcommon.createStyleObj(layerdef);
+                            // copy calor range from our styleArray
+                            layerdef.style.startpoint = styleArray[numLayers].startpoint;
+                            layerdef.style.midpoint = styleArray[numLayers].midpoint;
+                            layerdef.style.endpoint = styleArray[numLayers].endpoint;                            
+                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms');
+
+                            addLayerLegend(layerdef.title, layerdef.style.endpoint, uuid);
                             
                             // add layer to layer group
                             visLayers.getLayers().push(newLayer);
