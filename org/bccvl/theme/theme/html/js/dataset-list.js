@@ -123,7 +123,6 @@ define(
                 
             }();
             
-
             // Dateset entry dropdown functions
             $('body').on('click', '.dropdown-button', function(event){
                 event.preventDefault();
@@ -167,7 +166,7 @@ define(
                 }
 
             });
-    
+
             // modal preview
             $('body').on('click', '.bccvl-modal-occurrence-viz, .bccvl-modal-auto-viz', function(event){
                 event.preventDefault();
