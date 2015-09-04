@@ -11,21 +11,6 @@
 
     <metal:content-core fill-slot="content-core">
       <metal:block define-macro="content-core">
-        <div class="datasets-table-header row-fluid">
-          <div style="padding:0 1em;">
-            <div class="datasets-table-header-row row-fluid">
-              <div class="span7">
-                <p><strong>Title / Info</strong></p>
-              </div>
-              <div class="span1">
-                <p><strong>Contributorr</strong></p>
-              </div>
-              <div class="span4">
-                <p><strong></strong></p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div id="datasets-listing" class="row-fluid datasets-table" tal:define="
            folderContents folderContents | python:context.getFolderContents();
