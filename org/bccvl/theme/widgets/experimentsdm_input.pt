@@ -19,6 +19,7 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
+       tal:define="error view/error;"
        tal:attributes="id string:${view/id}">
     <tal:block tal:define="item view/item"
                tal:condition="python: view.value and item">
@@ -37,7 +38,8 @@
                              data-resolution item/resolution"
              tal:content="item/title">Experiment Title</h4>
           <!-- List of Models within experiment -->
-          <table class="table">
+          <table class="table"
+                 tal:attributes="class string:table ${python: 'error' if error else ''};">
             <thead>
               <tr>
                 <th colspan="2">Selected</th>
@@ -76,7 +78,13 @@
             <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
           </tr>
         </tbody>
-      </table>
+          </table>
+          <label id="form.widgets.fieldname:list-error"
+                 class="error"
+                 for="form.widgets.fieldname:list"
+                 tal:attributes="id string:${view/id}:list-error;
+                                 for string:${view/id}:list;"
+                 tal:condition="error">This field is required.</label>          
       </div>
     </div>
     </tal:block>
