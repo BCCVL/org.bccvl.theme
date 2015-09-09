@@ -84,7 +84,8 @@
                  for="form.widgets.fieldname:list"
                  tal:attributes="id string:${view/id}:list-error;
                                  for string:${view/id}:list;"
-                 tal:condition="error">This field is required.</label>          
+                 tal:condition="error"
+                 tal:content="structure error/render">This field is required.</label>          
       </div>
     </div>
     </tal:block>
