@@ -85,7 +85,6 @@
                          adapters -->
                     <ul>
                       <tal:block tal:condition="python: 'function' in result.job_params">
-                        
                         <li tal:condition="result/job_params/function">
                           <strong>Algorithm: </strong>
                           <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
@@ -94,6 +93,12 @@
                           <strong>State: </strong>
                           <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
                         </li>
+                        <li tal:define="state result/@@dataset_tools/job_state; 
+                                        reason result/@@dataset_tools/job_progress"
+                            tal:condition="python:state == 'FAILED'">
+                          <strong>Reason: </strong>
+                          <tal:replace tal:replace="reason"></tal:replace>
+                        </li>                        
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                         <!-- TODO: species in job_params/species_distribution_models -->
