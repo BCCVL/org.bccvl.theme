@@ -125,7 +125,8 @@
 
                   <div class="collapse" tal:attributes="id string:${result/getId}-body">
                   <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type='org.bccvl.content.dataset')">
-                    <div class="row-fluid experiment-result-contents">
+                    <div class="row-fluid experiment-result-contents"
+                         tal:condition="python: item.getId() != 'pstats.json'">
                        <div class="span9 bccvl-table-label"
                            tal:define="itemobj item/getObject;
                                        md itemobj/dataset_tools/metadata">
@@ -155,7 +156,7 @@
                          <a class="bccvl-auto-viz btn btn-primary"
                             title="Preview this file"
                             data-viz-id="#downloadurl"
-                            data-mimetype="application/octet-tream"
+                            data-mimetype="application/octet-stream"
                             data-uuid="a uuid"
                             tal:attributes="data-viz-id visurl;
                                             data-file-url downloadurl;
