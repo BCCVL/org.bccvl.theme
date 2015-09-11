@@ -87,16 +87,6 @@
                               <strong>Algorithm: </strong>
                               <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
                             </li>
-                            <li tal:condition="result/@@dataset_tools/job_state">
-                              <strong>State: </strong>
-                              <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
-                            </li>
-                            <li tal:define="state result/@@dataset_tools/job_state; 
-                                            reason result/@@dataset_tools/job_progress"
-                                tal:condition="python:state == 'FAILED'">
-                              <strong>Reason: </strong>
-                              <tal:replace tal:replace="reason"></tal:replace>
-                            </li>
                           </tal:block>
                           <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                             <!-- TODO: species in job_params/species_distribution_models -->
@@ -112,10 +102,18 @@
                               <strong>Year: </strong>
                               <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
                             </li>
+                          </tal:block>                          
+                          <tal:block tal:define="state result/@@dataset_tools/job_state; 
+                                                reason result/@@dataset_tools/job_progress"
+                                     tal:condition="state">
                             <li>
                               <strong>State: </strong>
-                              <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                              <tal:replace tal:replace="state"></tal:replace>
                             </li>
+                            <li tal:condition="python:state == 'FAILED'">
+                              <strong>Reason: </strong>
+                              <tal:replace tal:replace="reason"></tal:replace>
+                            </li>                            
                           </tal:block>
                           </ul>
                         </div>
