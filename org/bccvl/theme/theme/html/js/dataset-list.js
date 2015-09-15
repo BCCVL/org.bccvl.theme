@@ -3,10 +3,10 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
+     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'js/bccvl-modals', 'openlayers3',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
-    function($, viz, vizmap, sharing, editmodal, removedataset) {
+    function($, viz, vizmap, sharing, editmodal, removedataset, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -207,32 +207,10 @@ define(
 
             // Request metadata for datasets
             // These buttons have a fallback to open their request in a new tab (if JS is disabled)
-            $('body').on('click', '.dataset-info-btn', function(event){
-                event.preventDefault();
-                var requestUrl = $(this).attr('href');
-                $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
-                $.ajax(requestUrl)
-                    .done(function(data){
-                        console.log(data);
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html(data);
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    })
-                    .fail(function() {
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html('<h1>No metadata is available for this dataset at this time.</h1>');
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    });
-                $('#dataset-meta-modal').modal();
-                $('#dataset-meta-modal').on('hidden', function(){
-                    $('#dataset-meta-modal').remove();
-                });
-            });
-
+            var infomodal = new modals.InfoModal('info-modal');
+            infomodal.init('body', "[data-toggle='InfoModal']");
         });
-
+        
         function renderDatasetRow(completeURL, $tr) {
             $.ajax({
                 url: completeURL,
