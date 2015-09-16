@@ -4,42 +4,46 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       i18n:domain="bccvl"
+      tal:define="dstools nocall:context/@@dataset_tools;
+                  data dstools/details"
       tal:omit-tag="">
   <!-- TODO: use sort of main_template for modal content with slots to fill for different contexts? -->
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 tal:content="context/title">Dataset title</h3>
+    <h3 tal:content="data/title">Dataset title</h3>
   </div>
   <div class="modal-body">
-    <p tal:content="context/description">Dataset description</p>
-    <div tal:condition="context/attribution">
+    <p tal:content="data/description">Dataset description</p>
+    <div tal:condition="data/attribution">
       <strong>Citation and attribution</strong><br/>
       <!-- margin-left:1em; padding-left:1em; -->
       <div style="text-indent:1em;">
-        <p tal:repeat="attribution context/attribution"
+        <p tal:repeat="attribution data/attribution"
            tal:content="structure attribution/output">
         </p>
       </div>
     </div>
-    <div tal:condition="context/rights">
+    <div tal:condition="data/rights">
       <strong>License</strong><br/>
       <!-- margin-left:1em; padding-left:1em; -->
       <div style="text-indent:1em;">
-        <p tal:content="context/rights"></p>
+        <p tal:content="data/rights"></p>
       </div>
     </div>
-    <div tal:condition="context/external_description">
+    <div tal:condition="data/external_description">
       <strong>Full description</strong><br/>
       <div style="text-indent:1em;">
-        <p tal:content="structure context/external_description/output"></p>
+        <p tal:content="structure data/external_description/output"></p>
       </div>
     </div>
     <!-- TODO: build stats about collection here... -->
-    <hr/>
-    <p>If you are the owner of this dataset and believe it is
-    incorrectly used, please visit <a href="http://www.bccvl.org.au/contact-us">http://www.bccvl.org.au/contact-us</a></p>
+    <div>
+      <p  tal:repeat="layer data/layers"
+          tal:content="layer/title"></p>
+    </div>
   </div>
   <div class="modal-footer">
+    <div class="span4" style="text-align:left;">If you are the owner of this dataset and believe it is incorrectly used, please visit <a href="http://www.bccvl.org.au/contact-us">http://www.bccvl.org.au/contact-us</a></div>    
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
 </html>
