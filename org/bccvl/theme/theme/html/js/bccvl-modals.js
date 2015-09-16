@@ -42,7 +42,7 @@ define(
         InfoModal.prototype.click_handler = function(event) {
             event.preventDefault();
 
-            var $el = $(event.target);
+            var $el = $(event.currentTarget);
             var html = this.render_modal_load();
             // remove modal_id from dom
             $('#' + this.modal_id).remove();
