@@ -52,6 +52,7 @@
             <input type="checkbox" class="require-from-group" checked="checked" value=""
                    tal:attributes="value subitem/id;
                                    name string:${view/name}.item.${index}.item:list;
+                                   checked subitem/selected;
                                    id subitem/title;"/>
             <label  tal:attributes="for subitem/title;"
                     tal:content="subitem/title">Layer</label>            
