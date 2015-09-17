@@ -96,7 +96,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard colours
                     var colorArr = ['#13a7ce','#0eb9d2','#54c5d2','#87d2d1','#b1e0d3','#c6e6d3','#d8eed4','#ecf6d5','#fefed7','#fef5bd','#fdea9b','#fcd78b','#fdc775','#f8a95b','#f58e41','#f3713e'];
-                } else if (standard_range == 'probability' && startpoint == null)) {
+                } else if (standard_range == 'probability' && startpoint == null) {
                     // apply standard probability coloring only if we don't have a color range set up
                     // FIXME: generate default color range for probabilities automatically as we do below if possible
                     // basic prob spectrum
