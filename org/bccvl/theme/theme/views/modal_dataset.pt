@@ -37,8 +37,9 @@
       </div>
     </div>
     <!-- TODO: build stats about collection here... -->
-    <div>
-      <p  tal:repeat="layer data/layers"
+    <div tal:define="layers data/layers|nothing"
+         tal:condition="layers">
+      <p  tal:repeat="layer layers"
           tal:content="layer/title"></p>
     </div>
   </div>
