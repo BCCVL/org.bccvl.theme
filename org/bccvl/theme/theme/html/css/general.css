@@ -2476,3 +2476,10 @@ form.plone-to-bootstrap-form .widget label span {
     color:#0088cc;
     font-family: "OpenSansRegular";
 }
+.ol-viewport  .popover {
+    min-width:180px;
+}
+.ol-viewport .popover-toggle {
+    cursor:pointer;
+    padding: .2em 0 .2em .3em;
+}
