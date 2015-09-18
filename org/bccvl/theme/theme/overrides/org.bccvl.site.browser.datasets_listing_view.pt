@@ -219,7 +219,7 @@
                       </tal:block>
                       <a class="dataset-info-btn btn btn-info btn-small" href="#" target="_blank"
                          tal:attributes="href string:${item_url}/details">
-                        <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                        <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
                       More Info</a>
                       <a class="sharing-btn btn btn-info btn-small" href="#"
                          tal:attributes="href action/url"

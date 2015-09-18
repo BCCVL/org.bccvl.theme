@@ -145,7 +145,7 @@
                       <div class="span4">
                         <a class="dataset-info-btn btn btn-info btn-mini" href="#" target="_blank" data-toggle="InfoModal"
                            tal:attributes="href string:${item_url}/modal_view">
-                          <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                          <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
                          Info</a>
                         <a class="sharing-btn btn btn-info btn-mini" href="#"
                            tal:attributes="href action/url"

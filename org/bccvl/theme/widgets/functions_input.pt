@@ -24,10 +24,20 @@
       <!-- <input name="field-empty-marker" type="hidden" value="1" -->
       <!--        tal:attributes="name string:${view/name}-empty-marker" /> -->
       <span class="label" tal:content="structure item/label">Label</span>
-      <a class="search" target="_blank" href="searchurl"
-         tal:attributes="href string:${portal_url}/@@search?Subject=${python: ' '.join(item['subject'])}&path=/bccvl/knowledgebase">
-        <i class="icon-info-sign" title="more information"></i>
-      </a>
+
+      
+        <tal:block tal:condition="item/description">
+          <a class="search" href="javascript:void(0);" target="_blank" data-toggle="popover" data-trigger="hover" data-placement="right" 
+              tal:attributes="title string:${item/label} algorithm;
+                              data-content item/description;">
+              <i class="fa fa-info-circle"></i>
+          </a>
+        </tal:block>
+        <tal:block tal:condition="not:item/description">
+          <a class="search" target="_blank" href="searchurl"
+         tal:attributes="href string:${portal_url}/@@search?Subject=${python: ' '.join(item['subject'])}&amp;path=/bccvl/knowledgebase"><i class="fa fa-info-circle" title="Click to read more about this algorithm (external)."></i></a>
+        </tal:block>
+      
     </label>
   </tal:loop>
 </html>
