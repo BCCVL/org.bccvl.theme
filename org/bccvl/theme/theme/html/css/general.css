@@ -654,6 +654,10 @@ body.modal-open {
     overflow: hidden;
 }
 
+.modal form {
+    margin: 0;
+}
+
 /* stretcher related stuff ----------------------------------------------- */
 
 /* the parent of a stretcher needs to be position absolute or relative. */
