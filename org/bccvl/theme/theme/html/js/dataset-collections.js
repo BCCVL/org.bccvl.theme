@@ -10,7 +10,7 @@ define(
 
         $(document).ready(function() {
             var infomodal = new modals.InfoModal('info-modal');
-            infomodal.init("[data-toggle='InfoModal']");
+            infomodal.bind("[data-toggle='InfoModal']");
         });
 
     }
