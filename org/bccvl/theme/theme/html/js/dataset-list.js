@@ -3,10 +3,10 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'js/bccvl-modals', 'openlayers3',
+     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
-    function($, viz, vizmap, sharing, editmodal, removedataset, modals) {
+    function($, viz, vizmap, sharing, editmodal, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -21,7 +21,6 @@ define(
             viz.init();
             sharing.init();
             editmodal.init();
-            removedataset.init();
 
 
             $('.bccvl-datasetstable').tablesorter({
@@ -208,7 +207,9 @@ define(
             // Request metadata for datasets
             // These buttons have a fallback to open their request in a new tab (if JS is disabled)
             var infomodal = new modals.InfoModal('info-modal');
-            infomodal.init('body', "[data-toggle='InfoModal']");
+            infomodal.bind('body', "[data-toggle='InfoModal']");
+            var removemodal = new modals.RemoveModal('remove-modal');
+            removemodal.bind('body', 'a.remove-dataset-btn');
         });
         
         function renderDatasetRow(completeURL, $tr) {
@@ -219,7 +220,6 @@ define(
                     // Wire up visualiser and sharing
                     viz.init();
                     sharing.init();
-                    removedataset.init();
                 }
             });
         };
