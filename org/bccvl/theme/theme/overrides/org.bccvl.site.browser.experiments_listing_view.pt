@@ -134,7 +134,7 @@
                                         if experiment_tools.check_if_used(item_obj) else None ;     
                                       data-html python: 'true' if experiment_tools.check_if_used(item_obj) else None;
                                       data-toggle python: 'tooltip' if experiment_tools.check_if_used(item_obj) else None;
-                                      href python: item_url+'/@@remove' if not experiment_tools.check_if_used(item_obj) else None"
+                                      href python: item_url+'/@@modal_remove' if not experiment_tools.check_if_used(item_obj) else None"
                       data-placement="top">                      
                      Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>

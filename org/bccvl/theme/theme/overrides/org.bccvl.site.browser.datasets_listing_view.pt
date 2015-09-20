@@ -238,7 +238,7 @@
                       <!-- remove dataset -->                    
 
                       <a class="remove-dataset-btn btn btn-warning btn-small"
-                         tal:attributes="href string:${item_url}/@@remove"
+                         tal:attributes="href string:${item_url}/@@modal_remove"
                          tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
                         <i class="icon-remove icon-white" title="Remove"></i>
                       Remove</a>
