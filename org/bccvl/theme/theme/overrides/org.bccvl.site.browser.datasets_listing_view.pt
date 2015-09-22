@@ -222,7 +222,7 @@
                         <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
                       More Info</a>
                       <a class="sharing-btn btn btn-info btn-small" href="#"
-                         tal:attributes="href action/url"
+                         tal:attributes="href string:${item_url}/modal_sharing"
                          tal:condition="python: complete and action.get('available')"
                          tal:define="action item_obj/dataset_tools/local_roles_action;">
                         <i class="fa fa-share-alt icon-white" title="Sharing Options"

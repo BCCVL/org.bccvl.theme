@@ -3,10 +3,10 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
+     'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
-    function($, viz, vizmap, sharing, editmodal, modals) {
+    function($, viz, vizmap, editmodal, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -19,7 +19,6 @@ define(
         $(function() {
 
             viz.init();
-            sharing.init();
             editmodal.init();
 
 
@@ -210,6 +209,9 @@ define(
             infomodal.bind('body', "[data-toggle='InfoModal']");
             var removemodal = new modals.RemoveModal('remove-modal');
             removemodal.bind('body', 'a.remove-dataset-btn');
+            var sharingmodal = new modals.SharingModal('sharing-modal');
+            sharingmodal.bind('body', 'a.sharing-btn');
+            
         });
         
         function renderDatasetRow(completeURL, $tr) {
@@ -219,7 +221,6 @@ define(
                     $tr.replaceWith($(rowHTML));
                     // Wire up visualiser and sharing
                     viz.init();
-                    sharing.init();
                 }
             });
         };

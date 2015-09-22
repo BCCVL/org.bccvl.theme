@@ -116,7 +116,7 @@
                    </a>
                    
                    <a class="sharing-btn btn btn-default"
-                      tal:attributes="href action/url;
+                      tal:attributes="href string:${item_url}/modal_sharing;
                                       data-friendlyname string:sharing_${item/Title}"
                       tal:condition="python: action.get('available')"
                       tal:define="item_obj item/getObject;
