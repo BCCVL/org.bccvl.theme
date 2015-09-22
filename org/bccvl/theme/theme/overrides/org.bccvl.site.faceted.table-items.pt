@@ -100,8 +100,9 @@
                     </div>
                     </tal:block>
                   </div>
-                  <div class="span1">
-                    <p><small><tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
+                  <div class="span1"
+                       tal:define="author_name author/name_or_id">
+                    <p tal:condition="python: author_name != 'BCCVL'"><small><tal:r tal:replace="author_name">Me</tal:r></small></p>
                   </div>
                   <div class="datasets-controls span4"
                          tal:define="complete python: item.job_state in ('COMPLETED', None)">
