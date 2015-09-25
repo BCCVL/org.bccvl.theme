@@ -291,11 +291,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 // Build legend obj
                 var legend = document.createElement('div');
                 legend.className = 'olLegend';
-            
-                var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
-                legend.innerHTML += popover;
-                if (layerdef.unit) {
+
+                var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
+
+                if (layerdef.tooltip.length < 0) {
                     legend.innerHTML = '<h5>' + layerdef.unit + ' '+popover+'</h5>';
+                } else {
+                    legend.innerHTML = '<h5>' + layerdef.unit + '</h5>';
                 }
                 for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
                     if (i == (rangeArr.length-1)){
