@@ -2490,3 +2490,7 @@ form.plone-to-bootstrap-form .widget label span {
 .popover h3 {
     font-size:1.2em;
 }
+
+.popover {
+    z-index: 1050;
+}
