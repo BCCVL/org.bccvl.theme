@@ -157,9 +157,18 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                     },
                     search: {
-                        searchUrl: function(searchString) {
-                            // rank:species  -> only return items that are species (not genus, subspecies etc)
-                            return ('ala/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
+                        searchUrl: function(selectedItem) {
+                            var splitItems = selectedItem.split(/<\/?i>/);
+                            var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
+                            var searchString = splitItems[1];
+                            var filter = 'rank:species';
+                            if (rankSupplied == 'genus') {
+                                filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)';
+                            }
+                            else if (rankSupplied == 'family') {
+                                filter = rankSupplied + ':' + searchString;
+                            }
+                            return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseSearchData: function(rawData, searchString) {
@@ -352,8 +361,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             if (!provider.autocomplete) return selectedItem;
                             if (!provider.autocomplete.cleanAutoItem) return selectedItem;
 
-                            var selectedValue = provider.autocomplete.cleanAutoItem(selectedItem);
-                            var searchUrl = provider.search.searchUrl(selectedValue);
+                            var searchUrl = provider.search.searchUrl(selectedItem);
 
                             // hide old results and show spinner for results
                             $('.bccvl-searchform-results').hide();
