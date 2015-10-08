@@ -104,10 +104,6 @@
                           <strong>Year: </strong>
                           <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
                         </li>
-                        <li>
-                          <strong>State: </strong>
-                          <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace>
-                        </li>
                       </tal:block>
                       <tal:block tal:define="state result/@@dataset_tools/job_state; 
                                              reason result/@@dataset_tools/job_progress"

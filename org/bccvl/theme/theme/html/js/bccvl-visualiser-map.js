@@ -200,7 +200,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     }
                                     if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
                                         layerdef.legend = 'probability';
-                                        layerdef.unit = 'probability';
+                                        layerdef.unit = 'Probability';
+                                        layerdef.unitfull = 'Probability of occurrence';
+                                        layerdef.tooltip = 'This value describes the projected probability of a species presence in a given location.';
                                     }
                                 } else {
                                     // make a copy of the original object

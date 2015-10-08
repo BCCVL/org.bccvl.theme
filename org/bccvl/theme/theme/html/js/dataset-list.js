@@ -186,14 +186,12 @@ define(
                 $('#preview-dataset-modal').on('hidden', function(){
                     $('#preview-dataset-modal').remove();
                 });
-                // setup popover handling in modal
+                // setup popover handling in modal (bootstrap does not initialise dynamically loaded popovers inside modals?)
                 $('#preview-dataset-modal .modal-body').popover({
                     'selector': '[data-toggle="popover"]',
-                    'container': '#preview-dataset-modal', // bug in bootstrap :( only works as data-attribute when using selector
-                    //'container': '#preview-dataset-modal .modal-body',
-                    //'container':  'div.modal-backdrop',
+                    'container': 'body', // bug in bootstrap :( only works as data-attribute when using selector
                     'trigger': 'hover'
-                }).on('shown', function(e) { // prevent events from bubbling up to modal
+                }).on('shown', function(e) { // prevent shared popover/modal events from bubbling up to modal
                     e.stopPropagation();
                 }).on('hidden', function(e) {
                     e.stopPropagation();
