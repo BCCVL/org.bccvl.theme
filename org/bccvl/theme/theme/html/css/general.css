@@ -168,6 +168,13 @@ color: #ffffff!important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+.new-experiment-type-heading {
+    font-family: "OpenSansSemiBold";
+    font-size:1.1em;
+    padding:.5em 0 .25em;
+    color:#333;
+}
+
 .new-experiment-button {
     text-align: center;
     vertical-align: middle;
