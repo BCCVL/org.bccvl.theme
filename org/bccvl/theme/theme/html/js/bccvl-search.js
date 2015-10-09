@@ -171,16 +171,23 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString));
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        searchSpeciesUrl: function(rank, searchString, pageSize) {
+                            return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseSearchData: function(rawData, searchString) {
                             var list = [];
                             if (rawData.searchResults && rawData.searchResults.results) {
                                 var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {
                                     // build the proper data object
-                                    result = { title: "", description: "", actions: {}, friendlyname: "" };
+                                    result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                                     result.title = item.name;
                                     result.friendlyname = item.name;
-
+                                    result.rank = item.rank;
+                                    result.genus = item.genus;
+                                    result.family = item.family;
+                                    
                                     if (item.commonNameSingle) {
                                         result.title = item.commonNameSingle + ' <i class="taxonomy">' + item.name + '</i>';
                                         result.friendlyname = item.commonNameSingle + ' ' + item.name;
@@ -236,6 +243,21 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             }
                             return list;
                         },
+                        // --------------------------------------------------------------
+                        importSpeciesDatasets: function(results) {
+                            // Import all the species datasets from the search results
+                            if (results.length > 0) {
+                                $.each(results, function(index, item) {
+                                    $.each(item.actions, function(action, actionParam) {
+                                        if (action == 'alaimport') {
+                                            $.get(actionParam);
+                                        }
+                                    });
+                                });
+                                return true;
+                            }
+                            return false;
+                        },                        
                     }
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 }
@@ -286,6 +308,53 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 // switch on all the magic autocomplete behaviour - - - - - - -
 
                 $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
+
+                $('#searchOccurrence').on('click', 'a.import-dataset-btn', function(e) {
+                   e.preventDefault();
+                   var $el = $(e.currentTarget);
+                   var provider = bccvl_search.providers[$sourceField.val()];
+
+                   if ($el.attr('data-rank') == 'genus') {
+                        // Send a query to ALA to get the number of records
+                        var  surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), 0);
+
+                        $.ajax({
+                            dataType: 'jsonp',                       // ..using JSONP instead
+                            url: surl,
+                            success: function(data) {
+                                if (data['searchResults']['status'] == 'ERROR'){
+                                    provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                    return
+                                }
+
+                                // Set pageSize and search for all the species again
+                                var pageSize = data['searchResults']['totalRecords'];
+                                var surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), pageSize);
+
+                                $.ajax({
+                                    dataType: 'jsonp',                       // ..using JSONP instead
+                                    url: surl,
+                                    success: function(data) {
+                                        if (data['searchResults']['status'] == 'ERROR'){
+                                            provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                            return
+                                        }
+                                        // Import all the species datasets
+                                        var results = provider.search.parseSearchData(data, $inputField.val());
+                                        if (!provider.search.importSpeciesDatasets(results)) {
+                                            provider.autocomplete.noResultsFound();
+                                        }
+                                        location.href = $('.bccvllinks-datasets').attr('href');
+                                    }
+                                });
+
+                            }
+                        });
+                   }
+                   else {
+                        location.href = $el.attr('href');
+                   }
+                });
 
                 // switch on twitter bootstrap autocomplete
                 // only do search 
@@ -451,7 +520,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         switch (action) {
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
-                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i> Import to BCCVL</a>';
+                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname + '" data-rank="'+ item.rank + '" data-genus="'+ item.genus + '" data-family="'+ item.family +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i> Import to BCCVL</a>';
                                 $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
