@@ -287,9 +287,10 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             },
             // --------------------------------------------------------------
             enableForm: function(formElement) {
+                // Constants
+                var UNEXPECTED_ALA_ERROR_MSG = 'An unexpected error has occurred with ALA. Please try again later.';
 
                 // locate all the dom elements we need - - - - - - -
-
                 var $form = $(formElement);
 
                 // find the id of the parent element
@@ -334,7 +335,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             url: surl,
                             success: function(data) {
                                 if (data['searchResults']['status'] == 'ERROR'){
-                                    provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                    provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                     return
                                 }
 
@@ -347,7 +348,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     url: surl,
                                     success: function(data) {
                                         if (data['searchResults']['status'] == 'ERROR'){
-                                            provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                             return
                                         }
                                         // Import all the species datasets
@@ -429,7 +430,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     error: function(xhr, status, msg){
                                         $inputField.removeClass("bccvl-search-spinner");
                                         if (status != 'abort'){
-                                            provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                             process(parsedDataList);
                                         }
                                     }
@@ -461,7 +462,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 url: searchUrl,
                                 success: function(data) {
                                     if (data['searchResults']['status'] == 'ERROR'){
-                                        provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                        provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                         $('.bccvl-results-spinner').css('display', 'none');
                                         return;
                                     }
@@ -492,7 +493,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
 
                             function displayData(data) {
                                 if (data['searchResults']['status'] == 'ERROR'){
-                                    provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                    provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                     $('.bccvl-results-spinner').css('display', 'none');
                                     return;
                                 }
