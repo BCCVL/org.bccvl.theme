@@ -99,7 +99,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 $.each(rawData.autoCompleteList, function(index, item) {
                                     // each item in the autoCompleteList is a taxon.  so it
                                     // only needs to show up once in the suggestion list.
-                                    if (typeof(item.rankString) == 'undefined') return true;
+                                    if (typeof(item.rankString) == 'undefined' || item.rankString == 'family') {
+                                        return true;
+                                    }
                                     var name = ' (' + item.rankString + ')';
                                     name = name + ' <i>' + item.name + '</i>';
                                     if (item.commonName) {
@@ -184,8 +186,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     {
                                         return;
                                     }
+                                    if (item.guid && item.guid.length > 0) {
+
+                                        included.push(item.guid);
+                                    }
                                     // build the proper data object
-                                    included.push(item.guid);
                                     result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                                     result.title = item.name;
                                     result.friendlyname = item.name;
