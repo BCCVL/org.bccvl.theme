@@ -48,8 +48,8 @@ define(
                 $modal.trigger('modalapply');
             });
 
-            $modal.on('shown', function(){
-                $(settings.result_child_selector).parent().css('max-height', $modal.find('form').outerHeight());
+            $modal.on('show', function(){
+                $modal.find('.modal-body').css('max-height', (window.innerHeight * 0.75));
             });
             
             function show() {
