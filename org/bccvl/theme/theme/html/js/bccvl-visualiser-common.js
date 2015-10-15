@@ -234,43 +234,78 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 return xmlStylesheet;
             },
 
-            createStyleObj: function(layerdef) {
+            createStyleObj: function(layerdef, uuid) {
                 var styleObj;
-                var standard_range = bccvl_common.getStandardRange(layerdef);
-                if (standard_range == 'probability'){
-                    // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
-                    var max = bccvl_common.roundUpToNearestMagnitude(layerdef.max);
-                    styleObj = {
-                        minVal: 0, // TODO: mahal has negative min value?
-                        maxVal: max,
-                        steps: 20,
-                        startpoint: null,
-                        midpoint: null,
-                        endpoint: null
-                    };
-                } else if (standard_range == 'default') {
-                    // standard raster
-                    styleObj = {
-                        minVal: layerdef.min,
-                        maxVal: layerdef.max,
-                        steps: 20,
-                        startpoint: {r:255,g:255,b:255},
-                        midpoint: {r:231,g:76,b:60},
-                        endpoint: {r:192,g:57,b:43}
-                    };
+                var style = $.Deferred()
+                
+                if (layerdef.legend == 'categories') {
+
+                    $.ajax({
+                        url: portal_url + '/dm/getRAT',
+                        method: 'GET',
+                        datatype: 'json',
+                        data: {'datasetid': uuid, 'layer': layerdef.token},
+                        success: function(data, status, jqXHR){
+                            console.log(data);
+                            // standard raster
+                            styleObj = {
+                                minVal: layerdef.min,
+                                maxVal: layerdef.max,
+                                steps: 20,
+                                startpoint: {r:255,g:255,b:255},
+                                midpoint: {r:231,g:76,b:60},
+                                endpoint: {r:192,g:57,b:43}
+                            };
+
+                            styleObj.standard_range = 'default';
+
+                            style.resolve(styleObj, layerdef);
+                        }
+                    });
+
+                    return style;
+
                 } else {
-                    // a predefined color scheme
-                    styleObj = {
-                        minVal: 0, // TODO: mahal has negative min value?
-                        maxVal: layerdef.max,
-                        steps: 20,
-                        startpoint: null,
-                        midpoint: null,
-                        endpoint: null
-                    };
-                } // TODO: what about soil / categorical?
-                styleObj.standard_range = standard_range;
-                return styleObj;
+                    var standard_range = bccvl_common.getStandardRange(layerdef);
+                    if (standard_range == 'probability'){
+                        // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
+                        var max = bccvl_common.roundUpToNearestMagnitude(layerdef.max);
+                        styleObj = {
+                            minVal: 0, // TODO: mahal has negative min value?
+                            maxVal: max,
+                            steps: 20,
+                            startpoint: null,
+                            midpoint: null,
+                            endpoint: null
+                        };
+                    } else if (standard_range == 'default') {
+                        // standard raster
+                        styleObj = {
+                            minVal: layerdef.min,
+                            maxVal: layerdef.max,
+                            steps: 20,
+                            startpoint: {r:255,g:255,b:255},
+                            midpoint: {r:231,g:76,b:60},
+                            endpoint: {r:192,g:57,b:43}
+                        };
+                    } else {
+                        // a predefined color scheme
+                        styleObj = {
+                            minVal: 0, // TODO: mahal has negative min value?
+                            maxVal: layerdef.max,
+                            steps: 20,
+                            startpoint: null,
+                            midpoint: null,
+                            endpoint: null
+                        };
+                    } 
+                    styleObj.standard_range = standard_range;
+                    
+                    style.resolve(styleObj, layerdef);
+
+                    return style;
+                }
+                
             },
 
             createLegend: function(layerdef) {
