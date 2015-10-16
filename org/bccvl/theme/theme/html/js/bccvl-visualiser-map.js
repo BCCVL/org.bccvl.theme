@@ -100,6 +100,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     map = null;
                 }
 
+                $('#progress-'+id).remove();
+                container.after('<div id="progress-'+id+'" class="map-progress-bar"></div>');
+
                 // layer group 
                 var visLayers = new ol.layer.Group({
                     title: 'Layers',
@@ -176,7 +179,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 'title': data.description || 'Data Overlay'
                             }
                             // there is no legend for csv data
-                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
+                            var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                             // add layer to layers group
                             visLayers.getLayers().push(newLayer);
                         } else {
@@ -227,7 +230,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 layerdef.isVisible = layer.filename == visibleLayer;
 
                                 $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-                                    console.log(layerdef);
                                     // object to hold legend and color ranges
                                     layerdef.style = styleObj;
 
@@ -235,7 +237,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     var legend = vizcommon.createLegend(layerdef);
                                     
                                     // create layer
-                                    var newLayer = vizcommon.createLayer(layerdef, data, 'wms', legend);
+                                    var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', legend);
                                     // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
                                     // add new layer to layer group
 

@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
-   function( $, layout, ol  ) {
+define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-progress-bar'],
+   function( $, layout, ol, layerswitcher, progress_bar ) {
 
         // visualiser base url
         var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
@@ -120,7 +120,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     for (var i = 0; i < (steps+1); i++) {
                         colorArr.push('#'+bccvl_common.genColor(i+1));
                     }
-                    console.log(colorArr);
                 } else {
                     // utility functions to convert RGB values into hex values for SLD styling.
                     function byte2Hex(n) {
@@ -266,7 +265,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                         datatype: 'json',
                         data: {'datasetid': uuid, 'layer': layerdef.token},
                         success: function(data, status, jqXHR){
-                            console.log(data);
 
                             var numRows = data.rows.length;
                             var labels = [];
@@ -433,7 +431,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
 
             // create new OL layer from layer metadata data object
 //            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
-            createLayer: function(layerdef, data, type, legend) {
+            createLayer: function(id, layerdef, data, type, legend) {
 
                 var uuid = data.id;
                 var title = layerdef.title;
@@ -460,16 +458,31 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 } else {
                     wms_params['DATA_URL'] = data.vizurl;  // The data_url the user specified
                 }
+
+                var progress = new progress_bar.Progress_bar(document.getElementById('progress-'+id));
+
+                var source = new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                         url: visualiserWMS,
+                         params: wms_params,
+                         serverType: 'mapserver'
+                }));
+
+                source.on('tileloadstart', function(event) {
+                  progress.addLoading();
+                });
+
+                source.on('tileloadend', function(event) {
+                  progress.addLoaded();
+                });
+                source.on('tileloaderror', function(event) {
+                  progress.addLoaded();
+                });
                 
                 var newLayer = new ol.layer.Tile({
                     // OL3 layer attributes
                     visible: visible,
                     preload: 10,
-                    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                         url: visualiserWMS,
-                         params: wms_params,
-                         serverType: 'mapserver'
-                    })),
+                    source: source,
                     // layer switcher attributes
                     title: title,
                     type: type, // 'base', 'wms', 'wms-occurrence', 'layers'?
@@ -672,6 +685,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 
             }
+
         };
         return bccvl_common;
     }

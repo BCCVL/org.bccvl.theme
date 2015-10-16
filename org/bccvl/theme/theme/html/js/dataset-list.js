@@ -174,7 +174,15 @@ define(
 
                 $('#preview-dataset-modal').modal();
 
+                $('#preview-dataset-modal').on('show', function(){
+                    // this event refuses to fire for some reason
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
+                });
+
                 $('#preview-dataset-modal').on('shown', function(){
+
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
+
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
                         vizmap.mapRender(el.data('uuid'), el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'occurence');

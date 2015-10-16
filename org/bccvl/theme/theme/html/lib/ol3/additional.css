@@ -28,6 +28,34 @@
 
 
 /*  Openlayers styles */
+
+.ol-control button, .ol-control a.ol-button {
+  background-color: rgba(0, 159, 227, .5);
+}
+.ol-control button:hover, .ol-control a.ol-button:hover {
+  background-color: rgba(0, 159, 227, 1);
+}
+.ol-control button:focus, .ol-control a.ol-button:focus {
+  outline:none;
+}
+.ol-control, .ol-control:hover {
+    background:none;
+}
+.ol-attribution {
+    bottom: 12px;
+    right: 12px;
+}
+
+.map-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(0, 159, 227, .7);
+  width: 0;
+  transition: width 250ms;  
+}
+
 .ol-control a.ol-button {
   display: block;
   margin: 1px;
@@ -39,8 +67,6 @@
   text-align: center;
   height: 1.375em;
   width: 1.375em;
-  background-color: #7b98bc;
-  background-color: rgba(0,60,136,.5);
   border: none;
   border-radius: 2px;
   cursor:pointer;
@@ -48,6 +74,7 @@
 .layer-switcher {
     top:0;
     right:0;
+    margin:8px;
     background:transparent!important;
     background: transparent!important;
     border-radius: 0;
@@ -67,7 +94,7 @@
 .layer-switcher * {
     pointer-events: auto;
 }
-.layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
+/*.layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
     background-color: rgba(0,60,136,.7);
     outline:none;
 }
@@ -76,14 +103,13 @@
 }
 .layer-switcher.shown a.ol-button:hover {
     background-color: rgba(255,255,255,.6);
-}
+}*/
 .layer-switcher a.ol-button {
     position: absolute;
     right: 8px;
     top: 8px;
     height: 20px;
     width: 20px;
-    background-color: rgba(0,60,136,.5);
     background-image: none;
     font-family: "FontAwesome";
     pointer-events: auto;
@@ -165,7 +191,7 @@ div.olControlAttribution {
 .olLegend {
     font-family: "OpenSansLight", sans-serif;
     position: absolute;
-    top: 70px;
+    top: 10px;
     left: 10px;
     z-index: 1000;
     font-size: 11px;
@@ -177,7 +203,7 @@ div.olControlAttribution {
     font-weight: 300;
     line-height: 1.3em;
     display: inline-block;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 .olLegend i {
     width: 14px;
@@ -205,6 +231,12 @@ div.olControlAttribution {
     margin-bottom: 2px;
     cursor:default;
 }
+.ol-zoom {
+    bottom: 15px;
+    left: 15px;
+    padding: 0;
+    top:inherit;
+}
 .olControlLayerSwitcher .minimizeDiv {
     background-color: rgba(0, 60, 136, 0.5);
 }
@@ -229,26 +261,29 @@ div.olControlAttribution {
 }
 
 .export-map {
-      position: absolute;
-      left: 8px;
-      bottom: 8px;
-      height: 20px;
-      background-color: rgba(0,60,136,.5);
-      background-image: none;
-      font-family: "OpenSansRegular";
-      color:white;
-      font-size:0.9em;
-      padding-left:5px;
-      padding-right:5px;
-      border-radius:2px;
+    position: absolute;
+    left: 70px;
+    bottom: 16px;
+    height: 20px;
+    background-color: rgba(0, 159, 227, .5);
+    background-image: none;
+    font-family: "OpenSansRegular";
+    color: white;
+    font-size: 0.9em;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 2px;
 }
 .export-map:hover, .export-map:focus {
     text-decoration: none;
     color:white;
-    background-color: rgba(0,60,136,.7);
+    background-color: rgba(0, 159, 227, 1);
 }
 .ol-full-screen {
-    left: 3em;
+    left: 42px;
+    bottom: 15px;
+    top: inherit;
+    padding: 0;
     right: inherit;
 }
 .ol-full-screen button { 
