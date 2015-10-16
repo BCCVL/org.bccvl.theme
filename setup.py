@@ -24,10 +24,10 @@ setup(name='org.bccvl.theme',
       include_package_data=True,
       zip_safe=False,
       extras_require={
-          'test':
-            ['plone.app.robotframework',
-             'unittest2']
-          },
+          'test': [
+              'plone.app.robotframework',
+          ]
+      },
       install_requires=[
           'setuptools',
           'plone.app.theming',

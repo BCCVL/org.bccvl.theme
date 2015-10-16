@@ -1,4 +1,4 @@
-import unittest2 as unittest
+import unittest
 
 import robotsuite
 from org.bccvl.theme.testing import BCCVL_THEME_FUNCTIONAL_TESTING
