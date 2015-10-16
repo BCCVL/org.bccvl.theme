@@ -227,7 +227,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 layerdef.isVisible = layer.filename == visibleLayer;
 
                                 $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-
+                                    console.log(layerdef);
                                     // object to hold legend and color ranges
                                     layerdef.style = styleObj;
 
