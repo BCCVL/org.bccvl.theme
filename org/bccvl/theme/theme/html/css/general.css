@@ -168,6 +168,13 @@ color: #ffffff!important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+.new-experiment-type-heading {
+    font-family: "OpenSansSemiBold";
+    font-size:1.1em;
+    padding:.5em 0 .25em;
+    color:#333;
+}
+
 .new-experiment-button {
     text-align: center;
     vertical-align: middle;
@@ -474,6 +481,7 @@ div.loader {
     box-shadow: inset 0px -3px 2px rgba(0,0,0,.1), inset 0px 3px 2px rgba(0,0,0,.1);
 }
 
+
 /* wizard+tabs interface ------------------------------------------------- */
 
 .bccvl-wizardtabs {
@@ -639,19 +647,28 @@ div.loader {
 
 /* ---Edit layer modal--- */
 .modal {
-    max-height: 80%;
     overflow-y: auto;
     margin-left: 0;
-    left: 25%;
-    width: 50%;
+    left: 10%;
+    width: 80%;
 }
-
+.modal, .modal.fade.in {
+    top:7%;
+}
+.modal-header {
+    height:5%;
+}
 .modal-body {
-    max-height: 60%
+    padding:0;
+    max-height: none;
 }
 
 body.modal-open {
     overflow: hidden;
+}
+
+.modal form {
+    margin: 0;
 }
 
 /* stretcher related stuff ----------------------------------------------- */
@@ -1417,7 +1434,7 @@ div.morefilters h4:hover {
     font-size: 24px;
 }
 
-#sharing-save-button, .standalone{
+.standalone{
     margin-top: 10px;
     margin-right: 10px;
 }
@@ -1650,9 +1667,9 @@ body.home>.white-bg {
     }
 }
 @media only screen and (min-height: 501px) {
-    .modal-body {
+    /*.modal-body {
         max-height:60%;
-    }
+    }*/
 }
 span.loading-gif {
     text-align: center;
@@ -2173,10 +2190,12 @@ table.error td {
     border-top: 1px solid rgba(255,0,0,.1);
 }
 .modal.large.new-experiment {
-      width: 80%; /* responsive width */
-      margin-left: -40%; /* width/2 */
+      width: 90%; /* responsive width */
+      margin-left: -45%; /* width/2 */
       left: 50%;
+      top:5%;
       overflow-y: initial ;
+      max-height: 90%;
   }
 .ui-selectee {
     cursor: pointer;
@@ -2200,7 +2219,7 @@ table.error td {
     vertical-align: top;
 }
 #datasets-popup-result .datasets-list-entry {
-    margin-bottom: .3em;
+    margin-bottom: .75em;
     cursor:pointer;
 }
 #datasets-popup-result .datasets-list-entry.ui-selected {
@@ -2255,22 +2274,24 @@ ul.inline > li, ol.inline > li {
 #datasets-popup-result .ui-selecting { background: rgba(0, 159, 227, .3); }
 
 div#datasets-popup-result {
-    max-height: 420px;
+    background:white;
     overflow-y: auto;
 }
 .new-experiment.modal .modal-body {
     padding:0;
 }
+.new-experiment.modal .modal-body h4 {
+    font-family: "OpenSansRegular";
+}
+
 .new-experiment.modal .modal-body form {
-    padding:1em 0;
-    background: rgba(0, 159, 227, .15);
-    margin-bottom: 0;
-    min-height: 420px;
-    max-height: 600px;
-    overflow-y: auto;
+    padding: 1em .5em;
+    margin: 1.5em 0 1.5em 1.5em;
+    background: #ecf0f1;
+    border-radius: 5px;
 }
 #datasets-popup-result-list {
-    padding-right: 1em;
+        padding: 1.5em;
 }
 #datasets-popup-searchform input,  #datasets-popup-searchform select {
     width:auto;
@@ -2282,12 +2303,17 @@ div#datasets-popup-result {
     font-size:12px;
 }
 #datasets-popup-searchform label {
-    font-size:1em;
-    font-family: "OpenSansRegular";
+    font-family: "OpenSansSemibold";
     color: #009FE3;
 }
 .popup-filter {
-padding: 0 1em;
+    margin: 1em;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    padding-bottom: 1em;
+}
+.popup-filter:last-child {
+    border-bottom:0px;
+    padding-bottom:0;
 }
 #datasets-popup-searchform small {
     line-height: 1.3em;
@@ -2475,4 +2501,18 @@ form.plone-to-bootstrap-form .widget label span {
 .bccvl-algorithmtable label {
     color:#0088cc;
     font-family: "OpenSansRegular";
+}
+.ol-viewport  .popover {
+    min-width:180px;
+}
+.ol-viewport .popover-toggle {
+    cursor:pointer;
+    padding: .2em 0 .2em .3em;
+}
+.popover h3 {
+    font-size:1.2em;
+}
+
+.popover {
+    z-index: 1050;
 }

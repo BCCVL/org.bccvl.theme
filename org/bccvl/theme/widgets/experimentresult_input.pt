@@ -19,7 +19,8 @@
   <script type="text/javascript"
           tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
-       tal:define="dataset_tools context/@@dataset_tools"
+       tal:define="dataset_tools context/@@dataset_tools;
+                   error view/error;"
        tal:attributes="id string:${view/id}">
     <tal:block tal:repeat="item view/items"
                tal:condition="view/value">
@@ -37,6 +38,7 @@
              tal:content="item/title">Experiment Title</h4>
           <!-- List of Datesets within experiment -->
           <table class="table"
+                 tal:attributes="class string:table ${python: 'error' if error else ''};"
                  tal:define="item_type item/brain/portal_type;
                              is_sdm python: item_type == 'org.bccvl.content.sdmexperiment';
                              is_cc python: item_type == 'org.bccvl.content.projectionexperiment';
@@ -103,6 +105,13 @@
               </tr>
             </tbody>
           </table>
+          <label id="form.widgets.fieldname:list-error"
+                 class="error"
+                 for="form.widgets.fieldname:list"
+                 tal:attributes="id string:${view/id}:list-error;
+                                 for string:${view/id}:list;"
+                 tal:condition="error"
+                 tal:content="structure error/render">This field is required.</label>          
         </div>
       </div>
       <input type="hidden" value="" name="form.widgets.name.count"

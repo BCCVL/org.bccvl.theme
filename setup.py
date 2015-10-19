@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.8.5.dev'
+version = '1.9.4.dev'
 
 setup(name='org.bccvl.theme',
       version=version,
@@ -24,10 +24,10 @@ setup(name='org.bccvl.theme',
       include_package_data=True,
       zip_safe=False,
       extras_require={
-          'test':
-            ['plone.app.robotframework',
-             'unittest2']
-          },
+          'test': [
+              'plone.app.robotframework',
+          ]
+      },
       install_requires=[
           'setuptools',
           'plone.app.theming',

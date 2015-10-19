@@ -60,7 +60,7 @@
                                      that are relevant to this algo. -->
                                 <xsl:value-of select="//form[@id='searchGadget_form']/@action" />?Subject%3Alist=<xsl:value-of select="@value" />
                             </xsl:attribute>
-                            <i class="icon-info-sign" title="more information"></i>
+                            <i class="fa fa-info-circle" title="more information"></i>
                         </xsl:element>
                     </td>
                 </tr>

@@ -100,6 +100,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     map = null;
                 }
 
+                $('#progress-'+id).remove();
+                container.after('<div id="progress-'+id+'" class="map-progress-bar"></div>');
+
                 // layer group 
                 var visLayers = new ol.layer.Group({
                     title: 'Layers',
@@ -160,6 +163,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     url: dmurl,
                     params: {'datasetid': uuid},
                     success: function(data, status, jqXHR) {
+
                         // xmlrpc returns an array of results
                         data = data[0];
                         // define local variables
@@ -175,7 +179,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 'title': data.description || 'Data Overlay'
                             }
                             // there is no legend for csv data
-                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
+                            var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                             // add layer to layers group
                             visLayers.getLayers().push(newLayer);
                         } else {
@@ -200,7 +204,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     }
                                     if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
                                         layerdef.legend = 'probability';
-                                        layerdef.unit = 'probability';
+                                        layerdef.unit = 'Probability';
+                                        layerdef.unitfull = 'Probability of occurrence';
+                                        layerdef.tooltip = 'This value describes the projected probability of a species presence in a given location.';
                                     }
                                 } else {
                                     // make a copy of the original object
@@ -222,36 +228,44 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     visibleLayer = layer.filename;
                                 }
                                 layerdef.isVisible = layer.filename == visibleLayer;
-                                // object to hold legend and color ranges
-                                layerdef.style = vizcommon.createStyleObj(layerdef);
-                                // create legend for this layer
-                                var legend = vizcommon.createLegend(layerdef);
-                                // create layer
-                                var newLayer = vizcommon.createLayer(layerdef, data, 'wms', legend)
-                                // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
-                                // add new layer to layer group
-                                visLayers.getLayers().push(newLayer);
-                                // if layer is visible we have to show legend as well
-                                if (layerdef.isVisible) {
-                                    $('#'+id+' .ol-viewport').append(legend);
-                                }
+
+                                $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
+                                    // object to hold legend and color ranges
+                                    layerdef.style = styleObj;
+
+                                    // create legend for this layer
+                                    var legend = vizcommon.createLegend(layerdef);
+                                    
+                                    // create layer
+                                    var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', legend);
+                                    // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
+                                    // add new layer to layer group
+
+                                    newLayer.on('change:visible', function(e){
+                                        if (newLayer.getVisible()){
+                                            var bccvl = newLayer.get('bccvl');
+                                            // remove existing legend
+                                            $('.olLegend').remove();
+                                            // add new legend to dom tree
+                                            $('#'+id+' .ol-viewport').append(bccvl.legend);
+                                        }
+                                    });
+
+                                    visLayers.getLayers().push(newLayer);
+
+                                    // if layer is visible we have to show legend as well
+                                    if (layerdef.isVisible) {
+                                        $('#'+id+' .ol-viewport').append(legend);
+                                    }
+
+                                    layerSwitcher.renderPanel();
+
+                                });
+                                
                             });
                         }
 
-                        layerSwitcher.renderPanel();
                         layerSwitcher.showPanel();
-
-                        visLayers.getLayers().forEach(function(lyr, idx, arr) {
-                            lyr.on('change:visible', function(e){
-                                if (lyr.getVisible()){
-                                    var bccvl = lyr.get('bccvl');
-                                    // remove existing legend
-                                    $('.olLegend').remove();
-                                    // add new legend to dom tree
-                                    $('#'+id+' .ol-viewport').append(bccvl.legend);
-                                }
-                            });
-                        });
 
                         // hook up exportAsImage
                         $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');

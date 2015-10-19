@@ -100,8 +100,9 @@
                     </div>
                     </tal:block>
                   </div>
-                  <div class="span1">
-                    <p><small><tal:r tal:replace="author/name_or_id">Me</tal:r></small></p>
+                  <div class="span1"
+                       tal:define="author_name author/name_or_id">
+                    <p tal:condition="python: author_name != 'BCCVL'"><small><tal:r tal:replace="author_name">Me</tal:r></small></p>
                   </div>
                   <div class="datasets-controls span4"
                          tal:define="complete python: item.job_state in ('COMPLETED', None)">
@@ -143,12 +144,12 @@
                       </tal:block>
 
                       <div class="span4">
-                        <a class="dataset-info-btn btn btn-info btn-mini" href="#" target="_blank"
-                           tal:attributes="href string:${item_url}/details">
-                          <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                        <a class="dataset-info-btn btn btn-info btn-mini" href="#" target="_blank" data-toggle="InfoModal"
+                           tal:attributes="href string:${item_url}/modal_view">
+                          <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
                          Info</a>
                         <a class="sharing-btn btn btn-info btn-mini" href="#"
-                           tal:attributes="href action/url"
+                           tal:attributes="href string:${item_url}/modal_sharing"
                            tal:condition="python: complete and action.get('available')"
                            tal:define="action item_obj/dataset_tools/local_roles_action;">
                           <i class="fa fa-share-alt icon-white" title="Sharing Options"
@@ -166,7 +167,7 @@
                         <!-- remove dataset -->                    
                         
                         <a class="remove-dataset-btn btn btn-warning btn-mini"
-                           tal:attributes="href string:${item_url}/@@remove"
+                           tal:attributes="href string:${item_url}/modal_remove"
                            tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
                           <i class="icon-remove icon-white" title="Remove"></i>
                         Remove</a>

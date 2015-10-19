@@ -13,4 +13,12 @@
         template="plone.portalfooter.pt"
         />
 
+    <browser:viewlet
+        name="plone.global_sections"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class=".common.GlobalSectionsViewlet"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        permission="zope2.View"
+        />
+    
 </configure>

@@ -3,10 +3,10 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
+     'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
-    function($, viz, vizmap, sharing, editmodal, removedataset) {
+    function($, viz, vizmap, editmodal, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -19,9 +19,7 @@ define(
         $(function() {
 
             viz.init();
-            sharing.init();
             editmodal.init();
-            removedataset.init();
 
 
             $('.bccvl-datasetstable').tablesorter({
@@ -176,7 +174,15 @@ define(
 
                 $('#preview-dataset-modal').modal();
 
+                $('#preview-dataset-modal').on('show', function(){
+                    // this event refuses to fire for some reason
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
+                });
+
                 $('#preview-dataset-modal').on('shown', function(){
+
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
+
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
                         vizmap.mapRender(el.data('uuid'), el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'occurence');
@@ -188,14 +194,12 @@ define(
                 $('#preview-dataset-modal').on('hidden', function(){
                     $('#preview-dataset-modal').remove();
                 });
-                // setup popover handling in modal
+                // setup popover handling in modal (bootstrap does not initialise dynamically loaded popovers inside modals?)
                 $('#preview-dataset-modal .modal-body').popover({
                     'selector': '[data-toggle="popover"]',
-                    'container': '#preview-dataset-modal', // bug in bootstrap :( only works as data-attribute when using selector
-                    //'container': '#preview-dataset-modal .modal-body',
-                    //'container':  'div.modal-backdrop',
+                    'container': 'body', // bug in bootstrap :( only works as data-attribute when using selector
                     'trigger': 'hover'
-                }).on('shown', function(e) { // prevent events from bubbling up to modal
+                }).on('shown', function(e) { // prevent shared popover/modal events from bubbling up to modal
                     e.stopPropagation();
                 }).on('hidden', function(e) {
                     e.stopPropagation();
@@ -207,32 +211,15 @@ define(
 
             // Request metadata for datasets
             // These buttons have a fallback to open their request in a new tab (if JS is disabled)
-            $('body').on('click', '.dataset-info-btn', function(event){
-                event.preventDefault();
-                var requestUrl = $(this).attr('href');
-                $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
-                $.ajax(requestUrl)
-                    .done(function(data){
-                        console.log(data);
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html(data);
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    })
-                    .fail(function() {
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html('<h1>No metadata is available for this dataset at this time.</h1>');
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    });
-                $('#dataset-meta-modal').modal();
-                $('#dataset-meta-modal').on('hidden', function(){
-                    $('#dataset-meta-modal').remove();
-                });
-            });
-
+            var infomodal = new modals.InfoModal('info-modal');
+            infomodal.bind('body', "[data-toggle='InfoModal']");
+            var removemodal = new modals.RemoveModal('remove-modal');
+            removemodal.bind('body', 'a.remove-dataset-btn');
+            var sharingmodal = new modals.SharingModal('sharing-modal');
+            sharingmodal.bind('body', 'a.sharing-btn');
+            
         });
-
+        
         function renderDatasetRow(completeURL, $tr) {
             $.ajax({
                 url: completeURL,
@@ -240,8 +227,6 @@ define(
                     $tr.replaceWith($(rowHTML));
                     // Wire up visualiser and sharing
                     viz.init();
-                    sharing.init();
-                    removedataset.init();
                 }
             });
         };

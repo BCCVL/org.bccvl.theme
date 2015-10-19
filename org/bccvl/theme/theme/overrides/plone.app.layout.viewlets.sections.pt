@@ -4,16 +4,33 @@
   <div class="nav-collapse collapse">
     <ul id="portal-globalnav" class="nav"
         tal:define="selected_tab python:view.selected_portal_tab">
-      <tal:tabs tal:repeat="tab portal_tabs">
-        <li tal:define="tid tab/id"
-            tal:attributes="class python:selected_tab==tid and 'active' or ''">
+      <tal:tabs tal:repeat="tab portal_tabs/values">
+        <li tal:define="tid tab/id;
+                        subitems python:tab.get('subitems', ());
+                        subitemclass python:'dropdown' if subitems else '';
+                        subitemtoggle python:(subitemclass + '-toggle') if subitems else '';
+                        class python:selected_tab==tid and 'active' or '';
+                        class string:${class} ${subitemclass};"
+            tal:attributes="class class">
           <a href="#" class=""
-             tal:content="tab/name"
+             tal:define="class string:bccvllinks-${tid} ${subitemtoggle};"
              tal:attributes="href tab/url;
-                             class string:bccvllinks-${tid};
+                             class class;
+                             data-toggle python:'dropdown' if subitems else '';
                              title tab/description|nothing;
-                             target tab/link_target|nothing;">Tab Name</a>
+                             target tab/link_target|nothing;"><tal:r tal:replace="tab/name">Tab Name</tal:r> <b class="caret" tal:condition="subitems"></b></a>
+          <ul tal:condition="subitems" class="dropdown-menu" role="menu">
+            <li tal:repeat="sub subitems/values">
+              <a href="#" class=""
+                 tal:content="sub/name"
+                 tal:attributes="href sub/url;
+                                 class string:bccvllinks-${tid};
+                                 title sub/description|nothing;
+                                 target sub/link_target|nothing">Item</a>
+            </li>
+          </ul>
         </li>
+
       </tal:tabs>
     </ul>
   </div>
