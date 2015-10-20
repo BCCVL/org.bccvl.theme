@@ -71,6 +71,16 @@ define(
             });
         });
 
+        if (window.innerWidth > 767){
+            var affix = $('.affixed-map');
+            affix.data('offset-top', affix.offset().top );
+            affix.css({
+                'left': affix.offset().left,
+                'width': affix.innerWidth(),
+            });
+        }
+        
+
         // Poll /jm/getJobStatus for the status of the experiments
         // This endpoint returns the status of each algorithm
         function pollExperimentStatus() {

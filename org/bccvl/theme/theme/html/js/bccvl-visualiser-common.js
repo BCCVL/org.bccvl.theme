@@ -363,25 +363,47 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 }
                 // Build legend obj
                 var legend = document.createElement('div');
-                legend.className = 'olLegend';
+                legend.className = 'olLegend ol-unselectable ol-control';
+
+                var button = document.createElement('a');
+                button.className = 'ol-button open';
+                button.innerHTML = '<i class="fa fa-list-ul"></i>';
+                
+                var panel = document.createElement('div');
+                panel.className = 'panel shown';
+
+                button.onclick = function(e) {
+                    e.stopPropagation();
+                    if ( panel.className.indexOf('shown') > 0){
+                        button.className = 'ol-button'
+                        panel.className = 'panel';
+                    } else {
+                        button.className = 'ol-button open'
+                        panel.className = 'panel shown';
+                    }
+                };
                 
                 if (layerdef.tooltip && layerdef.tooltip.length < 0) {
                     var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
-                    legend.innerHTML = '<h5>' + layerdef.unit + ' '+popover+'</h5>';
+                    panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
                 } else {
-                    legend.innerHTML = '<h5>' + layerdef.unit + '</h5>';
+                    panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';
                 }
                 for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
                     if (standard_range == 'categorical'){
-                        legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
+                        panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
                     } else {
                         if (i == (rangeArr.length-1)){
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
                         } else {
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+1], 2)+'</label>';
+                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+1], 2)+'</label>';
                         }
                     }
                 }
+
+                legend.appendChild(button);
+                legend.appendChild(panel);
+
                 return legend;
             },
 

@@ -191,7 +191,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             container.addClass('active');
 
             // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
             $('#'+id+' a.export-map').click(
                 { map: map,
                   mapTitle: 'Overlay'

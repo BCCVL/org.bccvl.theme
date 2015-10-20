@@ -247,7 +247,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                             // remove existing legend
                                             $('.olLegend').remove();
                                             // add new legend to dom tree
-                                            $('#'+id+' .ol-viewport').append(bccvl.legend);
+                                            $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
                                         }
                                     });
 
@@ -255,7 +255,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                                     // if layer is visible we have to show legend as well
                                     if (layerdef.isVisible) {
-                                        $('#'+id+' .ol-viewport').append(legend);
+                                        $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
                                     }
 
                                     layerSwitcher.renderPanel();
@@ -268,7 +268,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         layerSwitcher.showPanel();
 
                         // hook up exportAsImage
-                        $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+                        $('#'+id+' .ol-viewport  .ol-overlaycontainer-stopevent').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
                         $('#'+id+' a.export-map').click(
                             { map: map,
                               mapTitle: data.title
