@@ -16,8 +16,6 @@
       <button class="btn btn-primary">Select Experiment</button>
     </div>
   </div>
-  <script type="text/javascript"
-          tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
        tal:define="error view/error;"
        tal:attributes="id string:${view/id}">

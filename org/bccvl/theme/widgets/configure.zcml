@@ -34,48 +34,6 @@
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         />
 
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IDatasetWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IDatasetDictWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-    
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IExperimentSDMWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IExperimentResultWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IFutureDatasetsWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-
-    <adapter
-        for="org.bccvl.theme.interfaces.IBCCVLThemeLayer
-             org.bccvl.site.widgets.interfaces.IExperimentResultProjectionWidget"
-        provides="org.bccvl.site.widgets.interfaces.IJSWrapper"
-        factory=".widgets.JS_WRAPPER_ADAPTER"
-        />
-    
     <z3c:widgetTemplate
         mode="input"
         widget="org.bccvl.site.widgets.interfaces.IDatasetWidget"
