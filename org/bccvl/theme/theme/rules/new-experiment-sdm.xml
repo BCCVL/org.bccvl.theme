@@ -21,24 +21,8 @@
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
         <!-- hook in the algorithm list -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody">
-            <xsl:for-each select="//input[@name='form.widgets.functions:list']">
-                <tr>
-                  <td class="bccvl-table-choose">
-                    <xsl:copy-of select="."/>
-                  </td>
-                  <td class="bccvl-table-label">
-                    <xsl:element name="label">
-                      <xsl:attribute name="for"><xsl:value-of select="@id"/></xsl:attribute>
-                      <xsl:value-of select="following-sibling::span[@class='label']/text()"/>
-                    </xsl:element>
-                  </td>
-                  <td class="bccvl-table-controls">
-                    <xsl:copy-of select="following-sibling::a[@class='search']"/>
-                  </td>
-                </tr>
-            </xsl:for-each>
-        </replace>
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
+                 css:content-children="#form-widgets-functions-table"/>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
