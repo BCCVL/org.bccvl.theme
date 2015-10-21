@@ -16,8 +16,6 @@
       <button class="btn btn-primary">Select Experiment</button>
     </div>
   </div>
-  <script type="text/javascript"
-          tal:content="structure view/js"></script>
   <div id="form-widgets-fieldname"
        tal:define="dataset_tools context/@@dataset_tools;
                    error view/error;"
