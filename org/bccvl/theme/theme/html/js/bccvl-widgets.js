@@ -23,6 +23,24 @@ define(
             });
         };
 
+        function truncate($elements) {
+            $elements.after('<a class="more-info"><i class="fa fa-chevron-down"></i>Details</a>');
+            $elements.hide();
+            $elements.next('a.more-info').click(function(e){
+                e.stopPropagation();
+                var _this = $(this);
+                if (_this.hasClass('shown')){
+                    _this.prev('ul').slideUp(300, function(){
+                        _this.removeClass('shown').html('<i class="fa fa-chevron-down"></i>Details');
+                    });
+                } else {
+                    _this.prev('ul').slideDown(300, function(){
+                        _this.addClass('shown').html('<i class="fa fa-chevron-up"></i>Hide');;
+                    });
+                }
+            });
+        }
+
         // An object to handle Modal dialog for the widgets defined here
         function ModalBrowseSelect($modal, options) {
             // $modal ... the jquery object for the modal element on the page
@@ -114,6 +132,8 @@ define(
                 // apply selectable behaviour to result list
                 selectable($modal.find(settings.result_child_selector));
 
+                truncate($modal.find(settings.result_child_selector).find('ul.details'));
+                
                 $modal.find('select[multiple]').selectize({
                     plugins: ['remove_button'],
                     onChange: function(){

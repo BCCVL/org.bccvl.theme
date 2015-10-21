@@ -276,6 +276,9 @@ td.date-time {
     line-height: 1.3em;
     margin-top:.3em;
 }
+a.more-info i {
+    margin-right:.3em;
+}
 
 .new-experiment-button a, .new-experiment-button a span {
     display:block;
