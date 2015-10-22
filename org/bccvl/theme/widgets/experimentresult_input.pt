@@ -2,6 +2,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url"      
       tal:omit-tag="">
   <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
@@ -19,7 +21,8 @@
   <div id="form-widgets-fieldname"
        tal:define="dataset_tools context/@@dataset_tools;
                    error view/error;"
-       tal:attributes="id string:${view/id}">
+       tal:attributes="id string:${view/id};
+                       data-multiple view/multiple|string:">
     <tal:block tal:repeat="item view/items"
                tal:condition="view/value">
       <div class="selecteditem"
@@ -55,50 +58,50 @@
               </tr>
             </thead>
             <tbody>
-              <tal:repeat tal:repeat="model item/datasets">
+              <tal:repeat tal:repeat="subitem item/subitems">
                 <tr class="selectedmodels row-fluid">
                   <td>
                     <input type="checkbox" value=""
-                           name="form.widgets.fieldname.dataset.0:list"
-                           tal:attributes="value model/uuid;
-                                           name string:${view/name}.dataset.${index}:list;
+                           name="form.widgets.fieldname.item.0:list"
+                           tal:attributes="value subitem/uuid;
+                                           name string:${view/name}.item.${index}:list;
                                            required view/required;
-                                           checked model/selected;"/>
+                                           checked subitem/selected;"/>
                   </td>
                   <td tal:condition="not: is_bd">
-                    <span tal:content="model/md/species/scientificName">Species data</span>
+                    <span tal:content="subitem/md/species/scientificName">Species data</span>
                   </td>
                   <td tal:condition="not: is_bd">
-                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(model['md']['resolution']).title">Resolution data</span>
+                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(subitem['md']['resolution']).title">Resolution data</span>
                   </td>
                   <td tal:condition="is_sdm">
-                    <span tal:content="python: model['obj'].__parent__.job_params['function']">Algorithm id</span>
+                    <span tal:content="python: subitem['obj'].__parent__.job_params['function']">Algorithm id</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(model['md']['gcm']).title">GCM</span>
+                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(subitem['md']['gcm']).title">GCM</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(model['md']['emsc']).title">EMSC</span>
+                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(subitem['md']['emsc']).title">EMSC</span>
                   </td>
                   <td tal:condition="is_cc"
-                      tal:define="year model/md/year|nothing;
-                                  month model/md/month|nothing">
+                      tal:define="year subitem/md/year|nothing;
+                                  month subitem/md/month|nothing">
                     <span tal:condition="year" tal:content="year">Year</span>
                     <span tal:condition="month" tal:content="month">Month</span>
                   </td>
                   <td tal:condition="not: is_bd">
                     <ul>
-                      <li tal:repeat="layer model/md/layers_used"
+                      <li tal:repeat="layer subitem/md/layers_used"
                           tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title">Layer title</li>
                     </ul>
                   </td>                                       
                   <td tal:condition="is_bd">
-                    <span tal:content="python: dataset_tools.genre_vocab.getTerm(model['md']['genre']).title">EMSC</span>
+                    <span tal:content="python: dataset_tools.genre_vocab.getTerm(subitem['md']['genre']).title">EMSC</span>
                   </td>
                 </tr>
               </tal:repeat>
               <tr class="selectedmodels row-fluid"
-                  tal:condition="not: item/datasets">
+                  tal:condition="not: item/subitems">
                 <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
               </tr>
             </tbody>
@@ -129,7 +132,8 @@
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
   <a id="fieldname-popup" href="#" class="btn btn-default"
-     tal:attributes="id string:${view/field/__name__}-popup">
+     tal:attributes="id string:${view/field/__name__}-popup;
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}">
      <i class="icon icon-plus-sign"></i> Select Experiment
   </a>
 </html>

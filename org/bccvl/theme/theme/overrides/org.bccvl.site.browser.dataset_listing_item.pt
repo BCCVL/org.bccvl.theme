@@ -21,6 +21,6 @@
       tal:omit-tag="">
 
   <!-- TODO: find default view name for datasets folder and use it instead of hardcoded @@faceted-table-items -->
-      <metal:block use-macro="context/@@faceted-table-items/datasets_listitem"></metal:block>
+      <metal:block use-macro="context/dataset_macros/datasets_listitem"></metal:block>
 
 </html>

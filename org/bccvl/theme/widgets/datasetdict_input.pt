@@ -2,6 +2,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url"      
       tal:omit-tag="">
   <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
@@ -17,7 +19,8 @@
     </div>
   </div>
   <div id="form-widgets-fieldname"
-       tal:attributes="id string:${view/id}">
+       tal:attributes="id string:${view/id};
+                       data-multiple view/multiple|string:">
     <div class="alert alert-error"
          tal:condition="python: len(view.resolutions()) > 1">
       <p>WARNING: Selection contains layers with different
@@ -84,5 +87,6 @@
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
   <a id="fieldname-popup" href="#" class="btn btn-default"
-     tal:attributes="id string:${view/field/__name__}-popup"><i class="icon icon-plus-sign"></i> Select Available Datasets</a>
+     tal:attributes="id string:${view/field/__name__}-popup;
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}"><i class="icon icon-plus-sign"></i> Select Available Datasets</a>
 </html>

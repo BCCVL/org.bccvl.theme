@@ -2,6 +2,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url"      
       tal:omit-tag="">
   <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
@@ -18,7 +20,8 @@
   </div>
   <div id="form-widgets-fieldname"
        tal:define="error view/error;"
-       tal:attributes="id string:${view/id}">
+       tal:attributes="id string:${view/id};
+                       data-multiple view/multiple|string:">
     <tal:block tal:define="item view/item"
                tal:condition="python: view.value and item">
       <div class="selecteditem">
@@ -47,17 +50,17 @@
               </tr>
             </thead>
             <tbody>
-          <tal:repeat tal:repeat="model item/models">
+          <tal:repeat tal:repeat="subitem item/subitems">
             <tr class="selectedmodels row-fluid"
-                 tal:define="modelobj model/item/getObject;
+                 tal:define="modelobj subitem/item/getObject;
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
-                       name="form.widgets.fieldname.model:list"
-                       tal:attributes="value model/uuid;
-                                       name string:${view/name}.model:list;
+                       name="form.widgets.fieldname.item:list"
+                       tal:attributes="value subitem/uuid;
+                                       name string:${view/name}.item:list;
                                        required view/required;
-                                       checked model/selected;"/>&nbsp;
+                                       checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
               </td>
               <td>
@@ -72,7 +75,7 @@
             </tr>
           </tal:repeat>
           <tr class="selectedmodels row-fluid"
-              tal:condition="not: item/models">
+              tal:condition="not: item/subitems">
             <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
           </tr>
         </tbody>
@@ -98,7 +101,8 @@
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
   <a id="fieldname-popup" href="#" class="btn btn-default"
-     tal:attributes="id string:${view/field/__name__}-popup">
+     tal:attributes="id string:${view/field/__name__}-popup;
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}">
     <i class="icon icon-plus-sign"></i> Select SDM Experiment
   </a>
 </html>
