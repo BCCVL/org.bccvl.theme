@@ -4,7 +4,8 @@
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
      'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize',
+     'bbq', 'faceted_view.js', 'js/selectize-remove-single'],
 
     function($, viz, vizmap, editmodal, modals) {
 
