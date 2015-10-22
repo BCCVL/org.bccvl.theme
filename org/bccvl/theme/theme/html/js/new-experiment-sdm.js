@@ -6,8 +6,10 @@ define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
-     'js/bccvl-form-popover', 'jquery-xmlrpc'],
-    function($, preview_layout, viz, vizmap, wiztabs, search, formvalidator, popover ) {
+     'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
+     'js/bccvl-widgets', 'jquery-xmlrpc'],
+    function($, preview_layout, viz, vizmap, wiztabs, search, formvalidator,
+             popover, bbq, faceted, bccvl) {
 
         // ==============================================================
         $(function() {
@@ -29,7 +31,10 @@ define(
                              'min': 1}
             );*/
 
-
+            // setup dataset select widgets
+            new bccvl.SelectList("species_occurrence_dataset");
+            new bccvl.SelectList("species_absence_dataset");
+            new bccvl.SelectDict("environmental_datasets");
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
@@ -130,6 +135,7 @@ define(
             });
 
             // -- layer selection -----------------------------------
+            // FIXME: this is probably all dead code below
 
             var $envTable = $('table.bccvl-environmentaldatatable');
             var $envBody = $envTable.find('tbody');
