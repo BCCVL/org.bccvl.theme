@@ -4,9 +4,12 @@
 define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
      'js/bccvl-wizard-tabs', 'js/bccvl-search', 'js/bccvl-form-jquery-validate',
-     'jquery-tablesorter', 'jquery-arrayutils', 'select2',
-     'js/bccvl-form-popover', 'js/bccvl-visualiser-map'],
-    function($, preview_layout, viz, wiztabs, search, formvalidator) {
+     'jquery-tablesorter', 'jquery-arrayutils',
+     'js/bccvl-form-popover', 'js/bccvl-visualiser-map',
+     'bbq', 'faceted_view.js', 'js/bccvl-widgets'],
+    function($, preview_layout, viz, wiztabs, search, formvalidator,
+             tablesorter, arrayutils, popover, vizmap, bbq,
+             faceted, bccvl) {
 
         $(function() {
 
@@ -23,6 +26,9 @@ define(
 
             // hook up the search fields
             search.init();
+
+            // setup dataset select widgets
+            new bccvl.SelectList("data_table");
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
