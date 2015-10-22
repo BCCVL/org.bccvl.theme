@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="eea">
+
+<body>
+  <metal:content-core fill-slot="content-core">
+    <metal:block define-macro="content-core">
+      <div id="datasets-popup-result" class="span9" tal:define="
+        folderContents folderContents | python:context.getFolderContents();
+        Batch python:modules['Products.CMFPlone'].Batch;
+        b_start python:request.get('b_start', 0);
+        batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, 100, int(b_start), orphan=2);
+
+        dstools nocall:context/@@dataset_tools;
+        layer_vocab python:dstools.layer_vocab;
+        pas_member context/@@pas_member;
+        toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+        <div id="datasets-popup-result-list">
+          
+          <div class="row" tal:condition="batch">
+            <div class="cell">
+              <div metal:use-macro="context/batch_macros/macros/navigation" />
+            </div>
+          </div>
+        
+          <tal:repeat tal:repeat="item batch">
+          <tal:block tal:condition="python: item.portal_type in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset')">
+            <div class="datasets-list-entry selectable"
+                 tal:attributes="data-uuid item/UID"
+                 tal:define="item_title_or_id item/pretty_title_or_id;
+                             item_icon python:plone_view.getIcon(item);
+                             item_creator item/Creator;
+                             item_modified item/ModificationDate;
+                             item_description item/Description;
+                             md python:dataset_tools.metadata(item);
+                             ">
+              <div class="cell">
+                <h4>
+                <span tal:content="item_title_or_id">Item Title</span></h4>
+                <ul class="details">
+                  <li tal:condition="item_description"
+                      tal:content="item_description">Item description</li>
+                  <li tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></li>
+                  <li tal:condition="md/emsc|nothing"><small><b>Emmission Scenario: <tal:r tal:replace="md/emsc"></tal:r></b></small></li>
+                  <li tal:condition="md/gcm|nothing"><small><b>Global Circulation Model: <tal:r tal:replace="md/gcm"></tal:r></b></small></li>
+                  <li tal:condition="python: 'layer' in filters">
+                    <small><b>Layers:</b>
+                    <ul tal:condition="python: 'layer' in filters">
+                      <li tal:repeat="layer md/layers|nothing"
+                          tal:define="layer_vocab python:dataset_tools.layer_vocab"
+                          tal:content="python: layer_vocab.getTerm(layer).title">Layer Title
+                      </li>
+                    </ul>
+                    </small>                
+                  </li>
+                  <li><small><b>Creator:</b> <span tal:condition="item_creator"
+                  tal:define="author python:pas_member.info(item_creator)"
+                  tal:content="author/name_or_id">Bob Dobalina</span></small></li>
+                  <li><small><b>Modified:</b> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></small></li>
+                  
+                </ul>
+              </div>
+            </div>
+          </tal:block>
+
+          <tal:block tal:condition="python: item.portal_type not in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset')">
+            <div class="datasets-list-entry selectable"
+                 tal:attributes="data-uuid item/uuid"
+                 tal:define="item_title item/Title;
+                             item_icon python:plone_view.getIcon(item);
+                             item_creator item/Creator;
+                             item_modified item/ModificationDate;
+                             item_description item/Description;
+                             exp python:view.experiment_details(item);
+                             ">
+              <div class="cell">
+                <h4>
+                  <strong tal:content="item_title">Item Title</strong>,
+                  <span class="taxonomy" tal:content="exp/species_occurrence"/>
+                  <em>(<span tal:content="exp/functions"/>)</em>
+                </h4>
+                <tal:if condition="exp/environmental_layers|nothing">
+                  <dl>
+                    <dt class="bccvl-experiment-parameters"
+                        tal:repeat="dataset exp/environmental_layers" >
+                      <tal:repl tal:replace="dataset/title"/>
+                      <dd class="bccvl-experiment-parameters"
+                          tal:repeat="layer dataset/layers"
+                          tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title"></dd>
+                    </dt>
+                  </dl>
+                </tal:if>
+                <tal:if condition="exp/years|nothing">
+                  <p class="bccvl-experiment-parameters" tal:content="exp/years" />                    
+                </tal:if>
+                <tal:if condition="item/Description">
+                  <p class="bccvl-experiment-summary" tal:content="item/Description" />
+                </tal:if>
+                
+                <ul class="inline">
+                  <li><strong>Creator:</strong><span tal:condition="item_creator"
+                  tal:define="author python:pas_member.info(item_creator)"
+                  tal:content="author/name_or_id"> Bob Dobalina</span></li>
+                  <li><strong>Modified:</strong> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></li>
+                </ul>
+              </div>
+            </div>
+            
+          </tal:block>
+          </tal:repeat>
+             
+          <div class="row" tal:condition="batch">
+            <div class="cell">
+              <div metal:use-macro="context/batch_macros/macros/navigation" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </metal:block>
+  </metal:content-core>
+</body>
+</html>

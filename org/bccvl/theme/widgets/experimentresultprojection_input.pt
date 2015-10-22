@@ -2,6 +2,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url"      
       tal:omit-tag="">
   <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
@@ -17,7 +19,8 @@
     </div>
   </div>
   <div id="form-widgets-fieldname"
-       tal:attributes="id string:${view/id}"
+       tal:attributes="id string:${view/id};
+                       data-multiple view/multiple|string:"
        tal:define="dataset_tools nocall:context/@@dataset_tools;
                    error view/error">
     <tal:repeat tal:repeat="item view/items"
@@ -25,9 +28,9 @@
       <div class="selecteditem"
            tal:define="index repeat/item/index;">
         <div class="selectedexperiment">
-          <input type="hidden" value="" name="form.widgets.fieldname.experiment.0"
+          <input type="hidden" value="" name="form.widgets.fieldname.item.0"
                  tal:attributes="value item/uuid;
-                                 name string:${view/name}.experiment.${index};"/>
+                                 name string:${view/name}.item.${index};"/>
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
           <!-- TODO: show experiment infos -->
           <h4 class="experiment-title"
@@ -55,29 +58,29 @@
               </tr>
             </thead>
             <tbody>
-              <tal:repeat tal:repeat="dataset item/datasets">
+              <tal:repeat tal:repeat="subitem item/subitems">
                 <tr class="selecteddatasets controls-row row-fluid"
-                    tal:define="dsindex repeat/dataset/index">
+                    tal:define="dsindex repeat/subitem/index">
                   <td>
                     <input type="checkbox" value=""
-                           name="form.widgets.fieldname.dataset.0.0.uuid"
-                           tal:attributes="value dataset/uuid;
-                                           name string:${view/name}.dataset.${index}.${dsindex}.uuid;
-                                           checked dataset/selected;"/>
+                           name="form.widgets.fieldname.item.0.item.0.uuid"
+                           tal:attributes="value subitem/uuid;
+                                           name string:${view/name}.item.${index}.item.${dsindex}.uuid;
+                                           checked subitem/selected;"/>
                   </td>
                   <td>
-                    <span tal:content="dataset/md/species/scientificName">Species data</span>
+                    <span tal:content="subitem/md/species/scientificName">Species data</span>
                   </td>
                   <td>
-                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(dataset['md']['resolution']).title">Resolution data</span>
+                    <span tal:content="python: dataset_tools.resolution_vocab.getTerm(subitem['md']['resolution']).title">Resolution data</span>
                   </td>
                   <td>
-                    <select name="form.widgets.fieldname.dataset.0.0.threshold"
-                            tal:attributes="name string:${view/name}.dataset.${index}.${dsindex}.threshold;">
-                      <tal:block tal:repeat="threshold dataset/thresholds">
+                    <select name="form.widgets.fieldname.item.0.item.0.threshold"
+                            tal:attributes="name string:${view/name}.item.${index}.item.${dsindex}.threshold;">
+                      <tal:block tal:repeat="threshold subitem/thresholds">
                         <option value=""
-                                tal:define="value python:dataset['thresholds'][threshold];
-                                            thlabel dataset/threshold/label|nothing;"
+                                tal:define="value python:subitem['thresholds'][threshold];
+                                            thlabel subitem/threshold/label|nothing;"
                                 tal:attributes="value threshold;
                                                 selected python:thlabel == threshold"
                                 tal:content="string:${threshold} (${value})"/>
@@ -85,30 +88,30 @@
                     </select>
                   </td>
                   <td>
-                    <span tal:content="dataset/layermd/min">Min</span>
+                    <span tal:content="subitem/layermd/min">Min</span>
                   </td>
                   <td>
-                    <span tal:content="dataset/layermd/max">Max</span>
+                    <span tal:content="subitem/layermd/max">Max</span>
                   </td>
                   <td tal:condition="is_sdm">
-                    <span tal:content="python: dataset['obj'].__parent__.job_params['function']">Algorithm id</span>
+                    <span tal:content="python: subitem['obj'].__parent__.job_params['function']">Algorithm id</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(dataset['md']['gcm']).title">GCM</span>
+                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(subitem['md']['gcm']).title">GCM</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(dataset['md']['emsc']).title">EMSC</span>
+                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(subitem['md']['emsc']).title">EMSC</span>
                   </td>
                   <td tal:condition="is_cc"
-                      tal:define="year model/md/year|nothing;
-                                  month model/md/month|nothing">
+                      tal:define="year subitem/md/year|nothing;
+                                  month subitem/md/month|nothing">
                     <span tal:condition="year" tal:content="year">Year</span>
                     <span tal:condition="month" tal:content="month">Month</span>
                   </td>
                 </tr>
               </tal:repeat>
               <tr class="selectedmodels row-fluid"
-                  tal:condition="not: item/datasets">
+                  tal:condition="not: item/subitems">
                 <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
               </tr>
             </tbody>
@@ -120,10 +123,10 @@
                                  for string:${view/id}:list;"
                  tal:condition="error"
                  tal:content="structure error/render">This field is required.</label>          
-          <input type="hidden" value="" name="form.widgets.dataset.0.count"
+          <input type="hidden" value="" name="form.widgets.item.0.count"
 		 tal:condition="repeat/dataset/end"
                  tal:attributes="value repeat/dataset/number;
-                                 name string:${view/name}.dataset.${index}.count;"/>
+                                 name string:${view/name}.item.${index}.count;"/>
         </div>
       </div>
       <input type="hidden" value="" name="form.widgets.name.count"
@@ -143,7 +146,8 @@
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
   <a id="fieldname-popup" href="#" class="btn btn-default"
-     tal:attributes="id string:${view/field/__name__}-popup">
+     tal:attributes="id string:${view/field/__name__}-popup;
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}">
      <i class="icon icon-plus-sign"></i> Select SDM Experiment
   </a>
 </html>
