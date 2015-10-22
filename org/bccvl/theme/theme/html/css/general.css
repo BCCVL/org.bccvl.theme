@@ -2228,7 +2228,7 @@ table.error td {
     margin-bottom: .75em;
     cursor:pointer;
 }
-#datasets-popup-result .datasets-list-entry.ui-selected {
+.ui-selected {
     background: rgba(0, 159, 227, .5);
     /*color: white;*/
 }
@@ -2236,7 +2236,7 @@ table.error td {
     color:#009FE3;
 }
 
-#datasets-popup-result .datasets-list-entry.ui-selected h4, #datasets-popup-result .datasets-list-entry.ui-selected h4 strong {
+.ui-selected h4, #datasets-popup-result .ui-selected h4 strong {
     color:#333;
 }
 #datasets-popup-result .datasets-list-entry dl {
