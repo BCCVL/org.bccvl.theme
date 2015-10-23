@@ -6,7 +6,7 @@ define(
      'js/bccvl-dimension-equation', 'js/bccvl-form-jquery-validate',
      'bbq', 'faceted_view.js', 'js/bccvl-widgets'],
     function($, viz, wiztabs, stretch, dimensions, formvalidator,
-             jqvalidate, bbq, faceted, bccvl) {
+             bbq, faceted, bccvl) {
         // ==============================================================
         // do the work
         $(function() {
