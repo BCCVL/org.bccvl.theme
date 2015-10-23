@@ -64,7 +64,7 @@
         <tbody>
        <metal:listing use-macro="context/@@listing_view/listing">
           <metal:entry fill-slot="entry">
-            <tr tal:define="exp python:view.experiment_details(item);
+            <tr tal:define="exp python:experiment_tools.experiment_details(item);
                             class_state python:experiment_tools.get_state_css(item)">
                
                  <td class="bccvl-table-label">
