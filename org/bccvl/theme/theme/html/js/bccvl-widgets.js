@@ -233,6 +233,15 @@ define(
             $('#' + this.settings.widgetid).on('click', 'a:has(i.icon-remove)',
                 function(event) {
                     event.preventDefault();
+                    // search for any hidden 'empty-check' fields and update them if an item is removed
+	            var field = $(this).parents('.control-group');
+	            var numDatasets = field.find('.selecteditem').length-1;
+	            
+	            if (numDatasets <= 0) {
+	                field.find('.empty-check').val('');
+	            } else {
+	                field.find('.empty-check').val(numDatasets);
+	            }
                     $(this).parents('div.selecteditem').remove();
                     // trigger change event on widget update
                     $(event.delegateTarget).trigger('widgetChanged');
