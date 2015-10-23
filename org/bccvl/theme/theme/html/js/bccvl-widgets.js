@@ -242,12 +242,18 @@ define(
         };
 
         SelectList.prototype.reload_widget = function(params) {
+            params.push({name: 'ajax_load', value: 1});
+            var $loader = this.$widget.parent().find('span.loader-container img.loader');
+            $loader.show(0);
             this.$widget.load(
                 this.settings.widgeturl + ' #' + this.settings.widgetid + ' >',
                 params,
                 function(text, status, xhr) {
+                    $loader.hide();
+                    // TODO: pass some metadata in with the HTML response instead.
+                    var rows = $(text).find('.dataset-rows').data('rows');                    
                     // trigger change event on widget update                        
-                    $(this).trigger('widgetChanged');
+                    $(this).trigger('widgetChanged', [rows]);
                 }
             );
         };
