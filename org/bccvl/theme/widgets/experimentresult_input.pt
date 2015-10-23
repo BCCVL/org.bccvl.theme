@@ -28,9 +28,9 @@
       <div class="selecteditem"
            tal:define="index repeat/item/index;">
         <div class="selectedexperiment">
-          <input type="hidden" value="" name="form.widgets.fieldname.experiment.0"
+          <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item"
                  tal:attributes="value item/uuid;
-                                 name string:${view/name}.experiment.${index};"/>
+                                 name string:${view/name}.item.${index};"/>
           <!-- TODO: show experiment infos -->
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
           <h4 class="experiment-title"
@@ -62,9 +62,9 @@
                 <tr class="selectedmodels row-fluid">
                   <td>
                     <input type="checkbox" value=""
-                           name="form.widgets.fieldname.item.0:list"
+                           name="form.widgets.fieldname.item.0.item:list"
                            tal:attributes="value subitem/uuid;
-                                           name string:${view/name}.item.${index}:list;
+                                           name string:${view/name}.item.${index}.item:list;
                                            required view/required;
                                            checked subitem/selected;"/>
                   </td>

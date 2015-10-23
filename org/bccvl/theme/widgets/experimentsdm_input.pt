@@ -28,7 +28,7 @@
         <!-- Experiment block -->
         <div class="selectedexperiment"
              tal:define="dataset_tools nocall:context/@@dataset_tools">
-          <input type="hidden" value="" name="form.widgets.fieldname"
+          <input type="hidden" value="" name="form.widgets.fieldname" class="item"
                  tal:attributes="value item/uuid;
                                  name string:${view/name};"/>
           <!-- TODO: show experiment infos -->

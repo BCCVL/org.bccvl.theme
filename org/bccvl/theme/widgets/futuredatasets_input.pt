@@ -26,7 +26,7 @@
         <div class="selecteditem"
              tal:define="layer item/title;
                          brain item/title;">
-          <input type="hidden" value="" name="form.widgets.fieldname:list"
+          <input type="hidden" value="" name="form.widgets.fieldname:list" class="item"
                  tal:attributes="value item/uuid;
                                  name string:${view/name}:list;"/>
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
