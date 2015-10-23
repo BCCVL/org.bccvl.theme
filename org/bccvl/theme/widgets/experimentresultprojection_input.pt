@@ -28,7 +28,7 @@
       <div class="selecteditem"
            tal:define="index repeat/item/index;">
         <div class="selectedexperiment">
-          <input type="hidden" value="" name="form.widgets.fieldname.item.0"
+          <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item"
                  tal:attributes="value item/uuid;
                                  name string:${view/name}.item.${index};"/>
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
@@ -124,8 +124,8 @@
                  tal:condition="error"
                  tal:content="structure error/render">This field is required.</label>          
           <input type="hidden" value="" name="form.widgets.item.0.count"
-		 tal:condition="repeat/dataset/end"
-                 tal:attributes="value repeat/dataset/number;
+		 tal:condition="repeat/subitem/end"
+                 tal:attributes="value repeat/subitem/number;
                                  name string:${view/name}.item.${index}.count;"/>
         </div>
       </div>
