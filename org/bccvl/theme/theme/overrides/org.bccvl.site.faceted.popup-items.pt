@@ -17,7 +17,8 @@
         dstools nocall:context/@@dataset_tools;
         layer_vocab python:dstools.layer_vocab;
         pas_member context/@@pas_member;
-        toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+        toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+        exptools nocall:context/@@experiment_tools">
         <div id="datasets-popup-result-list">
           
           <div class="row" tal:condition="batch">
@@ -35,7 +36,7 @@
                              item_creator item/Creator;
                              item_modified item/ModificationDate;
                              item_description item/Description;
-                             md python:dataset_tools.metadata(item);
+                             md python:dstools.metadata(item);
                              ">
               <div class="cell">
                 <h4>
@@ -43,15 +44,16 @@
                 <ul class="details">
                   <li tal:condition="item_description"
                       tal:content="item_description">Item description</li>
-                  <li tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></li>
+                  <li tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dstools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></li>
                   <li tal:condition="md/emsc|nothing"><small><b>Emmission Scenario: <tal:r tal:replace="md/emsc"></tal:r></b></small></li>
                   <li tal:condition="md/gcm|nothing"><small><b>Global Circulation Model: <tal:r tal:replace="md/gcm"></tal:r></b></small></li>
-                  <li tal:condition="python: 'layer' in filters">
+                  <li tal:condition="layers"
+                      tal:define="layers md/layers|nothing">
                     <small><b>Layers:</b>
-                    <ul tal:condition="python: 'layer' in filters">
-                      <li tal:repeat="layer md/layers|nothing"
-                          tal:define="layer_vocab python:dataset_tools.layer_vocab"
-                          tal:content="python: layer_vocab.getTerm(layer).title">Layer Title
+                    <ul>
+                      <li tal:repeat="layer layers"
+                          tal:define="layer_vocab python:dstools.layer_vocab"
+                          tal:content="python: layer_vocab.getTerm(layer).title if layer in layer_vocab else layer">Layer Title                      
                       </li>
                     </ul>
                     </small>                
@@ -68,13 +70,13 @@
 
           <tal:block tal:condition="python: item.portal_type not in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset')">
             <div class="datasets-list-entry selectable"
-                 tal:attributes="data-uuid item/uuid"
+                 tal:attributes="data-uuid item/UID"
                  tal:define="item_title item/Title;
                              item_icon python:plone_view.getIcon(item);
                              item_creator item/Creator;
                              item_modified item/ModificationDate;
                              item_description item/Description;
-                             exp python:view.experiment_details(item);
+                             exp python:exptools.experiment_details(item);
                              ">
               <div class="cell">
                 <h4>
@@ -89,7 +91,7 @@
                       <tal:repl tal:replace="dataset/title"/>
                       <dd class="bccvl-experiment-parameters"
                           tal:repeat="layer dataset/layers"
-                          tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title"></dd>
+                          tal:content="python: dstools.layer_vocab.getTerm(layer).title"></dd>
                     </dt>
                   </dl>
                 </tal:if>
