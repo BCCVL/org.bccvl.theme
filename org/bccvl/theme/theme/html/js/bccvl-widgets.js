@@ -167,11 +167,11 @@ define(
                     var uuid = $(event.target).attr('data-uuid');
                     self.basket.remove(uuid);
                 });
-                //
-                truncate($(this).find('#faceted-results').find('ul.details'));
                 // init faceted ui
                 Faceted.Load(0, self.settings.remote + '/');
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(){
+                    //
+                    truncate(self.$modal.find('#faceted-results').find('ul.details'));
                     // update selection state from basket
                     $.each($("#faceted-results .selectable"), function(idx, element) {
                         var uuid = $(element).attr('data-uuid');
