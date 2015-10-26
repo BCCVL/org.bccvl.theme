@@ -23,9 +23,9 @@
         </select>
         <p class="bccvl-labelfade-description bccvl-read"></p>
 
-        <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
-
         <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+
+        <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>        
     </div>
 
 
