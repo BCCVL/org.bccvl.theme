@@ -99,7 +99,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 $.each(rawData.autoCompleteList, function(index, item) {
                                     // each item in the autoCompleteList is a taxon.  so it
                                     // only needs to show up once in the suggestion list.
-                                    if (typeof(item.rankString) == 'undefined') return true;
+                                    if (typeof(item.rankString) == 'undefined' || item.rankString == 'family') {
+                                        return true;
+                                    }
                                     var name = ' (' + item.rankString + ')';
                                     name = name + ' <i>' + item.name + '</i>';
                                     if (item.commonName) {
@@ -157,21 +159,47 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                     },
                     search: {
-                        searchUrl: function(searchString) {
-                            // rank:species  -> only return items that are species (not genus, subspecies etc)
-                            return ('ala/search.json?fq=rank:species&q=' + encodeURIComponent(searchString));
+                        searchUrl: function(selectedItem, start, pageSize) {
+                            startIndex = start || 0;
+                            pageSize = pageSize || 10;
+                            var splitItems = selectedItem.split(/<\/?i>/);
+                            var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
+                            var searchString = splitItems[1];
+                            var filter = 'rank:species+OR+rank:subspecies';
+                            if (rankSupplied == 'genus') {
+                                filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)&fq=occurrenceCount:[1+TO+*]';
+                            }
+                            return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        searchSpeciesUrl: function(rank, searchString, pageSize) {
+                            return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&fq=occurrenceCount:[1+TO+*]&q=&pageSize=' + pageSize);
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         parseSearchData: function(rawData, searchString) {
                             var list = [];
                             if (rawData.searchResults && rawData.searchResults.results) {
+                                var included = [];
                                 var searchStringWords = searchString.toLowerCase().split(" ");
-                                $.each(rawData.searchResults.results, function(index, item) {
+                                $.each(rawData.searchResults.results, function(index, item) {                                   
+                                    // Skip if data is already included, or there is no occurrence count
+                                    if (item.occCount == undefined || item.occCount <= 0 || $.inArray(item.guid, included) != -1)
+                                    {
+                                        return true;
+                                    }
+
+                                    if (item.guid && item.guid.length > 0) {
+
+                                        included.push(item.guid);
+                                    }
                                     // build the proper data object
-                                    result = { title: "", description: "", actions: {}, friendlyname: "" };
+                                    result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                                     result.title = item.name;
                                     result.friendlyname = item.name;
-
+                                    result.rank = item.rank;
+                                    result.genus = item.genus;
+                                    result.family = item.family;
+                                    
                                     if (item.commonNameSingle) {
                                         result.title = item.commonNameSingle + ' <i class="taxonomy">' + item.name + '</i>';
                                         result.friendlyname = item.commonNameSingle + ' ' + item.name;
@@ -218,15 +246,26 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                         result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
                                         result.actions.alaimport = document.URL + alaImportArgs;
                                     }
-
-                                    // actually we only want results that have occurrences..
-                                    if (item.occCount && item.occCount > 0) {
-                                        list.push(result);
-                                    }
+                                    list.push(result);
                                 });
                             }
                             return list;
                         },
+                        // --------------------------------------------------------------
+                        importSpeciesDatasets: function(results) {
+                            // Import all the species datasets from the search results
+                            if (results.length > 0) {
+                                $.each(results, function(index, item) {
+                                    $.each(item.actions, function(action, actionParam) {
+                                        if (action == 'alaimport') {
+                                            $.get(actionParam);
+                                        }
+                                    });
+                                });
+                                return true;
+                            }
+                            return false;
+                        },                        
                     }
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 }
@@ -246,9 +285,10 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             },
             // --------------------------------------------------------------
             enableForm: function(formElement) {
+                // Constants
+                var UNEXPECTED_ALA_ERROR_MSG = 'An unexpected error has occurred with ALA. Please try again later.';
 
                 // locate all the dom elements we need - - - - - - -
-
                 var $form = $(formElement);
 
                 // find the id of the parent element
@@ -277,6 +317,72 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 // switch on all the magic autocomplete behaviour - - - - - - -
 
                 $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
+
+
+                // Import more records from ALA when it is near the bottom of the page
+                var loading = false;    // Indicate if we are still loading from ALA
+                $(window).on('scroll', function(e) {
+                    if (isNearScreenBottom()) {
+                        var $resultTable = $('.bccvl-search-results');                        
+                        if (!loading && $resultTable) {
+                            var totalRecords = $resultTable.data('data-totalRecords');
+                            var nextIndex = $resultTable.data('data-nextIndex');
+                            var selectedItem = $resultTable.data('data-selectedItem');
+                            displayMoreData(nextIndex, totalRecords, selectedItem);
+                        }
+                    }
+                });
+
+                $('#searchOccurrence').on('click', 'a.import-dataset-btn', function(e) {
+                   e.preventDefault();
+                   var $el = $(e.currentTarget);
+                   var provider = bccvl_search.providers[$sourceField.val()];
+
+                   // For genus, import all species datasets 
+                   if ($el.attr('data-rank') == 'genus') {
+                        // Send a query to ALA to determine the number of records of species
+                        var  surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), 0);
+
+                        $.ajax({
+                            dataType: 'jsonp',                       // ..using JSONP instead
+                            url: surl,
+                            success: function(data) {
+                                if (data['searchResults']['status'] == 'ERROR'){
+                                    provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
+                                    return
+                                }
+
+                                // Set pageSize and search for all the species again
+                                var pageSize = data['searchResults']['totalRecords'];
+                                var surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), pageSize);
+
+                                $.ajax({
+                                    dataType: 'jsonp',                       // ..using JSONP instead
+                                    url: surl,
+                                    success: function(data) {
+                                        if (data['searchResults']['status'] == 'ERROR'){
+                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
+                                            return
+                                        }
+                                        // Import all the species datasets
+                                        var results = provider.search.parseSearchData(data, $inputField.val());
+                                        if (!provider.search.importSpeciesDatasets(results)) {
+                                            provider.autocomplete.noResultsFound();
+                                        }
+                                        location.href = $('.bccvllinks-datasets').attr('href');
+                                    },
+                                    timeout: 60000,
+                                    error: bccvl_search.displayAlaErrorMessage                                    
+                                });    
+                            },
+                            timeout: 60000,
+                            error: bccvl_search.displayAlaErrorMessage                            
+                        });
+                   }
+                   else {
+                        location.href = $el.attr('href');
+                   }
+                });
 
                 // switch on twitter bootstrap autocomplete
                 // only do search 
@@ -337,7 +443,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     error: function(xhr, status, msg){
                                         $inputField.removeClass("bccvl-search-spinner");
                                         if (status != 'abort'){
-                                            provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
+                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
                                             process(parsedDataList);
                                         }
                                     }
@@ -352,65 +458,94 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             if (!provider.autocomplete) return selectedItem;
                             if (!provider.autocomplete.cleanAutoItem) return selectedItem;
 
-                            var selectedValue = provider.autocomplete.cleanAutoItem(selectedItem);
-                            var searchUrl = provider.search.searchUrl(selectedValue);
-
                             // hide old results and show spinner for results
                             $('.bccvl-searchform-results').hide();
 
                             // do nothing if input field is empty
                             if ($.trim($inputField.val()) == '') return;
                             
-                            $('.bccvl-results-spinner').css('display', 'block');
-
-                            // get search results
-                            $.ajax({
-                                // xhrFields: { withCredentials: true }, // not using CORS (ALA said they were working on it)
-                                dataType: 'jsonp',                       // ..using JSONP instead
-                                url: searchUrl,
-                                success: function(data) {
-                                    if (data['searchResults']['status'] == 'ERROR'){
-                                        provider.autocomplete.noResultsFound('An unexpected error has occurred with ALA. Please try again later.');
-                                        $('.bccvl-results-spinner').css('display', 'none');
-                                        return
-                                    }
-
-                                    // maybe the search provider will have a parseSearchData function,
-                                    // which extracts the result objects from the returned data.
-                                    if (provider.search.parseSearchData) {
-                                        // if this provider has a parseSearchData function, call it
-                                        var results = provider.search.parseSearchData(data, $inputField.val());
-                                        if (results.length !== 0){
-                                            bccvl_search.displayResults(results, $resultsField);
-                                        }
-                                        else {
-                                            provider.autocomplete.noResultsFound();
-                                            $('.bccvl-results-spinner').css('display', 'none');
-                                        }
-                                    } else {
-                                        // otherwise assume the data is already good
-                                        bccvl_search.displayResults(data, $resultsField);
-                                    }
-                                },
-                                timeout: 60000, // ala is pretty slow...
-                                error: function(xhr, status, msg) {
-                                    if (status === 'timeout') {
-                                        alert('There was no response to your search query.');
-                                    } else {
-                                        alert('There was a problem that stopped your query from getting results.');
-                                    }
-                                }
-                            });
-
+                            // Display the result data
+                            displayMoreData(0 /* start index */, -1 /* first time */, selectedItem);
                             return provider.autocomplete.cleanAutoItem(selectedItem);
                         }
                     });
                 })();
+                // --------------------------------------------------------------           
+                function displayData(data, provider, newTable) {
+                    var count = -1;
+                    if (data['searchResults']['status'] == 'ERROR'){
+                        provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
+                    }
+                    else {
+                        // if this provider has a parseSearchData function, call it to extract the result
+                        // objects from the returned data. Otherwise assume the data is already good.
+                        var results = (provider.search.parseSearchData) ? provider.search.parseSearchData(data, $inputField.val()) : data;
+                        count = results.length;
+                        if (results.length > 0) {
+                            bccvl_search.displayResults(results, $resultsField, newTable);
+                        }
+                    }
+                    // get rid of spinner
+                    $('.bccvl-results-spinner').css('display', 'none');                    
+                    return count;
+                }
+                // --------------------------------------------------------------   
+                function isNearScreenBottom() {
+                    return ($(window).height() >= 0.7 * ($(document).height() - $(window).scrollTop()));
+                }
+                // --------------------------------------------------------------   
+                function isScrollBarShown() {
+                    return ($(window).height() < $(document).height());
+                }
+                // -------------------------------------------------------------- 
+                function displayMoreData(nextIndex, totalRecords, selectedItem) {
+                    // Get and display species data from ALA. Negative totalRecord indicates first time, so 
+                    // need to create result table.
+                    var createTable = totalRecords  < 0;
+                    if (selectedItem && (totalRecords < 0 || nextIndex < totalRecords)) {
+                        // Send a query to ALA to get data; limit to 10 records.
+                        // ALA does not send occCount if the number of records is too big i.e. 1370 for Acacia genus.
+                        loading = true;
+                        var pageSize = 10;
+                        var provider = bccvl_search.providers[$sourceField.val()];
+                        var searchUrl = provider.search.searchUrl(selectedItem, nextIndex, pageSize);
+                        $('.bccvl-results-spinner').css('display', 'block');
+                        
+                        $.ajax({
+                            dataType: 'jsonp',
+                            url: searchUrl,
+                            success: function(data) {
+                                // Display these records & update the nextIndex
+                                if (displayData(data, provider, createTable) >= 0) {
+                                    if (createTable) {
+                                        // First time
+                                        totalRecords = data['searchResults']['totalRecords'];
+                                        $('.bccvl-search-results').data('data-totalRecords', totalRecords);
+                                        $('.bccvl-search-results').data('data-selectedItem', selectedItem);
+                                    }
+                                    $('.bccvl-search-results').data("data-nextIndex", nextIndex + pageSize);
+                                }                                
+                            },
+                            timeout: 60000,
+                            error: bccvl_search.displayAlaErrorMessage,
+                            complete: function(xhr, status) {
+                                loading = false;
+                                if (status == "success" && (!isScrollBarShown() || isNearScreenBottom())) {
+                                    displayMoreData(nextIndex + pageSize, totalRecords, selectedItem);
+                                }
+                            }
+                        });                            
+                    }
+                }
             },
             // --------------------------------------------------------------
-            displayResults: function(results, domElement) {
+            displayResults: function(results, domElement, newTable) {
                 // get a table dom fragment ready to put search results into
                 var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
+
+                if (!newTable) {
+                    $elem = $('.bccvl-search-results');
+                }
 
                 var $tab = $(domElement).closest('.tab-pane');
                 if ($tab.length > 0) {
@@ -443,7 +578,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         switch (action) {
                             // - - - - - - - - - - - - - - - - - - - - - - - -
                             case 'alaimport': // import from ala
-                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i> Import to BCCVL</a>';
+                                var html = '<a href="' + actionParam + '" class="fine import-dataset-btn btn-mini btn-primary" data-friendlyname="'+ item.friendlyname + '" data-rank="'+ item.rank + '" data-genus="'+ item.genus + '" data-family="'+ item.family +'"><i class="fa fa-cloud-download" data-friendlyname="icon_alaimport_' + item.friendlyname + '"></i> Import to BCCVL</a>';
                                 $(html).appendTo($actions);
                                 break;
                             // - - - - - - - - - - - - - - - - - - - - - - - -
@@ -463,10 +598,19 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 });
 
                 // finally, add the dom fragment to the page dom.
-                $(domElement).empty().addClass('bccvl-search-active').append($elem);
-                // get rid of spinner and show the results
-                $('.bccvl-results-spinner').css('display', 'none');
+                if (newTable) {
+                    $(domElement).empty().addClass('bccvl-search-active').append($elem);
+                }
+                // show the results
                 $('.bccvl-searchform-results').show();
+            },
+            // --------------------------------------------------------------
+            displayAlaErrorMessage: function(xhr, status, msg) {
+                if (status === 'timeout') {
+                    alert('There was no response to your search query.');
+                } else {
+                    alert('There was a problem that stopped your query from getting results.');
+                }
             }
             // --------------------------------------------------------------
             // --------------------------------------------------------------
