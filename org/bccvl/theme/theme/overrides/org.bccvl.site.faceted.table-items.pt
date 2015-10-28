@@ -1,0 +1,191 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="bccvl">
+  <head>
+    <title>Datasets</title>
+  </head>
+  <body>
+
+    <metal:content-core fill-slot="content-core">
+      <metal:block define-macro="content-core">
+
+        <div id="datasets-listing" class="row-fluid datasets-table" tal:define="
+           folderContents folderContents | python:context.getFolderContents();
+           Batch python:modules['Products.CMFPlone'].Batch;
+           b_start python:request.get('b_start', 0);
+           batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, 100, int(b_start), orphan=2);
+           
+           dataset_tools nocall:context/@@dataset_tools;
+           pas_member context/@@pas_member;
+           navigation_root_url context/@@plone_portal_state/navigation_root_url;
+           normalizeString nocall: context/plone_utils/normalizeString;
+           toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+           site_properties context/portal_properties/site_properties;
+           isAnon context/@@plone_portal_state/anonymous;
+           show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
+
+          <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+          <tal:loop tal:repeat="item batch">
+            <tal:define tal:define="item_title_or_id item/pretty_title_or_id;
+                                    item_icon python:plone_view.getIcon(item);
+                                    item_creator item/Creator;
+                                    item_modified item/ModificationDate;
+                                    item_url item/getURL|item/absolute_url;
+                                    item_description item/Description;
+                                    item_type item/portal_type;
+                                    item_type_class python:'contenttype-' + normalizeString(item_type);
+                                    item_genre item/BCCDataGenre;
+                                    item_genre_title python:dataset_tools.genre_title(item['BCCDataGenre']);
+                                    item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
+                                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                                    use_view_action site_properties/typesUseViewActionInListings|python:();
+                                    item_obj item/getObject;
+                                    "
+                        metal:define-macro="datasets_listitem">
+              <div class="datasets-list-entry"
+                   tal:attributes="data-uuid item/UID"
+                   tal:define="md item_obj/dataset_tools/metadata;
+                               item_editable item_obj/dataset_tools/can_modify;">
+                <div class="datasets-table-row row-fluid"
+                     tal:define="author python:pas_member.info(item_creator)">
+                  <div class="span7 dataset-main-info">
+                  <tal:block
+                      tal:define="state item/job_state;
+                                  klass python: 'failed' if state == 'FAILED' else 'loading';
+                                  klass python: 'completed' if state in (None, 'COMPLETED') else klass;
+                                  title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
+                                  title python: '' if state in (None, 'COMPLETED') else title;">
+
+                      <div class="dataset-error span2"
+                           tal:condition="python: klass == 'failed'"
+                           tal:attributes="data-url item_url;
+                                           title title;">
+                        <i class="fa fa-warning"></i><br/>Error</div>
+
+                      <div class="dataset-loading dataset-import span2" 
+                           tal:condition="python: klass == 'loading'"
+                           tal:attributes="data-url item_url;
+                                           title title;">
+                        <span class="loading-gif"></span><br/>Loading</div>
+
+                      <!-- if completed, add nothing -->
+                  
+                    <div 
+                      tal:attributes="class python: 'span10' if klass in ('loading', 'failed') else 'span12'">
+                      <h4 tal:define="complete python: item.job_state in ('COMPLETED', None);
+                                      dlinfo item_obj/dataset_tools/get_download_info;">
+
+                                     <a href="#" class="bccvl-modal-occurrence-viz"
+                                         tal:content="item_title_or_id"
+                                         tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                                         data-uuid item/UID;
+                                                         data-title item_title_or_id;"
+                                         tal:condition="python: item_obj.format == 'text/csv'">Title</a>
+                                      <a href="#" class="bccvl-modal-auto-viz"
+                                         tal:content="item_title_or_id"
+                                         tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                                         data-uuid item/UID;
+                                                         data-title item_title_or_id;"
+                                         tal:condition="python: item_obj.format != 'text/csv'">Title</a>
+
+                      </h4>
+                      <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
+                      <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
+                      <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
+                      <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
+                    </div>
+                    </tal:block>
+                  </div>
+                  <div class="span1"
+                       tal:define="author_name author/name_or_id">
+                    <p tal:condition="python: author_name != 'BCCVL'"><small><tal:r tal:replace="author_name">Me</tal:r></small></p>
+                  </div>
+                  <div class="datasets-controls span4"
+                         tal:define="complete python: item.job_state in ('COMPLETED', None)">
+
+                      <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
+                                 tal:condition="complete">
+                        <!--<a href="#" class="bccvl-list-occurrence-viz btn btn-primary btn-small"
+                           tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                           data-uuid item/UID"
+                           tal:condition="python: item_obj.format == 'text/csv'">
+                          <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                        Preview</a>
+                        <a href="#" class="bccvl-list-auto-viz btn btn-primary btn-small"
+                           tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                           data-uuid item/UID"
+                           tal:condition="python: item_obj.format != 'text/csv'">
+                          <i class="icon-eye-open icon-link icon-white" title="preview"></i>
+                        Preview</a>-->
+                        <div class="span4">
+                          <a href="#" class="bccvl-modal-occurrence-viz btn btn-primary btn-mini"
+                             tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                             data-uuid item/UID;
+                                             data-title item_title_or_id;"
+                             tal:condition="python: item_obj.format == 'text/csv'">
+                            <i class="fa fa-object-ungroup"></i>
+                          View</a>
+                          <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-mini"
+                             tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                                             data-uuid item/UID;
+                                             data-title item_title_or_id;"
+                             tal:condition="python: item_obj.format != 'text/csv'">
+                           <i class="fa fa-object-ungroup"></i>
+                          View</a>
+                          <a href="#"
+                             tal:attributes="href dlinfo/url" class="btn btn-primary btn-mini dataset-download-btn">
+                            <i class="icon-circle-arrow-down icon-white" title="download"></i>
+                          Data</a>
+                        </div>
+                      </tal:block>
+
+                      <div class="span4">
+                        <a class="dataset-info-btn btn btn-info btn-mini" href="#" target="_blank" data-toggle="InfoModal"
+                           tal:attributes="href string:${item_url}/modal_view">
+                          <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
+                         Info</a>
+                        <a class="sharing-btn btn btn-info btn-mini" href="#"
+                           tal:attributes="href string:${item_url}/modal_sharing"
+                           tal:condition="python: complete and action.get('available')"
+                           tal:define="action item_obj/dataset_tools/local_roles_action;">
+                          <i class="fa fa-share-alt icon-white" title="Sharing Options"
+                             tal:attributes="title action/title"></i>
+                        Sharing</a>
+                      </div>
+
+                      <div class="span4">
+                        <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
+                        <a class="environmentallayers-zip-edit btn btn-warning btn-mini"
+                           tal:attributes="href string:${item_url}/@@editfilemetadata"
+                           tal:condition="python: item_editable and item_obj.format == 'application/zip'">
+                          <i class="icon-pencil icon-white" title="edit"></i>
+                        Edit</a>
+                        <!-- remove dataset -->                    
+                        
+                        <a class="remove-dataset-btn btn btn-warning btn-mini"
+                           tal:attributes="href string:${item_url}/modal_remove"
+                           tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
+                          <i class="icon-remove icon-white" title="Remove"></i>
+                        Remove</a>
+                        <!-- end remove dataset --> 
+                      </div>
+
+                  </div>
+              
+                </div>
+               
+                
+              </div>
+              
+            </tal:define>
+          </tal:loop>
+          <div metal:use-macro="context/batch_macros/macros/navigation" />
+        </div>
+      </metal:block>
+    </metal:content-core>
+  </body>
+</html>

@@ -13,30 +13,31 @@
 
     <metal:content-core fill-slot="body">
 
-    <ul id="datasets-nav" class="nav nav-tabs" metal:define-macro="datasets_tabs">
-      <li class="tab-datasetslisting"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_listing_view' else '';"
+      <ul id="datasets-nav" class="nav nav-tabs" metal:define-macro="datasets_tabs"
+          tal:define="current_view view/__name__">
+        <li class="tab-datasetslisting"
+            tal:define="selected python: 'active' if current_view == context.getLayout() else '';"
             tal:attributes="class string:tab-datasetslisting ${selected}">
           <a href="#"
-             tal:attributes="href string:${context/absolute_url}"><span>Datasets</span></a>
+             tal:attributes="href string:${context/absolute_url}"><span>Search Datasets</span></a>
         </li>
+         <li class="tab-datasetsupload"
+            tal:define="selected python: 'active' if current_view == 'datasets_collection_list' else '';"
+            tal:attributes="class string:tab-datasetsupload ${selected}">
+          <a href="#"
+             tal:attributes="href string:${context/absolute_url}/datasets_collection_list"><span>Browse Collections</span></a>
+        </li>        
         <li class="tab-datasetsimport"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_import_view' else '';"
+            tal:define="selected python: 'active' if current_view == 'datasets_import_view' else '';"
             tal:attributes="class string:tab-datasetsimport ${selected}">
           <a href="#"
-             tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Discover Dataset</span></a>
+             tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Import Species Data</span></a>
         </li>
         <li class="tab-datasetsupload"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_upload_view' else '';"
+            tal:define="selected python: 'active' if current_view == 'datasets_upload_view' else '';"
             tal:attributes="class string:tab-datasetsupload ${selected}">
           <a href="#"
              tal:attributes="href string:${context/absolute_url}/datasets_upload_view"><span>Upload Dataset</span></a>
-        </li>
-         <li class="tab-datasetsupload"
-            tal:define="selected python: 'active' if view.__name__ == 'datasets_collection_list' else '';"
-            tal:attributes="class string:tab-datasetsupload ${selected}">
-          <a href="#"
-             tal:attributes="href string:${context/absolute_url}/datasets_collection_list"><span>Dataset Collections</span></a>
         </li>
     </ul>
       <div id="datasets-filter" class="bccvl-datasetlist-filter span4">
@@ -177,6 +178,7 @@
                                     "
                         metal:define-macro="datasets_listitem">
               <div class="datasets-list-entry"
+                   tal:attributes="data-uuid item/UID"
                    tal:define="md item_obj/dataset_tools/metadata;
                                item_editable item_obj/dataset_tools/can_modify;">
                 <div class="bccvl-table-label"
@@ -217,10 +219,10 @@
                       </tal:block>
                       <a class="dataset-info-btn btn btn-info btn-small" href="#" target="_blank"
                          tal:attributes="href string:${item_url}/details">
-                        <i class="icon-info-sign icon-white" title="More information for this dataset."></i>
+                        <i class="fa fa-info-circle icon-white" title="More information for this dataset."></i>
                       More Info</a>
                       <a class="sharing-btn btn btn-info btn-small" href="#"
-                         tal:attributes="href action/url"
+                         tal:attributes="href string:${item_url}/modal_sharing"
                          tal:condition="python: complete and action.get('available')"
                          tal:define="action item_obj/dataset_tools/local_roles_action;">
                         <i class="fa fa-share-alt icon-white" title="Sharing Options"
@@ -236,7 +238,7 @@
                       <!-- remove dataset -->                    
 
                       <a class="remove-dataset-btn btn btn-warning btn-small"
-                         tal:attributes="href string:${item_url}/@@remove"
+                         tal:attributes="href string:${item_url}/@@modal_remove"
                          tal:condition="python: item_editable and item.job_state in ('COMPLETED', 'FAILED', None)">
                         <i class="icon-remove icon-white" title="Remove"></i>
                       Remove</a>

@@ -2,14 +2,11 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',  'bootstrap'],
+    ['jquery', 'js/bccvl-visualiser-map',  'bootstrap'],
     function( $,       viz, vizmap ) {
         // ==============================================================
         var intervalID;
         $(function() {
-
-            //stretch.init({ topPad: 60, bottomPad: 10 });
-            viz.init();
 
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
@@ -27,8 +24,12 @@ define(
                 $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
                 $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
             }
-
-
+            
+            $('.bccvl-experimenttable-accordion').on('hide', function(){
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
+            }).on('show', function(){
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
+            });
             
 
             $('a.export-btn').click( function(event ) {
@@ -69,6 +70,16 @@ define(
                 $(this).find('.modal-content').empty();
             });
         });
+
+        if (window.innerWidth > 767){
+            var affix = $('.affixed-map');
+            affix.data('offset-top', affix.offset().top );
+            affix.css({
+                'left': affix.offset().left,
+                'width': affix.innerWidth(),
+            });
+        }
+        
 
         // Poll /jm/getJobStatus for the status of the experiments
         // This endpoint returns the status of each algorithm

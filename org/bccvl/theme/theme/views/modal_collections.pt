@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="dstools nocall:context/@@dataset_tools;"      
+      tal:omit-tag="">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 tal:content="context/title">Collection title</h3>
+  </div>
+  <div class="modal-body">
+    <p tal:content="context/description">Collection description</p>
+    <div tal:condition="context/attribution">
+      <strong>Citation and attribution</strong><br/>
+      <!-- margin-left:1em; padding-left:1em; -->
+      <div style="text-indent:1em;">
+        <p tal:repeat="attribution context/attribution"
+           tal:content="structure attribution/output">
+        </p>
+      </div>
+    </div>
+    <div tal:condition="context/rights">
+      <strong>License</strong><br/>
+      <!-- margin-left:1em; padding-left:1em; -->
+      <div style="text-indent:1em;">
+        <p tal:content="context/rights"></p>
+      </div>
+    </div>
+    <div tal:condition="context/external_description">
+      <strong>Full description</strong><br/>
+      <div style="text-indent:1em;">
+        <p tal:content="structure context/external_description/output"></p>
+      </div>
+    </div>
+    <div>
+      <p  tal:repeat="layer dstools/collection_layers"
+          tal:content="layer/title"></p>
+    </div>
+    <!-- TODO: build stats about collection here... -->
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</html>

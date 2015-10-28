@@ -77,14 +77,16 @@ define(
             });
 
             // -- absences + random --------------------------------
+            $('#formfield-form-widgets-species_number_pseudo_absence_points').hide(0);
             $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
             $("#form-widgets-species_pseudo_absence_points-0:checkbox").change(function() {
                 if ($(this).is(":checked")) {
                     $("input[id^='form-widgets-species_absence_dataset-']").prop('checked', false);
                     $("#form-widgets-species_number_pseudo_absence_points").removeAttr('disabled');
-                }
-                else {
+                    $('#formfield-form-widgets-species_number_pseudo_absence_points').slideDown();
+                } else {
                     $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
+                    $('#formfield-form-widgets-species_number_pseudo_absence_points').slideUp();
                 }
             });
 

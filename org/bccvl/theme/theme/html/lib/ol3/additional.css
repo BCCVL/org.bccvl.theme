@@ -25,9 +25,46 @@
   z-index: 99999;
 }
 
-
+.ol-viewport .ol-control {
+  opacity:0;
+  transition: opacity .3s;
+}
+.ol-viewport:hover .ol-control {
+  opacity:1;
+}
+.ol-viewport .ol-control.shown {
+  opacity:1!important;
+}
 
 /*  Openlayers styles */
+
+.ol-control button, .ol-control a.ol-button {
+  background-color: rgba(0, 159, 227, .5);
+}
+.ol-control button:hover, .ol-control a.ol-button:hover {
+  background-color: rgba(0, 159, 227, 1);
+}
+.ol-control button:focus, .ol-control a.ol-button:focus {
+  outline:none;
+}
+.ol-control, .ol-control:hover {
+    background:none;
+}
+.ol-attribution {
+    bottom: 12px;
+    right: 12px;
+}
+
+.map-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(0, 159, 227, .7);
+  width: 0;
+  transition: width 250ms;  
+}
+
 .ol-control a.ol-button {
   display: block;
   margin: 1px;
@@ -39,8 +76,6 @@
   text-align: center;
   height: 1.375em;
   width: 1.375em;
-  background-color: #7b98bc;
-  background-color: rgba(0,60,136,.5);
   border: none;
   border-radius: 2px;
   cursor:pointer;
@@ -48,6 +83,7 @@
 .layer-switcher {
     top:0;
     right:0;
+    margin:8px;
     background:transparent!important;
     background: transparent!important;
     border-radius: 0;
@@ -67,7 +103,7 @@
 .layer-switcher * {
     pointer-events: auto;
 }
-.layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
+/*.layer-switcher a.ol-button:focus, .layer-switcher a.ol-button:hover {
     background-color: rgba(0,60,136,.7);
     outline:none;
 }
@@ -76,14 +112,13 @@
 }
 .layer-switcher.shown a.ol-button:hover {
     background-color: rgba(255,255,255,.6);
-}
+}*/
 .layer-switcher a.ol-button {
     position: absolute;
     right: 8px;
     top: 8px;
     height: 20px;
     width: 20px;
-    background-color: rgba(0,60,136,.5);
     background-image: none;
     font-family: "FontAwesome";
     pointer-events: auto;
@@ -162,23 +197,55 @@ div.olControlAttribution {
     font-family: "Helvetica", sans-serif;
     bottom: 10px;
 }
-.olLegend {
-    font-family: "OpenSansLight", sans-serif;
-    position: absolute;
-    top: 70px;
-    left: 10px;
-    z-index: 1000;
-    font-size: 11px;
-    background-color: rgba(255,255,255,.75);
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
-    color: #000;
-    font-weight: 300;
-    line-height: 1.3em;
+
+.olLegend a.ol-button {
+    background: rgba(0, 159, 227, .5);
     display: inline-block;
-    white-space:nowrap;
+    margin-bottom: 1em;
+    padding: 3px;
+    margin: 18px;
+    color: #fff;
+    font-size: 1.14em;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    height: 14px;
+    width: 14px;
+    line-height: .4em;
+    border-radius: 2px;
+    cursor: pointer;
+    pointer-events: auto;
+    position: absolute;
+    top: 0px;
+    z-index: 1000;
 }
+.olLegend a.ol-button.open {
+   background: rgba(0, 0, 0, .35);
+}
+.olLegend {
+
+}
+.olLegend .panel {
+  display:none;
+  font-family: "OpenSansLight", sans-serif;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 999;
+  font-size: 11px;
+  background-color: rgba(255,255,255,.75);
+  padding: 12px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+  color: #000;
+  font-weight: 300;
+  line-height: 1.3em;
+  white-space: nowrap;
+}
+.olLegend .panel.shown {
+  display: inline-block;
+}
+
 .olLegend i {
     width: 14px;
     height: 14px;
@@ -187,12 +254,12 @@ div.olControlAttribution {
     opacity: 1;
 }
 .olLegend h5 {
-    margin: 0 0 8px 0px;
+    margin: 0 0 15px 0px;
     font-size: 12px;
-    text-align: center;
-    color:#000;
+    color: #000;
     font-weight: normal;
     font-family: "OpenSansRegular";
+    text-indent: 22px;
 }
 .olLegend label {
     display: inline-block;
@@ -205,20 +272,11 @@ div.olControlAttribution {
     margin-bottom: 2px;
     cursor:default;
 }
-.olLegend select {
-    padding: 1px 2px;
-    float: left;
-    font-size: 1em;
-    line-height: 1em;
-    width: 140px;
-    height: 2em;
-}
-.olLegend label.mode {
-    min-width: auto;
-    font-weight: bold;
-    color: rgba(0,0,0,.6);
-    margin-right: 5px;
-    line-height: 1.8em;
+.ol-zoom {
+    bottom: 15px;
+    left: 15px;
+    padding: 0;
+    top:inherit;
 }
 .olControlLayerSwitcher .minimizeDiv {
     background-color: rgba(0, 60, 136, 0.5);
@@ -244,26 +302,28 @@ div.olControlAttribution {
 }
 
 .export-map {
-      position: absolute;
-      left: 8px;
-      bottom: 8px;
-      height: 20px;
-      background-color: rgba(0,60,136,.5);
-      background-image: none;
-      font-family: "OpenSansRegular";
-      color:white;
-      font-size:0.9em;
-      padding-left:5px;
-      padding-right:5px;
-      border-radius:2px;
+    position: absolute;
+    left: 70px;
+    bottom: 16px;
+    background-color: rgba(0, 159, 227, .5);
+    background-image: none;
+    font-family: "OpenSansRegular";
+    color: white;
+    font-size: 0.9em;
+    border-radius: 2px;
+    padding: 4px 5px;
+    line-height: 1em;
 }
 .export-map:hover, .export-map:focus {
     text-decoration: none;
     color:white;
-    background-color: rgba(0,60,136,.7);
+    background-color: rgba(0, 159, 227, 1);
 }
 .ol-full-screen {
-    left: 3em;
+    left: 42px;
+    bottom: 15px;
+    top: inherit;
+    padding: 0;
     right: inherit;
 }
 .ol-full-screen button { 

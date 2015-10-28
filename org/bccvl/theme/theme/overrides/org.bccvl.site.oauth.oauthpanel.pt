@@ -6,121 +6,114 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<head>
+  <head>
+    <title>OAuth User Settings</title>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <div class="cell width-full position-0"
          tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
          metal:fill-slot="content">
+      <div id="edit-bar">
+        <h5 class="hiddenStructure"
+            i18n:translate="heading_views">Views</h5>
+        <ul class="contentViews"
+            id="content-views"
+            tal:define="view_name view/__name__"
+            i18n:domain="plone">
+          
+          <li id="contentview-user_data-personal-information"
+              tal:define="link view/getPersonalInfoLink;
+                          selected python:view_name=='personal-information'"
+              tal:condition="link|nothing"
+              tal:attributes="class python:selected and 'selected' or 'plain'">
+            <a href=""
+               tal:attributes="href string:${navigation_root_url}/${link}"
+               i18n:translate="title_personal_information_form">
+              Personal Information
+            </a>
+          </li>
+          
+          <li id="contentview-user_data-oauth-preferences"
+              tal:define="link view/getOAuthPrefsLink;
+                          selected python:view_name=='oauth-preferences';"
+              tal:condition="link|nothing"
+              tal:attributes="class python:selected and 'selected' or 'plain'">
+            <a href=""
+               tal:attributes="href string:${navigation_root_url}/${link}"
+               i18n:translate="">
+              OAuth Preferences
+            </a>
+          </li>
+          
+          <li id="contentview-user_data-change-password"
+              tal:define="link view/getPasswordLink;
+                          selected python:view_name=='change-password';"
+              tal:condition="link|nothing"
+              tal:attributes="class python:selected and 'selected' or 'plain'">
+            <a href=""
+               tal:attributes="href string:${navigation_root_url}/${link}"
+               i18n:translate="label_password">
+              Password
+            </a>
+          </li>
+          
+        </ul>
+        <div class="contentActions">&nbsp;</div>
+      </div>
 
+      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>        
 
-        <div id="edit-bar">
+      <div id="content">
 
-            <h5 class="hiddenStructure"
-                i18n:translate="heading_views">Views</h5>
-
-            <ul class="contentViews"
-                id="content-views"
-                tal:define="view_name view/__name__"
-                i18n:domain="plone">
-
-                <li id="contentview-user_data-personal-information"
-                    tal:define="link view/getPersonalInfoLink;
-                                selected python:view_name=='personal-information'"
-                    tal:condition="link|nothing"
-                    tal:attributes="class python:selected and 'selected' or 'plain'">
-                    <a href=""
-                       tal:attributes="href string:${navigation_root_url}/${link}"
-                       i18n:translate="title_personal_information_form">
-                        Personal Information
-                    </a>
-                </li>
-
-                <li id="contentview-user_data-oauth-preferences"
-                    tal:define="link view/getOAuthPrefsLink;
-                                selected python:view_name=='oauth-preferences';"
-                    tal:condition="link|nothing"
-                    tal:attributes="class python:selected and 'selected' or 'plain'">
-                    <a href=""
-                       tal:attributes="href string:${navigation_root_url}/${link}"
-                       i18n:translate="">
-                        OAuth Preferences
-                    </a>
-                </li>
-                
-                <li id="contentview-user_data-change-password"
-                    tal:define="link view/getPasswordLink;
-                                selected python:view_name=='change-password';"
-                    tal:condition="link|nothing"
-                    tal:attributes="class python:selected and 'selected' or 'plain'">
-                    <a href=""
-                       tal:attributes="href string:${navigation_root_url}/${link}"
-                       i18n:translate="label_password">
-                        Password
-                    </a>
-                </li>
-
-            </ul>
-
-            <div class="contentActions">&nbsp;</div>
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+            tal:condition="view/label"
+            tal:content="view/label"
+            metal:define-slot="heading">
+          Do something
+        </h1>
+          
+        <div class="documentDescription" i18n:translate=""
+             tal:condition="view/description"
+             tal:content="view/description">
+          Description
         </div>
-
-        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-          Portal status message
-        </div>        
-
-        <div id="content">
-
-          <h1 class="documentFirstHeading"
-              i18n:translate=""
-              tal:condition="view/label"
-              tal:content="view/label"
-              metal:define-slot="heading">
-            Do something
-          </h1>
           
-          <div class="documentDescription" i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-            Description
-          </div>
-          
-          <div id="content-core">
+        <div id="content-core">
 
-            <fieldset>
-              <p>BCCVL has access to the following services:</p>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Service</th>
-                    <th>Authorise / Revoke</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr tal:repeat="oauth view/services">
-                    <tal:block tal:define="valid oauth/validate">
-                      <td tal:content="oauth/config/id"></td>
-                      <td>
-                        <a class="btn btn-mini btn-primary" href="#"
-                           tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize;
-                                           class string:btn btn-mini btn-primary${python: ' disabled' if valid else ''};
-                                           disabled valid;"><i class="fa fa-check"></i> Authorise</a>
-                        <a class="btn btn-mini btn-danger" href="#"
-                           tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken;
-                                           class string:btn btn-mini btn-danger${python: ' disabled' if not valid else ''};
-                                           disabled not:valid;"><i class="fa fa-times"></i> Revoke</a></td>
-                    </tal:block>
-                  </tr>
-                </tbody>
-              </table>
-
-            </fieldset>
-            
-          </div>
-        </div>        
-        
+          <fieldset>
+            <legend>BCCVL has access to the following services:</legend>
+            <p>BCCVL has access to the following services:</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Authorise / Revoke</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr tal:repeat="oauth view/services">
+                  <tal:block tal:define="valid oauth/validate">
+                    <td tal:content="oauth/config/title"></td>
+                    <td>
+                      <a class="btn btn-mini btn-primary" href="#"
+                         tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize;
+                                         class string:btn btn-mini btn-primary${python: ' disabled' if valid else ''};
+                                         disabled valid;"><i class="fa fa-check"></i> Authorise</a>
+                      <a class="btn btn-mini btn-danger" href="#"
+                         tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken;
+                                         class string:btn btn-mini btn-danger${python: ' disabled' if not valid else ''};
+                                         disabled not:valid;"><i class="fa fa-times"></i> Revoke</a></td>
+                  </tal:block>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </div>        
     </div>
-</body>
+  </body>
 </html>

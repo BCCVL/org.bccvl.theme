@@ -3,17 +3,23 @@
 //
 define(
     ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
-     'js/bccvl-sharing-modal', 'js/layer-edit-modal', 'js/bccvl-remove-dataset-modal', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'jquery-timer', 'selectize'],
-    function($, viz, vizmap, sharing, editmodal, removedataset) {
+     'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
+     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize', 'faceted_view.js', 'bbq', 'js/selectize-remove-single'],
 
+    function($, viz, vizmap, editmodal, modals) {
+
+        $(window).load(function(evt) {
+            Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
+        });
+        $(window).unload(function() {
+            Faceted.Unload();
+        });
+        
         // ==============================================================
         $(function() {
 
             viz.init();
-            sharing.init();
             editmodal.init();
-            removedataset.init();
 
 
             $('.bccvl-datasetstable').tablesorter({
@@ -33,7 +39,28 @@ define(
             });*/
 
             $('select.selectize').selectize({
-                plugins: ['remove_button']
+                plugins: ['remove_button', 'remove_single_button'],
+                render: {
+                    'option': function(data, escape) {
+                        var opt_class="option"
+                        var opt_style="";
+                        if (data.disabled) {
+                            opt_class += " faceted-select-item-disabled";
+                        }
+                        var opt_text = '<div class="' + opt_class + '">' + escape(data[this.settings.labelField]);
+                        if (typeof data.count !== 'undefined') {
+                            opt_text += ' <span class="badge">' + data.count + '</span>';
+                        }
+			return opt_text + '</div>';
+		    },
+                    'item': function(data, escape) {
+                        var item_text = '<div class="item">' + escape(data[this.settings.labelField]);
+                        if (typeof data.count !== 'undefined') {
+                            item_text += ' <span class="badge">' + data.count + '</span>';
+                        }
+                        return item_text + '</div>';
+                    }
+                }
             });
 
             // duplicate top bar filters as hidden fields in the filters form
@@ -42,40 +69,58 @@ define(
                 $(this).clone().appendTo('#datasets-filter-form .hidden-options');
             });*/
 
-            $('.datasets-list-sorting select').change(function(){
-                var selection = $(this).val();
-                $('#datasets-filter-form .hidden-options select.'+$(this).data('field-class')+' option').filter(function(){
-                    return ($(this).val() == selection);
-                }).prop('selected', true);
-                $('#datasets-filter-form').submit();
-            });
+            // No longer needed with new faceted nav product
+            // $('.datasets-list-sorting select').change(function(){
+            //     var selection = $(this).val();
+            //     $('#datasets-filter-form .hidden-options select.'+$(this).data('field-class')+' option').filter(function(){
+            //         return ($(this).val() == selection);
+            //     }).prop('selected', true);
+            //     $('#datasets-filter-form').submit();
+            // });
 
             // Identify datasets that are currently importing.
             // These are the spinner icons.
-            $.each($('i.dataset-import'), function(i, spinner) {
-                var datasetURL = $(spinner).attr('data-url');
-                var pollURL = datasetURL + '/jm/getJobStatus';
-                var completeURL = datasetURL + '/@@datasets_list_item';
+            var datasets_timer = function() {
+                var timer_id = null;
+                var spinner_sel = '.dataset-import';
 
-                // Start a timer that does the polling
-                var timer = $.timer(function() {
-                    $.ajax({
-                        url: pollURL,
-                        success: function(status) {
-                            if (status == 'COMPLETED' || status == 'FAILED') {
-                                timer.stop();
-                                // The import is complete, now render the row.
-                                renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
+                function update_dataset_row() {
+                    // poll all active spinners and update dataset row if completed
+                    $.each($(spinner_sel), function(i, spinner) {
+                        var datasetURL = $(spinner).attr('data-url');
+                        var pollURL = datasetURL + '/jm/getJobStatus';
+                        var completeURL = datasetURL + '/@@datasets_list_item';
+                        
+                        // poll status of dataset import
+                        $.ajax({
+                            url: pollURL,
+                            success: function(status) {
+                                if (status == 'COMPLETED' || status == 'FAILED') {
+                                    // The import is complete, now render the row.
+                                    renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
+                                }
                             }
-                        }
+                        });
                     });
-                });
-                timer.set({
-                    time: 5000,
-                    autostart: true
-                });
-            });
+                    // restart timer if there are any spinners left
+                    if ($(spinner_sel).length) {
+                        timer_id = window.setTimeout(update_dataset_row, 5000);
+                    }
+                }
 
+
+                $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(evt) {
+                    // clear current timeout
+                    if (timer_id) {
+                        window.clearTimeout(timer_id);
+                    }
+                    if ($(spinner_sel).length) {
+                        timer_id = window.setTimeout(update_dataset_row, 5000);
+                    }
+                });
+                
+            }();
+            
             // Dateset entry dropdown functions
             $('body').on('click', '.dropdown-button', function(event){
                 event.preventDefault();
@@ -120,34 +165,61 @@ define(
 
             });
 
-            // Request metadata for datasets
-            // These buttons have a fallback to open their request in a new tab (if JS is disabled)
-            $('body').on('click', '.dataset-info-btn', function(event){
+            // modal preview
+            $('body').on('click', '.bccvl-modal-occurrence-viz, .bccvl-modal-auto-viz', function(event){
                 event.preventDefault();
-                var requestUrl = $(this).attr('href');
-                $('body').append('<div class="modal hide fade" id="dataset-meta-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">Dataset Metadata</h3></div><div class="modal-body"><span class="loading-gif"></span></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Close</button></div></div>');
-                $.ajax(requestUrl)
-                    .done(function(data){
-                        console.log(data);
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html(data);
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    })
-                    .fail(function() {
-                        $('#dataset-meta-modal .modal-body').fadeOut(300, function(){
-                            $('#dataset-meta-modal .modal-body').html('<h1>No metadata is available for this dataset at this time.</h1>');
-                            $('#dataset-meta-modal .modal-body').fadeIn(300);
-                        });
-                    });
-                $('#dataset-meta-modal').modal();
-                $('#dataset-meta-modal').on('hidden', function(){
-                    $('#dataset-meta-modal').remove();
+                var el = $(this);
+
+                $('body').append('<div class="modal hide fade" id="preview-dataset-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">'+el.data('title')+'</h3></div><div class="modal-body"><span class="loading-gif" style="margin:3m 0;"></span></div></div>');
+
+                $('#preview-dataset-modal').modal();
+
+                $('#preview-dataset-modal').on('show', function(){
+                    // this event refuses to fire for some reason
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
                 });
+
+                $('#preview-dataset-modal').on('shown', function(){
+
+                    $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
+
+                    $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
+                    if ($(this).hasClass('bccvl-list-occurrence-viz')){
+                        vizmap.mapRender(el.data('uuid'), el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'occurence');
+                    } else {
+                        vizmap.mapRender(el.data('uuid'),el.data('viz-id'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
+                    }
+                }); 
+
+                $('#preview-dataset-modal').on('hidden', function(){
+                    $('#preview-dataset-modal').remove();
+                });
+                // setup popover handling in modal (bootstrap does not initialise dynamically loaded popovers inside modals?)
+                $('#preview-dataset-modal .modal-body').popover({
+                    'selector': '[data-toggle="popover"]',
+                    'container': 'body', // bug in bootstrap :( only works as data-attribute when using selector
+                    'trigger': 'hover'
+                }).on('shown', function(e) { // prevent shared popover/modal events from bubbling up to modal
+                    e.stopPropagation();
+                }).on('hidden', function(e) {
+                    e.stopPropagation();
+                });
+
+
+                
             });
 
+            // Request metadata for datasets
+            // These buttons have a fallback to open their request in a new tab (if JS is disabled)
+            var infomodal = new modals.InfoModal('info-modal');
+            infomodal.bind('body', "[data-toggle='InfoModal']");
+            var removemodal = new modals.RemoveModal('remove-modal');
+            removemodal.bind('body', 'a.remove-dataset-btn');
+            var sharingmodal = new modals.SharingModal('sharing-modal');
+            sharingmodal.bind('body', 'a.sharing-btn');
+            
         });
-
+        
         function renderDatasetRow(completeURL, $tr) {
             $.ajax({
                 url: completeURL,
@@ -155,8 +227,6 @@ define(
                     $tr.replaceWith($(rowHTML));
                     // Wire up visualiser and sharing
                     viz.init();
-                    sharing.init();
-                    removedataset.init();
                 }
             });
         };

@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- DATASET LIST ============================================ -->
-    <rules if-path="datasets/" >
+    <rules if-path="datasets/">
 
       <theme href="html/dataset-list.html" />
 
@@ -12,10 +12,13 @@
       <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
 
       <!-- Search filter -->
-      <replace css:theme="#datasets-filter" css:content="#datasets-filter"/>
+      <replace css:theme-children="#datasets-filter" css:content="#left-area"/>
+      <!-- faceted version -->
+      <after css:theme-children="#datasets-filter" css:content="#faceted-version"/>
 
       <!-- Dataset Table -->
-      <replace css:theme-children="#datasets-listing" css:content-children="#datasets-listing" />
+      <replace css:theme-children="#bccvl-my-datasets" css:content-children="#center-area" />
+
 
     </rules>
 </rules>

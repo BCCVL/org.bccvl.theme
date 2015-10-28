@@ -4,7 +4,7 @@ define(
 
         return {
             init: function() {
-                $(".remove-dataset-btn").click(function(e) {
+                $(".bccvl-datasetlist").on("click", ".remove-dataset-btn", function(e) {
                     e.preventDefault();
 
                     var url = $(this).attr('href');
@@ -57,11 +57,11 @@ define(
                     $('.modal-body').scrollTop(0);
                     $("body").addClass("modal-open");
                 });
-
+                
                 $('.modal').on('hidden', function() {
                     $("body").removeClass("modal-open");
                 });
-
+                
             }
         };
 

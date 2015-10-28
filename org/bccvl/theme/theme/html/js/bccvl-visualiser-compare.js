@@ -4,9 +4,6 @@
 define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
-        // Bring in generic visualiser error handling of timeouts
-        vizcommon.commonAjaxSetup();
-
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -52,7 +49,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
             $.each(data, function(index, value) {
-                layer_vocab[value.token] = value.title;
+                layer_vocab[value.token] = value;
             });
         });
         
@@ -117,7 +114,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             container.addClass('active');
 
             // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
             $('#'+id+' a.export-map').click(
                 { map: map,
                   mapTitle: 'Side-by-side'
@@ -138,41 +135,71 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
-
+                    // define local variables
+                    var localdef;
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ($.isEmptyObject(data.layers)) {
                         // occurrence data
                         // TODO: use data.title (needs to be populated)
-                        layerName = layerName || data.filename || 'Data Overlay';
+                        layerdef = {
+                            'title': layerName || data.filename || 'Data Overlay'
+                        };
                         
-                        var newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
+                        var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
                         if (typeof algorithm != "undefined") {
-                            container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
+                            container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
                         } else {
-                            container.append('<label>'+layerName+'<br/></label>');
+                            container.append('<label>'+layerdef.title+'<br/></label>');
                         }
 
                         newLayer.setOpacity(0.9);
                         visLayers.getLayers().push(newLayer);
                     } else {
                         // raster data
-                        $.each( data.layers, function(layerid, layer){
-                            layerName = layer_vocab[layer.layer] || layer.layer || layer.filename;
-                            var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                            var styleObj = {
-                                minVal: 0, // TODO: mahal has negative min value?
-                                maxVal: max,
-                                steps: 20,
-                                startpoint: null,
-                                midpoint: null,
-                                endpoint: null
-                            };
-                            var newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
+                        $.each(data.layers, function(layerid, layer) {
+
+                            layerdef = layer_vocab[layer.layer];
+                            if (typeof layerdef === 'undefined') {
+                                layerdef = {
+                                    'token': layer.layer,
+                                    'title': layer.layer || layer.filename,
+                                    'unitfull': '',
+                                    'unit': '',
+                                    'type': '',  // unused
+                                    'legend': 'default',
+                                    'tooltip': '',
+                                    'filename': layer.filename
+                                }
+                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                                    layerdef.legend = 'probability';
+                                    layerdef.unit = 'probability';
+                                }
+                            } else {
+                                // make a copy of the original object
+                                layerdef = $.extend({}, layerdef)
+                                // for zip files we need the filename associated with the layer
+                                if (layer.filename) {
+                                    layerdef.filename = layer.filename;
+                                }
+                            }
+                            // copy datatype into layer def object
+                            layerdef.datatype = layer.datatype;
+                            // add min / max values
+                            // FIXME: this should go away but some datasets return strings instead of numbers
+                            layerdef.min = Number(layer.min);
+                            layerdef.max = Number(layer.max);
+
+                            // give precedence to passed in layerName
+                            layer.title = layerName || layer.title;
+
+                            layerdef.style = vizcommon.createStyleObj(layerdef);
+                            
+                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms');
 
                             if (typeof algorithm != "undefined") {
-                                container.append('<label>'+layerName+'<br/> (<em>'+algorithm+'</em>)</label>');
+                                container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
                             } else {
-                                container.append('<label>'+layerName+'<br/></label>');
+                                container.append('<label>'+layerdef.title+'<br/></label>');
                             }
 
                             visLayers.getLayers().push(newLayer);

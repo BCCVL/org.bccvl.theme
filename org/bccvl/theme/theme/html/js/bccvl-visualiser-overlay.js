@@ -4,11 +4,13 @@
 define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
-        // Bring in generic visualiser error handling of timeouts
-        vizcommon.commonAjaxSetup();
-
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
+
+        $(function () {
+            renderBase($('.bccvl-preview-pane:visible').attr('id'));
+            createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
+        });
 
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
@@ -22,7 +24,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             event.preventDefault();
 
             var uuid = $(this).data('uuid');
-            var colorName = $('.olLegend label[data-uuid="'+uuid+'"]').data('color-name');
 
             visLayers.getLayers().forEach(function (lyr) {
                 if (lyr.get('uuid') == uuid){
@@ -30,14 +31,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 }          
             });
 
-            $.each(usedStyleArray, function(i){
-                if($(this)[0].name == colorName){
-                    styleArray.unshift(usedStyleArray[i]);
-                    usedStyleArray.splice(i,1);
-                }
-            });
-
-            $('.olLegend label[data-uuid="'+uuid+'"]').remove();
+            $('.olLegend label[data-uuid="'+$(this).data('uuid')+'"]').remove();
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
@@ -60,7 +54,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
             $.each(data, function(index, value) {
-                layer_vocab[value.token] = value.title;
+                layer_vocab[value.token] = value;
             });
         });
         
@@ -68,71 +62,54 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:139,g:208,b:195},
-              "endpoint": {r:18,g:157,b:133},
-              "name":'aquaGreen'
+              "endpoint": {r:18,g:157,b:133}
             },
             { "minVal": 0,"maxVal" :1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:233,g:170,b:129},
-              "endpoint": {r:210,g:96,b:19},
-              "name":'redOrange'
+              "endpoint": {r:210,g:96,b:19}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:255,g:172,b:236},
-              "endpoint": {r:247,g:108,b:215},
-              "name":'magenta'
+              "endpoint": {r:247,g:108,b:215}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:248,g:225,b:135},
-              "endpoint": {r:241,g:196,b:15},
-              "name":'yellowOrange'
+              "endpoint": {r:241,g:196,b:15}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:198,g:162,b:214},
-              "endpoint": {r:143,g:76,b:176},
-              "name":'purple'
+              "endpoint": {r:143,g:76,b:176}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:154,g:164,b:175},
-              "endpoint": {r:48,g:71,b:94},
-              "name":'darkNavy'
+              "endpoint": {r:48,g:71,b:94}
             },  
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:151,g:229,b:184},
-              "endpoint": {r:45,g:195,b:108},
-              "name":'brightGreen'
+              "endpoint": {r:45,g:195,b:108}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:154,g:203,b:237},
-              "endpoint": {r:47,g:150,b:220},
-              "name":'brightBlue'
+              "endpoint": {r:47,g:150,b:220}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:223,g:156,b:149},
-              "endpoint": {r:192,g:57,b:43},
-              "name":'deepRed'
+              "endpoint": {r:192,g:57,b:43}
             },
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
               "midpoint": {r:154,g:154,b:154},
-              "endpoint":{r:47,g:47,b:47},
-              "name":'black'
+              "endpoint":{r:47,g:47,b:47}
             }
         ];
-
-        var usedStyleArray = [];
-
-
-        renderBase($('.bccvl-preview-pane:visible').attr('id'));
-        createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
-        appendBlendControl($('.bccvl-preview-pane:visible').attr('id'));
 
         function createLegendBox(id){
             // have to make a new legend for each layerswap, as layer positioning doesn't work without an iframe
@@ -143,51 +120,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             $('#'+id+' .ol-viewport').append(legend);
         }
 
-        function addLayerLegend(layername, color, uuid, colorName){  
+        function addLayerLegend(layername, color, uuid){  
             if (color == 'occurrence'){
                 $('.olLegend').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
                 $('.olLegend').show(0);
             } else {
                 var colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-                $('.olLegend').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
+                $('.olLegend').append('<label data-uuid="'+uuid+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
                 $('.olLegend').show(0);
             }
-        }
-
-        function appendBlendControl(id){
-            $('#'+id+' .ol-viewport .olLegend').append('<label for="blend-mode" class="mode">Mode: </label>'+
-                        '<select id="blend-mode" class="form-control" >'+
-                            '<optgroup label="Common">'+
-                                '<option selected>darken (default)</option>'+
-                                '<option>lighten</option>'+
-                                '<option>source-over</option>'+
-                            '</optgroup>'+
-                            '<optgroup label="Experimental">'+
-                                '<option>source-in</option>'+
-                                '<option>source-out</option>'+
-                                '<option>source-atop</option>'+
-                                '<option>destination-over</option>'+
-                                '<option>destination-in</option>'+
-                                '<option>destination-out</option>'+
-                                '<option>destination-atop</option>'+
-                                '<option>lighter</option>'+
-                                '<option>copy</option>'+
-                                '<option>xor</option>'+
-                                '<option>multiply</option>'+
-                                '<option>screen</option>'+
-                                '<option>overlay</option>'+
-                                '<option>color-dodge</option>'+
-                                '<option>color-burn</option>'+
-                                '<option>hard-light</option>'+
-                                '<option>soft-light</option>'+
-                                '<option>difference</option>'+
-                                '<option>exclusion</option>'+
-                                '<option>hue</option>'+
-                                '<option>saturation</option>'+
-                                '<option>color</option>'+
-                                '<option>luminosity</option>'+
-                            '</optgroup>'+
-                        '</select>');
         }
 
         // RENDER EMPTY MAP
@@ -250,64 +191,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             container.addClass('active');
 
             // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
             $('#'+id+' a.export-map').click(
                 { map: map,
                   mapTitle: 'Overlay'
                 }, vizcommon.exportAsImage);
         }
-
-        // Various helper methods and event handlers
-        /**
-         * This method sets the globalCompositeOperation to the value of the select
-         * field and it is bound to the precompose event of the layers.
-         *
-         * @param {ol.render.Event} evt The render event.
-         */
-        var setBlendModeFromSelect = function(evt) {
-          evt.context.globalCompositeOperation = select.value;
-        };
-
-
-        /**
-         * This method resets the globalCompositeOperation to the default value of
-         * 'source-over' and it is bound to the postcompose event of the layers.
-         *
-         * @param {ol.render.Event} evt The render event.
-         */
-        var resetBlendModeFromSelect = function(evt) {
-          evt.context.globalCompositeOperation = 'darken';
-        };
-
-
-        /**
-         * Bind the pre- and postcompose handlers to the passed layer.
-         *
-         * @param {ol.layer.Vector} layer The layer to bind the handlers to.
-         */
-        var bindLayerListeners = function(layer) {
-          layer.on('precompose', setBlendModeFromSelect);
-          layer.on('postcompose', resetBlendModeFromSelect);
-        };
-
-
-        /**
-         * Unind the pre- and postcompose handlers to the passed layers.
-         *
-         * @param {ol.layer.Vector} layer The layer to unbind the handlers from.
-         */
-        var unbindLayerListeners = function(layer) {
-          layer.un('precompose', setBlendModeFromSelect);
-          layer.un('postcompose', resetBlendModeFromSelect);
-        };
-
-        // Get the form elements and bind the listeners
-        var select = document.getElementById('blend-mode');
-
-        // Rerender map when blend mode changes
-        select.addEventListener('change', function() {
-            map.render();
-        });
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
@@ -326,14 +215,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 success: function(data, status, jqXHR) {
                     // xmlrpc returns an array of results
                     data = data[0];
-                    var newLayer;
+                    // define local variable
+                    var layerdef;
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ($.isEmptyObject(data.layers)) {
                         // occurrence data 
-                        
                         // TODO: use data.title (needs to be populated)
-                        layerName = layerName || data.filename || 'Data Overlay';
-                        newLayer = vizcommon.createLayer(uuid, data, data, layerName, 'wms-occurrence', true);
+                        layerdef = {
+                            'title': layerName || data.filename || 'Data Overlay'
+                        };
+
+                        var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
                         addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
@@ -343,34 +235,59 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     } else {
                         // raster data
-                        $.each( data.layers, function(layerid, layer){
+                        $.each(data.layers, function(layerid, layer) {
 
-                            layerName = layerName || layer_vocab[layer.layer] || layer.layer || layer.filename;
-                            // TODO: double check ... we should only have probability rasters here
-                            var max = vizcommon.roundUpToNearestMagnitude(layer.max);
-                            var styleObj = $.extend({}, styleArray[0]);
-                            styleObj.maxVal = max;
-                            newLayer = vizcommon.createLayer(uuid, data, layer, layerName, 'wms', true, styleObj);
+                            layerdef = layer_vocab[layer.layer];
+                            if (typeof layerdef === 'undefined') {
+                                layerdef = {
+                                    'token': layer.layer,
+                                    'title': layer.layer || layer.filename,
+                                    'unitfull': '',
+                                    'unit': '',
+                                    'type': '',  // unused
+                                    'legend': 'default',
+                                    'tooltip': '',
+                                    'filename': layer.filename
+                                }
+                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                                    layerdef.legend = 'probability';
+                                    layerdef.unit = 'probability';
+                                }
+                            } else {
+                                // make a copy of the original object
+                                layerdef = $.extend({}, layerdef)
+                                // for zip files we need the filename associated with the layer
+                                if (layer.filename) {
+                                    layerdef.filename = layer.filename;
+                                }
+                            }
+                            // copy datatype into layer def object
+                            layerdef.datatype = layer.datatype;
+                            // add min / max values
+                            // FIXME: this should go away but some datasets return strings instead of numbers
+                            layerdef.min = Number(layer.min);
+                            layerdef.max = Number(layer.max);
 
-                            addLayerLegend(layerName, styleArray[0].endpoint, uuid, styleArray[0].name);
+                            // give precedence to passed in layerName
+                            layer.title = layerName || layer.title;
 
-                            usedStyleArray.push(styleArray[0]);
-                            styleArray.splice(0, 1);
+                            layerdef.style = vizcommon.createStyleObj(layerdef);
+                            // copy calor range from our styleArray
+                            layerdef.style.startpoint = styleArray[numLayers].startpoint;
+                            layerdef.style.midpoint = styleArray[numLayers].midpoint;
+                            layerdef.style.endpoint = styleArray[numLayers].endpoint;                            
+                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms');
+
+                            addLayerLegend(layerdef.title, layerdef.style.endpoint, uuid);
                             
                             // add layer to layer group
                             visLayers.getLayers().push(newLayer);
 
                         });
-
-                        bindLayerListeners(newLayer);
                     }
-
                     map.render();
                 }
             });
-
-
-            
         }
     }
 

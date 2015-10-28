@@ -78,7 +78,9 @@
                       portal_registry
                       delete_confirmation/
                       @@plone-upgrade/
-                      @@oauth-controlpanel/" />
+                      @@oauth-controlpanel/
+                      @@jqueryui-controlpanel/
+                      @@jqueryui-plugins-controlpanel/" />
 
      <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />

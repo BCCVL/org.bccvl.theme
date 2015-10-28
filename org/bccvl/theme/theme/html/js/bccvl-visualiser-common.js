@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher'],
-   function( $, layout, ol  ) {
+define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-progress-bar'],
+   function( $, layout, ol, layerswitcher, progress_bar ) {
 
         // visualiser base url
         var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
@@ -24,7 +24,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             */
 
             // TODO: make this local to have better timeout error messages and avoid too short timeouts on some ajax calls
-            commonAjaxSetup: function(){
+            // 260815: No longer in use, kept for possible future use.
+            /*commonAjaxSetup: function(){
                 $.ajaxSetup({
                     timeout: 20000,
                     error: function(jqXHR, textStatus, errorThrown){
@@ -35,9 +36,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     }
                 });
                 
-            },
+            },*/
 
-            generateRangeArr: function(standard_range, minVal, maxVal, steps){
+            generateRangeArr: function(styleObj){
+                var standard_range = styleObj.standard_range;
+                var minVal = styleObj.minVal;
+                var maxVal = styleObj.maxVal;
+                var steps = styleObj.steps;
                 
                 if (standard_range == 'rainfall'){
                     // rainfall BOM standard range
@@ -45,7 +50,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard range
                     var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
-                } else if (standard_range == 'probability') {
+                } else if (standard_range == 'probability' && maxVal <= 1000) {
                     
                     if (maxVal <= 1){
                         var rangeArr = [0,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00];
@@ -57,6 +62,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                         var rangeArr = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
                     }
                     
+                } else if (standard_range == 'categorical') { 
+                    var rangeArr = [];
+                    for (var i = 1; i < (steps+1); i++) {
+                        rangeArr.push(i);
+                    }
                 } else {
                     // dummy max and min values, eventually replaced with relative-to-layer values
                     if (minVal==undefined) minVal = 0;
@@ -66,24 +76,50 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     var rangeInt = (maxVal - minVal)/steps;
                     var rangeArr = [];
                     for (var i = 0; i < (steps+1); i++) {
-                        rangeArr.push((rangeInt*i).toFixed(2));
+                        rangeArr.push(minVal + rangeInt*i);
                     }
                 }
-                
                 return rangeArr;
             },
 
-            generateColorArr: function(standard_range, steps, startpoint, midpoint, endpoint){
+            numPrec: function(num, prec) {
+                return (num.toFixed(prec) * 1).toString();
+            },
+
+            genColor: function(seed) {
+                color = Math.floor((Math.abs(Math.sin(seed) * 12233456)) % 12233456);
+                color = color.toString(16);
+                // pad any colors shorter than 6 characters with leading 0s
+                while(color.length < 6) {
+                    color = '0' + color;
+                }
+                
+                return color;
+            },
+
+            generateColorArr: function(styleObj) {
                 /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
+                var standard_range = styleObj.standard_range;
+                var startpoint = styleObj.startpoint;
+                var midpoint = styleObj.midpoint;
+                var endpoint = styleObj.endpoint;
+                var steps = styleObj.steps;
                 if (standard_range == 'rainfall'){
                     // rainfall BOM standard colours
                     var colorArr = ['#FFFFFF','#fffee8','#fefdd1','#f6f8ab','#daeca2','#c1e3a3','#a8dba4','#8cd1a4','#6fc9a5','#45c1a4','#00b4a5','#00999a','#017b7d','#005b5c'];
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard colours
                     var colorArr = ['#13a7ce','#0eb9d2','#54c5d2','#87d2d1','#b1e0d3','#c6e6d3','#d8eed4','#ecf6d5','#fefed7','#fef5bd','#fdea9b','#fcd78b','#fdc775','#f8a95b','#f58e41','#f3713e'];
-                } else if (standard_range == 'probability') {
+                } else if (standard_range == 'probability' && startpoint == null) {
+                    // apply standard probability coloring only if we don't have a color range set up
+                    // FIXME: generate default color range for probabilities automatically as we do below if possible
                     // basic prob spectrum
                     var colorArr = ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
+                } else if (standard_range == 'categorical') {
+                    var colorArr = [];
+                    for (var i = 0; i < (steps+1); i++) {
+                        colorArr.push('#'+bccvl_common.genColor(i+1));
+                    }
                 } else {
                     // utility functions to convert RGB values into hex values for SLD styling.
                     function byte2Hex(n) {
@@ -179,30 +215,30 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 return colorArr;
             },
 
-            getStandardRange: function(name, layertype) {
+            getStandardRange: function(layerdef) {
                 var standard_range;
-                if(/B12|B17|B16|B18|B13|B19|B15|B14|bioclim_12|bioclim_17|bioclim_16|bioclim_18|bioclim_13|bioclim_19|bioclim_15|bioclim_14/g.test(name)){
-                    standard_range = 'rainfall';
-                } else if(/B11|B10|B02|B03|B01|B06|B07|B04|B05|B08|B09|bioclim_11|bioclim_10|bioclim_02|bioclim_03|bioclim_01|bioclim_06|bioclim_07|bioclim_04|bioclim_05|bioclim_08|bioclim_09/g.test(name)){
-                    standard_range = 'temperature';
-                } else if(layertype == 'continuous') {
-                    standard_range = 'probability';
+                if ($.inArray(layerdef.legend, ['rainfall', 'temperature', 'probability']) > -1) {
+                    return layerdef.legend;
+                } else if(typeof layerdef.legend === 'undefined') {
+                    if (layerdef.datatype == 'continuous') {
+                        // undefined layer, and continiuous
+                        standard_range = 'probability';
+                    } else {
+                        // TODO: categorical data types should not use range, but represent each value as single color
+                        standard_range = 'soil';
+                    }
                 } else {
-                    standard_range = 'soil';
-                }
+                    // it's nothing of the above but a defined layer ... so don't use probability
+                    standard_range = 'default';
+                } 
                 return standard_range;
             },
             
-            generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype ) {
-                var standard_range;
-                if (startpoint || midpoint || endpoint ) {
-                    standard_range = "custom";
-                } else {
-                    standard_range = bccvl_common.getStandardRange(filename, layertype);
-                }
-                
-                var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
-                var colorArr = bccvl_common.generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
+            //generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
+            generateSLD: function(layerdef) {
+                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
+                var colorArr = bccvl_common.generateColorArr(layerdef.style);
+                var steps = layerdef.style.steps;
                 
                 var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.8</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
 
@@ -217,52 +253,157 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 return xmlStylesheet;
             },
 
-            createLegend: function(layer, id, minVal, maxVal, steps, startpoint, midpoint, endpoint) {
+            createStyleObj: function(layerdef, uuid) {
+                var styleObj;
+                var style = $.Deferred()
+                
+                if (layerdef.legend == 'categories') {
+
+                    $.ajax({
+                        url: portal_url + '/dm/getRAT',
+                        method: 'GET',
+                        datatype: 'json',
+                        data: {'datasetid': uuid, 'layer': layerdef.token},
+                        success: function(data, status, jqXHR){
+
+                            var numRows = data.rows.length;
+                            var labels = [];
+
+                            $.each( data.rows, function(i, row){
+                                //labels.push([]);
+                                var label = ''+(i+1)+':';
+
+                                $.each( data.cols, function(idx, col){
+                                    if (col.type == 'String' && (col.usage == 'Generic' || col.usage == 'Name')){
+                                        label = label + ' ' + row[idx];
+                                    }
+                                });
+
+                                labels.push(label);
+
+                            });
+
+                            layerdef.labels = labels;                                   
+
+                            // categorial styleobj
+                            styleObj = {
+                                minVal: 1,
+                                maxVal: numRows,
+                                steps: numRows,
+                                startpoint: {},
+                                midpoint: {},
+                                endpoint: {}
+                            };
+
+                            styleObj.standard_range = 'categorical';
+
+                            style.resolve(styleObj, layerdef);
+                        }
+                    });
+
+                    return style;
+
+                } else {
+                    var standard_range = bccvl_common.getStandardRange(layerdef);
+                    if (standard_range == 'probability'){
+                        // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
+                        var max = bccvl_common.roundUpToNearestMagnitude(layerdef.max);
+                        styleObj = {
+                            minVal: 0, // TODO: mahal has negative min value?
+                            maxVal: max,
+                            steps: 20,
+                            startpoint: null,
+                            midpoint: null,
+                            endpoint: null
+                        };
+                    } else if (standard_range == 'default') {
+                        // standard raster
+                        styleObj = {
+                            minVal: layerdef.min,
+                            maxVal: layerdef.max,
+                            steps: 20,
+                            startpoint: {r:255,g:255,b:255},
+                            midpoint: {r:231,g:76,b:60},
+                            endpoint: {r:192,g:57,b:43}
+                        };
+                    } else {
+                        // a predefined color scheme
+                        styleObj = {
+                            minVal: 0, // TODO: mahal has negative min value?
+                            maxVal: layerdef.max,
+                            steps: 20,
+                            startpoint: null,
+                            midpoint: null,
+                            endpoint: null
+                        };
+                    } 
+                    styleObj.standard_range = standard_range;
+                    
+                    style.resolve(styleObj, layerdef);
+
+                    return style;
+                }
+                
+            },
+
+            createLegend: function(layerdef) {
                 // create a legend for given values
-                var standard_range = bccvl_common.getStandardRange(layer.id, layer.type);
                 
                 // Get hex color range and map values
-                var rangeArr = bccvl_common.generateRangeArr(standard_range, minVal, maxVal, steps);
-                var colorArr = bccvl_common.generateColorArr(standard_range, steps, startpoint, midpoint, endpoint);
+                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
+                var colorArr = bccvl_common.generateColorArr(layerdef.style);
+                var standard_range = layerdef.style.standard_range;
+                var steps = layerdef.style.steps;
+                // determine step size for legend
+                var legend_step_size = 5;
+                if (standard_range == 'probability') {
+                    legend_step_size = 2;
+                } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical']) > -1) {
+                    legend_step_size = 1;
+                }
                 // Build legend obj
                 var legend = document.createElement('div');
-                legend.className = 'olLegend';
-                if (standard_range == 'rainfall'){
-                    legend.innerHTML = '<h5>Units (mm)</h5>';
-                    for (var i = 0; i < (rangeArr.length); i = i+1) {
-                        if (i == (rangeArr.length-1)){
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
-                        } else {
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;-&nbsp;'+Math.round(rangeArr[i+1])+'</label>';
-                        }
+                legend.className = 'olLegend ol-unselectable ol-control';
+
+                var button = document.createElement('a');
+                button.className = 'ol-button open';
+                button.innerHTML = '<i class="fa fa-list-ul"></i>';
+                
+                var panel = document.createElement('div');
+                panel.className = 'panel shown';
+
+                button.onclick = function(e) {
+                    e.stopPropagation();
+                    if ( panel.className.indexOf('shown') > 0){
+                        button.className = 'ol-button'
+                        panel.className = 'panel';
+                    } else {
+                        button.className = 'ol-button open'
+                        panel.className = 'panel shown';
                     }
-                } else if (standard_range == 'temperature') {
-                    legend.innerHTML = '<h5>Units (&deg;C)</h5>';
-                    for (var i = 0; i < (rangeArr.length); i = i+1) {
-                        if (i == (rangeArr.length-1)){
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
-                        } else {
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;-&nbsp;'+Math.round(rangeArr[i+1])+'</label>';
-                        }
-                    }
-                } else if (standard_range == 'probability') {
-                    for (var i = 0; i < (steps+1); i = i+2) {
-                        if (i == (steps)){
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+rangeArr[i]+'</label>';
-                        } else {
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+rangeArr[i]+'&nbsp;-&nbsp;'+rangeArr[i+2]+'</label>';
-                        }
-                    }
+                };
+                
+                if (layerdef.tooltip && layerdef.tooltip.length < 0) {
+                    var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
+                    panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
                 } else {
-                    legend.innerHTML = '<h5>Units ('+layer.units+')</h5>';
-                    for (var i = 0; i < (steps+1); i = i+5) {
-                        if (i == (steps)){
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;+</label>';
+                    panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';
+                }
+                for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
+                    if (standard_range == 'categorical'){
+                        panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
+                    } else {
+                        if (i == (rangeArr.length-1)){
+                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
                         } else {
-                            legend.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+Math.round(rangeArr[i])+'&nbsp;-&nbsp;'+Math.round(rangeArr[i+5])+'</label>';
+                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+1], 2)+'</label>';
                         }
                     }
                 }
+
+                legend.appendChild(button);
+                legend.appendChild(panel);
+
                 return legend;
             },
 
@@ -311,7 +452,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
             },
 
             // create new OL layer from layer metadata data object
-            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend) {
+//            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
+            createLayer: function(id, layerdef, data, type, legend) {
+
+                var uuid = data.id;
+                var title = layerdef.title;
+                var visible = layerdef.isVisible;
+                var styleObj = layerdef.style;
+                
                 // data ... dataset metadata
                 // layer ... layer metadata
                 // title ... display title
@@ -324,23 +472,39 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     "format": "image/png"
                 };
                 if (type != "wms-occurrence") {
-                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype);
+                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layerdef);
+                    // wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype, style);
                 }
                 if (data.mimetype == "application/zip") {
-                    wms_params['DATA_URL'] = data.vizurl + ('filename' in layer ? '#' + layer.filename : '');  // The data_url the user specified
+                    wms_params['DATA_URL'] = data.vizurl + ('filename' in layerdef ? '#' + layerdef.filename : '');  // The data_url the user specified
                 } else {
                     wms_params['DATA_URL'] = data.vizurl;  // The data_url the user specified
                 }
+
+                var progress = new progress_bar.Progress_bar(document.getElementById('progress-'+id));
+
+                var source = new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+                         url: visualiserWMS,
+                         params: wms_params,
+                         serverType: 'mapserver'
+                }));
+
+                source.on('tileloadstart', function(event) {
+                  progress.addLoading();
+                });
+
+                source.on('tileloadend', function(event) {
+                  progress.addLoaded();
+                });
+                source.on('tileloaderror', function(event) {
+                  progress.addLoaded();
+                });
                 
                 var newLayer = new ol.layer.Tile({
                     // OL3 layer attributes
                     visible: visible,
                     preload: 10,
-                    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                         url: visualiserWMS,
-                         params: wms_params,
-                         serverType: 'mapserver'
-                    })),
+                    source: source,
                     // layer switcher attributes
                     title: title,
                     type: type, // 'base', 'wms', 'wms-occurrence', 'layers'?
@@ -348,7 +512,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                     uuid: uuid,
                     bccvl: { 
                         data: data,
-                        layer: layer, // layer metadata
+                        layer: layerdef, // layer metadata
                         legend: legend
                     }
                 });
@@ -556,6 +720,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher']
                 map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 
             }
+
         };
         return bccvl_common;
     }

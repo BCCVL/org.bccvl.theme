@@ -28,7 +28,8 @@ requirejs.config({
         'OpenLayers':           'openlayers/OpenLayers',
         'openlayers3':          'ol3/ol',
         'ol3-layerswitcher':    'ol3/layerswitcher/ol3-layerswitcher',
-        'prism':                'prism/prism'
+        'prism':                'prism/prism',
+        'bbq':                  'jquery-bbq/jquery.ba-bbq'
     },
     shim: {
         'parsley':              ['jquery'],
@@ -38,7 +39,7 @@ requirejs.config({
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
         'jquery-timer':         ['jquery'],
-        'select2':              ['jquery'], 
+        'select2':              ['jquery']
     }
 });
 

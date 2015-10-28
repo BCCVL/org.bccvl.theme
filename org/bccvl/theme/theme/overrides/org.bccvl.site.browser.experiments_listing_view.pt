@@ -21,22 +21,27 @@
   <div>
     <div id="new-experiment-menu"
          tal:define="actions view/new_experiment_actions">
+
+      <h4 class="new-experiment-type-heading">PRIMARY EXPERIMENTS &nbsp;<i data-toggle="tooltip" data-placement="right" title="Primary experiments model your species under current conditions. The outputs of these models are then used as input into secondary experiments." class="fa fa-info-circle"></i></h4>
       <div class="new-experiment-button experiment-sdm">
         <a class="bccvllinks-experiment-new"
            tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i> new</span> Species Distribution Modelling Experiment</a>
-      </div>
-      <div class="new-experiment-button experiment-cce">
-        <a class=" bccvllinks-experiment-proj-new"
-           tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Climate change experiment</a>
-      </div>
-      <div class="new-experiment-button experiment-bio">
-        <a class=" bccvllinks-experiment-biodiverse-new"
-           tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Biodiverse Experiment</a>
       </div>
       <div class="new-experiment-button experiment-stm">
         <a class=" bccvllinks-experiment-speciestrait-new"
            tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait Modelling Experiment</a>
       </div>
+      
+      <h4 class="new-experiment-type-heading">SECONDARY EXPERIMENTS &nbsp;<i data-toggle="tooltip" data-placement="right" title="Secondary experiments allow you to build on your existing models. Before running a secondary experiment you must first run at least one primary experiment to be used as input." class="fa fa-info-circle"></i></h4>
+      <div class="new-experiment-button experiment-bio">
+        <a class=" bccvllinks-experiment-biodiverse-new"
+           tal:attributes="href python:actions['org.bccvl.content.biodiverseexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Biodiverse Experiment</a>
+      </div>
+      <div class="new-experiment-button experiment-cce">
+        <a class=" bccvllinks-experiment-proj-new"
+           tal:attributes="href python:actions['org.bccvl.content.projectionexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Climate change experiment</a>
+      </div>
+      
       <div class="new-experiment-button experiment-ensemble">
         <a class=" bccvllinks-experiment-ensemble-new"
            tal:attributes="href python:actions['org.bccvl.content.ensemble']['action']"><span><i class="fa fa-plus"></i> New</span> Ensemble Analysis</a>
@@ -44,10 +49,9 @@
     </div>
   </div>
 
-  <metal:text-field-view use-macro="context/folder_listing/text-field-view"/>
+  <metal:text-field-view use-macro="context/@@listing_view/text-field-view"/>
 
-  <tal:define define="contentFilter view/contentFilter;
-                      limit_display request/limit_display|python:100">
+  <tal:define>
     <div id="experiment-list">
       <table class="table bccvl-experimenttable">
         <thead>
@@ -58,7 +62,7 @@
           </tr>
         </thead>
         <tbody>
-       <metal:listing use-macro="context/folder_listing/listing">
+       <metal:listing use-macro="context/@@listing_view/listing">
           <metal:entry fill-slot="entry">
             <tr tal:define="exp python:view.experiment_details(item);
                             class_state python:experiment_tools.get_state_css(item)">
@@ -117,7 +121,7 @@
                    </a>
                    
                    <a class="sharing-btn btn btn-default"
-                      tal:attributes="href action/url;
+                      tal:attributes="href string:${item_url}/modal_sharing;
                                       data-friendlyname string:sharing_${item/Title}"
                       tal:condition="python: action.get('available')"
                       tal:define="item_obj item/getObject;
@@ -135,7 +139,7 @@
                                         if experiment_tools.check_if_used(item_obj) else None ;     
                                       data-html python: 'true' if experiment_tools.check_if_used(item_obj) else None;
                                       data-toggle python: 'tooltip' if experiment_tools.check_if_used(item_obj) else None;
-                                      href python: item_url+'/@@remove' if not experiment_tools.check_if_used(item_obj) else None"
+                                      href python: item_url+'/@@modal_remove' if not experiment_tools.check_if_used(item_obj) else None"
                       data-placement="top">                      
                      Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>

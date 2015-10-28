@@ -8,6 +8,7 @@ define(
         $(function() {
             console.log('login page behaviour loaded.');
             $('.disclaimer.legals').insertBefore('.aaf-logo-link');
+
             $('#login-aaf').click(function(e) {
                 $(this).addClass('active');
                 $('#login-basic').removeClass('active');
@@ -35,7 +36,7 @@ define(
             });
 
             $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
-            $("#wrapper-aaf a").attr('onclick','return false;');
+            //$("#wrapper-aaf a").attr('onclick','return false;');
 
             $("#legals-checkbox:checkbox").change(function() {
                 if ($(this).is(":checked")) {
@@ -52,7 +53,7 @@ define(
                 }
             });
 
-            $("#wrapper-aaf a").click(function() {
+            $('#wrapper-aaf a:not([target="_blank"])').click(function() {
                 if ( !($("#legals-checkbox:checkbox").is(":checked")) )
                     alert("Please agree to the terms and conditions to login.");
             });
