@@ -225,7 +225,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             'title': layerName || data.filename || 'Data Overlay'
                         };
 
-                        var newLayer = vizcommon.createLayer(layerdef, data, 'wms-occurrence');
+                        var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                         addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
