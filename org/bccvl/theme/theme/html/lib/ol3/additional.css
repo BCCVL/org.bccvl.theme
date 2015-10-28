@@ -56,7 +56,7 @@
 }
 
 .map-progress-bar {
-  position: absolute;
+  /*position: absolute;*/
   bottom: 0;
   left: 0;
   height: 4px;
@@ -223,7 +223,7 @@ div.olControlAttribution {
    background: rgba(0, 0, 0, .35);
 }
 .olLegend {
-
+  top:0;
 }
 .olLegend .panel {
   display:none;
@@ -271,6 +271,41 @@ div.olControlAttribution {
     line-height: 14px;
     margin-bottom: 2px;
     cursor:default;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.ol-viewport .ol-control.ol-blend-control {
+    opacity: 1;
+    font-family: "OpenSansLight", sans-serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 999;
+    font-size: 11px;
+    background-color: rgba(255,255,255,.75);
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+    color: #000;
+    font-weight: 300;
+    line-height: 1.3em;
+    white-space: nowrap;
+}
+.ol-blend-control select, .ol-blend-control label{
+    display: inline-block;
+    font-size: 1.1em;
+    line-height: 1em;
+}
+.ol-blend-control select {
+    padding: 2px;
+    max-width: 120px;
+    vertical-align: baseline;
+    margin-bottom: 0;
+    height: 2.4em;
+    margin-left: .4em;
+}
+.ol-blend-control label {
+    font-family: "OpenSansRegular";
 }
 .ol-zoom {
     bottom: 15px;
