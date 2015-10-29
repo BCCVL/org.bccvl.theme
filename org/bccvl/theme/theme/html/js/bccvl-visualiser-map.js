@@ -100,8 +100,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     map = null;
                 }
 
+                // destroy any floating progress bars (should be destroyed above, this is a fallback)
                 $('#progress-'+id).remove();
-                container.after('<div id="progress-'+id+'" class="map-progress-bar"></div>');
 
                 // layer group 
                 var visLayers = new ol.layer.Group({
@@ -284,8 +284,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         });
 
                     }});
-
+                // set to active
                 container.addClass('active');
+                // add progress bar container
+                container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
             }
         }
 

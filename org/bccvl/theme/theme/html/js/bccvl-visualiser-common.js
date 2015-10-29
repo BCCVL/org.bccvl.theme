@@ -240,7 +240,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var colorArr = bccvl_common.generateColorArr(layerdef.style);
                 var steps = layerdef.style.steps;
                 
-                var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.7</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
+                var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
 
                 for (var i = 0; i < (steps+1); i++) {
                     xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
@@ -363,7 +363,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 }
                 // Build legend obj
                 var legend = document.createElement('div');
-                legend.className = 'olLegend ol-unselectable ol-control';
+                legend.className = 'olLegend ol-unselectable ol-control shown';
 
                 var button = document.createElement('a');
                 button.className = 'ol-button open';
@@ -377,9 +377,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     if ( panel.className.indexOf('shown') > 0){
                         button.className = 'ol-button'
                         panel.className = 'panel';
+                        legend.className = 'olLegend ol-unselectable ol-control';
                     } else {
                         button.className = 'ol-button open'
                         panel.className = 'panel shown';
+                        legend.className = 'olLegend ol-unselectable ol-control shown';
                     }
                 };
                 
@@ -516,6 +518,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         legend: legend
                     }
                 });
+                
+                if (type != "wms-occurrence") {
+
+                    var setCompositeMode = function(evt){
+                        evt.context.globalCompositeOperation = 'darken';
+                    }
+
+                    newLayer.on('precompose', setCompositeMode);
+                    newLayer.on('postcompose', function(){
+                        newLayer.un('precompose', setCompositeMode);
+                    });
+                }
+
                 return newLayer;
             },
 
