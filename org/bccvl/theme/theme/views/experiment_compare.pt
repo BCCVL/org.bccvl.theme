@@ -34,6 +34,7 @@
               <div class="row-fluid experiment-result-contents"
                    tal:define="item_obj item/getObject|nothing;
                                item_desc item/Description;
+                               result_folder python: item_obj.__parent__;
                                md python:dstools.metadata(item_obj);">
                 <div class="span9 bccvl-table-label">
                   <h5 tal:content="item/Title">Item Title</h5>
@@ -41,6 +42,7 @@
                            tal:content="item_desc">Dataset short description</span>
                     <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
                     <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
+                    <span tal:condition="result_folder/job_params/function|nothing">Algorithm: <i tal:content="result_folder/job_params/function"></i></span>
                   </p>
                 </div>
                 <div class="bccvl-table-controls span3"
