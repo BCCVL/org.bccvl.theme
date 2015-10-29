@@ -277,9 +277,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 map = null;
             }
 
-
             // destroy any html from images or text files
             container.html('');
+
+            // destroy any floating progress bars (should be destroyed above, this is a fallback)
+            $('#progress-'+id).remove();
 
             visLayers = new ol.layer.Group({
                 title: 'Layers',
@@ -322,10 +324,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // remove crappy unicode icon so fontawesome can get in
             $('#'+id+' button.ol-full-screen-false').html('');
 
+            // set to active
             container.addClass('active');
-
-            $('#progress-'+id).remove();
-            container.after('<div id="progress-'+id+'" class="map-progress-bar"></div>');
+            // add progress bar container
+            container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
 
             // hook up exportAsImage
             $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');

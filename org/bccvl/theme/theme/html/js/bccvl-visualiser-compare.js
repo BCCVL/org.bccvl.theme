@@ -68,6 +68,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     }
                 });
             }
+
+            // destroy any floating progress bars (should be destroyed above, this is a fallback)
+            $('#progress-'+id).remove();
             
             var visLayers = new ol.layer.Group({
                 title: 'Layers',
@@ -110,11 +113,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             map.addControl(fullScreenToggle);
             // remove crappy unicode icon so fontawesome can get in
             $('#'+id+' button.ol-full-screen-false').html('');
-
+            // set to active
             container.addClass('active');
+            // add progress bar container
+            container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
 
             // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+            $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
             $('#'+id+' a.export-map').click(
                 { map: map,
                   mapTitle: 'Side-by-side'
@@ -192,17 +197,22 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             // give precedence to passed in layerName
                             layer.title = layerName || layer.title;
 
-                            layerdef.style = vizcommon.createStyleObj(layerdef);
-                            
-                            var newLayer = vizcommon.createLayer(layerdef, data, 'wms');
+                            $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
+                                    // object to hold legend and color ranges
+                                    layerdef.style = styleObj;
 
-                            if (typeof algorithm != "undefined") {
-                                container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
-                            } else {
-                                container.append('<label>'+layerdef.title+'<br/></label>');
-                            }
+                                    // create layer - legend is null on this interface.
+                                    var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', null);
 
-                            visLayers.getLayers().push(newLayer);
+                                    // append title
+                                    if (typeof algorithm != "undefined") {
+                                        container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
+                                    } else {
+                                        container.append('<label>'+layerdef.title+'<br/></label>');
+                                    }
+
+                                    visLayers.getLayers().push(newLayer);
+                            });
                         });
                     }
                     map.uuid = uuid;
