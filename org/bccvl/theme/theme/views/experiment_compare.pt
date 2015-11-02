@@ -60,6 +60,7 @@
                                      data-uuid item/UID;
                                      data-mimetype dlinfo/contenttype;
                                      data-layername item/Title;
+                                     data-algorithm result_folder/job_params/function|nothing;
                                      data-viztype python: 'occurrence' if item.BCCDataGenre in ('DataGenreSpeciesOccurrence', 'DataGenreSpeciesAbsence') else 'auto';"
                      tal:condition="python: dlinfo['contenttype'] not
                                     in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
