@@ -195,7 +195,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             layerdef.max = Number(layer.max);
 
                             // give precedence to passed in layerName
-                            layer.title = layerName || layer.title;
+                            layerdef.title = layerName || layer.title;
 
                             $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
                                     // object to hold legend and color ranges
