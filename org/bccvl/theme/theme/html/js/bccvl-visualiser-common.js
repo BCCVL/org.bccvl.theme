@@ -243,10 +243,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
 
                 for (var i = 0; i < (steps+1); i++) {
-                    xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                    xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                 }
-                
-                xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                 
                 xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
 
@@ -300,6 +298,23 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             style.resolve(styleObj, layerdef);
                         }
                     });
+
+                    return style;
+
+                } else if (layerdef.legend == 'binary'){
+
+                    styleObj = {
+                        minVal: 0, 
+                        maxVal: 1,
+                        steps: 1,
+                        startpoint: null,
+                        midpoint: null,
+                        endpoint: null
+                    };
+
+                    styleObj.standard_range = 'binary';
+
+                    style.resolve(styleObj, layerdef);
 
                     return style;
 
@@ -358,7 +373,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var legend_step_size = 5;
                 if (standard_range == 'probability') {
                     legend_step_size = 2;
-                } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical']) > -1) {
+                } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical', 'binary']) > -1) {
                     legend_step_size = 1;
                 }
                 // Build legend obj
@@ -389,11 +404,20 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
                     panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
                 } else {
+                    if (standard_range == 'binary') {
+                        panel.innerHTML += '<h5>Occurence</h5>';
+                    }
                     panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';
                 }
+
                 for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
                     if (standard_range == 'categorical'){
                         panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
+                    } else if (standard_range == 'binary'){
+                        if (rangeArr[i] != 0){
+                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
+                        }
+                        
                     } else {
                         if (i == (rangeArr.length-1)){
                             panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
@@ -454,7 +478,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             },
 
             // create new OL layer from layer metadata data object
-//            createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
+            // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
 
                 var uuid = data.id;
