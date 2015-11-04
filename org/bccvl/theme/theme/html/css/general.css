@@ -1020,6 +1020,10 @@ a.result-export-link:hover {
 .bccvl-table-label h1 small {
     font-size: 90%;
 }
+.bccvl-table-label {
+  word-break: normal;  
+}
+
 
 .bccvl-datasetstable td {
     line-height: 1.3em;

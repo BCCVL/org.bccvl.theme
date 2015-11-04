@@ -254,6 +254,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             createStyleObj: function(layerdef, uuid) {
                 var styleObj;
                 var style = $.Deferred()
+
+                console.log(layerdef);
                 
                 if (layerdef.legend == 'categories') {
 
@@ -318,7 +320,24 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     return style;
 
-                } else {
+                } else if (layerdef.legend == 'discrete'){
+
+                    styleObj = {
+                        minVal: layerdef.min,
+                        maxVal: layerdef.max,
+                        steps: 20,
+                        startpoint: {r:255,g:255,b:255},
+                        midpoint: {r:113,g:183,b:242},
+                        endpoint: {r:0,g:133,b:244}
+                    };
+
+                    styleObj.standard_range = 'discrete';
+
+                    style.resolve(styleObj, layerdef);
+
+                    return style;
+
+                }  else {
                     var standard_range = bccvl_common.getStandardRange(layerdef);
                     if (standard_range == 'probability'){
                         // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
@@ -406,6 +425,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 } else {
                     if (standard_range == 'binary') {
                         panel.innerHTML += '<h5>Occurence</h5>';
+                    } else if (standard_range == 'discrete') {
+                        panel.innerHTML += '<h5>Mask</h5>';
                     }
                     panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';
                 }
