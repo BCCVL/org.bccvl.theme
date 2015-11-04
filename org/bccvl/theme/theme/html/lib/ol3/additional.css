@@ -225,6 +225,7 @@ div.olControlAttribution {
 }
 .olLegend {
   top:0;
+  min-width:30%;
 }
 .olLegend .panel {
   display:none;
