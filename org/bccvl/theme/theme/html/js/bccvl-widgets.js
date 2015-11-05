@@ -167,8 +167,7 @@ define(
                     var uuid = $(event.target).attr('data-uuid');
                     self.basket.remove(uuid);
                 });
-                // init faceted ui
-                Faceted.Load(0, self.settings.remote + '/');
+                
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(){
                     //
                     truncate(self.$modal.find('#faceted-results').find('ul.details'));
@@ -179,16 +178,19 @@ define(
                             selectable.select($(element));
                         };
                     });
-                });
+                }); 
 
                 $(Faceted.Events).bind(Faceted.Events.INITIALIZE, function() {
-                    self.$modal.find('select[multiple]').selectize({
+                    self.$modal.find('select[multiple], .selectize').selectize({
                         plugins: ['remove_button'],
                         onChange: function(){
                             $('#faceted-results').parent().css('max-height', $('#faceted-form').outerHeight());
                         }
                     });
                 });
+
+                // init faceted ui
+                Faceted.Load(0, self.settings.remote + '/');
 
             });
         };
