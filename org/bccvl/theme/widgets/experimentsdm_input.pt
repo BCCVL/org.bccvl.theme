@@ -28,9 +28,9 @@
         <!-- Experiment block -->
         <div class="selectedexperiment"
              tal:define="dataset_tools nocall:context/@@dataset_tools">
-          <input type="hidden" value="" name="form.widgets.fieldname" class="item"
+          <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item"
                  tal:attributes="value item/uuid;
-                                 name string:${view/name};"/>
+                                 name string:${view/name}.item.0;"/>
           <!-- TODO: show experiment infos -->
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>          
           <h4 class="experiment-title"
@@ -56,9 +56,9 @@
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
-                       name="form.widgets.fieldname.item:list"
+                       name="form.widgets.fieldname.item.0.item:list"
                        tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item:list;
+                                       name string:${view/name}.item.0.item:list;
                                        required view/required;
                                        checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
@@ -82,13 +82,18 @@
           </table>
           <label id="form.widgets.fieldname:list-error"
                  class="error"
-                 for="form.widgets.fieldname:list"
-                 tal:attributes="id string:${view/id}:list-error;
-                                 for string:${view/id}:list;"
+                 for="form.widgets.fieldname.item.0.item:list"
+                 tal:attributes="id string:${view/id}-item-0-item:list-error;
+                                 for string:${view/id}.item.0.item:list;"
                  tal:condition="error"
                  tal:content="structure error/render">This field is required.</label>          
       </div>
-    </div>
+      </div>
+      <div class="selecteditem">
+        <input type="hidden" value="" name="form.widgets.name.count"
+               tal:attributes="value string:1;
+                               name string:${view/name}.count;"/>
+      </div>
     </tal:block>
     <div tal:condition="not:view/value">
       <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
