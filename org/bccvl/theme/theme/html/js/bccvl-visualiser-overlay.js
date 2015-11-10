@@ -416,16 +416,20 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 // object to hold legend and color ranges
                                 layerdef.style = styleObj;
 
-                                // copy calor range from our styleArray
-                                layerdef.style.startpoint = styleArray[numLayers].startpoint;
-                                layerdef.style.midpoint = styleArray[numLayers].midpoint;
-                                layerdef.style.endpoint = styleArray[numLayers].endpoint;
+                                // copy color range from our styleArray
+                                layerdef.style.startpoint = styleArray[0].startpoint;
+                                layerdef.style.midpoint = styleArray[0].midpoint;
+                                layerdef.style.endpoint = styleArray[0].endpoint;
 
                                 // create layer
                                 var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', null);
                                 
                                 // handle our own legend
                                 addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+
+                                // move used color into used array
+                                usedStyleArray.push(styleArray[0]);
+                                styleArray.shift();
                             
                                 // add layer to layer group
                                 visLayers.getLayers().push(newLayer);

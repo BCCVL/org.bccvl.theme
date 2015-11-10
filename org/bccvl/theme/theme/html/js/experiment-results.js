@@ -71,15 +71,35 @@ define(
             });
         });
 
+        // CUSTOM AFFIX, BOOTSTRAP 2.3.2 IS BORKED.
         if (window.innerWidth > 767){
-            var affix = $('.affixed-map');
-            affix.data('offset-top', affix.offset().top );
-            affix.css({
-                'left': affix.offset().left,
-                'width': affix.innerWidth(),
-            });
+            setupAffix();
         }
         
+        function setupAffix() {
+            var affix = $('.affixed-map');
+            var offsetTop = affix.offset().top;
+            var offsetLeft = affix.offset().left;
+            var affixWidth = affix.innerWidth() - 10;
+            var affixHeight = affix.outerHeight();
+
+            affix.css({
+                'max-height': affixHeight,
+                'overflow-y': 'auto'
+            });
+
+            $(window).scroll(function(){
+                if( ($(window).scrollTop() - 15) > offsetTop) {
+                    affix.addClass('affix');
+                    affix.css({
+                        'left': offsetLeft,
+                        'width': affixWidth
+                    });
+                } else {
+                    affix.removeClass('affix');
+                }
+            });
+        }
 
         // Poll /jm/getJobStatus for the status of the experiments
         // This endpoint returns the status of each algorithm
