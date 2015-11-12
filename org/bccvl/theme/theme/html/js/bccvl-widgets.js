@@ -1,5 +1,5 @@
 define(
-    ['jquery','selectize'],
+    ['jquery', 'selectize', 'js/selectize-remove-single'],
     function($) {
 
         function truncate($elements) {
@@ -182,7 +182,28 @@ define(
 
                 $(Faceted.Events).bind(Faceted.Events.INITIALIZE, function() {
                     self.$modal.find('select[multiple], .selectize').selectize({
-                        plugins: ['remove_button'],
+                        plugins: ['remove_button', 'remove_single_button'],
+                        render: {
+                            'option': function(data, escape) {
+                                var opt_class="option"
+                                var opt_style="";
+                                if (data.disabled) {
+                                    opt_class += " faceted-select-item-disabled";
+                                }
+                                var opt_text = '<div class="' + opt_class + '">' + escape(data[this.settings.labelField]);
+                                if (typeof data.count !== 'undefined') {
+                                    opt_text += ' <span class="badge">' + data.count + '</span>';
+                                }
+                                return opt_text + '</div>';
+                            },
+                        },
+                        'item': function(data, escape) {
+                            var item_text = '<div class="item">' + escape(data[this.settings.labelField]);
+                            if (typeof data.count !== 'undefined') {
+                                item_text += ' <span class="badge">' + data.count + '</span>';
+                            }
+                            return item_text + '</div>';
+                        },
                         onChange: function(){
                             $('#faceted-results').parent().css('max-height', $('#faceted-form').outerHeight());
                         }
