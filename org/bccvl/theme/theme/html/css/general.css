@@ -657,6 +657,7 @@ div.loader {
     margin-left: 0;
     left: 10%;
     width: 80%;
+    max-height: 85%;
 }
 .modal, .modal.fade.in {
     top:7%;
@@ -665,8 +666,7 @@ div.loader {
     height:5%;
 }
 .modal-body {
-    padding:0;
-    max-height: none;
+    padding:1.5em;
 }
 
 body.modal-open {
@@ -1864,7 +1864,7 @@ span.loading-gif {
     color:rgba(0,0,0,.6);
 }
 .faceted-results .pagination:first-child ul {
-    margin-top: -5em;
+    margin-top: -3em;
     float:right;
 }
 .faceted-center-column {
@@ -2322,6 +2322,7 @@ div#datasets-popup-result {
 .new-experiment.modal .modal-body {
     padding:10px 25px;
     min-height: 400px;
+    max-height: none;
 }
 .new-experiment.modal .modal-body h4 {
     font-family: "OpenSansRegular";
@@ -2566,10 +2567,6 @@ form.plone-to-bootstrap-form .widget label span {
 .affix.affixed-map {
     margin:0!important;
     top:15px;
-}
-
-.affix-top.affixed-map {
-    top:300px;
 }
 .affix-bottom.affixed-map {
     bottom:50px;
