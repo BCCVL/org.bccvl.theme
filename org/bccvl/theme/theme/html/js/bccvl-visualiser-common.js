@@ -427,8 +427,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         panel.innerHTML += '<h5>Occurence</h5>';
                     } else if (standard_range == 'discrete') {
                         panel.innerHTML += '<h5>Mask</h5>';
+                    } else if (standard_range == 'suitability') {
+                        panel.innerHTML += '<h5>Suitability</h5>';
+                    } else {
+                        panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';                        
                     }
-                    panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';
                 }
 
                 for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
