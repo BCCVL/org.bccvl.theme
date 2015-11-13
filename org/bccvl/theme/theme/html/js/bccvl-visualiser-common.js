@@ -50,7 +50,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard range
                     var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
-                } else if (standard_range == 'probability' && maxVal <= 1000) {
+                } else if (standard_range == 'suitability' && maxVal <= 1000) {
                     
                     if (maxVal <= 1){
                         var rangeArr = [0,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.55,0.60,0.65,0.70,0.75,0.80,0.85,0.90,0.95,1.00];
@@ -110,9 +110,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard colours
                     var colorArr = ['#13a7ce','#0eb9d2','#54c5d2','#87d2d1','#b1e0d3','#c6e6d3','#d8eed4','#ecf6d5','#fefed7','#fef5bd','#fdea9b','#fcd78b','#fdc775','#f8a95b','#f58e41','#f3713e'];
-                } else if (standard_range == 'probability' && startpoint == null) {
-                    // apply standard probability coloring only if we don't have a color range set up
-                    // FIXME: generate default color range for probabilities automatically as we do below if possible
+                } else if (standard_range == 'suitability' && startpoint == null) {
+                    // apply standard suitability coloring only if we don't have a color range set up
+                    // FIXME: generate default color range for suitabilities automatically as we do below if possible
                     // basic prob spectrum
                     var colorArr = ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
                 } else if (standard_range == 'categorical') {
@@ -217,18 +217,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             getStandardRange: function(layerdef) {
                 var standard_range;
-                if ($.inArray(layerdef.legend, ['rainfall', 'temperature', 'probability']) > -1) {
+                if ($.inArray(layerdef.legend, ['rainfall', 'temperature', 'suitability']) > -1) {
                     return layerdef.legend;
                 } else if(typeof layerdef.legend === 'undefined') {
                     if (layerdef.datatype == 'continuous') {
                         // undefined layer, and continiuous
-                        standard_range = 'probability';
+                        standard_range = 'suitability';
                     } else {
                         // TODO: categorical data types should not use range, but represent each value as single color
                         standard_range = 'soil';
                     }
                 } else {
-                    // it's nothing of the above but a defined layer ... so don't use probability
+                    // it's nothing of the above but a defined layer ... so don't use suitability
                     standard_range = 'default';
                 } 
                 return standard_range;
@@ -339,8 +339,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 }  else {
                     var standard_range = bccvl_common.getStandardRange(layerdef);
-                    if (standard_range == 'probability'){
-                        // probability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
+                    if (standard_range == 'suitability'){
+                        // suitability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
                         var max = bccvl_common.roundUpToNearestMagnitude(layerdef.max);
                         styleObj = {
                             minVal: 0, // TODO: mahal has negative min value?
@@ -390,7 +390,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var steps = layerdef.style.steps;
                 // determine step size for legend
                 var legend_step_size = 5;
-                if (standard_range == 'probability') {
+                if (standard_range == 'suitability') {
                     legend_step_size = 2;
                 } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical', 'binary']) > -1) {
                     legend_step_size = 1;
