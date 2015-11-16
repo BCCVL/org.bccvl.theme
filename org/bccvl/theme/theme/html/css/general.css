@@ -667,6 +667,7 @@ div.loader {
 }
 .modal-body {
     padding:1.5em;
+    max-height: none;
 }
 
 body.modal-open {
