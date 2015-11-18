@@ -52,6 +52,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             }
         });
 
+        // Render a base map if theres a map of it's class
+        $('body').find('.pre-render-map').each(function(){
+            if ($(this).hasClass('constraints-map')){
+                $.when( vizcommon.renderBase($(this).attr('id')) ).then(function(map){
+                    //console.log(map);
+                    //map.un('singleclick', vizcommon.getPointInfo);
+                    vizcommon.constraintTools(map);
+                });
+            } else {
+                vizcommon.renderBase($(this).attr('id'));
+            } 
+        });
+
         // setup popover handling for bccvl-preview-pane
         $('.bccvl-preview-pane').popover({
             'selector': '[data-toggle="popover"]',

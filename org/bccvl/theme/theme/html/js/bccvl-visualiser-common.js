@@ -769,6 +769,219 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 );
                 map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 
+            },
+
+            
+            renderBase: function(id){
+                var base = $.Deferred()
+                // RENDER EMPTY MAP
+                // CREATE BASE MAP
+                // -------------------------------------------------------------------------------------------
+
+                // Australia Bounds
+                var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
+                var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
+                var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
+
+                // NEED TO DESTROY ANY EXISTING MAP
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
+
+                // destroy any html from images or text files
+                container.html('');
+
+                // destroy any floating progress bars (should be destroyed above, this is a fallback)
+                $('#progress-'+id).remove();
+
+                visLayers = new ol.layer.Group({
+                    title: 'Layers',
+                    layers: []
+                });
+
+                map = new ol.Map({
+                    target: id,
+                    layers: [
+                        new ol.layer.Group({
+                            'title': 'Base maps',
+                            layers: [
+                                new ol.layer.Tile({
+                                    title: 'OSM',
+                                    type: 'base',
+                                    preload: 10,
+                                    visible: true,
+                                    source: new ol.source.OSM()
+                                })
+                                // new ol.layer.Tile({
+                                //     title: 'Satellite',
+                                //     type: 'base',
+                                //     visible: false,
+                                //     source: new ol.source.MapQuest({layer: 'sat'})
+                                // })
+                            ]
+                        }),
+                        visLayers
+                    ],
+                    view: new ol.View({
+                      center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
+                      zoom: 4
+                    })
+                });
+
+                map.getView().fit(australia_bounds, map.getSize());
+
+                var fullScreenToggle = new ol.control.FullScreen();
+                map.addControl(fullScreenToggle);
+                // remove crappy unicode icon so fontawesome can get in
+                $('#'+id+' button.ol-full-screen-false').html('');
+
+                // set to active
+                container.addClass('active');
+                // add progress bar container
+                container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
+
+                // hook up exportAsImage
+                $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
+                $('#'+id+' a.export-map').click(
+                    { map: map,
+                      mapTitle: null
+                    }, bccvl_common.exportAsImage);
+
+                base.resolve(map);
+
+                return base;
+            },
+
+            drawConstraints: function(el, map){
+                var visLayer;
+
+                var source;
+
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Group) {
+                        // iterate over layers within group
+                        lgr.getLayers().forEach(function(lyr) {
+
+                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                                // only look at visible non base layers
+
+                                visLayer = lyr;
+                            }
+                        });
+                    } else if (lgr instanceof ol.layer.Vector) {
+                        // get vector source if one already exists
+                        source = lgr.getSource();
+                    } 
+                });
+                // use vector source if it already exists
+                if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
+                    // clear existing features
+                    source.removeFeature(source.getFeatureById('geo_constraints'));
+                    //source.clear();
+                } else {
+                    // else define a completely new source
+                    source = new ol.source.Vector({wrapX: false});
+                }   
+
+                // define a new feature
+                var vector = new ol.layer.Vector({
+                  source: source,
+                  style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                      color: 'rgba(0, 160, 228, 0.1)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                      color: 'rgba(0, 160, 228, 0.9)',
+                      width: 2
+                    })
+                  })
+                });
+
+                map.addLayer(vector);
+
+                var draw;
+
+                var geometryFunction = function(coordinates, geometry) {
+                    if (!geometry) {
+                      geometry = new ol.geom.Polygon(null);
+                    }
+                    var start = coordinates[0];
+                    var end = coordinates[1];
+                    geometry.setCoordinates([
+                      [start, [start[0], end[1]], end, [end[0], start[1]], start]
+                    ]);
+                    return geometry;
+                };
+
+                draw = new ol.interaction.Draw({
+                  source: source,
+                  type: /** @type {ol.geom.GeometryType} */ 'LineString',
+                  geometryFunction: geometryFunction,
+                  maxPoints: 2
+                });
+
+                draw.on('drawstart', function(evt){
+                    // this isn't being used... yet
+                });
+
+                draw.on('drawend', function(evt){
+
+                    evt.feature.setId('geo_constraints');
+
+                    //encode to geoJson and write to textarea input
+                    var feature = evt.feature,
+                        format = new ol.format.GeoJSON(),
+                        data;
+
+                    data = format.writeFeature(feature);
+                    el.parent().find('textarea').val(''+data+'');
+                    // interaction finished, free up mouse events
+                    map.removeInteraction(draw);
+                    //map.on('singleclick', bccvl_common.getPointInfo)
+                });
+
+
+                map.addInteraction(draw);
+            },
+
+            removeConstraints: function(el, map){
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Group) {
+                        // iterate over layers within group
+                        lgr.getLayers().forEach(function(lyr) {
+
+                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                                // only look at visible non base layers
+
+                                visLayer = lyr;
+                            }
+                        });
+                    } else if (lgr instanceof ol.layer.Vector) {
+                        // get vector source if one already exists
+                        source = lgr.getSource();
+                    } 
+                });
+                // use vector source if it already exists
+                if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
+                    // clear existing features
+                    source.removeFeature(source.getFeatureById('geo_constraints'));
+                } 
+                el.parent().find('textarea').val('');
+            },
+
+            constraintTools: function(map){
+                console.log('constraing click events set up');
+                $('.tab-pane:visible').on('click', '.draw-polygon',  function(){
+                    //map.un('singleclick', bccvl_common.getPointInfo);
+                    bccvl_common.drawConstraints($(this), map);
+                });
+                $('.tab-pane:visible').on('click', '.remove-polygon',  function(){
+                    bccvl_common.removeConstraints($(this), map);
+                });
             }
 
         };

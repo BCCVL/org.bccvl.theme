@@ -7,7 +7,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var select;
 
         $(function () {
-            renderBase($('.bccvl-preview-pane:visible').attr('id'));
+            vizcommon.renderBase($('.bccvl-preview-pane:visible').attr('id'));
             createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
             appendBlendControl($('.bccvl-preview-pane:visible').attr('id'));
             // tie up blend control
@@ -60,10 +60,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
         var map;
         var visLayers;
-        // Australia Bounds
-        var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
-        var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
-        var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
 
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
@@ -263,81 +259,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         '</select>'+
                     '</div>');
         }
-
-
-        // RENDER EMPTY MAP
-        function renderBase(id){
-            // CREATE BASE MAP
-            // -------------------------------------------------------------------------------------------
-
-            // NEED TO DESTROY ANY EXISTING MAP
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
-
-            // destroy any html from images or text files
-            container.html('');
-
-            // destroy any floating progress bars (should be destroyed above, this is a fallback)
-            $('#progress-'+id).remove();
-
-            visLayers = new ol.layer.Group({
-                title: 'Layers',
-                layers: []
-            });
-
-            map = new ol.Map({
-                target: id,
-                layers: [
-                    new ol.layer.Group({
-                        'title': 'Base maps',
-                        layers: [
-                            new ol.layer.Tile({
-                                title: 'OSM',
-                                type: 'base',
-                                preload: 10,
-                                visible: true,
-                                source: new ol.source.OSM()
-                            })
-                            // new ol.layer.Tile({
-                            //     title: 'Satellite',
-                            //     type: 'base',
-                            //     visible: false,
-                            //     source: new ol.source.MapQuest({layer: 'sat'})
-                            // })
-                        ]
-                    }),
-                    visLayers
-                ],
-                view: new ol.View({
-                  center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4
-                })
-            });
-
-            map.getView().fit(australia_bounds, map.getSize());
-
-            var fullScreenToggle = new ol.control.FullScreen();
-            map.addControl(fullScreenToggle);
-            // remove crappy unicode icon so fontawesome can get in
-            $('#'+id+' button.ol-full-screen-false').html('');
-
-            // set to active
-            container.addClass('active');
-            // add progress bar container
-            container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
-
-            // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-            $('#'+id+' a.export-map').click(
-                { map: map,
-                  mapTitle: 'Overlay'
-                }, vizcommon.exportAsImage);
-        }
-
-
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------

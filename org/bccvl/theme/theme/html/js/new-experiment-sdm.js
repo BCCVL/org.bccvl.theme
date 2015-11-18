@@ -134,6 +134,8 @@ define(
                     $('#form-widgets-species_number_pseudo_absence_points').val(rows);
             });
 
+            $('#form-widgets-modelling_region').attr('readonly', true);
+
             // -- layer selection -----------------------------------
             // FIXME: this is probably all dead code below
 

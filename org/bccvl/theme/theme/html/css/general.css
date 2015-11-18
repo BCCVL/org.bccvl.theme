@@ -2286,6 +2286,22 @@ table.error td {
 .selectize-input.items.not-full.has-options.has-items, .selectize-control.multi .selectize-input {
     padding:5px;
 }
+.constraints {
+    margin-top:1em;
+}
+.constraints .btn.pull-right {
+    margin-left:.5em;
+    margin-bottom:.5em;
+}
+.tab-pane .control-group textarea {
+    font-size:1em;
+    line-height: 1.2em;
+    min-height:180px;
+    background:rgba(0,0,0,.1);
+}
+label[disabled] {
+    opacity:.6;
+}
 
 /* custom single select remove button */
 .selectize-control.plugin-remove_button [data-value] .remove-single, .selectize-control.multi .selectize-input [data-value] .remove-single {
