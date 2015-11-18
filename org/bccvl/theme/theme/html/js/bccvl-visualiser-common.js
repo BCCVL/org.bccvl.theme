@@ -255,7 +255,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var styleObj;
                 var style = $.Deferred()
 
-                console.log(layerdef);
+                //console.log(layerdef);
                 
                 if (layerdef.legend == 'categories') {
 
