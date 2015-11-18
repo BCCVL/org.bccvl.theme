@@ -849,7 +849,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                       mapTitle: null
                     }, bccvl_common.exportAsImage);
 
-                base.resolve(map);
+                base.resolve(map, visLayers);
 
                 return base;
             },

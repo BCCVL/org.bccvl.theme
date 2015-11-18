@@ -5,23 +5,42 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         var select;
+        /* Global configuration */
+        // ----------------------------------------------------------------
+        // visualiser base url
+        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
+        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
+        // dataset manager getMetadata endpoint url
+        var dmurl = portal_url + '/dm/getMetadata';
+
+        var map;
+        var visLayers;
+
+        var mapId = $('.bccvl-preview-pane:visible').attr('id');
 
         $(function () {
-            vizcommon.renderBase($('.bccvl-preview-pane:visible').attr('id'));
-            createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
-            appendBlendControl($('.bccvl-preview-pane:visible').attr('id'));
+          $.when( vizcommon.renderBase(mapId) ).then(function(base, layergroup){
+            
+            map = base;
+            visLayers = layergroup;
+
+            createLegendBox(mapId);
+            appendBlendControl(mapId);
             // tie up blend control
             select = document.getElementById('blend-mode');
             // Rerender map when blend mode changes
             select.addEventListener('change', function() {
                 map.render();
             });
+
+          });
+
         });
 
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             var viztype = $(this).data('viz-type') || 'auto';
-            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'));
+            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), mapId, viztype, $(this).data('layername'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
@@ -49,17 +68,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
-
-        /* Global configuration */
-        // ----------------------------------------------------------------
-        // visualiser base url
-        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
-        // dataset manager getMetadata endpoint url
-        var dmurl = portal_url + '/dm/getMetadata';
-
-        var map;
-        var visLayers;
 
         var layer_vocab = {};
         $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {

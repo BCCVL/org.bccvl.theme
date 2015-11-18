@@ -56,8 +56,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         $('body').find('.pre-render-map').each(function(){
             if ($(this).hasClass('constraints-map')){
                 $.when( vizcommon.renderBase($(this).attr('id')) ).then(function(map){
-                    //console.log(map);
-                    //map.un('singleclick', vizcommon.getPointInfo);
                     vizcommon.constraintTools(map);
                 });
             } else {
