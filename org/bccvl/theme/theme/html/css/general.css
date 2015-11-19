@@ -2293,7 +2293,7 @@ table.error td {
     margin-left:.5em;
     margin-bottom:.5em;
 }
-.tab-pane .control-group textarea {
+.tab-pane#tab-geo .control-group textarea {
     font-size:1em;
     line-height: 1.2em;
     min-height:180px;

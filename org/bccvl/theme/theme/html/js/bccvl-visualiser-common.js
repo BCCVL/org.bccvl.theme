@@ -947,6 +947,82 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 map.addInteraction(draw);
             },
 
+            inputConstraints: function(el, map, coords){
+                var visLayer;
+
+                var source;
+
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Group) {
+                        // iterate over layers within group
+                        lgr.getLayers().forEach(function(lyr) {
+
+                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                                // only look at visible non base layers
+
+                                visLayer = lyr;
+                            }
+                        });
+                    } else if (lgr instanceof ol.layer.Vector) {
+                        // get vector source if one already exists
+                        source = lgr.getSource();
+                    } 
+                });
+                
+                // use vector source if it already exists
+                if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
+                    // clear existing features
+
+                    // remove feature returns as if it works but only seems to clear the id, not remove the feature
+                    // source.removeFeature(source.getFeatureById('geo_constraints'));
+
+                    source.clear();
+                } else {
+                    // else define a completely new source
+                    source = new ol.source.Vector({wrapX: false});
+                }  
+
+                var mapProj = map.getView().getProjection().getCode();
+
+                var bounds = [
+                   [coords.west, coords.north], 
+                   [coords.east, coords.north], 
+                   [coords.east, coords.south], 
+                   [coords.west, coords.south],
+                   [coords.west, coords.north]
+                ]
+
+                var polygon = new ol.geom.Polygon([bounds]);
+
+                polygon.transform('EPSG:4326', 'EPSG:3857');
+
+                var feature = new ol.Feature({
+                    geometry: polygon
+                    //id: 'geo_constraints'
+                });
+
+                feature.setId('geo_constraints');
+
+                source.addFeature(feature);
+
+                var vectorLayer = new ol.layer.Vector({
+                  source: source,
+                  style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                      color: 'rgba(0, 160, 228, 0.1)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                      color: 'rgba(0, 160, 228, 0.9)',
+                      width: 2
+                    })
+                  })
+                }); 
+
+                map.addLayer(vectorLayer);
+
+            },
+
             removeConstraints: function(el, map){
                 map.getLayers().forEach(function(lgr) {
                     // assumes that we have only groups on map check that
@@ -978,6 +1054,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $('.tab-pane:visible').on('click', '.draw-polygon',  function(){
                     //map.un('singleclick', bccvl_common.getPointInfo);
                     bccvl_common.drawConstraints($(this), map);
+                });
+                $('.tab-pane:visible').on('click', '.input-polygon',  function(){
+                    var coords = {};
+                    coords.north = parseInt($(this).parent().find('#north-bounds').val());
+                    coords.east = parseInt($(this).parent().find('#east-bounds').val());
+                    coords.south = parseInt($(this).parent().find('#south-bounds').val());
+                    coords.west = parseInt($(this).parent().find('#west-bounds').val());
+
+                    bccvl_common.inputConstraints($(this), map, coords);
                 });
                 $('.tab-pane:visible').on('click', '.remove-polygon',  function(){
                     bccvl_common.removeConstraints($(this), map);
