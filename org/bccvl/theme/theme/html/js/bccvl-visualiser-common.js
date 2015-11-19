@@ -947,7 +947,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 map.addInteraction(draw);
             },
 
-            inputConstraints: function(el, map, coords){
+            inputConstraints: function(el, map, coords, fieldId){
                 var visLayer;
 
                 var source;
@@ -973,11 +973,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // use vector source if it already exists
                 if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
                     // clear existing features
+                    source.removeFeature(source.getFeatureById('geo_constraints'));
 
-                    // remove feature returns as if it works but only seems to clear the id, not remove the feature
-                    // source.removeFeature(source.getFeatureById('geo_constraints'));
-
-                    source.clear();
                 } else {
                     // else define a completely new source
                     source = new ol.source.Vector({wrapX: false});
@@ -1021,6 +1018,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 map.addLayer(vectorLayer);
 
+                var format = new ol.format.GeoJSON(),
+                    data = format.writeFeature(feature);
+
+                $('#'+fieldId).val(''+data+'');
+
             },
 
             removeConstraints: function(el, map){
@@ -1050,7 +1052,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             },
 
             constraintTools: function(map){
-                console.log('constraing click events set up');
                 $('.tab-pane:visible').on('click', '.draw-polygon',  function(){
                     //map.un('singleclick', bccvl_common.getPointInfo);
                     bccvl_common.drawConstraints($(this), map);
@@ -1062,7 +1063,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     coords.south = parseInt($(this).parent().find('#south-bounds').val());
                     coords.west = parseInt($(this).parent().find('#west-bounds').val());
 
-                    bccvl_common.inputConstraints($(this), map, coords);
+                    bccvl_common.inputConstraints($(this), map, coords, $(this).data('field-id'));
                 });
                 $('.tab-pane:visible').on('click', '.remove-polygon',  function(){
                     bccvl_common.removeConstraints($(this), map);
