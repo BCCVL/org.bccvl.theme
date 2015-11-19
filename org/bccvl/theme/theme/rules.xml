@@ -80,7 +80,9 @@
                       @@plone-upgrade/
                       @@oauth-controlpanel/
                       @@jqueryui-controlpanel/
-                      @@jqueryui-plugins-controlpanel/" />
+                      @@jqueryui-plugins-controlpanel/
+                      @@swift-settings/"
+             />
 
      <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
