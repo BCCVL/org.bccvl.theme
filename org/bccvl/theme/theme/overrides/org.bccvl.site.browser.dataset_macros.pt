@@ -88,13 +88,13 @@
                 
                 <a href="#" class="bccvl-modal-occurrence-viz"
                    tal:content="item_title_or_id"
-                   tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                   tal:attributes="data-viz-id python: dlinfo['url'];
                                    data-uuid item/UID;
                                    data-title item_title_or_id;"
                    tal:condition="python: item_obj.format == 'text/csv'">Title</a>
                 <a href="#" class="bccvl-modal-auto-viz"
                    tal:content="item_title_or_id"
-                   tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                   tal:attributes="data-viz-id python: dlinfo['url'];
                                    data-uuid item/UID;
                                    data-title item_title_or_id;"
                    tal:condition="python: item_obj.format != 'text/csv'">Title</a>
@@ -130,14 +130,14 @@
                 Preview</a>-->
             <div class="span4">
               <a href="#" class="bccvl-modal-occurrence-viz btn btn-primary btn-mini"
-                 tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                 tal:attributes="data-viz-id python: dlinfo['url'];
                                  data-uuid item/UID;
                                  data-title item_title_or_id;"
                  tal:condition="python: item_obj.format == 'text/csv'">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-mini"
-                 tal:attributes="data-viz-id python: dlinfo['alturl'][0];
+                 tal:attributes="data-viz-id python: dlinfo['url'];
                                  data-uuid item/UID;
                                  data-title item_title_or_id;"
                  tal:condition="python: item_obj.format != 'text/csv'">
