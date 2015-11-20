@@ -143,7 +143,7 @@
                          tal:define="item_obj item/getObject;
                                      dlinfo item_obj/dataset_tools/get_download_info;
                                      downloadurl dlinfo/url;
-                                     visurl python: dlinfo['alturl'][0]">
+                                     visurl python: dlinfo['url']">
                       
                       <a class="fine btn btn-info"
                          title="Download this file"

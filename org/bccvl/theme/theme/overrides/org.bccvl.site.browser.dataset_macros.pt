@@ -116,18 +116,6 @@
           
           <tal:block tal:define="dlinfo item_obj/dataset_tools/get_download_info"
                      tal:condition="complete">
-            <!--<a href="#" class="bccvl-list-occurrence-viz btn btn-primary btn-small"
-                tal:attributes="data-viz-id python: dlinfo['alturl'][0];
-                data-uuid item/UID"
-                tal:condition="python: item_obj.format == 'text/csv'">
-                <i class="icon-eye-open icon-link icon-white" title="preview"></i>
-                Preview</a>
-                <a href="#" class="bccvl-list-auto-viz btn btn-primary btn-small"
-                tal:attributes="data-viz-id python: dlinfo['alturl'][0];
-                data-uuid item/UID"
-                tal:condition="python: item_obj.format != 'text/csv'">
-                <i class="icon-eye-open icon-link icon-white" title="preview"></i>
-                Preview</a>-->
             <div class="span4">
               <a href="#" class="bccvl-modal-occurrence-viz btn btn-primary btn-mini"
                  tal:attributes="data-viz-id python: dlinfo['url'];
