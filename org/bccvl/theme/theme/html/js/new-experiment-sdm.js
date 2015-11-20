@@ -182,7 +182,7 @@ define(
                 html += '/></td>';
                 html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
                 // viz button to viz the layer (and whatever other actions eventually go here)
-                html += '<td class="bccvl-table-controls"><a href="javascript:void(0);" class="fine bccvl-auto-viz" data-viz-id="'+zipFile+'" data-viz-layer="'+fileName+'"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
+                html += '<td class="bccvl-table-controls"><a href="javascript:void(0);" class="fine bccvl-auto-viz" href="'+zipFile+'" data-viz-layer="'+fileName+'"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
                 html += '</tr>';
                 var $html = $(html);
 

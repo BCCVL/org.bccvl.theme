@@ -47,16 +47,14 @@
                 </div>
                 <div class="bccvl-table-controls span3"
                      tal:define="dlinfo python:dstools.get_download_info(item_obj);
-                                 downloadurl dlinfo/url;
-                                 visurl python: dlinfo['url']">
+                                 downloadurl dlinfo/url;">
                   <a class="bccvl-compare-viz btn btn-primary"
                      title="Preview this file"
-                     data-viz-id="#downloadurl"
+                     href="#downloadurl"
                      data-viz-type="occurrence"
                      data-mimetype="application/octet-tream"
                      data-uuid="a uuid"
-                     tal:attributes="data-viz-id visurl;
-                                     data-file-url downloadurl;
+                     tal:attributes="href downloadurl;
                                      data-uuid item/UID;
                                      data-mimetype dlinfo/contenttype;
                                      data-layername item/Title;
@@ -130,9 +128,7 @@
                     </div>
                     <div class="bccvl-table-controls span3"
                          tal:define="dlinfo python: dstools.get_download_info(item_obj);
-                                     downloadurl dlinfo/url;
-                                     visurl python: dlinfo['url']">
-
+                                     downloadurl dlinfo/url;">
                       <a class="fine btn btn-info"
                          title="Download this file"
                          href="#downloadurl"
@@ -142,12 +138,11 @@
                       </a>
                       <a class="bccvl-compare-viz btn btn-primary"
                          title="Preview this file"
-                         data-viz-id="#downloadurl"
+                         href="#downloadurl"
                          data-viz-type="auto"
                          data-mimetype="application/octet-tream"
                          data-uuid="a uuid"
-                         tal:attributes="data-viz-id visurl;
-                                         data-file-url downloadurl;
+                         tal:attributes="href downloadurl;
                                          data-uuid item/UID;
                                          data-mimetype dlinfo/contenttype;
                                          data-layername item/Title;

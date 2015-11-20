@@ -37,10 +37,10 @@
         <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
         <a class="fine bccvl-auto-viz btn btn-primary pull-right"
            title="preview this dataset"
-           data-viz-id="vizurl"
+           href="#downloadurl"
            data-uuid="uuid"
            data-mimetype="application/octet-stream"
-           tal:attributes="data-viz-id python:item['dlinfo']['url'];
+           tal:attributes="href item/dlinfo/url;
                            data-uuid item/id;
                            data-mimetype item/dlinfo/contenttype;">
           <i class="icon-eye-open icon-link icon-white"></i>
