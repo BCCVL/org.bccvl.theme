@@ -39,7 +39,7 @@
          data-mimetype="application/octet-stream"
          data-file-url="download url"
          tal:attributes="class string:fine btn pull-right btn-primary ${view/vizclass};
-                         data-viz-id python:dlinfo['alturl'][0];
+                         data-viz-id python:dlinfo['url'];
                          data-file-url dlinfo/url;
                          data-uuid item/UID;
                          data-mimetype itemmd/mimetype;">

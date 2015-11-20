@@ -48,7 +48,7 @@
                 <div class="bccvl-table-controls span3"
                      tal:define="dlinfo python:dstools.get_download_info(item_obj);
                                  downloadurl dlinfo/url;
-                                 visurl python: dlinfo['alturl'][0]">
+                                 visurl python: dlinfo['url']">
                   <a class="bccvl-compare-viz btn btn-primary"
                      title="Preview this file"
                      data-viz-id="#downloadurl"
@@ -131,7 +131,7 @@
                     <div class="bccvl-table-controls span3"
                          tal:define="dlinfo python: dstools.get_download_info(item_obj);
                                      downloadurl dlinfo/url;
-                                     visurl python: dlinfo['alturl'][0]">
+                                     visurl python: dlinfo['url']">
 
                       <a class="fine btn btn-info"
                          title="Download this file"
