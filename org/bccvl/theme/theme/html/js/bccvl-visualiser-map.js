@@ -56,7 +56,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         $('body').find('.pre-render-map').each(function(){
             if ($(this).hasClass('constraints-map')){
                 $.when( vizcommon.renderBase($(this).attr('id')) ).then(function(map){
+                    // set up constraint tools
                     vizcommon.constraintTools(map);
+
+                    // bind widgets to the constraint map
+                    $('.bccvl-new-sdm').on('widgetChanged', function(e){
+                        var geometries = [];
+                        $('body').find('input[data-bbox]').each(function(){
+                           geometries.push($(this).data('bbox'));
+                        });
+                        vizcommon.drawNewBBox(map, geometries);
+                    });
+
                 });
             } else {
                 vizcommon.renderBase($(this).attr('id'));

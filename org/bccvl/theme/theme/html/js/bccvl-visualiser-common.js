@@ -855,25 +855,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             },
 
             drawConstraints: function(el, map){
-                var visLayer;
 
                 var source;
 
                 map.getLayers().forEach(function(lgr) {
-                    // assumes that we have only groups on map check that
-                    if (lgr instanceof ol.layer.Group) {
-                        // iterate over layers within group
-                        lgr.getLayers().forEach(function(lyr) {
-
-                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
-                                // only look at visible non base layers
-
-                                visLayer = lyr;
-                            }
-                        });
-                    } else if (lgr instanceof ol.layer.Vector) {
+                    if (lgr instanceof ol.layer.Vector) {
                         // get vector source if one already exists
-                        source = lgr.getSource();
+                         if (lgr.get('id') == 'constraints_layer'){
+                            source = lgr.getSource();
+                        }
                     } 
                 });
                 // use vector source if it already exists
@@ -889,6 +879,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // define a new feature
                 var vector = new ol.layer.Vector({
                   source: source,
+                  id: 'constraints_layer',
                   style: new ol.style.Style({
                     fill: new ol.style.Fill({
                       color: 'rgba(0, 160, 228, 0.1)'
@@ -948,36 +939,33 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             },
 
             inputConstraints: function(el, map, coords, fieldId){
-                var visLayer;
 
                 var source;
 
                 map.getLayers().forEach(function(lgr) {
                     // assumes that we have only groups on map check that
-                    if (lgr instanceof ol.layer.Group) {
-                        // iterate over layers within group
-                        lgr.getLayers().forEach(function(lyr) {
-
-                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
-                                // only look at visible non base layers
-
-                                visLayer = lyr;
-                            }
-                        });
-                    } else if (lgr instanceof ol.layer.Vector) {
+                    if (lgr instanceof ol.layer.Vector) {
                         // get vector source if one already exists
-                        source = lgr.getSource();
+                        if (lgr.get('id') == 'constraints_layer'){
+                            source = lgr.getSource();
+                            if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
+                                source.removeFeature(source.getFeatureById('geo_constraints'));
+                            }
+                        }
                     } 
                 });
                 
                 // use vector source if it already exists
-                if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
-                    // clear existing features
-                    source.removeFeature(source.getFeatureById('geo_constraints'));
-
-                } else {
+                if (typeof source == "undefined") {
                     // else define a completely new source
                     source = new ol.source.Vector({wrapX: false});
+
+                    var vectorLayer = new ol.layer.Vector({
+                      source: source,
+                      id: 'constraints_layer'
+                    }); 
+
+                    map.addLayer(vectorLayer);
                 }  
 
                 var mapProj = map.getView().getProjection().getCode();
@@ -992,20 +980,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 var polygon = new ol.geom.Polygon([bounds]);
 
-                polygon.transform('EPSG:4326', 'EPSG:3857');
+                polygon.transform('EPSG:4326', mapProj);
 
                 var feature = new ol.Feature({
                     geometry: polygon
-                    //id: 'geo_constraints'
                 });
 
                 feature.setId('geo_constraints');
 
-                source.addFeature(feature);
-
-                var vectorLayer = new ol.layer.Vector({
-                  source: source,
-                  style: new ol.style.Style({
+                var style = new ol.style.Style({
                     fill: new ol.style.Fill({
                       color: 'rgba(0, 160, 228, 0.1)'
                     }),
@@ -1013,10 +996,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                       color: 'rgba(0, 160, 228, 0.9)',
                       width: 2
                     })
-                  })
-                }); 
+                });
 
-                map.addLayer(vectorLayer);
+                feature.setStyle(style);
+
+                source.addFeature(feature);
+
+                // is this recreating the vector layer each time?
 
                 var format = new ol.format.GeoJSON(),
                     data = format.writeFeature(feature);
@@ -1027,27 +1013,20 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             removeConstraints: function(el, map){
                 map.getLayers().forEach(function(lgr) {
-                    // assumes that we have only groups on map check that
-                    if (lgr instanceof ol.layer.Group) {
-                        // iterate over layers within group
-                        lgr.getLayers().forEach(function(lyr) {
+                    if (lgr instanceof ol.layer.Vector) {
+                        if (lgr.get('id') == 'constraints_layer'){
+                            // get vector source if one already exists
+                            source = lgr.getSource();
 
-                            if (lyr.get('type') != 'base' && lyr.getVisible()) {
-                                // only look at visible non base layers
-
-                                visLayer = lyr;
-                            }
-                        });
-                    } else if (lgr instanceof ol.layer.Vector) {
-                        // get vector source if one already exists
-                        source = lgr.getSource();
+                            // use vector source if it already exists
+                            if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
+                                // clear existing features
+                                source.removeFeature(source.getFeatureById('geo_constraints'));
+                            } 
+                        }
                     } 
                 });
-                // use vector source if it already exists
-                if (source instanceof ol.source.Vector && source.getFeatureById('geo_constraints')) {
-                    // clear existing features
-                    source.removeFeature(source.getFeatureById('geo_constraints'));
-                } 
+                
                 el.parent().find('textarea').val('');
             },
 
@@ -1068,6 +1047,80 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $('.tab-pane:visible').on('click', '.remove-polygon',  function(){
                     bccvl_common.removeConstraints($(this), map);
                 });
+            },
+
+            drawNewBBox: function(map, geometries) {
+
+                var source;
+
+                map.getLayers().forEach(function(lgr) {
+                    // assumes that we have only groups on map check that
+                    if (lgr instanceof ol.layer.Vector) {
+                        console.log('count this');
+                        // get vector source if one already exists
+                        
+                        // keep the source and remove the layer if it already exists
+                        if (lgr.get('id') == 'dataset_bounds') {
+                            source = lgr.getSource();
+                            source.clear();
+                        }
+                    } 
+                });
+                // use vector source if it already exists
+                if (typeof source == "undefined" ) {
+                    console.log(source);
+                    // else define a completely new source
+                    source = new ol.source.Vector({wrapX: false});
+
+                }  
+
+                var vectorLayer = new ol.layer.Vector({
+                  source: source,
+                  id: 'dataset_bounds'
+                }); 
+
+                map.addLayer(vectorLayer);
+
+                var features;
+
+                geometries.forEach(function(geometry){
+
+                    var mapProj = map.getView().getProjection().getCode();
+
+                    var bounds = [
+                       [geometry.left, geometry.top], 
+                       [geometry.right, geometry.top], 
+                       [geometry.right, geometry.bottom], 
+                       [geometry.left, geometry.bottom],
+                       [geometry.left, geometry.top]
+                    ]
+
+                    var polygon = new ol.geom.Polygon([bounds]);
+
+                    polygon.transform('EPSG:4326', mapProj);
+
+                    var feature = new ol.Feature({
+                        geometry: polygon
+                    });
+
+                    var style = new ol.style.Style({
+                        fill: new ol.style.Fill({
+                          color: 'rgba(228, 160, 0, 0.2)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                          color: 'rgba(228, 160, 0, 0.9)',
+                          width: 2
+                        })
+                    });
+                    feature.setStyle(style);
+
+                    source.addFeature(feature);
+
+                    /**/
+                });
+
+                
+
             }
 
         };

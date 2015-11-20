@@ -4,11 +4,11 @@
 //
 define(
     ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
-     'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
+     'js/bccvl-visualiser-map', 'js/bccvl-visualiser-common', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
      'js/bccvl-widgets', 'jquery-xmlrpc'],
-    function($, preview_layout, viz, vizmap, wiztabs, search, formvalidator,
+    function($, preview_layout, viz, vizmap, vizcommon, wiztabs, search, formvalidator,
              popover, bbq, faceted, bccvl) {
 
         // ==============================================================
@@ -126,10 +126,10 @@ define(
                 $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
-
             // -- set psuedo absence to match an occurence selection.
 
             $('.bccvl-new-sdm').on('widgetChanged', function(e, rows){
+
                 if (rows) 
                     $('#form-widgets-species_number_pseudo_absence_points').val(rows);
             });
