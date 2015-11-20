@@ -11,7 +11,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
             var viztype = $(this).data('viz-type') || 'auto';
-            renderNewMap($(this).data('uuid'),$(this).data('viz-id'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'), $(this).data('algorithm'));
+            renderNewMap($(this).data('uuid'),$(this).data('href'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'), $(this).data('algorithm'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });

@@ -40,7 +40,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             var viztype = $(this).data('viz-type') || 'auto';
-            addNewLayer($(this).data('uuid'),$(this).data('viz-id'), mapId, viztype, $(this).data('layername'));
+            addNewLayer($(this).data('uuid'),$(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });

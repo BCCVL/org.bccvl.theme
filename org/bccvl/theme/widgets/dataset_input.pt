@@ -36,13 +36,11 @@
       <a class="btn pull-right removeitem" href="#"><i class="icon-remove"></i></a>
       <a class="fine bccvl-occurrence-viz btn pull-right btn-primary"
          title="preview this dataset"
-         data-viz-id="vizurl"
+         href="#downloadurl"
          data-uuid="uuid"
          data-mimetype="application/octet-stream"
-         data-file-url="download url"
          tal:attributes="class string:fine btn pull-right btn-primary ${view/vizclass};
-                         data-viz-id python:dlinfo['url'];
-                         data-file-url dlinfo/url;
+                         href dlinfo/url;
                          data-uuid item/UID;
                          data-mimetype itemmd/mimetype;">
         <i class="icon-eye-open icon-link icon-white"></i>

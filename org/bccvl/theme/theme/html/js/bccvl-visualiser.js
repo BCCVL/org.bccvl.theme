@@ -21,7 +21,7 @@ define(     ['jquery'],
 
                 // This goes looking for viz buttons, and attaches a click event.
                 // The buttons (or links or whatever) should look like this:
-                // <button class=".bccvl-occurrence-viz" data-viz-id="http://<baseurl>/bccvl/<some path to the file>">
+                // <button class=".bccvl-occurrence-viz" href="http://<baseurl>/bccvl/<some path to the file>">
 
                 // here's a list of all the viz-able things.   We'll loop through this below.
                 // each item looks like this:
@@ -83,9 +83,9 @@ define(     ['jquery'],
                         // This loop would just be calling that function on the
                         // invokers in the initial page.
 
-                        // each invoker should have a data-viz-id.. bail if it doesn't
+                        // each invoker should have a href.. bail if it doesn't
                         var $invoker = $(invoker);
-                        var id = $invoker.attr('data-viz-id');
+                        var id = $invoker.attr('href');
                         if (!id) return;
 
                         if (vizType.resolveId) {

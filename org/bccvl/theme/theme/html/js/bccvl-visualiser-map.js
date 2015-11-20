@@ -10,18 +10,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         // new list layout events
         $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
             event.preventDefault();
-            render.mapRender($(this).data('uuid'), $(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'occurence');
+            render.mapRender($(this).data('uuid'), $(this).data('href'), 'map-'+$(this).data('uuid')+'', 'occurence');
         });
 
         $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
             event.preventDefault();
-            render.mapRender($(this).data('uuid'),$(this).data('viz-id'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
+            render.mapRender($(this).data('uuid'),$(this).data('href'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
         });
 
         // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
-            render.mapRender($(this).data('uuid'), $(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+            render.mapRender($(this).data('uuid'), $(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
         });
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
@@ -32,23 +32,23 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // hack in old style visualiser here
                 var iframe = $(this).closest('.tab-pane, body').find('iframe.bccvl-viz');
                 if (iframe.length != 0) {
-                    var vizid = $(this).data('viz-id');
+                    var vizid = $(this).data('href');
                     require(['js/bccvl-visualiser'], function(bccvl_visualiser){
                         bccvl_visualiser.visualise(vizid, iframe);
                     });
                 } else {
-                    render.mapRender($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
+                    render.mapRender($(this).data('uuid'),$(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
                 }
             } else if (type == 'image/png'){
-                renderPng($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+                renderPng($(this).data('uuid'), $(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/csv'){
-                renderCSV($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+                renderCSV($(this).data('uuid'), $(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
-                renderCode($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+                renderCode($(this).data('uuid'), $(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'application/pdf') {
-                renderPDF($(this).data('uuid'), $(this).data('file-url'), $('.bccvl-preview-pane:visible').attr('id'));
+                renderPDF($(this).data('uuid'), $(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'application/zip') {
-                render.mapRender($(this).data('uuid'),$(this).data('viz-id'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
+                render.mapRender($(this).data('uuid'),$(this).data('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
             }
         });
 
