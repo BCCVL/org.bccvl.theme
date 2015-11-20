@@ -2,12 +2,12 @@
 // main JS for the new species trait model experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser',
+    ['jquery', 'js/bccvl-preview-layout',
      'js/bccvl-wizard-tabs', 'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'js/bccvl-form-popover', 'js/bccvl-visualiser-map',
      'bbq', 'faceted_view.js', 'js/bccvl-widgets'],
-    function($, preview_layout, viz, wiztabs, search, formvalidator,
+    function($, preview_layout, wiztabs, search, formvalidator,
              tablesorter, arrayutils, popover, vizmap, bbq,
              faceted, bccvl) {
 
@@ -17,9 +17,6 @@ define(
 
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
-
-            // init the visualiser
-            viz.init();
 
             // hook up the wizard buttons
             wiztabs.init();

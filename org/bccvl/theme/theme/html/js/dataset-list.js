@@ -2,12 +2,12 @@
 // main JS for the dataset list page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser', 'js/bccvl-visualiser-map',
+    ['jquery', 'js/bccvl-visualiser-map',
      'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
      'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize',
      'bbq', 'faceted_view.js', 'js/selectize-remove-single'],
 
-    function($, viz, vizmap, editmodal, modals) {
+    function($, vizmap, editmodal, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -19,7 +19,6 @@ define(
         // ==============================================================
         $(function() {
 
-            viz.init();
             editmodal.init();
 
 
@@ -226,8 +225,6 @@ define(
                 url: completeURL,
                 success: function(rowHTML) {
                     $tr.replaceWith($(rowHTML));
-                    // Wire up visualiser and sharing
-                    viz.init();
                 }
             });
         };
