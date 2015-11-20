@@ -1049,16 +1049,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 });
             },
 
-            drawNewBBox: function(map, geometries) {
+            drawBBoxes: function(map, geometries) {
 
                 var source;
 
                 map.getLayers().forEach(function(lgr) {
                     // assumes that we have only groups on map check that
                     if (lgr instanceof ol.layer.Vector) {
-                        console.log('count this');
-                        // get vector source if one already exists
-                        
+
                         // keep the source and remove the layer if it already exists
                         if (lgr.get('id') == 'dataset_bounds') {
                             source = lgr.getSource();
@@ -1068,7 +1066,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 });
                 // use vector source if it already exists
                 if (typeof source == "undefined" ) {
-                    console.log(source);
                     // else define a completely new source
                     source = new ol.source.Vector({wrapX: false});
 
@@ -1082,6 +1079,33 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 map.addLayer(vectorLayer);
 
                 var features;
+
+                var fillColor = function(type){
+                    var color;
+                    if (type == 'DataGenreSpeciesOccurrence') {
+                        color = 'rgba(155, 89, 182, 0.2)'
+                    } else if (type == 'DataGenreSpeciesAbsence') {
+                        color = 'rgba(230, 126, 34, 0.2)'
+                    } else if (type == 'DataGenreCC') {
+                        color = 'rgba(46, 204, 113, 0.2)'
+                    } else {
+                        color = 'rgba(228, 160, 0, 0.2)'
+                    }   
+                    return color;
+                }
+                var strokeColor = function(type){
+                    var color;
+                    if (type == 'DataGenreSpeciesOccurrence') {
+                        color = 'rgba(155, 89, 182, 0.9)'
+                    } else if (type == 'DataGenreSpeciesAbsence') {
+                        color = 'rgba(230, 126, 34, 0.9)'
+                    } else if (type == 'DataGenreCC') {
+                        color = 'rgba(46, 204, 113, 0.9)'
+                    } else {
+                        color = 'rgba(228, 160, 0, 0.9)'
+                    }   
+                    return color;
+                }
 
                 geometries.forEach(function(geometry){
 
@@ -1105,10 +1129,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     var style = new ol.style.Style({
                         fill: new ol.style.Fill({
-                          color: 'rgba(228, 160, 0, 0.2)'
+                          color: fillColor(geometry.type)
                         }),
                         stroke: new ol.style.Stroke({
-                          color: 'rgba(228, 160, 0, 0.9)',
+                          color: strokeColor(geometry.type),
                           width: 2
                         })
                     });

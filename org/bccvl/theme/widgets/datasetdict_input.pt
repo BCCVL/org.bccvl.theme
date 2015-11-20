@@ -36,6 +36,7 @@
                tal:attributes="value item/id;
                                data-bbox dstool/bbox|nothing;
                                name string:${view/name}.item.${index};
+                               data-type itemmd/genre;
                                "/>
         <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
         <a class="fine bccvl-auto-viz btn btn-primary pull-right"

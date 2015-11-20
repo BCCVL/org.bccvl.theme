@@ -63,9 +63,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     $('.bccvl-new-sdm').on('widgetChanged', function(e){
                         var geometries = [];
                         $('body').find('input[data-bbox]').each(function(){
-                           geometries.push($(this).data('bbox'));
+                            var geom = $(this).data('bbox');
+                            geom.type = $(this).data('type');
+                            geometries.push(geom);
                         });
-                        vizcommon.drawNewBBox(map, geometries);
+                        vizcommon.drawBBoxes(map, geometries);
                     });
 
                 });
