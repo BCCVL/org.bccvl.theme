@@ -539,9 +539,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     // wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype, style);
                 //}
                 if (data.mimetype == "application/zip") {
-                    wms_params['DATA_URL'] = data.vizurl + ('filename' in layerdef ? '#' + layerdef.filename : '');  // The data_url the user specified
+                    wms_params['DATA_URL'] = data.file + ('filename' in layerdef ? '#' + layerdef.filename : '');  // The data_url the user specified
                 } else {
-                    wms_params['DATA_URL'] = data.vizurl;  // The data_url the user specified
+                    wms_params['DATA_URL'] = data.file;  // The data_url the user specified
                 }
 
                 var progress = new progress_bar.Progress_bar(document.getElementById('progress-'+id));
