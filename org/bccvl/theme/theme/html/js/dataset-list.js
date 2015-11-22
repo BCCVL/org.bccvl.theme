@@ -185,9 +185,9 @@ define(
 
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
-                        vizmap.mapRender(el.data('uuid'), el.data('href'), 'modal-map-'+el.data('uuid')+'', 'occurence');
+                        vizmap.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'occurence');
                     } else {
-                        vizmap.mapRender(el.data('uuid'),el.data('href'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
+                        vizmap.mapRender(el.data('uuid'),el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
                     }
                 }); 
 
