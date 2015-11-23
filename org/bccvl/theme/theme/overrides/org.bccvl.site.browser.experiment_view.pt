@@ -155,7 +155,7 @@
                          href="#downloadurl"
                          data-mimetype="application/octet-stream"
                          data-uuid="a uuid"
-                         tal:attributes="href downloadurl
+                         tal:attributes="href downloadurl;
                                          data-uuid item/UID;
                                          data-mimetype item/Format"
                          tal:condition="python: item.Format() not
