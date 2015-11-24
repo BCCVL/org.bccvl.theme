@@ -24,7 +24,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             map = base;
             visLayers = layergroup;
 
-            createLegendBox(mapId);
+            vizcommon.createLegendBox(mapId);
             appendBlendControl(mapId);
             // tie up blend control
             select = document.getElementById('blend-mode');
@@ -187,49 +187,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         };
 
 
-        function createLegendBox(id){
-
-            // Build legend obj
-            var legend = document.createElement('div');
-            legend.className = 'olLegend ol-unselectable ol-control shown';
-
-            var button = document.createElement('a');
-            button.className = 'ol-button open';
-            button.innerHTML = '<i class="fa fa-list-ul"></i>';
-            
-            var panel = document.createElement('div');
-            panel.innerHTML = '<h5>Layers</h5>';
-            panel.className = 'panel shown';
-
-            button.onclick = function(e) {
-                e.stopPropagation();
-                if ( panel.className.indexOf('shown') > 0){
-                    button.className = 'ol-button'
-                    panel.className = 'panel';
-                    legend.className = 'olLegend ol-unselectable ol-control';
-                } else {
-                    button.className = 'ol-button open'
-                    panel.className = 'panel shown';
-                    legend.className = 'olLegend ol-unselectable ol-control shown';
-                }
-            };
-
-            legend.appendChild(button);
-            legend.appendChild(panel);
-
-            $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
-                
-        }
-
-        function addLayerLegend(layername, color, uuid, colorName){  
-            if (color == 'occurrence'){
-                $('.olLegend .panel').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
-            } else {
-                var colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-                $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
-            }
-        }
-
         function appendBlendControl(id){
             $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append('<div class="ol-unselectable ol-control ol-blend-control">'+
                         '<label for="blend-mode" class="mode">Mode: </label>'+
@@ -296,7 +253,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         };
 
                         var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
-                        addLayerLegend(layerName, 'occurrence', uuid);
+                        vizcommon.addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
                         // add layer to layer group
@@ -354,7 +311,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                 var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', null);
                                 
                                 // handle our own legend
-                                addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+                                vizcommon.addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
 
                                 // move used color into used array
                                 usedStyleArray.push(styleArray[0]);

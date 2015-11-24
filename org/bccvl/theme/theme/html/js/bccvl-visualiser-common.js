@@ -854,6 +854,59 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 return base;
             },
 
+
+            createLegendBox: function(id, title){
+
+                // Build legend obj
+                var legend = document.createElement('div');
+                legend.className = 'olLegend ol-unselectable ol-control shown';
+
+                var button = document.createElement('a');
+                button.className = 'ol-button open';
+                button.innerHTML = '<i class="fa fa-list-ul"></i>';
+                
+                var panel = document.createElement('div');
+                if (typeof title !== "undefined"){
+                    panel.innerHTML = '<h5>'+title+'</h5>';
+                } else {
+                    panel.innerHTML = '<h5>Layers</h5>';
+                }
+                panel.className = 'panel shown';
+
+                button.onclick = function(e) {
+                    e.stopPropagation();
+                    if ( panel.className.indexOf('shown') > 0){
+                        button.className = 'ol-button'
+                        panel.className = 'panel';
+                        legend.className = 'olLegend ol-unselectable ol-control';
+                    } else {
+                        button.className = 'ol-button open'
+                        panel.className = 'panel shown';
+                        legend.className = 'olLegend ol-unselectable ol-control shown';
+                    }
+                };
+
+                legend.appendChild(button);
+                legend.appendChild(panel);
+
+                $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
+                    
+            },
+
+
+            addLayerLegend: function(layername, color, uuid, colorName){  
+                if (color == 'occurrence'){
+                    $('.olLegend .panel').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
+                } else {
+                    if (typeof color == 'string'){
+                        $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+color+'"></i>&nbsp;'+layername+'</label>');
+                    } else {
+                        var colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
+                        $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
+                    }
+                }
+            },
+
             drawConstraints: function(el, map){
 
                 var source;
@@ -1051,6 +1104,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             drawBBoxes: function(map, geometries) {
 
+                // recreate legend
+                $('#'+map.getTarget()).find('.olLegend').remove();
+                bccvl_common.createLegendBox(map.getTarget(), 'Selected Datasets');
+
                 var source;
 
                 map.getLayers().forEach(function(lgr) {
@@ -1089,25 +1146,27 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     } else if (type == 'DataGenreCC') {
                         color = 'rgba(46, 204, 113, 0.2)'
                     } else {
-                        color = 'rgba(228, 160, 0, 0.2)'
+                        color = 'rgba(61, 158, 209, 0.2)'
                     }   
                     return color;
                 }
                 var strokeColor = function(type){
                     var color;
                     if (type == 'DataGenreSpeciesOccurrence') {
-                        color = 'rgba(155, 89, 182, 0.9)'
+                        color = 'rgba(155, 89, 182, 0.9)' //#9b59b6
                     } else if (type == 'DataGenreSpeciesAbsence') {
-                        color = 'rgba(230, 126, 34, 0.9)'
+                        color = 'rgba(230, 126, 34, 0.9)' //#e67e22
                     } else if (type == 'DataGenreCC') {
-                        color = 'rgba(46, 204, 113, 0.9)'
+                        color = 'rgba(46, 204, 113, 0.9)' //#2ecc71
                     } else {
-                        color = 'rgba(228, 160, 0, 0.9)'
+                        color = 'rgba(61, 158, 209, 0.9)' //#3d9ed1
                     }   
                     return color;
                 }
 
                 geometries.forEach(function(geometry){
+
+                    bccvl_common.addLayerLegend(geometry.type, strokeColor(geometry.type), null, null);
 
                     var mapProj = map.getView().getProjection().getCode();
 

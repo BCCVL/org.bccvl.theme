@@ -31,7 +31,8 @@
       <div class="selecteditem"
            tal:define="index repeat/item/index;
                        itemob item/brain/getObject;
-                       dstool itemob/@@dataset_tools;">
+                       dstool itemob/@@dataset_tools;
+                       itemmd dstool/metadata;">
         <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item" data-bbox=""
                tal:attributes="value item/id;
                                data-bbox dstool/bbox|nothing;
