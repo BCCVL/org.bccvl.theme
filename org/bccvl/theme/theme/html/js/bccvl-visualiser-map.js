@@ -304,6 +304,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             $.ajax({
                 url: url, 
                 dataType: 'text',
+                crossDomain: true,
                 success: function( data ) {
                     container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>').addClass('active');
                     Prism.highlightAll();
@@ -322,19 +323,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 container.empty();
                 map = null;
             }
-            $.ajax({
-                url: url, 
-                dataType: 'text',
-                success: function( data ) {
-                    container.height('auto').html('').CSVToTable(url,
-                        {
-                            tableClass: 'table table-striped'
-                        });
-                },
-                error: function() {
-                    container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
-                }
-            });
+            container.height('auto').html('').CSVToTable(
+                url,
+                {
+                    tableClass: 'table table-striped',
+                    error: function() {
+                        container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
+                    }
+                });
         }
 
         function renderPDF(uuid, url, id){
