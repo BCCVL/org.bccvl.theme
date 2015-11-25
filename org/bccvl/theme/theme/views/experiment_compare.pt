@@ -132,8 +132,7 @@
                       <a class="fine btn btn-info"
                          title="Download this file"
                          href="#downloadurl"
-                         tal:attributes="href downloadurl;
-                                         data-friendlyname string:a_experimentoutput_${item_obj/file/filename}">
+                         tal:attributes="href downloadurl;">
                         <i class="icon-download-alt icon-link icon-white"></i>
                       </a>
                       <a class="bccvl-compare-viz btn btn-primary"
