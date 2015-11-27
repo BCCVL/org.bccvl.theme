@@ -215,6 +215,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             layerdef = {
                                 'title': data.description || 'Data Overlay'
                             }
+
+                            if (data.genre == "DataGenreSpeciesOccurrence") {
+                                layerdef.type = 'occurrence';
+                                layerdef.style = {
+                                    color: '#e74c3c'
+                                }
+                            } else if (data.genre == "DataGenreSpeciesAbsence") {
+                                layerdef.type = 'absence';
+                                layerdef.style = {
+                                    color: '#3498db'
+                                }
+                            } 
+
                             // there is no legend for csv data
                             var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                             // add layer to layers group

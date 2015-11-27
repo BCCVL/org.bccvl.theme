@@ -243,17 +243,25 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             
             //generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
             generateSLD: function(layerdef) {
-                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-                var colorArr = bccvl_common.generateColorArr(layerdef.style);
-                var steps = layerdef.style.steps;
-                
-                var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
+                if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
 
-                for (var i = 0; i < (steps+1); i++) {
-                    xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
+                    var xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
+                    xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>6</Size>';
+                    xmlStylesheet += '</Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
+
+                } else {
+                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
+                    var colorArr = bccvl_common.generateColorArr(layerdef.style);
+                    var steps = layerdef.style.steps;
+                    
+                    var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
+
+                    for (var i = 0; i < (steps+1); i++) {
+                        xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
+                    }
+                    
+                    xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                 }
-                
-                xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
 
                 return xmlStylesheet;
             },
@@ -261,8 +269,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             createStyleObj: function(layerdef, uuid) {
                 var styleObj;
                 var style = $.Deferred()
-
-                //console.log(layerdef);
                 
                 if (layerdef.legend == 'categories') {
 
@@ -389,7 +395,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             createLegend: function(layerdef) {
                 // create a legend for given values
-                console.log(layerdef);
+                
                 // Get hex color range and map values
                 var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
                 var colorArr = bccvl_common.generateColorArr(layerdef.style);
@@ -431,7 +437,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
                 } else {
                     if (standard_range == 'binary') {
-                        panel.innerHTML += '<h5>Occurence</h5>';
+                        panel.innerHTML += '<h5>Occurrence</h5>';
                     } else if (standard_range == 'discrete') {
                         panel.innerHTML += '<h5>Mask</h5>';
                     } else if (standard_range == 'suitability') {
@@ -511,7 +517,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // create new OL layer from layer metadata data object
             // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
-                console.log(layerdef);
+
                 var uuid = data.id;
                 var title = layerdef.title;
                 var visible = layerdef.isVisible;
@@ -1221,7 +1227,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             layerForExtent: function(dmurl, map, uuid, type) {
 
-                // need to style absence/occurence
+                // need to style absence/occurrence
                 // need to push to legend.
 
                 var id = map.getTarget();
@@ -1231,18 +1237,23 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var title;
 
                 if (type == 'DataGenreSpeciesOccurrence') {
-                    color = 'rgba(255, 0, 0, 0.9)';
-                    title = 'Occurences';
-                    layerdef.style = {
-                        standard_range: "occurence",
-                        steps: 1
+                    title = 'Occurrence';
+                    layerdef = {
+                        title: 'occurrence',
+                        type: 'occurrence',
+                        style: {
+                            color:'#e74c3c'
+                        }
                     }
                 } else if (type == 'DataGenreSpeciesAbsence') {
-                    color = 'rgba(0, 0, 255, 0.9)';
+                    
                     title = 'Absences';
-                    layerdef.style = {
-                        standard_range: "absence",
-                        steps: 1
+                    layerdef = {
+                        title: 'absence',
+                        type: 'absence',
+                        style: {
+                            color:'#3498db'
+                        }
                     }
                 }   
 
@@ -1251,15 +1262,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     params: {'datasetid': uuid},
                     success: function(data, status, jqXHR) {
                         data = data[0];
-                        var layerdef;
                         if ($.isEmptyObject(data.layers)) {
-                            layerdef = {
-                                'title': data.description || 'Data Overlay'
-                            }
+                            layerdef.title = data.description || 'Data Overlay'
                             newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms-occurrence');
                         }
 
-                        bccvl_common.addLayerLegend(title, color, null, null);
+                        bccvl_common.addLayerLegend(title, layerdef.style.color, null, null);
                         
                         map.addLayer(newLayer);
                     }
