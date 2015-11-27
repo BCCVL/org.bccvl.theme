@@ -62,6 +62,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         var rangeArr = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000];
                     }
                     
+                } else if (standard_range == 'occurrence' ||  standard_range == 'absence') {
+                    var rangeArr = [1];
                 } else if (standard_range == 'categorical') { 
                     var rangeArr = [];
                     for (var i = 1; i < (steps+1); i++) {
@@ -120,6 +122,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     for (var i = 0; i < (steps+1); i++) {
                         colorArr.push('#'+bccvl_common.genColor(i+1));
                     }
+                } else if (standard_range == 'occurrence') {
+                    var colorArr = ['#e74c3c'];
+                } else if (standard_range == 'absence') {
+                    var colorArr = ['#3498db'];
+                
                 } else {
                     // utility functions to convert RGB values into hex values for SLD styling.
                     function byte2Hex(n) {
@@ -382,7 +389,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             createLegend: function(layerdef) {
                 // create a legend for given values
-                
+                console.log(layerdef);
                 // Get hex color range and map values
                 var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
                 var colorArr = bccvl_common.generateColorArr(layerdef.style);
@@ -504,7 +511,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // create new OL layer from layer metadata data object
             // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
-
+                console.log(layerdef);
                 var uuid = data.id;
                 var title = layerdef.title;
                 var visible = layerdef.isVisible;
@@ -521,10 +528,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     "transparent": "true",
                     "format": "image/png"
                 };
-                if (type != "wms-occurrence") {
-                    wms_params['SLD_BODY'] = bccvl_common.generateSLD(layerdef);
+                //if (type != "wms-occurrence") {
+                wms_params['SLD_BODY'] = bccvl_common.generateSLD(layerdef);
                     // wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype, style);
-                }
+                //}
                 if (data.mimetype == "application/zip") {
                     wms_params['DATA_URL'] = data.vizurl + ('filename' in layerdef ? '#' + layerdef.filename : '');  // The data_url the user specified
                 } else {
@@ -567,7 +574,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     }
                 });
                 
-                if (type != "wms-occurrence") {
+                //if (type != "wms-occurrence") {
 
                     var setCompositeMode = function(evt){
                         evt.context.globalCompositeOperation = 'darken';
@@ -577,7 +584,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     newLayer.on('postcompose', function(){
                         newLayer.un('precompose', setCompositeMode);
                     });
-                }
+                //}
 
                 return newLayer;
             },
@@ -1104,10 +1111,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             drawBBoxes: function(map, geometries) {
 
-                // recreate legend
-                $('#'+map.getTarget()).find('.olLegend').remove();
-                bccvl_common.createLegendBox(map.getTarget(), 'Selected Datasets');
-
                 var source;
 
                 map.getLayers().forEach(function(lgr) {
@@ -1137,13 +1140,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 var features;
 
-                var fillColor = function(type){
+                /*var fillColor = function(type){
                     var color;
                     if (type == 'DataGenreSpeciesOccurrence') {
                         color = 'rgba(155, 89, 182, 0.2)'
                     } else if (type == 'DataGenreSpeciesAbsence') {
                         color = 'rgba(230, 126, 34, 0.2)'
-                    } else if (type == 'DataGenreCC') {
+                    } else if (type == 'DataGenreCC' || type == 'DataGenreE') {
                         color = 'rgba(46, 204, 113, 0.2)'
                     } else {
                         color = 'rgba(61, 158, 209, 0.2)'
@@ -1156,19 +1159,31 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         color = 'rgba(155, 89, 182, 0.9)' //#9b59b6
                     } else if (type == 'DataGenreSpeciesAbsence') {
                         color = 'rgba(230, 126, 34, 0.9)' //#e67e22
-                    } else if (type == 'DataGenreCC') {
+                    } else if (type == 'DataGenreCC' || type == 'DataGenreE') {
                         color = 'rgba(46, 204, 113, 0.9)' //#2ecc71
                     } else {
                         color = 'rgba(61, 158, 209, 0.9)' //#3d9ed1
                     }   
                     return color;
-                }
+                }*/
 
                 geometries.forEach(function(geometry){
 
-                    bccvl_common.addLayerLegend(geometry.type, strokeColor(geometry.type), null, null);
+                    bccvl_common.addLayerLegend('Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
 
                     var mapProj = map.getView().getProjection().getCode();
+
+                    // sanity check for worldclim
+                    var max4326 = ol.proj.get('EPSG:4326').getExtent();
+
+                    if (geometry.top >= max4326[3])
+                        geometry.top = max4326[3];
+                    if (geometry.right >= max4326[2])
+                        geometry.right = max4326[2];
+                    if (geometry.bottom <= max4326[1])
+                        geometry.bottom = max4326[1];
+                    if (geometry.left <= max4326[0])
+                        geometry.left = max4326[0];
 
                     var bounds = [
                        [geometry.left, geometry.top], 
@@ -1188,10 +1203,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     var style = new ol.style.Style({
                         fill: new ol.style.Fill({
-                          color: fillColor(geometry.type)
+                          color: 'rgba(46, 204, 113, 0.2)'
                         }),
                         stroke: new ol.style.Stroke({
-                          color: strokeColor(geometry.type),
+                          color: 'rgba(46, 204, 113, 0.9)',
                           width: 2
                         })
                     });
@@ -1202,8 +1217,55 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     /**/
                 });
 
-                
+            },
 
+            layerForExtent: function(dmurl, map, uuid, type) {
+
+                // need to style absence/occurence
+                // need to push to legend.
+
+                var id = map.getTarget();
+                var layerdef = {};
+                var newLayer;
+                var color;
+                var title;
+
+                if (type == 'DataGenreSpeciesOccurrence') {
+                    color = 'rgba(255, 0, 0, 0.9)';
+                    title = 'Occurences';
+                    layerdef.style = {
+                        standard_range: "occurence",
+                        steps: 1
+                    }
+                } else if (type == 'DataGenreSpeciesAbsence') {
+                    color = 'rgba(0, 0, 255, 0.9)';
+                    title = 'Absences';
+                    layerdef.style = {
+                        standard_range: "absence",
+                        steps: 1
+                    }
+                }   
+
+                $.xmlrpc({
+                    url: dmurl,
+                    params: {'datasetid': uuid},
+                    success: function(data, status, jqXHR) {
+                        data = data[0];
+                        var layerdef;
+                        if ($.isEmptyObject(data.layers)) {
+                            layerdef = {
+                                'title': data.description || 'Data Overlay'
+                            }
+                            newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms-occurrence');
+                        }
+
+                        bccvl_common.addLayerLegend(title, color, null, null);
+                        
+                        map.addLayer(newLayer);
+                    }
+                });
+                
+                
             }
 
         };
