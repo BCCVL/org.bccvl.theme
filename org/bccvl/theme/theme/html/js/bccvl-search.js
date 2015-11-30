@@ -164,7 +164,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             pageSize = pageSize || 10;
                             var splitItems = selectedItem.split(/<\/?i>/);
                             var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
-                            var searchString = splitItems[1];
+                            var searchString = splitItems[1].replace(/\(|\)/g, '');
                             var filter = 'rank:species+OR+rank:subspecies';
                             if (rankSupplied == 'genus') {
                                 filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)&fq=occurrenceCount:[1+TO+*]';
@@ -182,16 +182,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                 var included = [];
                                 var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {                                   
-                                    // Skip if data is already included, or there is no occurrence count
-                                    if (item.occCount == undefined || item.occCount <= 0 || $.inArray(item.guid, included) != -1)
-                                    {
+                                    // Skip if there is no occurrence count
+                                    if (item.occCount == undefined || item.occCount <= 0) {
                                         return true;
                                     }
 
-                                    if (item.guid && item.guid.length > 0) {
-
-                                        included.push(item.guid);
-                                    }
                                     // build the proper data object
                                     result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                                     result.title = item.name;
@@ -215,10 +210,16 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                             wrongSpecies = true;
                                         }
                                     });
-                                    if (wrongSpecies) {
+                                    // Skip if wrong species or it is already included
+                                    if (wrongSpecies || $.inArray(item.guid, included) != -1) {
                                         // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
                                         return true;
                                     }
+
+                                    if (item.guid && item.guid.length > 0) {
+
+                                        included.push(item.guid);
+                                    } 
 
                                     if (item.rank) {
                                         result.description += ' (' + item.rank + ')';

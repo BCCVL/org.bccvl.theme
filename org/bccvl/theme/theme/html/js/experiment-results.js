@@ -72,7 +72,7 @@ define(
         });
 
         // CUSTOM AFFIX, BOOTSTRAP 2.3.2 IS BORKED.
-        if (window.innerWidth > 767){
+        if (window.innerWidth > 767 && $('.affixed-map').length > 0){
             setupAffix();
         }
         
