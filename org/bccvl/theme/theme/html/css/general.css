@@ -27,14 +27,17 @@ a[disabled] {
     background:#FFF;
 }
 @media (max-width: 760px) {
-.white-bg {
-    margin: 0 -20px;
-    padding: 0 20px;
+    .white-bg {
+        margin: 0 -20px;
+        padding: 0 20px;
+    }
+    
 }
-}
-@media (max-width: 980px) { body {
+@media (max-width: 980px) { 
+    body {
     padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
-}   }
+    }   
+}
 h1,h2,h3,h4,h5,h6 {
     color: #009FE3;
     word-break: normal;
@@ -463,7 +466,7 @@ div.loader {
     width: 32%;
     display: inline-block;
     margin-right: 2%!important;
-    margin-bottom: 4.8em!important;
+    margin-bottom: 5em!important;
     vertical-align: top;
 }
 .bccvl-preview-pane .minimap label {
@@ -1887,7 +1890,18 @@ span.loading-gif {
     margin-bottom: 0;
 }
 .datasets-table-row .btn {
-    margin-bottom:.3em;
+    margin-bottom: .3em;
+    margin-right: 1em;
+    line-height: 1em;
+    padding: .5em .3em;
+    white-space: nowrap;
+    min-width: 60px;
+}
+@media (max-width: 980px) {   
+    .datasets-table-row .btn {
+        white-space: normal;
+        min-width: 0px;
+    }
 }
 .dataset-loading {
     font-size: 7px;
