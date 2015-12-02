@@ -100,6 +100,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             },
 
             generateColorArr: function(styleObj) {
+
                 /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
                 var standard_range = styleObj.standard_range;
                 var startpoint = styleObj.startpoint;
@@ -245,24 +246,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             generateSLD: function(layerdef) {
                 if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
 
-                    var xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
-                    xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>6</Size>';
-                    xmlStylesheet += '</Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
-
+                // colour range for temperature needs to extend indefinitely negatively and positively.
+                if (layerdef.style.standard_range == 'temperature') {
+                    for (var i = 0; i < (colorArr.length-1); i++) {
+                        xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                    }
+                    xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                 } else {
-                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-                    var colorArr = bccvl_common.generateColorArr(layerdef.style);
-                    var steps = layerdef.style.steps;
-                    
-                    var xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
-
-                    for (var i = 0; i < (steps+1); i++) {
+                    for (var i = 0; i < (colorArr.length-1); i++) {
                         xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                     }
-                    
-                    xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
-                }
-
+                }               
+                
+                xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                 return xmlStylesheet;
             },
 
