@@ -1146,33 +1146,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 var features;
 
-                /*var fillColor = function(type){
-                    var color;
-                    if (type == 'DataGenreSpeciesOccurrence') {
-                        color = 'rgba(155, 89, 182, 0.2)'
-                    } else if (type == 'DataGenreSpeciesAbsence') {
-                        color = 'rgba(230, 126, 34, 0.2)'
-                    } else if (type == 'DataGenreCC' || type == 'DataGenreE') {
-                        color = 'rgba(46, 204, 113, 0.2)'
-                    } else {
-                        color = 'rgba(61, 158, 209, 0.2)'
-                    }   
-                    return color;
-                }
-                var strokeColor = function(type){
-                    var color;
-                    if (type == 'DataGenreSpeciesOccurrence') {
-                        color = 'rgba(155, 89, 182, 0.9)' //#9b59b6
-                    } else if (type == 'DataGenreSpeciesAbsence') {
-                        color = 'rgba(230, 126, 34, 0.9)' //#e67e22
-                    } else if (type == 'DataGenreCC' || type == 'DataGenreE') {
-                        color = 'rgba(46, 204, 113, 0.9)' //#2ecc71
-                    } else {
-                        color = 'rgba(61, 158, 209, 0.9)' //#3d9ed1
-                    }   
-                    return color;
-                }*/
-
                 geometries.forEach(function(geometry){
 
                     bccvl_common.addLayerLegend('Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);

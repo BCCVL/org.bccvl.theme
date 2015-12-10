@@ -100,6 +100,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         $('#'+map.getTarget()).find('.olLegend').remove();
                         vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
 
+                        // clear any existing layers.
+                        map.getLayers().forEach(function(lyr) {
+                            if (lyr.get('type') == 'wms-occurrence'){
+                                map.removeLayer(lyr);
+                            }
+                        });
+
                         var geometries = [];
 
                         $('body').find('input[data-bbox]').each(function(){
