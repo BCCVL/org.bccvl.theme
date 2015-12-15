@@ -244,27 +244,35 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             
             //generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
             generateSLD: function(layerdef) {
+                var xmlStylesheet;
                 if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
-
-                // colour range for temperature needs to extend indefinitely negatively and positively.
-                if (layerdef.style.standard_range == 'temperature') {
-                    for (var i = 0; i < (colorArr.length-1); i++) {
-                        xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
-                    }
-                    xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
+                    xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
+                    xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>6</Size>';
+                    xmlStylesheet += '</Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                 } else {
-                    for (var i = 0; i < (colorArr.length-1); i++) {
-                        xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
+                    xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
+                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
+	            var colorArr = bccvl_common.generateColorArr(layerdef.style);
+	            var steps = layerdef.style.steps;                    
+                    // colour range for temperature needs to extend indefinitely negatively and positively.
+                    if (layerdef.style.standard_range == 'temperature') {
+                        for (var i = 0; i < (colorArr.length-1); i++) {
+                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                        }
+                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
+                    } else {
+                        for (var i = 0; i < (colorArr.length-1); i++) {
+                            xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
+                        }
                     }
-                }               
-                
-                xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
+                    xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
+                }
                 return xmlStylesheet;
             },
 
             createStyleObj: function(layerdef, uuid) {
                 var styleObj;
-                var style = $.Deferred()
+                var style = $.Deferred();
                 
                 if (layerdef.legend == 'categories') {
 
@@ -578,12 +586,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 
                 //if (type != "wms-occurrence") {
 
-                    var setCompositeMode = function(evt){
+                    var setCompositeMode = function(evt) {
                         evt.context.globalCompositeOperation = 'darken';
-                    }
+                    };
 
                     newLayer.on('precompose', setCompositeMode);
-                    newLayer.on('postcompose', function(){
+                    newLayer.on('postcompose', function() {
                         newLayer.un('precompose', setCompositeMode);
                     });
                 //}
@@ -770,11 +778,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     return true;
                 },
                     this,
-                    function(layer){
-                        if (layer.get('type') != 'base')
+                    function(layer) {
+                        if (layer.get('type') != 'base') {
                             return true;
+                        }
+                        return false;
                     }
-
                 );
                 map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 
@@ -782,7 +791,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
             
             renderBase: function(id){
-                var base = $.Deferred()
+                var base = $.Deferred();
                 // RENDER EMPTY MAP
                 // CREATE BASE MAP
                 // -------------------------------------------------------------------------------------------
@@ -884,12 +893,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                 button.onclick = function(e) {
                     e.stopPropagation();
-                    if ( panel.className.indexOf('shown') > 0){
-                        button.className = 'ol-button'
+                    if ( panel.className.indexOf('shown') > 0) {
+                        button.className = 'ol-button';
                         panel.className = 'panel';
                         legend.className = 'olLegend ol-unselectable ol-control';
                     } else {
-                        button.className = 'ol-button open'
+                        button.className = 'ol-button open';
                         panel.className = 'panel shown';
                         legend.className = 'olLegend ol-unselectable ol-control shown';
                     }
@@ -1038,7 +1047,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                    [coords.east, coords.south], 
                    [coords.west, coords.south],
                    [coords.west, coords.north]
-                ]
+                ];
 
                 var polygon = new ol.geom.Polygon([bounds]);
 
@@ -1166,7 +1175,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                        [geometry.right, geometry.bottom], 
                        [geometry.left, geometry.bottom],
                        [geometry.left, geometry.top]
-                    ]
+                    ];
 
                     var polygon = new ol.geom.Polygon([bounds]);
 
@@ -1213,7 +1222,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         style: {
                             color:'#e74c3c'
                         }
-                    }
+                    };
                 } else if (type == 'DataGenreSpeciesAbsence') {
                     
                     title = 'Absences';
@@ -1223,7 +1232,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         style: {
                             color:'#3498db'
                         }
-                    }
+                    };
                 }   
 
                 $.xmlrpc({
@@ -1232,7 +1241,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     success: function(data, status, jqXHR) {
                         data = data[0];
                         if ($.isEmptyObject(data.layers)) {
-                            layerdef.title = data.description || 'Data Overlay'
+                            layerdef.title = data.description || 'Data Overlay';
                             newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms-occurrence');
                         }
 
