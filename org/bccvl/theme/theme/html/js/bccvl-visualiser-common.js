@@ -252,8 +252,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 } else {
                     xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
                     var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-	            var colorArr = bccvl_common.generateColorArr(layerdef.style);
-	            var steps = layerdef.style.steps;                    
+	                var colorArr = bccvl_common.generateColorArr(layerdef.style);
+	                var steps = layerdef.style.steps;                    
                     // colour range for temperature needs to extend indefinitely negatively and positively.
                     if (layerdef.style.standard_range == 'temperature') {
                         for (var i = 0; i < (colorArr.length-1); i++) {

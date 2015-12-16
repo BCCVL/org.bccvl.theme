@@ -69,7 +69,7 @@
                                            checked subitem/selected;"/>
                   </td>
                   <td>
-                    <span tal:content="subitem/md/species/scientificName">Species data</span>
+                    <span tal:content="subitem/md/species/scientificName|nothing">Species data</span>
                   </td>
                   <td>
                     <span tal:content="python: dataset_tools.resolution_vocab.getTerm(subitem['md']['resolution']).title">Resolution data</span>
