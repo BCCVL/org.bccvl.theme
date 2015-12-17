@@ -3,12 +3,12 @@
 // main JS for the new sdm experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-preview-layout',
+    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser-common',
      'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
      'js/bccvl-widgets', 'jquery-xmlrpc'],
-    function($, preview_layout, vizmap, wiztabs, search, formvalidator,
+    function($, preview_layout, vizcommon, vizmap, wiztabs, search, formvalidator,
              popover, bbq, faceted, bccvl) {
 
         // ==============================================================
@@ -120,14 +120,58 @@ define(
                     $('#form-widgets-species_number_pseudo_absence_points').val(rows);
             });
 
+            // -- set up region constraints
             $('#form-widgets-modelling_region').attr('readonly', true);
 
+            $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
+                var mapid = $('.constraints-map').attr('id');
 
+                // map.updateSize()
+                if ($('.constraints-map').not(':visible')) {
+                    $('a[href="#tab-geo"]').one('shown', function(evt) {
+                        map.updateSize();
+                    });
                 }
-                        } else {
+                
+                // set up constraint tools
+                vizcommon.constraintTools(map, 'form-widgets-modelling_region');
+
+                // bind widgets to the constraint map
+                $('.bccvl-new-sdm').on('widgetChanged', function(e){
+                        
+                    // recreate legend
+                    $('#'+map.getTarget()).find('.olLegend').remove();
+                    vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
+
+                    // clear any existing layers.
+                    map.getLayers().forEach(function(lyr) {
+                        if (lyr.get('type') == 'wms-occurrence'){
+                            map.removeLayer(lyr);
                         }
+                    });
+
+                    var geometries = [];
+                    // FIXME: the find is too generic (in case we add bboxes everywhere)
+                    $('body').find('input[data-bbox]').each(function(){
+                        var type = $(this).data('type');
+                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
+                            vizmap.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayer) {
+                                vizcommon.addLayerLegend(newLayer.get('title'),
+                                                         newLayer.get('bccvl').layer.style.color, null, null);
+                            });
+                        } else {
+                            var geom = $(this).data('bbox');
+                            geom.type = type;
+                            geometries.push(geom);
+                        }
+                    });
+                    // draw collected geometries
+                    vizcommon.drawBBoxes(map, geometries);
+                        
+                });
 
             });
+
         });
         // ==============================================================
     }

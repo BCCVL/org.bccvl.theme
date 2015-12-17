@@ -77,50 +77,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             });
         });
 
-        // Render a base map if theres a map of it's class
-        $('body').find('.pre-render-map').each(function(){
-            if ($(this).hasClass('constraints-map')){
-                $.when( vizcommon.renderBase($(this).attr('id')) ).then(function(map){
-                    // set up constraint tools
-                    vizcommon.constraintTools(map);
-
-                    // bind widgets to the constraint map
-                    $('.bccvl-new-sdm').on('widgetChanged', function(e){
-                        
-                        // recreate legend
-                        $('#'+map.getTarget()).find('.olLegend').remove();
-                        vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
-
-                        // clear any existing layers.
-                        map.getLayers().forEach(function(lyr) {
-                            if (lyr.get('type') == 'wms-occurrence'){
-                                map.removeLayer(lyr);
-                            }
-                        });
-
-                        var geometries = [];
-
-                        $('body').find('input[data-bbox]').each(function(){
-                            var type = $(this).data('type');
-                            if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
-                                vizcommon.layerForExtent(dmurl, map, $(this).val(), type);
-                            } else {
-                                var geom = $(this).data('bbox');
-                                geom.type = type;
-                                geometries.push(geom);
-                        
-                                vizcommon.drawBBoxes(map, geometries);
-                            }
-                        });
-                        
-                    });
-
-                });
-            } else {
-                vizcommon.renderBase($(this).attr('id'));
-            } 
-        });
-
         var render = {
             // RENDER DATA LAYERS
             // -------------------------------------------------------------------------------------------
