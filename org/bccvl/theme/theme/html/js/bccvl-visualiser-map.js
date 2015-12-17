@@ -56,17 +56,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
         /* Global configuration */
         // ----------------------------------------------------------------
-        // visualiser base url
-        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
 
         var map;
-        // Australia Bounds
-        var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
-        var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
-        var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
                         
         var layer_vocab = {};
         // FIXME: is there a  race condition possible here?
@@ -83,71 +76,42 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             mapRender: function(uuid, url, id, type, visibleLayer) {
                 // CREATE BASE MAP
                 // -------------------------------------------------------------------------------------------
+                // TODO: wrapping in when not necessary?
+                $.when(vizcommon.renderBase(id)).then(function(map, visLayers) {
+                    // map ... the map generated
+                    // visLayers ... an empty layer group
+                    // get base layer group and add Satelite Tile layer
+                    map.getLayers().item(0).getLayers().push(
+                        new ol.layer.Tile({
+                            title: 'Satellite',
+                            type: 'base',
+                            visible: false,
+                            source: new ol.source.MapQuest({layer: 'sat'})
+                        })
+                    );
+                    
+                    // add layerswitcher
+                    var layerSwitcher = new ol.control.LayerSwitcher({
+                        toggleOpen: true,
+                        singleVisibleOverlay: true
+                    });
+                    map.addControl(layerSwitcher);
+                    layerSwitcher.showPanel();
 
-                // NEED TO DESTROY ANY EXISTING MAP
-                var container = $('#'+id);
-                if (container.hasClass('active')) {
-                    container.empty();
-                    map = null;
-                }
-
-                // destroy any floating progress bars (should be destroyed above, this is a fallback)
-                $('#progress-'+id).remove();
-
-                // layer group 
-                var visLayers = new ol.layer.Group({
-                    title: 'Layers',
-                    layers: []
+                    // load and add layers to map
+                    render.addLayersForDataset(uuid, id, visibleLayer, visLayers);
+                    
+                    // add click control for point return
+                    map.on('singleclick', function(evt){
+                        vizcommon.getPointInfo(evt);
+                    });
+                    
+                    map.on('pointermove', function(evt) {
+                        vizcommon.hoverHandler(evt);
+                    });
+                            
                 });
-
-                // map with base layers
-                map = new ol.Map({
-                    target: id,
-                    layers: [
-                        new ol.layer.Group({
-                            'title': 'Base maps',
-                            layers: [
-                                new ol.layer.Tile({
-                                    title: 'OSM',
-                                    type: 'base',
-                                    preload: 1,
-                                    visible: true,
-                                    source: new ol.source.OSM()
-                                }),
-                                new ol.layer.Tile({
-                                    title: 'Satellite',
-                                    type: 'base',
-                                    visible: false,
-                                    source: new ol.source.MapQuest({layer: 'sat'})
-                                })
-                            ]
-                        }),
-                        visLayers
-                    ],
-                    view: new ol.View({
-                      center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
-                      zoom: 4
-                    })
-                });
-
-                // zoom to Australia
-                map.getView().fit(australia_bounds, map.getSize());
-
-                // add layerswitcher
-                var layerSwitcher = new ol.control.LayerSwitcher({
-                    toggleOpen: true,
-                    singleVisibleOverlay: true
-                });
-
-                map.addControl(layerSwitcher);
-
-                // add fullscreen toggle control
-                var fullScreenToggle = new ol.control.FullScreen();
-                map.addControl(fullScreenToggle);
-
-                
-                // remove crappy unicode icon so fontawesome can get in
-                $('#'+id+' button.ol-full-screen-false').html('');
+            },
 
             addLayersForDataset: function(uuid, id, visibleLayer, visLayers) {
                 var dfrd = $.Deferred();
