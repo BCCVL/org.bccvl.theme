@@ -149,151 +149,129 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // remove crappy unicode icon so fontawesome can get in
                 $('#'+id+' button.ol-full-screen-false').html('');
 
-                // fetch layer metadata and build up map layers
-                $.xmlrpc({
+            addLayersForDataset: function(uuid, id, visibleLayer, visLayers) {
+                var dfrd = $.Deferred();
+                var jqxhr = $.xmlrpc({
                     url: dmurl,
-                    params: {'datasetid': uuid},
-                    success: function(data, status, jqXHR) {
-
-                        // xmlrpc returns an array of results
-                        data = data[0];
-                        // define local variables
-                        var layerdef;
+                    params: {'datasetid': uuid}});
+                jqxhr.then(function(data, status, jqXHR) {
+                    // xmlrpc returns an array of results
+                    data = data[0];
+                    // define local variables
+                    var layerdef;
                         
-                        // check for layers metadata, if none exists then the request is returning a data like a csv file
-                        // TODO: alternative check data.mimetype == 'text/csv' or data.genre
-                        //       or use type passed in as parameter
-                        if ($.isEmptyObject(data.layers)) {
-                            // species data  (not a raster)
-                            // TODO: use data.title (needs to be populated)
-                            layerdef = {
-                                'title': data.description || 'Data Overlay'
+                    // check for layers metadata, if none exists then the request is returning a data like a csv file
+                    // TODO: alternative check data.mimetype == 'text/csv' or data.genre
+                    //       or use type passed in as parameter
+                    if ($.isEmptyObject(data.layers)) {
+                        // species data  (not a raster)
+                        // TODO: use data.title (needs to be populated)
+                        layerdef = {
+                            'title': data.title || data.description || 'Data Overlay'
+                        };
+                        
+                        if (data.genre == "DataGenreSpeciesOccurrence") {
+                            layerdef.type = 'occurrence';
+                            layerdef.style = {
+                                color: '#e74c3c'
+                            };
+                        } else if (data.genre == "DataGenreSpeciesAbsence") {
+                            layerdef.type = 'absence';
+                            layerdef.style = {
+                                color: '#3498db'
+                            };
+                        } 
+                        
+                        // there is no legend for csv data
+                        var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
+                        // add layer to layers group
+                        visLayers.getLayers().push(newLayer);
+                    } else {
+                        // raster data
+                        // TODO: data.layer could be standard array, as layerid is in layer object as well
+                        $.each( data.layers, function(layerid, layer){
+                            // get layer definition from vocab
+                            layerdef = layer_vocab[layer.layer];
+                            if (typeof layerdef === 'undefined') {
+                                // We don't have a layerdef so let's create a default fallback
+                                // TODO: this may happen in case of experiment outputs (i.e. probability maps) ... they don't have a layer identifier, but a file name
+                                // FIXME: how do I know if it is a probability map or just some undefined layer?
+                                layerdef = {
+                                    'token': layer.layer,
+                                    'title': layer.layer || layer.filename,
+                                    'unitfull': '',
+                                    'unit': '',
+                                    'type': '',  // unused
+                                    'legend': 'default',
+                                    'tooltip': '',
+                                    'filename': layer.filename
+                                };
+                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                                    layerdef.legend = 'suitability';
+                                    layerdef.unit = ' ';
+                                    layerdef.unitfull = 'Environmental suitability';
+                                    layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
+                                }
+                            } else {
+                                // make a copy of the original object
+                                layerdef = $.extend({}, layerdef);
+                                // for zip files we need the filename associated with the layer
+                                if (layer.filename) {
+                                    layerdef.filename = layer.filename;
+                                }
                             }
-
-                            if (data.genre == "DataGenreSpeciesOccurrence") {
-                                layerdef.type = 'occurrence';
-                                layerdef.style = {
-                                    color: '#e74c3c'
-                                }
-                            } else if (data.genre == "DataGenreSpeciesAbsence") {
-                                layerdef.type = 'absence';
-                                layerdef.style = {
-                                    color: '#3498db'
-                                }
-                            } 
-
-                            // there is no legend for csv data
-                            var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
-                            // add layer to layers group
-                            visLayers.getLayers().push(newLayer);
-                        } else {
-                            // raster data
-                            // TODO: data.layer could be standard array, as layerid is in layer object as well
-                            $.each( data.layers, function(layerid, layer){
-                                // get layer definition from vocab
-                                layerdef = layer_vocab[layer.layer];
-                                if (typeof layerdef === 'undefined') {
-                                    // We don't have a layerdef so let's create a default fallback
-                                    // TODO: this may happen in case of experiment outputs (i.e. probability maps) ... they don't have a layer identifier, but a file name
-                                    // FIXME: how do I know if it is a probability map or just some undefined layer?
-                                    layerdef = {
-                                        'token': layer.layer,
-                                        'title': layer.layer || layer.filename,
-                                        'unitfull': '',
-                                        'unit': '',
-                                        'type': '',  // unused
-                                        'legend': 'default',
-                                        'tooltip': '',
-                                        'filename': layer.filename
+                            // copy datatype into layer def object
+                            layerdef.datatype = layer.datatype;
+                            // add min / max values
+                            // FIXME: this should go away but some datasets return strings instead of numbers
+                            layerdef.min = Number(layer.min);
+                            layerdef.max = Number(layer.max);
+                            // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
+                            // if visibleLayer is undefined set first layer visible
+                            if (typeof visibleLayer == 'undefined') {
+                                visibleLayer = layer.filename;
+                            }
+                            layerdef.isVisible = layer.filename == visibleLayer;
+                            
+                            $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
+                                // object to hold legend and color ranges
+                                layerdef.style = styleObj;
+                                
+                                // create legend for this layer
+                                var legend = vizcommon.createLegend(layerdef);
+                                
+                                // create layer
+                                var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', legend);
+                                // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
+                                // add new layer to layer group
+                                
+                                newLayer.on('change:visible', function(e){
+                                    if (newLayer.getVisible()){
+                                        var bccvl = newLayer.get('bccvl');
+                                        // remove existing legend
+                                        $('.olLegend').remove();
+                                        // add new legend to dom tree
+                                        $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
                                     }
-                                    if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
-                                        layerdef.legend = 'suitability';
-                                        layerdef.unit = ' ';
-                                        layerdef.unitfull = 'Environmental suitability';
-                                        layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
-                                    }
-                                } else {
-                                    // make a copy of the original object
-                                    layerdef = $.extend({}, layerdef)
-                                    // for zip files we need the filename associated with the layer
-                                    if (layer.filename) {
-                                        layerdef.filename = layer.filename;
-                                    }
-                                }
-                                // copy datatype into layer def object
-                                layerdef.datatype = layer.datatype;
-                                // add min / max values
-                                // FIXME: this should go away but some datasets return strings instead of numbers
-                                layerdef.min = Number(layer.min);
-                                layerdef.max = Number(layer.max);
-                                // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
-                                // if visibleLayer is undefined set first layer visible
-                                if (typeof visibleLayer == 'undefined') {
-                                    visibleLayer = layer.filename;
-                                }
-                                layerdef.isVisible = layer.filename == visibleLayer;
-
-                                $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-                                    // object to hold legend and color ranges
-                                    layerdef.style = styleObj;
-
-                                    // create legend for this layer
-                                    var legend = vizcommon.createLegend(layerdef);
-                                    
-                                    // create layer
-                                    var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', legend);
-                                    // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
-                                    // add new layer to layer group
-
-                                    newLayer.on('change:visible', function(e){
-                                        if (newLayer.getVisible()){
-                                            var bccvl = newLayer.get('bccvl');
-                                            // remove existing legend
-                                            $('.olLegend').remove();
-                                            // add new legend to dom tree
-                                            $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
-                                        }
-                                    });
-
-                                    visLayers.getLayers().push(newLayer);
-
-                                    // if layer is visible we have to show legend as well
-                                    if (layerdef.isVisible) {
-                                        $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
-                                    }
-
-                                    layerSwitcher.renderPanel();
-
                                 });
+                                    
+                                visLayers.getLayers().push(newLayer);
+                                
+                                // if layer is visible we have to show legend as well
+                                if (layerdef.isVisible) {
+                                    $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
+                                }
                                 
                             });
-                        }
-
-                        layerSwitcher.showPanel();
-
-                        // hook up exportAsImage
-                        $('#'+id+' .ol-viewport  .ol-overlaycontainer-stopevent').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-                        $('#'+id+' a.export-map').click(
-                            { map: map,
-                              mapTitle: data.title
-                            }, vizcommon.exportAsImage);
-
-                        // add click control for point return
-                        map.on('singleclick', function(evt){
-                            vizcommon.getPointInfo(evt);
+                            
                         });
-
-                        map.on('pointermove', function(evt) {
-                            vizcommon.hoverHandler(evt);
-                        });
-
-                    }});
-                // set to active
-                container.addClass('active');
-                // add progress bar container
-                container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
+                    }
+                    dfrd.resolve(newLayer);
+                    
+                });
+                return dfrd;
             }
-        }
+        };
 
         // RENDER PNG IMAGES
         function renderPng(uuid, url, id){
