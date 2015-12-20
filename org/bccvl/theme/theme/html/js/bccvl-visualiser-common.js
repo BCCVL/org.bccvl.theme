@@ -1049,6 +1049,23 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $('.btn.remove-polygon').on('click', function(){
                     bccvl_common.removeConstraints($(this), map, constraintsLayer, field_id);
                 });
+                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
+                    if (evt.type == 'removefeature') {
+                        $('#north-bounds').val('');
+                        $('#east-bounds').val('');
+                        $('#south-bounds').val('');
+                        $('#west-bounds').val('');
+                    } else {
+                        var geom = evt.feature.getGeometry();
+                        var ext = geom.getExtent();
+                        var mapProj = map.getView().getProjection().getCode();
+                        var transfn = ol.proj.getTransform(mapProj, 'EPSG:4326');
+                        var newext = ol.extent.applyTransform(ext, transfn);
+                        $('#north-bounds').val(newext[3].toFixed(6));
+                        $('#east-bounds').val(newext[2].toFixed(6));
+                        $('#south-bounds').val(newext[1].toFixed(6));
+                        $('#west-bounds').val(newext[0].toFixed(6));
+                    }
                 });
             },
 
