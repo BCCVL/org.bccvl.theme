@@ -160,6 +160,12 @@ define(
                 if ($('.constraints-map').not(':visible')) {
                     $('a[href="#tab-geo"]').one('shown', function(evt) {
                         map.updateSize();
+                        world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
+                        // visLayers-> group
+                        // bboxLayer
+                        // constraintsLayer
+                        var bext = bboxLayer.getSource().getExtent();
+                        map.getView().fit(world, map.getSize(), {'constrainResolution': false});
                     });
                 }
                 
