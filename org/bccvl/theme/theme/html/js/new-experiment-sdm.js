@@ -7,9 +7,9 @@ define(
      'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
-     'js/bccvl-widgets', 'jquery-xmlrpc'],
+     'js/bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
     function($, preview_layout, vizcommon, vizmap, wiztabs, search, formvalidator,
-             popover, bbq, faceted, bccvl) {
+             popover, bbq, faceted, bccvl, ol) {
 
         // ==============================================================
         $(function() {
@@ -124,6 +124,36 @@ define(
             $('#form-widgets-modelling_region').attr('readonly', true);
 
             $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
+                // add layers for bboxes and drawing area
+                var features = new ol.Collection(); // drawn feature
+                var constraintsLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        wrapX: false,
+                        features: features
+                    }),
+                    id: 'constraints_layer',
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 160, 228, 0.1)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 160, 228, 0.9)',
+                            width: 2
+                        })
+                    })
+                });
+                var bboxLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({wrapX: false}),
+                    id: 'dataset_bounds'
+                });
+                var vectors = new ol.layer.Group({
+                    // extent: ... set to Mercator bounds [-180, -85, +180, +85]
+                    layers: [
+                        bboxLayer,
+                        constraintsLayer
+                    ]
+                });
+                map.addLayer(vectors);
                 var mapid = $('.constraints-map').attr('id');
 
                 // map.updateSize()
@@ -134,7 +164,7 @@ define(
                 }
                 
                 // set up constraint tools
-                vizcommon.constraintTools(map, 'form-widgets-modelling_region');
+                vizcommon.constraintTools(map, constraintsLayer, 'form-widgets-modelling_region');
 
                 // bind widgets to the constraint map
                 $('.bccvl-new-sdm').on('widgetChanged', function(e){
@@ -144,11 +174,8 @@ define(
                     vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
 
                     // clear any existing layers.
-                    map.getLayers().forEach(function(lyr) {
-                        if (lyr.get('type') == 'wms-occurrence'){
-                            map.removeLayer(lyr);
-                        }
-                    });
+                    visLayers.getLayers().clear(); // clear species layers
+                    bboxLayer.getSource().clear(); // clear bboxes as well
 
                     var geometries = [];
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
@@ -166,7 +193,7 @@ define(
                         }
                     });
                     // draw collected geometries
-                    vizcommon.drawBBoxes(map, geometries);
+                    vizcommon.drawBBoxes(map, geometries, bboxLayer);
                         
                 });
 
