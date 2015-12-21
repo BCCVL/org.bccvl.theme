@@ -513,6 +513,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
 
+                console.log(layerdef);
+
                 var uuid = data.id;
                 var title = layerdef.title;
                 var visible = layerdef.isVisible;

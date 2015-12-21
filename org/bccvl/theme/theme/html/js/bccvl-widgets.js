@@ -145,6 +145,7 @@ define(
         // hide and clear modal
         ModalBrowseSelect.prototype._clear = function() {
             this.$modal.removeData('modal');
+
             this.$modal.find('.modal-body').empty();
             Faceted.Cleanup();            
         };
@@ -181,6 +182,12 @@ define(
                 }); 
 
                 $(Faceted.Events).bind(Faceted.Events.INITIALIZE, function() {
+                    self.$modal.find('.modal-body .selectize').each(function(){
+                        if (this.selectize){
+                            this.selectize.destroy();
+                        }
+                    });
+
                     self.$modal.find('select[multiple], .selectize').selectize({
                         plugins: ['remove_button', 'remove_single_button'],
                         render: {
@@ -206,6 +213,12 @@ define(
                         },
                         onChange: function(){
                             $('#faceted-results').parent().css('max-height', $('#faceted-form').outerHeight());
+                        }
+                    });
+
+                    self.$modal.find('.modal-body .selectize').each(function(){
+                        if (this.selectize){
+                            this.selectize.clear();
                         }
                     });
                 });
