@@ -49,7 +49,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     var rangeArr = [0,200,300,400,500,600,800,1000,1200,1600,2000,2400,3200];
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard range
-                    var rangeArr = [-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39];
+                    var rangeArr = [-6,-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45];
                 } else if (standard_range == 'suitability' && maxVal <= 1000) {
                     
                     if (maxVal <= 1){
@@ -110,7 +110,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     var colorArr = ['#FFFFFF','#fffee8','#fefdd1','#f6f8ab','#daeca2','#c1e3a3','#a8dba4','#8cd1a4','#6fc9a5','#45c1a4','#00b4a5','#00999a','#017b7d','#005b5c'];
                 } else if (standard_range == 'temperature') {
                     // temperature BOM standard colours
-                    var colorArr = ['#13a7ce','#0eb9d2','#54c5d2','#87d2d1','#b1e0d3','#c6e6d3','#d8eed4','#ecf6d5','#fefed7','#fef5bd','#fdea9b','#fcd78b','#fdc775','#f8a95b','#f58e41','#f3713e'];
+                    // rangeArr =           [-6,        -3,       0,         3,        6,         9,        12,       15,       18,       21,      24,       27,       30,       33,       36,        39,       42,     45];
+                    var colorArr = ['#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e', '#993300'];
                 } else if (standard_range == 'suitability' && startpoint == null) {
                     // apply standard suitability coloring only if we don't have a color range set up
                     // FIXME: generate default color range for suitabilities automatically as we do below if possible
@@ -513,7 +514,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
 
-                console.log(layerdef);
+                //console.log(layerdef);
 
                 var uuid = data.id;
                 var title = layerdef.title;

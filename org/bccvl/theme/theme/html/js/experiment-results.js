@@ -31,6 +31,13 @@ define(
                 $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
             });
             
+            /*$('.expand-btn').toggle(function(e){
+                $(this).parents('.bccvl-experimenttable-accordion').find('.collapse').slideDown(300);
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
+            }, function(e){
+                $(this).parents('.bccvl-experimenttable-accordion').find('.collapse').slideUp(300);
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
+            });*/
 
             $('a.export-btn').click( function(event ) {
                 event.preventDefault();

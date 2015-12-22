@@ -90,7 +90,7 @@
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
-  <a id="fieldname-popup" href="#" class="btn btn-default"
+  <a id="fieldname-popup" href="#" class="btn btn-primary btn-large"
      tal:attributes="id string:${view/field/__name__}-popup;
-                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}"><i class="icon icon-plus-sign"></i> Select Available Datasets</a>
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}"><i class="fa fa-plus-circle"></i> Select Available Datasets</a>
 </html>

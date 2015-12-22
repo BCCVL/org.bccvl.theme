@@ -22,6 +22,8 @@ define(
 
         // helper function for selectable behaviour
         function Selectable(elements, multi) {
+            
+
             if (multi) {
                 this.multi = true;
             } else {
@@ -34,8 +36,10 @@ define(
                 var $row = $(event.target).closest('.selectable');
                 // new state for input element
                 if ($row.hasClass('ui-selected') ) {
+                    $row.find('input[type="checkbox"]').prop('checked', false);
                     this.unselect($row);
                 } else {
+                    $row.find('input[type="checkbox"]').prop('checked', true);
                     this.select($row);
                 }
             }.bind(this));
@@ -170,15 +174,28 @@ define(
                 });
                 
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(){
-                    //
+
                     truncate(self.$modal.find('#faceted-results').find('ul.details'));
                     // update selection state from basket
-                    $.each($("#faceted-results .selectable"), function(idx, element) {
-                        var uuid = $(element).attr('data-uuid');
-                        if (self.basket.contains(uuid)) {
-                            selectable.select($(element));
-                        };
-                    });
+                    if(self.settings.multiple == 'multiple'){
+                        $.each($("#faceted-results .selectable"), function(idx, element) {
+                            var uuid = $(element).attr('data-uuid');
+                            if (self.basket.contains(uuid)) {
+                                selectable.select($(element));
+                                $(element).find('.cell h4').prepend('<input type="checkbox" class="modal-item-checkbox" checked />');
+                            } else {
+                                $(element).find('.cell h4').prepend('<input type="checkbox" class="modal-item-checkbox"/>');
+                            }
+                        });
+                    } else {
+                        $.each($("#faceted-results .selectable"), function(idx, element) {
+                            var uuid = $(element).attr('data-uuid');
+                            if (self.basket.contains(uuid)) {
+                                selectable.select($(element));
+                            };
+                        });
+                    }
+                    
                 }); 
 
                 $(Faceted.Events).bind(Faceted.Events.INITIALIZE, function() {
