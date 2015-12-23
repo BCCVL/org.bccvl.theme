@@ -750,6 +750,10 @@ Update: this bug is fixed in Bootstrap 3.0, so for now let's
 show the disclosure triangles, file a bug that they're wrong
 sometimes, and TODO: upgrade when bootstrap 3 is out.
 --- */
+
+.experiment-details.header {
+    padding:1em;
+}
 .bccvl-algoconfig .accordion-toggle:before {
     content: '\25bc';
     color: #ccc;

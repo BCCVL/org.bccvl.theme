@@ -72,25 +72,19 @@
           <h5 class="results-title">Visualisable Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
             <div class="bccvl-experimenttable-accordion accordion-group">
-              <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
-                   tal:attributes="data-target string:#${result/getId}-body">
-                <div tal:attributes="class python:dstools.job_state(result) or 'info';">
-                  <div class="bccvl-table-controls">
+              <div tal:attributes="class python:dstools.job_state(result) or 'info';">
+
+              
+
+                  <!--<div class="bccvl-table-controls">
                     <a class="fine btn btn-mini btn-info download-btn"
                        title="Download this result"
                        href="#downloadurl"
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
-                    <a class="fine btn btn-mini btn-default expand-btn"
-                       title="Expand results"
-                       href="javascript:void(0)"
-                       data-toggle="collapse" 
-                       tal:attributes="data-target string:#${result/getId}-body">
-                      <i class="fa fa-chevron-circle-down icon-link"></i> More
-                    </a>
-                  </div>
-                  <div class="experiment-details">
+                  </div>-->
+                  <div class="experiment-details header">
                     <h5><tal:replace tal:replace="result/Title">Result Title</tal:replace></h5>
                     <!-- FIXME: get a better condition or use
                          adapters -->
@@ -107,15 +101,16 @@
                                 tal:replace="result/job_params/year">bioclim</tal:replace></span>
                           <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                     </tal:block>
+                    
                   </div>
                 </div>
-              </div>
-              <div class="collapse" tal:attributes="id string:${result/getId}-body">
+                
                 <tal:loop tal:repeat="item python:dstools.experiment_results(result.getObject())">
                   <div class="row-fluid experiment-result-contents"
-                       tal:define="item_obj item/getObject">
+                        tal:define="item_obj item/getObject">
                     <div class="span9 bccvl-table-label"
                            tal:define="md python:dstools.metadata(item_obj)">
+                                       
                       <h5><span tal:content="item/Title">Item Title</span></h5>
                       <p><span tal:content="item/Description">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
@@ -154,9 +149,8 @@
                     </div>
                   </div>
                 </tal:loop>
-              </div><!-- collapse -->
+              </div>
 
-            </div> <!-- accordion-group -->
           </tal:block>
 
         </div>

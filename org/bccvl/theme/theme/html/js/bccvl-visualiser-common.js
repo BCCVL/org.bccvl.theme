@@ -514,12 +514,21 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
             createLayer: function(id, layerdef, data, type, legend) {
 
-                //console.log(layerdef);
+                
 
                 var uuid = data.id;
                 var title = layerdef.title;
                 var visible = layerdef.isVisible;
                 var styleObj = layerdef.style;
+                if (typeof layerdef.bounds != 'undefined' && typeof layerdef.projection != 'undefined') {
+                    var bounds = [ 
+                        layerdef.bounds.left,
+                        layerdef.bounds.bottom,
+                        layerdef.bounds.right,
+                        layerdef.bounds.top
+                        ];
+                    var proj = layerdef.projection;
+                }
                 
                 // data ... dataset metadata
                 // layer ... layer metadata
@@ -588,6 +597,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     newLayer.on('postcompose', function(){
                         newLayer.un('precompose', setCompositeMode);
                     });
+                }
+
+                if (bounds && proj){
+                    var extent = ol.proj.transformExtent(bounds, proj, 'EPSG:3857');
+                    newLayer.setExtent(extent);
                 }
 
                 return newLayer;

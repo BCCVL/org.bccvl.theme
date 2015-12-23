@@ -61,6 +61,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
         // dataset manager getMetadata endpoint url
         var dmurl = portal_url + '/dm/getMetadata';
+        // capabilities url
+        var gcurl = portal_url + '?request=GetCapabilities&service=WMS&version=1.1.1';
 
         var map;
         // Australia Bounds
@@ -148,6 +150,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // remove crappy unicode icon so fontawesome can get in
                 $('#'+id+' button.ol-full-screen-false').html('');
 
+                
+
                 // fetch layer metadata and build up map layers
                 $.xmlrpc({
                     url: dmurl,
@@ -156,6 +160,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                         // xmlrpc returns an array of results
                         data = data[0];
+
                         // define local variables
                         var layerdef;
                         
@@ -166,12 +171,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             // species data  (not a raster)
                             // TODO: use data.title (needs to be populated)
                             layerdef = {
-                                'title': data.description || 'Data Overlay'
+                                'title': data.description || 'Data Overlay',
+                                'bounds': data.bounds,
+                                'projection': data.srs || 'EPSG:4326'
                             }
                             // there is no legend for csv data
                             var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                             // add layer to layers group
                             visLayers.getLayers().push(newLayer);
+
+                            if(newLayer.getExtent()){
+                                map.getView().fit(newLayer.getExtent(), map.getSize());
+                            }
+
                         } else {
                             // raster data
                             // TODO: data.layer could be standard array, as layerid is in layer object as well
@@ -206,6 +218,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                         layerdef.filename = layer.filename;
                                     }
                                 }
+                                layerdef.bounds = layer.bounds;
+                                layerdef.projection = layer.srs || 'EPSG:4326';
                                 // copy datatype into layer def object
                                 layerdef.datatype = layer.datatype;
                                 // add min / max values
@@ -238,10 +252,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                             $('.olLegend').remove();
                                             // add new legend to dom tree
                                             $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
+                                            if(newLayer.getExtent()){
+                                                map.getView().fit(newLayer.getExtent(), map.getSize());
+                                            }
                                         }
+
                                     });
 
                                     visLayers.getLayers().push(newLayer);
+
+                                    if(newLayer.getExtent()){
+                                        map.getView().fit(newLayer.getExtent(), map.getSize());
+                                    }
 
                                     // if layer is visible we have to show legend as well
                                     if (layerdef.isVisible) {

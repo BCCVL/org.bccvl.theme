@@ -142,12 +142,16 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     data = data[0];
                     // define local variables
                     var localdef;
+
+                    var extent;
                     // check for layers metadata, if none exists then the request is returning a data like a csv file
                     if ($.isEmptyObject(data.layers)) {
                         // occurrence data
                         // TODO: use data.title (needs to be populated)
                         layerdef = {
-                            'title': layerName || data.filename || 'Data Overlay'
+                            'title': layerName || data.filename || 'Data Overlay',
+                            'bounds': data.bounds,
+                            'projection': data.srs || 'EPSG:4326'
                         };
                         
                         var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
@@ -159,6 +163,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                         newLayer.setOpacity(0.9);
                         visLayers.getLayers().push(newLayer);
+
+                        if( newLayer.getExtent() ){
+                          
+                          if ( visLayers.getExtent() ){
+                            
+                            ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
+                            map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+                          } else {
+                            
+                            visLayers.setExtent(newLayer.getExtent());
+                            map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+                          }
+                        } 
                     } else {
                         // raster data
                         $.each(data.layers, function(layerid, layer) {
@@ -187,6 +204,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     layerdef.filename = layer.filename;
                                 }
                             }
+                            layerdef.bounds = layer.bounds;
+                            layerdef.projection = layer.srs || 'EPSG:4326';
                             // copy datatype into layer def object
                             layerdef.datatype = layer.datatype;
                             // add min / max values
@@ -212,6 +231,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     }
 
                                     visLayers.getLayers().push(newLayer);
+
+                                    if( newLayer.getExtent() ){
+                          
+                                      if ( visLayers.getExtent() ){
+                                        
+                                        ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
+                                        map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20]});
+                                      } else {
+                                        
+                                        visLayers.setExtent(newLayer.getExtent());
+                                        map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20]});
+                                      }
+                                    } 
                             });
                         });
                     }
