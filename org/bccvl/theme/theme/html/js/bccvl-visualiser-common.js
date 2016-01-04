@@ -963,10 +963,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     //encode to geoJson and write to textarea input
                     var feature = evt.feature;
-                    var format = new ol.format.GeoJSON();
+                    var format = new ol.format.GeoJSON({
+                        defaultDataProjection: 'EPSG:4326'
+                    });
                     var data;
 
+                    // FIXME: workaround (should be fixed in R script)
+                    //        set dummy property, because R geojson parser doesn't like null for properties
+                    // FIXME: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
+                    feature.set('dummy', false);
                     data = format.writeFeature(feature);
+                    
 
                     $('#' + field_id).val('' + data + '');
                     // interaction finished, free up mouse events
