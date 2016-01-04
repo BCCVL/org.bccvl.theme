@@ -928,7 +928,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 }
             },
 
-            drawConstraints: function(el, map, constraintsLayer, field_id){
+            drawConstraints: function(el, map, constraintsLayer) {
                 // clear loyer
                 constraintsLayer.getSource().clear();
                 
@@ -958,24 +958,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 });
 
                 draw.on('drawend', function(evt){
-
                     evt.feature.setId('geo_constraints');
-
-                    //encode to geoJson and write to textarea input
-                    var feature = evt.feature;
-                    var format = new ol.format.GeoJSON({
-                        defaultDataProjection: 'EPSG:4326'
-                    });
-                    var data;
-
-                    // FIXME: workaround (should be fixed in R script)
-                    //        set dummy property, because R geojson parser doesn't like null for properties
-                    // FIXME: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
-                    feature.set('dummy', false);
-                    data = format.writeFeature(feature);
-                    
-
-                    $('#' + field_id).val('' + data + '');
                     // interaction finished, free up mouse events
                     map.removeInteraction(draw);
                     //map.on('singleclick', bccvl_common.getPointInfo)
@@ -984,12 +967,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 map.addInteraction(draw);
             },
 
-            inputConstraints: function(el, map, coords, constraintsLayer, field_id){
+            inputConstraints: function(el, map, coords, constraintsLayer){
 
                 // clear layer
                 constraintsLayer.getSource().clear();
-
-                var mapProj = map.getView().getProjection().getCode();
 
                 var bounds = [
                    [coords.west, coords.north], 
@@ -1000,7 +981,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 ];
 
                 var polygon = new ol.geom.Polygon([bounds]);
-
+                var mapProj = map.getView().getProjection().getCode();
                 polygon.transform('EPSG:4326', mapProj);
 
                 var feature = new ol.Feature({
@@ -1020,29 +1001,18 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 });
 
                 feature.setStyle(style);
-
                 constraintsLayer.getSource().addFeature(feature);
-
-                // is this recreating the vector layer each time?
-
-                var format = new ol.format.GeoJSON();
-                var data = format.writeFeature(feature);
-
-                $('#'+field_id).val(''+data+'');
-
             },
 
-            removeConstraints: function(el, map, constraintsLayer, field_id){
+            removeConstraints: function(el, map, constraintsLayer) {
                 // clear vector source
                 constraintsLayer.getSource().clear();
-
-                $('#' + field_id).val('');
             },
 
-            constraintTools: function(map, constraintsLayer, field_id){
+            constraintTools: function(map, constraintsLayer, field_id) {
                 $('.btn.draw-polygon').on('click', function(){
                     //map.un('singleclick', bccvl_common.getPointInfo);
-                    bccvl_common.drawConstraints($(this), map, constraintsLayer, field_id);
+                    bccvl_common.drawConstraints($(this), map, constraintsLayer);
                 });
                 $('.btn.input-polygon').on('click',  function(){
                     var coords = {};
@@ -1051,12 +1021,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     coords.south = parseFloat($('#south-bounds').val());
                     coords.west = parseFloat($('#west-bounds').val());
 
-                    bccvl_common.inputConstraints($(this), map, coords, constraintsLayer, field_id);
+                    bccvl_common.inputConstraints($(this), map, coords, constraintsLayer);
                 });
                 $('.btn.remove-polygon').on('click', function(){
-                    bccvl_common.removeConstraints($(this), map, constraintsLayer, field_id);
+                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
                 });
                 constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
+                    // update coordinate inputs
                     if (evt.type == 'removefeature') {
                         $('#north-bounds').val('');
                         $('#east-bounds').val('');
@@ -1072,6 +1043,29 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         $('#east-bounds').val(newext[2].toFixed(6));
                         $('#south-bounds').val(newext[1].toFixed(6));
                         $('#west-bounds').val(newext[0].toFixed(6));
+                    }
+                    // update hidden geojson field
+                    if (evt.type == 'removeFeature') {
+                        $('#' + field_id).val('');
+                    } else {
+                        //encode to geoJson and write to textarea input
+                        var feature = evt.feature;
+                        var format = new ol.format.GeoJSON();
+                        var data = format.writeFeatureObject(feature);
+                        // TODO: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
+                        data.crs = {
+                            'type': 'name',
+                            'properties': {
+                                // FIXME: hardcoded CRS spec, as OL3 does not support urn's
+                                'name': 'urn:ogc:def:crs:EPSG::3857'
+                            }
+                        };
+                        // FIXME: workaround for rgdal, which can't pars 'null' properties
+                        if (data.properties == null) {
+                            data.properties = {};
+                        }
+                        data = JSON.stringify(data);
+                        $('#' + field_id).val('' + data + '');
                     }
                 });
             },
