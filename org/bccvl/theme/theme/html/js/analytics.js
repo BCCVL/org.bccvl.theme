@@ -65,7 +65,7 @@ require(['jquery'], function($) {
 
         // Knowledge base events
         $('section.bccvl-knowledgebase').on('click', '.bccvl-kbsearchcontent a.title_link', function(){
-            _gaq.push(['_trackEvent', 'Knowledge Base', 'Title Click', $(this).text() ]);
+            _gaq.push(['_trackEvent', 'Support', 'Title Click', $(this).text() ]);
         });
 
 

@@ -45,6 +45,6 @@
   </div>
   <div class="modal-footer">
     <div class="span4" style="text-align:left;">If you are the owner of this dataset and believe it is incorrectly used, please visit <a href="http://www.bccvl.org.au/contact-us">http://www.bccvl.org.au/contact-us</a></div>    
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+     
   </div>
 </html>

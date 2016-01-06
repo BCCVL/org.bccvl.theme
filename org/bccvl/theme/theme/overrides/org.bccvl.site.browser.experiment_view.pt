@@ -54,7 +54,7 @@
             
             <div class="bccvl-experimenttable-accordion accordion-group">
               
-              <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
+              <div class="experiment-accordion-heading" 
                    tal:attributes="data-target string:#${result/getId}-body;
                                    data-uuid result/UID">
                 <div tal:attributes="class result/@@dataset_tools/job_state|string:info;">
@@ -71,14 +71,9 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
-                    <a class="fine btn btn-mini btn-default expand-btn"
-                       title="Expand results"
-                       href="javascript:void(0)"
-                       data-toggle="collapse" 
-                       tal:attributes="data-target string:#${result/getId}-body">
-                      <i class="fa fa-chevron-circle-down icon-link"></i> More
-                    </a>
+                    
                   </div>
+
                   <div class="experiment-details">
                     <h5><tal:replace tal:replace="result/Title">Result
                     Title</tal:replace></h5>
@@ -119,6 +114,39 @@
                         </li>                            
                       </tal:block>
                     </ul>
+                    <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
+                      <tal:block tal:condition="python: item.format in ('image/geotiff')">
+ 
+                          <div tal:condition="python: 'Projection' in item.description">
+
+                            <div tal:define="item_obj item/getObject;
+                                             dlinfo item_obj/dataset_tools/get_download_info;
+                                             downloadurl dlinfo/url;">
+                              <a class="bccvl-auto-viz btn btn-primary"
+                                 title="Preview this file"
+                                 href="#downloadurl"
+                                 data-mimetype="application/octet-stream"
+                                 data-uuid="a uuid"
+                                 tal:attributes="href downloadurl;
+                                                 data-uuid item/UID;
+                                                 data-mimetype item/format"
+                                 tal:condition="python: item.format not
+                                                in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                                <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
+                              </a>
+                            </div>
+                          </div>
+
+                      </tal:block>
+                    </tal:block>
+                    <a class="expand-btn"
+                       title="Expand results"
+                       href="javascript:void(0)"
+                       data-toggle="collapse" 
+                        data-parent="#bccvl-experimentresults-table"
+                       tal:attributes="data-target string:#${result/getId}-body">
+                      <i class="fa fa-chevron-circle-down icon-link"></i> More
+                    </a>
                   </div>
                 </div>
               </div>

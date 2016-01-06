@@ -43,6 +43,7 @@
                           item_modified item/ModificationDate;
                           item_url item/getURL|item/absolute_url;
                           item_description item/Description;
+                          item_uuid item/UID;
                           item_type item/portal_type;
                           item_type_class python:'contenttype-' + normalizeString(item_type);
                           item_genre item/BCCDataGenre;
@@ -51,10 +52,11 @@
                           item_wf_state_class python:'state-' + normalizeString(item_wf_state);
                           use_view_action site_properties/typesUseViewActionInListings|python:();
                           item_obj item/getObject;
+                          checkPermission nocall: context/portal_membership/checkPermission;
                           "
               metal:define-macro="datasets_listitem">
     <div class="datasets-list-entry"
-         tal:attributes="data-uuid item/UID"
+         tal:attributes="data-uuid item_uuid"
          tal:define="md item_obj/dataset_tools/metadata;
                      item_editable item_obj/dataset_tools/can_modify;">
       <div class="datasets-table-row row-fluid"
@@ -89,13 +91,13 @@
                 <a href="#" class="bccvl-modal-occurrence-viz"
                    tal:content="item_title_or_id"
                    tal:attributes="href dlinfo/url;
-                                   data-uuid item/UID;
+                                   data-uuid item_uuid;
                                    data-title item_title_or_id;"
                    tal:condition="python: item_obj.format == 'text/csv'">Title</a>
                 <a href="#" class="bccvl-modal-auto-viz"
                    tal:content="item_title_or_id"
                    tal:attributes="href dlinfo/url;
-                                   data-uuid item/UID;
+                                   data-uuid item_uuid;
                                    data-title item_title_or_id;"
                    tal:condition="python: item_obj.format != 'text/csv'">Title</a>
                 
@@ -119,14 +121,14 @@
             <div class="span4">
               <a href="#" class="bccvl-modal-occurrence-viz btn btn-primary btn-mini"
                  tal:attributes="href dlinfo/url;
-                                 data-uuid item/UID;
+                                 data-uuid item_uuid;
                                  data-title item_title_or_id;"
                  tal:condition="python: item_obj.format == 'text/csv'">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-mini"
                  tal:attributes="href dlinfo/url;
-                                 data-uuid item/UID;
+                                 data-uuid item_uuid;
                                  data-title item_title_or_id;"
                  tal:condition="python: item_obj.format != 'text/csv'">
                 <i class="fa fa-object-ungroup"></i>
@@ -167,6 +169,14 @@
               <i class="fa fa-times" title="Remove"></i>
             Remove</a>
             <!-- end remove dataset --> 
+            <!-- update dataset metadata -->                    
+            
+            <a class="update-dataset-btn btn btn-warning btn-mini"
+               tal:attributes="data-url item_url;"
+               tal:condition="python: item_editable and item.job_state in ('COMPLETED') and checkPermission('cmf.ManagePortal', context)">
+              <i class="fa fa-refresh" title="update"></i>
+            Update</a>
+            <!-- end update dataset metadata -->             
           </div>
           
         </div>

@@ -249,16 +249,33 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                         // occurrence data 
                         // TODO: use data.title (needs to be populated)
                         layerdef = {
-                            'title': layerName || data.filename || 'Data Overlay'
+                            'title': layerName || data.filename || 'Data Overlay',
+                            'bounds': data.bounds,
+                            'projection': data.srs || 'EPSG:4326'
                         };
 
                         var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
                         vizcommon.addLayerLegend(layerName, 'occurrence', uuid);
 
                         newLayer.setOpacity(1);
+
+                        if( newLayer.getExtent() ){
+                          
+                          if ( visLayers.getExtent() ){
+                            
+                            ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
+                            map.getView().fit(visLayers.getExtent(), map.getSize());
+                          } else {
+                            
+                            visLayers.setExtent(newLayer.getExtent());
+                            map.getView().fit(visLayers.getExtent(), map.getSize());
+                          }
+                        } 
                         // add layer to layer group
                         // TODO: should occurrence be always on top? (insert at 0)
                         visLayers.getLayers().push(newLayer);
+
+                       
 
                     } else {
                         // raster data
@@ -288,6 +305,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     layerdef.filename = layer.filename;
                                 }
                             }
+                            layerdef.bounds = layer.bounds;
+                            layerdef.projection = layer.srs || 'EPSG:4326';
                             // copy datatype into layer def object
                             layerdef.datatype = layer.datatype;
                             // add min / max values
@@ -319,6 +338,19 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             
                                 // add layer to layer group
                                 visLayers.getLayers().push(newLayer);
+
+                                if( newLayer.getExtent() ){
+                                  
+                                  if ( visLayers.getExtent() ){
+                                    
+                                    ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
+                                    map.getView().fit(visLayers.getExtent(), map.getSize());
+                                  } else {
+                                  
+                                    visLayers.setExtent(newLayer.getExtent());
+                                    map.getView().fit(visLayers.getExtent(), map.getSize());
+                                  }
+                                } 
 
                                 bindLayerListeners(newLayer);
                             });
