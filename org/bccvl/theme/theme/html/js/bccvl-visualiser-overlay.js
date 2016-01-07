@@ -7,15 +7,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         var select;
         /* Global configuration */
         // ----------------------------------------------------------------
-        // visualiser base url
-        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
-        // dataset manager getMetadata endpoint url
-        var dmurl = portal_url + '/dm/getMetadata';
-
         var map;
         var visLayers;
-
+        
         var mapId = $('.bccvl-preview-pane:visible').attr('id');
 
         $(function () {
@@ -69,13 +63,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
 
-        var layer_vocab = {};
-        $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
-            $.each(data, function(index, value) {
-                layer_vocab[value.token] = value;
-            });
-        });
-        
         var styleArray = [
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
@@ -236,130 +223,32 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 return;
             } 
 
-            $.xmlrpc({
-                url: dmurl,
-                params: {'datasetid': uuid},
-                success: function(data, status, jqXHR) {
-                    // xmlrpc returns an array of results
-                    data = data[0];
-                    // define local variable
-                    var layerdef;
-                    // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    if ($.isEmptyObject(data.layers)) {
-                        // occurrence data 
-                        // TODO: use data.title (needs to be populated)
-                        layerdef = {
-                            'title': layerName || data.filename || 'Data Overlay',
-                            'bounds': data.bounds,
-                            'projection': data.srs || 'EPSG:4326'
-                        };
+            $.when(vizcommon.addLayersForDataset(uuid, id, undefined, visLayers)).then(function(newLayers) {
+                // TODO: rendering legend should be an option or has to happen outside of addLayersForDataset
+                // FIXME: assumes there is only one layer
+                var newLayer = newLayers[0];
+                var layerdef = newLayer.get('bccvl').layer;
 
-                        var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
-                        vizcommon.addLayerLegend(layerName, 'occurrence', uuid);
-
-                        newLayer.setOpacity(1);
-
-                        if( newLayer.getExtent() ){
-                          
-                          if ( visLayers.getExtent() ){
+                if (layerdef.type == 'occurrence') {
+                    vizcommon.addLayerLegend(layerName, 'occurrence', uuid);
+                    newLayer.setOpacity(1);                    
+                } else {
+                    // copy color range from our styleArray
+                    layerdef.style.startpoint = styleArray[0].startpoint;
+                    layerdef.style.midpoint = styleArray[0].midpoint;
+                    layerdef.style.endpoint = styleArray[0].endpoint;
+                    // TODO: this does not update legend
+                    newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
+                    
+                    // handle our own legend
+                    vizcommon.addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+                    
+                    // move used color into used array
+                    usedStyleArray.push(styleArray[0]);
+                    styleArray.shift();
                             
-                            ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
-                            map.getView().fit(visLayers.getExtent(), map.getSize());
-                          } else {
-                            
-                            visLayers.setExtent(newLayer.getExtent());
-                            map.getView().fit(visLayers.getExtent(), map.getSize());
-                          }
-                        } 
-                        // add layer to layer group
-                        // TODO: should occurrence be always on top? (insert at 0)
-                        visLayers.getLayers().push(newLayer);
-
-                       
-
-                    } else {
-                        // raster data
-                        $.each(data.layers, function(layerid, layer) {
-
-                            layerdef = layer_vocab[layer.layer];
-                            if (typeof layerdef === 'undefined') {
-                                layerdef = {
-                                    'token': layer.layer,
-                                    'title': layer.layer || layer.filename,
-                                    'unitfull': '',
-                                    'unit': '',
-                                    'type': '',  // unused
-                                    'legend': 'default',
-                                    'tooltip': '',
-                                    'filename': layer.filename
-                                }
-                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
-                                    layerdef.legend = 'probability';
-                                    layerdef.unit = 'probability';
-                                }
-                            } else {
-                                // make a copy of the original object
-                                layerdef = $.extend({}, layerdef)
-                                // for zip files we need the filename associated with the layer
-                                if (layer.filename) {
-                                    layerdef.filename = layer.filename;
-                                }
-                            }
-                            layerdef.bounds = layer.bounds;
-                            layerdef.projection = layer.srs || 'EPSG:4326';
-                            // copy datatype into layer def object
-                            layerdef.datatype = layer.datatype;
-                            // add min / max values
-                            // FIXME: this should go away but some datasets return strings instead of numbers
-                            layerdef.min = Number(layer.min);
-                            layerdef.max = Number(layer.max);
-
-                            // give precedence to passed in layerName
-                            layer.title = layerName || layer.title;
-
-                            $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-                                // object to hold legend and color ranges
-                                layerdef.style = styleObj;
-
-                                // copy color range from our styleArray
-                                layerdef.style.startpoint = styleArray[0].startpoint;
-                                layerdef.style.midpoint = styleArray[0].midpoint;
-                                layerdef.style.endpoint = styleArray[0].endpoint;
-
-                                // create layer
-                                var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', null);
-                                
-                                // handle our own legend
-                                vizcommon.addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
-
-                                // move used color into used array
-                                usedStyleArray.push(styleArray[0]);
-                                styleArray.shift();
-                            
-                                // add layer to layer group
-                                visLayers.getLayers().push(newLayer);
-
-                                if( newLayer.getExtent() ){
-                                  
-                                  if ( visLayers.getExtent() ){
-                                    
-                                    ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
-                                    map.getView().fit(visLayers.getExtent(), map.getSize());
-                                  } else {
-                                  
-                                    visLayers.setExtent(newLayer.getExtent());
-                                    map.getView().fit(visLayers.getExtent(), map.getSize());
-                                  }
-                                } 
-
-                                bindLayerListeners(newLayer);
-                            });
-
-                        });
-                        
-                    }
-                    map.render();
                 }
+                bindLayerListeners(newLayer);
             });
         }
     }

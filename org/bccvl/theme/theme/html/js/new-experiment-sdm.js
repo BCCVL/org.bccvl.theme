@@ -188,7 +188,9 @@ define(
                     $('body').find('input[data-bbox]').each(function(){
                         var type = $(this).data('type');
                         if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
-                            vizmap.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayer) {
+                            vizcommon.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayers) {
+                                // FIXME: assumes only one layer because of species data
+                                var newLayer = newLayers[0];
                                 vizcommon.addLayerLegend(newLayer.get('title'),
                                                          newLayer.get('bccvl').layer.style.color, null, null);
                             });
