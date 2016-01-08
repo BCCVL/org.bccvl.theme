@@ -35,3 +35,6 @@ nosetests.xml
 
 # OS X crap
 .DS_Store
+
+# Unignore js lib folder (lib is ignored by default)
+!lib
