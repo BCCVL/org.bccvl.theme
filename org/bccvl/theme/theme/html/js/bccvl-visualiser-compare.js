@@ -23,7 +23,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // iterate reverse over maps and remove correct one
             var idx = maps.length;
             while (idx--) {
-                maps[idx].setTarget(null);
                 maps.splice(idx, 1);
             }
             //delete window.maps[uuid];  
@@ -47,8 +46,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $.each(maps, function(i, map){
                     if (map.uuid == uuid){
                         delete $(this);
-                        // make sure map has no reference to dom (or vice verse)
-                        map.setTarget(null);
                     }
                 });
                 maps = [];
