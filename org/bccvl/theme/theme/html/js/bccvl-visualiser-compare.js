@@ -58,7 +58,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $.when(vizcommon.addLayersForDataset(uuid, id, undefined, visLayers)).then(function(newLayers) {
                     // FIXME: assumes there is only 1 layer
                     var newLayer = newLayers[0];
-                    var layerdef = newLayers.get('bccvl').layer;
+                    var layerdef = newLayer.get('bccvl').layer;
                     // set layer title and opacity
                     if (typeof algorithm != "undefined") {
                         container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
