@@ -73,7 +73,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     newLayer.setOpacity(0.9);
 
                     // if it is the first map, zoom to extent
-                    if (maps.length == 0) {
+                    if (maps.length == 1) {
                         if ( visLayers.getExtent() ){
                             
                             ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
@@ -83,12 +83,14 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             visLayers.setExtent(newLayer.getExtent());
                             map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
                         }
-                    } else {
-                        // assign same view as first (leader) map
-                        map.setView(maps[0].getView());
                     }
                     
                 });
+
+                // let all maps use the same view
+                if (maps.length != 0) {
+                    map.setView(maps[0].getView());
+                }
                 
                 map.uuid = uuid;
                 maps.push(map);
