@@ -20,11 +20,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             event.preventDefault();
             var uuid = $(this).data('uuid');
             $('#minimap_'+uuid).remove();
-            $.each(maps, function(i, map){
-                if (map.uuid == uuid){
-                    delete $(this);
-                }
-            });
+            // iterate reverse over maps and remove correct one
+            var idx = maps.length;
+            while (idx--) {
+                maps[idx].setTarget(null);
+                maps.splice(idx, 1);
+            }
             //delete window.maps[uuid];  
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
@@ -46,8 +47,11 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 $.each(maps, function(i, map){
                     if (map.uuid == uuid){
                         delete $(this);
+                        // make sure map has no reference to dom (or vice verse)
+                        map.setTarget(null);
                     }
                 });
+                maps = [];
             }
 
             // destroy any floating progress bars (should be destroyed above, this is a fallback)
@@ -68,9 +72,8 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
 
                     newLayer.setOpacity(0.9);
 
-                    // updat extent on event?
-                    if( newLayer.getExtent() ){
-                          
+                    // if it is the first map, zoom to extent
+                    if (maps.length == 0) {
                         if ( visLayers.getExtent() ){
                             
                             ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
@@ -80,28 +83,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             visLayers.setExtent(newLayer.getExtent());
                             map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
                         }
-                    } 
+                    } else {
+                        // assign same view as first (leader) map
+                        map.setView(maps[0].getView());
+                    }
                     
                 });
                 
                 map.uuid = uuid;
                 maps.push(map);
 
-                bindMaps();
-                
             });
-            
-            
-            function bindMaps(){
-                var leader = maps[0];
-                $.each(maps, function(i, map){
-                    if (i>0){
-                        // BindTo removed somewhere between OL3.4.x and OL3.7.0
-                        //map.bindTo('view', leader);
-                        map.setView(leader.getView());
-                    }
-                });
-            }
             
         }
         
