@@ -23,7 +23,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             // iterate reverse over maps and remove correct one
             var idx = maps.length;
             while (idx--) {
-                maps.splice(idx, 1);
+                if (maps[idx].uuid == uuid) {
+                    maps.splice(idx, 1);
+                }
             }
             //delete window.maps[uuid];  
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
