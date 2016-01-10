@@ -1280,13 +1280,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                    var bounds = bccvl_common.transformExtent(geometry.getExtent(), 'EPSG:4326', mapProj);
                    
                    var feature = new ol.Feature({
-                       geometry: new ol.geom.Polygon([
+                       geometry: new ol.geom.Polygon([[
                            ol.extent.getBottomLeft(bounds),
                            ol.extent.getBottomRight(bounds),
                            ol.extent.getTopRight(bounds),
                            ol.extent.getTopLeft(bounds),
                            ol.extent.getBottomLeft(bounds)
-                       ])
+                       ]])
                    });
 
                    var style = new ol.style.Style({
