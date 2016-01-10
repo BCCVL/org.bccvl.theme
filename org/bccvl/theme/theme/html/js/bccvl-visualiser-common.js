@@ -1094,15 +1094,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
            },
 
 
-           addLayerLegend: function(layername, color, uuid, colorName){  
+           addLayerLegend: function(mapid, layername, color, uuid, colorName){
+               // find legend box
+               var $legend = $('#' + mapid + ' .olLegend .panel');
                if (color == 'occurrence'){
-                   $('.olLegend .panel').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
+                   $legend.append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
                } else {
                    if (typeof color == 'string'){
-                       $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+color+'"></i>&nbsp;'+layername+'</label>');
+                       $legend.append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+color+'"></i>&nbsp;'+layername+'</label>');
                    } else {
                        var colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-                       $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
+                       $legend.append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
                    }
                }
            },
@@ -1270,7 +1272,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                
                geometries.forEach(function(geometry) {
 
-                   bccvl_common.addLayerLegend('Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
+                   bccvl_common.addLayerLegend(map.getTarget(), 'Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
 
                    var mapProj = map.getView().getProjection().getCode();
 

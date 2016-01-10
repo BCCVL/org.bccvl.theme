@@ -230,7 +230,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 var layerdef = newLayer.get('bccvl').layer;
 
                 if (layerdef.type == 'occurrence') {
-                    vizcommon.addLayerLegend(layerName, 'occurrence', uuid);
+                    vizcommon.addLayerLegend(id, layerName, 'occurrence', uuid);
                     newLayer.setOpacity(1);                    
                 } else {
                     // copy color range from our styleArray
@@ -241,7 +241,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
                     
                     // handle our own legend
-                    vizcommon.addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+                    vizcommon.addLayerLegend(id, layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
                     
                     // move used color into used array
                     usedStyleArray.push(styleArray[0]);

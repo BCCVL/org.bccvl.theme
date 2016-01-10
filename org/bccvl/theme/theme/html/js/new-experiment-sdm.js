@@ -191,8 +191,10 @@ define(
                             vizcommon.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayers) {
                                 // FIXME: assumes only one layer because of species data
                                 var newLayer = newLayers[0];
-                                vizcommon.addLayerLegend(newLayer.get('title'),
-                                                         newLayer.get('bccvl').layer.style.color, null, null);
+                                vizcommon.addLayerLegend(
+                                    map.getTarget(),
+                                    newLayer.get('title'),
+                                    newLayer.get('bccvl').layer.style.color, null, null);
                             });
                         } else {
                             var geom = $(this).data('bbox');
