@@ -655,7 +655,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                //}
 
                if (bounds && proj){
-                   var extent = ol.proj.transformExtent(bounds, proj, 'EPSG:3857');
+                   var extent = bccvl_common.transformExtent(bounds, proj, 'EPSG:3857');
                    newLayer.setExtent(extent);
                }
                
@@ -1247,6 +1247,20 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                        $('#' + field_id).val('' + data + '');
                    }
                });
+           },
+
+           /************************************************
+            * project extent from crs to crs, and clip
+            * given extent to extent of from crs
+            */
+           transformExtent: function(extent, fromcrs, tocrs) {
+               var ret = ol.extent.getIntersection(extent, ol.proj.get(fromcrs).getExtent());
+               if (fromcrs != tocrs) {
+                   ret = ol.proj.transformExtent(ret, fromcrs, tocrs);
+                   // make sure result bbox is within target crs
+                   ret = ol.extent.getIntersection(ret, ol.proj.get(tocrs).getExtent());
+               }
+               return ret;
            },
 
            drawBBoxes: function(map, geometries, bboxLayer) {
