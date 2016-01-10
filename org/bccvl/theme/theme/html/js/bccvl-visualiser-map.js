@@ -95,20 +95,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                             // if layer is visible we have to show legend as well
                             if (newLayer.getVisible()) {
                                 $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(newLayer.get('bccvl').legend);
+                                // zoom to extent to first visible layer
+                                if(newLayer.getExtent()){
+                                    map.getView().fit(newLayer.getExtent(), map.getSize());
+                                }
                             }
                             
-                            newLayer.on('change:visible', function(e){
-                                if (newLayer.getVisible()){
-                                    var bccvl = newLayer.get('bccvl');
-                                    // remove existing legend
-                                    $('.olLegend').remove();
-                                    // add new legend to dom tree
-                                    $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
-                                    if(newLayer.getExtent()){
-                                        map.getView().fit(newLayer.getExtent(), map.getSize());
-                                    }
-                                }
-                            });
                         });
                     });
                     
