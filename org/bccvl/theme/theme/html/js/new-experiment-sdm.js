@@ -196,7 +196,14 @@ define(
                             });
                         } else {
                             var geom = $(this).data('bbox');
-                            geom.type = type;
+                            geom = new ol.geom.Polygon([[
+                                [geom.left, geom.bottom],
+                                [geom.right, geom.bottom],
+                                [geom.right, geom.top],
+                                [geom.left, geom.top],
+                                [geom.left, geom.bottom]
+                            ]]);
+                            //geom.type = type;
                             geometries.push(geom);
                         }
                     });

@@ -1274,28 +1274,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
 
                    var mapProj = map.getView().getProjection().getCode();
 
-                   // sanity check for worldclim
-                   var max4326 = ol.proj.get('EPSG:4326').getExtent();
-
-                   geometry.top = Math.min(geometry.top, max4326[3]);
-                   geometry.right = Math.min(geometry.right, max4326[2]);
-                   geometry.bottom = Math.max(geometry.bottom, max4326[1]);
-                   geometry.left = Math.max(geometry.left, max4326[0]);
-
-                   var bounds = [
-                       [geometry.left, geometry.top], 
-                       [geometry.right, geometry.top], 
-                       [geometry.right, geometry.bottom], 
-                       [geometry.left, geometry.bottom],
-                       [geometry.left, geometry.top]
-                   ];
-
-                   var polygon = new ol.geom.Polygon([bounds]);
-
-                   polygon.transform('EPSG:4326', mapProj);
-
+                   // convert geomotry to rectangle and project to map
+                   var bounds = bccvl_common.transformExtent(geometry.getExtent(), 'EPSG:4326', mapProj);
+                   
                    var feature = new ol.Feature({
-                       geometry: polygon
+                       geometry: new ol.geom.Polygon([
+                           ol.extent.getBottomLeft(bounds),
+                           ol.extent.getBottomRight(bounds),
+                           ol.extent.getTopRight(bounds),
+                           ol.extent.getTopLeft(bounds),
+                           ol.extent.getBottomLeft(bounds)
+                       ])
                    });
 
                    var style = new ol.style.Style({
