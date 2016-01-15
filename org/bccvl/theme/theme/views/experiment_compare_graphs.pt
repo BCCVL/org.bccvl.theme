@@ -16,14 +16,7 @@
     <!--</metal:slot>-->
     <metal:main fill-slot="main">
       
-      <ul class="nav nav-tabs">
-	      <li id= "tab-res"><a href="view#tab-results">Results</a></li>
-        <li id= "tab-det"><a href="view#tab-details">Details</a></li>
-        <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay Maps</a></li>
-        <li id= "tab-comp"><a href="experiment_compare#tab-comp">Compare Maps</a></li>
-        <li id= "tab-comp-graph" class="active"><a href="experiment_compare_graphs#tab-comp">Compare Graphs</a></li>
-      </ul>
-      
+      <metal:block use-macro="context/@@experiment-macros/experiment_view_nav"/>      
       <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
 
       <div id="bccvl-experiment-compare-graphs">
