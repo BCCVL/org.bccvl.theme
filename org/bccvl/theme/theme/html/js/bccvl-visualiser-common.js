@@ -794,7 +794,68 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 );
                 map.getTargetElement().style.cursor = hit ? 'pointer' : '';
 
-            }
+            },
+
+            // RENDER PNG IMAGES
+            renderPng: function(uuid, url, id){
+                // NEED TO DESTROY ANY EXISTING MAP OR HTML
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
+                container.height('auto').html('<img src="'+url+'" alt="" />').addClass('active');
+            },
+
+            // RENDER CODE
+            renderCode: function(uuid, url, id){
+                // NEED TO DESTROY ANY EXISTING MAP OR HTML
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
+                $.ajax({
+                    url: url, 
+                    dataType: 'text',
+                    crossDomain: true,
+                    success: function( data ) {
+                        container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>').addClass('active');
+                        Prism.highlightAll();
+                    },
+                    error: function() {
+                        container.html('<pre>Problem loading data. Please try again later.</pre>');
+                    }
+                });
+            },
+
+            // RENDER CSV
+            renderCSV: function(uuid, url, id){
+                // NEED TO DESTROY ANY EXISTING MAP OR HTML
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
+                container.height('auto').html('').CSVToTable(
+                    url,
+                    {
+                        tableClass: 'table table-striped',
+                        error: function() {
+                            container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
+                        }
+                    });
+            },
+
+            renderPDF: function(uuid, url, id){
+                // NEED TO DESTROY ANY EXISTING MAP OR HTML
+                var container = $('#'+id);
+                if (container.hasClass('active')) {
+                    container.empty();
+                    map = null;
+                }
+                container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
+            } 
 
         };
         return bccvl_common;
