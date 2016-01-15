@@ -71,7 +71,15 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
-                    
+                    <tal:block tal:define="state result/@@dataset_tools/job_state"
+                               tal:condition="python:state == 'FAILED'">
+                      <a class="fine btn btn-mini btn-info email-support-btn"
+                         title="Send an email to BCCVL for support regarding this experiment"
+                         href="#emailsupporturl"
+                         tal:attributes="href string:${navigation_root_url}/API/site/v1/send_support_email?url=${result/getURL};">
+                        <i class="fa fa-envelope-o icon-link"></i> Support
+                      </a>
+                    </tal:block>
                   </div>
 
                   <div class="experiment-details">
