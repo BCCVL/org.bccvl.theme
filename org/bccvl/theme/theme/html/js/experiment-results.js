@@ -84,6 +84,9 @@ define(
                       var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
                       $('.bccvl-flashmessages').append(msg);
                       console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
+                      if (data["success"]){
+                          $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
+                      }
                   });
            });
 
