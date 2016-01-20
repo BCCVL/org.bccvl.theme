@@ -141,7 +141,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     singleVisibleOverlay: true
                 });
 
+                // add scaleline
+                var scaleline = new ol.control.ScaleLine({
+                    className: 'ol-scale-line'
+                });
+
                 map.addControl(layerSwitcher);
+                map.addControl(scaleline);
 
                 // add fullscreen toggle control
                 var fullScreenToggle = new ol.control.FullScreen();
