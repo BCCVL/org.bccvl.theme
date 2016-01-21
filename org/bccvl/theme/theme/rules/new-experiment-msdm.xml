@@ -1,0 +1,58 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- NEW SDM EXPERIMENT ========================================= -->
+    <rules if-path="newMultiSpeciesDistribution/">"
+        <theme href="html/new-experiment-msdm.html" />
+
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
+
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
+
+        <!-- hook in title field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+
+        <!-- hook in description field -->
+        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+
+        <!-- hook in the algorithm list -->
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
+                 css:content-children="#form-widgets-functions-table"/>
+
+        <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
+
+        <replace css:theme-children="#algoConfig"
+                 css:content-children="#fieldset-parameters"/>
+
+
+        <!-- hook in the occurrences list -->
+
+        <!--
+            We are converting a select to a radio button input,
+            so we need to give the radio button the select's name,
+            not the option's name.
+
+        -->
+        <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
+                 css:content="#formfield-form-widgets-species_occurrence_dataset" />
+
+        <replace css:theme-children=".random-absences-settings"
+               css:content="#formfield-form-widgets-species_pseudo_absence_points"/>
+        <after css:theme-children=".random-absences-settings"
+               css:content="#formfield-form-widgets-species_number_pseudo_absence_points"/>
+        <!-- hook in the absences list -->
+        <replace css:theme="#formfield-form-widgets-species_absence_dataset"
+                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
+
+        <!-- The rest of this is filled in with AJAX -->
+        <replace css:theme="#formfield-form-widgets-environmental_datasets"
+                 css:content="#formfield-form-widgets-environmental_datasets"/>"
+
+    </rules>
+
+</rules>
