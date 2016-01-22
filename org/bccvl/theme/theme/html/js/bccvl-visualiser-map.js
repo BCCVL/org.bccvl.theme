@@ -31,13 +31,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             if (type == 'image/geotiff'){
                 render.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
             } else if (type == 'image/png'){
-                renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/csv'){
-                renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
-                renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'application/pdf') {
-                renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (type == 'application/zip') {
                 render.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
             }
@@ -114,68 +114,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     });
                             
                 });
-            },
-        };
-
-        // RENDER PNG IMAGES
-        function renderPng(uuid, url, id) {
-            // NEED TO DESTROY ANY EXISTING MAP OR HTML
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
             }
-            container.height('auto').html('<img src="'+url+'" alt="" />').addClass('active');
-        };
-
-        // RENDER CODE
-        function renderCode(uuid, url, id) {
-            // NEED TO DESTROY ANY EXISTING MAP OR HTML
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
-            $.ajax({
-                url: url, 
-                dataType: 'text',
-                crossDomain: true,
-                success: function( data ) {
-                    container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>').addClass('active');
-                    Prism.highlightAll();
-                },
-                error: function() {
-                    container.html('<pre>Problem loading data. Please try again later.</pre>');
-                }
-            });
-        };
-
-        // RENDER CSV
-        function renderCSV(uuid, url, id) {
-            // NEED TO DESTROY ANY EXISTING MAP OR HTML
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
-            container.height('auto').html('').CSVToTable(
-                url,
-                {
-                    tableClass: 'table table-striped',
-                    error: function() {
-                        container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
-                    }
-                });
-        };
-
-        function renderPDF(uuid, url, id) {
-            // NEED TO DESTROY ANY EXISTING MAP OR HTML
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
-            container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
         };
 
         return render;       

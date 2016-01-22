@@ -78,5 +78,36 @@
         </div>
     </metal:block>
 
+    <metal:block define-macro="experiment_view_nav"
+                 tal:define="current_view view/__name__">
+      <ul class="nav nav-tabs"
+          tal:define="toggle python: 'tab' if current_view in context.getLayout() else ''">
+	<li id= "tab-res"
+            tal:attributes="class python: 'active' if current_view == context.getLayout() else '';">
+          <a href="view#tab-results"
+             tal:attributes="data-toggle toggle;
+                             href python:'#tab-results' if toggle else 'view#tab-results'">Results</a>
+        </li>
+	<li id= "tab-det">
+          <a href="view#tab-details"
+             tal:attributes="data-toggle toggle;
+                             href python:'#tab-details' if toggle else 'view#tab-details'">Details</a>
+        </li>
+        <li id= "tab-overlay"
+            tal:attributes="class python: 'active' if current_view == 'experiment_overlay' else '';">
+          <a href="experiment_overlay#tab-overlay">Overlay</a>
+        </li>
+	<li id= "tab-comp"
+            tal:attributes="class python: 'active' if current_view == 'experiment_compare' else '';">
+          <a href="experiment_compare#tab-compare">Compare</a>
+        </li>
+        <li id= "tab-comp-graph"
+            tal:attributes="class python: 'active' if current_view == 'experiment_compare' else '';">
+          <a href="experiment_compare_graphs#tab-comp">Compare Graphs</a>
+        </li>
+      </ul>
+    </metal:block>
+
+      
   </body>
 </html>

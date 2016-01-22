@@ -429,6 +429,7 @@ div.loader {
 }
 .bccvl-preview-pane.active, .bccvl-preview-pane.multimaps {
     background:none;
+    overflow:hidden;
 }
 
 .bccvl-preview-pane .empty {
@@ -448,6 +449,10 @@ div.loader {
 .bccvl-preview-pane img {
     margin: 0 auto;
     display: block;
+}
+.bccvl-preview-pane .minimap.graph img {
+    outline: 1px solid rgba(0,0,0,.3);
+    outline-offset: -1px;
 }
 
 .bccvl-preview-pane pre {
@@ -2171,6 +2176,8 @@ table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERRO
 .bccvl-experimenttable-accordion {
     margin-bottom:6px;
     border:0px;
+    overflow:hidden;
+    border-radius:0px;
 }
 .bccvl-experimenttable-accordion ul, .bccvl-experimenttable-accordion ol{
     list-style-type: none;
