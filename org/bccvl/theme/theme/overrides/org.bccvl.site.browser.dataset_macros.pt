@@ -173,7 +173,7 @@
             
             <a class="update-dataset-btn btn btn-warning btn-mini"
                tal:attributes="data-url item_url;"
-               tal:condition="python: item_editable and item.job_state in ('COMPLETED') and checkPermission('cmf.ManagePortal', context)">
+               tal:condition="python: item_editable and checkPermission('cmf.ManagePortal', context)">
               <i class="fa fa-refresh" title="update"></i>
             Update</a>
             <!-- end update dataset metadata -->             
