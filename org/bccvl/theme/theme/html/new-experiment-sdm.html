@@ -136,8 +136,8 @@
                 <li><a href="#tab-occur" data-toggle="tab">Occurrences</a></li>
                 <li><a href="#tab-absent" data-toggle="tab">Absences</a></li>
                 <li><a href="#tab-enviro" data-toggle="tab">Climate &amp; Environmental Data</a></li>
+                <li><a href="#tab-geo" data-toggle="tab">Constraints</a></li>
                 <li><a href="#tab-config" data-toggle="tab">Algorithms</a></li>
-                <!-- <li><a href="#tab-climate" data-toggle="tab">Climate</a></li> -->
                 <li><a href="#tab-review" data-toggle="tab">Run</a></li>
               </ul>
             </div>
@@ -330,6 +330,55 @@
                       </div>
                     </div>
 
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+              <div class="tab-pane active" id="tab-geo">
+                <fieldset class="tab">
+                  <div class="row-fluid">
+                    <p class="span12 bccvl-tab-description">
+                      Define any geographic constraints for the experiment.
+                    </p>
+                  </div>
+
+                  <div class="row-fluid bccvl-stretch-parent">
+
+                    <!-- list of available data -->
+                    <div class="span4">
+                      <div class="control-group">
+                        <div class="bccvl-occurrencestable">
+                          
+                    <p>
+                      This tab is optional.<br/>
+                      Here you can constrain your model output to a particular area or region (e.g. Queensland) by drawing or entering in bounding box coordinates. The default constraint is the extent of the largest environmental/climate dataset you selected. If you do not want to constrain your model simply click next.
+                    </p>
+                          <div class="constraints" id="formfield-form-widgets-modelling_region">
+                          </div>
+                          
+                          <a href="javascript:void(0);" class="btn btn-small btn-default draw-polygon"><i class="fa fa-crop"></i> Draw On Map</a>&nbsp;
+                          <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
+                        </div>
+                        <hr/>
+                        <div class="bccvl-constraint-input">
+                          <input type="text" placeholder="North bounds." class="bounds" name="north-bounds" id="north-bounds"/>
+                          <input type="text" placeholder="East bounds." class="bounds" name="east-bounds" id="east-bounds"/>
+                          <input type="text" placeholder="South bounds." class="bounds" name="south-bounds" id="south-bounds"/>
+                          <input type="text" placeholder="West bounds." class="bounds" name="west-bounds" id="west-bounds"/>
+                          <br/>
+                          <a href="javascript:void(0);" class="btn btn-small btn-default input-polygon"><i class="fa fa-crop"></i> Input Constraints</a>&nbsp;
+                          <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- preview area -->
+                    <div class="span8">
+                      <div class="bccvl-preview-pane constraints-map pre-render-map" id="map4">
+
+                      </div>
+                    </div>
                   </div>
                 </fieldset>
               </div>

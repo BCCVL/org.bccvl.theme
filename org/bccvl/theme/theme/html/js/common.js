@@ -29,7 +29,8 @@ requirejs.config({
         'openlayers3':          'ol3/ol',
         'ol3-layerswitcher':    'ol3/layerswitcher/ol3-layerswitcher',
         'prism':                'prism/prism',
-        'bbq':                  'jquery-bbq/jquery.ba-bbq'
+        'bbq':                  'jquery-bbq/jquery.ba-bbq',
+        'proj4':                'proj4/proj4',
     },
     shim: {
         'parsley':              ['jquery'],

@@ -3,13 +3,13 @@
 // main JS for the new sdm experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-preview-layout',
+    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser-common',
      'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
      'js/bccvl-search', 'js/bccvl-form-jquery-validate',
      'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
-     'js/bccvl-widgets', 'jquery-xmlrpc'],
-    function($, preview_layout, vizmap, wiztabs, search, formvalidator,
-             popover, bbq, faceted, bccvl) {
+     'js/bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
+    function($, preview_layout, vizcommon, vizmap, wiztabs, search, formvalidator,
+             popover, bbq, faceted, bccvl, ol) {
 
         // ==============================================================
         $(function() {
@@ -85,7 +85,6 @@ define(
             $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
             $("#form-widgets-species_pseudo_absence_points-0:checkbox").change(function() {
                 if ($(this).is(":checked")) {
-                    $("input[id^='form-widgets-species_absence_dataset-']").prop('checked', false);
                     $("#form-widgets-species_number_pseudo_absence_points").removeAttr('disabled');
                     $('#formfield-form-widgets-species_number_pseudo_absence_points').slideDown();
                 } else {
@@ -94,18 +93,7 @@ define(
                 }
             });
 
-            $("input[id^='form-widgets-species_absence_dataset-']").change(function() {
-                $("#form-widgets-species_pseudo_absence_points-0:checkbox").prop('checked', false);
-                $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
-            });
-
-            $('#form-widgets-resolution').prepend('<option value="" selected>Select resolution to begin ...</option>');
-            $('#form-widgets-resolution').change(function(){
-                $('table.bccvl-environmentaldatatable').find('tr.layer-row').fadeOut();
-                $('table.bccvl-environmentaldatatable').find('tr.info').addClass('disabled bccvl-envgroup');
-                $('table.bccvl-environmentaldatatable').find('tr.info[data-resolution="'+$(this).val()+'"]').removeClass('disabled bccvl-envgroup');
-            });
-
+            // TODO: move  select-all / select-none into widget?
             $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
             });
@@ -117,6 +105,7 @@ define(
                 });
             });
 
+            // TODO: move  select-all / select-none into widget?
             $('#tab-config').on('click', 'a.select-all', function(){
                 $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
             });
@@ -125,155 +114,108 @@ define(
                 $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
-
             // -- set psuedo absence to match an occurence selection.
-
             $('.bccvl-new-sdm').on('widgetChanged', function(e, rows){
                 if (rows) 
                     $('#form-widgets-species_number_pseudo_absence_points').val(rows);
             });
 
-            // -- layer selection -----------------------------------
-            // FIXME: this is probably all dead code below
+            // -- set up region constraints
+            $('#form-widgets-modelling_region').attr('readonly', true);
 
-            var $envTable = $('table.bccvl-environmentaldatatable');
-            var $envBody = $envTable.find('tbody');
+            $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
+                // add layers for bboxes and drawing area
+                var features = new ol.Collection(); // drawn feature
+                var constraintsLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        wrapX: false,
+                        features: features
+                    }),
+                    id: 'constraints_layer',
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 160, 228, 0.1)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 160, 228, 0.9)',
+                            width: 2
+                        })
+                    })
+                });
+                var bboxLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({wrapX: false}),
+                    id: 'dataset_bounds'
+                });
+                var vectors = new ol.layer.Group({
+                    // extent: ... set to Mercator bounds [-180, -85, +180, +85]
+                    layers: [
+                        bboxLayer,
+                        constraintsLayer
+                    ]
+                });
+                map.addLayer(vectors);
+                var mapid = $('.constraints-map').attr('id');
 
-            // here's some convenience functions we'll refer to below.  defining them
-            // here saves us creating functions inside loops, which is Bad.
-
-            // make a function to handle selection/deselection of a layer.
-            var layerUpdate = function(parentId, layerId, checkBox) {
-                var $checkBox = $(checkBox);
-
-                var $secretCountField = $('#environmental_layers_count');
-                var currentCount = parseInt($secretCountField.attr('value'));
-
-                // This is purely so we can do validation, to ensure at least n checkboxes are checked.
-                if ($checkBox.prop('checked')) {
-                    $secretCountField.attr('value', currentCount + 1);
-                } else {
-                    $secretCountField.attr('value', currentCount - 1);
+                // map.updateSize()
+                if ($('.constraints-map').not(':visible')) {
+                    $('a[href="#tab-geo"]').one('shown', function(evt) {
+                        map.updateSize();
+                        world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
+                        // visLayers-> group
+                        // bboxLayer
+                        // constraintsLayer
+                        var bext = bboxLayer.getSource().getExtent();
+                        map.getView().fit(world, map.getSize(), {'constrainResolution': false});
+                    });
                 }
+                
+                // set up constraint tools
+                vizcommon.constraintTools(map, constraintsLayer, 'form-widgets-modelling_region');
 
-                // Count how many checkboxes are selected in the given climate layer
-                var $layerSelectedField = $('#form-widgets-environmental_datasets-' + parentId + '-select');
-                var numSelected = $('input[name="form.widgets.environmental_datasets.' + parentId + ':list"]:checked').length;
+                // bind widgets to the constraint map
+                $('.bccvl-new-sdm').on('widgetChanged', function(e){
+                        
+                    // recreate legend
+                    $('#'+map.getTarget()).find('.olLegend').remove();
+                    vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
 
-                // Enable/disable the climate layer accordingly
-                $layerSelectedField.attr('value', numSelected == 0 ? '' : parentId);
+                    // clear any existing layers.
+                    visLayers.getLayers().clear(); // clear species layers
+                    bboxLayer.getSource().clear(); // clear bboxes as well
 
-                // Force a validation
-                //$secretCountField.parsley().validate();
-            };
-
-            // make a function to render a layer row.
-            var renderLayerRow = function(parentId, layerId, friendlyName, fileName, zipFile) {
-
-                // Build id and name
-                var id = parentId + '_' + layerId;
-                var name = 'form.widgets.environmental_datasets.' + parentId + ':list';
-
-                var html = '';
-                html += '<tr data-envparent="' + parentId + '" class="layer-row">';
-                // checkbox for selecting the layer
-                html += '<td><input type="checkbox" id="' + id + '" name="' + name + '" value="' + layerId + '" data-friendlyname="checkbox_climatelayer_' + friendlyName + '"';
-                html += '/></td>';
-                html += '<td><label for="' + id + '">' + friendlyName + '</label></td>';
-                // viz button to viz the layer (and whatever other actions eventually go here)
-                html += '<td class="bccvl-table-controls"><a href="javascript:void(0);" class="fine bccvl-auto-viz" href="'+zipFile+'" data-viz-layer="'+fileName+'"><i class="icon-eye-open icon-link" title="view this layer"></i></a></td>';
-                html += '</tr>';
-                var $html = $(html);
-
-                // now attach some behaviour, here in the JS where nobody can see wtf is going on. TODO move to somewhere else..?
-                // here's where we hook up the viz
-                var $vizButton = $html.find('.bccvl-table-controls i.icon-eye-open');
-
-                /*$vizButton.click(function(evt) {
-                    var params = {
-                        file_name: fileName
-                    };
-                    viz.visualise(zipFile, $vizButton, null, params);
-                    evt.preventDefault();
-                });*/
-
-                var $layerSelect = $html.find('input[name="' + name + '"]');
-                $layerSelect.change(function(evt) {
-                    layerUpdate(parentId, layerId, $layerSelect);
+                    var geometries = [];
+                    // FIXME: the find is too generic (in case we add bboxes everywhere)
+                    $('body').find('input[data-bbox]').each(function(){
+                        var type = $(this).data('type');
+                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
+                            vizcommon.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayers) {
+                                // FIXME: assumes only one layer because of species data
+                                var newLayer = newLayers[0];
+                                vizcommon.addLayerLegend(
+                                    map.getTarget(),
+                                    newLayer.get('title'),
+                                    newLayer.get('bccvl').layer.style.color, null, null);
+                            });
+                        } else {
+                            var geom = $(this).data('bbox');
+                            geom = new ol.geom.Polygon([[
+                                [geom.left, geom.bottom],
+                                [geom.right, geom.bottom],
+                                [geom.right, geom.top],
+                                [geom.left, geom.top],
+                                [geom.left, geom.bottom]
+                            ]]);
+                            //geom.type = type;
+                            geometries.push(geom);
+                        }
+                    });
+                    // draw collected geometries
+                    vizcommon.drawBBoxes(map, geometries, bboxLayer);
+                        
                 });
 
-                return $html;
-            };
-
-            // make a function that toggles between showing and hiding a dataset's layers
-            var toggleEnvGroup = function(token) {
-                // find the group header
-                if ($('[data-envgroupid=' + token + ']').hasClass('disabled')){
-
-                } else {
-                    var $header = $('[data-envgroupid=' + token + ']');
-                    if ($header.length > 0) {
-                        if ($header.hasClass('bccvl-open')) {
-                            // it was open, so close it
-                            $header.find('i.icon-minus').removeClass('icon-minus').addClass('icon-plus');
-                            $header.removeClass('bccvl-open');
-                            // hide all the layer rows
-                            //$header.parent().find('tr[data-envparent=' + token + ']').addClass('hidden');
-                            $header.parent().find('tr[data-envparent=' + token + ']').fadeOut();
-                        } else {
-                            // it's not open, so open it
-                            $header.find('i.icon-plus').removeClass('icon-plus').addClass('icon-minus');
-                            $header.addClass('bccvl-open');
-
-                            // got any child rows?
-                            var $layerRows = $header.parent().find('tr[data-envparent=' + token + ']');
-                            if ($layerRows.length > 0) {
-                                // already fetched the layers. just show them
-                                //$layerRows.removeClass('hidden');
-                                $layerRows.fadeIn();
-                            } else {
-                                // fetch metadata for this dataset, to see what env layers it holds
-                                var layerReq = $.xmlrpc({ url: portal_url + '/dm/getMetadata?datasetid=' + token });
-                                layerReq.done( function(list) {
-                                    // xmlrpc returns list of results
-                                    list = list[0];
-                                    if (Object.keys(list.layers).length) {
-                                        // collect layers by name (for sorting them)
-                                        var layerNames = [];
-                                        var layers = {};
-                                        // render each layer
-                                        $.each(list.layers, function(key, value) {
-                                            var name = value.label;
-                                            var fileName = 'filename' in value ? value.filename : list.file;
-                                            var zipFile = list.file;
-                                            layerNames.push(name);
-                                            layers[name] = renderLayerRow(token, value.layer, name, fileName, zipFile);
-                                        });
-
-                                        // now sort the names and add them in order
-                                        layerNames.sort();
-                                        // gotta be reverse order, coz we add each successive one in right after the $header
-                                        for(var index = layerNames.length - 1; index >= 0; index--) {
-                                            $header.after(layers[layerNames[index]]);
-                                        }
-                                    } else {
-                                        alert('There are no layers in selected dataset.');
-                                    }
-                                });
-                                layerReq.fail( function(jqxhr, status) {
-                                    alert('Failed to get layers contained in selected dataset; status was "' + status + '", whatever that means.');
-                                });
-                            }
-                        }
-                    }
-                }
-            };
-
-            // Wire up listeners to the climate layer boxes
-            $('.bccvl-envgroup').click(function() {
-                var envgroupid = $(this).attr('data-envgroupid');
-                toggleEnvGroup(envgroupid);
             });
+
         });
         // ==============================================================
     }
