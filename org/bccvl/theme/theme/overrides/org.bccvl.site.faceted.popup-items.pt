@@ -39,8 +39,10 @@
                              md python:dstools.metadata(item);
                              ">
               <div class="cell">
+                
                 <h4>
-                <span tal:content="item_title_or_id">Item Title</span></h4>
+                  <span tal:content="item_title_or_id">Item Title</span>
+                </h4>
                 <ul class="details">
                   <li tal:condition="item_description"
                       tal:content="item_description">Item description</li>
@@ -79,34 +81,40 @@
                              exp python:exptools.experiment_details(item);
                              ">
               <div class="cell">
+                
                 <h4>
                   <strong tal:content="item_title">Item Title</strong>,
                   <span class="taxonomy" tal:content="exp/species_occurrence"/>
                   <em>(<span tal:content="exp/functions"/>)</em>
                 </h4>
-                <tal:if condition="exp/environmental_layers|nothing">
-                  <dl>
-                    <dt class="bccvl-experiment-parameters"
-                        tal:repeat="dataset exp/environmental_layers" >
+                <ul class="details">
+                  
+                  <tal:if condition="exp/environmental_layers|nothing">
+                    <li tal:repeat="dataset exp/environmental_layers" >
                       <tal:repl tal:replace="dataset/title"/>
-                      <dd class="bccvl-experiment-parameters"
-                          tal:repeat="layer dataset/layers"
-                          tal:content="python: dstools.layer_vocab.getTerm(layer).title"></dd>
-                    </dt>
-                  </dl>
-                </tal:if>
-                <tal:if condition="exp/years|nothing">
-                  <p class="bccvl-experiment-parameters" tal:content="exp/years" />                    
-                </tal:if>
-                <tal:if condition="item/Description">
-                  <p class="bccvl-experiment-summary" tal:content="item/Description" />
-                </tal:if>
+                      <ul class="bccvl-experiment-parameters">
+                        <li class="bccvl-experiment-parameters"
+                            tal:repeat="layer dataset/layers"
+                            tal:content="python: dstools.layer_vocab.getTerm(layer).title"></li>
+                      </ul>
+                    </li>
+                  </tal:if>
                 
-                <ul class="inline">
-                  <li><strong>Creator:</strong><span tal:condition="item_creator"
-                  tal:define="author python:pas_member.info(item_creator)"
-                  tal:content="author/name_or_id"> Bob Dobalina</span></li>
-                  <li><strong>Modified:</strong> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></li>
+                  <tal:if condition="exp/years|nothing">
+                    <li class="bccvl-experiment-parameters"><small><b>Years:</b> <span tal:content="exp/years"></span></small></li>                   
+                  </tal:if>
+
+                  <tal:if condition="item/Description">
+                    <li class="bccvl-experiment-summary"><small><b>Description:</b> <span tal:content="item/Description"></span></small></li>
+                  </tal:if>
+                  
+                  <tal:if condition="item_creator">
+                    <li tal:define="author python:pas_member.info(item_creator)">
+                      <small><b>Creator:</b> <span tal:content="author/name_or_id"></span></small></li>
+                  </tal:if>
+                  
+                  <li><small><b>Modified:</b> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)"></span></small></li>
+                  
                 </ul>
               </div>
             </div>

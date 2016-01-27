@@ -12,7 +12,7 @@
     </div>
     <div id="modal-body" class="modal-body"></div>
     <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+       
       <button class="btn btn-primary">Select</button>
     </div>
   </div>
@@ -27,9 +27,11 @@
                      dlinfo dstool/get_download_info;">
       <input type="hidden" value="" name="form.widgets.fieldname:list" class="item"
              tal:attributes="value item/UID;
+                             data-bbox dstool/bbox|nothing;
                              name string:${view/name}:list;
                              required view/required;
                              class python: 'item' + ' required' if view.required else '';
+                             data-type itemmd/genre;
                              "/>
       <a class="btn pull-right removeitem" href="#"><i class="icon-remove"></i></a>
       <a class="fine bccvl-occurrence-viz btn pull-right btn-primary"
@@ -64,9 +66,9 @@
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
   </span>
-  <a id="fieldname-popup" href="#" class="btn btn-default"
+  <a id="fieldname-popup" href="#" class="btn btn-primary btn-large"
      tal:attributes="id string:${view/field/__name__}-popup;
                      href string:${portal_url}/portal_facetconfig/${view/field/__name__}">
-     <i class="icon icon-plus-sign"></i> Select A Dataset
+     <i class="fa fa-plus-circle"></i> Select A Dataset
   </a>
 </html>

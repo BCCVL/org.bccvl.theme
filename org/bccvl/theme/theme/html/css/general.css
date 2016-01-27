@@ -68,8 +68,7 @@ a.active, a.active:hover {
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-    padding-left: 5px;
-padding-right: 5px;
+
   word-break: normal;
 }
 .btn-primary {
@@ -415,9 +414,22 @@ div.loader {
     max-height: 800px;
     width:100%;
 }
-
+.preview-text {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    color: rgba(0,0,0,.1);
+    position: absolute;
+    text-align: center;
+    width: 160px;
+    margin-left: -80px;
+    left: 50%;
+    top: 50%;
+}
 .bccvl-preview-pane.active, .bccvl-preview-pane.multimaps {
     background:none;
+/*    overflow:hidden; */
 }
 
 .bccvl-preview-pane .empty {
@@ -437,6 +449,10 @@ div.loader {
 .bccvl-preview-pane img {
     margin: 0 auto;
     display: block;
+}
+.bccvl-preview-pane .minimap.graph img {
+    outline: 1px solid rgba(0,0,0,.3);
+    outline-offset: -1px;
 }
 
 .bccvl-preview-pane pre {
@@ -739,6 +755,10 @@ Update: this bug is fixed in Bootstrap 3.0, so for now let's
 show the disclosure triangles, file a bug that they're wrong
 sometimes, and TODO: upgrade when bootstrap 3 is out.
 --- */
+
+.experiment-details.header {
+    padding:1em;
+}
 .bccvl-algoconfig .accordion-toggle:before {
     content: '\25bc';
     color: #ccc;
@@ -965,6 +985,23 @@ td.bccvl-table-controls a.btn {
   margin-left: .3em;
 }
 td.bccvl-table-controls a.btn:hover {
+    text-decoration: none;
+}
+a.expand-btn {
+    display: block;
+    text-align: center;
+    background: rgba(77,195,69, .3);
+    padding: .3em;
+    margin: .3em -1em -1em;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+a.expand-btn:hover {
+    text-decoration: none;
+    background: rgba(77,195,69, .8);
+}
+a.expand-btn:focus {
     text-decoration: none;
 }
 #bccvl-experimentresults-table td.bccvl-table-controls a.btn {
@@ -1811,6 +1848,11 @@ span.loading-gif {
 .selectize-dropdown [data-selectable].active .badge {
     background: rgba(0,0,0,.2);
 }
+.datasets-list-entry input[type="checkbox"].modal-item-checkbox {
+    display: inline-block;
+    margin: 0 .2em 0 0;
+    vertical-align: middle;
+}
 .filter .search-widget input[type="text"], .faceted-widget .search-widget input[type="text"] {
     width:80%;
 }
@@ -2134,15 +2176,16 @@ table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERRO
 .bccvl-experimenttable-accordion {
     margin-bottom:6px;
     border:0px;
+    overflow:hidden;
+    border-radius:0px;
 }
 .bccvl-experimenttable-accordion ul, .bccvl-experimenttable-accordion ol{
     list-style-type: none;
 }
 .bccvl-experimenttable-accordion .experiment-accordion-heading > div{
-    cursor:pointer;
     padding:1em;
 }
-.bccvl-experimenttable-accordion .experiment-accordion-heading:hover .COMPLETED {
+/*.bccvl-experimenttable-accordion .experiment-accordion-heading:hover .COMPLETED {
     background:rgba(77,195,69, .5);
 }
 .bccvl-experimenttable-accordion .experiment-accordion-heading:hover .info {
@@ -2150,7 +2193,7 @@ table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERRO
 }
 .bccvl-experimenttable-accordion .experiment-accordion-heading:hover .ERROR {
     background:rgba(231,76,60, .5);
-}
+}*/
 .bccvl-experimenttable-accordion .bccvl-table-controls {
     float: right;
     max-width: 100px;
@@ -2285,6 +2328,22 @@ table.error td {
 }
 .selectize-input.items.not-full.has-options.has-items, .selectize-control.multi .selectize-input {
     padding:5px;
+}
+.constraints {
+    margin-top:1em;
+}
+.constraints .btn.pull-right {
+    margin-left:.5em;
+    margin-bottom:.5em;
+}
+.tab-pane#tab-geo .control-group textarea {
+    font-size:1em;
+    line-height: 1.2em;
+    min-height:180px;
+    background:rgba(0,0,0,.1);
+}
+label[disabled] {
+    opacity:.6;
 }
 
 /* custom single select remove button */

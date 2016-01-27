@@ -128,7 +128,7 @@
     <div class="modal-footer">
       <button id="sharing-save-button" class="context btn btn-primary allowMultiSubmit" type="submit" name="form.button.Save" value="Save" i18n:attributes="value label_save" disabled="disabled">Save</button>
       
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+       
     </div>
   </form>
 </html>

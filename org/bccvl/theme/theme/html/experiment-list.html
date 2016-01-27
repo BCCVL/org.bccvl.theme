@@ -80,7 +80,7 @@
 	    <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
 	    <li               ><a class="bccvllinks-datasets">Datasets</a></li>
 	    <li class="active"><a class="bccvllinks-experiments">Experiments</a></li>
-	    <li               ><a class="bccvllinks-knowledgebase">Knowledge Base</a></li>
+	    <li               ><a class="bccvllinks-knowledgebase">Support</a></li>
 	  </ul>
 
 	</div><!--/.nav-collapse -->
@@ -113,18 +113,19 @@
           </div>
           <div class="row-fluid">
             <div class="span4">
-      	      <h4><strong>Run A New Experiment</strong></h4>
-              <hr/>
-      	      <p>The BCCVL enables you to conduct five types of experiments to investigate the impact of climate change on biodiversity.</p>
-      	      <div class="alert">
-      	        <button type="button" class="close" data-dismiss="alert">&times;</button>
-      	        <p>Before conducting an experiment you need to make sure all the species, climate, and other environmental datasets are uploaded into the BCCVL.</p>
-      	      </div>
-      	    
-              
-
     	    <!-- some controls -->
+              <h4 class="new-experiment-type-heading" style="text-transform:uppercase;">Before Running An Experiment</h4>
+
+                <p>The datasets available for use within an experiment must be available within the BCCVL before the experiment is started. Prior to beginning an experiment, we recommend you:</p>
+                <div class="new-experiment-button experiment-stm">
+                  <a class="" href="/datasets/datasets_upload_view"><span><i class="fa fa-upload"></i> Upload datasets</a>
+                </div>
+                <div class="new-experiment-button experiment-stm">
+                  <a class="" href="/datasets/datasets_import_view"><span><i class="fa fa-cloud-download"></i> Import datasets from other services</a>
+                </div>
+                
         	    <div id="new-experiment-menu">
+                
                 <h3>Primary Experiments </h3>
         	      <div class="new-experiment-button experiment-sdm">
         	        <a class=" bccvllinks-experiment-new"><i class="fa fa-plus"></i><br/>new <span>Species Distribution Modelling</span> Experiment</a>
@@ -152,6 +153,7 @@
 	    <!-- list of available experiments -->
 	             <div class="span8">
                 <div class="span10 offset1">
+
     	             <h4><strong>Previously Run Experiments<strong></h4>
                    <hr/>
                     <div id="experiment-list">

@@ -31,6 +31,13 @@ define(
                 $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
             });
             
+            /*$('.expand-btn').toggle(function(e){
+                $(this).parents('.bccvl-experimenttable-accordion').find('.collapse').slideDown(300);
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
+            }, function(e){
+                $(this).parents('.bccvl-experimenttable-accordion').find('.collapse').slideUp(300);
+                $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
+            });*/
 
             $('a.export-btn').click( function(event ) {
                 event.preventDefault();
@@ -64,6 +71,24 @@ define(
                       $(this).find('.spinner').hide();
                   });
             });
+
+            $('a.email-support-btn').click( function(event ) {
+                event.preventDefault();
+                
+                var url = $(this).attr('href');
+                $.ajax( {
+                    url: url,
+                    timeout: 10000,
+                  })
+                  .done(function(data) {
+                      var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
+                      $('.bccvl-flashmessages').append(msg);
+                      console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
+                      if (data["success"]){
+                          $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
+                      }
+                  });
+           });
 
             $('#oauth-select-modal').on('hidden', function(){
                 $(this).removeData('modal');

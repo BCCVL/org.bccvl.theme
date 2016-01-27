@@ -121,6 +121,21 @@ define(
                 
             }();
             
+            $("body").on("click", ".update-dataset-btn", function(event) {
+                event.preventDefault();
+                var datasetURL = $(this).attr('data-url');
+                var updatemetadataURL = datasetURL + '/API/dm/v1/update_metadata?uuid=';
+                var completeURL = datasetURL + '/@@datasets_list_item';
+                var dsRow = $(this).parents('.datasets-list-entry');
+                $.ajax({
+                    url: updatemetadataURL
+                }).then(function(){ 
+                    renderDatasetRow(completeURL, dsRow);
+                }).then(function(){ 
+                    $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
+                });
+            });
+
             // Dateset entry dropdown functions
             $('body').on('click', '.dropdown-button', function(event){
                 event.preventDefault();
@@ -221,7 +236,7 @@ define(
         });
         
         function renderDatasetRow(completeURL, $tr) {
-            $.ajax({
+            return $.ajax({
                 url: completeURL,
                 success: function(rowHTML) {
                     $tr.replaceWith($(rowHTML));

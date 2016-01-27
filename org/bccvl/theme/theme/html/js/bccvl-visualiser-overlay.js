@@ -5,17 +5,30 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         var select;
+        /* Global configuration */
+        // ----------------------------------------------------------------
+        var map;
+        var visLayers;
+        
+        var mapId = $('.bccvl-preview-pane:visible').attr('id');
 
         $(function () {
-            renderBase($('.bccvl-preview-pane:visible').attr('id'));
-            createLegendBox($('.bccvl-preview-pane:visible').attr('id'));
-            appendBlendControl($('.bccvl-preview-pane:visible').attr('id'));
+          $.when( vizcommon.renderBase(mapId) ).then(function(base, layergroup){
+            
+            map = base;
+            visLayers = layergroup;
+
+            vizcommon.createLegendBox(mapId);
+            appendBlendControl(mapId);
             // tie up blend control
             select = document.getElementById('blend-mode');
             // Rerender map when blend mode changes
             select.addEventListener('change', function() {
                 map.render();
             });
+
+          });
+
         });
 
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
@@ -50,28 +63,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
 
-        /* Global configuration */
-        // ----------------------------------------------------------------
-        // visualiser base url
-        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
-        // dataset manager getMetadata endpoint url
-        var dmurl = portal_url + '/dm/getMetadata';
-
-        var map;
-        var visLayers;
-        // Australia Bounds
-        var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
-        var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
-        var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
-
-        var layer_vocab = {};
-        $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
-            $.each(data, function(index, value) {
-                layer_vocab[value.token] = value;
-            });
-        });
-        
         var styleArray = [
             { "minVal": 0, "maxVal": 1, "steps": 20,
               "startpoint": {r:255,g:255,b:255},
@@ -183,49 +174,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
         };
 
 
-        function createLegendBox(id){
-
-            // Build legend obj
-            var legend = document.createElement('div');
-            legend.className = 'olLegend ol-unselectable ol-control shown';
-
-            var button = document.createElement('a');
-            button.className = 'ol-button open';
-            button.innerHTML = '<i class="fa fa-list-ul"></i>';
-            
-            var panel = document.createElement('div');
-            panel.innerHTML = '<h5>Layers</h5>';
-            panel.className = 'panel shown';
-
-            button.onclick = function(e) {
-                e.stopPropagation();
-                if ( panel.className.indexOf('shown') > 0){
-                    button.className = 'ol-button'
-                    panel.className = 'panel';
-                    legend.className = 'olLegend ol-unselectable ol-control';
-                } else {
-                    button.className = 'ol-button open'
-                    panel.className = 'panel shown';
-                    legend.className = 'olLegend ol-unselectable ol-control shown';
-                }
-            };
-
-            legend.appendChild(button);
-            legend.appendChild(panel);
-
-            $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
-                
-        }
-
-        function addLayerLegend(layername, color, uuid, colorName){  
-            if (color == 'occurrence'){
-                $('.olLegend .panel').append('<label data-uuid="'+uuid+'" style="padding-top:1px;"><i style="color:red;text-align:center;margin-top:3px;" class="fa fa-circle"></i>&nbsp;'+layername+'</label>');
-            } else {
-                var colorRGB = 'rgba('+color.r+','+color.g+','+color.b+',1)';
-                $('.olLegend .panel').append('<label data-uuid="'+uuid+'" data-color-name="'+colorName+'"><i style="background:'+colorRGB+'"></i>&nbsp;'+layername+'</label>');
-            }
-        }
-
         function appendBlendControl(id){
             $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append('<div class="ol-unselectable ol-control ol-blend-control">'+
                         '<label for="blend-mode" class="mode">Mode: </label>'+
@@ -264,81 +212,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     '</div>');
         }
 
-
-        // RENDER EMPTY MAP
-        function renderBase(id){
-            // CREATE BASE MAP
-            // -------------------------------------------------------------------------------------------
-
-            // NEED TO DESTROY ANY EXISTING MAP
-            var container = $('#'+id);
-            if (container.hasClass('active')) {
-                container.empty();
-                map = null;
-            }
-
-            // destroy any html from images or text files
-            container.html('');
-
-            // destroy any floating progress bars (should be destroyed above, this is a fallback)
-            $('#progress-'+id).remove();
-
-            visLayers = new ol.layer.Group({
-                title: 'Layers',
-                layers: []
-            });
-
-            map = new ol.Map({
-                target: id,
-                layers: [
-                    new ol.layer.Group({
-                        'title': 'Base maps',
-                        layers: [
-                            new ol.layer.Tile({
-                                title: 'OSM',
-                                type: 'base',
-                                preload: 10,
-                                visible: true,
-                                source: new ol.source.OSM()
-                            })
-                            // new ol.layer.Tile({
-                            //     title: 'Satellite',
-                            //     type: 'base',
-                            //     visible: false,
-                            //     source: new ol.source.MapQuest({layer: 'sat'})
-                            // })
-                        ]
-                    }),
-                    visLayers
-                ],
-                view: new ol.View({
-                  center: ol.proj.transform([133, -27], 'EPSG:4326', 'EPSG:3857'),
-                  zoom: 4
-                })
-            });
-
-            map.getView().fit(australia_bounds, map.getSize());
-
-            var fullScreenToggle = new ol.control.FullScreen();
-            map.addControl(fullScreenToggle);
-            // remove crappy unicode icon so fontawesome can get in
-            $('#'+id+' button.ol-full-screen-false').html('');
-
-            // set to active
-            container.addClass('active');
-            // add progress bar container
-            container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
-
-            // hook up exportAsImage
-            $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-            $('#'+id+' a.export-map').click(
-                { map: map,
-                  mapTitle: 'Overlay'
-                }, vizcommon.exportAsImage);
-        }
-
-
-
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
         function addNewLayer(uuid, url, id, type, layerName){
@@ -350,98 +223,32 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 return;
             } 
 
-            $.xmlrpc({
-                url: dmurl,
-                params: {'datasetid': uuid},
-                success: function(data, status, jqXHR) {
-                    // xmlrpc returns an array of results
-                    data = data[0];
-                    // define local variable
-                    var layerdef;
-                    // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    if ($.isEmptyObject(data.layers)) {
-                        // occurrence data 
-                        // TODO: use data.title (needs to be populated)
-                        layerdef = {
-                            'title': layerName || data.filename || 'Data Overlay'
-                        };
+            $.when(vizcommon.addLayersForDataset(uuid, id, undefined, visLayers)).then(function(newLayers) {
+                // TODO: rendering legend should be an option or has to happen outside of addLayersForDataset
+                // FIXME: assumes there is only one layer
+                var newLayer = newLayers[0];
+                var layerdef = newLayer.get('bccvl').layer;
 
-                        var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms-occurrence');
-                        addLayerLegend(layerName, 'occurrence', uuid);
-
-                        newLayer.setOpacity(1);
-                        // add layer to layer group
-                        // TODO: should occurrence be always on top? (insert at 0)
-                        visLayers.getLayers().push(newLayer);
-
-                    } else {
-                        // raster data
-                        $.each(data.layers, function(layerid, layer) {
-
-                            layerdef = layer_vocab[layer.layer];
-                            if (typeof layerdef === 'undefined') {
-                                layerdef = {
-                                    'token': layer.layer,
-                                    'title': layer.layer || layer.filename,
-                                    'unitfull': '',
-                                    'unit': '',
-                                    'type': '',  // unused
-                                    'legend': 'default',
-                                    'tooltip': '',
-                                    'filename': layer.filename
-                                }
-                                if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
-                                    layerdef.legend = 'probability';
-                                    layerdef.unit = 'probability';
-                                }
-                            } else {
-                                // make a copy of the original object
-                                layerdef = $.extend({}, layerdef)
-                                // for zip files we need the filename associated with the layer
-                                if (layer.filename) {
-                                    layerdef.filename = layer.filename;
-                                }
-                            }
-                            // copy datatype into layer def object
-                            layerdef.datatype = layer.datatype;
-                            // add min / max values
-                            // FIXME: this should go away but some datasets return strings instead of numbers
-                            layerdef.min = Number(layer.min);
-                            layerdef.max = Number(layer.max);
-
-                            // give precedence to passed in layerName
-                            layer.title = layerName || layer.title;
-
-                            $.when( vizcommon.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-                                // object to hold legend and color ranges
-                                layerdef.style = styleObj;
-
-                                // copy color range from our styleArray
-                                layerdef.style.startpoint = styleArray[0].startpoint;
-                                layerdef.style.midpoint = styleArray[0].midpoint;
-                                layerdef.style.endpoint = styleArray[0].endpoint;
-
-                                // create layer
-                                var newLayer = vizcommon.createLayer(id, layerdef, data, 'wms', null);
-                                
-                                // handle our own legend
-                                addLayerLegend(layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
-
-                                // move used color into used array
-                                usedStyleArray.push(styleArray[0]);
-                                styleArray.shift();
+                if (layerdef.type == 'occurrence') {
+                    vizcommon.addLayerLegend(id, layerName, 'occurrence', uuid);
+                    newLayer.setOpacity(1);                    
+                } else {
+                    // copy color range from our styleArray
+                    layerdef.style.startpoint = styleArray[0].startpoint;
+                    layerdef.style.midpoint = styleArray[0].midpoint;
+                    layerdef.style.endpoint = styleArray[0].endpoint;
+                    // TODO: this does not update legend
+                    newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
+                    
+                    // handle our own legend
+                    vizcommon.addLayerLegend(id, layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+                    
+                    // move used color into used array
+                    usedStyleArray.push(styleArray[0]);
+                    styleArray.shift();
                             
-                                // add layer to layer group
-                                visLayers.getLayers().push(newLayer);
-
-                                bindLayerListeners(newLayer);
-                            });
-
-                        });
-                        
-                    }
-                    map.render();
                 }
+                bindLayerListeners(newLayer);
             });
         }
     }

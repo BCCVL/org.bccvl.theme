@@ -33,13 +33,8 @@
              tal:attributes="href string:${navigation_root_url}/@@oauth-preferences" target="_blank"><i class="fa fa-gear"></i> Manage Authorisations</a>
         </div>
       </div>
-      
-      <ul class="nav nav-tabs">
-	<li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-	<li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-        <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay</a></li>
-	<li id= "tab-comp"><a href="experiment_compare#tab-compare">Compare</a></li>
-      </ul>
+
+      <metal:block use-macro="context/@@experiment-macros/experiment_view_nav"/>
 
       <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
 
@@ -54,7 +49,7 @@
             
             <div class="bccvl-experimenttable-accordion accordion-group">
               
-              <div class="experiment-accordion-heading" data-toggle="collapse" data-target="#demo" data-parent="#bccvl-experimentresults-table"
+              <div class="experiment-accordion-heading" 
                    tal:attributes="data-target string:#${result/getId}-body;
                                    data-uuid result/UID">
                 <div tal:attributes="class result/@@dataset_tools/job_state|string:info;">
@@ -71,14 +66,17 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
-                    <a class="fine btn btn-mini btn-default expand-btn"
-                       title="Expand results"
-                       href="javascript:void(0)"
-                       data-toggle="collapse" 
-                       tal:attributes="data-target string:#${result/getId}-body">
-                      <i class="fa fa-chevron-circle-down icon-link"></i> More
-                    </a>
+                    <tal:block tal:define="state result/@@dataset_tools/job_state"
+                               tal:condition="python:state == 'FAILED'">
+                      <a class="fine btn btn-mini btn-info email-support-btn"
+                         title="Send an email to BCCVL for support regarding this experiment"
+                         href="#emailsupporturl"
+                         tal:attributes="href string:${navigation_root_url}/API/site/v1/send_support_email?url=${result/getURL};">
+                        <i class="fa fa-envelope-o icon-link"></i> Support
+                      </a>
+                    </tal:block>
                   </div>
+
                   <div class="experiment-details">
                     <h5><tal:replace tal:replace="result/Title">Result
                     Title</tal:replace></h5>
@@ -119,6 +117,39 @@
                         </li>                            
                       </tal:block>
                     </ul>
+                    <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
+                      <tal:block tal:condition="python: item.format in ('image/geotiff')">
+ 
+                          <div tal:condition="python: 'Projection' in item.description">
+
+                            <div tal:define="item_obj item/getObject;
+                                             dlinfo item_obj/dataset_tools/get_download_info;
+                                             downloadurl dlinfo/url;">
+                              <a class="bccvl-auto-viz btn btn-primary"
+                                 title="Preview this file"
+                                 href="#downloadurl"
+                                 data-mimetype="application/octet-stream"
+                                 data-uuid="a uuid"
+                                 tal:attributes="href downloadurl;
+                                                 data-uuid item/UID;
+                                                 data-mimetype item/format"
+                                 tal:condition="python: item.format not
+                                                in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                                <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
+                              </a>
+                            </div>
+                          </div>
+
+                      </tal:block>
+                    </tal:block>
+                    <a class="expand-btn"
+                       title="Expand results"
+                       href="javascript:void(0)"
+                       data-toggle="collapse" 
+                        data-parent="#bccvl-experimentresults-table"
+                       tal:attributes="data-target string:#${result/getId}-body">
+                      <i class="fa fa-chevron-circle-down icon-link"></i> More
+                    </a>
                   </div>
                 </div>
               </div>
