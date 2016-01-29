@@ -69,18 +69,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                 // -------------------------------------------------------------------------------------------
                 // TODO: wrapping in when not necessary?
                 $.when(vizcommon.renderBase(id)).then(function(map, visLayers) {
-                    // map ... the map generated
-                    // visLayers ... an empty layer group
-                    // get base layer group and add Satelite Tile layer
-                    map.getLayers().item(0).getLayers().push(
-                        new ol.layer.Tile({
-                            title: 'Satellite',
-                            type: 'base',
-                            visible: false,
-                            source: new ol.source.MapQuest({layer: 'sat'})
-                        })
-                    );
-                    
+
                     // add layerswitcher
                     var layerSwitcher = new ol.control.LayerSwitcher({
                         toggleOpen: true,
