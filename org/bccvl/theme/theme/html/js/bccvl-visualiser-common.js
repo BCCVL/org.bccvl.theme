@@ -914,19 +914,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                       }
                });            
                     
-              /*
-              var setCompositeMode = function(evt) {
-                   evt.context.globalCompositeOperation = 'darken';
-               };
-               
-               newLayer.on('precompose', setCompositeMode);
-               newLayer.on('postcompose', function() {
-                   newLayer.un('precompose', setCompositeMode);
-               });
-
-                */
-
-
                map = new ol.Map({
                    target: id,
                    layers: [
