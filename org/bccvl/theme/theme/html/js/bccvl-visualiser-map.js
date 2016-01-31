@@ -89,6 +89,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                     map.addControl(layerSwitcher);
                     layerSwitcher.showPanel();
 
+                    // FIXME: map should be cleared if the dataset is being removed in dataset selector widget -> have to hook up the event somewhere else
                     // load and add layers to map
                     vizcommon.addLayersForDataset(uuid, id, visibleLayer, visLayers).then(function(newLayers) {
                         $.each(newLayers, function(index, newLayer) {
@@ -100,7 +101,17 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher',
                                     map.getView().fit(newLayer.getExtent(), map.getSize());
                                 }
                             }
-                            
+
+                            remove map on dataset selector change
+                            newLayer.on('change:visible', function(e) {
+                                if (newLayer.getVisible()){
+                                    var bccvl = newLayer.get('bccvl');
+                                    // remove existing legend
+                                    $('.olLegend').remove();
+                                    // add new legend to dom tree
+                                    $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
+                                }
+                            });                            
                         });
                     });
                     
