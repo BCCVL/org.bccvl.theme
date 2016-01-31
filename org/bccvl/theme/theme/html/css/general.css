@@ -1862,7 +1862,6 @@ span.loading-gif {
 }
 .search-widget .btn i {
     line-height: 1.6em;
-    padding: 0 10px;
 }
 .faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled *, .faceted-select-item-disabled {
     cursor:default;

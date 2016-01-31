@@ -882,27 +882,42 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                    layers: []
                });
 
+               var baseLayers = new ol.layer.Group({
+                    title: 'Base Maps',
+                    layers: [
+                        new ol.layer.Tile({
+                            title: 'Satellite',
+                            type: 'base',
+                            visible: false,
+                            source: new ol.source.MapQuest({layer: 'sat'})
+                        }),
+                        new ol.layer.Tile({
+                           title: 'OSM',
+                           type: 'base',
+                           preload: 5,
+                           visible: true,
+                           source: new ol.source.OSM()
+                        })
+                    ]
+
+               });        
+
+               baseLayers.getLayers().forEach(function(lyr) {
+                      if (lyr.get('title') == 'Satellite'){
+                        lyr.on('precompose', function(evt){
+                          evt.context.globalCompositeOperation = 'lighten';
+                        });
+                      } else {
+                        lyr.on('precompose', function(evt){
+                          evt.context.globalCompositeOperation = 'darken';
+                        });
+                      }
+               });            
+                    
                map = new ol.Map({
                    target: id,
                    layers: [
-                       new ol.layer.Group({
-                           'title': 'Base maps',
-                           layers: [
-                               new ol.layer.Tile({
-                                   title: 'OSM',
-                                   type: 'base',
-                                   preload: 5,
-                                   visible: true,
-                                   source: new ol.source.OSM()
-                               })
-                               // new ol.layer.Tile({
-                               //     title: 'Satellite',
-                               //     type: 'base',
-                               //     visible: false,
-                               //     source: new ol.source.MapQuest({layer: 'sat'})
-                               // })
-                           ]
-                       }),
+                       baseLayers,
                        visLayers
                    ],
                    view: new ol.View({

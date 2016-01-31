@@ -2,11 +2,40 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser-map',  'bootstrap'],
-    function( $,       viz, vizmap ) {
+    ['jquery', 'js/bccvl-visualiser-map', 'js/bccvl-visualiser-common', 'openlayers3', 'bootstrap'],
+    function( $, vizmap, vizcommon, ol ) {
         // ==============================================================
         var intervalID;
         $(function() {
+            //console.log(vizmap.mapReady);
+            var geojsonObject = $('#form-widgets-modelling_region').val();
+
+            var source = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+            });
+
+            var constraintsLayer = new ol.layer.Vector({
+                source: source,
+                style: new ol.style.Style({
+                   fill: new ol.style.Fill({
+                       color: 'rgba(0, 160, 228, 0.1)'
+                   }),
+                   stroke: new ol.style.Stroke({
+                       color: 'rgba(0, 160, 228, 0.9)',
+                       width: 2
+                   })
+                })
+            });
+
+            var constraints = new ol.layer.Group({
+                title: 'Constraints',
+                layers: constraintsLayer
+            }); 
+
+            $.when(vizmap.ready).then(function(map){
+                console.log('map event');
+                map.addLayer(constraintsLayer);
+            });
 
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
