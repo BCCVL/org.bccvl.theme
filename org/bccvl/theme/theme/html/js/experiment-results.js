@@ -10,7 +10,7 @@ define(
 
             var geojsonObject = $('#form-widgets-modelling_region').val();
 
-            if (typeof geojsonObject != "undefined") {
+            if (geojsonObject) {
 
                 var source = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
@@ -18,6 +18,7 @@ define(
 
                 var constraintsLayer = new ol.layer.Vector({
                     source: source,
+                    title: 'Input region',
                     style: new ol.style.Style({
                         fill: new ol.style.Fill({
                             color: 'rgba(0, 160, 228, 0.0)'
@@ -31,7 +32,7 @@ define(
                 
                 var constraints = new ol.layer.Group({
                     title: 'Constraints',
-                    layers: constraintsLayer
+                    layers: [constraintsLayer]
                 }); 
 
                 // temp fix to wipe common listener off button on this page
@@ -44,18 +45,7 @@ define(
                     if (type == 'image/geotiff'){
                         $.when(vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'))).then(function(map, visLayers) {
                             
-                            //map.addLayer(constraintsLayer);
-
-                            // this does the same as the shorthand above, just using to output and test
-                            map.getLayers().forEach(function(lgr) {
-                               // assumes that we have only groups on map check that
-                               if (lgr instanceof ol.layer.Group) {
-                                   // iterate over layers within group                           
-                                   if(lgr.get('title') == "Layers"){
-                                     lgr.getLayers().push(constraintsLayer);
-                                   }
-                               }
-                           });
+                            map.addLayer(constraints);
 
                         });
                     }
