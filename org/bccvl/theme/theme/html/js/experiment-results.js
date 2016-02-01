@@ -10,32 +10,35 @@ define(
             //console.log(vizmap.mapReady);
             var geojsonObject = $('#form-widgets-modelling_region').val();
 
-            var source = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-            });
+            if (geojsonObject) {
 
-            var constraintsLayer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                   fill: new ol.style.Fill({
-                       color: 'rgba(0, 160, 228, 0.1)'
-                   }),
-                   stroke: new ol.style.Stroke({
-                       color: 'rgba(0, 160, 228, 0.9)',
-                       width: 2
-                   })
-                })
-            });
+                var source = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                });
 
-            var constraints = new ol.layer.Group({
-                title: 'Constraints',
-                layers: constraintsLayer
-            }); 
-
-            $.when(vizmap.ready).then(function(map){
-                console.log('map event');
-                map.addLayer(constraintsLayer);
-            });
+                var constraintsLayer = new ol.layer.Vector({
+                    source: source,
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 160, 228, 0.1)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 160, 228, 0.9)',
+                            width: 2
+                        })
+                    })
+                });
+                
+                var constraints = new ol.layer.Group({
+                    title: 'Constraints',
+                    layers: constraintsLayer
+                }); 
+                
+                $.when(vizmap.ready).then(function(map){
+                    console.log('map event');
+                    map.addLayer(constraintsLayer);
+                });
+            };
 
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
@@ -107,17 +110,16 @@ define(
                 var url = $(this).attr('href');
                 $.ajax( {
                     url: url,
-                    timeout: 10000,
-                  })
-                  .done(function(data) {
-                      var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
-                      $('.bccvl-flashmessages').append(msg);
-                      console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
-                      if (data["success"]){
-                          $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
-                      }
-                  });
-           });
+                    timeout: 10000
+                }).done(function(data) {
+                    var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
+                    $('.bccvl-flashmessages').append(msg);
+                    console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
+                    if (data["success"]){
+                        $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
+                    }
+                });
+            });
 
             $('#oauth-select-modal').on('hidden', function(){
                 $(this).removeData('modal');
