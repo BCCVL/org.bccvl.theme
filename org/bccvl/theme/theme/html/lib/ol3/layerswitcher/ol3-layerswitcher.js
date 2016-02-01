@@ -137,10 +137,14 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 this.mapListeners.push(map.on('pointerdown', function() {
                     this_.hidePanel();
                 }));
+                // watch map top level layergroup for changes
+                handler = map.getLayerGroup().getLayers().on('propertychange', function(evt) {
+                    this_.renderPanel();
+                });
+                this_.layerlisteners.push([map.getLayerGroup().getLayers(), handler]);
                 // recurse through all layers and attach change listeners to
                 // all layer groups, re-render layer switcher in case
                 // the list of layers on the map has changed
-                // TODO: may need another listener action in case we add a new layer group
                 ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {
                     if (l instanceof ol.layer.Group) {
                         handler = l.getLayers().on('propertychange', function(evt) {
