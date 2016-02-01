@@ -12,7 +12,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
          */
 
 
-         // modifications by Sam Wolski, Griffith University eRSAD
+         // modifications by Sam Wolski, Griffith University eRSAD 
          // Apr 2015
         ol.control.LayerSwitcher = function(opt_options) {
 

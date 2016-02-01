@@ -7,35 +7,61 @@ define(
         // ==============================================================
         var intervalID;
         $(function() {
-            //console.log(vizmap.mapReady);
+
             var geojsonObject = $('#form-widgets-modelling_region').val();
 
-            var source = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-            });
+            if (typeof geojsonObject != "undefined") {
 
-            var constraintsLayer = new ol.layer.Vector({
-                source: source,
-                style: new ol.style.Style({
-                   fill: new ol.style.Fill({
-                       color: 'rgba(0, 160, 228, 0.1)'
-                   }),
-                   stroke: new ol.style.Stroke({
-                       color: 'rgba(0, 160, 228, 0.9)',
-                       width: 2
-                   })
-                })
-            });
+                var source = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                });
 
-            var constraints = new ol.layer.Group({
-                title: 'Constraints',
-                layers: constraintsLayer
-            }); 
+                var constraintsLayer = new ol.layer.Vector({
+                    source: source,
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 160, 228, 0.0)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 160, 228, 0.9)',
+                            width: 2
+                        })
+                    })
+                });
+                
+                var constraints = new ol.layer.Group({
+                    title: 'Constraints',
+                    layers: constraintsLayer
+                }); 
 
-            $.when(vizmap.ready).then(function(map){
-                console.log('map event');
-                map.addLayer(constraintsLayer);
-            });
+                // temp fix to wipe common listener off button on this page
+                $('body a.bccvl-auto-viz').unbind('click');
+                // and redo it
+                $('body').on('click', 'a.bccvl-auto-viz', function(event){
+
+                    var type = $(this).data('mimetype');
+
+                    if (type == 'image/geotiff'){
+                        $.when(vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'))).then(function(map, visLayers) {
+                            
+                            //map.addLayer(constraintsLayer);
+
+                            // this does the same as the shorthand above, just using to output and test
+                            map.getLayers().forEach(function(lgr) {
+                               // assumes that we have only groups on map check that
+                               if (lgr instanceof ol.layer.Group) {
+                                   // iterate over layers within group                           
+                                   if(lgr.get('title') == "Layers"){
+                                     lgr.getLayers().push(constraintsLayer);
+                                   }
+                               }
+                           });
+
+                        });
+                    }
+                });
+            }
+
 
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
@@ -107,17 +133,16 @@ define(
                 var url = $(this).attr('href');
                 $.ajax( {
                     url: url,
-                    timeout: 10000,
-                  })
-                  .done(function(data) {
-                      var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
-                      $('.bccvl-flashmessages').append(msg);
-                      console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
-                      if (data["success"]){
-                          $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
-                      }
-                  });
-           });
+                    timeout: 10000
+                }).done(function(data) {
+                    var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
+                    $('.bccvl-flashmessages').append(msg);
+                    console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
+                    if (data["success"]){
+                        $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
+                    }
+                });
+            });
 
             $('#oauth-select-modal').on('hidden', function(){
                 $(this).removeData('modal');

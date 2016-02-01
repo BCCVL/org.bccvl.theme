@@ -87,6 +87,64 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                 
             },*/
 
+            mapRender: function(uuid, url, id, type, visibleLayer) {
+
+              var ready = $.Deferred();
+
+              // CREATE BASE MAP
+              // -------------------------------------------------------------------------------------------
+              // TODO: wrapping in when not necessary?
+              $.when(bccvl_common.renderBase(id)).then(function(map, visLayers) {
+
+                  // add layerswitcher
+                  var layerSwitcher = new ol.control.LayerSwitcher({
+                      toggleOpen: true,
+                      singleVisibleOverlay: true
+                  });
+                  map.addControl(layerSwitcher);
+                  layerSwitcher.showPanel();
+
+                  // load and add layers to map
+                  bccvl_common.addLayersForDataset(uuid, id, visibleLayer, visLayers).then(function(newLayers) {
+                      $.each(newLayers, function(index, newLayer) {
+                          // if layer is visible we have to show legend as well
+                          if (newLayer.getVisible()) {
+                              $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(newLayer.get('bccvl').legend);
+                              // zoom to extent to first visible layer
+                              if(newLayer.getExtent()){
+                                  map.getView().fit(newLayer.getExtent(), map.getSize());
+                              }
+                          }
+
+                          newLayer.on('change:visible', function(e) {
+                              if (newLayer.getVisible()){
+                                  var bccvl = newLayer.get('bccvl');
+                                  // remove existing legend
+                                  $('.olLegend').remove();
+                                  // add new legend to dom tree
+                                  $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
+                              }
+                          });                            
+                      });
+                  });
+                  
+                  // add click control for point return
+                  map.on('singleclick', function(evt){
+                      bccvl_common.getPointInfo(evt);
+                  });
+                  
+                  map.on('pointermove', function(evt) {
+                      bccvl_common.hoverHandler(evt);
+                  });
+
+                  ready.resolve(map, visLayers);
+                  
+              });
+
+              return ready;
+
+           },
+
            generateRangeArr: function(styleObj){
                var standard_range = styleObj.standard_range;
                var minVal = styleObj.minVal;
