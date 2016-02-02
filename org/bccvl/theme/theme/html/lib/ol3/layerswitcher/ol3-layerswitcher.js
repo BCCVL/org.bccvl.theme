@@ -257,7 +257,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                     input.type = 'checkbox';
                     input.name = 'constraint';
                 } else if (this.singleViewOnly && lyr.get('type') != 'constraint'){
-                    input.type = 'checkbox';
+                    input.type = 'radio';
                     input.name = 'layers';
                 } else {
                     input.type = 'checkbox';
