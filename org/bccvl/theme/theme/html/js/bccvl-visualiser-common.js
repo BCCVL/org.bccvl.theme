@@ -101,7 +101,13 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                       toggleOpen: true,
                       singleVisibleOverlay: true
                   });
+                  // add scaleline
+                  var scaleline = new ol.control.ScaleLine({
+                      className: 'ol-scale-line'
+                  });
+
                   map.addControl(layerSwitcher);
+                  map.addControl(scaleline);
                   layerSwitcher.showPanel();
 
                   // load and add layers to map

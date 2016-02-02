@@ -18,6 +18,7 @@ define(
 
                 var constraintsLayer = new ol.layer.Vector({
                     source: source,
+                    type: 'constraint',
                     title: 'Input region',
                     style: new ol.style.Style({
                         fill: new ol.style.Fill({
