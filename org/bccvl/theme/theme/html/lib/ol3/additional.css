@@ -257,7 +257,10 @@ div.olControlAttribution {
   white-space: nowrap;
 }
 .olLegend .panel.shown {
-  display: inline-block;
+    display: inline-block;
+    overflow: auto;
+    max-height: 500px;
+    max-width: 400px;
 }
 
 .olLegend i {
