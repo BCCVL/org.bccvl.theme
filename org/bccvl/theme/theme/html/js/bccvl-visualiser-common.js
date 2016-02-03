@@ -1315,7 +1315,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
                });
                $('.btn.draw-geojson').on('click', function(e){
-                  console.log($(this).data('geojson'));
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {

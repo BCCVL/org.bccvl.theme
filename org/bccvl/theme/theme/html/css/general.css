@@ -1848,6 +1848,9 @@ span.loading-gif {
 .selectize-dropdown [data-selectable].active .badge {
     background: rgba(0,0,0,.2);
 }
+.selectize-control {
+    margin-bottom:.5em;
+}
 .datasets-list-entry input[type="checkbox"].modal-item-checkbox {
     display: inline-block;
     margin: 0 .2em 0 0;
