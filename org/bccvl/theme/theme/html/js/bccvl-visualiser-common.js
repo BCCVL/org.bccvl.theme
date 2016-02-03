@@ -1261,6 +1261,37 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
 
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
+
+               console.log(constraintsLayer.getSource().getFeatures());
+           },
+
+           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
+
+               // clear layer
+               constraintsLayer.getSource().clear();
+
+               console.log(geojsonObject);
+
+               var feature = (new ol.format.GeoJSON()).readFeature(geojsonObject);
+
+               console.log(feature);
+
+               feature.setId('geo_constraints');
+
+               var style = new ol.style.Style({
+                   fill: new ol.style.Fill({
+                       color: 'rgba(0, 160, 228, 0.1)'
+                   }),
+                   stroke: new ol.style.Stroke({
+                       color: 'rgba(0, 160, 228, 0.9)',
+                       width: 2
+                   })
+               });
+
+               feature.setStyle(style);
+               constraintsLayer.getSource().addFeature(feature);
+               console.log(map.getView().getProjection());
+               map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
            },
 
            removeConstraints: function(el, map, constraintsLayer) {
@@ -1284,6 +1315,10 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                });
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
+               });
+               $('#select-region').on('change', function(e){
+                  console.log($(this).val());
+                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).val(), constraintsLayer);
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
                    // update coordinate inputs

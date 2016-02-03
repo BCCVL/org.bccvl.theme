@@ -80,6 +80,58 @@ define(
                 $checkbox.change();
             });
 
+            // -- region selection ---------------------------------
+            $('#select-region').selectize({
+                valueField: 'feature',
+                labelField: 'name',
+                searchField: 'name',
+                optgroupField: 'state',
+                optgroupValueField: 'state',
+                optgroupLabelField: 'state',
+                options: [],
+                create: false,
+                load: function(query, callback) {
+                    //console.log(query);
+                    if (!query.length) return callback();
+                    //console.log('blah')
+                     $.ajax({
+                        url: 'https://192.168.100.200/_debug/bccvl/++resource++bccvl/lib/geojson/LGA-3857.geojson',
+                        dataType: 'json',
+                        error: function() {
+                            //console.log(error);
+                            callback();
+                        },
+                        success: function(data) {
+                            //console.log(query);
+                            query = query.toLowerCase();
+
+                            var results = [];
+                            //console.log(data.features);
+                            $.each(data.features, function (key, feature) {
+                              //geometry = val.geometry;
+                              //properties = val.properties;
+                              var featureName = feature.properties.LGA_NAME11.toLowerCase();
+                              //console.log(properties.LGA_NAME11);  
+                              if (featureName.indexOf(query) >= 0) {
+                                //console.log('run2');
+
+                                var match = {
+                                    'name': feature.properties.LGA_NAME11,
+                                    'feature': JSON.stringify(feature),
+                                    'state': feature.properties.STATE_CODE,
+                                }
+                                results.push(match);
+                              }
+                            });
+                            console.log(results);
+                            callback(results);
+                        }
+                    });
+                        
+                }
+            });
+
+
             // -- absences + random --------------------------------
             $('#formfield-form-widgets-species_number_pseudo_absence_points').hide(0);
             $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
