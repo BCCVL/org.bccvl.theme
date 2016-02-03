@@ -341,6 +341,10 @@
                     <p class="span12 bccvl-tab-description">
                       Define any geographic constraints for the experiment.
                     </p>
+                    <p>
+                      This tab is optional.<br/>
+                      Here you can constrain your model output to a particular area or region (e.g. Queensland) by drawing or entering in bounding box coordinates. The default constraint is the extent of the largest environmental/climate dataset you selected. If you do not want to constrain your model simply click next.
+                    </p>
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">
@@ -350,16 +354,22 @@
                       <div class="control-group">
                         <div class="bccvl-occurrencestable">
                           
-                          <p>
-                            This tab is optional.<br/>
-                            Here you can constrain your model output to a particular area or region (e.g. Queensland) by drawing or entering in bounding box coordinates. The default constraint is the extent of the largest environmental/climate dataset you selected. If you do not want to constrain your model simply click next.
-                          </p>
+                          
                           <div class="constraints" id="formfield-form-widgets-modelling_region"></div>
                           <div class="bccvl-constraint-geojson-input">
                             <p>Select constraints by pre-defined region</p>
-                            <select id="select-region" placeholder="Find a region...">
+                            <select id="select-region-type" placeholder="Choose a region type ...">
+                              <option value="">Select A Region Type ...</option>
+                              <option value="cl959">Local Goverment Areas</option>
+                              <option value="cl916">National Resource Management Regions</option>
+                              <option value="cl22">Australian States and Territories</option>
+                              <option value="cl1048">IBRA 7 Regions</option>
+                            </select>
+                            <select id="select-region" placeholder="Find a region ...">
                               <option value="" selected="selected"></option>
                             </select>
+                            <a href="javascript:void(0);" class="btn btn-small btn-default draw-geojson" id="selected-geojson"><i class="fa fa-crop"></i> Add To Map</a>&nbsp;
+                            <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
                           <hr/>
                           

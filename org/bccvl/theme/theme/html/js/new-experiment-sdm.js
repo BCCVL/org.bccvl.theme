@@ -81,55 +81,69 @@ define(
             });
 
             // -- region selection ---------------------------------
-            $('#select-region').selectize({
-                valueField: 'feature',
-                labelField: 'name',
-                searchField: 'name',
-                optgroupField: 'state',
-                optgroupValueField: 'state',
-                optgroupLabelField: 'state',
-                options: [],
-                create: false,
-                load: function(query, callback) {
-                    //console.log(query);
-                    if (!query.length) return callback();
-                    //console.log('blah')
-                     $.ajax({
-                        url: 'https://192.168.100.200/_debug/bccvl/++resource++bccvl/lib/geojson/LGA-3857.geojson',
-                        dataType: 'json',
-                        error: function() {
-                            //console.log(error);
-                            callback();
-                        },
-                        success: function(data) {
-                            //console.log(query);
-                            query = query.toLowerCase();
 
-                            var results = [];
-                            //console.log(data.features);
-                            $.each(data.features, function (key, feature) {
-                              //geometry = val.geometry;
-                              //properties = val.properties;
-                              var featureName = feature.properties.LGA_NAME11.toLowerCase();
-                              //console.log(properties.LGA_NAME11);  
-                              if (featureName.indexOf(query) >= 0) {
-                                //console.log('run2');
+            var xhr;
+            var select_type, $select_type;
+            var select_region, $select_region;
 
-                                var match = {
-                                    'name': feature.properties.LGA_NAME11,
-                                    'feature': JSON.stringify(feature),
-                                    'state': feature.properties.STATE_CODE,
-                                }
-                                results.push(match);
-                              }
-                            });
-                            console.log(results);
-                            callback(results);
-                        }
+            $select_type = $('#select-region-type').selectize({
+                onChange: function(value) {
+                    if (!value.length) return;
+                    select_region.disable();
+                    select_region.clearOptions();
+                    select_region.load(function(callback) {
+                        xhr && xhr.abort();
+                        xhr = $.ajax({
+                            url: 'https://192.168.100.200/_spatial/ws/field/' + value,
+                            success: function(data) {
+                                select_region.enable();
+
+                                var results = [];
+
+                                $.each(data.objects, function (key, feature) {
+
+                                    var match = {
+                                        'name': feature.name,
+                                        'pid': feature.pid
+                                    }
+                                    results.push(match);
+                                });
+                                callback(results);
+                            },
+                            error: function() {
+                                callback();
+                            }
+                        })
                     });
-                        
                 }
             });
+
+            $select_region = $('#select-region').selectize({
+                valueField: 'pid',
+                labelField: 'name',
+                searchField: ['name'],
+                onChange: function(value){
+                    $.ajax({
+                        url: 'https://192.168.100.200/_spatial/ws/shape/geojson/' + value,
+                        success: function(result) {
+                            // have to clean up ALA's geojson format
+                            var geojson = {
+                                'type': 'Feature',
+                                'geometry': result
+                            }
+                            $('#selected-geojson').data('geojson', JSON.stringify(geojson));
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    })
+                }
+            });
+
+            select_region  = $select_region[0].selectize;
+            select_type = $select_type[0].selectize;
+
+            select_region.disable();
 
 
             // -- absences + random --------------------------------

@@ -1270,11 +1270,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                // clear layer
                constraintsLayer.getSource().clear();
 
-               console.log(geojsonObject);
-
                var feature = (new ol.format.GeoJSON()).readFeature(geojsonObject);
 
-               console.log(feature);
+               feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
 
                feature.setId('geo_constraints');
 
@@ -1290,7 +1288,7 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
 
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-               console.log(map.getView().getProjection());
+
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
            },
 
@@ -1316,9 +1314,9 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
                });
-               $('#select-region').on('change', function(e){
-                  console.log($(this).val());
-                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).val(), constraintsLayer);
+               $('.btn.draw-geojson').on('click', function(e){
+                  console.log($(this).data('geojson'));
+                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
                    // update coordinate inputs
