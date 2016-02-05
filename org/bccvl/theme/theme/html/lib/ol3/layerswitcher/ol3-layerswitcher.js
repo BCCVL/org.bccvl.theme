@@ -265,16 +265,16 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 input.id = lyrId;
 
                 input.checked = lyr.get('visible');
-                /*if (this.singleViewOnly){
+                if (this.singleViewOnly && lyr.get('type') != 'constraint'){
                     //console.log(this_);
                     input.onchange = function(e) {
                         this_.setVisible_(lyr, e.target.checked, true);
                     };
-                } else {*/
+                } else {
                     input.onchange = function(e) {
                         this_.setVisible_(lyr, e.target.checked);
                     };
-                //}
+                }
                 
                 li.appendChild(input);
                 li.dataset.filename = lyrId;
