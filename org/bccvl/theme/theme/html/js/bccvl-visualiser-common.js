@@ -110,29 +110,43 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                   map.addControl(scaleline);
                   layerSwitcher.showPanel();
 
-                  // load and add layers to map
-                  bccvl_common.addLayersForDataset(uuid, id, visibleLayer, visLayers).then(function(newLayers) {
-                      $.each(newLayers, function(index, newLayer) {
+                  var layerListeners = []
+
+                  // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
+                  visLayers.getLayers().on('propertychange', function(e, layer){
+
+                    // Clean up layer change listeners
+                    for (var i = 0, key; i < layerListeners.length; i++) {
+                        binding = layerListeners[i];
+                        binding[0].unByKey(binding[1]);
+                    }
+                    layerListeners.length = 0;
+
+                    visLayers.getLayers().forEach(function(layer) {
                           // if layer is visible we have to show legend as well
-                          if (newLayer.getVisible()) {
-                              $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(newLayer.get('bccvl').legend);
+                          if (layer.getVisible()) {
+                              $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
                               // zoom to extent to first visible layer
-                              if(newLayer.getExtent()){
-                                  map.getView().fit(newLayer.getExtent(), map.getSize());
+                              if(layer.getExtent()){
+                                  map.getView().fit(layer.getExtent(), map.getSize());
                               }
                           }
 
-                          newLayer.on('change:visible', function(e) {
-                              if (newLayer.getVisible()){
-                                  var bccvl = newLayer.get('bccvl');
+                          layer.on('change:visible', function(e) {
+                              if (layer.getVisible()){
+                                  var bccvl = layer.get('bccvl');
                                   // remove existing legend
                                   $('.olLegend').remove();
                                   // add new legend to dom tree
                                   $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
                               }
-                          });                            
-                      });
+                          }); 
+                    });
+
                   });
+  
+                  // load and add layers to map
+                  bccvl_common.addLayersForDataset(uuid, id, visibleLayer, visLayers);
                   
                   // add click control for point return
                   map.on('singleclick', function(evt){
