@@ -80,11 +80,214 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             // -- providers -------------------------------------------------
             // --
             // -- this providers config is how search providers are added.
-            // -- The ALA provider supplies autocomplete and search examples,
+            // -- The ALA and GBIF providers supply autocomplete and search examples,
             // -- if you follow those it will probably work as expected.
             // --------------------------------------------------------------
             providers: {
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                gbif: {
+                    autocomplete: {
+                        autoUrl: function(autocompleteString) {
+                            return ('gbif/auto.json?q=' + encodeURIComponent(autocompleteString));
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        parseAutoData: function(rawData) {
+                            var list = [];
+                            if (rawData) {
+                                $.each(rawData, function(index, item) {
+                                    // each item in the autoCompleteList is a taxon.  so it
+                                    // only needs to show up once in the suggestion list.
+                                    if (typeof(item.rank) == 'undefined' || (item.rank != 'SPECIES' && item.rank != 'GENUS')) {
+                                        return true;
+                                    }
+                                    var name = ' (' + item.rank + ')';
+                                    name = name + ' <i>' + item.canonicalName + '</i>';
+                                    list.push(name);
+                                });
+                            }
+                            return list;
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        noResultsFound: function(reason) {
+                            var $desc = $('.bccvl-labelfade-description');
+                            if (reason){
+                                $desc.html(reason);
+                            }
+                            else{
+                                $desc.html('No Results Found');
+                            }
+                            $desc.show();
+                            $desc.removeClass('bccvl-read');
+                            $desc.addClass('bccvl-unread');
+                            setTimeout(function() {
+                                $desc.removeClass('bccvl-unread');
+                                $desc.addClass('bccvl-read');
+                            }, 5000);
+                            setTimeout(function(){
+                                $desc.hide();
+                            }, 8000);
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        cleanAutoItem: function(selectedItem) {
+                            // the string will always have <i>sciname</i> at the start, so..
+                            return selectedItem.split(/<\/?i>/)[1];
+                        }
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                    },
+                    search: {
+                        searchUrl: function(selectedItem, start, pageSize) {
+                            startIndex = start || 0;
+                            pageSize = pageSize || 10;
+                            var splitItems = selectedItem.split(/<\/?i>/);
+                            var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
+                            var searchString = splitItems[1].replace(/\(|\)/g, '');
+
+                            return ('gbif/search.json?name=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        searchSpeciesUrl: function(genusKey, start, pageSize) {
+                            // To search for all the species belong to a given genus 
+                            startIndex = start || 0;
+                            pageSize = pageSize || 10;                            
+                            return ('gbif/species.json?genusKey=' + encodeURIComponent(genusKey) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        statusError: function(data) {                        
+                            return !('results' in data)
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -                        
+                        totalRecords: function(data) {
+                            if (typeof(data.endOfRecords) != 'undefined' && !data.endOfRecords) {
+                                return data.offset + (2 * data.limit);
+                            }
+                            return data.offset;
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        parseSearchData: function(rawData, searchString, excluded) {
+                            var list = [];
+                            if (rawData.results) {
+                                var included = [];
+                                var searchStringWords = searchString.toLowerCase().split(" ");
+                                $.each(rawData.results, function(index, item) {
+
+                                    // Skip if it is already included
+                                    if (typeof(item.nubKey) == 'undefined' || $.inArray(item.nubKey, included) != -1) {
+                                        // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
+                                        return true;
+                                    }
+
+                                    // Check if it is alreday included for import in other search
+                                    if ($.inArray(item.nubKey, excluded) != -1) {
+                                        return true;
+                                    }                                    
+
+                                    // Skip if rank is undefined. Only interested in species or genus
+                                    if (typeof(item.rank) == 'undefined' || (item.rank != 'SPECIES' && item.rank != 'GENUS'))
+                                    {
+                                        return true;
+                                    }
+
+                                    // build the proper data object
+                                    result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
+                                    result.title = item.scientificName;
+                                    result.friendlyname = item.scientificName;
+                                    result.rank = item.rank;
+                                    result.genus = item.genus;
+                                    result.family = item.family;
+                                    result.nubKey = item.nubKey;
+                                    result.genusKey = item.genusKey;
+                                    
+                                    if (item.vernacularName) {
+                                        result.title = item.vernacularName + ' <i class="taxonomy">' + item.scientificName + '</i>';
+                                        result.friendlyname = item.vernacularName + ' ' + item.scientificName;
+                                    }
+
+                                    if (item.nubKey) {
+
+                                        included.push(item.nubKey);
+                                        excluded.push(item.nubKey);
+                                    } 
+
+                                    if (item.rank) {
+                                        result.description += ' (' + item.rank + ')';
+                                    }
+
+                                    // now get the actions sorted. For GBIF, lsid is the taxonKey/nubKey i.e. speciesKey, genusKey
+                                    if (item.nubKey) {
+                                        var gbifImportArgs = '?import=Import&';
+                                        gbifImportArgs += 'lsid=' + encodeURIComponent(item.nubKey) + "&";
+                                        gbifImportArgs += 'taxon=' + encodeURIComponent(item.scientificName) + "&";
+                                        gbifImportArgs += 'searchOccurrence_source=' + encodeURIComponent('gbif');
+
+                                        result.actions.viz = 'http://api.gbif.org/v1/species/' + encodeURIComponent(item.nubKey);
+                                        result.actions.alaimport = document.URL + gbifImportArgs;
+                                    }
+                                    list.push(result);
+                                });
+                            }
+                            return list;
+                        },
+                        // --------------------------------------------------------------
+                        getData: function(nextIndex, selectedItem) {
+                            // Get species data from GBIF 
+                            var pageSize = 10;
+                            var searchUrl = bccvl_search.providers.gbif.search.searchUrl(selectedItem, nextIndex, pageSize);
+                            $('.bccvl-results-spinner').css('display', 'block');
+                                
+                            return $.ajax({
+                                    dataType: 'jsonp',
+                                    url: searchUrl,
+                                    timeout: 60000
+                                });
+                        },                        
+                        // --------------------------------------------------------------
+                        getGenusSpecies: function(genusKey, nextIndex) {
+                            var pageSize = 10;
+                            var surl = bccvl_search.providers.gbif.search.searchSpeciesUrl(genusKey, nextIndex, pageSize);
+                            $('.bccvl-results-spinner').css('display', 'block');
+                                
+                            return $.ajax({
+                                    dataType: 'jsonp',
+                                    url: surl,
+                                    timeout: 60000
+                                });
+                        },
+                        // --------------------------------------------------------------                                                
+                        importGenusDatasets: function(searchString, excluded) {
+                            var pageSize = 40;
+                            var endOfRecords = false;
+
+                            var $resultTable = $('.bccvl-search-results');                        
+                            var genusKey = $resultTable.data('data-genusKey');  
+                            var index = 0;
+                            while (!endOfRecords) {
+                                var  surl = bccvl_search.providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
+                                $.ajax({
+                                    async: false,
+                                    dataType: 'jsonp',                       // ..using JSONP instead
+                                    url: surl,
+                                    success: function(data) {
+                                        if (bccvl_search.providers.gbif.search.statusError(data)){
+                                            bccvl_search.providers.gbif.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg('gbif'));
+                                            return
+                                        }
+                                        // Import all the species datasets
+                                        endOfRecords = data.endOfRecords;
+                                        var results = bccvl_search.providers.gbif.search.parseSearchData(data, searchString, excluded);
+                                        if (!bccvl_search.importSpeciesDatasets(results)) {
+                                            bccvl_search.providers.gbif.autocomplete.noResultsFound();
+                                        }
+                                    },
+                                    timeout: 60000,
+                                    error: bccvl_search.displayErrorMessage                                    
+                                });
+                                index += pageSize;
+                            } 
+                            location.href = $('.bccvllinks-datasets').attr('href');
+                        },
+                    }
+                    // - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                },                
                 ala: {
                     autocomplete: {
                         autoUrl: function(autocompleteString) {
@@ -176,7 +379,15 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&fq=occurrenceCount:[1+TO+*]&q=&pageSize=' + pageSize);
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
-                        parseSearchData: function(rawData, searchString) {
+                        statusError: function(data) {                        
+                            return data['searchResults']['status'] == 'ERROR';
+                        },
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        totalRecords: function(data) {
+                            return data['searchResults']['totalRecords'];
+                        },                        
+                        // - - - - - - - - - - - - - - - - - - - - - - - - -
+                        parseSearchData: function(rawData, searchString, excluded) {
                             var list = [];
                             if (rawData.searchResults && rawData.searchResults.results) {
                                 var included = [];
@@ -239,7 +450,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     if (item.guid) {
                                         var alaImportArgs = '?import=Import&';
                                         alaImportArgs += 'lsid=' + encodeURIComponent(item.guid) + "&";
-                                        alaImportArgs += 'taxon=' + encodeURIComponent(item.name);
+                                        alaImportArgs += 'taxon=' + encodeURIComponent(item.name) + "&";
+                                        alaImportArgs += 'searchOccurrence_source=' + encodeURIComponent('ala');
                                         if (item.commonNameSingle) {
                                             alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
                                         }
@@ -253,20 +465,58 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             return list;
                         },
                         // --------------------------------------------------------------
-                        importSpeciesDatasets: function(results) {
-                            // Import all the species datasets from the search results
-                            if (results.length > 0) {
-                                $.each(results, function(index, item) {
-                                    $.each(item.actions, function(action, actionParam) {
-                                        if (action == 'alaimport') {
-                                            $.get(actionParam);
-                                        }
-                                    });
+                        getData: function(nextIndex, selectedItem) {
+                            // Get species data from ALA. 
+                            var pageSize = 10;
+                            var searchUrl = bccvl_search.providers.ala.search.searchUrl(selectedItem, nextIndex, pageSize);
+                            $('.bccvl-results-spinner').css('display', 'block');
+                                
+                            return $.ajax({
+                                    dataType: 'jsonp',
+                                    url: searchUrl,
+                                    timeout: 60000
                                 });
-                                return true;
-                            }
-                            return false;
-                        },                        
+                        },
+                        // --------------------------------------------------------------
+                        importGenusDatasets: function(searchString, excluded) {
+                            var  surl = bccvl_search.providers.ala.search.searchSpeciesUrl('genus', searchString, 0);
+
+                            $.ajax({
+                                dataType: 'jsonp',                       // ..using JSONP instead
+                                url: surl,
+                                success: function(data) {
+                                    if (bccvl_search.providers.ala.search.statusError(data)){
+                                        bccvl_search.providers.ala.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg('ala'));
+                                        return
+                                    }
+
+                                    // Set pageSize and search for all the species again
+                                    var pageSize = bccvl_search.providers.ala.search.totalRecords(data);
+                                    var surl = bccvl_search.providers.ala.search.searchSpeciesUrl('genus', searchString, pageSize);
+
+                                    $.ajax({
+                                        dataType: 'jsonp',                       // ..using JSONP instead
+                                        url: surl,
+                                        success: function(data) {
+                                            if (bccvl_search.providers.ala.search.statusError(data)){
+                                                bccvl_search.providers.ala.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg('ala'));
+                                                return
+                                            }
+                                            // Import all the species datasets
+                                            var results = bccvl_search.providers.ala.search.parseSearchData(data, searchString, excluded);
+                                            if (!bccvl_search.importSpeciesDatasets(results)) {
+                                                bccvl_search.providers.ala.autocomplete.noResultsFound();
+                                            }
+                                            location.href = $('.bccvllinks-datasets').attr('href');
+                                        },
+                                        timeout: 60000,
+                                        error: bccvl_search.displayErrorMessage                                    
+                                    });    
+                                },
+                                timeout: 60000,
+                                error: bccvl_search.displayErrorMessage                            
+                            });
+                        },
                     }
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 }
@@ -286,9 +536,6 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
             },
             // --------------------------------------------------------------
             enableForm: function(formElement) {
-                // Constants
-                var UNEXPECTED_ALA_ERROR_MSG = 'An unexpected error has occurred with ALA. Please try again later.';
-
                 // locate all the dom elements we need - - - - - - -
                 var $form = $(formElement);
 
@@ -319,6 +566,9 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
 
                 $inputField.attr('autocomplete', 'off'); // switch off browser autocomplete
 
+                // Exclude import list to filter duplicates.
+                // Todo: This is a ugly hack. Shall be replaced.
+                var excludedList = []
 
                 // Import more records from ALA when it is near the bottom of the page
                 var loading = false;    // Indicate if we are still loading from ALA
@@ -329,7 +579,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             var totalRecords = $resultTable.data('data-totalRecords');
                             var nextIndex = $resultTable.data('data-nextIndex');
                             var selectedItem = $resultTable.data('data-selectedItem');
-                            displayMoreData(nextIndex, totalRecords, selectedItem);
+                            var genusKey = $resultTable.data('data-genusKey');
+
+                            // reset the excluded list for a new list
+                            if (nextIndex == 0) {
+                                excludedList = [];
+                            }
+                            displayMoreData(nextIndex, totalRecords, selectedItem, genusKey);
                         }
                     }
                 });
@@ -339,46 +595,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                    var $el = $(e.currentTarget);
                    var provider = bccvl_search.providers[$sourceField.val()];
 
+                   // reset the excluded list 
+                   excludedList = [];
+
                    // For genus, import all species datasets 
-                   if ($el.attr('data-rank') == 'genus') {
-                        // Send a query to ALA to determine the number of records of species
-                        var  surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), 0);
-
-                        $.ajax({
-                            dataType: 'jsonp',                       // ..using JSONP instead
-                            url: surl,
-                            success: function(data) {
-                                if (data['searchResults']['status'] == 'ERROR'){
-                                    provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
-                                    return
-                                }
-
-                                // Set pageSize and search for all the species again
-                                var pageSize = data['searchResults']['totalRecords'];
-                                var surl = provider.search.searchSpeciesUrl('genus', $el.attr('data-genus'), pageSize);
-
-                                $.ajax({
-                                    dataType: 'jsonp',                       // ..using JSONP instead
-                                    url: surl,
-                                    success: function(data) {
-                                        if (data['searchResults']['status'] == 'ERROR'){
-                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
-                                            return
-                                        }
-                                        // Import all the species datasets
-                                        var results = provider.search.parseSearchData(data, $inputField.val());
-                                        if (!provider.search.importSpeciesDatasets(results)) {
-                                            provider.autocomplete.noResultsFound();
-                                        }
-                                        location.href = $('.bccvllinks-datasets').attr('href');
-                                    },
-                                    timeout: 60000,
-                                    error: bccvl_search.displayAlaErrorMessage                                    
-                                });    
-                            },
-                            timeout: 60000,
-                            error: bccvl_search.displayAlaErrorMessage                            
-                        });
+                   if ($el.attr('data-rank').toLowerCase() == 'genus') {
+                        provider.search.importGenusDatasets($inputField.val(), excludedList);
                    }
                    else {
                         location.href = $el.attr('href');
@@ -431,10 +653,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                             var parsedDataList = provider.autocomplete.parseAutoData(data);
                                             if (parsedDataList.length == 0) {
                                                 provider.autocomplete.noResultsFound();
-                                                process(parsedDataList);
-                                            } else {
-                                                process(parsedDataList);
                                             }
+                                            process(parsedDataList);
                                         } else {
                                             // otherwise assume the data is already good
                                             process(data);
@@ -444,7 +664,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                     error: function(xhr, status, msg){
                                         $inputField.removeClass("bccvl-search-spinner");
                                         if (status != 'abort'){
-                                            provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
+                                            provider.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg($sourceField.val()));
                                             process(parsedDataList);
                                         }
                                     }
@@ -466,31 +686,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                             if ($.trim($inputField.val()) == '') return;
                             
                             // Display the result data
-                            displayMoreData(0 /* start index */, -1 /* first time */, selectedItem);
+                            excludedList = [];
+                            displayMoreData(0 /* start index */, -1 /* first time */, selectedItem, -1 /* not genusKey */);
                             return provider.autocomplete.cleanAutoItem(selectedItem);
                         }
                     });
                 })();
                 // --------------------------------------------------------------           
-                function displayData(data, provider, newTable) {
-                    var count = -1;
-                    if (data['searchResults']['status'] == 'ERROR'){
-                        provider.autocomplete.noResultsFound(UNEXPECTED_ALA_ERROR_MSG);
-                    }
-                    else {
-                        // if this provider has a parseSearchData function, call it to extract the result
-                        // objects from the returned data. Otherwise assume the data is already good.
-                        var results = (provider.search.parseSearchData) ? provider.search.parseSearchData(data, $inputField.val()) : data;
-                        count = results.length;
-                        if (results.length > 0) {
-                            bccvl_search.displayResults(results, $resultsField, newTable);
-                        }
-                    }
-                    // get rid of spinner
-                    $('.bccvl-results-spinner').css('display', 'none');                    
-                    return count;
-                }
-                // --------------------------------------------------------------   
                 function isNearScreenBottom() {
                     return ($(window).height() >= 0.7 * ($(document).height() - $(window).scrollTop()));
                 }
@@ -499,7 +701,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                     return ($(window).height() < $(document).height());
                 }
                 // -------------------------------------------------------------- 
-                function displayMoreData(nextIndex, totalRecords, selectedItem) {
+                function displayMoreData(nextIndex, totalRecords, selectedItem, genusKey) {
+                    // Get and display species data from ALA. Negative totalRecord indicates first time, so 
+                    // need to create result table.
+                    var dataSrc = $sourceField.val();
+
                     // Get and display species data from ALA. Negative totalRecord indicates first time, so 
                     // need to create result table.
                     var createTable = totalRecords  < 0;
@@ -508,36 +714,59 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                         // ALA does not send occCount if the number of records is too big i.e. 1370 for Acacia genus.
                         loading = true;
                         var pageSize = 10;
-                        var provider = bccvl_search.providers[$sourceField.val()];
+                        var provider = bccvl_search.providers[dataSrc];
                         var searchUrl = provider.search.searchUrl(selectedItem, nextIndex, pageSize);
                         $('.bccvl-results-spinner').css('display', 'block');
-                        
-                        $.ajax({
-                            dataType: 'jsonp',
-                            url: searchUrl,
-                            success: function(data) {
-                                // Display these records & update the nextIndex
-                                if (displayData(data, provider, createTable) >= 0) {
-                                    if (createTable) {
-                                        // First time
-                                        totalRecords = data['searchResults']['totalRecords'];
-                                        $('.bccvl-search-results').data('data-totalRecords', totalRecords);
-                                        $('.bccvl-search-results').data('data-selectedItem', selectedItem);
+                        var results = (genusKey >= 0) ? provider.search.getGenusSpecies(genusKey, nextIndex)
+                                                      : provider.search.getData(nextIndex, selectedItem);
+                        results.done(function(data) {
+                            // Display these records & update the nextIndex
+                            var res = displayData(data, provider, createTable, dataSrc, $inputField.val(), $resultsField);
+                            if (res != null) {
+                                totalRecords = provider.search.totalRecords(data);
+                                $('.bccvl-search-results').data('data-totalRecords', totalRecords);
+                                $('.bccvl-search-results').data('data-selectedItem', selectedItem);
+                                $('.bccvl-search-results').data("data-nextIndex", nextIndex + pageSize);
+                                $('.bccvl-search-results').data("data-genusKey", genusKey);
+                             
+                                // For BGIF, if a genus is selected, need to display its associated species.
+                                if (dataSrc == 'gbif' && res.length > 0){
+                                    item = res[0];
+                                    if (item.rank == 'GENUS'){
+                                        displayMoreData(0, pageSize, selectedItem, item.genusKey);
+                                        $('.bccvl-search-results').data("data-genusKey", item.genusKey);
                                     }
-                                    $('.bccvl-search-results').data("data-nextIndex", nextIndex + pageSize);
-                                }                                
-                            },
-                            timeout: 60000,
-                            error: bccvl_search.displayAlaErrorMessage,
-                            complete: function(xhr, status) {
+                                }
+                            }                           
+                        });
+                        results.fail(bccvl_search.displayErrorMessage);
+                        results.always(function(xhr, status) {
                                 loading = false;
                                 if (status == "success" && (!isScrollBarShown() || isNearScreenBottom())) {
                                     displayMoreData(nextIndex + pageSize, totalRecords, selectedItem);
                                 }
-                            }
                         });                            
                     }
+
                 }
+                // -------------------------------------------------------------- 
+                function displayData(data, provider, newTable, dataSrc, searchString, resultsField) {
+                    var results = null;
+                    if (provider.search.statusError(data)){
+                        provider.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg(dataSrc));
+                    }
+                    else {
+                        // if this provider has a parseSearchData function, call it to extract the result
+                        // objects from the returned data. Otherwise assume the data is already good.
+                        results = (provider.search.parseSearchData) ? provider.search.parseSearchData(data, searchString, excludedList) : data;
+                        if (results.length > 0) {
+                            bccvl_search.displayResults(results, resultsField, newTable);
+                        }
+                    }
+                    // get rid of spinner
+                    $('.bccvl-results-spinner').css('display', 'none');                    
+                    return results;
+                } 
             },
             // --------------------------------------------------------------
             displayResults: function(results, domElement, newTable) {
@@ -606,14 +835,32 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                 $('.bccvl-searchform-results').show();
             },
             // --------------------------------------------------------------
-            displayAlaErrorMessage: function(xhr, status, msg) {
+            importSpeciesDatasets: function(results) {
+                // Import all the species datasets from the search results
+                if (results.length > 0) {
+                    $.each(results, function(index, item) {
+                        $.each(item.actions, function(action, actionParam) {
+                            if (action == 'alaimport') {
+                                $.get(actionParam);
+                            }
+                        });
+                    });
+                    return true;
+                }
+                return false;
+            },                        
+            // --------------------------------------------------------------
+            displayErrorMessage: function(xhr, status, msg) {
                 if (status === 'timeout') {
                     alert('There was no response to your search query.');
                 } else {
                     alert('There was a problem that stopped your query from getting results.');
                 }
-            }
+            },
             // --------------------------------------------------------------
+            unexpectedErrorMsg: function(dataSrc) {
+                return 'An unexpected error has occurred with ' + dataSrc.toUpperCase() +'. Please try again later.';
+            }
             // --------------------------------------------------------------
         }
         return bccvl_search;
