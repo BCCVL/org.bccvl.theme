@@ -12,7 +12,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
          */
 
 
-         // modifications by Sam Wolski, Griffith University eRSAD
+         // modifications by Sam Wolski, Griffith University eRSAD 
          // Apr 2015
         ol.control.LayerSwitcher = function(opt_options) {
 
@@ -22,6 +22,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
               options.tipLabel : 'Legend';
 
             this.mapListeners = [];
+            this.layerlisteners = [];
 
             
             this.hiddenClassName = 'ol-unselectable ol-control layer-switcher';
@@ -59,7 +60,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 };
                 button.onclick = function(e) {
                     this_.showPanel();
-                }
+                };
                 element.onmouseout = function(e) {
                     e = e || window.event;
                     if (!element.contains(e.toElement)) {
@@ -123,6 +124,12 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 this.getMap().unByKey(this.mapListeners[i]);
             }
             this.mapListeners.length = 0;
+            // Clean up layer change listeners
+            for (var i = 0, key; i < this.layerlisteners.length; i++) {
+                binding = this.layerlisteners[i];
+                binding[0].unByKey(binding[1]);
+            }
+            this.layerlisteners.length = 0;
             // Wire up listeners etc. and store reference to new map
             ol.control.Control.prototype.setMap.call(this, map);
             if (map) {
@@ -130,6 +137,23 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 this.mapListeners.push(map.on('pointerdown', function() {
                     this_.hidePanel();
                 }));
+                // watch map top level layergroup for changes
+                handler = map.getLayerGroup().getLayers().on('propertychange', function(evt) {
+                    this_.renderPanel();
+                });
+                this_.layerlisteners.push([map.getLayerGroup().getLayers(), handler]);
+                // recurse through all layers and attach change listeners to
+                // all layer groups, re-render layer switcher in case
+                // the list of layers on the map has changed
+                ol.control.LayerSwitcher.forEachRecursive(map, function(l, idx, a) {
+                    if (l instanceof ol.layer.Group) {
+                        handler = l.getLayers().on('propertychange', function(evt) {
+                            this_.renderPanel();
+                        });
+                        this_.layerlisteners.push([l, handler]);
+                    }
+                });
+                // render layer switcher the first time
                 this.renderPanel();
             }
         };
@@ -229,7 +253,10 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 if (lyr.get('type') === 'base') {
                     input.type = 'radio';
                     input.name = 'base';
-                } else if (this.singleViewOnly){
+                } else if (lyr.get('type') === 'constraint') {
+                    input.type = 'checkbox';
+                    input.name = 'constraint';
+                } else if (this.singleViewOnly && lyr.get('type') != 'constraint'){
                     input.type = 'radio';
                     input.name = 'layers';
                 } else {
@@ -238,7 +265,7 @@ define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
                 input.id = lyrId;
 
                 input.checked = lyr.get('visible');
-                if (this.singleViewOnly){
+                if (this.singleViewOnly && lyr.get('type') != 'constraint'){
                     //console.log(this_);
                     input.onchange = function(e) {
                         this_.setVisible_(lyr, e.target.checked, true);

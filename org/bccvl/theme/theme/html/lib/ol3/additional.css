@@ -25,16 +25,28 @@
   z-index: 99999;
 }
 
-.ol-viewport .ol-control {
+.ol-viewport .ol-control, .ol-viewport .ol-scale-line {
   opacity:0;
   transition: opacity .3s;
 }
-.ol-viewport:hover .ol-control {
+.ol-viewport:hover .ol-control, .ol-viewport:hover .ol-scale-line {
   opacity:1;
 }
 .ol-viewport .ol-control.shown {
   opacity:1!important;
 }
+.ol-scale-line {
+    background-color: rgba(0, 159, 227, .5);
+    border-radius: 2px;
+    bottom: 16px;
+    right: 15px;
+    left: initial;
+    position: absolute;
+}
+.ol-scale-line-inner {
+    line-height: 14px;
+}
+
 
 /*  Openlayers styles */
 
@@ -51,7 +63,7 @@
     background:none;
 }
 .ol-attribution {
-    bottom: 12px;
+    bottom: 40px;
     right: 12px;
 }
 
@@ -166,7 +178,7 @@
 .baseLbl, .dataLbl {
     font-weight: 500;
 }
-.datasets-list-entry .layer-switcher input[type="radio"], .layer-switcher input[type="radio"]{
+.datasets-list-entry .layer-switcher input[type="radio"], .layer-switcher input[type="radio"], .layer-switcher input[type="checkbox"]{
     display: inline;
     float: left;
     margin: 0 .3em 0 0;
@@ -245,7 +257,10 @@ div.olControlAttribution {
   white-space: nowrap;
 }
 .olLegend .panel.shown {
-  display: inline-block;
+    display: inline-block;
+    overflow: auto;
+    max-height: 500px;
+    max-width: 400px;
 }
 
 .olLegend i {

@@ -95,14 +95,14 @@
         </li>
         <li id= "tab-overlay"
             tal:attributes="class python: 'active' if current_view == 'experiment_overlay' else '';">
-          <a href="experiment_overlay#tab-overlay">Overlay</a>
+          <a href="experiment_overlay#tab-overlay">Overlay Maps</a>
         </li>
 	<li id= "tab-comp"
             tal:attributes="class python: 'active' if current_view == 'experiment_compare' else '';">
-          <a href="experiment_compare#tab-compare">Compare</a>
+          <a href="experiment_compare#tab-compare">Compare Maps</a>
         </li>
         <li id= "tab-comp-graph"
-            tal:attributes="class python: 'active' if current_view == 'experiment_compare' else '';">
+            tal:attributes="class python: 'active' if current_view == 'experiment_compare_graphs' else '';">
           <a href="experiment_compare_graphs#tab-comp">Compare Graphs</a>
         </li>
       </ul>

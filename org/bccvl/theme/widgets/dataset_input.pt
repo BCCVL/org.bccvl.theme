@@ -27,9 +27,11 @@
                      dlinfo dstool/get_download_info;">
       <input type="hidden" value="" name="form.widgets.fieldname:list" class="item"
              tal:attributes="value item/UID;
+                             data-bbox dstool/bbox|nothing;
                              name string:${view/name}:list;
                              required view/required;
                              class python: 'item' + ' required' if view.required else '';
+                             data-type itemmd/genre;
                              "/>
       <a class="btn pull-right removeitem" href="#"><i class="icon-remove"></i></a>
       <a class="fine bccvl-occurrence-viz btn pull-right btn-primary"
