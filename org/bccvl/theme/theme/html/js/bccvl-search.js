@@ -176,6 +176,11 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
                                         return true;
                                     }
 
+                                    // Skip if its status is not accepted
+                                    if (typeof(item.taxonomicStatus) == 'undefined' || item.taxonomicStatus != 'ACCEPTED') {
+                                        return true;
+                                    }
+
                                     // Check if it is alreday included for import in other search
                                     if ($.inArray(item.nubKey, excluded) != -1) {
                                         return true;
