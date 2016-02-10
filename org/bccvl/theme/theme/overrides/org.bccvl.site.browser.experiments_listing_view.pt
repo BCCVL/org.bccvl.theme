@@ -148,8 +148,11 @@
                   <tal:if condition="python:class_state == 'success'">
                     <i class="fa fa-check"></i><br/>Completed
                   </tal:if>
-                  <tal:if condition="python:class_state == 'info'">
+                  <tal:if condition="python:class_state == 'warning'">
                     <i class="fa fa-clock-o"></i><br/>In Progress
+                  </tal:if>
+                  <tal:if condition="python:class_state == 'info'">
+                    <i class="fa fa-check"></i><br/>Finished
                   </tal:if>
                   <tal:if condition="python:class_state == 'error'">
                     <i class="fa fa-times"></i><br/>Failed

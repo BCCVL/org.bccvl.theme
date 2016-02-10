@@ -2167,9 +2167,13 @@ table.bccvl-experimenttable thead tr.COMPLETED td, .experiment-state.success, di
     background:rgba(77,195,69, .35);
     color:rgba(77,195,69, 1);
 }
-table.bccvl-experimenttable thead td.info, .experiment-state.info, div.info  {
+table.bccvl-experimenttable thead td.warning, .experiment-state.warning, div.warning  {
     background:rgba(249,178,51, .35);
     color:rgba(236,132,30, 1);
+}
+table.bccvl-experimenttable thead td.info, .experiment-state.info, div.info  {
+    background: rgba(91, 192, 222, .35);
+    color: rgba(47, 150, 180, 1);
 }
 table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERROR  {
     background:rgba(231,76,60, .35);
