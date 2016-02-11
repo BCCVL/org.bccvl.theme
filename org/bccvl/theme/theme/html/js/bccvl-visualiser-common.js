@@ -5,6 +5,21 @@
 define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'js/bccvl-visualiser-progress-bar'],
    function( $, layout, ol, proj4, layerswitcher, progress_bar ) {
 
+        Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2:fdd3cffdc5964ce0a833a018f9f5fc08@sentry.bccvl.org.au/2').install()
+
+        $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+          Raven.captureMessage(thrownError || jqXHR.statusText, {
+              extra: {
+                  type: ajaxSettings.type,
+                  url: ajaxSettings.url,
+                  data: ajaxSettings.data,
+                  status: jqXHR.status,
+                  error: thrownError || jqXHR.statusText,
+                  response: jqXHR.responseText.substring(0, 100)
+              }
+          });
+        });
+
        // define some projections we need
        proj4.defs([
            // alternatively load http://epsg.io/4283.proj4js

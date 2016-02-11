@@ -31,6 +31,7 @@ requirejs.config({
         'prism':                'prism/prism',
         'bbq':                  'jquery-bbq/jquery.ba-bbq',
         'proj4':                'proj4/proj4',
+        'raven':                'https://cdn.ravenjs.com/2.1.0/raven.min.js'
     },
     shim: {
         'parsley':              ['jquery'],
@@ -40,7 +41,8 @@ requirejs.config({
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
         'jquery-timer':         ['jquery'],
-        'select2':              ['jquery']
+        'select2':              ['jquery'],
+        'raven':                ['jquery']
     }
 });
 
