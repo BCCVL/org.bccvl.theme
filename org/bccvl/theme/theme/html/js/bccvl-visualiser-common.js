@@ -1276,7 +1276,6 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
 
-               console.log(constraintsLayer.getSource().getFeatures());
            },
 
            renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){

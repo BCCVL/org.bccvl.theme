@@ -15,8 +15,12 @@ define(['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser-common', 'jque
             if (type == 'image/png'){
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), 'minigraph_'+$(this).data('uuid'));
             } 
-
-            $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'</label>');
+            if (typeof $(this).data('algorithm') !== 'undefined') {
+                $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'<br/> (<em>'+$(this).data('algorithm')+'</em>)</label>');
+            } else {
+                $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'</label>');
+            }
+            
 
             $(this).removeClass('bccvl-compare-graph').addClass('bccvl-remove-graph');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
