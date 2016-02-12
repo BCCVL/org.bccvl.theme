@@ -153,7 +153,13 @@
 					});
 				}
 			})
-			.fail(options.error);
+			.fail(function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR);
+
+				if (jqXHR.status == 0){
+					return 'Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.'
+				}
+			});
 		});
 	};
 

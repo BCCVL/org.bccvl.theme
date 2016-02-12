@@ -1472,8 +1472,15 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
                        container.height('auto').html('<pre><code class="language-javascript">'+data+'</code></pre>').addClass('active');
                        Prism.highlightAll();
                    },
-                   error: function() {
-                       container.html('<pre>Problem loading data. Please try again later.</pre>');
+                   error: function(jqXHR, textStatus, errorThrown){
+                      console.log(jqXHR);
+
+                      if (jqXHR.status == 0){
+                        container.html('Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.');
+                      } else {
+                        container.html('<pre>Problem loading data. Please try again later.</pre>');
+                      }
+                       
                    }
                });
            },
