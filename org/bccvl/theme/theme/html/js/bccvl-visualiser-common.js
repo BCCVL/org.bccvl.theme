@@ -8,16 +8,16 @@ define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layers
         Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2').install()
 
         $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-          Raven.captureMessage(thrownError || jqXHR.statusText, {
-              extra: {
-                  type: ajaxSettings.type,
-                  url: ajaxSettings.url,
-                  data: ajaxSettings.data,
-                  status: jqXHR.status,
-                  error: thrownError || jqXHR.statusText,
-                  response: jqXHR.responseText.substring(0, 100)
-              }
-          });
+            Raven.captureException(new Error(thrownError || jqXHR.statusText), {
+                extra: {
+                    type: ajaxSettings.type,
+                    url: ajaxSettings.url,
+                    data: ajaxSettings.data,
+                    status: jqXHR.status,
+                    error: thrownError || jqXHR.statusText,
+                    response: jqXHR.responseText.substring(0, 100)
+                }
+            });
         });
 
        // define some projections we need
