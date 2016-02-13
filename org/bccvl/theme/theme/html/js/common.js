@@ -31,7 +31,7 @@ requirejs.config({
         'prism':                'prism/prism',
         'bbq':                  'jquery-bbq/jquery.ba-bbq',
         'proj4':                'proj4/proj4',
-        'raven':                'https://cdn.ravenjs.com/2.1.0/raven.min'
+        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min'
     },
     shim: {
         'parsley':              ['jquery'],
