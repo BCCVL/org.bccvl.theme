@@ -4,6 +4,8 @@
     i18n_domain="org.bccvl.site"
     >
 
+    <include package="z3c.form" file="meta.zcml"/>
+
     <z3c:widgetTemplate
          mode="input"
          widget="z3c.form.interfaces.ITextWidget"
@@ -75,7 +77,7 @@
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="experimentresult_input.pt"
         />
-    
+
     <z3c:widgetTemplate
         mode="input"
         widget="z3c.form.interfaces.IFileWidget"
@@ -111,7 +113,7 @@
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="functions_input.pt"
         />
-    
+
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
     self
