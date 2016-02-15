@@ -1,0 +1,3 @@
+#: plone.app.workflow/plone/app/workflow/browser/sharing.py:260
+msgid "Logged-in users"
+msgstr "All users"
