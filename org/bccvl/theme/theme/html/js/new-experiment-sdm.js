@@ -148,16 +148,6 @@ define(
 
             // -- absences + random --------------------------------
             $('#formfield-form-widgets-species_number_pseudo_absence_points').hide(0);
-            $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
-            $("#form-widgets-species_pseudo_absence_points-0:checkbox").change(function() {
-                if ($(this).is(":checked")) {
-                    $("#form-widgets-species_number_pseudo_absence_points").removeAttr('disabled');
-                    $('#formfield-form-widgets-species_number_pseudo_absence_points').slideDown();
-                } else {
-                    $("#form-widgets-species_number_pseudo_absence_points").attr('disabled', 'disabled');
-                    $('#formfield-form-widgets-species_number_pseudo_absence_points').slideUp();
-                }
-            });
 
             // TODO: move  select-all / select-none into widget?
             $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){

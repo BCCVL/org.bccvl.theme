@@ -149,18 +149,6 @@ define(
             });
         });
 
-        // remove required tag from hidden field if the checkbox is set on page load
-        // only happens when a user gets redirected to a pre-populated form
-        if (form.find('#form-widgets-species_pseudo_absence_points-0').is(':checked')){
-            $('#form-widgets-species_absence_dataset input').removeAttr('required');
-        }
-
-        form.find('#form-widgets-species_pseudo_absence_points-0').on('change',function(){
-            if ($('#form-widgets-species_absence_dataset input').attr('required'))
-                $('#form-widgets-species_absence_dataset input').removeAttr('required').removeClass('required error').valid();
-            else 
-                $('#form-widgets-species_absence_dataset input').attr('required', true).addClass('required').valid();
-        });
 
         $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event, form){
             event.preventDefault();
