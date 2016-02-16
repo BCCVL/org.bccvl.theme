@@ -147,8 +147,6 @@ define(
 
 
             // -- absences + random --------------------------------
-            $('#formfield-form-widgets-species_number_pseudo_absence_points').hide(0);
-
             // TODO: move  select-all / select-none into widget?
             $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
@@ -168,12 +166,6 @@ define(
 
             $('#tab-config').on('click', 'a.select-none', function(){
                 $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
-            });
-
-            // -- set psuedo absence to match an occurence selection.
-            $('.bccvl-new-sdm').on('widgetChanged', function(e, rows){
-                if (rows) 
-                    $('#form-widgets-species_number_pseudo_absence_points').val(rows);
             });
 
             // -- set up region constraints
