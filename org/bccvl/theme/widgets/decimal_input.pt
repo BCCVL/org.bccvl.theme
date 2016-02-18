@@ -3,7 +3,7 @@
      tal:omit-tag="">
     <input id="" name="" class="" title="" lang="" disabled=""
            readonly="" alt="" tabindex="" accesskey="" size="" maxlength=""
-           style="" value="" data-parsley-type="number" type="text" data-default=""
+           style="" value="" data-type="number" type="text" data-default=""
            tal:attributes="id view/id;
                            name view/name;
                            class view/klass;

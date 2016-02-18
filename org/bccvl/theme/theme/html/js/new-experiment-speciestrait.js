@@ -52,11 +52,10 @@ define(
                             $accordionBody.removeClass('in');
                         }
 
-                        // This is to avoid parsley thinking that there are validation errors on algo conifg items that have been
+                        // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
                         // deselected - so we put the default value back into the text field when deselected.
                         $.each($accordionGroup.find('input[type="number"], input[type="text"]'), function(i2, c) {
                             $(c).val($(c).attr('data-default'));
-                            //$(c).parsley().validate();
                         });
 
                         // Finally - hide

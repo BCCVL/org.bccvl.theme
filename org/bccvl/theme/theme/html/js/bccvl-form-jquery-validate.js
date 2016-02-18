@@ -21,11 +21,39 @@ define(
         $('[data-parsley-type]').each(function(){
             $(this).addClass(''+$(this).data('parsleyDataType')+'');
         });
+        // fallback for type to class
+        $('[data-type]').each(function(){
+            $(this).addClass(''+$(this).data('type')+'');
+        });
+
+        $.validator.addMethod('lessThanEqual', function(value, element, param) {
+            return this.optional(element) || parseInt(value) <= parseInt($(param).val());
+        }, "The value {0} must be less than {1}");
 
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
                 number: true
+            },
+            "year": {
+                digits: true,
+                minlength: 4,
+                maxlength: 4
+            },
+            "month": {
+                digits: true,
+                minlength: 1,
+                maxlength: 2,
+                max: 12
+            },
+            "day": {
+                digits: true,
+                minlength: 1,
+                maxlength: 2,
+                max: 31
+            },
+            "date": {
+                date: true
             }
         });
 
@@ -132,7 +160,7 @@ define(
                     required: true,
                     minlength: 1,
                     messages: {
-                        required: 'You must select at least one dataset layer.'
+                        required: 'You must select at least one.'
                     }
                 });
             });             

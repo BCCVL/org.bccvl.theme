@@ -2,7 +2,7 @@
 // main JS for the dataset upload page.
 //
 define(
-    ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'bootstrap-fileupload', 'parsley',
+    ['jquery', 'js/bccvl-form-jquery-validate', 'bootstrap', 'bootstrap-fileupload',
      'js/bccvl-form-popover'],
     function($, formvalidator ) {
         // ==============================================================
@@ -51,8 +51,7 @@ define(
                 $('div.bccvl-datasetupload-prompt').addClass('hidden');
             });
 
-            // assume parsleyconfig already loaded by bccvl-form-validator.js
-            //$('form#addspecies').parsley();
+            
 
             $("input[id$='-widgets-legalcheckbox-0']").change(function() {
                 var idprefix = this.id.split('-')[0];
