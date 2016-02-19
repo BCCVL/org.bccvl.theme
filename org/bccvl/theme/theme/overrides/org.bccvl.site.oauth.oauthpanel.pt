@@ -7,77 +7,64 @@
 
   <metal:block fill-slot="content">
 
-    <div tal:define="view_actions view/prepareObjectTabs;"
-         id="edit-bar">
-      <h5 class="hiddenStructure"  
-          tal:condition="view_actions"
-          i18n:translate="heading_views">Views</h5>
-
-      <ul class="contentViews"
-          id="content-views"
-          i18n:domain="plone">
-
-        <tal:views repeat="action view_actions">
-          <li tal:define="selected action/selected|nothing;"
-              tal:attributes="id string:contentview-${action/id};
-                              class python:selected and 'selected' or 'plain'">
-            <a href=""
-               tal:content="action/title"
-               tal:attributes="href action/url;"
-               i18n:translate="">
-              View name
-            </a>
-          </li>
-        </tal:views>
-        
-      </ul>
-    </div>
+    <ul class="nav nav-tabs"
+        tal:define="view_actions view/prepareObjectTabs;">
+      <tal:views repeat="action view_actions">
+        <li tal:define="selected action/selected|nothing;"
+            tal:attributes="id string:contentview-${action/id};
+                            class python:selected and 'active' or ''">
+          <a href=""
+             tal:content="action/title"
+             tal:attributes="href action/url;"
+             i18n:translate="">
+            View name
+          </a>
+        </li>
+      </tal:views>
+    </ul>
 
     <div metal:use-macro="context/global_statusmessage/macros/portal_message">
       Portal status message
     </div>
 
-    <div id="content">
-      <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
-      <div class="documentDescription" i18n:translate=""
-           tal:condition="view/description"
-           tal:content="view/description">
-        Description
-      </div>
-      
-      <div id="content-core">
-        <fieldset
-            tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;">
-          <legend>BCCVL has access to the following services:</legend>
-          <p>BCCVL has access to the following services:</p>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Service</th>
-                <th>Authorise / Revoke</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr tal:repeat="oauth view/services">
-                <tal:block tal:define="valid oauth/validate">
-                  <td tal:content="oauth/config/title"></td>
-                  <td>
-                    <a class="btn btn-mini btn-primary" href="#"
-                       tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize;
-                                       class string:btn btn-mini btn-primary${python: ' disabled' if valid else ''};
-                                       disabled valid;"><i class="fa fa-check"></i> Authorise</a>
-                    <a class="btn btn-mini btn-danger" href="#"
-                       tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken;
-                                       class string:btn btn-mini btn-danger${python: ' disabled' if not valid else ''};
-                                       disabled not:valid;"><i class="fa fa-times"></i> Revoke</a></td>
-                </tal:block>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
+    <div class="row">
+      <div class="span8 offset2">
+        <h1><strong tal:content="view/label | nothing">Account Settings Title</strong></h1>
+	<h4 tal:content="view/description | nothing">Accent settings help text.</h4>
+
+        <div id="account-form"
+             tal:attributes="id string:${view/__name__}-form">        
+          <fieldset
+              tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;">
+            <legend>BCCVL has access to the following services:</legend>
+            <p>BCCVL has access to the following services:</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Authorise / Revoke</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr tal:repeat="oauth view/services">
+                  <tal:block tal:define="valid oauth/validate">
+                    <td tal:content="oauth/config/title"></td>
+                    <td>
+                      <a class="btn btn-mini btn-primary" href="#"
+                         tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/authorize;
+                                         class string:btn btn-mini btn-primary${python: ' disabled' if valid else ''};
+                                         disabled valid;"><i class="fa fa-check"></i> Authorise</a>
+                      <a class="btn btn-mini btn-danger" href="#"
+                         tal:attributes="href string:${navigation_root_url}/oauth/${oauth/config/id}/cleartoken;
+                                         class string:btn btn-mini btn-danger${python: ' disabled' if not valid else ''};
+                                         disabled not:valid;"><i class="fa fa-times"></i> Revoke</a></td>
+                  </tal:block>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
       </div>
     </div>
-    
   </metal:block>
-  
 </html>
