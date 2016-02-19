@@ -5,9 +5,13 @@
 
     <!-- USER DETAILS PAGE ============================================ -->
 
-    <rules if-path="@@personal-preferences/">
-        <theme href="html/personal-preferences.html" />
+    <rules if-path="@@change-password/
+                    @@personal-information/
+                    @@personal-preferences/
+                    @@oauth-preferences/">
+        <theme href="html/account.html" />
 
+        <!-- 1. manipulate content -->
         <!-- add bootstrap classes to content form -->
         <replace content="form/@class[contains(., 'edit-form')]">
            <xsl:attribute name="class"><xsl:value-of select="."/> form form-horizontal plone-to-bootstrap-form</xsl:attribute>
@@ -34,20 +38,36 @@
         <replace content="div/@class[contains(., 'formControls')]">
            <xsl:attribute name="class"><xsl:value-of select="."/> form-actions</xsl:attribute>
         </replace>
+        <!-- drop form help -->
+        <drop css:content="p.discreet"/>
 
-        <!-- copy content into theme, drop in theme if not in content -->
-        <!-- nav links -->
-        <copy attributes="href" css:theme=".bccvllinks-personalinfo" css:content="#contentview-user_data-personal-information a" css:if-content="" />
-        <drop theme="//li[a/@class='bccvllinks-personalpref']" css:if-not-content="#contentview-user_data-personal-information"/>
-        <copy attributes="href" css:theme=".bccvllinks-personalpref" css:content="#contentview-user_data-personal-preferences a" css:if-content=""/>
-        <drop theme="//li[a/@class='bccvllinks-personalpref']" css:if-not-content="#contentview-user_data-personal-preferences"/>
-        <copy attributes="href" css:theme=".bccvllinks-oauthpref" css:content="#contentview-user_data-oauth-preferences a" css:if-content=""/>
-        <drop theme="//li[a/@class='bccvllinks-oauthpref']" css:if-not-content="#contentview-user_data-oauth-preferences"/>
-        <copy attributes="href" css:theme=".bccvllinks-changepassword" css:content="#contentview-user_data-change-password a" css:if-content=""/>
-        <drop theme="//li[a/@class='bccvllinks-changepassword']" css:if-not-content="#contentview-user_data-change-password"/>
 
-        <!-- page content -->
-        <replace css:theme-children="div#user-info-form" css:content-children="div#content-core" />
+        <!-- copy content into page -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+            <xsl:for-each select="//dl[@class='portalMessage error' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-error">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+            <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+        </replace>
+        <drop css:content="dl.portalMessage"/>
+
+
+        <replace
+            css:theme="div#content"
+            css:content-children="#portal-column-content"/>
+
 
     </rules>
 
