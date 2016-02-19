@@ -87,6 +87,14 @@
 
     <z3c:widgetTemplate
         mode="input"
+        widget="plone.app.users.schema.PortraitWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="image_input.pt"
+        />
+    <!-- widget="plone.formwidget.namedfile.interfaces.INamedImageWidget" -->
+    
+    <z3c:widgetTemplate
+        mode="input"
         widget="z3c.form.interfaces.ISubmitWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="submit_input.pt"
