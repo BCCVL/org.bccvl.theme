@@ -16,5 +16,11 @@
                          required view/required;
                          data-default view/value;
                          data-view-class view/klass;
+                         aria-invalid view/error;
+                         placeholder view/placeholder|nothing;
                          "/>
 </html>
+
+  <!-- class="bccvl-expname input-block-level required error" -->
+  <!-- placeholder="Name for this experiment" -->
+  <!-- aria-required="true/false" -->
