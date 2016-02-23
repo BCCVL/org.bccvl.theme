@@ -2,9 +2,9 @@
 // main JS for the new biodiverse experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs',
-     'js/bccvl-form-jquery-validate', 'jquery-tablesorter', 'jquery-arrayutils',
-     'bbq', 'faceted_view.js', 'js/bccvl-widgets',],
+    ['jquery', 'bccvl-wizard-tabs',
+     'bccvl-form-jquery-validate', 'jquery-tablesorter', 'jquery-arrayutils',
+     'bbq', 'faceted_view.js', 'bccvl-widgets',],
     function($, wiztabs, formvalidator, tablesorter, arrayutils,
              bbq, faceted, bccvl) {
 

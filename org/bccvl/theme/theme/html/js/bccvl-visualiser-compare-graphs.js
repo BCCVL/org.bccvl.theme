@@ -1,7 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
+define(['jquery', 'bccvl-preview-layout', 'bccvl-visualiser-common', 'jquery-xmlrpc'],
     function( $, preview, vizcommon  ) {
 
         // REGISTER CLICK EVENT

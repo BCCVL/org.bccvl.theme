@@ -2,7 +2,7 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser-map', 'js/bccvl-visualiser-common', 'openlayers3', 'bootstrap'],
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bootstrap2'],
     function( $, vizmap, vizcommon, ol ) {
         // ==============================================================
         var intervalID;

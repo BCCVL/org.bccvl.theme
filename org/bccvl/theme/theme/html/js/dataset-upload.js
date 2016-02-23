@@ -2,8 +2,8 @@
 // main JS for the dataset upload page.
 //
 define(
-    ['jquery', 'js/bccvl-form-jquery-validate', 'bootstrap', 'bootstrap-fileupload',
-     'js/bccvl-form-popover'],
+    ['jquery', 'bccvl-form-jquery-validate', 'bootstrap2', 'bootstrap2-fileupload',
+     'bccvl-form-popover'],
     function($, formvalidator ) {
         // ==============================================================
         $(function() {

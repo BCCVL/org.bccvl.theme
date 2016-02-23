@@ -71,7 +71,7 @@
 //      }
 // }
 
-define(     ['jquery', 'jquery-xmlrpc', 'bootstrap'],
+define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
     function( $      ) {
 
 

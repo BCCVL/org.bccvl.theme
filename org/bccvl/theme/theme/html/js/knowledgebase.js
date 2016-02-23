@@ -2,7 +2,7 @@
 // main JS for the knowledgebase page.
 //
 define(
-    ['jquery', 'bootstrap'],
+    ['jquery', 'bootstrap2'],
     function( $) {
         // ==============================================================
         $(function() {

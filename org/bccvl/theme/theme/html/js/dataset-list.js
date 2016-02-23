@@ -2,10 +2,10 @@
 // main JS for the dataset list page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser-map', 'js/bccvl-visualiser-common',
-     'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize',
-     'bbq', 'faceted_view.js', 'js/selectize-remove-single'],
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
+     'layer-edit-modal', 'bccvl-modals', 'openlayers3',
+     'bootstrap2', 'jquery-tablesorter', 'jquery-form', 'selectize',
+     'bbq', 'faceted_view.js', 'selectize-remove-single'],
 
     function($, vizmap, vizcommon, editmodal, modals) {
 

@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form', 'parsley'],
+    ['jquery', 'bootstrap2', 'jquery-tablesorter', 'jquery-form'],
     function($) {
 
         return {

@@ -2,7 +2,7 @@
 // Javascript to perform validation.
 //
 define(
-    ['jquery', 'jquery-validate', 'bootstrap'],
+    ['jquery', 'jquery-validate', 'bootstrap2'],
     function( $) {
         // ==============================================================
 

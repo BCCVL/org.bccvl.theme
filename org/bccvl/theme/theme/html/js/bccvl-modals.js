@@ -3,7 +3,7 @@
 //
 
 define(
-    ['jquery', 'bootstrap'],
+    ['jquery', 'bootstrap2'],
     function($, bootstrap) {
 
         // Modal object
