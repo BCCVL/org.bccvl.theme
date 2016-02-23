@@ -25,16 +25,14 @@
     <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
-    <xi:include href="rules/personal-information.xml" />
-    <xi:include href="rules/oauth-preferences.xml" />
-    <xi:include href="rules/personal-preferences.xml" />
-    <xi:include href="rules/change-password.xml" />
-    <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
     <xi:include href="rules/sharing.xml" />
-    <xi:include href="rules/remove-item.xml" />    
+    <xi:include href="rules/remove-item.xml" />
     <xi:include href="rules/feedback.xml" />
     <xi:include href="rules/statistics.xml" />
+    <xi:include href="rules/password-reset.xml" />
+    <xi:include href="rules/account.xml" />
+
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
@@ -102,6 +100,9 @@
         local = false;
     </replace>
 
+    <!-- set title for page -->
+    <replace theme="/html/head/title" content="/html/head/title"/>
+
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
       <xsl:for-each select="//dl[contains(@class,'portalMessage') and not (@id = 'kssPortalMessage')]">
@@ -121,7 +122,7 @@
         </xsl:variable>
         <div class="bccvl-flashmessage bccvl-flashmessage-{$msgtype} alert alert-block alert-{$msgtype}">
           <p>
-            <xsl:copy-of select="./dd/child::node()" />  
+            <xsl:copy-of select="./dd/child::node()" />
           </p>
         </div>
       </xsl:for-each>

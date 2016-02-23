@@ -3,11 +3,11 @@
 // main JS for the new sdm experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-preview-layout', 'js/bccvl-visualiser-common',
-     'js/bccvl-visualiser-map', 'js/bccvl-wizard-tabs',
-     'js/bccvl-search', 'js/bccvl-form-jquery-validate',
-     'js/bccvl-form-popover', 'bbq', 'faceted_view.js',
-     'js/bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
+    ['jquery', 'bccvl-preview-layout', 'bccvl-visualiser-common',
+     'bccvl-visualiser-map', 'bccvl-wizard-tabs',
+     'bccvl-search', 'bccvl-form-jquery-validate',
+     'bccvl-form-popover', 'bbq', 'faceted_view.js',
+     'bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
     function($, preview_layout, vizcommon, vizmap, wiztabs, search, formvalidator,
              popover, bbq, faceted, bccvl, ol) {
 

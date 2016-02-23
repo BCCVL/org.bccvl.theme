@@ -1,7 +1,7 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'js/bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'js/bccvl-visualiser-common', 'jquery-xmlrpc'],
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'jquery-xmlrpc'],
     function( $, preview, ol, layerswitcher, vizcommon  ) {
 
         var select;

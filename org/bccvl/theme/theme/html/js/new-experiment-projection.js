@@ -2,10 +2,10 @@
 // main JS for the new projection experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-stretch',
-     'js/bccvl-dimension-equation', 'js/bccvl-form-jquery-validate',
-     'bbq', 'faceted_view.js', 'js/bccvl-widgets'],
-    function($, wiztabs, stretch, dimensions, formvalidator,
+    ['jquery', 'bccvl-wizard-tabs', 'bccvl-stretch',
+     'bccvl-form-jquery-validate',
+     'bbq', 'faceted_view.js', 'bccvl-widgets'],
+    function($, wiztabs, stretch, formvalidator,
              bbq, faceted, bccvl) {
         // ==============================================================
         // do the work

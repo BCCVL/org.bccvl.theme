@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
+      tal:define="exists python: view.value is not None;
+                  action view/action;
+                  allow_nochange view/allow_nochange;
+                  nav_root context/@@plone_portal_state/navigation_root_url;
+                  imgurl python: view.download_url if exists else nav_root + '/defaultUser.png';
+                  ">
+  <div class="fileupload fileupload-exists"
+       data-provides="fileupload">
+    <!--  ... fileupload-exists? -->
+    <div class="fileupload-new thumbnail" style="width: 99px; height: 75px;"><img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" tal:attributes="src string:${nav_root}/defaultUser.png"/></div>
+    <div class="fileupload-exists fileupload-preview thumbnail" style="width: 99px; height: 75px;"><img srce="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" tal:attributes="src imgurl"/></div>
+    <span class="btn btn-file">
+      <span class="fileupload-new">Select an image to upload</span>
+      <span class="fileupload-exists">Change</span>
+      <input id="" name="" type="file"
+             required="required"
+             tal:attributes="id view/id;
+                             name view/name;
+                             title view/title;
+                             disabled view/disabled;
+                             readonly view/readonly;
+                             alt view/alt;
+                             required view/required;
+                             data-view-class view/klass;"/>
+    </span>
+    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+  </div>
+  <div tal:condition="allow_nochange" style="padding-top: 1em;">
+    <input
+        type="radio"
+        value="nochange"
+        class="noborder"
+        tal:attributes="name string:${view/name}.action;
+                        id string:${view/id}-nochange;
+                        checked python:(action == 'nochange') and 'checked' or None;"
+        />
+    <label
+        tal:attributes="for string:${view/id}-nochange" i18n:translate="image_keep">Keep existing image</label>
+    <tal:block condition="not:view/field/required">
+      <br />
+      <input
+          type="radio"
+          value="remove"
+          class="noborder"
+          tal:attributes="name string:${view/name}.action;
+                          id string:${view/id}-remove;
+                          checked python:action== 'remove' and 'checked' or None;"
+          />
+      <label
+          tal:attributes="for string:${view/id}-remove" i18n:translate="image_remove">Remove existing image</label>
+    </tal:block>
+    <input
+        type="radio"
+        value="replace"
+        class="noborder"
+        tal:attributes="name string:${view/name}.action;
+                        id string:${view/id}-replace;
+                        checked python:action == 'replace' and 'checked' or None;" />
+    <label
+        tal:attributes="for string:${view/id}-replace" i18n:translate="image_replace">Replace with new image</label>
+  </div>
+  
+</html>

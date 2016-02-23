@@ -8,7 +8,7 @@
 
     <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
-     
+
     <link href="lib/selectize/selectize.bootstrap2.css" rel="stylesheet" />
     <link href="css/general.css" rel="stylesheet" />
     <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-    
+
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
       window.bccvl || (window.bccvl = {});
@@ -50,9 +50,9 @@
     <script src="//maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
     <!-- load main javascript -->
     <script type="text/javascript">
-      require(['js/new-experiment-sdm']);
+      require(['new-experiment-sdm']);
     </script>
-    
+
     <script id="google-analytics"></script>
 
   </head>
@@ -158,10 +158,9 @@
                         Give your experiment a title and description.
                       </p>
 
-                      <div class="control-group">
+                      <div class="control-group" id="formfield-form-widgets-IDublinCore-title">
                         <input type="text" name="expName" class="bccvl-expname input-block-level"
-                               pattern="^[^_].*"
-                               required="required" 
+                               required="required"
                                placeholder="Name for this experiment"
                                />
                       </div>
@@ -176,7 +175,7 @@
                 </fieldset>
               </div>
 
-              
+
 
               <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-occur">
@@ -218,7 +217,7 @@
                         <div class="alert alert-warning">
                          <strong>You must select an occurence dataset for this experiment type.</strong>
                         </div>
-                            
+
                       </div>
                     </div></div>
 
@@ -246,7 +245,7 @@
                   <div class="row-fluid bccvl-stretch-parent">
                     <!-- list of available data -->
                     <div class="span4"><div class="control-group">
-                     
+
                       <div class="bccvl-absencestable">
                         <div id="formfield-form-widgets-species_absence_dataset">
                           <!-- Modal Dialog absences -->
@@ -263,7 +262,7 @@
                           </div>
                         </div>
                       </div>
-                      
+
                       <div class="random-absences-settings"></div>
                        <div class="alert alert-warning">
                          <strong>If absence data is selected in the absence tab, this data will be used. Pseudo-absence points can additionally be generated if the pseudo-absence strategy is not "none", and the number of absence points available in the dataset is not sufficient for the specified ratio under presence-absence ratio.</strong>
@@ -296,7 +295,7 @@
 
                     <!-- list of available data -->
                     <div class="span4">
-                      
+
 
                       <div class="control-group bccvl-environmentaldatatable">
                         <div id="formfield-form-widgets-environmental_datasets">
@@ -308,7 +307,7 @@
                             </div>
                             <div id="modal-body" class="modal-body"></div>
                             <div class="modal-footer">
-                          
+
                               <button class="btn btn-primary">Add layers</button>
                             </div>
                           </div>
@@ -350,8 +349,8 @@
                     <div class="span4" style="overflow:visible;">
                       <div class="control-group">
                         <div class="bccvl-occurrencestable">
-                          
-                          
+
+
                           <div class="constraints" id="formfield-form-widgets-modelling_region"></div>
                           <div class="bccvl-constraint-geojson-input">
                             <p>Select constraints by pre-defined region</p>
@@ -369,7 +368,7 @@
                             <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
                           <hr/>
-                          
+
                           <div class="bccvl-draw-constraints">
                             <p>Draw constraints on map</p>
                             <a href="javascript:void(0);" class="btn btn-small btn-default draw-polygon"><i class="fa fa-crop"></i> Draw On Map</a>&nbsp;
@@ -386,7 +385,7 @@
                             <a href="javascript:void(0);" class="btn btn-small btn-default input-polygon"><i class="fa fa-crop"></i> Input Constraints</a>&nbsp;
                             <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
-                        
+
                         </div>
                       </div>
                     </div>
@@ -477,7 +476,7 @@
                               <div id="formfield-form-widgets-algo1uuid-prevalence" data-fieldname="form.widgets.algo1uuid.prevalence" class="control-group">
                                 <label class="control-label" for="form-widgets-algo1uuid-prevalence">weighted response weights</label>
                                 <div class="controls">
-                                  <input type="text" max="1" min="0" value="" class="text-widget decimal-field" name="form.widgets.algo1uuid.prevalence" id="form-widgets-algo1uuid-prevalence"/>
+                                  <input type="text" max="1" min="0" value="" class="text-widget decimal-field" number name="form.widgets.algo1uuid.prevalence" id="form-widgets-algo1uuid-prevalence"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>
@@ -485,7 +484,7 @@
                                 <label class="control-label" for="form-widgets-algo1uuid-var_import">resampling</label>
                                 <i data-toggle="popover" data-content="number of resampling of each explanatory variable to measure the relative importance of each variable for each selected model" data-title="resampling" class="fa fa-info-circle pull-left" data-original-title="" title=""></i>
                                 <div class="controls">
-                                  <input type="number" min="0" data-default="0" value="0" class="text-widget int-field" name="form.widgets.algo1uuid.var_import" id="form-widgets-algo1uuid-var_import"/>
+                                  <input type="number" min="0" data-default="0" value="0" class="text-widget required int-field" name="form.widgets.algo1uuid.var_import" id="form-widgets-algo1uuid-var_import"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>
@@ -506,7 +505,7 @@
                                 <label class="control-label" for="form-widgets-algo1uuid-rang">rang</label>
                                 <i data-toggle="popover" data-content="Initial random weights" data-title="rang" class="fa fa-info-circle pull-left" data-original-title="" title=""></i>
                                 <div class="controls">
-                                  <input type="text" min="0" data-default="0.1" value="0.1" class="text-widget decimal-field" name="form.widgets.algo1uuid.rang" id="form-widgets-algo1uuid-rang"/>
+                                  <input type="text" min="0" data-default="0.1" value="0.1" class="text-widget decimal-field number" name="form.widgets.algo1uuid.rang" id="form-widgets-algo1uuid-rang"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>

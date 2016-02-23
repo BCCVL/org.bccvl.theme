@@ -36,7 +36,7 @@
     <script src="js/common.js" type="text/javascript"></script>
     <!-- include main js -->
     <script type="text/javascript">
-      require(['js/experiment-list']);
+      require(['experiment-list']);
     </script>
 
     <script id="google-analytics"></script>
@@ -114,17 +114,16 @@
           <div class="row-fluid">
             <div class="span4">
     	    <!-- some controls -->
+            <div id="new-experiment-menu">
               <h4 class="new-experiment-type-heading" style="text-transform:uppercase;">Before Running An Experiment</h4>
 
                 <p>The datasets available for use within an experiment must be available within the BCCVL before the experiment is started. Prior to beginning an experiment, we recommend you:</p>
                 <div class="new-experiment-button experiment-stm">
-                  <a class="" href="/datasets/datasets_upload_view"><span><i class="fa fa-upload"></i> Upload datasets</a>
+                  <a class="" href="/datasets/datasets_upload_view"><span><i class="fa fa-upload"></i> Upload datasets</span></a>
                 </div>
                 <div class="new-experiment-button experiment-stm">
-                  <a class="" href="/datasets/datasets_import_view"><span><i class="fa fa-cloud-download"></i> Import datasets from other services</a>
+                  <a class="" href="/datasets/datasets_import_view"><span><i class="fa fa-cloud-download"></i> Import datasets from other services</span></a>
                 </div>
-                
-        	    <div id="new-experiment-menu">
                 
                 <h3>Primary Experiments </h3>
         	      <div class="new-experiment-button experiment-sdm">

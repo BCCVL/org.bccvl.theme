@@ -2,7 +2,7 @@
 // JS to handle for form field description popover
 //
 define(
-    ['jquery', 'bootstrap'],
+    ['jquery', 'bootstrap2'],
     function($, bootstrap) {
         // configure popovers
         $('[data-toggle="popover"]').popover();

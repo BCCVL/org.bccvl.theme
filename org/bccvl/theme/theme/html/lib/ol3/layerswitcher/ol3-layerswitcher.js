@@ -1,5 +1,5 @@
 
-define(     ['jquery', 'openlayers3', 'js/bccvl-visualiser-common'],
+define(     ['jquery', 'openlayers3', 'bccvl-visualiser-common'],
             function( $, ol, vizcommon ) {
 
         /**

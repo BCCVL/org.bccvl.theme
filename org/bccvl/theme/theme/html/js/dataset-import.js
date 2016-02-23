@@ -2,7 +2,7 @@
 // main JS for the dataset iomport page.
 //
 define(
-    ['jquery', 'js/bccvl-search',  'bootstrap'],
+    ['jquery', 'bccvl-search',  'bootstrap2'],
     function($, search) {
         // ==============================================================
         $(function() {

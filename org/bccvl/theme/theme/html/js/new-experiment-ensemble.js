@@ -2,9 +2,9 @@
 // main JS for the new ensemble experiment page.
 //
 define(
-    ['jquery', 'js/bccvl-wizard-tabs', 'js/bccvl-form-jquery-validate',
+    ['jquery', 'bccvl-wizard-tabs', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
-     'bbq', 'faceted_view.js', 'js/bccvl-widgets'],
+     'bbq', 'faceted_view.js', 'bccvl-widgets'],
     function($, wiztabs, formvalidator, tablesorter, arryutils,
              bbq, faceted, bccvl) {
 

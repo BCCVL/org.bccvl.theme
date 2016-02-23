@@ -2,7 +2,7 @@
 // main JS for the login page.
 //
 define(
-    ['jquery', 'bootstrap'],
+    ['jquery', 'bootstrap2'],
     function( $) {
         // ==============================================================
         $(function() {

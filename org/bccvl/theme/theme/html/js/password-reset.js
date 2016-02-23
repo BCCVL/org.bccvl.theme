@@ -2,7 +2,7 @@
 // main JS for the password reset page.
 //
 define(
-    ['jquery', 'bootstrap'],
+    ['jquery', 'bootstrap2'],
     function( $) {
         // ==============================================================
         $(function() {
