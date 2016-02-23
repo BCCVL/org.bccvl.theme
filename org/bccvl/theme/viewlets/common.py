@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from plone.app.layout.viewlets import common
 from plone.memoize.view import memoize
+from z3c.form.interfaces import IAddForm
 from zope.component import getMultiAdapter
 from zope.i18n import translate
 
@@ -56,7 +57,7 @@ class TitleViewlet(common.TitleViewlet):
            creation_flag
         '''
         if (hasattr(aq_base(self.context), 'isTemporary') and
-                self.context.isTemporary()):
+            self.context.isTemporary()):
             # if we are in the portal_factory we want the page title to be
             # "Add fti title"
             portal_types = getToolByName(self.context, 'portal_types')
@@ -65,11 +66,28 @@ class TitleViewlet(common.TitleViewlet):
                              domain='plone',
                              mapping={'itemtype': fti.Title()},
                              context=self.request,
-                             default='Add ${itemtype}')
-
+                             default='New ${itemtype}')
+        if IAddForm.providedBy(self.view):
+            portal_types = getToolByName(self.context, 'portal_types')
+            fti = portal_types.getTypeInfo(self.view.portal_type)
+            return translate('heading_add_item',
+                             domain='plone',
+                             mapping={'itemtype': fti.Title()},
+                             context=self.request,
+                             default='New ${itemtype}')
         title = getattr(self.view, 'title', None)
         if not title:
             context_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_context_state')
             title = context_state.object_title()
         return escape(safe_unicode(title))
+
+    def update(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                       name=u'plone_portal_state')
+        portal_title = escape(safe_unicode(portal_state
+                                           .navigation_root_title()))
+        if self.page_title == portal_title:
+            self.site_title = portal_title
+        else:
+            self.site_title = u"{0} {1}".format(portal_title, self.page_title)

@@ -100,6 +100,9 @@
         local = false;
     </replace>
 
+    <!-- set title for page -->
+    <replace theme="/html/head/title" content="/html/head/title"/>
+
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
       <xsl:for-each select="//dl[contains(@class,'portalMessage') and not (@id = 'kssPortalMessage')]">
