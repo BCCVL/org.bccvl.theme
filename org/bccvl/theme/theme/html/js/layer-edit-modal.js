@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form', 'parsley'],
+    ['jquery', 'bootstrap', 'jquery-tablesorter', 'jquery-form'],
     function($) {
 
         return {
@@ -35,39 +35,7 @@ define(
                             var $cancelButton = '<input class="btn btn-danger" type="submit" name="form.button.Cancel" value="Cancel" data-dismiss="modal"></input>';
                             $('.modal form .action').append($cancelButton);
 
-                            // make sure there is no redirect when the form is submitted
-                            // also hide and empty the modal
-
-                            $('.select-widget').attr('data-parsley-unique', 'true');
-
-                            // assume parsleyconfig already loaded by bccvl-form-validator.js
-
-                            window.ParsleyValidator
-                                .addValidator('unique', function(val, requirement) {
-                                    var counter = 0;
-                                    $("[data-parsley-unique='true']").each(function() {
-                                        if ($(this).val() == val) {
-                                            counter++;
-                                        }
-                                    });
-
-                                    return counter == 1;
-                                })
-                                .addMessage('en', 'unique', 'Bioclimatic Variable must be unique.');
-
-                            $('form.layers-parsley-validated').parsley();
-
-                            $.listen('parsley:form:validate', function(isFormValid, evt) {
-
-                                var errorList = $(".error[data-parsley-unique='true']");
-
-                                if (errorList.length == 0) {
-                                    return true;
-                                }
-                                else return false;
-
-                            });
-
+                            // TODO, validation?
 
                             $('.modal form').ajaxForm(function() {
                                 $('.modal').modal('hide');

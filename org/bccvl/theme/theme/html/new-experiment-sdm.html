@@ -160,6 +160,7 @@
 
                       <div class="control-group">
                         <input type="text" name="expName" class="bccvl-expname input-block-level"
+                               pattern="^[^_].*"
                                required="required" 
                                placeholder="Name for this experiment"
                                />
@@ -476,7 +477,7 @@
                               <div id="formfield-form-widgets-algo1uuid-prevalence" data-fieldname="form.widgets.algo1uuid.prevalence" class="control-group">
                                 <label class="control-label" for="form-widgets-algo1uuid-prevalence">weighted response weights</label>
                                 <div class="controls">
-                                  <input type="text" max="1" min="0" value="" class="text-widget decimal-field" number name="form.widgets.algo1uuid.prevalence" id="form-widgets-algo1uuid-prevalence"/>
+                                  <input type="text" max="1" min="0" value="" class="text-widget decimal-field" name="form.widgets.algo1uuid.prevalence" id="form-widgets-algo1uuid-prevalence"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>
@@ -484,7 +485,7 @@
                                 <label class="control-label" for="form-widgets-algo1uuid-var_import">resampling</label>
                                 <i data-toggle="popover" data-content="number of resampling of each explanatory variable to measure the relative importance of each variable for each selected model" data-title="resampling" class="fa fa-info-circle pull-left" data-original-title="" title=""></i>
                                 <div class="controls">
-                                  <input type="number" min="0" data-default="0" value="0" class="text-widget required int-field" name="form.widgets.algo1uuid.var_import" id="form-widgets-algo1uuid-var_import"/>
+                                  <input type="number" min="0" data-default="0" value="0" class="text-widget int-field" name="form.widgets.algo1uuid.var_import" id="form-widgets-algo1uuid-var_import"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>
@@ -505,7 +506,7 @@
                                 <label class="control-label" for="form-widgets-algo1uuid-rang">rang</label>
                                 <i data-toggle="popover" data-content="Initial random weights" data-title="rang" class="fa fa-info-circle pull-left" data-original-title="" title=""></i>
                                 <div class="controls">
-                                  <input type="text" min="0" data-default="0.1" value="0.1" class="text-widget decimal-field number" name="form.widgets.algo1uuid.rang" id="form-widgets-algo1uuid-rang"/>
+                                  <input type="text" min="0" data-default="0.1" value="0.1" class="text-widget decimal-field" name="form.widgets.algo1uuid.rang" id="form-widgets-algo1uuid-rang"/>
                                 </div>
                                 <span class="help-inline bccvl-formerror"></span>
                               </div>

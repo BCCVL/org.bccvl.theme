@@ -54,6 +54,9 @@ define(
             },
             "date": {
                 date: true
+            },
+            "algorithm": {
+                require_from_group: [1, ".algorithm-checkbox"]
             }
         });
 
@@ -98,6 +101,7 @@ define(
             },
             // this is where we go back to the first invalid field
             invalidHandler: function(event, validator){
+                console.log(validator.errorList);
                 var errors = validator.numberOfInvalids();
                 if (errors) {
                     event.preventDefault();
