@@ -26,7 +26,7 @@ requirejs.config({
         'prism':                'lib/prism/prism',
         'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',
         'proj4':                'lib/proj4/proj4',
-        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min'
+        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
         // our own js files        
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
