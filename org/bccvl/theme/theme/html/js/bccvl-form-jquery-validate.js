@@ -30,10 +30,18 @@ define(
             return this.optional(element) || parseInt(value) <= parseInt($(param).val());
         }, "The value {0} must be less than {1}");
 
+        $.validator.addMethod("decimalOrScientific", function(value, element) {
+          // allow any non-whitespace characters as the host part
+          return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
+        }, 'Please enter a valid number using decimal or scientific notation.');
+
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
                 number: true
+            },
+            "decimal-field":{
+                "decimalOrScientific": true
             },
             "year": {
                 digits: true,
