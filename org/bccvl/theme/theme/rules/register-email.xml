@@ -1,0 +1,73 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- USER DETAILS PAGE ============================================ -->
+
+    <rules if-path="@@register-confirm-email/
+                    @@register/">
+        <theme href="html/register-email.html" />
+
+        <!-- 1. manipulate content -->
+        <!-- add bootstrap classes to content form -->
+        <replace content="form/@class[contains(., 'edit-form')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> form form-horizontal plone-to-bootstrap-form</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'field')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> control-group</xsl:attribute>
+        </replace>
+        <replace content="form/fieldset/div/img">
+         <xsl:copy>
+           <xsl:attribute name="class">profile-thumb</xsl:attribute>
+           <xsl:copy-of select="@*" />
+           <xsl:apply-templates />
+         </xsl:copy>
+       </replace>
+        <replace content="input/@class[contains(., 'context')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> btn</xsl:attribute>
+        </replace>
+        <replace content="id('form.actions.save')/@class">
+           <xsl:attribute name="class"><xsl:value-of select="."/> btn btn-primary</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'widget')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> controls</xsl:attribute>
+        </replace>
+        <replace content="div/@class[contains(., 'formControls')]">
+           <xsl:attribute name="class"><xsl:value-of select="."/> form-actions</xsl:attribute>
+        </replace>
+        <!-- drop form help -->
+        <drop css:content="p.discreet"/>
+
+
+        <!-- copy content into page -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+            <xsl:for-each select="//dl[@class='portalMessage error' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-error">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+            <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+                <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+                    <dt class="label label-important">
+                        <xsl:value-of select="./dt" />
+                    </dt>
+                    <xsl:copy-of select="./dd" />
+                </dl>
+            </xsl:for-each>
+        </replace>
+        <drop css:content="dl.portalMessage"/>
+
+
+        <replace
+            css:if-content="#content-core"
+            css:theme-children="div#content-core"
+            css:content-children="#content-core"
+            />
+
+    </rules>
+
+</rules>
