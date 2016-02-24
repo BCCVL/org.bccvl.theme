@@ -2660,7 +2660,7 @@ form.plone-to-bootstrap-form .widget label span {
     bottom:50px;
 }
 
-.register form #formfield-form-widgets-username {
+.register form.kssattr-formname-register-confirm-email #formfield-form-widgets-username {
     opacity:0;
     height:0;
     width:0;
@@ -2672,4 +2672,9 @@ form.plone-to-bootstrap-form .widget label span {
 }
 .register .well {
     width:50%;min-width:320px;margin:0 auto;
+}
+.register label {
+    display: inline-block;
+    float: left;
+    margin-right: .3em;
 }
