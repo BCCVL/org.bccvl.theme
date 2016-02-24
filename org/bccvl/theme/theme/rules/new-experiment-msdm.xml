@@ -41,13 +41,9 @@
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
                  css:content="#formfield-form-widgets-species_occurrence_dataset" />
 
-        <replace css:theme-children=".random-absences-settings"
-               css:content="#formfield-form-widgets-species_pseudo_absence_points"/>
-        <after css:theme-children=".random-absences-settings"
-               css:content="#formfield-form-widgets-species_number_pseudo_absence_points"/>
-        <!-- hook in the absences list -->
-        <replace css:theme="#formfield-form-widgets-species_absence_dataset"
-                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
+         <!-- pull in geo constraints field -->
+        <replace css:theme="#formfield-form-widgets-modelling_region"
+                 css:content="#formfield-form-widgets-modelling_region"/>"
 
         <!-- The rest of this is filled in with AJAX -->
         <replace css:theme="#formfield-form-widgets-environmental_datasets"
