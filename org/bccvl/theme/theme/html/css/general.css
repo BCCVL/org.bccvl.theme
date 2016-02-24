@@ -728,6 +728,10 @@ body.modal-open {
     padding: 0 1em;
     margin: 0 0 1em;
 }
+.bccvl-personal-information .bccvl-flashmessage {
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 20px;
+}
 
 .bccvl-flashmessage dt, .bccvl-flashmessage dd {
     display: inline;
@@ -2649,7 +2653,7 @@ form.plone-to-bootstrap-form .widget label span {
     bottom:50px;
 }
 
-.register form.kssattr-formname-register-confirm-email #formfield-form-widgets-username {
+.register form #formfield-form-widgets-username {
     opacity:0;
     height:0;
     width:0;
