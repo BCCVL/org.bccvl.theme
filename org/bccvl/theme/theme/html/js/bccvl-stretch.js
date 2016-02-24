@@ -82,7 +82,7 @@
 //
 //
 
-define(     ['jquery', 'bootstrap'],
+define(     ['jquery', 'bootstrap2'],
     function( $) {
 
 

@@ -2,7 +2,7 @@
 // Layout the bccvl preview pane and datasets list within the window.
 //
 
-define(     ['jquery', 'bootstrap'],
+define(     ['jquery', 'bootstrap2'],
     function( $) {
         var layoutResize = function(){
             // window height

@@ -2,12 +2,12 @@
 // main JS for the dataset list page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser-map',
-     'js/layer-edit-modal', 'js/bccvl-modals', 'openlayers3',
-     'bootstrap', 'jquery-tablesorter', 'jquery-form', 'selectize',
-     'bbq', 'faceted_view.js', 'js/selectize-remove-single'],
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
+     'layer-edit-modal', 'bccvl-modals', 'openlayers3',
+     'bootstrap2', 'jquery-tablesorter', 'jquery-form', 'selectize',
+     'bbq', 'faceted_view.js', 'selectize-remove-single'],
 
-    function($, vizmap, editmodal, modals) {
+    function($, vizmap, vizcommon, editmodal, modals) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -200,9 +200,9 @@ define(
 
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
-                        vizmap.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'occurence');
+                        vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'occurence');
                     } else {
-                        vizmap.mapRender(el.data('uuid'),el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
+                        vizcommon.mapRender(el.data('uuid'),el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
                     }
                 }); 
 

@@ -2,7 +2,7 @@
 // Javascript to perform validation.
 //
 define(
-    ['jquery', 'jquery-validate', 'bootstrap'],
+    ['jquery', 'jquery-validate', 'bootstrap2'],
     function( $) {
         // ==============================================================
 
@@ -21,11 +21,50 @@ define(
         $('[data-parsley-type]').each(function(){
             $(this).addClass(''+$(this).data('parsleyDataType')+'');
         });
+        // fallback for type to class
+        $('[data-type]').each(function(){
+            $(this).addClass(''+$(this).data('type')+'');
+        });
+
+        $.validator.addMethod('lessThanEqual', function(value, element, param) {
+            return this.optional(element) || parseInt(value) <= parseInt($(param).val());
+        }, "The value {0} must be less than {1}");
+
+        $.validator.addMethod("decimalOrScientific", function(value, element) {
+          // allow any non-whitespace characters as the host part
+          return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
+        }, 'Please enter a valid number using decimal or scientific notation.');
 
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
                 number: true
+            },
+            "decimal-field":{
+                "decimalOrScientific": true
+            },
+            "year": {
+                digits: true,
+                minlength: 4,
+                maxlength: 4
+            },
+            "month": {
+                digits: true,
+                minlength: 1,
+                maxlength: 2,
+                max: 12
+            },
+            "day": {
+                digits: true,
+                minlength: 1,
+                maxlength: 2,
+                max: 31
+            },
+            "date": {
+                date: true
+            },
+            "algorithm": {
+                require_from_group: [1, ".algorithm-checkbox"]
             }
         });
 
@@ -70,6 +109,7 @@ define(
             },
             // this is where we go back to the first invalid field
             invalidHandler: function(event, validator){
+                console.log(validator.errorList);
                 var errors = validator.numberOfInvalids();
                 if (errors) {
                     event.preventDefault();
@@ -132,7 +172,7 @@ define(
                     required: true,
                     minlength: 1,
                     messages: {
-                        required: 'You must select at least one dataset layer.'
+                        required: 'You must select at least one.'
                     }
                 });
             });             
@@ -149,18 +189,6 @@ define(
             });
         });
 
-        // remove required tag from hidden field if the checkbox is set on page load
-        // only happens when a user gets redirected to a pre-populated form
-        if (form.find('#form-widgets-species_pseudo_absence_points-0').is(':checked')){
-            $('#form-widgets-species_absence_dataset input').removeAttr('required');
-        }
-
-        form.find('#form-widgets-species_pseudo_absence_points-0').on('change',function(){
-            if ($('#form-widgets-species_absence_dataset input').attr('required'))
-                $('#form-widgets-species_absence_dataset input').removeAttr('required').removeClass('required error').valid();
-            else 
-                $('#form-widgets-species_absence_dataset input').attr('required', true).addClass('required').valid();
-        });
 
         $('.bccvl-wizardtabs-next, .bccvl-wizardtabs-prev, .bccvl-wizardtabs .nav-tabs a[data-toggle="tab"]').click(function(event, form){
             event.preventDefault();

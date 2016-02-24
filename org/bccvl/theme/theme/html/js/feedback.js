@@ -2,7 +2,7 @@
 // main JS for the feedback page.
 //
 define(
-    ['jquery', 'js/bccvl-form-validator', 'bootstrap', 'parsley'],
+    ['jquery', 'bootstrap2', 'bccvl-form-jquery-validate'],
     function($, formValidator) {
         // ==============================================================
         $(function() {

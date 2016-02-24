@@ -36,7 +36,7 @@
     <script src="js/common.js" type="text/javascript"></script>
     <!-- include main js -->
     <script type="text/javascript">
-      require(['js/experiment-list']);
+      require(['experiment-list']);
     </script>
 
     <script id="google-analytics"></script>
@@ -113,18 +113,18 @@
           </div>
           <div class="row-fluid">
             <div class="span4">
-      	      <h4><strong>Run A New Experiment</strong></h4>
-              <hr/>
-      	      <p>The BCCVL enables you to conduct five types of experiments to investigate the impact of climate change on biodiversity.</p>
-      	      <div class="alert">
-      	        <button type="button" class="close" data-dismiss="alert">&times;</button>
-      	        <p>Before conducting an experiment you need to make sure all the species, climate, and other environmental datasets are uploaded into the BCCVL.</p>
-      	      </div>
-      	    
-              
-
     	    <!-- some controls -->
-        	    <div id="new-experiment-menu">
+            <div id="new-experiment-menu">
+              <h4 class="new-experiment-type-heading" style="text-transform:uppercase;">Before Running An Experiment</h4>
+
+                <p>The datasets available for use within an experiment must be available within the BCCVL before the experiment is started. Prior to beginning an experiment, we recommend you:</p>
+                <div class="new-experiment-button experiment-stm">
+                  <a class="" href="/datasets/datasets_upload_view"><span><i class="fa fa-upload"></i> Upload datasets</span></a>
+                </div>
+                <div class="new-experiment-button experiment-stm">
+                  <a class="" href="/datasets/datasets_import_view"><span><i class="fa fa-cloud-download"></i> Import datasets from other services</span></a>
+                </div>
+                
                 <h3>Primary Experiments </h3>
         	      <div class="new-experiment-button experiment-sdm">
         	        <a class=" bccvllinks-experiment-new"><i class="fa fa-plus"></i><br/>new <span>Species Distribution Modelling</span> Experiment</a>
@@ -155,12 +155,6 @@
 	    <!-- list of available experiments -->
 	             <div class="span8">
                 <div class="span10 offset1">
-                  <div class="alert alert-info">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h5><strong>Before running an experiment!</strong></h5>
-                    <p>The datasets available for use within an experiment must be available within the BCCVL before the experiment is started. Prior to beginning an experiment, we recommend you:</p>
-                    <p><a href="/datasets/datasets_upload_view" class="btn btn-primary" target="_blank" title="Upload datasets."><i class="fa fa-upload"></i> Upload datasets</a> or <a href="/datasets/datasets_import_view" target="_blank" class="btn btn-primary" title="Import datasets."><i class="fa fa-cloud-download"></i> Import datasets from other services</a></p>
-                  </div>
 
     	             <h4><strong>Previously Run Experiments<strong></h4>
                    <hr/>

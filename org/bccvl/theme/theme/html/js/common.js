@@ -7,39 +7,72 @@
 // directory.
 
 requirejs.config({
-    baseUrl: (local ? 'lib' : portal_url + '/++resource++bccvl/lib'),          // load modules from the lib folder
+    baseUrl: (local ? 'lib' : portal_url + '/++resource++bccvl'),          // load modules from the lib folder
     paths: {
-        'js':                   (local ? '../js' : '++resource++bccvl/js'),  // bccvl stuff, which starts with js/, is in the js folder
-        'jquery':               'jquery/jquery-1.11.1.min',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
-        'jquery-ui':            'jquery-ui/jquery-ui.min',
-        'jquery-xmlrpc':        'jquery-xmlrpc/jquery.xmlrpc.min',
-        'bootstrap':            'bootstrap/js/bootstrap.min',
-        'bootstrap-fileupload': 'bootstrap-fileupload/bootstrap-fileupload.min',
-        'parsley':              'parsley/parsley.min',
-//        'parsley':              'parsley/parsley',
-        'jquery-validate':      'jquery-validate/jquery.validate.min',
-        'jquery-tablesorter':   'jquery-tablesorter/jquery.tablesorter',
-        'jquery-form':          'jquery-form/jquery.form.min',
-        'jquery-arrayutils':    'jquery-arrayutils/jquery.arrayutils.min',
-        'jquery-timer':         'jquery-timer/jquery.timer',
-        'jquery-csvtotable':    'jquery-csvtotable/jquery.csvToTable',
-        'selectize':            'selectize/selectize.min',        
-        'select2':              'select2/select2.min',
-        'OpenLayers':           'openlayers/OpenLayers',
-        'openlayers3':          'ol3/ol',
-        'ol3-layerswitcher':    'ol3/layerswitcher/ol3-layerswitcher',
-        'prism':                'prism/prism',
-        'bbq':                  'jquery-bbq/jquery.ba-bbq'
+        'jquery':               'lib/jquery/jquery-1.11.1.min',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
+        'jquery-ui':            'lib/jquery-ui/jquery-ui.min',
+        'jquery-xmlrpc':        'lib/jquery-xmlrpc/jquery.xmlrpc.min',
+        'bootstrap2':            'lib/bootstrap/js/bootstrap.min',
+        'bootstrap2-fileupload': 'lib/bootstrap-fileupload/bootstrap-fileupload.min',
+        'jquery-validate':      'lib/jquery-validate/jquery.validate.min',
+        'jquery-tablesorter':   'lib/jquery-tablesorter/jquery.tablesorter',
+        'jquery-form':          'lib/jquery-form/jquery.form.min',
+        'jquery-arrayutils':    'lib/jquery-arrayutils/jquery.arrayutils.min',
+        'jquery-timer':         'lib/jquery-timer/jquery.timer',
+        'jquery-csvtotable':    'lib/jquery-csvtotable/jquery.csvToTable',
+        'selectize':            'lib/selectize/selectize.min',        
+        'openlayers3':          'lib/ol3/ol',
+        'ol3-layerswitcher':    'lib/ol3/layerswitcher/ol3-layerswitcher',
+        'prism':                'lib/prism/prism',
+        'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',
+        'proj4':                'lib/proj4/proj4',
+        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
+        // our own js files        
+        'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
+        'bccvl-form-popover':         'js/bccvl-form-popover',
+        'bccvl-modals':               'js/bccvl-modals',
+        'bccvl-preview-layout':       'js/bccvl-preview-layout',
+        'bccvl-remove-dataset-modal': 'js/bccvl-remove-dataset-modal',
+        'bccvl-remove-experiment-modal': 'js/bccvl-remove-experiment-modal',        
+        'bccvl-search':               'js/bccvl-search',
+        'bccvl-sharing-modal':        'js/bccvl-sharing-modal',
+        'bccvl-stretch':              'js/bccvl-stretch',
+        'bccvl-visualiser-common':    'js/bccvl-visualiser-common',
+        'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
+        'bccvl-visualiser-compare':   'js/bccvl-visualiser-compare',
+        'bccvl-visualiser-map':       'js/bccvl-visualiser-map',
+        'bccvl-visualiser-overlay':   'js/bccvl-visualiser-overlay',
+        'bccvl-visualiser-progress-bar': 'js/bccvl-visualiser-progress-bar',
+        'bccvl-widgets':              'js/bccvl-widgets',
+        'bccvl-wizard-tabs':          'js/bccvl-wizard-tabs',
+        'dashboard':                  'js/dashboard',
+        'dataset-collection':         'js/dataset-collection',
+        'dataset-import':             'js/dataset-import',
+        'dataset-list':               'js/dataset-list',
+        'dataset-upload':             'js/dataset-upload',
+        'experiment-list':            'js/experiment-list',
+        'experiment-results':         'js/experiment-results',
+        'feedback':                   'js/feedback',
+        'homepage':                   'js/homepage',
+        'layer-edit-modal':           'js/layer-edit-modal',
+        'login':                      'js/login',
+        'new-experiment-biodiverse':  'js/new-experiment-biodiverse',
+        'new-experiment-ensemble':    'js/new-experiment-ensemble',
+        'new-experiment-projection':  'js/new-experiment-projection',
+        'new-experiment-sdm':         'js/new-experiment-sdm',
+        'new-experiment-speciestrait': 'js/new-experiment-speciestrait',
+        'password-reset':             'js/password-reset',
+        'search':                     'js/search',
+        'selectize-remove-single':    'js/selectize-remove-single'
     },
     shim: {
-        'parsley':              ['jquery'],
-        'bootstrap':            ['jquery'],
-        'bootstrap-fileupload': ['jquery', 'bootstrap'],
+        'bootstrap2':            ['jquery'],
+        'bootstrap2-fileupload': ['jquery', 'bootstrap2'],
         'jquery-xmlrpc':        ['jquery'],
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
         'jquery-timer':         ['jquery'],
-        'select2':              ['jquery']
+        'raven':                ['jquery']
     }
 });
 

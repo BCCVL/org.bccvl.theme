@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'selectize', 'js/selectize-remove-single'],
+    ['jquery', 'selectize', 'selectize-remove-single'],
     function($) {
 
         function truncate($elements) {

@@ -2,11 +2,57 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'js/bccvl-visualiser-map',  'bootstrap'],
-    function( $,       viz, vizmap ) {
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bootstrap2'],
+    function( $, vizmap, vizcommon, ol ) {
         // ==============================================================
         var intervalID;
         $(function() {
+
+            var geojsonObject = $('#form-widgets-modelling_region').val();
+
+            if (geojsonObject) {
+
+                var source = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                });
+
+                var constraintsLayer = new ol.layer.Vector({
+                    source: source,
+                    type: 'constraint',
+                    title: 'Input region',
+                    style: new ol.style.Style({
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 160, 228, 0.0)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 160, 228, 0.9)',
+                            width: 2
+                        })
+                    })
+                });
+                
+                var constraints = new ol.layer.Group({
+                    title: 'Constraints',
+                    layers: [constraintsLayer]
+                }); 
+
+                // temp fix to wipe common listener off button on this page
+                $('body a.bccvl-auto-viz').unbind('click');
+                // and redo it
+                $('body').on('click', 'a.bccvl-auto-viz', function(event){
+
+                    var type = $(this).data('mimetype');
+
+                    if (type == 'image/geotiff'){
+                        $.when(vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'))).then(function(map, visLayers) {
+                            
+                            map.addLayer(constraints);
+
+                        });
+                    }
+                });
+            }
+
 
             // Check to see if the experiment is already completed or not before start polling
             var experimentStatus = $(".bccvl-expstatus").attr('data-status');
@@ -78,17 +124,16 @@ define(
                 var url = $(this).attr('href');
                 $.ajax( {
                     url: url,
-                    timeout: 10000,
-                  })
-                  .done(function(data) {
-                      var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
-                      $('.bccvl-flashmessages').append(msg);
-                      console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
-                      if (data["success"]){
-                          $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
-                      }
-                  });
-           });
+                    timeout: 10000
+                }).done(function(data) {
+                    var msg = '<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><p><strong>' + data["message"] + '</strong></p></div>';
+                    $('.bccvl-flashmessages').append(msg);
+                    console.log('Success: ' + data["success"] + ', Message: ' + data["message"]);
+                    if (data["success"]){
+                        $('a[class$="email-support-btn"][href="' + url + '"]').attr("disabled", true);
+                    }
+                });
+            });
 
             $('#oauth-select-modal').on('hidden', function(){
                 $(this).removeData('modal');

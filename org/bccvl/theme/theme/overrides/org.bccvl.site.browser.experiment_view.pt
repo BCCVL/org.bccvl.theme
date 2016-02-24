@@ -77,7 +77,8 @@
                     </tal:block>
                   </div>
 
-                  <div class="experiment-details">
+                  <div class="experiment-details"
+                       tal:define="result_tools nocall:result/@@dataset_tools">
                     <h5><tal:replace tal:replace="result/Title">Result
                     Title</tal:replace></h5>
                     <!-- FIXME: get a better condition or use
@@ -104,8 +105,8 @@
                           <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
                         </li>
                       </tal:block>
-                      <tal:block tal:define="state result/@@dataset_tools/job_state; 
-                                             reason result/@@dataset_tools/job_progress"
+                      <tal:block tal:define="state result_tools/job_state; 
+                                             reason result_tools/job_progress"
                                  tal:condition="state">
                         <li>
                           <strong>State: </strong>
@@ -117,30 +118,22 @@
                         </li>                            
                       </tal:block>
                     </ul>
-                    <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
-                      <tal:block tal:condition="python: item.format in ('image/geotiff')">
- 
-                          <div tal:condition="python: 'Projection' in item.description">
-
-                            <div tal:define="item_obj item/getObject;
-                                             dlinfo item_obj/dataset_tools/get_download_info;
-                                             downloadurl dlinfo/url;">
-                              <a class="bccvl-auto-viz btn btn-primary"
-                                 title="Preview this file"
-                                 href="#downloadurl"
-                                 data-mimetype="application/octet-stream"
-                                 data-uuid="a uuid"
-                                 tal:attributes="href downloadurl;
-                                                 data-uuid item/UID;
-                                                 data-mimetype item/format"
-                                 tal:condition="python: item.format not
-                                                in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                                <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
-                              </a>
-                            </div>
-                          </div>
-
-                      </tal:block>
+                    <tal:block tal:define="item result_tools/get_primary_output"
+                               tal:condition="nocall:item">
+                      <div tal:define="item_obj item/getObject;
+                                       dlinfo item_obj/dataset_tools/get_download_info;
+                                       downloadurl dlinfo/url;">
+                        <a class="bccvl-auto-viz btn btn-primary"
+                           title="Preview this file"
+                           href="#downloadurl"
+                           data-mimetype="application/octet-stream"
+                           data-uuid="a uuid"
+                           tal:attributes="href downloadurl;
+                                           data-uuid item/UID;
+                                           data-mimetype item/format">
+                          <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
+                        </a>
+                      </div>
                     </tal:block>
                     <a class="expand-btn"
                        title="Expand results"
@@ -157,10 +150,10 @@
               <div class="collapse" tal:attributes="id string:${result/getId}-body">
                 <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
                   <div class="row-fluid experiment-result-contents"
-                       tal:condition="python: item.getId() != 'pstats.json'">
+                       tal:define="itemobj item/getObject;
+                                   item_tools nocall:itemobj/@@dataset_tools">
                     <div class="span9 bccvl-table-label"
-                         tal:define="itemobj item/getObject;
-                                     md itemobj/dataset_tools/metadata">
+                         tal:define="md item_tools/metadata">
                       <h5 tal:content="item/Title">Item Title</h5>
                       <p><span tal:content="item/Description">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
@@ -172,8 +165,7 @@
                       
                     </div>
                     <div class="bccvl-table-controls span3"
-                         tal:define="item_obj item/getObject;
-                                     dlinfo item_obj/dataset_tools/get_download_info;
+                         tal:define="dlinfo item_tools/get_download_info;
                                      downloadurl dlinfo/url;">
                       <a class="fine btn btn-info"
                          title="Download this file"
@@ -188,7 +180,8 @@
                          data-uuid="a uuid"
                          tal:attributes="href downloadurl;
                                          data-uuid item/UID;
-                                         data-mimetype item/format"
+                                         data-mimetype item/format;
+                                         class string:${item_tools/get_viz_class} btn btn-primary"
                          tal:condition="python: item.format not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>

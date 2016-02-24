@@ -19,8 +19,19 @@
                          templateId template/getId">
 
   <div>
+
     <div id="new-experiment-menu"
          tal:define="actions view/new_experiment_actions">
+    
+      <h4 class="new-experiment-type-heading" style="text-transform:uppercase;">Before Running An Experiment</h4>
+      
+      <p>The datasets available for use within an experiment must be available within the BCCVL before the experiment is started. Prior to beginning an experiment, we recommend you:</p>
+      <div class="new-experiment-button experiment-stm">
+        <a class="" href="datasets/datasets_upload_view"><span><i class="fa fa-upload"></i> Upload datasets</span></a>
+      </div>
+      <div class="new-experiment-button experiment-stm">
+        <a class="" href="datasets/datasets_import_view"><span><i class="fa fa-cloud-download"></i> Import datasets from other services</span></a>
+      </div>    
 
       <h4 class="new-experiment-type-heading">PRIMARY EXPERIMENTS &nbsp;<i data-toggle="tooltip" data-placement="right" title="Primary experiments model your species under current conditions. The outputs of these models are then used as input into secondary experiments." class="fa fa-info-circle"></i></h4>
       <div class="new-experiment-button experiment-sdm">
@@ -152,8 +163,11 @@
                   <tal:if condition="python:class_state == 'success'">
                     <i class="fa fa-check"></i><br/>Completed
                   </tal:if>
-                  <tal:if condition="python:class_state == 'info'">
+                  <tal:if condition="python:class_state == 'warning'">
                     <i class="fa fa-clock-o"></i><br/>In Progress
+                  </tal:if>
+                  <tal:if condition="python:class_state == 'info'">
+                    <i class="fa fa-check"></i><br/>Finished
                   </tal:if>
                   <tal:if condition="python:class_state == 'error'">
                     <i class="fa fa-times"></i><br/>Failed

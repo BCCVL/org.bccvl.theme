@@ -437,7 +437,7 @@ div.loader {
 }
 .bccvl-preview-pane.active, .bccvl-preview-pane.multimaps {
     background:none;
-    overflow:hidden;
+/*    overflow:hidden; */
 }
 
 .bccvl-preview-pane .empty {
@@ -1856,6 +1856,9 @@ span.loading-gif {
 .selectize-dropdown [data-selectable].active .badge {
     background: rgba(0,0,0,.2);
 }
+.selectize-control {
+    margin-bottom:.5em;
+}
 .datasets-list-entry input[type="checkbox"].modal-item-checkbox {
     display: inline-block;
     margin: 0 .2em 0 0;
@@ -1870,7 +1873,6 @@ span.loading-gif {
 }
 .search-widget .btn i {
     line-height: 1.6em;
-    padding: 0 10px;
 }
 .faceted-widget [disabled], .faceted-checkbox-item-disabled, .faceted-checkbox-item-disabled *, .faceted-select-item-disabled {
     cursor:default;
@@ -2034,7 +2036,7 @@ span.loading-gif {
     background:rgba(0,0,0,.05);
     height:100%;
     width:100%;
-    min-height: 500px;
+    min-height: 450px;
 }
 .bccvl-table-label p.lead {
     display: block;
@@ -2173,9 +2175,13 @@ table.bccvl-experimenttable thead tr.COMPLETED td, .experiment-state.success, di
     background:rgba(77,195,69, .35);
     color:rgba(77,195,69, 1);
 }
-table.bccvl-experimenttable thead td.info, .experiment-state.info, div.info  {
+table.bccvl-experimenttable thead td.warning, .experiment-state.warning, div.warning  {
     background:rgba(249,178,51, .35);
     color:rgba(236,132,30, 1);
+}
+table.bccvl-experimenttable thead td.info, .experiment-state.info, div.info  {
+    background: rgba(91, 192, 222, .35);
+    color: rgba(47, 150, 180, 1);
 }
 table.bccvl-experimenttable thead tr.ERROR td, .experiment-state.error, div.ERROR  {
     background:rgba(231,76,60, .35);
@@ -2336,6 +2342,22 @@ table.error td {
 }
 .selectize-input.items.not-full.has-options.has-items, .selectize-control.multi .selectize-input {
     padding:5px;
+}
+.constraints {
+    margin-top:1em;
+}
+.constraints .btn.pull-right {
+    margin-left:.5em;
+    margin-bottom:.5em;
+}
+.tab-pane#tab-geo .control-group textarea {
+    font-size:1em;
+    line-height: 1.2em;
+    min-height:180px;
+    background:rgba(0,0,0,.1);
+}
+label[disabled] {
+    opacity:.6;
 }
 
 /* custom single select remove button */

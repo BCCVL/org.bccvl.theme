@@ -7,7 +7,7 @@
       <span class="fileupload-new">Select a file to upload</span>
       <span class="fileupload-exists">Change</span>
       <input id="" name="" type="file"
-             required="required" data-parsley-trigger="change"
+             required="required"
              tal:attributes="id view/id;
                              name view/name;
                              title view/title;

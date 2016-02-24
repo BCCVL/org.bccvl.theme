@@ -29,10 +29,15 @@
     </div>
     <tal:repeat tal:repeat="item view/items">
       <div class="selecteditem"
-           tal:define="index repeat/item/index;">
-        <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item"
+           tal:define="index repeat/item/index;
+                       itemob item/brain/getObject;
+                       dstool itemob/@@dataset_tools;
+                       itemmd dstool/metadata;">
+        <input type="hidden" value="" name="form.widgets.fieldname.item.0" class="item" data-bbox=""
                tal:attributes="value item/id;
+                               data-bbox dstool/bbox|nothing;
                                name string:${view/name}.item.${index};
+                               data-type itemmd/genre;
                                "/>
         <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
         <a class=""

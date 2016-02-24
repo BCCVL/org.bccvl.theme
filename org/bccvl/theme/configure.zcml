@@ -3,7 +3,10 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="org.bccvl.theme">
+
+  <i18n:registerTranslations directory="locales" />
 
   <subscriber
       for="ZPublisher.interfaces.IPubStart"

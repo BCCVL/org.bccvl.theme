@@ -5,7 +5,7 @@
 // idea is that the tabs are different pages in a 'wizard'
 // style interface).
 
-define(     ['jquery', 'bootstrap'],
+define(     ['jquery', 'bootstrap2'],
     function( $) {
         // ==========================================================
 

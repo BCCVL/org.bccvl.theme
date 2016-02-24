@@ -154,7 +154,7 @@
 				}
 			})
 			.fail(options.error);
-		});
+ 		});
 	};
 
 })(jQuery);
