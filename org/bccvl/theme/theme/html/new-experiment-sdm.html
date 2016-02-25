@@ -240,13 +240,24 @@
                     <p class="span12 bccvl-tab-description">
                       Select absences data.
                     </p>
+
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">
                     <!-- list of available data -->
                     <div class="span4"><div class="control-group">
 
-                      <div class="bccvl-absencestable">
+                      <p><strong>Do you have a true absence dataset for your experiment?</strong></p>
+                      <div class="form-inline if-absence-radios">
+                        <label for="have_absence" class="inline">
+                          <input type="radio" value="yes" name="if_absence" id="have_absence"/> Yes
+                        </label>
+                        <label for="no_absence" class="inline">
+                          <input type="radio" value="no" name="if_absence" id="no_absence"/> No
+                        </label>
+                      </div>
+
+                      <div class="bccvl-absencestable" style="display:none;">
                         <div id="formfield-form-widgets-species_absence_dataset">
                           <!-- Modal Dialog absences -->
                           <div id="species_absence_dataset-modal" class="modal large hide fade" tabindex="-1" role="dialog">
@@ -259,16 +270,18 @@
                               <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                               <button class="btn btn-primary">Select Dataset</button>
                             </div>
+
                           </div>
                         </div>
+                        <p>Pseudo-absence points can additionally be generated if the pseudo-absence strategy is not "none", and the number of absence points available in the dataset is not sufficient for the specified ratio under presence-absence ratio.</p>
                       </div>
 
-                      <div class="random-absences-settings"></div>
-                       <div class="alert alert-warning">
-                         <strong>If absence data is selected in the absence tab, this data will be used. Pseudo-absence points can additionally be generated if the pseudo-absence strategy is not "none", and the number of absence points available in the dataset is not sufficient for the specified ratio under presence-absence ratio.</strong>
+                       <div class="bccvl-noabsence-dataset alert alert-info" style="display:none;">
+                         <p><strong>You can skip this tab.</strong></p>
+                         <p>Pseudo-absence points will be generated for the experiment.  Please see the alogrithm configuration settings to adjust your selected pseudo-absence strategy.</strong>
                         </div>
-
-                    </div></div>
+                      </div>
+                    </div>
 
                     <!-- preview area -->
                     <div class="span8">
