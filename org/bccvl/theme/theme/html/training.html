@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>BCCVL Dashboard</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+     
+    <link href="css/general.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+	<script src="lib/html5shiv/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- include portal_url to simplify path referencing -->
+    <script src="../plone_javascript_variables.js" type="text/javascript"></script>
+    <script id="js-config" type="text/javascript">
+      // this block needs to be replaced when served via plone
+      window.bccvl || (window.bccvl = {});
+      window.bccvl.config || (window.bccvl.config = {});
+      window.bccvl.config.data_mover = {
+          baseUrl: 'https://demo.bccvl.org.au/dv',
+      };
+      window.bccvl.config.visualiser = {
+          baseUrl: '/_visualiser/',
+      };
+
+      local = window.location.protocol == 'file:';
+      portal_url = document.URL.split('/').slice(0, -1).join('/');
+    </script>
+    <!-- this slightly less neat way of using require.js means we can use a common config across all pages -->
+    <script src="lib/require/require.js" type="text/javascript"></script>
+    <script src="js/common.js" type="text/javascript"></script>
+    <!-- include main js -->
+    <script type="text/javascript">
+      require(['training']);
+    </script>
+
+    <script id="google-analytics"></script>
+
+  </head>
+
+  <body class="dashboard">
+    <div class="white-bg">
+      <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
+
+	<!-- button for narrow screen menu -->
+	<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
+
+	<!-- project title -->
+	<a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"></a>
+
+	<!-- container for content that will hide under menu when screen is narrow -->
+	<div class="nav-collapse collapse">
+
+	  <!-- user menu -->
+	  <div id="user-menu" class="btn-group pull-right">
+	    <a class="btn dropdown-toggle fine" data-toggle="dropdown">
+	      <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
+	    </a>
+	    <ul class="dropdown-menu">
+              <li><a class="bccvllinks-dashboard"><i class="icon-eye-open"></i>Dashboard</a></li>
+	      <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
+	      <li class="divider"></li>
+	      <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
+	    </ul>
+	  </div>
+
+	  <!-- search field -->
+	  <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
+	    <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
+	  </form>
+
+	  <!-- main menu items -->
+	  <ul id="portal-globalnav" class="nav">
+	    <!-- <li><a class="bccvllinks-dashboard">Dashboard</a></li> -->
+	    <li><a class="bccvllinks-datasets">Datasets</a></li>
+	    <li><a class="bccvllinks-experiments">Experiments</a></li>
+	    <li><a class="bccvllinks-knowledgebase">Support</a></li>
+	  </ul>
+
+	</div><!--/.nav-collapse -->
+
+      </div></div></nav><!-- end of nav wrapper -->
+
+      <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- container for main content -->
+      <div class="container bccvl-main">
+
+        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	  <div id="breadcrumbs" class="bccvl-breadcrumb row-fluid">
+	    <div class="span12">
+	      <ul class="breadcrumb">
+		<li><a class="bccvllinks-home icon-home"></a></li>
+		<li class="separator icon-chevron-right"></li>
+		<li><a class="bccvllinks-dashboard">Dashboard</a></li>
+	      </ul>
+	    </div>
+	  </div> -->
+
+        <!-- experiment list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<section class="bccvl-training">
+
+	  <div class="row-fluid">
+	    <div class="span12">
+	      <h1 style="margin-top:0;">BCCVL <strong>Training</strong></h1>
+
+	      <!-- tabs -->
+			<div class="tabbable tabs-left">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#module1" data-toggle="tab">Module 1</a></li>
+					<li><a href="#module2" data-toggle="tab">Module 2</a></li>
+					<li><a href="#module3" data-toggle="tab">Module 3</a></li>
+					<li><a href="#module4" data-toggle="tab">Module 4</a></li>
+					<li><a href="#module5" data-toggle="tab">Module 5</a></li>
+					<li><a href="#module6" data-toggle="tab">Module 6</a></li>
+					<li><a href="#module7" data-toggle="tab">Module 7</a></li>
+					<li><a href="#module8" data-toggle="tab">Module 8</a></li>
+					<li><a href="#module9" data-toggle="tab">Module 9</a></li>
+					<li><a href="#module10" data-toggle="tab">Module 10</a></li>
+
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="module1">                
+						<div class="">
+							<h2>Module 1</h2>
+							<p>Welcome to the first module of this species distribution modelling course. In this module, we will give you an introduction to what species distribution modelling is and the steps involved in calibrating and mapping these models.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/FDtBmBdomOM" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group">
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div> 
+					<div class="tab-pane" id="module2">                
+						<div class="">
+							<h2>Module 2</h2>
+							<p>In the first module of this species distribution modelling course, we had a quick look at what species distribution modelling is. In this second module, I am going to explain the theory behind these models in a bit more detail.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/rKbEdbX_368" frameborder="0" allowfullscreen></iframe>   
+							</div> 
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module3">                
+						<div class="">
+							<h2>Module 3</h2>
+							<p>In the first two modules we gained a better understanding of how you can use species distribution models and some of the ecological theory underpinning these models. In this module, we will have a closer look at the different types of data that you need to run a species distribution model, where to get this data from, things to be aware of and some standard good practices when dealing with data.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/xVZ-DmYNSyE" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module4">                
+						<div class="">
+							<h2>Module 4</h2>
+							<p>Now we know more about the theoretical background of species distribution models, and the different types of data that you need to built a model, it is time to design your model. What I mean with that is that you need to think about the question that you are trying to answer, and what kind of data and algorithm are best to find that answer. In this module we explore the main components of an SDM and the things you need to think about.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/39-teoouIK4" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module5">                
+						<div class="">
+							<h2>Module 5</h2>
+							<p>In the previous modules of this online open course in species distribution modelling, we have learnt a great deal about the kind of data that you need to build a model, and we had a quick look at the different kinds of models that you can use. So, now it is time to explain the algorithms in more detail. In this module we will look at models that only use presence data: geographic and profile models, and Maxent, a popular machine learning model.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/1gQrhdQmk8w" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module6">                
+						<div class="">
+							<h2>Module 6</h2>
+							<p>In the previous module, we looked at models for which you only need to provide occurrence data to predict the distribution of a species. In this module, we will focus on statistical regression models, which use both presence and absence data.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/t03MWepskJE" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module7">                
+						<div class="">
+							<h2>Module 7</h2>
+							<p>In the previous two modules we have looked at geographic, profile and statistical regression models to predict species distributions. In this module, we will look at another group of species distribution models: machine learning models.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/wedfBG0qTNk" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module8">                
+						<div class="">
+							<h2>Module 8</h2>
+							<p>Now we have looked at the different models you can use to predict species distributions, it is important to understand how to interpret the output of a model. A vital step in modelling is assessing the accuracy of the model prediction, commonly called ‘validation’ or ‘evaluation’. </p>
+							<p>In this module, I will explain how you can do this.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/6A2032V3uoo" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module9">                
+						<div class="">
+							<h2>Module 9</h2>
+							<p>Welcome to module 9 of the online open course about species distribution modelling. In the first 8 modules of this course, we have learnt about the different aspects of designing a species distribution model: the data that you need, the different algorithms that you can use to predict species distributions and how to evaluate the outcomes of your model. With all that knowledge in our back pocket, we can now look at an important application of species distribution models: the prediction of species distribution under future climate change projections.</p>            
+							<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/lapvqdnci_Q" frameborder="0" allowfullscreen></iframe>   
+							</div>  
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="module10">                
+						<div class="">
+							<h2>Module 10</h2>
+							<p>TBA</p>            
+							<!--<div class="youtube-iframe">
+								<iframe data-src="https://www.youtube.com/embed/rKbEdbX_368" frameborder="0" allowfullscreen></iframe>   
+							</div>  -->
+							<div class="btn-group"> 
+								<button class="btn prev-button" href="http://www.bccvl.org.au/quiz/" target="_blank"><i class="fa fa-chevron-circle-left"></i> Prev</button>
+								<!--<button class="btn btn-primary" href="http://www.bccvl.org.au/quiz/" target="_blank">Take Module Quiz</button>
+								<button class="btn next-button" href="http://www.bccvl.org.au/quiz/" target="_blank">Next <i class="fa fa-chevron-circle-right"></i></button>-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /tabs -->
+
+	     </div>
+	  </div>
+
+	  </section>
+
+	</div><!-- end of main content container -->
+      </div>
+      <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <footer id="portal-footer">
+      </footer>
+
+    </body>
+</html>
