@@ -2,7 +2,7 @@
 //
 // main JS for the dashboard page.
 //
-define(     ['jquery', 'bootstrap2', 'bootstrap2-fileupload'],
+define(     ['jquery', 'bootstrap2', 'bootstrap2-fileupload', 'livechat'],
     function( $) {
     // ==============================================================
         $(function() {

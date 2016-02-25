@@ -6,7 +6,7 @@ define(
      'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
-     'bbq', 'faceted_view.js', 'bccvl-widgets'],
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat'],
     function($, preview_layout, wiztabs, search, formvalidator,
              tablesorter, arrayutils, popover, vizmap, bbq,
              faceted, bccvl) {
