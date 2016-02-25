@@ -4,7 +4,7 @@
 define(
     ['jquery', 'bccvl-wizard-tabs',
      'bccvl-form-jquery-validate', 'jquery-tablesorter', 'jquery-arrayutils',
-     'bbq', 'faceted_view.js', 'bccvl-widgets',],
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat'],
     function($, wiztabs, formvalidator, tablesorter, arrayutils,
              bbq, faceted, bccvl) {
 

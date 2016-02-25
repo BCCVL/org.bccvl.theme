@@ -5,24 +5,32 @@ from plone.app.robotframework.testing import (
 from org.bccvl.site.testing import (
     BCCVL_FIXTURE
 )
-from plone.app.testing import PloneSandboxLayer
+
+from plone.app.themingplugins.testing import ThemingPlugins
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 
 
-class BCCVLThemeLayer(PloneSandboxLayer):
+# use Theming base layer to ensure theming plugins are setup correctly
+class BCCVLThemeLayer(ThemingPlugins):
 
     defaultBases = (BCCVL_FIXTURE, )
 
     def setUpZope(self, app, configurationContext):
+        super(BCCVLThemeLayer, self).setUpZope(app, configurationContext)
         import org.bccvl.theme
         self.loadZCML('configure.zcml', package=org.bccvl.theme)
 
+
     def setUpPloneSite(self, portal):
+        # let base layer setup products as needed
+        super(BCCVLThemeLayer, self).setUpPloneSite(portal)
         # setup theme for test layer
         self.applyProfile(portal, 'org.bccvl.theme:default')
 
+
 BCCVL_THEME_FIXTURE = BCCVLThemeLayer()
+
 
 BCCVL_THEME_INTEGRATION_TESTING = IntegrationTesting(
     bases=(BCCVL_THEME_FIXTURE, ),

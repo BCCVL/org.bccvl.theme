@@ -27,6 +27,7 @@ requirejs.config({
         'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',
         'proj4':                'lib/proj4/proj4',
         'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
+        'livechat':             'lib/freshdesk/live-chat',
         // our own js files        
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
@@ -63,6 +64,7 @@ requirejs.config({
         'new-experiment-speciestrait': 'js/new-experiment-speciestrait',
         'password-reset':             'js/password-reset',
         'search':                     'js/search',
+        'training':                     'js/training',
         'selectize-remove-single':    'js/selectize-remove-single'
     },
     shim: {

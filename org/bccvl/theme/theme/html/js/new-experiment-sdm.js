@@ -7,7 +7,7 @@ define(
      'bccvl-visualiser-map', 'bccvl-wizard-tabs',
      'bccvl-search', 'bccvl-form-jquery-validate',
      'bccvl-form-popover', 'bbq', 'faceted_view.js',
-     'bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
+     'bccvl-widgets', 'openlayers3', 'jquery-xmlrpc', 'livechat'],
     function($, preview_layout, vizcommon, vizmap, wiztabs, search, formvalidator,
              popover, bbq, faceted, bccvl, ol) {
 
@@ -169,6 +169,16 @@ define(
 
             // -- set up region constraints
             $('#form-widgets-modelling_region').attr('readonly', true);
+
+            // -- set up absence radio buttons
+            $('#have_absence').click(function(){
+                $('.bccvl-noabsence-dataset').slideUp(100);
+                $('.bccvl-absencestable').slideDown(100);
+            });
+            $('#no_absence').click(function(){
+                $('.bccvl-absencestable').slideUp(100);
+                $('.bccvl-noabsence-dataset').slideDown(100);
+            });
 
             $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
                 // add layers for bboxes and drawing area
