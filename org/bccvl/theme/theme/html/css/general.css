@@ -2678,3 +2678,13 @@ form.plone-to-bootstrap-form .widget label span {
     float: left;
     margin-right: .3em;
 }
+.if-absence-radios {
+    margin-bottom:1.5em;
+}
+.if-absence-radios label {
+    margin-left:.3em;
+    margin-right:1em;
+}
+.if-absence-radios label input[type="radio"]{
+    margin:-2px .1em 0 0;
+}

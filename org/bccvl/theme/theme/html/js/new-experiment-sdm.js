@@ -170,6 +170,16 @@ define(
             // -- set up region constraints
             $('#form-widgets-modelling_region').attr('readonly', true);
 
+            // -- set up absence radio buttons
+            $('#have_absence').click(function(){
+                $('.bccvl-noabsence-dataset').slideUp(100);
+                $('.bccvl-absencestable').slideDown(100);
+            });
+            $('#no_absence').click(function(){
+                $('.bccvl-absencestable').slideUp(100);
+                $('.bccvl-noabsence-dataset').slideDown(100);
+            });
+
             $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
                 // add layers for bboxes and drawing area
                 var features = new ol.Collection(); // drawn feature
