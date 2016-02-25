@@ -35,6 +35,10 @@
     <xi:include href="rules/remove-item.xml" />    
     <xi:include href="rules/feedback.xml" />
     <xi:include href="rules/statistics.xml" />
+    <xi:include href="rules/password-reset.xml" />
+    <xi:include href="rules/account.xml" />
+    <xi:include href="rules/register-email.xml" />
+    <xi:include href="rules/training.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
