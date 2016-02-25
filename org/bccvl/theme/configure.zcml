@@ -13,14 +13,6 @@
       handler=".subscriber.pubstart"
       />
 
-  <genericsetup:registerProfile
-      name="default"
-      description="Diazo theme for BCCVL based on Sunburst"
-      directory="profiles/default"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      title="BCCVL Diazo Theme"
-      />
-
   <plone:static
       directory="theme"
       type="theme"
@@ -31,6 +23,7 @@
       directory="theme/html"
       />
 
+  <include file="profiles.zcml"/>  
   <include package=".views"/>
   <include package=".viewlets"/>
   <include package=".widgets"/>

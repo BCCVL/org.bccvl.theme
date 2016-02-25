@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="org.bccvl"
+    >
+
+  <genericsetup:registerProfile
+      name="default"
+      description="Diazo theme for BCCVL based on Sunburst"
+      directory="profiles/default"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      title="BCCVL Diazo Theme"
+      />
+
+  <genericsetup:upgradeSteps
+      source="0.9.0"
+      destination="111"
+      profile="org.bccvl.theme:default">
+
+    <genericsetup:upgradeDepends
+        title="Upgrade profile to version 111"
+        description="Update portal tabs"
+        import_steps="actions"
+        />
+
+  </genericsetup:upgradeSteps>
+
+
+</configure>
