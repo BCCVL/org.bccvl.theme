@@ -64,6 +64,7 @@ requirejs.config({
         'new-experiment-speciestrait': 'js/new-experiment-speciestrait',
         'password-reset':             'js/password-reset',
         'search':                     'js/search',
+        'training':                     'js/training',
         'selectize-remove-single':    'js/selectize-remove-single'
     },
     shim: {

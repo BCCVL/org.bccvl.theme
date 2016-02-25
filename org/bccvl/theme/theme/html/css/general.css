@@ -2688,3 +2688,31 @@ form.plone-to-bootstrap-form .widget label span {
 .if-absence-radios label input[type="radio"]{
     margin:-2px .1em 0 0;
 }
+section.bccvl-training {
+    font-size:1.3em;
+    line-height: 1.5em;
+    font-weight:300;
+}
+section.bccvl-training .tab-pane .btn-group {
+    text-align: center;
+    display:block;
+    margin:1.5em 0;
+}
+section.bccvl-training .tabbable {
+    margin-top:1.5em;
+}
+section.bccvl-training .tab-pane h2 {
+    margin-top:0;
+    padding-top:0;
+    margin-bottom:0.5em;
+}
+section.bccvl-training .tab-pane .youtube-iframe {
+    margin:1.5em 0;
+}
+section.bccvl-training .tabbable .nav-tabs {
+    margin-right:40px;
+}
+section.bccvl-training .tabbable .nav-tabs a {
+    min-width:120px;
+    padding:.7em;
+}
