@@ -22,7 +22,7 @@
 
         <!-- hook in the algorithm list -->
         <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
-                 css:content-children="#form-widgets-functions-table"/>
+                 css:content-children="#form-widgets-function-table"/>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
@@ -39,7 +39,7 @@
 
         -->
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
-                 css:content="#formfield-form-widgets-species_occurrence_dataset" />
+                 css:content="#formfield-form-widgets-species_occurrence_collections" />
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
