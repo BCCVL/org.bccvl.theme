@@ -28,7 +28,7 @@
           </div>
         
           <tal:repeat tal:repeat="item batch">
-          <tal:block tal:condition="python: item.portal_type in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset')">
+          <tal:block tal:condition="python: item.portal_type in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset', 'org.bccvl.content.datasetcollection', 'org.bccvl.content.multispeciesdataset')">
             <div class="datasets-list-entry selectable"
                  tal:attributes="data-uuid item/UID"
                  tal:define="item_title_or_id item/pretty_title_or_id;
@@ -70,7 +70,7 @@
             </div>
           </tal:block>
 
-          <tal:block tal:condition="python: item.portal_type not in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset')">
+          <tal:block tal:condition="python: item.portal_type not in ('org.bccvl.content.dataset', 'org.bccvl.content.remotedataset', 'org.bccvl.content.datasetcollection', 'org.bccvl.content.multispeciesdataset')">
             <div class="datasets-list-entry selectable"
                  tal:attributes="data-uuid item/UID"
                  tal:define="item_title item/Title;
