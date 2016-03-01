@@ -224,7 +224,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                         gbifImportArgs += 'taxon=' + encodeURIComponent(item.scientificName) + "&";
                                         gbifImportArgs += 'searchOccurrence_source=' + encodeURIComponent('gbif');
 
-                                        result.actions.viz = 'http://api.gbif.org/v1/species/' + encodeURIComponent(item.nubKey);
+                                        result.actions.viz = 'http://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
                                         result.actions.alaimport = document.URL + gbifImportArgs;
                                     }
                                     list.push(result);
