@@ -31,12 +31,12 @@ a[disabled] {
         margin: 0 -20px;
         padding: 0 20px;
     }
-    
+
 }
-@media (max-width: 980px) { 
+@media (max-width: 980px) {
     body {
     padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
-    }   
+    }
 }
 h1,h2,h3,h4,h5,h6 {
     color: #009FE3;
@@ -468,14 +468,14 @@ div.loader {
     border:none;
 }
 .bccvl-preview-pane .table {
-    border-spacing: 0; 
+    border-spacing: 0;
     border-collapse: collapse;
 }
 .bccvl-preview-pane .table tr td {
     background:none;
     border-top:1px solid #ddd;
 }
-    
+
 .bccvl-preview-pane .bccvl-viz {
     border: none;
     width: 100%;
@@ -1074,7 +1074,7 @@ a.result-export-link:hover {
     font-size: 90%;
 }
 .bccvl-table-label {
-  word-break: normal;  
+  word-break: normal;
 }
 
 
@@ -1736,7 +1736,7 @@ body.home>.white-bg {
 }
 span.loading-gif {
     text-align: center;
-    background-image: url('../lib/openlayers/img/Preloader_2.gif');
+    background-image: url('../images/bccvl-loader.gif');
     background-repeat: no-repeat;
     background-position: center center;
     height: 100px;
@@ -1953,7 +1953,7 @@ span.loading-gif {
     white-space: nowrap;
     min-width: 60px;
 }
-@media (max-width: 980px) {   
+@media (max-width: 980px) {
     .datasets-table-row .btn {
         white-space: normal;
         min-width: 0px;
@@ -1990,7 +1990,7 @@ span.loading-gif {
     margin-bottom: .75em;
 }
 .faceted-checkboxtree-widget ul {
-    padding-left:3px;   
+    padding-left:3px;
     margin-bottom:10px;
 }
 .faceted-checkboxtree-widget ul li label {
@@ -2468,7 +2468,7 @@ div#datasets-popup-result {
     margin-top:0;
 }
 .datasets-list-entry ul {
-    margin-bottom:0;    
+    margin-bottom:0;
 }
 .selecteditem {
     padding: .5em;
@@ -2512,7 +2512,7 @@ div#datasets-popup-result {
 }
 .selecteddatasets.controls-row input[type="checkbox"]{
    height: 1em;
-  margin-top: .7em; 
+  margin-top: .7em;
 }
 
 .selecteditem p {
@@ -2606,7 +2606,7 @@ form.plone-to-bootstrap-form span.fieldRequired {
     clear:left;
     float:left;
 }
-form.plone-to-bootstrap-form label { 
+form.plone-to-bootstrap-form label {
     display:inline-block;
 }
 form.plone-to-bootstrap-form .field>label {
