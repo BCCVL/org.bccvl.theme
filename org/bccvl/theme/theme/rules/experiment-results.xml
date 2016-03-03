@@ -19,6 +19,8 @@
         <!-- remove all mocked status blocks -->
         <drop css:theme=".bccvl-status-block" />
 
+        <replace css:theme="#experiment-actions"
+                 css:content="#experiment-actions"/>
         <!-- copy page tabs -->
         <replace css:theme="ul.nav-tabs" css:content="ul.nav-tabs"/>
 

@@ -2,12 +2,17 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bootstrap2'],
-    function( $, vizmap, vizcommon, ol ) {
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bccvl-modals', 'bootstrap2'],
+    function( $, vizmap, vizcommon, ol, modals) {
         // ==============================================================
         var intervalID;
         $(function() {
 
+            var removemodal = new modals.RemoveModal('remove-modal');
+            removemodal.bind('body', 'a.remove-experiment-btn');
+            var sharingmodal = new modals.SharingModal('sharing-modal');
+            sharingmodal.bind('body', 'a.sharing-btn');
+            
             var geojsonObject = $('#form-widgets-modelling_region').val();
 
             if (geojsonObject) {
