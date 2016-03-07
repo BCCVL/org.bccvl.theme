@@ -31,5 +31,10 @@
 
     <input type="text" tal:replace="structure widget/render"
            metal:define-slot="widget" />
+    <label id="form-widgets-username-error" class="error" for="form-widgets-username"
+           tal:condition="error"
+           tal:attributes="id string:${widget/id}-error;
+                           for widget/id"
+           tal:content="structure error/render|nothing">This field is required.</label>
   </div>
 </div>
