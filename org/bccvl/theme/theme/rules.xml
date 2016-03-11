@@ -35,7 +35,6 @@
     <xi:include href="rules/register-email.xml" />
     <xi:include href="rules/training.xml" />
 
-
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
 

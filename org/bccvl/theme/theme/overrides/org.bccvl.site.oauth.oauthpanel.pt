@@ -37,7 +37,6 @@
           <fieldset
               tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;">
             <legend>BCCVL has access to the following services:</legend>
-            <p>BCCVL has access to the following services:</p>
             <table class="table">
               <thead>
                 <tr>
