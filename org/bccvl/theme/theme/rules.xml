@@ -85,7 +85,7 @@
                       @@swift-settings/"
              />
 
-     <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
 
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -156,13 +156,13 @@
     <rules if="$is_debug">
     	<after css:theme="#siteSearch">
     		<button id="untheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
 			>no theme</button>
-			<button id="debugtheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.debug=1';"
+		<button id="debugtheme" class="bccvl-devbutton pull-right"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.debug=1';"
 			>debug theme</button>
-			<button id="norules" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?norules=1';"
+		<button id="norules" class="bccvl-devbutton pull-right"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?norules=1';"
 			>no rules</button>
 	</after>
     </rules>

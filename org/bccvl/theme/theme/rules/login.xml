@@ -7,32 +7,37 @@
     <rules if-path="login/
                     login_form/
                     login_failed/">
+      
         <theme href="html/login.html" />
         <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
         <replace css:theme="#site-login" css:content="#fieldset-site-login" />
-    </rules>
-
     
-    <!-- <replace css:theme-children="#error-message" content="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()"/>   -->
-    <replace css:theme-children="#notice-placeholder">
-      <xsl:if test="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()">
-        <div class="alert alert-error">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>Login failed. Both login name and password are case sensitive, check that caps lock is not enabled.</strong>
-        </div>
-      </xsl:if>  
-    </replace>
+        <!-- <replace css:theme-children="#error-message" content="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()"/>   -->
+        <replace css:theme-children="#notice-placeholder">
+          <xsl:if test="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()">
+            <div class="alert alert-error">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Login failed. Both login name and password are case sensitive, check that caps lock is not enabled.</strong>
+            </div>
+          </xsl:if>
+        </replace>
+
+    </rules>
     
     <rules if-path="require_login">
-    	<theme href="html/login.html" />
+
+      <!-- TODO: need to make sure to pass came_from, http_referer etc... on to next form -->
+      <theme href="html/login.html" />
+      
       <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
       <replace css:theme="#site-login" css:content="#fieldset-site-login" />
-
+      
       <replace css:theme-children="#notice-placeholder">
-          <div class="alert alert-error">
+        <div class="alert alert-error">
           <button type="button" class="close" data-dismiss="alert">×</button>
           <strong>Please login to use BCCVL.</strong>
-          </div>
+        </div>
       </replace>
+      
     </rules>
 </rules>
