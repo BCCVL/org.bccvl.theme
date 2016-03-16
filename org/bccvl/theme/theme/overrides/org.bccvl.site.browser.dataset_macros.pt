@@ -134,6 +134,7 @@
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#"
+                 tal:condition="dlinfo/available"
                  tal:attributes="href dlinfo/url" class="btn btn-primary btn-mini dataset-download-btn">
                 <i class="fa fa-download" title="download"></i>
               Package</a>

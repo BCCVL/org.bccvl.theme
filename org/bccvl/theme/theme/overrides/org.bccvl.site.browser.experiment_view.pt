@@ -170,6 +170,7 @@
                       <a class="fine btn btn-info"
                          title="Download this file"
                          href="#downloadurl"
+                         tal:condition="dlinfo/available"
                          tal:attributes="href downloadurl;">
                         <i class="icon-download-alt icon-link icon-white"></i>
                       </a>
