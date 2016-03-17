@@ -1061,7 +1061,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    // check for layers metadata, if none exists then the request is returning a data like a csv file
                    // TODO: alternative check data.mimetype == 'text/csv' or data.genre
                    //       or use type passed in as parameter
-                   if ($.isEmptyObject(data.layers)) {
+                   if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence") {
                        // species data  (not a raster)
                        // TODO: use data.title (needs to be populated)
                        layerdef = {
@@ -1069,6 +1069,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                            'bounds': data.bounds,
                            'projection': data.srs || 'EPSG:4326'
                        };
+
+
+                       if (!$.isEmptyObject(data.layers)) {
+                         $.each( data.layers, function(layerid, layer) {
+                            layerdef.filename = layer.filename;
+                            if (layer.bounds) {
+                              layerdef.bounds = layer.bounds;
+                            }
+                         });
+                       }
+
                         
                        if (data.genre == "DataGenreSpeciesOccurrence") {
                            layerdef.type = 'occurrence';
