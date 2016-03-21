@@ -1070,7 +1070,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                            'projection': data.srs || 'EPSG:4326'
                        };
                         
-                       if (data.genre == "DataGenreSpeciesOccurrence") {
+                       if (data.genre == "DataGenreSpeciesOccurrence" ||
+                           data.genre == "DataGenreSpeciesCollection") {
                            layerdef.type = 'occurrence';
                            layerdef.style = {
                                color: '#e74c3c'
