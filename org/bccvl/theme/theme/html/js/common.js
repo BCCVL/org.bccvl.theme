@@ -7,7 +7,7 @@
 // directory.
 
 requirejs.config({
-    baseUrl: (local ? 'lib' : portal_url + '/++resource++bccvl'),          // load modules from the lib folder
+    baseUrl: (local ? '' : portal_url + '/++resource++bccvl'),          // load modules from the lib folder
     paths: {
         'jquery':               'lib/jquery/jquery-1.11.1.min',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
         'jquery-ui':            'lib/jquery-ui/jquery-ui.min',
