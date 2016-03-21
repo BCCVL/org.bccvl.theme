@@ -162,24 +162,6 @@
 	    </div>
           </div>
 
-	  <div id="experiment-actions" class="row-fluid bccvl-buttonbar">
-	    <div class="span3">
-	      <div class="btn-group btn-block">
-		<a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
-		  <strong>delete</strong> this Experiment
-		</a>
-		<ul class="dropdown-menu">
-		  <li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
-		  <li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-		  <li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
-		</ul>
-	      </div>
-	    </div>
-	    <div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
-	    <div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
-	    <div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
-	  </div>
-
 	  <div class="progress hidden">
 	    <div class="bar bar-warning" id="bar-queued" style="width: 100%;">QUEUED</div>
 	    <div class="bar bar-info" id="bar-running" style="width: 0%;">RUNNING</div>
@@ -189,11 +171,22 @@
 
 	  <!-- tabs -->
 	  <ul class="nav nav-tabs">
-	    <li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-	    <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-	    <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay Maps</a></li>
-	    <li id= "tab-comp"><a href="experiment_compare#tab-comp">Compare Maps</a></li>
-	    <li id= "tab-comp-graph"><a href="experiment_compare_graphs#tab-comp">Compare Graphs</a></li>
+	    <li id="tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
+	    <li id="tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+	    <li id="tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay Maps</a></li>
+	    <li id="tab-comp"><a href="experiment_compare#tab-comp">Compare Maps</a></li>
+	    <li id="tab-comp-graph"><a href="experiment_compare_graphs#tab-comp">Compare Graphs</a></li>
+
+            <li id="tab-actions" class="dropdown pull-right">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#action1">Delete</a></li>
+                <li><a href="#action2">Discard</a></li>
+                <li><a href="#action3">Download</a></li>
+                <li><a href="#action4">Copy</a></li>
+                <li><a href="#action5">Share</a></li>                                
+              </ul>
+            </li>
 	  </ul>
 
 	  <div class="tab-content">
