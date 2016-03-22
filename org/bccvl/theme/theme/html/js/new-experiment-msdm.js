@@ -243,7 +243,7 @@ define(
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
                     $('body').find('input[data-bbox]').each(function(){
                         var type = $(this).data('type');
-                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
+                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence' || type == 'DataGenreSpeciesCollection') {
                             vizcommon.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayers) {
                                 // FIXME: assumes only one layer because of species data
                                 var newLayer = newLayers[0];
