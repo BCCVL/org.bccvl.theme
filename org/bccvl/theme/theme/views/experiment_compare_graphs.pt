@@ -4,7 +4,8 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       tal:define="pc nocall:context/portal_catalog;
-                  dstools nocall:context/dataset_tools"
+                  dataset_tools nocall:context/dataset_tools;
+                  experiment_tools nocall:context/experiment_tools;"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="org.bccvl.site">
   <head>
@@ -24,8 +25,11 @@
 
           <h5 class="results-title">Visualisable Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
-            <div class="bccvl-experimenttable-accordion accordion-group">
-              <div tal:attributes="class python:dstools.job_state(result) or 'info';">
+            <div class="bccvl-experimenttable-accordion accordion-group"
+                 tal:define="dsuuid result/job_params/species_occurrence_dataset|nothing;
+                             dsmd python:dataset_tools.metadata(uuid=dsuuid);
+                             species dsmd/species/scientificName|nothing">
+              <div tal:attributes="class python:dataset_tools.job_state(result) or 'info';">
 
               
 
@@ -41,9 +45,14 @@
                     <h5><tal:replace tal:replace="result/Title">Result Title</tal:replace></h5>
                     <!-- FIXME: get a better condition or use
                          adapters -->
+                    <tal:block tal:condition="species">
+                      <p>
+                        <span>Species: <tal:replace tal:replace="species">Species</tal:replace></span>
+                      </p>
+                    </tal:block>
                     <tal:block tal:condition="python: 'function' in result.job_params">
                       <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                      <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                     </tal:block>
                     <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                       <p><span>Emissions Scenario: <tal:replace
@@ -58,11 +67,11 @@
                   </div>
                 </div>
                 
-                <tal:loop tal:repeat="item python:dstools.experiment_plots(result.getObject())">
+                <tal:loop tal:repeat="item python:dataset_tools.experiment_plots(result.getObject())">
                   <div class="row-fluid experiment-result-contents"
                         tal:define="item_obj item/getObject">
                     <div class="span9 bccvl-table-label"
-                           tal:define="md python:dstools.metadata(item_obj)">
+                           tal:define="md python:dataset_tools.metadata(item_obj)">
                                        
                       <h5><span tal:content="item/Title">Item Title</span></h5>
                       <p><span tal:content="item/Description">Dataset short description</span>
@@ -72,7 +81,7 @@
 
                     </div>
                     <div class="bccvl-table-controls span3"
-                         tal:define="dlinfo python: dstools.get_download_info(item_obj);
+                         tal:define="dlinfo python: dataset_tools.get_download_info(item_obj);
                                      downloadurl dlinfo/url;">
                       <a class="fine btn btn-info"
                          title="Download this file"
@@ -90,7 +99,8 @@
                                          data-uuid item/UID;
                                          data-mimetype dlinfo/contenttype;
                                          data-layername item/Title;
-                                         data-algorithm result/job_params/function|nothing"
+                                         data-algorithm result/job_params/function|nothing;
+                                         data-species species;"
                          tal:condition="python: dlinfo['contenttype'] not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>

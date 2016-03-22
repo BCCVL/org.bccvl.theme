@@ -16,7 +16,10 @@ define(['jquery', 'bccvl-preview-layout', 'bccvl-visualiser-common', 'jquery-xml
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), 'minigraph_'+$(this).data('uuid'));
             } 
             if (typeof $(this).data('algorithm') !== 'undefined') {
-                $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'<br/> (<em>'+$(this).data('algorithm')+'</em>)</label>');
+                var label = [$(this).data('species'), $(this).data('algorithm')]
+                    .filter(function(n){return n != undefined})
+                    .join(" - ");
+                $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'<br/> (<em>'+label+'</em>)</label>');
             } else {
                 $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'</label>');
             }

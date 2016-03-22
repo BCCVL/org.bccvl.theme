@@ -116,6 +116,15 @@
                     <!-- FIXME: get a better condition or use
                          adapters -->
                     <ul>
+                      <tal:block tal:condition="dsuuid"
+                                 tal:define="dsuuid result/job_params/species_occurrence_dataset|nothing">
+                        <li tal:condition="species"
+                            tal:define="dsmd python: dataset_tools.metadata(uuid=dsuuid);
+                                        species dsmd/species/scientificName|nothing">
+                          <strong>Species: </strong>
+                          <tal:replace tal:replace="species">Species</tal:replace>
+                        </li>
+                      </tal:block>
                       <tal:block tal:condition="python: 'function' in result.job_params">
                         <li tal:condition="result/job_params/function">
                           <strong>Algorithm: </strong>
