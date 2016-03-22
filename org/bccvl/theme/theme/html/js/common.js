@@ -7,7 +7,7 @@
 // directory.
 
 requirejs.config({
-    baseUrl: (local ? 'lib' : portal_url + '/++resource++bccvl'),          // load modules from the lib folder
+    baseUrl: (local ? '' : portal_url + '/++resource++bccvl'),          // load modules from the lib folder
     paths: {
         'jquery':               'lib/jquery/jquery-1.11.1.min',                              // Ima say 'jquery', u say jquery-x.y.z.js, dawg
         'jquery-ui':            'lib/jquery-ui/jquery-ui.min',
@@ -61,6 +61,7 @@ requirejs.config({
         'new-experiment-ensemble':    'js/new-experiment-ensemble',
         'new-experiment-projection':  'js/new-experiment-projection',
         'new-experiment-sdm':         'js/new-experiment-sdm',
+        'new-experiment-msdm':        'js/new-experiment-msdm',
         'new-experiment-speciestrait': 'js/new-experiment-speciestrait',
         'password-reset':             'js/password-reset',
         'search':                     'js/search',

@@ -11,7 +11,10 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
             var viztype = $(this).data('viz-type') || 'auto';
-            renderNewMap($(this).data('uuid'),$(this).attr('href'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'), $(this).data('algorithm'));
+            var label = [$(this).data('species'), $(this).data('algorithm')]
+                .filter(function(n){return n != undefined})
+                .join(" - ");
+            renderNewMap($(this).data('uuid'),$(this).attr('href'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'), label);
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });

@@ -38,6 +38,10 @@
         <a class="bccvllinks-experiment-new"
            tal:attributes="href python:actions['org.bccvl.content.sdmexperiment']['action']"><span><i class="fa fa-plus"></i> new</span> Species Distribution Modelling Experiment</a>
       </div>
+      <div class="new-experiment-button experiment-msdm">
+        <a class="bccvllinks-experiment-msdm-new"
+           tal:attributes="href python:actions['org.bccvl.content.msdmexperiment']['action']"><span><i class="fa fa-plus"></i> new</span> Multi-Species Distribution Modelling Experiment</a>
+      </div>
       <div class="new-experiment-button experiment-stm">
         <a class=" bccvllinks-experiment-speciestrait-new"
            tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait Modelling Experiment</a>

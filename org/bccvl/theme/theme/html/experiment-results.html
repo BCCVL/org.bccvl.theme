@@ -160,26 +160,7 @@
 		This Experiment is <strong>complete</strong>. The results are available below.
 	      </p>
 	    </div>
-
-	    <div class="row-fluid bccvl-buttonbar">
-	      <div class="span3">
-		<div class="btn-group btn-block">
-		  <a class="btn dropdown-toggle btn-block btn-danger" data-toggle="dropdown">
-		    <strong>delete</strong> this Experiment
-		  </a>
-		  <ul class="dropdown-menu">
-		    <li class="bccvl-dropdownlabel disabled">really delete this Experiment and its results forever?</li>
-		    <li><a class="text-error"><i class="icon-remove"></i> yes, delete it</a></li>
-		    <li><a class=""><i class="icon-arrow-left"></i> no, on second thoughts leave it</a></li>
-		  </ul>
-		</div>
-	      </div>
-	      <div class="span3"><button class="broken btn btn-block"><strong>discard</strong> these results</button></div>
-	      <div class="span3"><button class="broken btn btn-block"><strong>download</strong> these results</button></div>
-	      <div class="span3"><button class="broken btn btn-block"><strong>copy</strong> this Experiment</button></div>
-	    </div>
-
-	  </div>
+          </div>
 
 	  <div class="progress hidden">
 	    <div class="bar bar-warning" id="bar-queued" style="width: 100%;">QUEUED</div>
@@ -190,11 +171,21 @@
 
 	  <!-- tabs -->
 	  <ul class="nav nav-tabs">
-	    <li id= "tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
-	    <li id= "tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
-	    <li id= "tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay Maps</a></li>
-	    <li id= "tab-comp"><a href="experiment_compare#tab-comp">Compare Maps</a></li>
-	    <li id= "tab-comp-graph"><a href="experiment_compare_graphs#tab-comp">Compare Graphs</a></li>
+	    <li id="tab-res" class="active"> <a href="#tab-results" data-toggle="tab">Results</a></li>
+	    <li id="tab-det"><a href="#tab-details" data-toggle="tab">Details</a></li>
+	    <li id="tab-overlay"><a href="experiment_overlay#tab-overlay">Overlay Maps</a></li>
+	    <li id="tab-comp"><a href="experiment_compare#tab-comp">Compare Maps</a></li>
+	    <li id="tab-comp-graph"><a href="experiment_compare_graphs#tab-comp">Compare Graphs</a></li>
+
+            <li id="tab-actions" class="dropdown pull-right">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-share-alt" style="color:#4aa3df;" title="Share Results"></i> Share</a></li>                                
+                <li><a href="#"><i class="fa fa-download" style="color:#4aa3df;" title="Download Results"></i> Download</a></li>
+                <li><a href="#"><i class="fa fa-copy" style="color:#4aa3df;" title="Copy Experiment"></i> Copy</a></li>
+                <li><a href="#"><i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i> Delete</a></li>
+              </ul>
+            </li>
 	  </ul>
 
 	  <div class="tab-content">
@@ -205,43 +196,43 @@
 	    	<h2 style="margin-top:0;">Experiment Details</h2>
 	      </div>
 	      <div class="row-fluid">
-		      <div class="experiment-details span6">
-		      </div>
-		      <div class="experiment-configuration span6">
-		      </div>
-		  </div>
+		<div class="experiment-details span6">
+		</div>
+		<div class="experiment-configuration span6">
+		</div>
+	      </div>
 	    </div>
-
+            
 	    <!-- RESULTS TAB-PANE -->
 	    <div class="row-fluid tab-pane active" id="tab-results">
-	      	<div>
-			<!-- list of (potential) results -->
-				<div class="span4">
-					<h5 class="results-title">Results</h5>
-
-				  <table class="table table-hover">
-				    <tbody>
-				    </tbody>
-				  </table>
-				</div>
-
-				<!-- preview area -->
-				<div class="span8 affixed-map">
-					<h2 style="margin-top:0;">Experiment Results</h2>
-					<div class="alert alert-info">
-						View the outputs of your experiments by clicking on the '<i class="icon-eye-open icon-link" style="vertical-align:top;"></i>' icons in the left table.
-					</div>
-				  	<div class="bccvl-preview-pane" id="map1">
-				  		<span class="preview-text">Preview Area</span>
-					</div>
-				</div>
-		    </div>
-		 </div>
-
+	      <div>
+		<!-- list of (potential) results -->
+		<div class="span4">
+		  <h5 class="results-title">Results</h5>
+                  
+		  <table class="table table-hover">
+		    <tbody>
+		    </tbody>
+		  </table>
+		</div>
+                
+		<!-- preview area -->
+		<div class="span8 affixed-map">
+		  <h2 style="margin-top:0;">Experiment Results</h2>
+		  <div class="alert alert-info">
+		    View the outputs of your experiments by clicking on the '<i class="icon-eye-open icon-link" style="vertical-align:top;"></i>' icons in the left table.
+		  </div>
+		  <div class="bccvl-preview-pane" id="map1">
+		    <span class="preview-text">Preview Area</span>
+		  </div>
+		</div>
+	      </div>
+	    </div>
+            
 	  </div>
-
+          
 	</section>
-
+        
       </div><!-- end of main content container -->
     </div>
     <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

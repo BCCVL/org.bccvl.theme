@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
+      tal:define="items view/items;
+                  portal_url context/@@plone/navigationRootUrl">
+  <table tal:attributes="id string:${view/id}-table">
+    <tal:loop tal:repeat="itemList items">
+      <tal:loop tal:repeat="item itemList">
+        <tal:condition tal:define="category item/category"
+                       tal:condition="python: item['pos'] == 0">
+          <tr>
+            <td class="span12 bccvl-tab-description" colspan="2" tal:content="category/title"></td>
+            <td class="bccvl-table-controls">
+              <a class="search" href="javascript:void(0);" target="_blank" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
+                 tal:attributes="title string:${category/title};
+                                data-content category/data/description;">
+                <i class="fa fa-info-circle"></i>
+              </a>
+            </td>
+          </tr>
+        </tal:condition> 
+        <tr>
+          <td class="bccvl-table-choose">
+            <input type="radio" id="" name="" class="" title=""
+                   disabled="" readonly="" value="" checked="checked"
+                   data-error-message="Please select at least 1 algorithm"
+                   data-friendlyname="radio_algorithm_label"
+                   tal:attributes="id item/id;
+                               name item/name;
+                               class python: 'required algorithm-radio' if view.required else '';
+                               data-class view/klass;
+                               value item/value;
+                               title view/title;
+                               disabled view/disabled;
+                               readonly view/readonly;
+                               checked item/checked;
+                               data-friendlyname string:radio_algorithm_${item/label};"/>
+          </td>
+          <td class="bccvl-table-label">
+            <label tal:attributes="for item/id" tal:content="structure item/label"></label>
+          </td>
+          <td class="bccvl-table-controls">
+            <tal:block tal:condition="item/description">
+              <a class="search" href="javascript:void(0);" target="_blank" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
+                 tal:attributes="title string:${item/label} algorithm;
+                                data-content item/description;">
+                <i class="fa fa-info-circle"></i>
+              </a>
+            </tal:block>
+            <tal:block tal:condition="not:item/description">
+              <a class="search" target="_blank" href="searchurl"
+                 tal:attributes="href string:${portal_url}/@@search?Subject=${python: ' '.join(item['subject'])}&amp;path=/bccvl/knowledgebase"><i class="fa fa-info-circle" title="Click to read more about this algorithm (external)."></i></a>
+            </tal:block>
+          </td>
+        </tr>
+      </tal:loop>
+    </tal:loop>
+  </table>
+</html>
