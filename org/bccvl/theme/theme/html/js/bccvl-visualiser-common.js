@@ -5,7 +5,9 @@
 define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'raven'],
     function( $, layout, ol, proj4, layerswitcher, progress_bar, Raven ) {
 
-        Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2').install()
+        Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
+              whitelistUrls: [ '\.bccvl\.org\.au/']
+            }).install()
 
         $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
             Raven.captureException(new Error(thrownError || jqXHR.statusText), {
