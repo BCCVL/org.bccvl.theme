@@ -135,7 +135,8 @@
     <replace css:theme="#portal-logo" css:content="#portal-logo"/>
     <replace css:theme="#user-menu" css:content="#user-menu"/>
     <!-- hook up the search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <replace css:theme="#siteSearch" css:content="#siteSearch"/>
+    <replace css:theme="#siteSearch" css:content="#siteSearch" css:if-content="" />
+    <drop css:theme="#siteSearch" css:if-not-content="#siteSearch" />
     <!-- copy global navbar -->
     <replace css:theme="#portal-globalnav" css:content="#portal-globalnav"/>
 
