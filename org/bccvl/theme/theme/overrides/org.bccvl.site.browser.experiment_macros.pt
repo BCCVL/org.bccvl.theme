@@ -39,7 +39,7 @@
                  <tal:block tal:repeat="subgroup group/groups">
                    <div class="paramgroup">
                      <p tal:content="subgroup/label"></p>
-                     <p tal:content="subgroup/description"></p>
+                     <p tal:content="structure subgroup/description"></p>
                    <tal:block define="view nocall:subgroup">
                      <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
                    </tal:block>
