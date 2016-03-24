@@ -1,0 +1,15 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- EXPERIMENT LIST ============================================ -->
+    <rules css:if-content="body.portaltype-document">
+        <theme href="html/page.html" />
+
+        <replace css:theme-children="div#content-core"
+                 css:content-children="div#content-core"/>
+
+    </rules>
+
+</rules>
