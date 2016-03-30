@@ -7,6 +7,7 @@
     <theme href="html/homepage.html" /> <!--if="$is_anonymous"/>-->
 
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/dataset-import.xml" />
@@ -34,7 +35,7 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/account.xml" />
     <xi:include href="rules/register-email.xml" />
-    <xi:include href="rules/training.xml" />
+    <!--<xi:include href="rules/training.xml" />-->
     <xi:include href="rules/page.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->

@@ -2724,3 +2724,33 @@ section.bccvl-training .tabbable .nav-tabs a {
     min-width:120px;
     padding:.7em;
 }
+
+.paramgroup:last-child {
+    border-bottom: none;
+}
+.paramgroup {
+    padding: 0 1em;
+    border-bottom: 1px solid #ddd;
+}
+.paramgroup .control-group {
+    margin: 0;
+}
+.bccvl-algo-config p {
+    margin-bottom: 2em;
+}
+.bccvl-algo-config h3 {
+    padding: 1em 0 0;
+}
+.jumbotron h2, .jumbotron h3 {
+    color:#333;
+}
+.jumbotron h2 {
+    font-size:3em;
+}
+.main-cta {
+    text-align: center;
+}
+.main-cta h4 {
+    font-size:1.8em;
+    color:#333;
+}
