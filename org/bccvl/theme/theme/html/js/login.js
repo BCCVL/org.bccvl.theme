@@ -7,49 +7,18 @@ define(
         // ==============================================================
         $(function() {
             console.log('login page behaviour loaded.');
-            $('.disclaimer.legals').insertBefore('.aaf-logo-link');
+            $('.disclaimer.legals').insertBefore('.aaf-logo-link, #login_form .formControls');
 
-            $('#login-aaf').click(function(e) {
-                $(this).addClass('active');
-                $('#login-basic').removeClass('active');
-            	$('#wrapper-basic').addClass('hidden');
-            	$('#wrapper-aaf').removeClass('hidden');
-                $('.disclaimer.legals').insertBefore('.aaf-logo-link');
-                if( $('#legals-checkbox').prop('checked') == true ){
-                    $('.aaf-logo-link').attr('disabled',false);
-                } else {
-                    $('.aaf-logo-link').attr('disabled',true);
-                }
-            });
-
-            $('#login-basic').click(function(e) {
-                $(this).addClass('active');
-                $('#login-aaf').removeClass('active');
-            	$('#wrapper-basic').removeClass('hidden');
-            	$('#wrapper-aaf').addClass('hidden');
-                $('.disclaimer.legals').insertBefore('#login-form .formControls');
-                if( $('#legals-checkbox').prop('checked') == true ){
-                    $('#login-form input[type="submit"]').attr('disabled',false);
-                } else {
-                    $('#login-form input[type="submit"]').attr('disabled',true);
-                }
-            });
 
             $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
-            //$("#wrapper-aaf a").attr('onclick','return false;');
 
-            $("#legals-checkbox:checkbox").change(function() {
+
+            $(".legals input:checkbox").change(function() {
                 if ($(this).is(":checked")) {
-                    $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").removeAttr("disabled");
+                    $(this).parents('.bccvl-loginfieldset').find('.btn-success').removeAttr("disabled");
+                } else {
+                    $(this).parents('.bccvl-loginfieldset').find('.btn-success').attr('disabled', 'disabled');
 
-                    $("#wrapper-aaf a").removeAttr('onclick');
-                    $("#wrapper-aaf a").css('cursor', 'pointer');
-
-                }
-                else {
-                    $("#wrapper-basic .btn-success").attr('disabled', 'disabled');
-                    $("#wrapper-aaf a").attr('onclick','return false;');
-                    $("#wrapper-aaf a").css('cursor', 'default');
                 }
             });
 

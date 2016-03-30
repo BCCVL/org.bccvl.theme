@@ -7,11 +7,11 @@
     <rules css:if-content="body.portaltype-document">
         <theme href="html/page.html" />
 
-        <!-- replace #notifications-target with #notifications -->
+        <!-- replace #notifications-target with #notifications
         <replace content-children="id('notifications-target')">
           <xsl:copy-of select="id('notifications')/*"/>
         </replace>
-        <drop css:content="#notifications"/>
+        <drop css:content="#notifications"/> -->
         
         <replace css:theme-children="div#content-core"
                  css:content-children="div#content-core"/>

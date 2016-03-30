@@ -327,6 +327,16 @@ div.loader {
     width:100px;
     height:100px;
 }
+.aaf-icon {
+    background-image:url('../images/aaf_white.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    display:inline-block;
+}
+.aaf-icon-lge {
+    width:125px;
+    height:100px;
+}
 .bccvl-main {
     padding-bottom:2em;
 }
@@ -593,6 +603,9 @@ div.loader {
 .bccvl-loginfieldset {
     text-align: center;
 }
+.bccvl-loginfieldset h3 {
+    margin-bottom:.5em;
+}
 #login-form .field {
     display:inline-block;
 }
@@ -601,6 +614,14 @@ div.loader {
 }
 .disclaimer input[type="checkbox"], .legals input[type="checkbox"]{
     margin-top:0;
+}
+#login-form .controls {
+    margin-left:100px;
+    margin-bottom:1em;
+}
+#login-form .control-label {
+    width:80px;
+    margin-bottom:.5em;
 }
 
 /* Dataset page ---------------------------------------------------------*/
