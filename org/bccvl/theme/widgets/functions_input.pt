@@ -12,7 +12,7 @@
           <tr>
             <td class="span12 bccvl-tab-description" colspan="2" tal:content="category/title"></td>
             <td class="bccvl-table-controls">
-              <a class="search" href="javascript:void(0);" target="_blank" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
+              <a class="search" href="javascript:void(0);" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
                  tal:attributes="title string:${category/title};
                                 data-content category/data/description;">
                 <i class="fa fa-info-circle"></i></a>
@@ -41,7 +41,7 @@
           </td>
           <td class="bccvl-table-controls">
             <tal:block tal:condition="item/description">
-              <a class="search" href="javascript:void(0);" target="_blank" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
+              <a class="search" href="javascript:void(0);" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
                  tal:attributes="title string:${item/label} algorithm;
                                 data-content item/description;">
                 <i class="fa fa-info-circle"></i></a>

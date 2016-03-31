@@ -7,7 +7,8 @@ define(
         // ==============================================================
         $(function() {
             console.log('login page behaviour loaded.');
-            $('.disclaimer.legals').insertBefore('.aaf-logo-link, #login_form .formControls');
+            $('.disclaimer.legals.aaf').insertBefore('.aaf-logo-link');
+            $('.disclaimer.legals.site').insertBefore('#login_form .formControls');
 
 
             $("#wrapper-basic .btn-success, #wrapper-aaf .btn-success").attr('disabled', 'disabled');
