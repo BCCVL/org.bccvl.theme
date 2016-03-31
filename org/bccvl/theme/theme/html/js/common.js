@@ -66,6 +66,7 @@ requirejs.config({
         'password-reset':             'js/password-reset',
         'search':                     'js/search',
         'training':                     'js/training',
+        'youtube':                    'js/youtube',
         'selectize-remove-single':    'js/selectize-remove-single'
     },
     shim: {
