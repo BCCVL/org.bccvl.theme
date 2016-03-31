@@ -2742,7 +2742,7 @@ section.bccvl-training .tab-pane h2 {
     padding-top:0;
     margin-bottom:0.5em;
 }
-section.bccvl-training .tab-pane .youtube-iframe {
+section.bccvl-training .tab-pane .youtube-frame {
     margin:1.5em 0;
 }
 section.bccvl-training .tabbable .nav-tabs {
@@ -2751,6 +2751,30 @@ section.bccvl-training .tabbable .nav-tabs {
 section.bccvl-training .tabbable .nav-tabs a {
     min-width:120px;
     padding:.7em;
+}
+.youtube-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    margin-bottom:40px;
+    height: 0;
+}
+.jumbotron .youtube-container {
+    margin-bottom:0;
+}
+.youtube-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+div.youtube-frame {
+    text-align: center;
+    background-image: url('../images/bccvl-loader_trans.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:#ecf0f1;
 }
 
 .paramgroup:last-child {

@@ -17,6 +17,7 @@ define(['jquery'],
            window.onYouTubeIframeAPIReady = function() {
                // instantiate a player for each element with class youtube-frame
                $('.youtube-frame').each(function(idx, el) {
+
                    if(! el.getAttribute('id')) {
                        el.setAttribute('id', 'iframe_'+idx);
                    }
