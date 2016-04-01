@@ -47,7 +47,7 @@ requirejs.config({
         'bccvl-widgets':              'js/bccvl-widgets',
         'bccvl-wizard-tabs':          'js/bccvl-wizard-tabs',
         'dashboard':                  'js/dashboard',
-        'dataset-collection':         'js/dataset-collection',
+        'dataset-collections':        'js/dataset-collections',
         'dataset-import':             'js/dataset-import',
         'dataset-list':               'js/dataset-list',
         'dataset-upload':             'js/dataset-upload',

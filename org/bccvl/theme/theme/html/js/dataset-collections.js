@@ -4,7 +4,7 @@
 // TODO: load whole modal via ajax? or just content?
 //
 define(
-    ['jquery', 'bccvl-modals'],
+    ['jquery', 'bccvl-modals', 'bootstrap2'],
 
     function($, modals) {
 
