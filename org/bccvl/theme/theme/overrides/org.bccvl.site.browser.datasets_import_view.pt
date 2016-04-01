@@ -14,7 +14,9 @@
 
     <div id="searchOccurrence" class="bccvl-search-form form-inline">
       <h4><strong>Import Dataset Form</strong></h4>
-              <hr/>
+        <p>Using this form, you can import species data from the Atlas of Living Australia (ALA) or the Global Biodiversity Information Facility (GBIF) databases.</p>
+        <p>ALA allows you to search using either a common or Latin name. GBIF requires you to search using species' latin names.</p>
+        <hr/>
         <input name="searchOccurrence_query" type="text"
                class="span8" placeholder="Find more species..."
                autocomplete="off"/>

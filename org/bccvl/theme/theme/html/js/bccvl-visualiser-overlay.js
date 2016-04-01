@@ -34,7 +34,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             var viztype = $(this).data('viz-type') || 'auto';
-            addNewLayer($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'));
+            addNewLayer($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'), $(this).data('algorithm'), $(this).data('species'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });
@@ -214,7 +214,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
 
         // RENDER DATA LAYERS
         // -------------------------------------------------------------------------------------------
-        function addNewLayer(uuid, url, id, type, layerName){
+        function addNewLayer(uuid, url, id, type, layerName, algo, species){
 
             var numLayers = visLayers.getLayers().getLength();
 
@@ -237,6 +237,12 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     layerdef.style.startpoint = styleArray[0].startpoint;
                     layerdef.style.midpoint = styleArray[0].midpoint;
                     layerdef.style.endpoint = styleArray[0].endpoint;
+
+                    // add metadata to layer title for legend.
+                    if (typeof algo !== "undefined" && typeof species !== "undefined") {
+                      layerdef.title = layerdef.title + ' ('+species+' - '+algo+')';
+                    }
+                    
                     // TODO: this does not update legend
                     newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
                     
