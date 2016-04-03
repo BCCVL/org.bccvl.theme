@@ -407,8 +407,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
+                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
+                       xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    }
                    xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                }

@@ -11,6 +11,7 @@
         <theme href="html/login.html" />
         <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
         <replace css:theme="#site-login" css:content="#fieldset-site-login" />
+        <replace css:theme="#new-user" css:content="#login-new-user" />
     
         <!-- <replace css:theme-children="#error-message" content="//*[@id='portal-column-content']/div[2]/dl[2]/dd/text()"/>   -->
         <replace css:theme-children="#notice-placeholder">
@@ -31,6 +32,7 @@
       
       <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
       <replace css:theme="#site-login" css:content="#fieldset-site-login" />
+      <replace css:theme="#new-user" css:content="#login-new-user" />
       
       <replace css:theme-children="#notice-placeholder">
         <div class="alert alert-error">
