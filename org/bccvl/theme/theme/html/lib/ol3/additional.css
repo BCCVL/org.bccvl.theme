@@ -1,5 +1,5 @@
 .olControlLoadingPanel {
-    background: url('../../img/map-spinner.gif') rgba(0,0,0,0.7);
+    background: url('../images/bccvl-loader.gif') rgba(0,0,0,0.7);
     opacity: 0.7;
     position: relative;
     width: 100%;
@@ -74,7 +74,7 @@
   height: 4px;
   background-color: rgba(0, 159, 227, .7);
   width: 0;
-  transition: width 250ms;  
+  transition: width 250ms;
   /*margin-top:-4px;*/
 }
 
@@ -164,8 +164,8 @@
 .layer-switcher .panel label {
     color: white!important;
     font-family: "OpenSansLight"!important;
-    font-size:0.9em!important; 
-    line-height: 1.25em; 
+    font-size:0.9em!important;
+    line-height: 1.25em;
 }
 
 .layer-switcher ul {
@@ -200,7 +200,7 @@ div.olControlAttribution {
 }
 
 .olControlLoadingPanel {
-    background: url('../../img/Preloader_2.gif') rgba(255,255,255,0.75);
+    background: url('../images/bccvl-loader.gif') rgba(255,255,255,0.75);
     background-repeat: no-repeat;
     background-position: center center;
     opacity: 0.7;
@@ -378,7 +378,7 @@ div.olControlAttribution {
     padding: 0;
     right: inherit;
 }
-.ol-full-screen button { 
+.ol-full-screen button {
     font-family: "FontAwesome";
 }
 .ol-full-screen button.ol-full-screen-false:before {

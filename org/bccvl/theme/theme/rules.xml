@@ -7,6 +7,7 @@
     <theme href="html/homepage.html" /> <!--if="$is_anonymous"/>-->
 
     <!-- include rules specific to pages ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
     <xi:include href="rules/dataset-upload.xml" />
     <xi:include href="rules/dataset-list.xml" />
     <xi:include href="rules/dataset-import.xml" />
@@ -17,6 +18,7 @@
     <xi:include href="rules/experiment-compare.xml" />
     <xi:include href="rules/experiment-compare-graphs.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
+    <xi:include href="rules/new-experiment-msdm.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/new-experiment-biodiverse.xml" />
     <xi:include href="rules/new-experiment-speciestrait.xml" />
@@ -33,7 +35,8 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/account.xml" />
     <xi:include href="rules/register-email.xml" />
-    <xi:include href="rules/training.xml" />
+    <!-- <xi:include href="rules/training.xml" /> -->
+    <xi:include href="rules/page.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
     <notheme if="$host='127.0.0.1'" />
@@ -84,7 +87,7 @@
                       @@swift-settings/"
              />
 
-     <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
 
     <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -133,7 +136,8 @@
     <replace css:theme="#portal-logo" css:content="#portal-logo"/>
     <replace css:theme="#user-menu" css:content="#user-menu"/>
     <!-- hook up the search bar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <replace css:theme="#siteSearch" css:content="#siteSearch"/>
+    <replace css:theme="#siteSearch" css:content="#siteSearch" css:if-content="" />
+    <drop css:theme="#siteSearch" css:if-not-content="#siteSearch" />
     <!-- copy global navbar -->
     <replace css:theme="#portal-globalnav" css:content="#portal-globalnav"/>
 
@@ -145,8 +149,8 @@
     <replace css:theme="#breadcrumbs" css:content="#breadcrumbs"/>
 
     <!-- notifications -->
-    <replace css:theme-children="#notifications"
-             css:content-children="#notifications"/>
+    <!-- <replace css:theme-children="#notifications" -->
+    <!--          css:content-children="#notifications"/> -->
 
     <!-- Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <replace css:theme="#portal-footer" css:content="#portal-footer"/>
@@ -155,13 +159,13 @@
     <rules if="$is_debug">
     	<after css:theme="#siteSearch">
     		<button id="untheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.off=1';"
 			>no theme</button>
-			<button id="debugtheme" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.debug=1';"
+		<button id="debugtheme" class="bccvl-devbutton pull-right"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?diazo.debug=1';"
 			>debug theme</button>
-			<button id="norules" class="bccvl-devbutton pull-right"
-				onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?norules=1';"
+		<button id="norules" class="bccvl-devbutton pull-right"
+			onclick="window.location.href = window.location.href.split(/[\?|#]/,1)[0] + '?norules=1';"
 			>no rules</button>
 	</after>
     </rules>

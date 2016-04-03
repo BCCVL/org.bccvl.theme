@@ -4,8 +4,13 @@
 define(
     ['jquery', 'bootstrap2'],
     function($, bootstrap) {
+
         // configure popovers
-        $('[data-toggle="popover"]').popover();
+        $('.bccvl-algorithmtable [data-toggle="popover"]').popover({ 
+                html: true,
+                trigger: 'click'
+        });
+        $('[data-toggle="popover"]').popover({html: true});
 
         // redefine popver click action
         // show new popover and hide currently active popover if any

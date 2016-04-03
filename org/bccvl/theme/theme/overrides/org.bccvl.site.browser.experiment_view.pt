@@ -5,7 +5,9 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="org.bccvl.site"
-      tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+      tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
+                  dataset_tools nocall:context/@@dataset_tools;
+                  experiment_tools nocall:context/@@experiment_tools;"
       >
   <head>
     <title>Experiment</title>
@@ -34,6 +36,36 @@
         </div>
       </div>
 
+      <!-- portal_actions/object/local_roles (sharing) -->
+      <!-- portal_actions/object_buttons/delete -->
+      <div id="experiment-actions" class="row-fluid bccvl-buttonbar">
+	<div class="span3">
+	  <div class="btn-group btn-block"
+               tal:define="item_url context/absolute_url;">
+            <a class="btn btn-default sharing-btn"
+               tal:attributes="href string:${item_url}/modal_sharing;"
+               tal:condition="python: action.get('available')"
+               tal:define="action dataset_tools/local_roles_action;">
+              Share <i class="fa fa-share-alt" style="color:#4aa3df;" title="Share Results"></i>
+            </a>
+            <a class="btn btn-danger remove-experiment-btn"
+               tal:condition="experiment_tools/can_modify"
+               tal:define="is_used experiment_tools/check_if_used"
+               tal:attributes="data-friendlyname string:removing_${context/title};
+                               disabled python: 'disabled' if is_used else None;
+                               title python: 'Experiment is used as input data for:&lt;br>'
+                                   +',&lt;br>'.join(map(lambda x: '&lt;i>&#8220;'+x+'&#8221;&lt;/i>', experiment_tools.get_depending_experiment_titles(context)))
+                                   if is_used else None ;     
+                               data-html python: 'true' if is_used else None;
+                               data-toggle python: 'tooltip' if is_used else None;
+                               href python: item_url+'/@@modal_remove' if not is_used else None"
+               data-placement="top">                      
+              Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
+            </a>              
+	  </div>
+        </div>
+      </div>
+      
       <metal:block use-macro="context/@@experiment-macros/experiment_view_nav"/>
 
       <h1 class="documentFirstHeading" tal:content="context/title">Title</h1>
@@ -51,8 +83,9 @@
               
               <div class="experiment-accordion-heading" 
                    tal:attributes="data-target string:#${result/getId}-body;
-                                   data-uuid result/UID">
-                <div tal:attributes="class result/@@dataset_tools/job_state|string:info;">
+                                   data-uuid result/UID"
+                   tal:define="result_tools nocall:result/@@dataset_tools">
+                <div tal:attributes="class result_tools/job_state|string:info;">
                   <div class="bccvl-table-controls">
                     <a class="fine btn btn-mini btn-inverse export-btn"
                        title="Export this result"
@@ -66,7 +99,7 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
-                    <tal:block tal:define="state result/@@dataset_tools/job_state"
+                    <tal:block tal:define="state result_tools/job_state"
                                tal:condition="python:state == 'FAILED'">
                       <a class="fine btn btn-mini btn-info email-support-btn"
                          title="Send an email to BCCVL for support regarding this experiment"
@@ -77,13 +110,21 @@
                     </tal:block>
                   </div>
 
-                  <div class="experiment-details"
-                       tal:define="result_tools nocall:result/@@dataset_tools">
+                  <div class="experiment-details">
                     <h5><tal:replace tal:replace="result/Title">Result
                     Title</tal:replace></h5>
                     <!-- FIXME: get a better condition or use
                          adapters -->
                     <ul>
+                      <tal:block tal:condition="dsuuid"
+                                 tal:define="dsuuid result/job_params/species_occurrence_dataset|nothing">
+                        <li tal:condition="species"
+                            tal:define="dsmd python: dataset_tools.metadata(uuid=dsuuid);
+                                        species dsmd/species/scientificName|nothing">
+                          <strong>Species: </strong>
+                          <tal:replace tal:replace="species">Species</tal:replace>
+                        </li>
+                      </tal:block>
                       <tal:block tal:condition="python: 'function' in result.job_params">
                         <li tal:condition="result/job_params/function">
                           <strong>Algorithm: </strong>
