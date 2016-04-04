@@ -19,6 +19,5 @@
       <!-- Dataset Table -->
       <replace css:theme-children="#bccvl-my-datasets" css:content-children="#center-area" />
 
-
     </rules>
 </rules>

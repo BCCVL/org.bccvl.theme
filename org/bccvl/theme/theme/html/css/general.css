@@ -31,12 +31,12 @@ a[disabled] {
         margin: 0 -20px;
         padding: 0 20px;
     }
-    
+
 }
-@media (max-width: 980px) { 
+@media (max-width: 980px) {
     body {
     padding-top: 0; /* navbar isn't fixed when narrow, no need to pad */
-    }   
+    }
 }
 h1,h2,h3,h4,h5,h6 {
     color: #009FE3;
@@ -205,6 +205,9 @@ color: #ffffff!important;
 .experiment-stm span {
     color: #f9b233!important;
 }
+.experiment-msdm span {
+    color: #9b59b6!important;
+}
 .experiment-cce span {
     color: #4dc345!important;
 }
@@ -234,6 +237,11 @@ color: #ffffff!important;
 }
 .experiment-sdm a:hover, .experiment-sdm a:hover span {
     background: #e74c3c!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-msdm a:hover, .experiment-msdm a:hover span {
+    background: #9b59b6!important;
     color: white!important;
     text-decoration: none;
 }
@@ -317,6 +325,16 @@ div.loader {
 }
 .logo-icon-lge {
     width:100px;
+    height:100px;
+}
+.aaf-icon {
+    background-image:url('../images/aaf_white.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    display:inline-block;
+}
+.aaf-icon-lge {
+    width:125px;
     height:100px;
 }
 .bccvl-main {
@@ -460,14 +478,14 @@ div.loader {
     border:none;
 }
 .bccvl-preview-pane .table {
-    border-spacing: 0; 
+    border-spacing: 0;
     border-collapse: collapse;
 }
 .bccvl-preview-pane .table tr td {
     background:none;
     border-top:1px solid #ddd;
 }
-    
+
 .bccvl-preview-pane .bccvl-viz {
     border: none;
     width: 100%;
@@ -584,6 +602,13 @@ div.loader {
 /* Login page ---------------------------------------------------------*/
 .bccvl-loginfieldset {
     text-align: center;
+    background: #ecf0f1;
+    padding: 2em 1.5em;
+    height:320px;
+    margin-bottom:2em;
+}
+.bccvl-loginfieldset h3 {
+    margin-bottom:.5em;
 }
 #login-form .field {
     display:inline-block;
@@ -593,6 +618,17 @@ div.loader {
 }
 .disclaimer input[type="checkbox"], .legals input[type="checkbox"]{
     margin-top:0;
+}
+#login-form {
+    margin-bottom:0;
+}
+#login-form .controls {
+    margin-left:100px;
+    margin-bottom:1em;
+}
+#login-form .control-label {
+    width:80px;
+    margin-bottom:.5em;
 }
 
 /* Dataset page ---------------------------------------------------------*/
@@ -1066,7 +1102,7 @@ a.result-export-link:hover {
     font-size: 90%;
 }
 .bccvl-table-label {
-  word-break: normal;  
+  word-break: normal;
 }
 
 
@@ -1635,7 +1671,7 @@ table.bccvl-environmentaldatatable tbody tr.info.disabled td {
 }
 .jumbotron h1 {
     font-size:3.6em;
-    margin:.5em 0 .4em 0;
+    margin:0em 0 .4em 0;
 }
 iframe.homepage {
     margin: .5em 0 1.5em;
@@ -1728,7 +1764,7 @@ body.home>.white-bg {
 }
 span.loading-gif {
     text-align: center;
-    background-image: url('../lib/openlayers/img/Preloader_2.gif');
+    background-image: url('../images/bccvl-loader.gif');
     background-repeat: no-repeat;
     background-position: center center;
     height: 100px;
@@ -1945,7 +1981,7 @@ span.loading-gif {
     white-space: nowrap;
     min-width: 60px;
 }
-@media (max-width: 980px) {   
+@media (max-width: 980px) {
     .datasets-table-row .btn {
         white-space: normal;
         min-width: 0px;
@@ -1982,7 +2018,7 @@ span.loading-gif {
     margin-bottom: .75em;
 }
 .faceted-checkboxtree-widget ul {
-    padding-left:3px;   
+    padding-left:3px;
     margin-bottom:10px;
 }
 .faceted-checkboxtree-widget ul li label {
@@ -2460,7 +2496,7 @@ div#datasets-popup-result {
     margin-top:0;
 }
 .datasets-list-entry ul {
-    margin-bottom:0;    
+    margin-bottom:0;
 }
 .selecteditem {
     padding: .5em;
@@ -2504,7 +2540,7 @@ div#datasets-popup-result {
 }
 .selecteddatasets.controls-row input[type="checkbox"]{
    height: 1em;
-  margin-top: .7em; 
+  margin-top: .7em;
 }
 
 .selecteditem p {
@@ -2598,7 +2634,7 @@ form.plone-to-bootstrap-form span.fieldRequired {
     clear:left;
     float:left;
 }
-form.plone-to-bootstrap-form label { 
+form.plone-to-bootstrap-form label {
     display:inline-block;
 }
 form.plone-to-bootstrap-form .field>label {
@@ -2706,7 +2742,7 @@ section.bccvl-training .tab-pane h2 {
     padding-top:0;
     margin-bottom:0.5em;
 }
-section.bccvl-training .tab-pane .youtube-iframe {
+section.bccvl-training .tab-pane .youtube-frame {
     margin:1.5em 0;
 }
 section.bccvl-training .tabbable .nav-tabs {
@@ -2715,4 +2751,76 @@ section.bccvl-training .tabbable .nav-tabs {
 section.bccvl-training .tabbable .nav-tabs a {
     min-width:120px;
     padding:.7em;
+}
+.youtube-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    margin-bottom:40px;
+    height: 0;
+}
+.jumbotron .youtube-container {
+    margin-bottom:0;
+}
+.youtube-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+div.youtube-frame {
+    text-align: center;
+    background-image: url('../images/bccvl-loader_trans.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:#ecf0f1;
+}
+
+.paramgroup:last-child {
+    border-bottom: none;
+}
+.paramgroup {
+    padding: 0 1em;
+    border-bottom: 1px solid #ddd;
+}
+.paramgroup .control-group {
+    margin: 0;
+}
+.bccvl-algo-config p {
+    margin-bottom: 2em;
+}
+.bccvl-algo-config h3 {
+    padding: 1em 0 0;
+}
+
+.jumbotron h2, .jumbotron h3, .jumbotron h4 {
+    color:#333;
+    font-family: "OpenSansRegular";
+}
+.jumbotron h2 {
+    font-size:3em;
+}
+.main-cta {
+    text-align: center;
+    background: #ecf0f1;
+    padding: 2em 1.5em;
+}
+.span4.main-cta {
+    min-height: 300px;
+}
+.main-cta .thumb {
+    height: 150px;
+}
+.main-cta img {
+    max-height: 150px;
+    display: inline;
+}
+.main-cta img.wide-icon {
+    max-width: 150px;
+    margin-top:1em;
+}
+.main-cta h4 {
+    font-size:1.8em;
+    color:#333;
 }

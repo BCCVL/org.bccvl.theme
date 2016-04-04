@@ -64,9 +64,10 @@
         <div class="span6 dataset-main-info">
           <tal:block
               tal:define="state item/job_state;
+                          reason python: dataset_tools.job_progress(item);
                           klass python: 'failed' if state == 'FAILED' else 'loading';
                           klass python: 'completed' if state in (None, 'COMPLETED') else klass;
-                          title python: 'Import failed' if state == 'FAILED' else 'Import in progress';
+                          title python: reason if state == 'FAILED' else 'Import in progress';
                           title python: '' if state in (None, 'COMPLETED') else title;">
             
             <div class="dataset-error span2"
@@ -134,6 +135,7 @@
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#"
+                 tal:condition="dlinfo/available"
                  tal:attributes="href dlinfo/url" class="btn btn-primary btn-mini dataset-download-btn">
                 <i class="fa fa-download" title="download"></i>
               Package</a>

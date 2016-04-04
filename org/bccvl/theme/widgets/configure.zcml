@@ -114,6 +114,13 @@
         template="functions_input.pt"
         />
 
+    <z3c:widgetTemplate
+        mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IFunctionsRadioWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="functionsradio_input.pt"
+        />
+    
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
     self
