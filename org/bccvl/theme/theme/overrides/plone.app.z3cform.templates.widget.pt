@@ -1,6 +1,6 @@
-<tal:block define="widget nocall:context;
-                  hidden python:widget.mode == 'hidden';">
-
+<tal:block tal:define="widget nocall:context;
+                       hidden python:widget.mode == 'hidden';"
+           metal:define-macro="widget-wrapper">
   <div class="control-group"
      tal:condition="not:hidden"
      metal:define-macro="widget-wrapper"
