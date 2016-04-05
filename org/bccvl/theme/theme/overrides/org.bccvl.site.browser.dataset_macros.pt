@@ -160,7 +160,7 @@
             <!-- TODO: should add helper method, to check whether this action is possible on this type of file/link content -->
             <a class="environmentallayers-zip-edit btn btn-warning btn-mini"
                tal:attributes="href string:${item_url}/@@editfilemetadata"
-               tal:condition="python: item_editable and item_obj.format == 'application/zip'">
+               tal:condition="python: item_editable and item_obj.format == 'application/zip' and item_genre_title == 'DataGenreSpeciesOccurrence'">
               <i class="fa fa-edit" title="edit"></i>
             Edit</a>
             <!-- remove dataset -->                    
