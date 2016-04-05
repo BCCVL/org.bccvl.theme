@@ -23,10 +23,27 @@ define(
                 }
             });
 
-            $('#wrapper-aaf a:not([target="_blank"])').click(function() {
-                if ( !($("#legals-checkbox:checkbox").is(":checked")) )
+            if ( $("#legals-checkbox-aaf").prop('checked') == true ){
+                $('#wrapper-aaf a.aaf-logo-link').attr('disabled', false);
+            }
+
+            if ( $("#legals-checkbox-site").prop('checked') == true ){
+                $('#login-form input[type="submit"]').attr('disabled', false);
+            }
+
+            $('#wrapper-aaf a.aaf-logo-link').click(function() {
+                if ( $("#legals-checkbox-aaf").prop('checked') == false ) {
                     alert("Please agree to the terms and conditions to login.");
+                    return false;
+                };
             });
+            $('#login-form input[type="submit"]').click(function(){
+                if ( $("#legals-checkbox-site").prop('checked') == false ) {
+                    alert("Please agree to the terms and conditions to login.");
+                    return false;
+                };
+            });
+            
         });
         // ==============================================================
     }
