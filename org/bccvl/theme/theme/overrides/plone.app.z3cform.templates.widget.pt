@@ -1,40 +1,49 @@
-<div class="control-group"
-   metal:define-macro="widget-wrapper"
-   i18n:domain="plone"
-   tal:define="widget nocall:context;
-               hidden python:widget.mode == 'hidden';
-               error widget/error;
-               error_class python:error and ' error' or '';
-               empty_values python: (None, '', [], ('', '', '', '00', '00', ''), ('', '', ''));
-               empty_class python: (widget.value in empty_values) and ' empty' or '';
-               fieldname_class string:kssattr-fieldname-${widget/name};"
-   tal:attributes="data-fieldname widget/name;
-                   id string:formfield-${widget/id};">
-    <label for="" class="control-label"
-        tal:attributes="for widget/id"
-        tal:condition="not:hidden"
-        tal:content="widget/label">label</label>
-    <i class="fa fa-info-circle pull-left" data-title="label"
-       data-content="field description"
-       data-toggle="popover"
-       data-container="body"
-       data-trigger="hover"
-       tal:condition="python: widget.mode == 'input' and widget.field.description"
-       tal:attributes="data-title widget/label;
-                       data-content widget/field/description"></i>
-    <div class="controls">
+<tal:block define="widget nocall:context;
+                  hidden python:widget.mode == 'hidden';">
 
-    <!-- <div class="fieldErrorBox" -->
-    <!--     tal:content="structure error/render|nothing"> -->
-    <!--     Error -->
-    <!-- </div> -->
+  <div class="control-group"
+     tal:condition="not:hidden"
+     metal:define-macro="widget-wrapper"
+     i18n:domain="plone"
+     tal:define="error widget/error;
+                 error_class python:error and ' error' or '';
+                 empty_values python: (None, '', [], ('', '', '', '00', '00', ''), ('', '', ''));
+                 empty_class python: (widget.value in empty_values) and ' empty' or '';
+                 fieldname_class string:kssattr-fieldname-${widget/name};"
+     tal:attributes="data-fieldname widget/name;
+                     id string:formfield-${widget/id};">
+      <label for="" class="control-label"
+          tal:attributes="for widget/id"
+          tal:condition="not:hidden"
+          tal:content="widget/label">label</label>
+      <i class="fa fa-info-circle pull-left" data-title="label"
+         data-content="field description"
+         data-toggle="popover"
+         data-container="body"
+         data-trigger="hover"
+         tal:condition="python: widget.mode == 'input' and widget.field.description"
+         tal:attributes="data-title widget/label;
+                         data-content widget/field/description"></i>
+      <div class="controls">
 
-    <input type="text" tal:replace="structure widget/render"
-           metal:define-slot="widget" />
-    <label id="form-widgets-username-error" class="error" for="form-widgets-username"
-           tal:condition="error"
-           tal:attributes="id string:${widget/id}-error;
-                           for widget/id"
-           tal:content="structure error/render|nothing">This field is required.</label>
+      <!-- <div class="fieldErrorBox" -->
+      <!--     tal:content="structure error/render|nothing"> -->
+      <!--     Error -->
+      <!-- </div> -->
+
+      <input type="text" tal:replace="structure widget/render"
+             metal:define-slot="widget" />
+      <label id="form-widgets-username-error" class="error" for="form-widgets-username"
+             tal:condition="error"
+             tal:attributes="id string:${widget/id}-error;
+                             for widget/id"
+             tal:content="structure error/render|nothing">This field is required.</label>
+    </div>
   </div>
-</div>
+
+  <input type="text" 
+         tal:condition="hidden"
+         tal:replace="structure widget/render"
+         metal:define-slot="widget" />
+
+</tal:block>
