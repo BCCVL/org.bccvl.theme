@@ -191,21 +191,25 @@ define(
                 type: $form.attr('method'),
                 url: $form.attr('action'),
                 data: formdata,
-                context: this,
-                error: function(jqXHR, textStatus, errorThrown) {
-                    this.replace_content(
-                        '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
-                            '<div class="alert alert-error">Fetching remote content failed</div>' +
-                            '</div>' +
-                            '<div class="modal-footer">' +
-                            '</div>'
-                    );
-                },
-                success: function(data, textStatus, jqXHR) {
-                    // can't check for redirect here... so if success assume it's all good
-                    // and reload the page
-                    location.reload();
+                context: this
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                this.replace_content(
+                    '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
+                        '<div class="modal-body">' +                    
+                        '<div class="alert alert-error">Fetching remote content failed</div>' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                        '</div>'
+                );
+            }).done(function(data, textStatus, jqXHR) {
+                // check if we have a location header
+                var newloc = jqXHR.getResponseHeader('Location');
+                if (newloc) {
+                    // redirect to location
+                    window.location.href = newloc;
+                } else {
+                    // otherwise just reload current page
+                    window.location.reload();
                 }
             });
 
