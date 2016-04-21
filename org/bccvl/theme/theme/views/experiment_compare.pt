@@ -68,8 +68,7 @@
           <h5 class="results-title">Visualisable Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
             <div class="bccvl-experimenttable-accordion accordion-group"
-                 tal:define="dsuuid result/job_params/species_occurrence_dataset|nothing;
-                             dsmd python:dataset_tools.metadata(uuid=dsuuid);
+                 tal:define="dsmd python:dataset_tools.species_metadata_for_result(result);
                              species dsmd/species/scientificName|nothing">
               <div tal:attributes="class python:dataset_tools.job_state(result) or 'info';">
 
