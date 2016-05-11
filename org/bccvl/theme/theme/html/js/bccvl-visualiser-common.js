@@ -56,8 +56,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
        // define transform methods from and to map projection
        var proj3577Transform = proj4('EPSG:3577', 'EPSG:3857');
        ol.proj.addCoordinateTransforms('EPSG:3577', 'EPSG:3857',
-                                       proj4283Transform.forward,
-                                       proj4283Transform.inverse);       
+                                       proj3577Transform.forward,
+                                       proj3577Transform.inverse);       
 
        // visualiser base url
        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
