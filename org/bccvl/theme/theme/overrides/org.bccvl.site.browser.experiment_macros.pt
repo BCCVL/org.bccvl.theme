@@ -111,7 +111,8 @@
           <a href="experiment_compare#tab-compare">Compare Maps</a>
         </li>
         <li id="tab-comp-graph"
-            tal:attributes="class python: 'active' if current_view == 'experiment_compare_graphs' else '';">
+            tal:attributes="class python: 'active' if current_view == 'experiment_compare_graphs' else '';"
+            tal:condition="python: context.portal_type in ('org.bccvl.content.sdmexperiment', 'org.bccvl.content.msdmexperiment')">
           <a href="experiment_compare_graphs#tab-comp">Compare Graphs</a>
         </li>
         <li id="tab-actions" class="dropdown pull-right">
