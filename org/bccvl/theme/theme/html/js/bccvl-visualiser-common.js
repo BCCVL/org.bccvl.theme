@@ -24,9 +24,11 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
 
        // define some projections we need
        proj4.defs([
-           // alternatively load http://epsg.io/4283.proj4js
+           // alternatively load http://epsg.io/4283.js
            ['EPSG:4283','+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'],
-           // alternatively load http://epsg.io/3577.proj4js
+           // alternatively load http://epsg.io/3577.js
+           //                    http://epsg.io/3577.wkt
+           //                    http://epsg.io/3577.proj4
            ['EPSG:3577', '+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs']
        ]);
 
