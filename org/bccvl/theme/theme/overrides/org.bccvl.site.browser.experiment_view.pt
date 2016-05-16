@@ -194,7 +194,7 @@
                        tal:define="itemobj item/getObject;
                                    item_tools nocall:itemobj/@@dataset_tools">
                     <div class="span9 bccvl-table-label"
-                         tal:define="md item_tools/metadata">
+                         tal:define="md item_tools/metadata|nothing">
                       <h5 tal:content="item/Title">Item Title</h5>
                       <p><span tal:content="item/Description">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
