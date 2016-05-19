@@ -2,23 +2,25 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'raven'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar, Raven ) {
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar'],
+    function( $, layout, ol, proj4, layerswitcher, progress_bar) {
 
-        Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
-              whitelistUrls: [ '\.bccvl\.org\.au/']
+        require(['Raven'], function(Raven) {
+            Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
+                whitelistUrls: [ '\.bccvl\.org\.au/']
             }).install()
-
-        $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-            Raven.captureException(new Error(thrownError || jqXHR.statusText), {
-                extra: {
-                    type: ajaxSettings.type,
-                    url: ajaxSettings.url,
-                    data: ajaxSettings.data,
-                    status: jqXHR.status,
-                    error: thrownError || jqXHR.statusText,
-                    response: jqXHR.responseText.substring(0, 100)
-                }
+            
+            $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+                Raven.captureException(new Error(thrownError || jqXHR.statusText), {
+                    extra: {
+                        type: ajaxSettings.type,
+                        url: ajaxSettings.url,
+                        data: ajaxSettings.data,
+                        status: jqXHR.status,
+                        error: thrownError || jqXHR.statusText,
+                        response: jqXHR.responseText.substring(0, 100)
+                    }
+                });
             });
         });
 
