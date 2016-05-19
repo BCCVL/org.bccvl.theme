@@ -12,25 +12,64 @@
 
     <tal:tabs metal:use-macro="context/dataset_macros/datasets_tabs"></tal:tabs>
 
-    <div id="searchOccurrence" class="bccvl-search-form form-inline">
-      <h4><strong>Import Dataset Form</strong></h4>
-        <p>Using this form, you can import species data from the Atlas of Living Australia (ALA) or the Global Biodiversity Information Facility (GBIF) databases.</p>
-        <p>ALA allows you to search using either a common or Latin name. GBIF requires you to search using species' latin names.</p>
-        <hr/>
-        <input name="searchOccurrence_query" type="text"
-               class="span8" placeholder="Find more species..."
-               autocomplete="off"/>
-        <select name="searchOccurrence_source" class="span4">
-           <option value="ala">at ALA</option>
-           <option value="gbif">at GBIF</option>
-        </select>
-        <p class="bccvl-labelfade-description bccvl-read"></p>
-
-        <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
-
-        <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>        
+    <div id="searchForms" class="form-inline">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#searchOccurrence" data-toggle="tab">Species</a></li>
+        <li class=""><a href="#searchTraits" data-toggle="tab">Traits</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active bccvl-search-form" id="searchOccurrence">
+          <h4><strong>Import Dataset Form</strong></h4>
+          <p>Using this form, you can import species data from the Atlas of Living Australia (ALA) or the Global Biodiversity Information Facility (GBIF) databases.</p>
+          <p>ALA allows you to search using either a common or Latin name. GBIF requires you to search using species' latin names.</p>
+          <hr/>
+          <input name="searchOccurrence_query" type="text"
+                 class="span8" placeholder="Find more species..."
+                 autocomplete="off"/>
+          <select name="searchOccurrence_source" class="span4">
+            <option value="ala">at ALA</option>
+            <option value="gbif">at GBIF</option>
+            <option value="aekos">at AEKOS</option>
+          </select>
+          <p class="bccvl-labelfade-description bccvl-read"></p>
+          
+          <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+          <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
+        </div>
+      
+        <div class="tab-pane bccvl-search-traits" id="searchTraits">
+          <h4><strong>Import Traits Data</strong></h4>
+          <p>Whatever</p>
+          <hr/>
+          <input name="searchTraits_query" type="text"
+                 class="span8" placeholder="Find more traits..."
+                 autocomplete="off"/>
+          <select name="searchTraits_source" class="span4">
+            <option value="aekos">at AEKOS</option>
+          </select>
+          <p class="bccvl-labelfade-description bccvl-read"></p>
+          
+          <div id="searchTraits_results" class="bccvl-traitsform-results row-fluid">
+            <div id="searchTraits_traits" class="span4">
+              <h5>Traits</h5>
+              <select name="searchTraits_traits" multiple="multiple"></select>
+              <!-- <div id="searchTraits_traits"></div> -->
+            </div>
+            <div id="searchTraits_species" class="span4">
+              <h5>Species</h5>              
+              <select name="searchTraits_species" multiple="multiple"></select>
+            </div>
+            <div id="searchTraits_environment" class="span4">
+              <h5>Environment</h5>              
+              <select name="searchTraits_environment" multiple="multiple"></select>
+            </div>
+            
+          </div>
+          <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
+        </div>
+      </div>
+        
     </div>
-
 
 </metal:content-core>
 
