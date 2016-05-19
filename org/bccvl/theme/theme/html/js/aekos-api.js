@@ -1,3 +1,9 @@
+// FIXME: - document it
+//        - should be configurable (api url?, apikey?)
+//        - get rid of jquery dependency? (optional)
+//        - simplify things, e.g. duplicate code for array parameter preparation
+//        - usage examples with in/output?
+//        - tests needed here?
 (function(factory) {
     if (typeof exports === 'object') {
 	// Node/CommonJS
@@ -122,6 +128,3 @@
     }
     
 }));
-
-
-    
