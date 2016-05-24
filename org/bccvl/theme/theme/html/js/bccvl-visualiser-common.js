@@ -1383,7 +1383,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                        $('#west-bounds').val(newext[0].toFixed(6));
                    }
                    // update hidden geojson field
-                   if (evt.type == 'removeFeature') {
+                   if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');
                    } else {
                        //encode to geoJson and write to textarea input
