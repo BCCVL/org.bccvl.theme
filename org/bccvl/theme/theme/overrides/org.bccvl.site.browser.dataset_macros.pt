@@ -99,7 +99,9 @@
                    tal:content="item_title_or_id"
                    tal:attributes="href dlinfo/url;
                                    data-uuid item_uuid;
-                                   data-title item_title_or_id;"
+                                   data-title item_title_or_id;
+                                   data-layers md/dblayers|nothing;
+                                   data-foreignKey md/foreignKey|nothing"
                    tal:condition="python: item_obj.format != 'text/csv'">Title</a>
                 
               </h4>
@@ -130,7 +132,9 @@
               <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-mini"
                  tal:attributes="href dlinfo/url;
                                  data-uuid item_uuid;
-                                 data-title item_title_or_id;"
+                                 data-title item_title_or_id;
+                                 data-layers md/dblayers|nothing;
+                                 data-foreignKey md/foreignKey|nothing"
                  tal:condition="python: item_obj.format != 'text/csv'">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
