@@ -703,14 +703,11 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
 
                // Update layers with layer's full name. Save it for referencing the layer.
                layerdef.dblayer = "";
-               if (data.dblayers) {
-                   for (var key in data.dblayers) {
-                        var lyr = data.dblayers[key];
-                        if (lyr.endsWith(layerdef.filename)) {
-                          wms_params["layers"] = lyr;
-                          layerdef.dblayer = lyr;
-                          break;
-                        }
+               if (!$.isEmptyObject(data.dblayers)) {
+                   var lyr = data.dblayers[layerdef.filename]
+                   if (!$.isEmptyObject(lyr)) {
+                       wms_params["layers"] = lyr['name'];
+                       layerdef.dblayer = lyr['name'];
                    }
                }
 
