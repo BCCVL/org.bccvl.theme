@@ -986,10 +986,12 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     title: 'Base Maps',
                     layers: [
                         new ol.layer.Tile({
-                            title: 'Satellite',
-                            type: 'base',
-                            visible: false,
-                            source: new ol.source.MapQuest({layer: 'sat'})
+                          title: 'Mapbox',
+                          type: 'base',
+                          source: new ol.source.XYZ({
+                            tileSize: [512, 512],
+                            url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                          })
                         }),
                         new ol.layer.Tile({
                            title: 'OSM',
@@ -998,6 +1000,15 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                            visible: true,
                            source: new ol.source.OSM()
                         })
+                        /*,
+                        new ol.layer.Tile({
+                          title: 'Mapbox',
+                          type: 'base',
+                          source: new ol.source.XYZ({
+                            tileSize: [512, 512],
+                            url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                          })
+                        })*/
                     ]
 
                });        
