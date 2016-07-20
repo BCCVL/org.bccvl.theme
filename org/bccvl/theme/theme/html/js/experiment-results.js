@@ -192,11 +192,13 @@ define(
                 var runningAlgorithms = [];
                 var failedAlgorithms = [];
                 var completedAlgorithms = [];
+                var submittingJob = [];
 
                 var completed = true;
                 var running = false;
                 var html = '';
 
+                var submitting = true;
                 data.forEach(function(job){
 
                     var algorithm = job[0];
@@ -210,7 +212,17 @@ define(
                         completed = false;
                     }
 
-                    if (status == 'QUEUED') {
+                    if (submitting) {
+                        // First job is the submission job
+                        submitting = false;
+                        if (status == 'COMPLETED') {
+                            completedAlgorithms.push(algorithm);
+                        }
+                        else {
+                            submittingJob.push(algorithm);
+                        }
+                    }
+                    else if (status == 'QUEUED') {
                         queuedAlgorithms.push(algorithm);
                     }
                     else if (status == 'FAILED'){
@@ -227,12 +239,13 @@ define(
 
                 // do the maths for the progress bar
 
-                var numAlgorithms = queuedAlgorithms.length + runningAlgorithms.length + failedAlgorithms.length + completedAlgorithms.length;
+                var numAlgorithms = queuedAlgorithms.length + runningAlgorithms.length + failedAlgorithms.length + completedAlgorithms.length + submittingJob.length;
 
                 var queuedPercentage = (queuedAlgorithms.length / numAlgorithms * 100).toString() + '%';
                 var runningPercentage = (runningAlgorithms.length / numAlgorithms * 100).toString() + '%';
                 var failedPercentage = (failedAlgorithms.length / numAlgorithms * 100).toString() + '%';
                 var completedPercentage = (completedAlgorithms.length / numAlgorithms * 100).toString() + '%';
+                var submittedPercentage = (submittingJob.length / numAlgorithms * 100).toString() + '%';
 
                 // unhide the progress bar
                 $('.progress').removeClass('hidden');
@@ -242,12 +255,14 @@ define(
                 $('#bar-running').text(runningAlgorithms.length.toString() + ' RUNNING');
                 $('#bar-failed').text(failedAlgorithms.length.toString() + ' FAILED');
                 $('#bar-completed').text(completedAlgorithms.length.toString() + ' COMPLETED');
+                $('#bar-submitted').text(submittingJob.length.toString() + ' SUBMITTING');
 
                 // update the widths accordingly
                 $('#bar-queued').css('width', queuedPercentage);
                 $('#bar-running').css('width', runningPercentage);
                 $('#bar-failed').css('width', failedPercentage);
                 $('#bar-completed').css('width', completedPercentage);
+                $('#bar-submitted').css('width', submittedPercentage);
 
                 if (!completed) {
                     if (running) {
