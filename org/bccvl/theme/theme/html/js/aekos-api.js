@@ -18,7 +18,7 @@
     }
 }(function($) {
 
-    var apiurl = "http://api.aekos.org.au:8099/v1/";
+    var apiurl = "https://api.aekos.org.au/v1/";
 
     function getApiUrl() {
         return apiurl;
