@@ -399,7 +399,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                 var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {                                   
                                     // Skip if there is no occurrence count
-                                    if (item.occCount == undefined || item.occCount <= 0) {
+                                    if (item.occurrenceCount == undefined || item.occurrenceCount <= 0) {
                                         return true;
                                     }
 
@@ -440,8 +440,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                     if (item.rank) {
                                         result.description += ' (' + item.rank + ')';
                                     }
-                                    if (item.occCount) {
-                                        result.description += ' ' + item.occCount + ' occurrences from ALA';
+                                    if (item.occurrenceCount) {
+                                        result.description += ' ' + item.occurrenceCount + ' occurrences from ALA';
                                     }
                                     // the thumbnail at ALA is often just an arbitrary crop of the
                                     // small image, so prefer the small image to use as our thumbnail.
