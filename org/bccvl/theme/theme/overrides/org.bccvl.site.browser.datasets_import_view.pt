@@ -14,10 +14,11 @@
 
     <div id="searchForms" class="form-inline">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#searchOccurrence" data-toggle="tab">Species</a></li>
-        <li class=""><a href="#searchTraits" data-toggle="tab">Traits</a></li>
+        <li class="active"><a href="#searchOccurrence" data-toggle="tab">Species Occurences</a></li>
+        <li class=""><a href="#searchTraitsSpecies" data-toggle="tab">Traits by Species</a></li>
+        <li class=""><a href="#searchTraitsTrait" data-toggle="tab">Traits by Trait</a></li>
       </ul>
-      <div class="tab-content">
+      <div class="tab-content" style="overflow:visible;">
         <div class="tab-pane active bccvl-search-form" id="searchOccurrence">
           <h4><strong>Import Dataset Form</strong></h4>
           <p>Using this form, you can import species data from the Atlas of Living Australia (ALA) or the Global Biodiversity Information Facility (GBIF) databases.</p>
@@ -37,7 +38,7 @@
           <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
         </div>
       
-        <div class="tab-pane bccvl-search-traits" id="searchTraits">
+        <div class="tab-pane bccvl-search-traits traits-by-species" id="searchTraitsSpecies">
           <h4><strong>Import Traits Data</strong></h4>
           <p>Whatever</p>
           <hr/>
@@ -46,24 +47,39 @@
                  autocomplete="off"/>
           <select name="searchTraits_source" class="span4">
             <option value="aekos">at AEKOS</option>
+            <option value="">More sources coming ..</option>
           </select>
           <p class="bccvl-labelfade-description bccvl-read"></p>
-          
+        </div>
+
+        <div class="tab-pane bccvl-search-traits traits-by-trait" id="searchTraitsTrait">
           <div id="searchTraits_results" class="bccvl-traitsform-results row-fluid">
-            <div id="searchTraits_traits" class="span4">
-              <h5>Traits</h5>
-              <select name="searchTraits_traits" multiple="multiple"></select>
-              <!-- <div id="searchTraits_traits"></div> -->
+            <h4><strong>Find Trait Data for Species by Trait</strong></h4>
+            <p>Text explaining what this page does.</p>
+            <div class="row-fluid">
+              <div id="searchTraits_traits" class="span10 offset1">
+                <h5>1. Select From Available Traits</h5>
+                <select name="searchTraits_traits" multiple="multiple"></select>
+                <!-- <div id="searchTraits_traits"></div> -->
+              </div>
             </div>
-            <div id="searchTraits_species" class="span4">
-              <h5>Species</h5>              
-              <select name="searchTraits_species" multiple="multiple"></select>
+            <div class="row-fluid">
+              <div id="searchTraits_species" class="span10 offset1">
+                <h5>2. Select Available Species</h5>              
+                <select name="searchTraits_species" multiple="multiple"></select>
+              </div>
             </div>
-            <div id="searchTraits_environment" class="span4">
-              <h5>Environment</h5>              
-              <select name="searchTraits_environment" multiple="multiple"></select>
+            <div class="row-fluid">
+              <div id="searchTraits_environment" class="span10 offset1">
+                <h5>3. Select Available Environmental Variables</h5>              
+                <select name="searchTraits_environment" multiple="multiple"></select>
+              </div>
             </div>
-            
+            <div class="row-fluid">
+              <div id="searchTraits_environment" class="span10 offset1"> 
+                <input type="submit" class="btn btn-primary" id="importSelection" href="javascript:void(0);" value="Import Selection as Dataset"/>
+              </div>
+            </div>
           </div>
           <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
         </div>

@@ -72,8 +72,8 @@
 // }
 
 define(
-    ['jquery', 'jquery-xmlrpc', 'bootstrap2', 'aekos-api'],
-    function($, xmlrpc, bs2, aekos) {
+    ['jquery', 'jquery-xmlrpc', 'bootstrap2', 'aekos-api', 'selectize'],
+    function($, xmlrpc, bs2, aekos, selectize) {
 
         // --------------------------------------------------------------
         // -- providers -------------------------------------------------
@@ -627,13 +627,14 @@ define(
         
         function enableTraitsForms() {
             // call enableForm() on each form in the dom
-            var $searchForms = $('.bccvl-search-traits');
+            var $searchForms = $('.bccvl-search-traits.traits-by-trait');
             $.each($searchForms, function(index, form) { enableTraitsForm(form); });            
         };
 
         function enableTraitsForm(formElement) {
             // locate all the dom elements we need - - - - - - -
             var $form = $(formElement);
+
             // find the id of the parent element
             formid = $form.attr('id');
             if (!formid) {
@@ -643,28 +644,51 @@ define(
 
             // we can find the input and source select by concatenating the
             // id of the parent div with "_query" and "_source".
-            var $inputField = $form.find('[name="' + formid + '_query"]').first();
-            var $sourceField = $form.find('[name="' + formid + '_source"]').first();
-            var $traitsselect = $form.find('[name="' + formid + '_traits"]').first();
+            //var $inputField = $form.find('[name="searchTraits_query"]').first();
+            //var $sourceField = $form.find('[name="searchTraits_source"]').first();
+            var $traitsselect = $form.find('[name="searchTraits_traits"]').first();
             // var $traitsselect = $form.find('#' + formid + '_traits').first();
-            var $speciesselect = $form.find('[name="' + formid + '_species"]').first();
-            var $environmentselect = $form.find('[name="' + formid + '_environment"]').first();
+            var $speciesselect = $form.find('[name="searchTraits_species"]').first();
+            var $environmentselect = $form.find('[name="searchTraits_environment"]').first();
+
+            var $importSelection = $form.find('#importSelection').first();
+
+            // init widgets
+            var $traitfield;
+            $traitfield = $traitsselect.selectize();
+            var traitFieldSelect = $traitfield[0].selectize;
+            
+            var $speciesField;
+            $speciesField = $speciesselect.selectize();
+            var speciesFieldSelect = $speciesField[0].selectize;
+
+            var $enviroField;
+            $enviroField = $environmentselect.selectize();
+            var enviroFieldSelect = $enviroField[0].selectize;
+
             // populate traits list
             aekos.getTraitVocab().then(function(data) {
-                console.log(data);
+
                 // clear current select
-                $traitsselect.empty();
+                traitFieldSelect.clearOptions();
                 $.each(data, function(index, trait) {
-                    $traitsselect.append('<option value="' + trait.code + '">' + trait.label + '</option>');
+
+                    traitFieldSelect.addOption({value: trait.code, text: trait.label })
+                    
                     // $traitsselect.append('<label><input type="checkbox" name="' + $traitsselect.attr('id') + '" value="' + trait.code + '"/>' + trait.label + '</label>');
                 });
+                traitFieldSelect.refreshOptions();
+                
             });
 
             // watch selection change event on traits
             // when trait selection changes, then update list of species as well
             // .... TODO: keep existing selected species if possible
             $traitsselect.on('change', function(event) {
-                $speciesselect.empty();
+
+                // clear current select
+                speciesFieldSelect.clearOptions();
+
                 var selectedtraits = [];
                 $.each($(this).serializeArray(), function(index, elem) {
                     selectedtraits.push(elem.value);
@@ -673,8 +697,11 @@ define(
                     aekos.getSpeciesByTrait(selectedtraits).then(
                         function(data) {
                             $.each(data, function(index, species) {
-                                $speciesselect.append('<option value="' + species.name + '">' + species.name + '</option>');
+
+                                speciesFieldSelect.addOption({value: species.name, text: species.name });
+
                             });
+                            speciesFieldSelect.refreshOptions();
                         }
                     );
                 }
@@ -685,7 +712,11 @@ define(
             // this works via sites where species occurred.
             // TODO: keep selected env vars if possible
             $speciesselect.on('change', function(event) {
-                $environmentselect.empty();
+                
+
+                // clear current select
+                enviroFieldSelect.clearOptions();
+
                 var selectedspecies = []
                 $.each($(this).serializeArray(), function(index, elem) {
                     selectedspecies.push(elem.value);
@@ -694,11 +725,31 @@ define(
                     aekos.getEnvironmentBySpecies(selectedspecies).then(
                         function(data) {
                             $.each(data, function(index, envvar) {
-                                $environmentselect.append('<option value="' + envvar.code + '">' + envvar.label + '</option>'); 
+                                enviroFieldSelect.addOption({value: envvar.code, text: envvar.label });
                             });
+                            enviroFieldSelect.refreshOptions();
                         }
                     );
                 }
+            });
+
+            $importSelection.click(function(){
+
+                var traits = traitFieldSelect.getValue();
+                var species = speciesFieldSelect.getValue();
+                var enviro = enviroFieldSelect.getValue();
+
+                // have to build the url
+                // have to encode it, as well as array (uses multiple query params for each request)
+
+                //need second request for enviro
+
+                var url = 'https://api.aekos.org.au/v1/traitData.json'
+                
+                console.log(traits);
+                console.log(species);
+                console.log(enviro);
+
             });
             
         };
