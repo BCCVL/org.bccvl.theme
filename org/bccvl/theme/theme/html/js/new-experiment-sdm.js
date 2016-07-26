@@ -54,6 +54,8 @@ define(
                         // if there is a config block..
                         if ($algoCheckbox.prop('checked')) {
                             $configBlock.show(250);
+                            // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
+                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
                         } else {
                             // make sure that the accordion closes before hiding it
                             if ($accordionBody.hasClass('in')) {
@@ -174,10 +176,12 @@ define(
             $('#have_absence').click(function(){
                 $('.bccvl-noabsence-dataset').slideUp(100);
                 $('.bccvl-absencestable').slideDown(100);
+                update_pa_strategy('none');
             });
             $('#no_absence').click(function(){
                 $('.bccvl-absencestable').slideUp(100);
                 $('.bccvl-noabsence-dataset').slideDown(100);
+                update_pa_strategy('random');
             });
 
             $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
@@ -275,5 +279,17 @@ define(
 
         });
         // ==============================================================
+
+        function update_pa_strategy(strategyname) {
+            var $algoCheckboxes = $('input[name="form.widgets.functions:list"]');
+            $.each($algoCheckboxes, function(index, checkbox) {
+                var $checkbox = $(checkbox);
+                if ($checkbox.prop('checked')) {
+                    // Set new option
+                    $('select[name="form.widgets.' + $checkbox.attr('value') + '.pa_strategy:list"]').val(strategyname);
+                }
+            });            
+        }
+
     }
 );
