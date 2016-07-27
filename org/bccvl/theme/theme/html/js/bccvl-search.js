@@ -736,20 +736,23 @@ define(
 
             $importSelection.click(function(){
 
-                speciesNames = aekos.buildRequestComponent('speciesName', speciesFieldSelect.getValue());
-                traitNames = aekos.buildRequestComponent('traitName', traitFieldSelect.getValue());
-                enviroNames = aekos.buildRequestComponent('envVarName', enviroFieldSelect.getValue());
+                var species = speciesFieldSelect.getValue(),
+                    traits  = traitFieldSelect.getValue(),
+                    enviro  = enviroFieldSelect.getValue();
 
                 $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
 
                 $.when(
-                    aekos.getTraitDataBySpecies(''+speciesNames+'&'+traitNames+''),
-                    aekos.getTraitDataByEnviro(''+speciesNames+'&'+enviroNames+'')
+                    aekos.getTraitDataBySpecies(species, traits),
+                    aekos.getTraitDataByEnviro(species, enviro)
                 ).done(function(traitData, enviroData) {
                     var traitResponse = traitData[0].response, 
                         enviroResponse = enviroData[0].response;
 
-                    if (traitResponse.length >= 0 && enviroResponse.length >= 0 ) {
+                    console.log(traitData[0].responseHeader.numFound);
+                    console.log(enviroData[0].responseHeader.numFound);
+
+                    if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound > 0 ) {
 
                         $traitDataField.val(JSON.stringify(traitResponse));
                         $enviroDataField.val(JSON.stringify(enviroResponse));
@@ -757,9 +760,27 @@ define(
                         $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
                         $submit.removeAttr('disabled');
 
+                    } else if (traitData[0].responseHeader.numFound == 0 && enviroData[0].responseHeader.numFound > 0 ) {
+
+                        alert('No trait data was found matching your selection. However, you may still import the matching environmental variable data, or change your selection.');
+
+                        $enviroDataField.val(JSON.stringify(enviroResponse));
+
+                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
+                        $submit.removeAttr('disabled');
+
+                    } else if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound == 0 ) {
+
+                        alert('No environmental variable data was found matching your selection. However, you may still import the matching trait data, or change your selection.');
+
+                        $traitDataField.val(JSON.stringify(traitResponse));
+
+                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
+                        $submit.removeAttr('disabled');
+
                     } else {
                         $importSelection.find('i.fa').removeClass().addClass('fa fa-folder-open');
-                        alert('There was a problem receiving the selected data, please try again later.');
+                        alert('There was a problem receiving the selected data (or there were no results), please try again later or modify your selection.');
                     }
                 });
             });

@@ -117,30 +117,62 @@
         }).promise();
     };
 
-    function getTraitDataBySpecies(query) {
+    function getTraitDataBySpecies(speciesArr, traitArr) {
+        var data = [];
+        if (speciesArr.constructor === Array) {
+            var arrayLength = speciesArr.length;
+            for (var i = 0; i < arrayLength; i++) {
+                data.push({'name': 'speciesName',
+                           'value': speciesArr[i]});
+            }
+        } else {
+            data.push({'name': 'speciesName',
+                     'value': speciesArr});
+        }
+        if (traitArr.constructor === Array) {
+            var arrayLength = traitArr.length;
+            for (var i = 0; i < arrayLength; i++) {
+                data.push({'name': 'traitName',
+                           'value': traitArr[i]});
+            }
+        } else {
+            data.push({'name': 'traitName',
+                     'value': traitArr});
+        }
         return $.ajax({
             dataType: 'json',
-            url: apiurl + 'traitData.json?'+query,
+            url: apiurl + 'traitData.json',
+            data: data
         }).promise();
     };
 
-    function getTraitDataByEnviro(query) {
+    function getTraitDataByEnviro(speciesArr, enviroArr) {
+        var data = [];
+        if (speciesArr.constructor === Array) {
+            var arrayLength = speciesArr.length;
+            for (var i = 0; i < arrayLength; i++) {
+                data.push({'name': 'speciesName',
+                           'value': speciesArr[i]});
+            }
+        } else {
+            data.push({'name': 'speciesName',
+                     'value': speciesArr});
+        }
+        if (enviroArr.constructor === Array) {
+            var arrayLength = enviroArr.length;
+            for (var i = 0; i < arrayLength; i++) {
+                data.push({'name': 'envVarName',
+                           'value': enviroArr[i]});
+            }
+        } else {
+            data.push({'name': 'envVarName',
+                     'value': enviroArr});
+        }
         return $.ajax({
             dataType: 'json',
-            url: apiurl + 'environmentData.json?'+query,
+            url: apiurl + 'environmentData.json',
+            data: data
         }).promise();
-    };
-
-    function buildRequestComponent(param, strArray){
-        var query = '';
-        $.each(strArray, function(i, str){
-            if (i != 0){
-                query += '&' + param + '=' + encodeURIComponent(str);
-            } else {
-                query += param + '=' + encodeURIComponent(str);
-            } 
-        });
-        return query;
     };
 
     return {
@@ -151,7 +183,6 @@
         'getEnvironmentBySpecies': getEnvironmentBySpecies,
         'speciesAutocomplete': speciesAutocomplete,
         'speciesSummary': speciesSummary,
-        'buildRequestComponent': buildRequestComponent,
         'getTraitDataBySpecies': getTraitDataBySpecies,
         'getTraitDataByEnviro': getTraitDataByEnviro,
     }
