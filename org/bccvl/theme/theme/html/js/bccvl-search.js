@@ -650,8 +650,8 @@ define(
             var $environmentselect = $form.find('[name="searchTraits_environment"]').first();
 
             var $importSelection = $form.find('.prepare-selection-btn').first();
-            var $traitData = $form.find('[name="searchTraits_traitData"]').first();
-            var $enviroData = $form.find('[name="searchTraits_enviroData"]').first();
+            var $traitDataField = $form.find('[name="searchTraits_traitData"]').first();
+            var $enviroDataField = $form.find('[name="searchTraits_enviroData"]').first();
             var $submit = $form.find('[name="submit_data"]').first();
 
             // init widgets
@@ -736,51 +736,27 @@ define(
 
             $importSelection.click(function(){
 
-                var traitUrl = 'https://api.aekos.org.au/v1/traitData.json?'
-                var enviroUrl = 'https://api.aekos.org.au//v1/environmentData.json?'
-
-                var addRequestComponents = function(url, param, strArray){
-                    $.each(strArray, function(i, str){
-                        if (i != 0){
-                            url += '&' + param + '=' + encodeURIComponent(str);
-                        } else {
-                            url += param + '=' + encodeURIComponent(str);
-                        }
-                        
-                    });
-
-                    return url;
-                }
-
-                traitUrl = addRequestComponents(traitUrl, 'speciesName', speciesFieldSelect.getValue());
-                traitUrl = addRequestComponents(traitUrl, 'traitName', traitFieldSelect.getValue());
-
-                enviroUrl = addRequestComponents(enviroUrl, 'speciesName', speciesFieldSelect.getValue());
-                enviroUrl = addRequestComponents(enviroUrl, 'envVarName', enviroFieldSelect.getValue());
+                speciesNames = aekos.buildRequestComponent('speciesName', speciesFieldSelect.getValue());
+                traitNames = aekos.buildRequestComponent('traitName', traitFieldSelect.getValue());
+                enviroNames = aekos.buildRequestComponent('envVarName', enviroFieldSelect.getValue());
 
                 $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
 
-                var traitResponse, enviroResponse;
-
                 $.when(
-                    $.getJSON(traitUrl, function(data){
-                        $traitData.val(JSON.stringify(data.response));
-                    }).done(function(){
-                        traitResponse = true;
-                    }).fail(function(){
-                        traitResponse = false;
-                    }),
-                    $.getJSON(enviroUrl, function(data){
-                        $enviroData.val(JSON.stringify(data.response));
-                    }).done(function(){
-                        enviroResponse = true;
-                    }).fail(function(){
-                        enviroResponse = false;
-                    })
-                ).then(function() {
-                    if (traitResponse && enviroResponse) {
+                    aekos.getTraitDataBySpecies(''+speciesNames+'&'+traitNames+''),
+                    aekos.getTraitDataByEnviro(''+speciesNames+'&'+enviroNames+'')
+                ).done(function(traitData, enviroData) {
+                    var traitResponse = traitData[0].response, 
+                        enviroResponse = enviroData[0].response;
+
+                    if (traitResponse.length >= 0 && enviroResponse.length >= 0 ) {
+
+                        $traitDataField.val(JSON.stringify(traitResponse));
+                        $enviroDataField.val(JSON.stringify(enviroResponse));
+
                         $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
                         $submit.removeAttr('disabled');
+
                     } else {
                         $importSelection.find('i.fa').removeClass().addClass('fa fa-folder-open');
                         alert('There was a problem receiving the selected data, please try again later.');

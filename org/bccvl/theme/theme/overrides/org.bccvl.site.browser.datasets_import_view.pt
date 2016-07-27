@@ -43,7 +43,7 @@
           <p>Whatever</p>
           <hr/>
           <input name="searchTraits_query" type="text"
-                 class="span8" placeholder="Find more traits..."
+                 class="span8" placeholder="Enter species name ..."
                  autocomplete="off"/>
           <select name="searchTraits_source" class="span4">
             <option value="aekos">at AEKOS</option>

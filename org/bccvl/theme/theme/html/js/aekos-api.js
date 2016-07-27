@@ -117,6 +117,32 @@
         }).promise();
     };
 
+    function getTraitDataBySpecies(query) {
+        return $.ajax({
+            dataType: 'json',
+            url: apiurl + 'traitData.json?'+query,
+        }).promise();
+    };
+
+    function getTraitDataByEnviro(query) {
+        return $.ajax({
+            dataType: 'json',
+            url: apiurl + 'environmentData.json?'+query,
+        }).promise();
+    };
+
+    function buildRequestComponent(param, strArray){
+        var query = '';
+        $.each(strArray, function(i, str){
+            if (i != 0){
+                query += '&' + param + '=' + encodeURIComponent(str);
+            } else {
+                query += param + '=' + encodeURIComponent(str);
+            } 
+        });
+        return query;
+    };
+
     return {
         'getApiUrl': getApiUrl,
         'getTraitVocab': getTraitVocab,
@@ -124,7 +150,10 @@
         'getTraitsBySpecies': getTraitsBySpecies,
         'getEnvironmentBySpecies': getEnvironmentBySpecies,
         'speciesAutocomplete': speciesAutocomplete,
-        'speciesSummary': speciesSummary
+        'speciesSummary': speciesSummary,
+        'buildRequestComponent': buildRequestComponent,
+        'getTraitDataBySpecies': getTraitDataBySpecies,
+        'getTraitDataByEnviro': getTraitDataByEnviro,
     }
     
 }));
