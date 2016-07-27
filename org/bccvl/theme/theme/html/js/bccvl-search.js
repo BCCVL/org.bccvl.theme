@@ -644,14 +644,15 @@ define(
 
             // we can find the input and source select by concatenating the
             // id of the parent div with "_query" and "_source".
-            //var $inputField = $form.find('[name="searchTraits_query"]').first();
-            //var $sourceField = $form.find('[name="searchTraits_source"]').first();
+
             var $traitsselect = $form.find('[name="searchTraits_traits"]').first();
-            // var $traitsselect = $form.find('#' + formid + '_traits').first();
             var $speciesselect = $form.find('[name="searchTraits_species"]').first();
             var $environmentselect = $form.find('[name="searchTraits_environment"]').first();
 
-            var $importSelection = $form.find('#importSelection').first();
+            var $importSelection = $form.find('.prepare-selection-btn').first();
+            var $traitData = $form.find('[name="searchTraits_traitData"]').first();
+            var $enviroData = $form.find('[name="searchTraits_enviroData"]').first();
+            var $submit = $form.find('[name="submit_data"]').first();
 
             // init widgets
             var $traitfield;
@@ -735,21 +736,56 @@ define(
 
             $importSelection.click(function(){
 
-                var traits = traitFieldSelect.getValue();
-                var species = speciesFieldSelect.getValue();
-                var enviro = enviroFieldSelect.getValue();
+                var traitUrl = 'https://api.aekos.org.au/v1/traitData.json?'
+                var enviroUrl = 'https://api.aekos.org.au//v1/environmentData.json?'
 
-                // have to build the url
-                // have to encode it, as well as array (uses multiple query params for each request)
+                var addRequestComponents = function(url, param, strArray){
+                    $.each(strArray, function(i, str){
+                        if (i != 0){
+                            url += '&' + param + '=' + encodeURIComponent(str);
+                        } else {
+                            url += param + '=' + encodeURIComponent(str);
+                        }
+                        
+                    });
 
-                //need second request for enviro
+                    return url;
+                }
 
-                var url = 'https://api.aekos.org.au/v1/traitData.json'
-                
-                console.log(traits);
-                console.log(species);
-                console.log(enviro);
+                traitUrl = addRequestComponents(traitUrl, 'speciesName', speciesFieldSelect.getValue());
+                traitUrl = addRequestComponents(traitUrl, 'traitName', traitFieldSelect.getValue());
 
+                enviroUrl = addRequestComponents(enviroUrl, 'speciesName', speciesFieldSelect.getValue());
+                enviroUrl = addRequestComponents(enviroUrl, 'envVarName', enviroFieldSelect.getValue());
+
+                $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
+
+                var traitResponse, enviroResponse;
+
+                $.when(
+                    $.getJSON(traitUrl, function(data){
+                        $traitData.val(JSON.stringify(data.response));
+                    }).done(function(){
+                        traitResponse = true;
+                    }).fail(function(){
+                        traitResponse = false;
+                    }),
+                    $.getJSON(enviroUrl, function(data){
+                        $enviroData.val(JSON.stringify(data.response));
+                    }).done(function(){
+                        enviroResponse = true;
+                    }).fail(function(){
+                        enviroResponse = false;
+                    })
+                ).then(function() {
+                    if (traitResponse && enviroResponse) {
+                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
+                        $submit.removeAttr('disabled');
+                    } else {
+                        $importSelection.find('i.fa').removeClass().addClass('fa fa-folder-open');
+                        alert('There was a problem receiving the selected data, please try again later.');
+                    }
+                });
             });
             
         };

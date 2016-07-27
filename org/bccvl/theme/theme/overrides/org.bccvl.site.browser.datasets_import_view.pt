@@ -76,8 +76,13 @@
               </div>
             </div>
             <div class="row-fluid">
-              <div id="searchTraits_environment" class="span10 offset1"> 
-                <input type="submit" class="btn btn-primary" id="importSelection" href="javascript:void(0);" value="Import Selection as Dataset"/>
+              <div id="searchTraits_request" class="span10 offset1"> 
+                <textarea id="importTraitData" name="searchTraits_traitData"  style="display:none;"></textarea>
+                <textarea id="importEnviroData" name="searchTraits_enviroData"  style="display:none;"></textarea>
+                <div class="btn-group">
+                  <button class="btn btn-default prepare-selection-btn" name="generate_data_request" id="prepareSelection"><i class="fa fa-folder-open"></i> Prepare Selection For Import</button>
+                  <input type="submit" class="btn btn-primary" name="submit_data" id="importSelection" href="javascript:void(0);" value="Import Dataset" disabled />
+                </div>
               </div>
             </div>
           </div>
