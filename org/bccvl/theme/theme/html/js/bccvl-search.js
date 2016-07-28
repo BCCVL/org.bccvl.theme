@@ -585,8 +585,6 @@ define(
                 parseSearchData: function(rawData, searchString, excluded) {
                     list = []
 
-                    console.log(rawData);
-
                     $.each(rawData, function(index, item) {
                         // classs : "species"
                         // commonName : "Leersia hexandra"
@@ -631,17 +629,17 @@ define(
         
         function enableTraitsForms() {
             // call enableForm() on each form in the dom
-            var $traitSearchForm = $('.bccvl-search-traits-by-trait');
-            $.each($traitSearchForm, function(index, form) { enableTraitsByTraitForm(form); });
-
-            var $speciesSearchForm = $('.bccvl-search-traits-by-species');
-            $.each($speciesSearchForm, function(index, form) { enableTraitsBySpeciesForm(form); });
+            var $traitSearchForm = $('.bccvl-search-traits');
+            $.each($traitSearchForm, function(index, form) { enableTraitsForm(form); });
             
         };
 
-        function enableTraitsByTraitForm(formElement) {
+        function enableTraitsForm(formElement) {
             // locate all the dom elements we need - - - - - - -
             var $form = $(formElement);
+            var $formType = $(formElement).data('form-type');
+
+            console.log($formType);
 
             // find the id of the parent element
             formid = $form.attr('id');
@@ -663,10 +661,27 @@ define(
 
             var $traitfield, traitFieldSelect, $speciesField, speciesFieldSelect, $enviroField, enviroFieldSelect;
 
-            // init trait field
+            // init selectize fields
+            if ($speciesselect && $speciesselect.length) { 
+                $speciesField = $speciesselect.selectize();
+                speciesFieldSelect = $speciesField[0].selectize;
+            }
             if ($traitsselect && $traitsselect.length) {
                 $traitfield = $traitsselect.selectize();
                 traitFieldSelect = $traitfield[0].selectize;
+            }
+            // init environmental var field
+            if ($environmentselect && $environmentselect.length) {  
+                $enviroField = $environmentselect.selectize();
+                enviroFieldSelect = $enviroField[0].selectize;
+            }
+
+
+            // END COMMON 
+
+            // TRAITS BY TRAIT FORM
+
+            if ($formType == 'traits-by-trait') {
 
                 // populate traits list
                 aekos.getTraitVocab().then(function(data) {
@@ -707,13 +722,6 @@ define(
                         );
                     }
                 });
-            }
-            
-            // init species fields
-            if ($speciesselect && $speciesselect.length) { 
-
-                $speciesField = $speciesselect.selectize();
-                speciesFieldSelect = $speciesField[0].selectize;
 
                 // hook up species selection chance
                 // when species selection changes fetch list of available env vars
@@ -740,94 +748,13 @@ define(
                         );
                     }
                 });
-            }
 
-            // init environmental var field
-            if ($environmentselect && $environmentselect.length) {  
-                $enviroField = $environmentselect.selectize();
-                enviroFieldSelect = $enviroField[0].selectize;
-            }
+            } else if ($formType == 'traits-by-species') { 
 
-            $importSelection.click(function(){
-                var species = speciesFieldSelect.getValue(),
-                    traits  = traitFieldSelect.getValue(),
-                    enviro  = enviroFieldSelect.getValue();
-
-                $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
-
-                $.when(
-                    aekos.getTraitDataBySpecies(species, traits),
-                    aekos.getTraitDataByEnviro(species, enviro)
-                ).done(function(traitData, enviroData) {
-                    var traitResponse = traitData[0].response, 
-                        enviroResponse = enviroData[0].response;
-
-                    console.log(traitData[0].responseHeader.numFound);
-                    console.log(enviroData[0].responseHeader.numFound);
-
-                    if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound > 0 ) {
-
-                        $traitDataField.val(JSON.stringify(traitResponse));
-                        $enviroDataField.val(JSON.stringify(enviroResponse));
-
-                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
-                        $submit.removeAttr('disabled');
-
-                    } else if (traitData[0].responseHeader.numFound == 0 && enviroData[0].responseHeader.numFound > 0 ) {
-
-                        alert('No trait data was found matching your selection. However, you may still import the matching environmental variable data, or change your selection.');
-
-                        $enviroDataField.val(JSON.stringify(enviroResponse));
-
-                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
-                        $submit.removeAttr('disabled');
-
-                    } else if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound == 0 ) {
-
-                        alert('No environmental variable data was found matching your selection. However, you may still import the matching trait data, or change your selection.');
-
-                        $traitDataField.val(JSON.stringify(traitResponse));
-
-                        $importSelection.find('i.fa').removeClass().addClass('fa fa-check-circle');
-                        $submit.removeAttr('disabled');
-
-                    } else {
-                        $importSelection.find('i.fa').removeClass().addClass('fa fa-folder-open');
-                        alert('There was a problem receiving the selected data (or there were no results), please try again later or modify your selection.');
-                    }
-                });
-            });
-            
-        };
-
-        function enableTraitsBySpeciesForm(formElement) {
-            // locate all the dom elements we need - - - - - - -
-            var $form = $(formElement);
-
-            // find the id of the parent element
-            formid = $form.attr('id');
-            if (!formid) {
-                console.log('BCCVL-Search: found a .bccvl-search-traits but it lacks an id attribute.');
-                return; // bail out of this form if it has no ID
-            }
-
-            // we can find the input and source select by concatenating the
-            // id of the parent div with "_query" and "_source".
-
-            var $traitsselect = $form.find('[name="searchTraits_traits"]').first(),
-                $speciesselect = $form.find('[name="searchTraits_species"]').first(),
-                $environmentselect = $form.find('[name="searchTraits_environment"]').first(),
-                $importSelection = $form.find('.prepare-selection-btn').first(),
-                $traitDataField = $form.find('[name="searchTraits_traitData"]').first(),
-                $enviroDataField = $form.find('[name="searchTraits_enviroData"]').first(),
-                $submit = $form.find('[name="submit_data"]').first();
-
-            var $traitfield, traitFieldSelect, $speciesField, speciesFieldSelect, $enviroField, enviroFieldSelect;
-
-            // init species field
-            if ($speciesselect && $speciesselect.length) {
-                $speciesfield = $speciesselect.selectize();
-                speciesFieldSelect = $speciesfield[0].selectize;
+                // currently this field is populated with all species that have a 'lifeForm' trait.
+                // that's the only species lookup supported by this provider at this time
+                // may need to be replaced with an autocomplete for smaller/faster response,
+                // or when a generic species list is implemented into the API
 
                 // populate traits list
                 aekos.getSpeciesByTrait('lifeForm').then(function(data) {
@@ -870,26 +797,14 @@ define(
                         );
                     }
                 });
-            }
-
-            // init species fields
-            if ($traitsselect && $traitsselect.length) { 
-                $traitsField = $traitsselect.selectize();
-                traitFieldSelect = $traitsField[0].selectize;
 
                 $traitsselect.on('change', function(event) { 
                     enviroFieldSelect.focus();
                 });
             }
 
-            // init environmental var field
-            if ($environmentselect && $environmentselect.length) {  
-                $enviroField = $environmentselect.selectize();
-                enviroFieldSelect = $enviroField[0].selectize;
-            }
 
             $importSelection.click(function(){
-
                 var species = speciesFieldSelect.getValue(),
                     traits  = traitFieldSelect.getValue(),
                     enviro  = enviroFieldSelect.getValue();
@@ -902,9 +817,6 @@ define(
                 ).done(function(traitData, enviroData) {
                     var traitResponse = traitData[0].response, 
                         enviroResponse = enviroData[0].response;
-
-                    console.log(traitData[0].responseHeader.numFound);
-                    console.log(enviroData[0].responseHeader.numFound);
 
                     if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound > 0 ) {
 

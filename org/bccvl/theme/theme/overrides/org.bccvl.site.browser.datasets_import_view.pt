@@ -38,7 +38,7 @@
           <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
         </div>
       
-        <div class="tab-pane bccvl-search-traits-by-species" id="searchTraitsSpecies">
+        <div class="tab-pane bccvl-search-traits" data-form-type="traits-by-species" id="searchTraitsSpecies">
           <div class="bccvl-traitsform-results row-fluid">
             <h4><strong>Find Trait Data by Species</strong></h4>
             <p>Text explaining what this page does.</p>
@@ -75,7 +75,7 @@
           <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
         </div>
 
-        <div class="tab-pane bccvl-search-traits-by-trait" id="searchTraitsTrait">
+        <div class="tab-pane bccvl-search-traits" data-form-type="traits-by-trait" id="searchTraitsTrait">
           <div class="bccvl-traitsform-results row-fluid">
             <h4><strong>Find Trait Data for Species by Trait</strong></h4>
             <p>Text explaining what this page does.</p>
