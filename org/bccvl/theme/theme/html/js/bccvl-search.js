@@ -375,7 +375,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                             var searchString = splitItems[1].replace(/\(|\)/g, '');
                             var filter = 'rank:species+OR+rank:subspecies';
                             if (rankSupplied == 'genus') {
-                                filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)';
+                                filter = '&fq=(rank:species+OR+rank:genus)';
                             }
                             return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                         },
