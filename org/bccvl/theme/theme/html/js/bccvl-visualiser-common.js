@@ -988,6 +988,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         new ol.layer.Tile({
                           title: 'Mapbox',
                           type: 'base',
+                          visible: false,
                           source: new ol.source.XYZ({
                             tileSize: [512, 512],
                             url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
