@@ -108,7 +108,6 @@
     }
     
     function speciesAutocomplete(q) {
-        console.log(q);
         return $.ajax({
             dataType: 'json',
             url: apiurl + 'speciesAutocomplete.json',

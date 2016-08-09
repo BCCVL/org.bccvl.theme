@@ -639,8 +639,6 @@ define(
             var $form = $(formElement);
             var $formType = $(formElement).data('form-type');
 
-            console.log($formType);
-
             // find the id of the parent element
             formid = $form.attr('id');
             if (!formid) {
