@@ -662,7 +662,7 @@ define(
             var $traitfield, traitFieldSelect, $speciesField, speciesFieldSelect, $enviroField, enviroFieldSelect;
 
             // init selectize fields
-            if ($speciesselect && $speciesselect.length) { 
+            if ($speciesselect && $speciesselect.length && $formType != 'traits-by-species') { 
                 $speciesField = $speciesselect.selectize();
                 speciesFieldSelect = $speciesField[0].selectize;
             }
@@ -750,24 +750,22 @@ define(
                 });
 
             } else if ($formType == 'traits-by-species') { 
+                
+                $speciesselect.selectize({
+                    valueField: 'scientificName',
+                    labelField: 'scientificName',
+                    searchField: 'scientificName',
+                    options: [],
+                    create: false,
+                    maxItems: 4,
+                    load: function(query, callback){
+                        if (!query.length) return callback();
+                        aekos.speciesAutocomplete(query).then(function(results){
+                            callback(results);
+                        });
 
-                // currently this field is populated with all species that have a 'lifeForm' trait.
-                // that's the only species lookup supported by this provider at this time
-                // may need to be replaced with an autocomplete for smaller/faster response,
-                // or when a generic species list is implemented into the API
+                    }
 
-                // populate traits list
-                aekos.getSpeciesByTrait('lifeForm').then(function(data) {
-
-                    // clear current select
-                    speciesFieldSelect.clearOptions();
-                    $.each(data, function(index, species) {
-
-                        speciesFieldSelect.addOption({value: species.name, text: species.name })
-                        
-                    });
-                    speciesFieldSelect.refreshOptions();
-                    
                 });
 
                 $speciesselect.on('change', function(event) {

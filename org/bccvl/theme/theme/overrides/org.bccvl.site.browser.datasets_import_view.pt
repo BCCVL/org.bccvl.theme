@@ -45,7 +45,11 @@
             <div class="row-fluid">
               <div class="span10 offset1 searchTraits_species">
                 <h5>1. Select from available species.</h5>
-                <select name="searchTraits_species" multiple="multiple"></select>
+                <input type="text" data-provide="typeahead" name="searchTraits_species" autocomplete="off"/>
+                <p class="bccvl-labelfade-description bccvl-read"></p>
+          
+                <div id="searchOccurrence_results" class="bccvl-searchform-results"></div>
+                <img src="/bccvl/++resource++bccvl/images/big-ajax-loader.gif" class="bccvl-results-spinner"/>
               </div>
             </div>
             <div class="row-fluid">
