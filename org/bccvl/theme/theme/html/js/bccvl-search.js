@@ -748,8 +748,8 @@ define(
                 });
 
             } else if ($formType == 'traits-by-species') { 
-                
-                $speciesselect.selectize({
+
+                $speciesField = $speciesselect.selectize({
                     valueField: 'scientificName',
                     labelField: 'scientificName',
                     searchField: 'scientificName',
@@ -766,7 +766,10 @@ define(
 
                 });
 
+                speciesFieldSelect = $speciesField[0].selectize;
+
                 $speciesselect.on('change', function(event) {
+
                     // clear current select
                     traitFieldSelect.clearOptions();
 
@@ -781,6 +784,8 @@ define(
                                     traitFieldSelect.addOption({value: trait.code, text: trait.label });
                                 });
                                 traitFieldSelect.refreshOptions();
+                                speciesFieldSelect.blur();
+                                traitFieldSelect.focus();
                             }
                         );
                          aekos.getEnvironmentBySpecies(selectedspecies).then(
