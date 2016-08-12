@@ -537,7 +537,7 @@ define(
                     var list = [];
                     if (rawData) {
                         $.each(rawData, function(index, item) {
-                            list.push(item.name);
+                            list.push(item.scientificName);
                         });
                     }
                     return list;
