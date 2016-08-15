@@ -612,6 +612,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    } else {
                        if (i == (rangeArr.length-1)){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                       } else if (i == 0) {
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        } else {
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        }
@@ -1015,7 +1017,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                });        
 
                baseLayers.getLayers().forEach(function(lyr) {
-                      if (lyr.get('title') == 'Satellite'){
+                      if (lyr.get('title') == 'Mapbox'){
                         lyr.on('precompose', function(evt){
                           evt.context.globalCompositeOperation = 'lighten';
                         });
