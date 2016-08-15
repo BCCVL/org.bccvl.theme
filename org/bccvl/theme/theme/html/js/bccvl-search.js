@@ -375,13 +375,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                             var searchString = splitItems[1].replace(/\(|\)/g, '');
                             var filter = 'rank:species+OR+rank:subspecies';
                             if (rankSupplied == 'genus') {
-                                filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)&fq=occurrenceCount:[1+TO+*]';
+                                filter = '&fq=(rank:species+OR+rank:genus)';
                             }
                             return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         searchSpeciesUrl: function(rank, searchString, pageSize) {
-                            return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&fq=occurrenceCount:[1+TO+*]&q=&pageSize=' + pageSize);
+                            return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                         },
                         // - - - - - - - - - - - - - - - - - - - - - - - - -
                         statusError: function(data) {                        
@@ -399,7 +399,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                 var searchStringWords = searchString.toLowerCase().split(" ");
                                 $.each(rawData.searchResults.results, function(index, item) {                                   
                                     // Skip if there is no occurrence count
-                                    if (item.occCount == undefined || item.occCount <= 0) {
+                                    if (item.occurrenceCount == undefined || item.occurrenceCount <= 0) {
                                         return true;
                                     }
 
@@ -440,8 +440,8 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                     if (item.rank) {
                                         result.description += ' (' + item.rank + ')';
                                     }
-                                    if (item.occCount) {
-                                        result.description += ' ' + item.occCount + ' occurrences from ALA';
+                                    if (item.occurrenceCount) {
+                                        result.description += ' ' + item.occurrenceCount + ' occurrences from ALA';
                                     }
                                     // the thumbnail at ALA is often just an arbitrary crop of the
                                     // small image, so prefer the small image to use as our thumbnail.
@@ -692,6 +692,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                             
                             // Display the result data
                             excludedList = [];
+                            // start search
                             displayMoreData(0 /* start index */, -1 /* first time */, selectedItem, -1 /* not genusKey */);
                             return provider.autocomplete.cleanAutoItem(selectedItem);
                         }
@@ -707,13 +708,12 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                 }
                 // -------------------------------------------------------------- 
                 function displayMoreData(nextIndex, totalRecords, selectedItem, genusKey) {
-                    // Get and display species data from ALA. Negative totalRecord indicates first time, so 
-                    // need to create result table.
+                    // totalRecords < 0 means we start a new search so clear the result area
+                    if (totalRecords < 0) {
+                        $resultsField.empty().addClass('bccvl-search-active');
+                    }
+                    // Get and display species data from ALA
                     var dataSrc = $sourceField.val();
-
-                    // Get and display species data from ALA. Negative totalRecord indicates first time, so 
-                    // need to create result table.
-                    var createTable = totalRecords  < 0;
                     if (selectedItem && (totalRecords < 0 || nextIndex < totalRecords)) {
                         // Send a query to ALA to get data; limit to 10 records.
                         // ALA does not send occCount if the number of records is too big i.e. 1370 for Acacia genus.
@@ -726,7 +726,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                                       : provider.search.getData(nextIndex, selectedItem);
                         results.done(function(data) {
                             // Display these records & update the nextIndex
-                            var res = displayData(data, provider, createTable, dataSrc, $inputField.val(), $resultsField);
+                            var res = displayData(data, provider, dataSrc, $inputField.val(), $resultsField);
                             if (res != null) {
                                 totalRecords = provider.search.totalRecords(data);
                                 $('.bccvl-search-results').data('data-totalRecords', totalRecords);
@@ -734,7 +734,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                                 $('.bccvl-search-results').data("data-nextIndex", nextIndex + pageSize);
                                 $('.bccvl-search-results').data("data-genusKey", genusKey);
                              
-                                // For BGIF, if a genus is selected, need to display its associated species.
+                                // For GBIF, if a genus is selected, need to display its associated species.
                                 if (dataSrc == 'gbif' && res.length > 0){
                                     item = res[0];
                                     if (item.rank == 'GENUS'){
@@ -755,7 +755,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
 
                 }
                 // -------------------------------------------------------------- 
-                function displayData(data, provider, newTable, dataSrc, searchString, resultsField) {
+                function displayData(data, provider, dataSrc, searchString, resultsField) {
                     var results = null;
                     if (provider.search.statusError(data)){
                         provider.autocomplete.noResultsFound(bccvl_search.unexpectedErrorMsg(dataSrc));
@@ -765,7 +765,7 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                         // objects from the returned data. Otherwise assume the data is already good.
                         results = (provider.search.parseSearchData) ? provider.search.parseSearchData(data, searchString, excludedList) : data;
                         if (results.length > 0) {
-                            bccvl_search.displayResults(results, resultsField, newTable);
+                            bccvl_search.displayResults(results, resultsField);
                         }
                     }
                     // get rid of spinner
@@ -774,12 +774,13 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                 } 
             },
             // --------------------------------------------------------------
-            displayResults: function(results, domElement, newTable) {
+            displayResults: function(results, domElement) {
                 // get a table dom fragment ready to put search results into
-                var $elem = $('<table class="table table-hover bccvl-search-results"></table>');
-
-                if (!newTable) {
-                    $elem = $('.bccvl-search-results');
+                var $elem  = $('.bccvl-search-results');
+                if ($elem.length == 0) {
+                    // create new table and add to page
+                    $elem = $('<table class="table table-hover bccvl-search-results"></table>');
+                    $(domElement).empty().addClass('bccvl-search-active').append($elem);
                 }
 
                 var $tab = $(domElement).closest('.tab-pane');
@@ -832,10 +833,6 @@ define(     ['jquery', 'jquery-xmlrpc', 'bootstrap2'],
                     $elem.append( $('<tr></tr>').append($info).append($actions) );
                 });
 
-                // finally, add the dom fragment to the page dom.
-                if (newTable) {
-                    $(domElement).empty().addClass('bccvl-search-active').append($elem);
-                }
                 // show the results
                 $('.bccvl-searchform-results').show();
             },

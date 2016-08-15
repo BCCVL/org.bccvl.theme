@@ -38,92 +38,15 @@
     <!-- include main js -->
     <script type="text/javascript">
       require(['dataset-list']);
-      require(['livechat']);
     </script>
-
-    <script id="google-analytics"></script>
 
   </head>
 
   <body>
     <div class="white-bg">
-      <!-- navbar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <nav class="navbar navbar-static-top"><div class="navbar-inner"><div class="container">
-
-        <!-- button for narrow screen menu -->
-        <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">menu</button>
-
-        <!-- project title -->
-        <a id="portal-logo" class="bccvllinks-home brand"><img src="images/bccvl_logo_beta.png" alt="Biodiversity &amp; Climate Change Virtual Lab"/></a>
-
-        <!-- container for content that will hide under menu when screen is narrow -->
-        <div class="nav-collapse collapse">
-
-          <!-- user menu -->
-          <div id="user-menu" class="btn-group pull-right">
-            <a class="btn dropdown-toggle fine" data-toggle="dropdown">
-              <i class="icon-user"></i> <span class="bccvl-username">unknown user</span> <i class="caret"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="bccvllinks-dashboard"><i class="icon-bell"></i>Dashboard</a></li>
-              <li><a class="bccvllinks-adminaccess"><i class="icon-eye-open"></i> Admin access</a></li>
-              <li class="divider"></li>
-              <li><a class="bccvllinks-logoutuser"><i class="icon-eject"></i> Log out</a></li>
-            </ul>
-          </div>
-
-          <!-- search field -->
-          <form id="siteSearch" class="navbar-search pull-right" method="" autocomplete="on" action="" enctype="text/plain">
-            <input type="text" name="siteSearchQuery" class="search-query" placeholder="Search"/>
-          </form>
-
-          <!-- main menu items -->
-          <ul id="portal-globalnav" class="nav">
-            <!-- <li               ><a class="bccvllinks-dashboard">Dashboard</a></li> -->
-            <li               ><a class="bccvllinks-datasets">Datasets</a></li>
-            <li               ><a class="bccvllinks-experiments">Experiments</a></li>
-            <li               ><a class="bccvllinks-knowledgebase">Support</a></li>
-          </ul>
-
-        </div><!--/.nav-collapse -->
-
-      </div></div></nav><!-- end of nav wrapper -->
-
       <!-- content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- container for main content -->
       <div class="container bccvl-main">
-
-
-        <!-- breadcrumb trail ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        <div id="breadcrumbs" class="bccvl-breadcrumb row">
-          <div class="span12">
-            <ul class="breadcrumb">
-              <li><a class="bccvllinks-home icon-home"></a></li>
-              <li class="separator icon-chevron-right"></li>
-              <li><a class="bccvllinks-datasets">Datasets</a></li>
-            </ul>
-          </div>
-        </div> -->
-        <h1><strong>Available</strong> Datasets</h1>
-
-
-        <div class="alert" >
-          <button type="button" class="close"
-                  data-dismiss="alert">&times;</button>
-          <strong>Do you have a dataset you would like to see available in the BCCVL?</strong> - <a href="http://www.bccvl.org.au/contact-us/" target="_blank">Contact us</a> and we’ll try and make it happen.
-        </div>
-
-        <ul id="datasets_tabs" class="nav nav-tabs">
-          <li class="tab-datasetslisting active">
-            <a href="dataset-list.html"><span>Datasets</span></a>
-          </li>
-          <li class="tab-datasetsimport ">
-            <a href="dataset-import.html"><span>Discover Dataset</span></a>
-          </li>
-          <li class="tab-datasetsupload ">
-            <a href="dataset-upload.html"><span>Upload Dataset</span></a>
-          </li>
-        </ul>
 
         <!-- dataset list ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <section class="bccvl-datasetlist">
@@ -358,8 +281,5 @@
 
       </div><!-- end of main content container -->
     </div>
-    <!-- footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <footer id="portal-footer">
-    </footer>
   </body>
 </html>

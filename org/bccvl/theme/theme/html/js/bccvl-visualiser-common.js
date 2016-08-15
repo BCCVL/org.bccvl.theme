@@ -5,7 +5,7 @@
 define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar'],
     function( $, layout, ol, proj4, layerswitcher, progress_bar) {
 
-        require(['Raven'], function(Raven) {
+        require(['raven'], function(Raven) {
             Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
                 whitelistUrls: [ '\.bccvl\.org\.au/']
             }).install()
@@ -616,6 +616,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    } else {
                        if (i == (rangeArr.length-1)){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                       } else if (i == 0) {
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        } else {
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        }
@@ -1005,10 +1007,13 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     title: 'Base Maps',
                     layers: [
                         new ol.layer.Tile({
-                            title: 'Satellite',
-                            type: 'base',
-                            visible: false,
-                            source: new ol.source.MapQuest({layer: 'sat'})
+                          title: 'Mapbox',
+                          type: 'base',
+                          visible: false,
+                          source: new ol.source.XYZ({
+                            tileSize: [512, 512],
+                            url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                          })
                         }),
                         new ol.layer.Tile({
                            title: 'OSM',
@@ -1017,12 +1022,21 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                            visible: true,
                            source: new ol.source.OSM()
                         })
+                        /*,
+                        new ol.layer.Tile({
+                          title: 'Mapbox',
+                          type: 'base',
+                          source: new ol.source.XYZ({
+                            tileSize: [512, 512],
+                            url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                          })
+                        })*/
                     ]
 
                });        
 
                baseLayers.getLayers().forEach(function(lyr) {
-                      if (lyr.get('title') == 'Satellite'){
+                      if (lyr.get('title') == 'Mapbox'){
                         lyr.on('precompose', function(evt){
                           evt.context.globalCompositeOperation = 'lighten';
                         });

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.12.0.dev'
+version = '1.14.0.dev0'
 
 setup(name='org.bccvl.theme',
       version=version,
@@ -11,9 +11,9 @@ setup(name='org.bccvl.theme',
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
-        "Framework :: Plone",
-        "Programming Language :: Python",
-        ],
+          "Framework :: Plone",
+          "Programming Language :: Python",
+      ],
       keywords='',
       author='',
       author_email='',
@@ -32,7 +32,8 @@ setup(name='org.bccvl.theme',
           'setuptools',
           'plone.app.theming',
           'plone.app.themingplugins',
-          # TODO: why do I need to depend on this as it is required for theme preview?
+          # TODO: why do I need to depend on this as it is required for theme
+          # preview?
           'cssselect',
       ],
       entry_points="""
