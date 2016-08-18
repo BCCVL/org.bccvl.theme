@@ -804,6 +804,47 @@ define(
                 });
             }
 
+            $submit.click(function() {
+                var species = speciesFieldSelect.getValue(),
+                    traits = traitFieldSelect.getValue(),
+                    enviro = enviroFieldSelect.getValue();
+
+                // make sure species is an array
+                if (! species instanceof Array) {
+                    species = species.split(',');
+                }
+                
+                $submit.find('i').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
+                // TODO: need to do manual json encoding if required
+                //       and set contentType to 'application/json'
+                $.ajax({
+                    'url': portal_url + '/API/dm/v1/import_trait_data',
+                    'contentType': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'data': {
+                        'source': 'aekos',
+                        'species': species,
+                        'traits': traits,
+                        'environ': enviro
+                    },
+                    'traditional': true,
+                    'method': 'POST',
+                    'importSelection': '',
+                }).then(
+                    function(data, textStatus, jqXHR) {
+                        console.log(jqXHR);
+                        $submit.find('i').removeClass();
+                        // jqXHR.status ... http number
+                        window.location = jqXHR.getResponseHeader('Location');
+                    },
+                    function(jqXHR, textStatus, errorThrown) {
+                        // jqXHR.responseText
+                        // $.parseJSON(jqXHR.responseText)
+                        alert('Failure when submitting dataset import');
+                        $submit.find('i').removeClass();
+                    }
+                );
+                    
+            });
 
             $importSelection.click(function(){
                 var species = speciesFieldSelect.getValue(),
