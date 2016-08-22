@@ -10,7 +10,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 whitelistUrls: [ '\.bccvl\.org\.au/']
             }).install()
             
-            $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+            /*$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
                 Raven.captureException(new Error(thrownError || jqXHR.statusText), {
                     extra: {
                         type: ajaxSettings.type,
@@ -21,7 +21,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         response: jqXHR.responseText.substring(0, 100)
                     }
                 });
-            });
+            });*/
         });
 
        // define some projections we need
@@ -69,6 +69,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
 
        // dataset manager getMetadata endpoint url
        var dmurl = portal_url + '/dm/getMetadata';
+       
+       // fetch api url url
+       var fetchurl = portal_url + '/_visualiser/api/fetch';
 
        var layer_vocab = {};
        // FIXME: is there a  race condition possible here?
@@ -167,7 +170,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                   });
   
                   // load and add layers to map
-                  bccvl_common.addLayersForDataset(uuid, id, visibleLayer, visLayers);
+                  bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
                   
                   // add click control for point return
                   map.on('singleclick', function(evt){
@@ -1067,22 +1070,48 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
            },
 
 
-           addLayersForDataset: function(uuid, id, visibleLayer, visLayers) {
-               // styObj ... override given certain styleObj parameters
-               var dfrd = $.Deferred();
-               var jqxhr = $.xmlrpc({
-                   url: dmurl,
-                   params: {'datasetid': uuid}});
-               jqxhr.then(function(data, status, jqXHR) {
-                   // xmlrpc returns an array of results
-                   data = data[0];
-                   // define local variables
-                   var layerdef;
-                        
-                   // check for layers metadata, if none exists then the request is returning a data like a csv file
-                   // TODO: alternative check data.mimetype == 'text/csv' or data.genre
-                   //       or use type passed in as parameter
-                   if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence") {
+           addLayersForDataset: function(uuid, url, id, visibleLayer, visLayers) {
+                // styObj ... override given certain styleObj parameters
+                var dfrd = $.Deferred();
+                var requestStatus = $.Deferred();
+                var jqxhr = $.Deferred();
+                
+                var fetch = function(){
+                    $.ajax({
+                        url: fetchurl,
+                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
+                    }).done(function(response){
+                        if(response.status == "COMPLETED"){
+                            requestStatus.resolve(data.status);
+                        } else if (response.status == "FAILED"){
+                            requestStatus.reject(response.reason);
+                        } else {
+                             setTimeout(function(){
+                                fetch();
+                             }, 500);
+                        }
+                    }).fail(alert('Problem request dataset, please try again later.'));
+                }
+                
+                fetch();
+                
+                requestStatus.then(function(){
+                     var meta = $.xmlrpc({
+                        url: dmurl,
+                        params: {'datasetid': uuid}});
+                     jqxhr.resolve(meta);
+                }).fail( alert('Problem preparing dataset for viewing, please try again later.') );
+                
+                jqxhr.then(function(data, status, jqXHR) {
+                     // xmlrpc returns an array of results
+                    data = data[0];
+                    // define local variables
+                    var layerdef;
+                         
+                    // check for layers metadata, if none exists then the request is returning a data like a csv file
+                    // TODO: alternative check data.mimetype == 'text/csv' or data.genre
+                    //       or use type passed in as parameter
+                    if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence") {
                        // species data  (not a raster)
                        // TODO: use data.title (needs to be populated)
                        layerdef = {
