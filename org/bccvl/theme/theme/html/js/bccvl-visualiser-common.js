@@ -68,7 +68,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
 
        // dataset manager getMetadata endpoint url
-       var dmurl = portal_url + '/dm/getMetadata';
+        var dmurl = portal_url + '/API/dm/v1/metadata';
        
        // fetch api url url
        var fetchurl = portal_url + '/_visualiser/api/fetch';
