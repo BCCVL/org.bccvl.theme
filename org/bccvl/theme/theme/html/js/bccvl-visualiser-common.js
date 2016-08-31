@@ -1080,27 +1080,36 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     $.ajax({
                         url: fetchurl,
                         data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
-                    }).done(function(response){
-                        if(response.status == "COMPLETED"){
+                    }).done(function(data, status, jqXHR){
+                        if(data.status == "COMPLETED"){
                             requestStatus.resolve(data.status);
-                        } else if (response.status == "FAILED"){
-                            requestStatus.reject(response.reason);
+                        } else if (data.status == "FAILED"){
+                            requestStatus.reject(data.reason);
                         } else {
                              setTimeout(function(){
                                 fetch();
                              }, 500);
                         }
-                    }).fail(alert('Problem request dataset, please try again later.'));
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        alert('Problem request dataset, please try again later.')
+                    });
                 }
                 
                 fetch();
                 
                 requestStatus.then(function(){
-                     var meta = $.xmlrpc({
+                    var meta = $.ajax({
                         url: dmurl,
-                        params: {'datasetid': uuid}});
-                     jqxhr.resolve(meta);
-                }).fail( alert('Problem preparing dataset for viewing, please try again later.') );
+                        type: 'GET',
+                        dataType: 'xml json',
+                        converters: {'xml json': $.xmlrpc.parseDocument},
+                        data: {'uuid': uuid}})
+                        .then(function(data, status, jqXHR) {
+                            jqxhr.resolve(data);
+                        });
+                }).fail( function(jqXHR, textStatus, errorThrown) {
+                    alert('Problem preparing dataset for viewing, please try again later.')
+                });
                 
                 jqxhr.then(function(data, status, jqXHR) {
                      // xmlrpc returns an array of results
