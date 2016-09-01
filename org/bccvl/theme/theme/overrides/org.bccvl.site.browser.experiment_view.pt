@@ -192,9 +192,9 @@
                 <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
                   <div class="row-fluid experiment-result-contents"
                        tal:define="itemobj item/getObject;
-                                   item_tools nocall:itemobj/@@dataset_tools">
-                    <div class="span9 bccvl-table-label"
-                         tal:define="md item_tools/metadata|nothing">
+                                   item_tools nocall:itemobj/@@dataset_tools;
+                                   md item_tools/metadata|nothing">
+                    <div class="span9 bccvl-table-label">
                       <h5 tal:content="item/Title">Item Title</h5>
                       <p><span tal:content="item/Description">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
@@ -223,6 +223,8 @@
                          tal:attributes="href downloadurl;
                                          data-uuid item/UID;
                                          data-mimetype item/format;
+                                         data-cellsize md/cellsize|nothing;
+                                         data-srs md/srs|nothing;
                                          class string:${item_tools/get_viz_class} btn btn-primary"
                          tal:condition="python: item.format not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
