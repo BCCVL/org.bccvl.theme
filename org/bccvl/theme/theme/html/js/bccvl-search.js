@@ -373,13 +373,13 @@ define(
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
                     var filter = 'rank:species+OR+rank:subspecies';
                     if (rankSupplied == 'genus') {
-                        filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)&fq=occurrenceCount:[1+TO+*]';
+                        filter = '(rank:species+OR+rank:genus)';
                     }
                     return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&fq=occurrenceCount:[1+TO+*]&q=&pageSize=' + pageSize);
+                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
