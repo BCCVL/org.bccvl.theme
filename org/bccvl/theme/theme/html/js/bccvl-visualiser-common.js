@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar) {
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3'],
+    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3) {
 
         require(['raven'], function(Raven) {
             Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
@@ -68,7 +68,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
 
        // dataset manager getMetadata endpoint url
-        var dmurl = portal_url + '/API/dm/v1/metadata';
+       var dmurl = portal_url + '/API/dm/v1/metadata';
        
        // fetch api url url
        var fetchurl = portal_url + '/_visualiser/api/fetch';
@@ -111,7 +111,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 
             },*/
 
-            mapRender: function(uuid, url, id, type, visibleLayer) {
+            mapRender: function(uuid, url, id, params, visibleLayer) {
 
               var ready = $.Deferred();
 
@@ -120,67 +120,139 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
               // TODO: wrapping in when not necessary?
               $.when(bccvl_common.renderBase(id)).then(function(map, visLayers) {
 
-                  // add layerswitcher
-                  var layerSwitcher = new ol.control.LayerSwitcher({
-                      toggleOpen: true,
-                      singleVisibleOverlay: true
-                  });
-                  // add scaleline
-                  var scaleline = new ol.control.ScaleLine({
-                      className: 'ol-scale-line'
-                  });
+                // add layerswitcher
+                var layerSwitcher = new ol.control.LayerSwitcher({
+                    toggleOpen: true,
+                    singleVisibleOverlay: true
+                });
+                // add scaleline
+                var scaleline = new ol.control.ScaleLine({
+                    className: 'ol-scale-line'
+                });
 
-                  map.addControl(layerSwitcher);
-                  map.addControl(scaleline);
-                  layerSwitcher.showPanel();
-
-                  var layerListeners = []
-
-                  // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
-                  visLayers.getLayers().on('propertychange', function(e, layer){
-
-                    // Clean up layer change listeners
-                    for (var i = 0, key; i < layerListeners.length; i++) {
-                        binding = layerListeners[i];
-                        binding[0].unByKey(binding[1]);
-                    }
-                    layerListeners.length = 0;
-
-                    visLayers.getLayers().forEach(function(layer) {
-                          // if layer is visible we have to show legend as well
-                          if (layer.getVisible()) {
-                              $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
-                              // zoom to extent to first visible layer
-                              if(layer.getExtent()){
-                                  map.getView().fit(layer.getExtent(), map.getSize());
+                map.addControl(layerSwitcher);
+                map.addControl(scaleline);
+                layerSwitcher.showPanel();
+                
+                var layerListeners = []
+                
+                if (params.type && params.type == 'auto'){
+                      
+                    // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
+                    visLayers.getLayers().on('propertychange', function(e, layer){
+    
+                        // Clean up layer change listeners
+                        for (var i = 0, key; i < layerListeners.length; i++) {
+                            binding = layerListeners[i];
+                            binding[0].unByKey(binding[1]);
+                        }
+                        layerListeners.length = 0;
+    
+                        visLayers.getLayers().forEach(function(layer) {
+                              // if layer is visible we have to show legend as well
+                              if (layer.getVisible()) {
+                                  $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
+                                  // zoom to extent to first visible layer
+                                  if(layer.getExtent()){
+                                      map.getView().fit(layer.getExtent(), map.getSize());
+                                  }
                               }
-                          }
-
-                          layer.on('change:visible', function(e) {
-                              if (layer.getVisible()){
-                                  var bccvl = layer.get('bccvl');
-                                  // remove existing legend
-                                  $('.olLegend').remove();
-                                  // add new legend to dom tree
-                                  $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
-                              }
-                          }); 
+    
+                              layer.on('change:visible', function(e) {
+                                  if (layer.getVisible()){
+                                      var bccvl = layer.get('bccvl');
+                                      // remove existing legend
+                                      $('.olLegend').remove();
+                                      // add new legend to dom tree
+                                      $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
+                                  }
+                              }); 
+                        });
+    
+                    });
+                
+                  
+                    // load and add layers to map
+                    bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
+                    // add click control for point return
+                    map.on('singleclick', function(evt){
+                        bccvl_common.getPointInfo(evt);
+                    });
+                      
+                    map.on('pointermove', function(evt) {
+                        bccvl_common.hoverHandler(evt);
                     });
 
-                  });
-  
-                  // load and add layers to map
-                  bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
-                  
-                  // add click control for point return
-                  map.on('singleclick', function(evt){
-                      bccvl_common.getPointInfo(evt);
-                  });
-                  
-                  map.on('pointermove', function(evt) {
-                      bccvl_common.hoverHandler(evt);
-                  });
+                } else if (params.type && params.type == 'biodiverse'){
+                    
+                    var sum = 0,
+                        cellClasses = [],
+                        selectedGridCells;
+                        
+                    // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
+                    visLayers.getLayers().on('propertychange', function(e, layer){
+                    
+                        // Clean up layer change listeners
+                        for (var i = 0, key; i < layerListeners.length; i++) {
+                            binding = layerListeners[i];
+                            binding[0].unByKey(binding[1]);
+                        }
+                        layerListeners.length = 0;
+                    
+                        visLayers.getLayers().forEach(function(layer) {
+                    
+                            // if layer is visible we have to show legend as well
+                            if (layer.getVisible()) {
 
+                                $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('legend'));
+
+                                // zoom to extent to first visible layer
+                                if(layer.getSource().getExtent()){
+                                    map.getView().fit(layer.getSource().getExtent(), map.getSize());
+                                }
+                            }
+                    
+                            layer.on('change:visible', function(e) {
+                                
+                                var selected;
+                    
+                                map.getInteractions().forEach(function (interaction) {
+                                    if(interaction instanceof ol.interaction.Select) { 
+                                       selected = interaction.getFeatures(); 
+                                    }
+                                });
+                                
+                                // trigger ol cell unselect
+                                selected.clear();
+                                //bccvl_common.updateSum(0);
+
+                    
+                                // wipe legend selects
+                                d3.selectAll('rect.legend-cell')
+                                    .style({stroke: "#333", "stroke-width": "0px"});
+                    
+                                if (layer.getVisible()){
+                                      var legend = layer.get('legend');
+                                      // remove existing legend
+                                      $('.olLegend').remove();
+                    
+                                      // add new legend to dom tree
+                                      $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
+                                      
+                                }
+                            }); 
+                        });
+                    
+                    });
+                    
+                    //map.addLayer(overlayGroup);
+                    // load and add layers to map
+                    //bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
+                    bccvl_common.addLayersForBiodiverse(map, uuid, url, id, params, visLayers);
+
+                }
+
+                  
                   ready.resolve(map, visLayers);
                   
               });
@@ -1095,9 +1167,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     });
                 }
                 
-                fetch();
-                
-                requestStatus.then(function(){
+                requestStatus.then(
+                  function(){
                     var meta = $.ajax({
                         url: dmurl,
                         type: 'GET',
@@ -1107,7 +1178,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         .then(function(data, status, jqXHR) {
                             jqxhr.resolve(data);
                         });
-                }).fail( function(jqXHR, textStatus, errorThrown) {
+                  }, function(jqXHR, textStatus, errorThrown){
                     alert('Problem preparing dataset for viewing, please try again later.')
                 });
                 
@@ -1230,7 +1301,288 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    }
                    
                });
+               
+               fetch();
+               
                return dfrd;
+           },
+           
+           addLayersForBiodiverse: function(map, uuid, url, id, params, overlayGroup){
+
+                var gridSize = params.cellsize,
+                    dataProj = params.srs.toUpperCase(), 
+                    mapProj = map.getView().getProjection().getCode(),
+                    projection = ol.proj.get(dataProj),
+                    projectionExtent = projection.getExtent(),
+                    size = ol.extent.getWidth(projectionExtent) / 256,
+                    colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013'];
+                    
+                var dfrd = $.Deferred(),
+                    requestStatus = $.Deferred(),
+                    jqxhr = $.Deferred(),
+                    csv = d3.dsv(',', 'text/plain');
+                
+                var fetch = function(){
+                    $.ajax({
+                        url: fetchurl,
+                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
+                    }).done(function(data, status, jqXHR){
+                        if(data.status == "COMPLETED"){
+                            requestStatus.resolve(data.status);
+                        } else if (data.status == "FAILED"){
+                            requestStatus.reject(data.reason);
+                        } else {
+                             setTimeout(function(){
+                                fetch();
+                             }, 500);
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        alert('Problem request dataset, please try again later.')
+                    });
+                }
+                
+                requestStatus.then(
+                  function(){
+                    var meta = $.ajax({
+                        url: dmurl,
+                        type: 'GET',
+                        dataType: 'xml json',
+                        converters: {'xml json': $.xmlrpc.parseDocument},
+                        data: {'uuid': uuid}})
+                        .then(function(data, status, jqXHR) {
+                            jqxhr.resolve(data);
+                        });
+                  }, function(jqXHR, textStatus, errorThrown){
+                    alert('Problem preparing dataset for viewing, please try again later.')
+                });
+                
+                jqxhr.then(
+                    function(){
+                        csv(url).get(function(error, data) {
+                            // Convert to GeoJSON
+                            var geojson = bccvl_common.biodiverseCSVtoJSON(data, dataProj, mapProj); 
+                            
+                            // Create vector grid from GeoJSON
+                            var grid = new ol.source.Vector({
+                                features: (new ol.format.GeoJSON()).readFeatures(geojson.points)
+                            });
+                        
+                            var classesPresent = []
+                            $.each(grid.getFeatures(), function(i, feature){
+                                if ($.inArray(feature.getProperties().species, classesPresent) == -1){
+                                    classesPresent.push(feature.getProperties().species);
+                                }
+                            });
+                            
+                            var hoverFunction = function(e) {
+                                if (e.dragging) return;
+                        
+                                featureOverlay.getSource().clear();
+                                   
+                                var pixel = map.getEventPixel(e.originalEvent);
+                                var hit = map.hasFeatureAtPixel(pixel);
+                                
+                                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+                        
+                                if(hit){
+                                    map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                                        featureOverlay.getSource().addFeature(feature);
+                                    });
+                                } else {
+                                    featureOverlay.getSource().clear();
+                                }
+                        
+                                return;
+                            }
+                            
+                            map.on('pointermove', hoverFunction );
+                            
+                            // Create grid selection style
+                            var gridSelectStyle = function (feature, resolution) {
+                        
+                                // get feature coords and transform back into 4326 (solely for simple grid calc)
+                                var coordinate = feature.getGeometry().getCoordinates();
+                                    coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
+                        
+                                var currentLayer = bccvl_common.getVisibleOverlay(map);
+                        
+                                var property = currentLayer.get('title');
+                                var range = geojson.range[property];
+                        
+                                // subtract half a point to create first point of polygon
+                                var x = coordinate[0] - gridSize / 2,
+                                    y = coordinate[1] - gridSize / 2,
+                                    val = Number(feature.getProperties()[property]);
+                        
+                                var col;
+                                    $.each(range, function(i, v){
+                                        if (v == val){
+                                            col = i+1;
+                                        }
+                                    })
+                                var rgb = d3.rgb(colorBank[col]);
+                        
+                                var geom = new ol.geom.Polygon([[
+                                        [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                                    ]]);
+                        
+                                    geom.transform(dataProj,mapProj);
+                        
+                                return [
+                                    new ol.style.Style({
+                                        stroke: new ol.style.Stroke({
+                                            color: '#333',
+                                            width: 0.25 * map.getView().getZoom()
+                                        }),
+                                        fill: new ol.style.Fill({
+                                            color: [rgb.r, rgb.g, rgb.b, .9]
+                                        }),
+                                        geometry: geom
+                                    })
+                                ];
+                            };
+                        
+                            // Create grid select interaction
+                            var gridSelect = new ol.interaction.Select({
+                                layers: function (layer) {
+                                  return layer.get('type') == 'features';
+                                },
+                                style: gridSelectStyle,
+                                name: 'gridSelect'
+                            });
+                        
+                            // Get selected grid cells collection
+                            selectedGridCells = gridSelect.getFeatures();
+                            
+                            selectedGridCells.on('add', function (feature) {
+                                var currentLayer = bccvl_common.getVisibleOverlay(map);
+                                var property = currentLayer.get('title');
+                                //sum += parseFloat(feature.element.getProperties()[property]);
+                                //bccvl_common.updateSum(sum);
+                        
+                            });
+                        
+                            selectedGridCells.on('remove', function (feature) {
+                                var currentLayer = bccvl_common.getVisibleOverlay(map);
+                                var property = currentLayer.get('title');
+                                //sum -= parseFloat(feature.element.getProperties()[property]);
+                                //bccvl_common.updateSum(sum);
+                            });
+                        
+                            // Add select interaction to map
+                            map.addInteraction(gridSelect);
+                        
+                            // Create grid selection style
+                            var gridHoverStyle = function (feature, resolution) {
+                                // get feature coords and transform back into 4326 (solely for simple grid calc)
+                                var coordinate = feature.getGeometry().getCoordinates();
+                                    coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
+                        
+                                var currentLayer = bccvl_common.getVisibleOverlay(map);
+                        
+                                var property = currentLayer.get('title');
+                                var range = geojson.range[property];
+                                
+                                // subtract half a point to create first point of polygon
+                                var x = coordinate[0] - gridSize / 2,
+                                    y = coordinate[1] - gridSize / 2,
+                                    val = Number(feature.getProperties()[property]);
+                                var col;
+                                    $.each(range, function(i, v){
+                                        if (v == val){
+                                            col = i+1;
+                                        }
+                                    })
+                                var rgb = d3.rgb(colorBank[col]);
+                        
+                                var geom = new ol.geom.Polygon([[
+                                        [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                                    ]]);
+                        
+                                    geom.transform(dataProj,mapProj);
+                        
+                                return [
+                                    new ol.style.Style({
+                                        fill: new ol.style.Fill({
+                                            color: [rgb.r, rgb.g, rgb.b, 1]
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: [0,0,0,.1],
+                                            width: 0.25 * map.getView().getZoom()
+                                        }),
+                                        geometry: geom
+                                    })
+                                ];
+                            };
+                        
+                            var features = new ol.Collection();
+                            var featureOverlay = new ol.layer.Vector({
+                                source: new ol.source.Vector({features: features}),
+                                name: 'Features',
+                                type: 'hover-overlay',
+                                style: gridHoverStyle,
+                                visible: true
+                            });
+                        
+                            map.addLayer(featureOverlay);
+                            
+                            var drawFunction = new ol.interaction.Draw({
+                                type: 'Polygon'
+                            });
+                            
+                            drawFunction.on('drawstart', function (evt) {
+                                // wipe legend selects
+                                d3.selectAll('rect.legend-cell')
+                                    .style({stroke: "#333", "stroke-width": "0px"});
+                        
+                                gridSelect.getFeatures().clear();
+                                
+                            });
+                        
+                            drawFunction.on('drawend', function (evt) {
+                        
+                                var geometry = evt.feature.getGeometry(),
+                                    extent = geometry.getExtent(),
+                                    drawCoords = geometry.getCoordinates()[0];
+                        
+                                map.removeInteraction(drawFunction);
+                        
+                                grid.forEachFeatureIntersectingExtent(extent, function(feature) {
+                                    if (bccvl_common.pointInPolygon(feature.getGeometry().getCoordinates(), drawCoords)) {
+                                        gridSelect.getFeatures().push(feature);
+                                    }
+                                });
+                        
+                                setTimeout(function(){ // Add delay to avoid deselect
+                                    map.on('pointermove', hoverFunction );
+                                    gridSelect.setActive(true);
+                                }, 800);
+                            });
+                        
+                        
+                            // this is not specifically the event we want, but it works
+                            map.on('singleclick', function(evt){
+                                // wipe legend selects
+                                d3.selectAll('rect.legend-cell')
+                                    .style({stroke: "#333", "stroke-width": "0px"});
+                            });
+                            
+                            var layercount = 0;
+                            $.each(geojson.range, function(property, range){
+                                bccvl_common.createBiodiverseLayer(layercount, map, grid, overlayGroup, property, range, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
+                                layercount++;
+                            });
+                            
+                            
+                        });
+                    
+                    }, function(){
+                        console.log('something is wrong fetching csv');
+                });
+                
+                fetch();
+                
+                return dfrd;
            },
 
            createLegendBox: function(id, title){
@@ -1583,8 +1935,365 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    map = null;
                }
                container.html('<object type="application/pdf" data="' + url + '" width="100%" height="810px"></object>');
-           } 
+           },
            
+            updateSum: function(newSum) {
+                sum = newSum;
+                $('.info:visible .sum').text(sum);
+            },
+
+            updateClasses: function (classes) {
+                $('.info:visible .cell-classes').empty();
+            
+                $.each(classes, function(i, cls){
+                    $('.info:visible .cell-classes').append('<li><a href="javascript:void(0);" title="Select all cells of this class." data-cell-class="'+cls+'" class="cell-class-link">'+cls+'</a></li>');
+                });
+            },
+
+            getVisibleOverlay: function (map, type){
+                var layer;
+                map.getLayers().forEach(function(lgr){
+                    if(lgr instanceof ol.layer.Group){
+                        lgr.getLayers().forEach(function(lyr){
+                            if (typeof type !== "undefined"){
+                                if (lyr.getVisible() && lyr.get('type') == type){
+                                    layer = lyr;
+                                }
+                            } else {
+                                if (lyr.getVisible()){
+                                    layer = lyr;
+                                }
+                            }
+                            
+                        })
+                    }
+                });
+                return layer;
+            },
+
+            // From https://github.com/substack/point-in-polygon, MIT licence
+            // Ray-casting algorithm based on
+            // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+            pointInPolygon: function (point, vs) {
+                var x = point[0], y = point[1];
+            
+                var inside = false;
+                for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+                    var xi = vs[i][0], yi = vs[i][1];
+                    var xj = vs[j][0], yj = vs[j][1];
+            
+                    var intersect = ((yi > y) != (yj > y))
+                        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                    if (intersect) inside = !inside;
+                }
+            
+                return inside;
+            },
+
+            // Convert data to GeoJSON
+            biodiverseCSVtoJSON: function (data, dataProj, mapProj) {
+            
+                var features = {}
+            
+                features.points = {
+                    type: 'FeatureCollection',
+                    features: []
+                };
+            
+                features.range = {
+                    'richness':[0],
+                    'redundancy':[0],
+                    'rarity':[0],
+                    'endemism':[0]
+                };
+            
+                data.forEach(function(d){
+            
+                    var prop = {};
+                    $.each(d, function(k, v){
+                        prop[k.toLowerCase()] = v;
+                    });
+
+                    var id = prop.element,
+                        x = parseFloat(prop.axis_0), 
+                        y = parseFloat(prop.axis_1);
+                        point = ol.proj.transform([x, y], dataProj, mapProj);
+                        richness = parseFloat(prop.rarew_richness);
+                        redundancy = parseFloat(prop.redundancy_all);
+                        rarity = parseFloat(prop.rarew_cwe);
+                        endemism = parseFloat(prop.endw_cwe);
+            
+                    if ($.inArray(richness, features.range.richness) <= -1){
+                        features.range.richness.push(richness);
+                    }
+                    if ($.inArray(redundancy, features.range.redundancy) <= -1){
+                        features.range.redundancy.push(redundancy);
+                    }
+            
+                    if ($.inArray(rarity, features.range.rarity) <= -1){
+                        features.range.rarity.push(rarity);
+                    }
+            
+                    if ($.inArray(endemism, features.range.endemism) <= -1){
+                        features.range.endemism.push(endemism);
+                    }
+            
+                    $.each(features.range, function(attr, range){
+                        range.sort(function(a, b){return a-b});
+                    });
+            
+                    features.points.features.push({
+                        type: 'Feature',
+                        properties: {
+                            'richness': richness,
+                            'redundancy': redundancy,
+                            'rarity': rarity,
+                            'endemism': endemism,
+                            'species': prop.species,
+                        },
+                        id: id,
+                        geometry: {
+                            type: 'Point',
+                            coordinates: point
+                        }
+                    });
+            
+                });
+            
+                return features;
+            },
+            
+            createBiodiverseLayer: function (i, map, grid, overlayGroup, property, range, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
+
+                // Create grid style function
+                var gridStyle = function (feature) {
+        
+                    // get feature coords and transform back into 4326 (solely for simple grid calc)
+                    var coordinate = feature.getGeometry().getCoordinates();
+                        coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
+                
+                    // subtract half a point to create first point of polygon
+                    var x = coordinate[0] - gridSize / 2,
+                        y = coordinate[1] - gridSize / 2,
+                        val = Number(feature.getProperties()[property]);
+        
+                    var col;
+                    $.each(range, function(i, v){
+                        if (v == val){
+                            col = i+1;
+                        }
+                    })
+                    var rgb = d3.rgb(colorBank[col]);
+                    
+                    var geom = new ol.geom.Polygon([[
+                            [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                        ]]);
+        
+                        geom.transform(dataProj,mapProj);
+        
+                    return [
+                        new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: [rgb.r, rgb.g, rgb.b, 0.8]
+                            }),
+                            geometry: geom
+                        })
+                    ];
+                };
+                
+                var colorArr = [];
+                $.each(range, function(i){
+                    colorArr.push(colorBank[i]);
+                });
+        
+                var colorScale = d3.scale.threshold()
+                    .domain(range)
+                    .range(colorArr);
+
+                var legend = bccvl_common.biodiverseLegend(grid, property, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction);
+        
+                // Create layer from vector grid and style function
+                // only make first layer visible
+                var gridLayer = new ol.layer.Vector({
+                    source: grid,
+                    name: property,
+                    title: property,
+                    type: 'features',
+                    legend: legend,
+                    selectedCells: [],
+                    visible: (i == 0),
+                    style: gridStyle
+                });
+        
+                // Add grid layer to map
+                overlayGroup.getLayers().push(gridLayer);
+        
+            },
+            
+            biodiverseLegend: function (grid, property, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction) {
+
+                function legendSelectCells (d) {
+                    var selected;
+                    
+                    map.getInteractions().forEach(function (interaction) {
+                        if(interaction instanceof ol.interaction.Select) { 
+                           selected = interaction.getFeatures(); 
+                        }
+                    });
+                    
+                    // trigger ol cell unselect
+                    selected.clear();
+        
+                    // wipe legend selects
+                    d3.selectAll('rect.legend-cell')
+                        .style({stroke: "#333", "stroke-width": "0px"});
+        
+                    // display legend cell select
+                    d3.select(this)
+                        .style({stroke: "#333", "stroke-width": "2px"});
+        
+                    // find and select all matching cells in map
+                    $.each(grid.getFeatures(), function(i, feature){
+                        if(parseFloat(feature.getProperties()[property]) == d[1]){
+                            selected.push(feature);
+                        }
+                    })
+        
+                }
+        
+                var legend = document.createElement('div');
+                    legend.className = 'info olLegend ol-unselectable ol-control shown';
+                var drawControl = document.createElement('a');
+                    drawControl.setAttribute('href', 'javascript:void()');
+                    drawControl.className = 'draw-selection';
+                    drawControl.innerHTML = 'Draw a Selection';
+                    legend.appendChild(drawControl);
+                var sumSpan = document.createElement('p');
+                    sumSpan.innerHTML = 'Sum of selection: <strong><span class="sum">0</span></strong>';
+                    legend.appendChild(sumSpan);
+                var speciesList = document.createElement('ul');
+                    speciesList.className = 'cell-classes';
+                    legend.appendChild(speciesList);
+        
+                var width = 220,
+                    height = 30,
+                    max = colorScale.domain()[colorScale.domain().length-1],
+                    intSize = ((width-8) / colorScale.domain().length-1 ),
+                    intArr = [];
+        
+                $.each(colorScale.domain(), function(i, v){
+                    intArr.push(i*intSize)
+                });
+        
+                //console.log(intArr);
+                //console.log(max);
+                //console.log('---')
+        
+                var threshold = d3.scale.threshold()
+                    .domain(colorScale.domain())
+                    .range(colorBank);
+        
+                var svg = d3.select(legend).append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("style", 'padding-top:20px');
+        
+                var g = svg.append("g")
+                    .attr("class", "key")
+                    .attr("transform", "translate(8,0)");
+        
+                g.selectAll('rect')
+                    .data(colorScale.range().map(function(color) {
+                        var d = colorScale.invertExtent(color);
+                        if (d[0] == null) d[0] = 0;
+                        if (d[1] == null) d[1] = x.domain()[1];
+                        return d;
+                    }))
+                    .enter().append('rect')
+                    .on("click", legendSelectCells)
+                    .attr('height', 15)
+                    .attr("style", 'cursor:pointer')
+                    .attr("class", "legend-cell")
+                    .attr("x", function(d, i) { 
+                        return (i * intSize); 
+                    })
+                    .attr('width', function(d) { 
+                        return (intSize); 
+                    })
+                    .style('fill', function(d) { 
+                        return threshold(d[1]);
+                    });
+        
+                var x = d3.scale.linear()
+                    .domain(colorScale.domain())
+                    .range(intArr);
+        
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient('bottom')
+                    .tickSize(15)
+                    .tickValues(threshold.domain())
+                    .tickFormat(d3.format(".4f"));
+        
+                g.call(xAxis).append("text")
+                    .attr("class", "caption")
+                    .attr("y", -6)
+                    .text("Value of cell point");
+        
+                d3.select(drawControl).on('click', function(){
+                    d3.event.preventDefault();
+
+                    map.getInteractions().forEach(function (interaction) {
+                        if(interaction instanceof ol.interaction.Select) { 
+                            interaction.getFeatures().clear();
+                            interaction.setActive(false); 
+                        }
+                    });
+
+                    // disable hover function whilst drawing
+                    // note that 'drawStart' occurs after first click
+                    // so this must be disabled immediately prior
+                    map.un('pointermove', hoverFunction);
+                    map.addInteraction(drawFunction);
+                });
+        
+                $.each(classesPresent, function(i, cls){
+                    var classItem = document.createElement('li');
+                    var classLink = document.createElement('a');
+                    classLink.setAttribute('href', "javascript:void(0);");
+                    classLink.setAttribute('title', "Select all cells of this class.");
+                    classLink.setAttribute('data-cell-class', cls);
+                    classLink.innerHTML = cls;
+                    classLink.className = "cell-class-link";
+        
+                    classLink.addEventListener("click", function(event){
+                        event.preventDefault();
+        
+                        var el = $(this);
+                        
+                        // trigger ol cell unselect
+                        selectedGridCells.clear();
+        
+                        // wipe legend selects
+                        d3.selectAll('rect.legend-cell')
+                            .style({stroke: "#333", "stroke-width": "0px"});
+        
+                        // find and select all matching cells in map
+                        $.each( grid.getFeatures(), function(i, feature){
+                            
+                            if(feature.getProperties().species === el.data('cell-class')){
+                                selectedGridCells.push(feature);
+                            }
+                        });
+                    });
+        
+                    classItem.appendChild(classLink);
+                    speciesList.appendChild(classItem);
+                });
+                return legend;
+            }
+
+     
        };
        return bccvl_common;
    }

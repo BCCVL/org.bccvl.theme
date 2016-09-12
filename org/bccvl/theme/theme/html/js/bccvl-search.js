@@ -232,9 +232,8 @@ define(
                     return list;
                 },
                 // --------------------------------------------------------------
-                getData: function(nextIndex, selectedItem) {
+                getData: function(nextIndex, selectedItem, pageSize) {
                     // Get species data from GBIF 
-                    var pageSize = 10;
                     var searchUrl = providers.gbif.search.searchUrl(selectedItem, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
                     
@@ -245,8 +244,7 @@ define(
                     });
                 },                        
                 // --------------------------------------------------------------
-                getGenusSpecies: function(genusKey, nextIndex) {
-                    var pageSize = 10;
+                getGenusSpecies: function(genusKey, nextIndex, pageSize) {
                     var surl = providers.gbif.search.searchSpeciesUrl(genusKey, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
                     
@@ -375,13 +373,13 @@ define(
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
                     var filter = 'rank:species+OR+rank:subspecies';
                     if (rankSupplied == 'genus') {
-                        filter = 'genus:' + searchString + '&fq=(rank:species+OR+rank:genus)&fq=occurrenceCount:[1+TO+*]';
+                        filter = '(rank:species+OR+rank:genus)';
                     }
                     return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&fq=occurrenceCount:[1+TO+*]&q=&pageSize=' + pageSize);
+                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
@@ -469,9 +467,8 @@ define(
                     return list;
                 },
                 // --------------------------------------------------------------
-                getData: function(nextIndex, selectedItem) {
+                getData: function(nextIndex, selectedItem, pageSize) {
                     // Get species data from ALA. 
-                    var pageSize = 10;
                     var searchUrl = providers.ala.search.searchUrl(selectedItem, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
                     
@@ -611,7 +608,7 @@ define(
                     });
                     return list;
                 },
-                getData: function(nextIndex, selectedItem) {
+                getData: function(nextIndex, selectedItem, pageSize) {
                     return aekos.speciesSummary(selectedItem);
                 }
             }
@@ -1082,12 +1079,11 @@ define(
                     // Send a query to ALA to get data; limit to 10 records.
                     // ALA does not send occCount if the number of records is too big i.e. 1370 for Acacia genus.
                     loading = true;
-                    var pageSize = 10;
+                    var pageSize = 20;
                     var provider = providers[dataSrc];
-                    var searchUrl = provider.search.searchUrl(selectedItem, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
-                    var results = (genusKey >= 0) ? provider.search.getGenusSpecies(genusKey, nextIndex)
-                        : provider.search.getData(nextIndex, selectedItem);
+                    var results = (genusKey >= 0) ? provider.search.getGenusSpecies(genusKey, nextIndex, pageSize)
+                        : provider.search.getData(nextIndex, selectedItem, pageSize);
                     results.done(function(data) {
                         // Display these records & update the nextIndex
                         var res = displayData(data, provider, dataSrc, $inputField.val(), $resultsField);

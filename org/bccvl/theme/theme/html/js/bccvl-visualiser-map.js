@@ -26,20 +26,37 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
             event.preventDefault();
-            var type = $(this).data('mimetype');
+            var params = {
+                'type': 'auto',
+                'mimetype': $(this).data('mimetype')
+            }
 
-            if (type == 'image/geotiff'){
-                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));
-            } else if (type == 'image/png'){
+            if (params.type == 'image/geotiff'){
+                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));
+            } else if (params.type == 'image/png'){
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (type == 'text/csv'){
+            } else if (params.type == 'text/csv'){
                 vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
+            } else if (params.type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
                 vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (type == 'application/pdf') {
+            } else if (params.type == 'application/pdf') {
                 vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (type == 'application/zip') {
-                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'));                
+            } else if (params.type == 'application/zip') {
+                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));                
+            }
+        });
+        
+        $('body').on('click', 'a.bccvl-biodiverse-viz', function(event){
+            event.preventDefault();
+            var params = {
+                'type': 'biodiverse',
+                'mimetype' : $(this).data('mimetype'),
+                'srs' : $(this).data('srs'), 
+                'cellsize' : $(this).data('cellsize')
+            }
+            
+            if ($(this).data('mimetype') == 'text/csv'){
+                vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer') );
             }
         });
 
