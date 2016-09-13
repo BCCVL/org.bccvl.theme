@@ -10,7 +10,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 whitelistUrls: [ '\.bccvl\.org\.au/']
             }).install()
             
-            /*$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+            $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
                 Raven.captureException(new Error(thrownError || jqXHR.statusText), {
                     extra: {
                         type: ajaxSettings.type,
@@ -21,7 +21,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         response: jqXHR.responseText.substring(0, 100)
                     }
                 });
-            });*/
+            });
         });
 
        // define some projections we need
