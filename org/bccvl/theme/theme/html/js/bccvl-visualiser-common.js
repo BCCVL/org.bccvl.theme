@@ -6,7 +6,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
     function( $, layout, ol, proj4, layerswitcher, progress_bar, d3) {
 
         require(['raven'], function(Raven) {
-            Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
+            /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
                 whitelistUrls: [ '\.bccvl\.org\.au/']
             }).install()
             
@@ -21,7 +21,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         response: jqXHR.responseText.substring(0, 100)
                     }
                 });
-            });
+            });*/
         });
 
        // define some projections we need
@@ -1407,20 +1407,21 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                                 var currentLayer = bccvl_common.getVisibleOverlay(map);
                         
                                 var property = currentLayer.get('title');
-                                var range = geojson.range[property];
+                                var range = geojson.vars[property].range;
                         
                                 // subtract half a point to create first point of polygon
                                 var x = coordinate[0] - gridSize / 2,
                                     y = coordinate[1] - gridSize / 2,
                                     val = Number(feature.getProperties()[property]);
-                        
-                                var col;
-                                    $.each(range, function(i, v){
-                                        if (v == val){
-                                            col = i+1;
-                                        }
-                                    })
-                                var rgb = d3.rgb(colorBank[col]);
+
+                                var colorIdx;
+                                $.each(range, function(i, x){
+                                    if (val >= x){
+                                        colorIdx = i;
+                                    }
+                                });
+                                
+                                var rgb = d3.rgb(colorBank[colorIdx]);
                         
                                 var geom = new ol.geom.Polygon([[
                                         [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
@@ -1479,21 +1480,23 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                                     coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
                         
                                 var currentLayer = bccvl_common.getVisibleOverlay(map);
-                        
+
                                 var property = currentLayer.get('title');
-                                var range = geojson.range[property];
+                                var range = geojson.vars[property].range;
                                 
                                 // subtract half a point to create first point of polygon
                                 var x = coordinate[0] - gridSize / 2,
                                     y = coordinate[1] - gridSize / 2,
                                     val = Number(feature.getProperties()[property]);
-                                var col;
-                                    $.each(range, function(i, v){
-                                        if (v == val){
-                                            col = i+1;
-                                        }
-                                    })
-                                var rgb = d3.rgb(colorBank[col]);
+
+                                var colorIdx;
+                                $.each(range, function(i, x){
+                                    if (val >= x){
+                                        colorIdx = i;
+                                    }
+                                });
+                                
+                                var rgb = d3.rgb(colorBank[colorIdx]);
                         
                                 var geom = new ol.geom.Polygon([[
                                         [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
@@ -1507,7 +1510,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                                             color: [rgb.r, rgb.g, rgb.b, 1]
                                         }),
                                         stroke: new ol.style.Stroke({
-                                            color: [0,0,0,.1],
+                                            color: [0,0,0,.2],
                                             width: 0.25 * map.getView().getZoom()
                                         }),
                                         geometry: geom
@@ -1568,8 +1571,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                             });
                             
                             var layercount = 0;
-                            $.each(geojson.range, function(property, range){
-                                bccvl_common.createBiodiverseLayer(layercount, map, grid, overlayGroup, property, range, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
+                            console.log(geojson);
+                            $.each(geojson.vars, function(key, variable){
+                                bccvl_common.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
                                 layercount++;
                             });
                             
@@ -2000,11 +2004,31 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     features: []
                 };
             
-                features.range = {
-                    'richness':[0],
-                    'redundancy':[0],
-                    'rarity':[0],
-                    'endemism':[0]
+                features.vars = {
+                    'richness': {
+                        values: [],
+                        range: [],
+                        num: [],
+                        total: 0
+                    },
+                    'redundancy':{
+                        values: [],
+                        range: [],
+                        num: [],
+                        total: 0
+                    },
+                    'rarity':{
+                        values: [],
+                        range: [],
+                        num: [],
+                        total: 0
+                    },
+                    'endemism':{
+                        values: [],
+                        range: [],
+                        num: [],
+                        total: 0
+                    }
                 };
             
                 data.forEach(function(d){
@@ -2016,31 +2040,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
 
                     var id = prop.element,
                         x = parseFloat(prop.axis_0), 
-                        y = parseFloat(prop.axis_1);
-                        point = ol.proj.transform([x, y], dataProj, mapProj);
-                        richness = parseFloat(prop.rarew_richness);
-                        redundancy = parseFloat(prop.redundancy_all);
-                        rarity = parseFloat(prop.rarew_cwe);
+                        y = parseFloat(prop.axis_1),
+                        point = ol.proj.transform([x, y], dataProj, mapProj),
+                        richness = parseFloat(prop.rarew_richness),
+                        redundancy = parseFloat(prop.redundancy_all),
+                        rarity = parseFloat(prop.rarew_cwe),
                         endemism = parseFloat(prop.endw_cwe);
             
-                    if ($.inArray(richness, features.range.richness) <= -1){
-                        features.range.richness.push(richness);
-                    }
-                    if ($.inArray(redundancy, features.range.redundancy) <= -1){
-                        features.range.redundancy.push(redundancy);
-                    }
-            
-                    if ($.inArray(rarity, features.range.rarity) <= -1){
-                        features.range.rarity.push(rarity);
-                    }
-            
-                    if ($.inArray(endemism, features.range.endemism) <= -1){
-                        features.range.endemism.push(endemism);
-                    }
-            
-                    $.each(features.range, function(attr, range){
-                        range.sort(function(a, b){return a-b});
-                    });
+                    features.vars.richness.values.push(richness);
+                    features.vars.redundancy.values.push(redundancy);
+                    features.vars.rarity.values.push(rarity);
+                    features.vars.endemism.values.push(endemism);
             
                     features.points.features.push({
                         type: 'Feature',
@@ -2059,12 +2069,56 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     });
             
                 });
-            
+                
+                $.each(features.vars, function(key, obj){
+                    features.vars[key].total = obj.values.length;
+                    // reduce range to discrete values
+                    
+                    var counts = {};
+                    for (var i = 0; i < obj.values.length; i++) {
+                        counts[obj.values[i]] = 1 + (counts[obj.values[i]] || 0);
+                    }
+                    
+                    //console.log(counts);
+
+                    if (Object.keys(counts).length == 1){
+                        var max = Math.max(...obj.values);
+                        var min = 0;
+                        features.vars[key].range = [min, max];
+                        // set up adjacent range count
+                        features.vars[key].num = [0, obj.values.length];
+                    } else {
+                        var max = Math.max(...obj.values);
+                        var min = Math.min(...obj.values);
+                        //features.vars[key].range = [];
+                        for (i = 0; i <= 10; i++) { 
+                            features.vars[key].range.push( ( ((max-min)/10)*i)+min );
+                            // set up adjacent range count arr for counting
+                            features.vars[key].num.push(0);
+                        }
+                        // count and store number of records within each discrete collection
+                        $.each(features.vars[key].range, function(i, rangeVal){
+                            $.each(obj.values, function(idx, val){
+                                if (i == 0){
+                                    if (val <= rangeVal)
+                                        features.vars[key].num[i]++; 
+                                } else {
+                                    if (val <= rangeVal && val > features.vars[key].range[i-1]) {
+                                       features.vars[key].num[i]++; 
+                                    }
+                                }
+                            });
+                        });
+                    }  
+                    
+                    
+                    
+                });
                 return features;
             },
             
-            createBiodiverseLayer: function (i, map, grid, overlayGroup, property, range, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
-
+            createBiodiverseLayer: function (i, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
+                //console.log(variable);
                 // Create grid style function
                 var gridStyle = function (feature) {
         
@@ -2075,16 +2129,18 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     // subtract half a point to create first point of polygon
                     var x = coordinate[0] - gridSize / 2,
                         y = coordinate[1] - gridSize / 2,
-                        val = Number(feature.getProperties()[property]);
-        
-                    var col;
-                    $.each(range, function(i, v){
-                        if (v == val){
-                            col = i+1;
-                        }
-                    })
-                    var rgb = d3.rgb(colorBank[col]);
+                        val = Number(feature.getProperties()[key]);
+                        
+                    //console.log('feature range: '+variable.range);
                     
+                    var colorIdx;
+                    $.each(variable.range, function(i, x){
+                        if (val >= x){
+                            colorIdx = i;
+                        }
+                    });
+                    
+                    var rgb = d3.rgb(colorBank[colorIdx]);
                     var geom = new ol.geom.Polygon([[
                             [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
                         ]]);
@@ -2100,24 +2156,25 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         })
                     ];
                 };
-                
-                var colorArr = [];
-                $.each(range, function(i){
-                    colorArr.push(colorBank[i]);
-                });
+
+                //var colorArr = [];
+                //$.each(variable.range, function(i){
+                //    colorArr.push(colorBank[i]);
+                //});
+                //colorArr;
         
                 var colorScale = d3.scale.threshold()
-                    .domain(range)
-                    .range(colorArr);
+                    .domain(variable.range)
+                    .range(colorBank);
 
-                var legend = bccvl_common.biodiverseLegend(grid, property, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction);
+                var legend = bccvl_common.biodiverseLegend(grid, key, variable, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction);
         
                 // Create layer from vector grid and style function
                 // only make first layer visible
                 var gridLayer = new ol.layer.Vector({
                     source: grid,
-                    name: property,
-                    title: property,
+                    name: key,
+                    title: key,
                     type: 'features',
                     legend: legend,
                     selectedCells: [],
@@ -2130,7 +2187,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
         
             },
             
-            biodiverseLegend: function (grid, property, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction) {
+            biodiverseLegend: function (grid, key, variable, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction) {
 
                 function legendSelectCells (d) {
                     var selected;
@@ -2154,7 +2211,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
         
                     // find and select all matching cells in map
                     $.each(grid.getFeatures(), function(i, feature){
-                        if(parseFloat(feature.getProperties()[property]) == d[1]){
+                        // this is value matching and doesnt make sense, need to eval differently
+                        if(parseFloat(feature.getProperties()[key]) > d[0] && parseFloat(feature.getProperties()[key]) <= d[1]){
                             selected.push(feature);
                         }
                     })
@@ -2162,36 +2220,43 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 }
         
                 var legend = document.createElement('div');
-                    legend.className = 'info olLegend ol-unselectable ol-control shown';
+                    legend.className = 'd3legend olLegend ol-unselectable ol-control shown';
                 var drawControl = document.createElement('a');
                     drawControl.setAttribute('href', 'javascript:void()');
                     drawControl.className = 'draw-selection';
                     drawControl.innerHTML = 'Draw a Selection';
                     legend.appendChild(drawControl);
-                var sumSpan = document.createElement('p');
+                /*var sumSpan = document.createElement('p');
                     sumSpan.innerHTML = 'Sum of selection: <strong><span class="sum">0</span></strong>';
-                    legend.appendChild(sumSpan);
+                    legend.appendChild(sumSpan);*/
                 var speciesList = document.createElement('ul');
                     speciesList.className = 'cell-classes';
                     legend.appendChild(speciesList);
-        
-                var width = 220,
-                    height = 30,
-                    max = colorScale.domain()[colorScale.domain().length-1],
-                    intSize = ((width-8) / colorScale.domain().length-1 ),
-                    intArr = [];
+                    
+                var width = 500,
+                    height = 50,
+                    max = Math.max(...colorScale.domain()),
+                    propWidths = [],
+                    propOffsets = [];
         
                 $.each(colorScale.domain(), function(i, v){
-                    intArr.push(i*intSize)
+                    var barWidth = (width/100)*((variable.num[i]/variable.total)*100);
+                    propWidths.push(barWidth);
                 });
-        
-                //console.log(intArr);
-                //console.log(max);
-                //console.log('---')
-        
+                
+               
+                $.each(propWidths, function(i,v){
+                    if (i != 0) {
+                        var offset = propOffsets[i-1] + propWidths[i-1];
+                        propOffsets.push(offset);
+                    } else {
+                        propOffsets.push(0);
+                    }
+                });
+
                 var threshold = d3.scale.threshold()
                     .domain(colorScale.domain())
-                    .range(colorBank);
+                    .range(colorScale.range());
         
                 var svg = d3.select(legend).append("svg")
                     .attr("width", width)
@@ -2200,8 +2265,29 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
         
                 var g = svg.append("g")
                     .attr("class", "key")
-                    .attr("transform", "translate(8,0)");
+                    .attr("width", (width-40))
+                    .attr("transform", "translate(10,0)");
+                    
+                var x = d3.scale.threshold()
+                    .domain(colorScale.domain())
+                    .range(propOffsets);
         
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient('bottom')
+                    .tickSize(15)
+                    .tickFormat(d3.format(".4f"));
+        
+                g.call(xAxis).selectAll("text")
+                    .style("text-anchor", "start")
+                    .style("font-size", "10")
+                    .attr('transform', 'rotate(45 5 30)');
+                
+                g.append("text")
+                    .attr("class", "caption")
+                    .attr("y", -6)
+                    .text("Value of cell point");
+                
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {
                         var d = colorScale.invertExtent(color);
@@ -2215,30 +2301,14 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr("style", 'cursor:pointer')
                     .attr("class", "legend-cell")
                     .attr("x", function(d, i) { 
-                        return (i * intSize); 
+                        return propOffsets[i];
                     })
-                    .attr('width', function(d) { 
-                        return (intSize); 
+                    .attr('width', function(d, i) { 
+                        return (propWidths[i]); 
                     })
                     .style('fill', function(d) { 
-                        return threshold(d[1]);
+                        return threshold(d[0]);
                     });
-        
-                var x = d3.scale.linear()
-                    .domain(colorScale.domain())
-                    .range(intArr);
-        
-                var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient('bottom')
-                    .tickSize(15)
-                    .tickValues(threshold.domain())
-                    .tickFormat(d3.format(".4f"));
-        
-                g.call(xAxis).append("text")
-                    .attr("class", "caption")
-                    .attr("y", -6)
-                    .text("Value of cell point");
         
                 d3.select(drawControl).on('click', function(){
                     d3.event.preventDefault();
