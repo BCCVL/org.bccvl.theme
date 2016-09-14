@@ -2086,7 +2086,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         var min = 0;
                         features.vars[key].range = [min, max];
                         // set up adjacent range count
-                        features.vars[key].num = [0, obj.values.length];
+                        features.vars[key].num = [obj.values.length];
                     } else {
                         var max = Math.max(...obj.values);
                         var min = Math.min(...obj.values);
@@ -2233,21 +2233,25 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     speciesList.className = 'cell-classes';
                     legend.appendChild(speciesList);
                     
-                var width = 500,
-                    height = 50,
+                var width = 160,
+                    height = 300,
                     max = Math.max(...colorScale.domain()),
-                    propWidths = [],
+                    propHeights = [],
                     propOffsets = [];
         
                 $.each(colorScale.domain(), function(i, v){
-                    var barWidth = (width/100)*((variable.num[i]/variable.total)*100);
-                    propWidths.push(barWidth);
+                    if (typeof variable.num[i] !== "undefined"){
+                        var barHeight = (height/100)*((variable.num[i]/variable.total)*100);
+                        propHeights.push(barHeight);
+                    } else {
+                        propHeights.push(0);
+                    }
                 });
                 
                
-                $.each(propWidths, function(i,v){
+                $.each(propHeights, function(i,v){
                     if (i != 0) {
-                        var offset = propOffsets[i-1] + propWidths[i-1];
+                        var offset = propOffsets[i-1] + propHeights[i-1];
                         propOffsets.push(offset);
                     } else {
                         propOffsets.push(0);
@@ -2260,51 +2264,50 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
         
                 var svg = d3.select(legend).append("svg")
                     .attr("width", width)
-                    .attr("height", height)
-                    .attr("style", 'padding-top:20px');
+                    .attr("height", height);
+                //    .attr("style", 'padding-top:20px');
         
                 var g = svg.append("g")
                     .attr("class", "key")
                     .attr("width", (width-40))
-                    .attr("transform", "translate(10,0)");
+                    .attr("transform", "translate(0,0)");
                     
-                var x = d3.scale.threshold()
+                var y = d3.scale.threshold()
                     .domain(colorScale.domain())
                     .range(propOffsets);
         
-                var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient('bottom')
-                    .tickSize(15)
-                    .tickFormat(d3.format(".4f"));
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient('right')
+                    .tickFormat(d3.format(".8f"));
         
-                g.call(xAxis).selectAll("text")
-                    .style("text-anchor", "start")
+                g.call(yAxis).selectAll("text")
+                //    .style("alignment-baseline", "middle")
                     .style("font-size", "10")
-                    .attr('transform', 'rotate(45 5 30)');
+                    .attr('transform', 'translate(10,7)');
                 
-                g.append("text")
+                /*g.append("text")
                     .attr("class", "caption")
                     .attr("y", -6)
-                    .text("Value of cell point");
+                    .text("Value of cell point");*/
                 
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {
                         var d = colorScale.invertExtent(color);
                         if (d[0] == null) d[0] = 0;
-                        if (d[1] == null) d[1] = x.domain()[1];
+                        if (d[1] == null) d[1] = y.domain()[1];
                         return d;
                     }))
                     .enter().append('rect')
                     .on("click", legendSelectCells)
-                    .attr('height', 15)
+                    .attr('width', 15)
                     .attr("style", 'cursor:pointer')
                     .attr("class", "legend-cell")
-                    .attr("x", function(d, i) { 
+                    .attr("y", function(d, i) { 
                         return propOffsets[i];
                     })
-                    .attr('width', function(d, i) { 
-                        return (propWidths[i]); 
+                    .attr('height', function(d, i) { 
+                        return propHeights[i]; 
                     })
                     .style('fill', function(d) { 
                         return threshold(d[0]);
