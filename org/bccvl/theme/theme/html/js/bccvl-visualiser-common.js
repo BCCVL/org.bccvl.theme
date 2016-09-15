@@ -2270,16 +2270,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         propOffsets.push(0);
                     }
                 });
-                
-                console.log(colorScale.domain());
-                console.log(propHeights);
-                console.log(propOffsets);
-                console.log(ticks);
-                
-                
-                //var newDomain = colorScale.domain();
-                //    newDomain.shift();
-                //console.log(newDomain);
+
+                console.log(colorScale.range());
             
                 var threshold = d3.scale.threshold()
                     .domain(colorScale.domain())
@@ -2317,6 +2309,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr("class", "caption")
                     .attr("y", -6)
                     .text("Value of cell point");*/
+                    
+                console.log('legend ---');
                 
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {
@@ -2336,8 +2330,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr('height', function(d, i) { 
                         return propHeights[i]; 
                     })
-                    .style('fill', function(d) { 
-                        return threshold(d[0]);
+                    .style('fill', function(d, i) { 
+                        return threshold.range()[i];
                     });
         
                 d3.select(drawControl).on('click', function(){
