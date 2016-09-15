@@ -24,6 +24,6 @@
         </replace>
 
         <!-- Import Form -->
-        <after css:theme-children="div.bccvl-datasetimportform" css:content="div#searchOccurrence" />
+        <after css:theme-children="div.bccvl-datasetimportform" css:content="div#searchForms" />
     </rules>
 </rules>
