@@ -1308,6 +1308,15 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
            },
            
            addLayersForBiodiverse: function(map, uuid, url, id, params, overlayGroup){
+                
+                // add special selection to d3
+                d3.selection.prototype.first = function() {
+                  return d3.select(this[0][0]);
+                };
+                d3.selection.prototype.last = function() {
+                  var last = this.size() - 1;
+                  return d3.select(this[0][last]);
+                };
 
                 var gridSize = params.cellsize,
                     dataProj = params.srs.toUpperCase(), 
@@ -2086,10 +2095,11 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         var min = 0;
                         features.vars[key].range = [min, max];
                         // set up adjacent range count
-                        features.vars[key].num = [obj.values.length];
+                        features.vars[key].num = [0, obj.values.length];
                     } else {
                         var max = Math.max(...obj.values);
-                        var min = Math.min(...obj.values);
+                        //var min = Math.min(...obj.values);
+                        var min = 0;
                         //features.vars[key].range = [];
                         for (i = 0; i <= 10; i++) { 
                             features.vars[key].range.push( ( ((max-min)/10)*i)+min );
@@ -2162,7 +2172,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 //    colorArr.push(colorBank[i]);
                 //});
                 //colorArr;
-        
+                
                 var colorScale = d3.scale.threshold()
                     .domain(variable.range)
                     .range(colorBank);
@@ -2208,7 +2218,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     // display legend cell select
                     d3.select(this)
                         .style({stroke: "#333", "stroke-width": "2px"});
-        
+                    console.log(d);
                     // find and select all matching cells in map
                     $.each(grid.getFeatures(), function(i, feature){
                         // this is value matching and doesnt make sense, need to eval differently
@@ -2235,19 +2245,22 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     
                 var width = 160,
                     height = 300,
+                    minHeight = 10,
                     max = Math.max(...colorScale.domain()),
                     propHeights = [],
-                    propOffsets = [];
+                    propOffsets = [],
+                    ticks = [];
         
                 $.each(colorScale.domain(), function(i, v){
-                    if (typeof variable.num[i] !== "undefined"){
-                        var barHeight = (height/100)*((variable.num[i]/variable.total)*100);
-                        propHeights.push(barHeight);
+                    var barHeight = minHeight+( (height-(10*colorScale.domain().length))/100)*((variable.num[i]/variable.total)*100);
+                    propHeights.push(barHeight);
+                    
+                    if (typeof colorScale.domain()[i+1] !== "undefined") {
+                        ticks.push(colorScale.domain()[i].toFixed(6)+' - '+colorScale.domain()[i+1].toFixed(6));
                     } else {
-                        propHeights.push(0);
+                        ticks.push(''+colorScale.domain()[i].toFixed(6)+'');
                     }
                 });
-                
                
                 $.each(propHeights, function(i,v){
                     if (i != 0) {
@@ -2258,6 +2271,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     }
                 });
 
+                console.log(colorScale.range());
+            
                 var threshold = d3.scale.threshold()
                     .domain(colorScale.domain())
                     .range(colorScale.range());
@@ -2272,24 +2287,30 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr("width", (width-40))
                     .attr("transform", "translate(0,0)");
                     
-                var y = d3.scale.threshold()
-                    .domain(colorScale.domain())
+                var y = d3.scale.ordinal()
+                    .domain(ticks)
                     .range(propOffsets);
         
                 var yAxis = d3.svg.axis()
                     .scale(y)
-                    .orient('right')
-                    .tickFormat(d3.format(".8f"));
+                    .orient('right');
+                    //.tickValues(ticks);
+                    //.tickFormat(d3.format(".8f"));
         
                 g.call(yAxis).selectAll("text")
                 //    .style("alignment-baseline", "middle")
                     .style("font-size", "10")
-                    .attr('transform', 'translate(10,7)');
+                    .attr('transform', 'translate(10,6)');
+                
+                //g.call(yAxis).selectAll("text").last()
+                //    .attr('transform','translate(10,'+(height-6)+')');
                 
                 /*g.append("text")
                     .attr("class", "caption")
                     .attr("y", -6)
                     .text("Value of cell point");*/
+                    
+                console.log('legend ---');
                 
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {
@@ -2309,8 +2330,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr('height', function(d, i) { 
                         return propHeights[i]; 
                     })
-                    .style('fill', function(d) { 
-                        return threshold(d[0]);
+                    .style('fill', function(d, i) { 
+                        return threshold.range()[i];
                     });
         
                 d3.select(drawControl).on('click', function(){
