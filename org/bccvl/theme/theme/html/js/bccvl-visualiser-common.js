@@ -1580,7 +1580,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                             });
                             
                             var layercount = 0;
-                            console.log(geojson);
+
                             $.each(geojson.vars, function(key, variable){
                                 bccvl_common.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
                                 layercount++;
@@ -2128,7 +2128,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
             },
             
             createBiodiverseLayer: function (i, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
-                //console.log(variable);
+
                 // Create grid style function
                 var gridStyle = function (feature) {
         
@@ -2140,8 +2140,6 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     var x = coordinate[0] - gridSize / 2,
                         y = coordinate[1] - gridSize / 2,
                         val = Number(feature.getProperties()[key]);
-                        
-                    //console.log('feature range: '+variable.range);
                     
                     var colorIdx;
                     $.each(variable.range, function(i, x){
@@ -2218,7 +2216,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     // display legend cell select
                     d3.select(this)
                         .style({stroke: "#333", "stroke-width": "2px"});
-                    console.log(d);
+
                     // find and select all matching cells in map
                     $.each(grid.getFeatures(), function(i, feature){
                         // this is value matching and doesnt make sense, need to eval differently
@@ -2270,8 +2268,6 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                         propOffsets.push(0);
                     }
                 });
-
-                console.log(colorScale.range());
             
                 var threshold = d3.scale.threshold()
                     .domain(colorScale.domain())
@@ -2302,15 +2298,15 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .style("font-size", "10")
                     .attr('transform', 'translate(10,6)');
                 
+                // move a specific tick
                 //g.call(yAxis).selectAll("text").last()
                 //    .attr('transform','translate(10,'+(height-6)+')');
                 
+                // add a legend title
                 /*g.append("text")
                     .attr("class", "caption")
                     .attr("y", -6)
                     .text("Value of cell point");*/
-                    
-                console.log('legend ---');
                 
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {

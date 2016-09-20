@@ -37,7 +37,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (params.type == 'text/csv'){
                 vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (params.type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
+            } else if (params.type == 'text/x-r-transcript' || params.type ==  'application/json' || params.type == 'text/plain' || params.type == 'text/x-r' || params.type == 'application/x-perl') {
                 vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
             } else if (params.type == 'application/pdf') {
                 vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
