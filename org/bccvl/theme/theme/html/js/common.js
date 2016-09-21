@@ -42,6 +42,7 @@ requirejs.config({
         'bccvl-sharing-modal':        'js/bccvl-sharing-modal',
         'bccvl-stretch':              'js/bccvl-stretch',
         'bccvl-visualiser-common':    'js/bccvl-visualiser-common',
+        'bccvl-visualiser-biodiverse':'js/bccvl-visualiser-biodiverse',
         'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
         'bccvl-visualiser-compare':   'js/bccvl-visualiser-compare',
         'bccvl-visualiser-map':       'js/bccvl-visualiser-map',
