@@ -2,8 +2,9 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3) {
+// TODO: Fix d3-422 when Sam has upgrade to d3 vesion 4.2.2
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'd3-422', 'zip'],
+    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3, d3_422, zip) {
 
         require(['raven'], function(Raven) {
             /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
@@ -67,12 +68,12 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
 
+       // fetch api url
+       var fetchurl = visualiserBaseUrl + 'api/fetch';
+
        // dataset manager getMetadata endpoint url
        var dmurl = portal_url + '/API/dm/v1/metadata';
        
-       // fetch api url url
-       var fetchurl = portal_url + '/_visualiser/api/fetch';
-
        var layer_vocab = {};
        // FIXME: is there a  race condition possible here?
        //        e.g. layer_vocab is required before it is populated?
@@ -81,6 +82,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                layer_vocab[value.token] = value;
            });
        });
+
+       // convex-hull polygon around occurrence dataset
+       var occurrence_convexhull_polygon = null;
 
        var bccvl_common = {
 
@@ -1756,6 +1760,97 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
            },
 
+           renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
+
+               // clear layer
+               constraintsLayer.getSource().clear();
+
+               var feature = new ol.Feature({geometry: geomObject});
+
+               // Do projection only if they are in different projection
+               if (projCode != map.getView().getProjection().getCode()) {
+                  feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
+               }
+
+               feature.setId('geo_constraints');
+
+               var style = new ol.style.Style({
+                   fill: new ol.style.Fill({
+                       color: 'rgba(0, 160, 228, 0.1)'
+                   }),
+                   stroke: new ol.style.Stroke({
+                       color: 'rgba(0, 160, 228, 0.9)',
+                       width: 2
+                   })
+               });
+
+               feature.setStyle(style);
+               constraintsLayer.getSource().addFeature(feature);
+
+               map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
+           }, 
+           
+           setOccurrencePolygon: function(polygon) {
+              occurrence_convexhull_polygon = polygon;
+           },
+
+           drawConvexhullPolygon: function(url, filename, mimetype, map, constraintsLayer) {
+              function renderConvexhullPolygon(polygon, map, constraintsLayer) {
+                  // Generate convex-hull polygon for the occurrence dataset
+                  var vhull = d3_422.polygonHull(polygon);
+                  vhull.push(vhull[0]);
+                  var hull1 = [vhull];
+                  var polygonHull = new ol.geom.Polygon(hull1);
+                  // Save the polygon and render it on map
+                  bccvl_common.setOccurrencePolygon(polygonHull);
+                  bccvl_common.renderPolygonConstraints(map, polygonHull, constraintsLayer, 'EPSG:4326');
+              }
+
+              if (mimetype == 'application/zip') {
+                  // Extract occurrence dataset from zip file
+                  zip.useWebWorkers = false;
+                  var httpReader = new zip.HttpReader(url);
+                  var zipReader = zip.createReader(httpReader, function(reader) {
+                      // get all entries from the zip
+                      reader.getEntries(function(entries) {
+                          // Look for file that end with filename.
+                          for (var i = 0; i < entries.length; i++) {
+                              if (!entries[i].filename.endsWith(filename)) {
+                                  continue;
+                              }
+                              // Get the data
+                              entries[i].getData(new zip.TextWriter(), function(data) {
+                                  // Parse data to extract the coordinates
+                                  var points = d3_422.csvParse(data, function(d) {
+                                      return [ +d["lon"], +d["lat"] ];
+                                  });
+
+                                  // Draw convex-hull polygon for the occurrence dataset
+                                  renderConvexhullPolygon(points, map, constraintsLayer);
+
+                                  // close the zip reader
+                                  reader.close();
+                              });
+                          }
+                      });
+
+                  }, function(error) {
+                      // onerror callback
+                      console.log("drawConvexhullPolygon:", error);
+                      throw error;
+                  });
+              }
+              else if (mimetype == 'text/csv') {
+                  d3_422.csv(url, function(error, data) {
+                      if (error) throw error;
+                      var points = data.map(function(d) {
+                          return [ +d["lon"], +d["lat"] ];
+                      });
+                      renderConvexhullPolygon(points, map, constraintsLayer);
+                  });
+              }
+           },
+
            removeConstraints: function(el, map, constraintsLayer) {
                // clear vector source
                constraintsLayer.getSource().clear();
@@ -1777,6 +1872,13 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                });
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
+
+                   // Display the convex-hull polygon around occurrence dataset
+                   if (occurrence_convexhull_polygon != null) {
+                      bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon, 
+                        constraintsLayer, map.getView().getProjection().getCode());
+                   }
+
                });
                $('.btn.draw-geojson').on('click', function(e){
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);

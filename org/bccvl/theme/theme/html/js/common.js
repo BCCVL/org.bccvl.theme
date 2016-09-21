@@ -29,7 +29,9 @@ requirejs.config({
         'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
         'livechat':             'lib/freshdesk/live-chat',
         'aekos-api':            'js/aekos-api',
-        'd3':                   'lib/d3/d3.min', 
+        'd3':                   'lib/d3/d3.min',
+        'd3-422':               'lib/d3/d3.min.js_4.2.2', 
+        'zip':                  'lib/zip/zip.min',
         // our own js files        
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
@@ -78,7 +80,8 @@ requirejs.config({
         'jquery-tablesorter':   ['jquery'],
         'jquery-arrayutils':    ['jquery'],
         'jquery-timer':         ['jquery'],
-        'raven':                ['jquery']
+        'raven':                ['jquery'],
+        'zip': { exports:'zip'}, 
     }
 });
 
