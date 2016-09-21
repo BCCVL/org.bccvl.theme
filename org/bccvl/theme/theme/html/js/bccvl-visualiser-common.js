@@ -2,9 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-// TODO: Fix d3-422 when Sam has upgrade to d3 vesion 4.2.2
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'd3-422', 'zip'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3, d3_422, zip) {
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'zip'],
+    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3, zip) {
 
         require(['raven'], function(Raven) {
             /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
@@ -1332,8 +1331,8 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     
                 var dfrd = $.Deferred(),
                     requestStatus = $.Deferred(),
-                    jqxhr = $.Deferred(),
-                    csv = d3.dsv(',', 'text/plain');
+                    jqxhr = $.Deferred();
+                    //csv = ;
                 
                 var fetch = function(){
                     $.ajax({
@@ -1371,7 +1370,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 
                 jqxhr.then(
                     function(){
-                        csv(url).get(function(error, data) {
+                        d3.csv(url, function(error, data) {
                             // Convert to GeoJSON
                             var geojson = bccvl_common.biodiverseCSVtoJSON(data, dataProj, mapProj); 
                             
@@ -1797,7 +1796,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
            drawConvexhullPolygon: function(url, filename, mimetype, map, constraintsLayer) {
               function renderConvexhullPolygon(polygon, map, constraintsLayer) {
                   // Generate convex-hull polygon for the occurrence dataset
-                  var vhull = d3_422.polygonHull(polygon);
+                  var vhull = d3.polygonHull(polygon);
                   vhull.push(vhull[0]);
                   var hull1 = [vhull];
                   var polygonHull = new ol.geom.Polygon(hull1);
@@ -1821,7 +1820,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                               // Get the data
                               entries[i].getData(new zip.TextWriter(), function(data) {
                                   // Parse data to extract the coordinates
-                                  var points = d3_422.csvParse(data, function(d) {
+                                  var points = d3.csvParse(data, function(d) {
                                       return [ +d["lon"], +d["lat"] ];
                                   });
 
@@ -1841,7 +1840,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                   });
               }
               else if (mimetype == 'text/csv') {
-                  d3_422.csv(url, function(error, data) {
+                  d3.csv(url, function(error, data) {
                       if (error) throw error;
                       var points = data.map(function(d) {
                           return [ +d["lon"], +d["lat"] ];
@@ -2273,7 +2272,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 //});
                 //colorArr;
                 
-                var colorScale = d3.scale.threshold()
+                var colorScale = d3.scaleThreshold()
                     .domain(variable.range)
                     .range(colorBank);
 
@@ -2371,7 +2370,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     }
                 });
             
-                var threshold = d3.scale.threshold()
+                var threshold = d3.scaleThreshold()
                     .domain(colorScale.domain())
                     .range(colorScale.range());
         
@@ -2385,18 +2384,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                     .attr("width", (width-40))
                     .attr("transform", "translate(0,0)");
                     
-                var y = d3.scale.ordinal()
+                var y = d3.scaleOrdinal()
                     .domain(ticks)
                     .range(propOffsets);
         
-                var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .orient('right');
+                var yAxis = d3.axisRight(y);
+                    //.scale(y)
+                    //.orient('right');
                     //.tickValues(ticks);
                     //.tickFormat(d3.format(".8f"));
         
                 g.call(yAxis).selectAll("text")
-                //    .style("alignment-baseline", "middle")
                     .style("font-size", "10")
                     .attr('transform', 'translate(10,6)');
                 
