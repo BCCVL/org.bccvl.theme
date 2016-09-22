@@ -139,7 +139,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 
                 var layerListeners = []
                 
-                if (params.type && params.type == 'auto'){
+                if (params.type && (params.type == 'auto' || params.type == 'occurrence')){
                       
                     // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
                     visLayers.getLayers().on('propertychange', function(e, layer){

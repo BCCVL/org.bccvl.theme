@@ -10,18 +10,30 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
         // new list layout events
         $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), 'map-'+$(this).data('uuid')+'', 'occurence');
+            var params = {
+                'type': 'occurrence',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), 'map-'+$(this).data('uuid')+'', params);
         });
 
         $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
+            var params = {
+                'type': 'auto',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), 'map-'+$(this).data('uuid')+'', params, $(this).data('viz-layer'));
         });
 
         // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+            var params = {
+                'type': 'occurrence',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
         });
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
