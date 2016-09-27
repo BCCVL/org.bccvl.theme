@@ -223,7 +223,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 return;
             } 
 
-            $.when(vizcommon.addLayersForDataset(uuid, id, undefined, visLayers)).then(function(newLayers) {
+            $.when(vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers)).then(function(newLayers) {
                 // TODO: rendering legend should be an option or has to happen outside of addLayersForDataset
                 // FIXME: assumes there is only one layer
                 var newLayer = newLayers[0];
