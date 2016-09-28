@@ -46,10 +46,13 @@ define(
                 // and redo it
                 $('body').on('click', 'a.bccvl-auto-viz', function(event){
 
-                    var type = $(this).data('mimetype');
+                    var params = {
+                        'type': 'auto',
+                        'mimetype': $(this).data('mimetype')
+                    }
 
-                    if (type == 'image/geotiff'){
-                        $.when(vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'auto', $(this).data('viz-layer'))).then(function(map, visLayers) {
+                    if (params.mimetype == 'image/geotiff'){
+                        $.when(vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'))).then(function(map, visLayers) {
                             
                             map.addLayer(constraints);
 

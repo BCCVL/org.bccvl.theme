@@ -278,6 +278,11 @@ p.label {
     color: white;
     padding: 4px 5px 2px 4px;
 }
+.label.label-MSDM {
+    background-color: #9b59b6;
+    color: white;
+    padding: 4px 5px 2px 4px;  
+}
 td.date-time {
     word-break:normal;
     line-height: 1.3em;
