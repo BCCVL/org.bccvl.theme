@@ -202,16 +202,23 @@ define(
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
                         var params = {
                             'type': 'occurrence',
-                            'mimetype': $(this).data('mimetype')
+                            'mimetype': el.data('mimetype')
                         }
 
                         vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params);
                     } else {
                         var params = {
                             'type': 'auto',
-                            'mimetype': $(this).data('mimetype')
+                            'mimetype': el.data('mimetype')
                         }
-                        vizcommon.mapRender(el.data('uuid'),el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
+                        console.log(params);
+                        console.log(el);
+                        if (params.mimetype == 'text/csv'){
+                            console.log('this runs');
+                            vizcommon.renderCSV(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'');
+                        } else {
+                            vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
+                        }
                     }
                 }); 
 
