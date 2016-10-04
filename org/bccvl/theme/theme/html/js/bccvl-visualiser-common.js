@@ -548,7 +548,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                } else if (layerdef.legend == 'binary'){
                    
                    styleObj = {
-                       minVal: 0, 
+                       // need to define the min as slightly more than zero
+                       // due to SLD matching spec.
+                       minVal: 0.0000001, 
                        maxVal: 1,
                        steps: 1,
                        startpoint: null,
@@ -680,7 +682,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    if (standard_range == 'categorical'){
                        panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
                    } else if (standard_range == 'binary'){
-                       if (rangeArr[i] != 0){
+                       if (rangeArr[i] == 1){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
                        }
                        
