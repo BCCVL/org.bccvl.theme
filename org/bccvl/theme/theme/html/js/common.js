@@ -29,8 +29,7 @@ requirejs.config({
         'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
         'livechat':             'lib/freshdesk/live-chat',
         'aekos-api':            'js/aekos-api',
-        'd3':                   'lib/d3/d3.min',
-        'd3-422':               'lib/d3/d3.min.js_4.2.2', 
+        'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
         // our own js files        
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
@@ -43,6 +42,7 @@ requirejs.config({
         'bccvl-sharing-modal':        'js/bccvl-sharing-modal',
         'bccvl-stretch':              'js/bccvl-stretch',
         'bccvl-visualiser-common':    'js/bccvl-visualiser-common',
+        'bccvl-visualiser-biodiverse':'js/bccvl-visualiser-biodiverse',
         'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
         'bccvl-visualiser-compare':   'js/bccvl-visualiser-compare',
         'bccvl-visualiser-map':       'js/bccvl-visualiser-map',

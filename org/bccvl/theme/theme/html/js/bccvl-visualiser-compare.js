@@ -61,7 +61,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
 
             $.when(vizcommon.renderBase(id)).then(function(map, visLayers) {
 
-                $.when(vizcommon.addLayersForDataset(uuid, id, undefined, visLayers)).then(function(newLayers) {
+                $.when(vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers)).then(function(newLayers) {
                     // FIXME: assumes there is only 1 layer
                     var newLayer = newLayers[0];
                     var layerdef = newLayer.get('bccvl').layer;

@@ -200,9 +200,25 @@ define(
 
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
                     if ($(this).hasClass('bccvl-list-occurrence-viz')){
-                        vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'occurence');
+                        var params = {
+                            'type': 'occurrence',
+                            'mimetype': el.data('mimetype')
+                        }
+
+                        vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params);
                     } else {
-                        vizcommon.mapRender(el.data('uuid'),el.attr('href'), 'modal-map-'+el.data('uuid')+'', 'auto', el.data('viz-layer'));
+                        var params = {
+                            'type': 'auto',
+                            'mimetype': el.data('mimetype')
+                        }
+                        console.log(params);
+                        console.log(el);
+                        if (params.mimetype == 'text/csv'){
+                            console.log('this runs');
+                            vizcommon.renderCSV(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'');
+                        } else {
+                            vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
+                        }
                     }
                 }); 
 
