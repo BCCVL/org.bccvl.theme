@@ -184,6 +184,8 @@ define(
             $('body').on('click', '.bccvl-modal-occurrence-viz, .bccvl-modal-auto-viz', function(event){
                 event.preventDefault();
                 var el = $(this);
+                
+                console.log(el);
 
                 $('body').append('<div class="modal hide fade" id="preview-dataset-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">'+el.data('title')+'</h3></div><div class="modal-body"><span class="loading-gif" style="margin:3m 0;"></span></div></div>');
 
@@ -199,7 +201,8 @@ define(
                     $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
 
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
-                    if ($(this).hasClass('bccvl-list-occurrence-viz')){
+                    
+                    if (el.hasClass('bccvl-modal-occurrence-viz')){
                         var params = {
                             'type': 'occurrence',
                             'mimetype': el.data('mimetype')
@@ -211,10 +214,7 @@ define(
                             'type': 'auto',
                             'mimetype': el.data('mimetype')
                         }
-                        console.log(params);
-                        console.log(el);
                         if (params.mimetype == 'text/csv'){
-                            console.log('this runs');
                             vizcommon.renderCSV(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'');
                         } else {
                             vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
