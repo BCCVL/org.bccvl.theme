@@ -2838,3 +2838,45 @@ div.youtube-frame {
     font-size:1.8em;
     color:#333;
 }
+.trait-dataset-summary .trait-column:nth-child(6n) {
+    clear: left;
+    margin-left: 0;
+}
+.trait-dataset-summary .trait-column {
+    background:rgba(0,0,0,.1);
+    padding:1em;
+    margin-top:1em;
+}
+.trait-dataset-summary .trait-dataset-summary-header {
+    margin-top:1em;
+    padding:1em 0;
+}
+.trait-dataset-summary .trait-dataset-summary-header .trait-row-vals, .trait-dataset-summary .trait-dataset-summary-header .trait-nom-row {
+    padding-top:.5em;
+}
+.trait-dataset-summary .trait-title {
+    font-family:"OpenSansSemibold";
+    color:black;
+    height:2em;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+.trait-dataset-summary .trait-row-vals {
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+.trait-dataset-summary .trait-row-vals {
+    height:12em;
+    line-height:1.2em;
+}
+.trait-dataset-summary .trait-row-vals p {
+    margin: .75em 0;
+}
+.trait-dataset-summary .trait-nom-row select {
+    width: auto;
+    height: 1.8em;
+    font-size: 1em;
+    margin-top:.5em;
+}
+.trait-dataset-summary {
+    margin-bottom:1.5em;
+    border-bottom:1px solid rgba(0,0,0,.15);
+}
