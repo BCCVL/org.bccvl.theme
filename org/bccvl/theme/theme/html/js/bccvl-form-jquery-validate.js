@@ -80,6 +80,84 @@ define(
             }
         });
         
+        $.validator.addMethod("requireNFromClass", function(value, element, options) {
+            
+            var numReq =  options[0];
+            var selector = options[1];
+            var desiredVal = options[2];
+            
+            var selection = [];
+            
+            $(selector, element.form).filter(function(){
+                if ($(this).val()){
+                    selection.push($(this).val());
+                }
+            });
+            
+            return $.grep(selection, function(v){
+                        return v === desiredVal
+                    }).length == numReq;
+                
+        }, function(params, element) {
+            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
+        });
+        
+        // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
+        // So this is just a duplicate method of the above so that it can be called twice.
+        $.validator.addMethod("requireNFromClassTwo", function(value, element, options) {
+            
+            var numReq =  options[0];
+            var selector = options[1];
+            var desiredVal = options[2];
+            
+            var selection = [];
+            
+            $(selector, element.form).filter(function(){
+                if ($(this).val()){
+                    selection.push($(this).val());
+                }
+            });
+            
+            return $.grep(selection, function(v){
+                        return v === desiredVal
+                    }).length == numReq;
+                
+        }, function(params, element) {
+            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
+        });
+        
+        $.validator.addMethod("requireAtLeastNOfFromClass", function(value, element, options) {
+            
+            var numReq =  options[0];
+            var selector = options[1];
+            var desiredVals = options[2]
+            
+            var selection = [];
+            
+            var isValid = false;
+            
+            $(selector, element.form).filter(function(){
+                if ($(this).val()){
+                    selection.push($(this).val());
+                }
+            });
+            
+            $.each(desiredVals, function(i, val){
+                var numSel = $.grep(selection, function(v){
+                    return v === val
+                }).length;
+                
+                if (numSel >= numReq){
+                    isValid = true;
+                }
+            })
+            
+            return isValid;
+                
+        }, function(params, element) {
+            return "This group requires at least "+params[0]+" "+params[3]+" fields to be nominated."
+        });
+        
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
@@ -112,7 +190,10 @@ define(
                 require_from_group: [1, ".algorithm-checkbox"]
             },
             "trait-nom": {
-                "traitsNomination": [1, ".trait-nom"]
+                //"traitsNomination": [1, ".trait-nom"],
+                "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
+                "requireNFromClassTwo": [1, ".trait-nom", "lat", "Latitude" ],
+                "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_cat", "trait_con"], "Trait"]
             }
         });
         
