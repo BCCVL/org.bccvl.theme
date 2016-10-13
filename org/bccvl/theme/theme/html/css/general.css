@@ -2838,21 +2838,27 @@ div.youtube-frame {
     font-size:1.8em;
     color:#333;
 }
-.trait-dataset-summary .trait-column:nth-child(6n) {
+.trait-dataset-summary .trait-column:nth-child(4n+1) {
     clear: left;
     margin-left: 0;
 }
 .trait-dataset-summary .trait-column {
     background:rgba(0,0,0,.1);
     padding:1em;
-    margin-top:1em;
+    margin-top:1.5em;
 }
 .trait-dataset-summary .trait-dataset-summary-header {
     margin-top:1em;
     padding:1em 0;
 }
-.trait-dataset-summary .trait-dataset-summary-header .trait-row-vals, .trait-dataset-summary .trait-dataset-summary-header .trait-nom-row {
+.trait-dataset-summary .trait-dataset-summary-header .trait-row-vals {
+    padding-top:.75em;    
+}
+.trait-dataset-summary .trait-dataset-summary-header .trait-nom-row {
     padding-top:.5em;
+}
+.trait-dataset-summary .trait-dataset-summary-header .trait-title {
+    padding-bottom:.5em;
 }
 .trait-dataset-summary .trait-title {
     font-family:"OpenSansSemibold";
@@ -2871,12 +2877,14 @@ div.youtube-frame {
     margin: .75em 0;
 }
 .trait-dataset-summary .trait-nom-row select {
-    width: auto;
+    width: 100%;
     height: 1.8em;
-    font-size: 1em;
-    margin-top:.5em;
+    font-size: 0.9em;
+    margin-top:.75em;
+    margin-bottom:0;
 }
 .trait-dataset-summary {
     margin-bottom:1.5em;
     border-bottom:1px solid rgba(0,0,0,.15);
+    padding-bottom:1.5em;
 }

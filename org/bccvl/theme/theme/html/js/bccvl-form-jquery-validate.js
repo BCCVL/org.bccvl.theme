@@ -34,7 +34,52 @@ define(
           // allow any non-whitespace characters as the host part
           return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
         }, 'Please enter a valid number using decimal or scientific notation.');
-
+        
+        $.validator.addMethod("traitsNomination", function(value, element, options) {
+            
+            var numReq =  options[0];
+            var selector = options[1];
+            
+            var selection = [];
+            
+            $(selector, element.form).filter(function(){
+                if ($(this).val()){
+                    selection.push($(this).val());
+                }
+            });
+            
+            var hasLat = $.grep(selection, function(v){
+                        return v === 'lat'
+                    }).length === numReq,
+                hasLon = $.grep(selection, function(v){
+                        return v === 'lon'
+                    }).length === numReq,
+                hasSpecies = ($.inArray('species', selection) >= 0),
+                hasTrait; 
+                
+            if ($.inArray('trait_cat', selection) >= 0) {
+                hasTrait = true;
+            } else if ($.inArray('trait_con', selection) >= 0) {
+                hasTrait = true; 
+            } else {
+                hasTrait = false;
+            }
+                
+            console.log(hasTrait);
+            
+            if(hasLat && hasLon && hasSpecies && hasTrait ) {
+                return true;
+            } else {
+                return false;
+            }
+        }, function(params, element) {
+            if ($(element).val() === 'lat' || $(element).val() === 'lon' || $(element).val() === 'species' || $(element).val() === 'trait_con' || $(element).val() === 'trait_cat' ){
+                return 'A required column is missing elsewhere or there is a duplicate.'
+            } else {
+                return 'Nominate one Latitude column, one Longitude column, and at least one each of Species and Trait columns.';
+            }
+        });
+        
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
@@ -65,9 +110,13 @@ define(
             },
             "algorithm": {
                 require_from_group: [1, ".algorithm-checkbox"]
+            },
+            "trait-nom": {
+                "traitsNomination": [1, ".trait-nom"]
             }
         });
-
+        
+        
 
         console.log('validation behaviour loaded');
 

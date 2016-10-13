@@ -72,8 +72,10 @@ define(
             });
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
-
-                console.log(e.target);
+                
+                // need something in here to test which widget sent this
+                
+                // and to clear any existing UI
 
                 $.each(traitsTable.modal.basket.uuids, function(i, uuid){
                     var jqxhr = $.Deferred();
@@ -95,7 +97,6 @@ define(
                     
                     // after getting urls, request file
                     jqxhr.then(function(data, status, jqXHR) {
-                        console.log(urls);
                         
                         $.each(urls, function(i, url){
                             
@@ -113,7 +114,7 @@ define(
                             
                             // parse and filter for columns and five rows
                             d3.csv(url, function(error, data) {
-                                console.log(data);
+
                                 var preview = [];
                                 var columns = data.columns;
                                 var truncData = data.filter(function(row,i){
@@ -121,8 +122,6 @@ define(
                                         return row;
                                     }
                                 });
-                                
-                                console.log(truncData);
                                 
                                 columns.forEach(function(column, i){
                                     
@@ -136,33 +135,43 @@ define(
 
                                 });
                                 
-                                console.log(preview);
-                                
                                 $.each(preview, function(i, col){
                                     
-                                   var newCol = document.createElement('div');
-                                   newCol.className = 'span2 trait-column';
-                                   var header = document.createElement('div');
-                                   header.className = 'trait-title';
-                                   header.innerHTML = col.name;
-                                   var examples = document.createElement('div');
-                                   examples.className = 'trait-row-vals';
-                                   console.log(col.values);
-                                   $.each(col.values, function(i,v){
-                                       examples.innerHTML += '<p>'+v+'</p>'
-                                   });
-                                   examples.innerHTML += '<p>...</p>'
-                                   var input = document.createElement('div');
-                                   input.className = 'trait-nom-row';
-                                   input.innerHTML = '<select class="trait-nom" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
-                                                     '<option selected>Please Select ...</option>'+
+                                    var newCol = document.createElement('div');
+                                    newCol.className = 'span3 trait-column';
+                                    var header = document.createElement('div');
+                                    header.className = 'trait-title';
+                                    header.innerHTML = col.name;
+                                    var examples = document.createElement('div');
+                                    examples.className = 'trait-row-vals';
+                                    $.each(col.values, function(i,v){
+                                        examples.innerHTML += '<p>'+v+'</p>'
+                                    });
+                                    examples.innerHTML += '<p>...</p>'
+                                    var input = document.createElement('div');
+                                    input.className = 'trait-nom-row';
+                                    input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                                     '<option selected value="ignore">Ignore</option>'+
+                                                     '<option value="lat">Latitude</option>'+
+                                                     '<option value="lon">Longitude</option>'+
+                                                     '<option value="species">Species Name</option>'+
+                                                     '<option value="trait_con">Trait (continuous)</option>'+
+                                                     '<option value="trait_cat">Trait (categorical)</option>'+
+                                                     '<option value="env_var_con">Env. Variable (continuous)</option>'+
+                                                     '<option value="env_var_cat">Env. Variable (categorical)</option>'+
                                                      '</select>';
+                                    
+                                    $(input).find('select option').each(function(){
+                                       if (col.name.toLowerCase() === $(this).val().toLowerCase()){
+                                           $(this).prop('selected', true);
+                                       }
+                                    });
                                    
-                                   newCol.appendChild(header);
-                                   newCol.appendChild(examples);
-                                   newCol.appendChild(input);
-                                
-                                   divTraits.appendChild(newCol);
+                                    newCol.appendChild(header);
+                                    newCol.appendChild(examples);
+                                    newCol.appendChild(input);
+                                 
+                                    divTraits.appendChild(newCol);
                                 });
 
                             });
