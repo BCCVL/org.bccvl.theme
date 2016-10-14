@@ -190,7 +190,6 @@ define(
                 require_from_group: [1, ".algorithm-checkbox"]
             },
             "trait-nom": {
-                //"traitsNomination": [1, ".trait-nom"],
                 "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
                 "requireNFromClassTwo": [1, ".trait-nom", "lat", "Latitude" ],
                 "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_cat", "trait_con"], "Trait"]
