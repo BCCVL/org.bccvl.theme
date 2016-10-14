@@ -73,113 +73,114 @@ define(
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 
-                // need something in here to test which widget sent this
-                
-                // and to clear any existing UI
+                if (e.target.id === 'form-widgets-data_table' && traitsTable.modal.basket.uuids.length > 0) {
+                    
+                    $('#'+e.target.id+' .trait-dataset-summary').empty();
 
-                $.each(traitsTable.modal.basket.uuids, function(i, uuid){
-                    var jqxhr = $.Deferred();
-                    
-                    var urls = [];
-                    // get file urls using uuid from widget basket
-                    $.ajax({
-                        url: dmurl,
-                        type: 'GET',
-                        dataType: 'xml json',
-                        converters: {'xml json': $.xmlrpc.parseDocument},
-                        data: {'uuid': uuid}
-                    }).done(function(response) {
-                        $.each(response, function(i,d){
-                            urls.push(d.file);
-                        });
-                        jqxhr.resolve(urls);
-                    });
-                    
-                    // after getting urls, request file
-                    jqxhr.then(function(data, status, jqXHR) {
+                    $.each(traitsTable.modal.basket.uuids, function(i, uuid){
+                        var jqxhr = $.Deferred();
                         
-                        $.each(urls, function(i, url){
-                            
-                            // set up dom node
-                            var div = document.createElement('div');
-                            div.className = 'row-fluid trait-dataset-summary';
-                            var divHeader = document.createElement('div');
-                            divHeader.className = 'trait-dataset-summary-header span2';
-                            divHeader.innerHTML += '<div class="trait-title">Column Header</div><div class="trait-row-vals">Example Values</div><div class="trait-nom-row">Input Type</div>'
-                            div.appendChild(divHeader);
-                            var divTraits = document.createElement('div');
-                            divTraits.className = 'trait-dataset-summary-traits span10'
-                            div.appendChild(divTraits);
-                            e.target.appendChild(div);
-                            
-                            // parse and filter for columns and five rows
-                            d3.csv(url, function(error, data) {
-
-                                var preview = [];
-                                var columns = data.columns;
-                                var truncData = data.filter(function(row,i){
-                                    if (i < 5){
-                                        return row;
-                                    }
-                                });
-                                
-                                columns.forEach(function(column, i){
-                                    
-                                    var col = {}
-                                    col.name = column;
-                                    col.values = []
-                                    $.each(truncData, function(i,r){
-                                       col.values.push(r[column]); 
-                                    });
-                                    preview.push(col);
-
-                                });
-                                
-                                $.each(preview, function(i, col){
-                                    
-                                    var newCol = document.createElement('div');
-                                    newCol.className = 'span3 trait-column';
-                                    var header = document.createElement('div');
-                                    header.className = 'trait-title';
-                                    header.innerHTML = col.name;
-                                    var examples = document.createElement('div');
-                                    examples.className = 'trait-row-vals';
-                                    $.each(col.values, function(i,v){
-                                        examples.innerHTML += '<p>'+v+'</p>'
-                                    });
-                                    examples.innerHTML += '<p>...</p>'
-                                    var input = document.createElement('div');
-                                    input.className = 'trait-nom-row';
-                                    input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
-                                                     '<option selected value="ignore">Ignore</option>'+
-                                                     '<option value="lat">Latitude</option>'+
-                                                     '<option value="lon">Longitude</option>'+
-                                                     '<option value="species">Species Name</option>'+
-                                                     '<option value="trait_con">Trait (continuous)</option>'+
-                                                     '<option value="trait_cat">Trait (categorical)</option>'+
-                                                     '<option value="env_var_con">Env. Variable (continuous)</option>'+
-                                                     '<option value="env_var_cat">Env. Variable (categorical)</option>'+
-                                                     '</select>';
-                                    
-                                    $(input).find('select option').each(function(){
-                                       if (col.name.toLowerCase() === $(this).val().toLowerCase()){
-                                           $(this).prop('selected', true);
-                                       }
-                                    });
-                                   
-                                    newCol.appendChild(header);
-                                    newCol.appendChild(examples);
-                                    newCol.appendChild(input);
-                                 
-                                    divTraits.appendChild(newCol);
-                                });
-
+                        var urls = [];
+                        // get file urls using uuid from widget basket
+                        $.ajax({
+                            url: dmurl,
+                            type: 'GET',
+                            dataType: 'xml json',
+                            converters: {'xml json': $.xmlrpc.parseDocument},
+                            data: {'uuid': uuid}
+                        }).done(function(response) {
+                            $.each(response, function(i,d){
+                                urls.push(d.file);
                             });
-                        })
+                            jqxhr.resolve(urls);
+                        });
+                        
+                        // after getting urls, request file
+                        jqxhr.then(function(data, status, jqXHR) {
+                            
+                            $.each(urls, function(i, url){
+                                
+                                // set up dom node
+                                var div = document.createElement('div');
+                                div.className = 'row-fluid trait-dataset-summary';
+                                var divHeader = document.createElement('div');
+                                divHeader.className = 'trait-dataset-summary-header span2';
+                                divHeader.innerHTML += '<div class="trait-title">Column Header</div><div class="trait-row-vals">Example Values</div><div class="trait-nom-row">Input Type</div>'
+                                div.appendChild(divHeader);
+                                var divTraits = document.createElement('div');
+                                divTraits.className = 'trait-dataset-summary-traits span10'
+                                div.appendChild(divTraits);
+                                e.target.appendChild(div);
+                                
+                                // parse and filter for columns and five rows
+                                d3.csv(url, function(error, data) {
+    
+                                    var preview = [];
+                                    var columns = data.columns;
+                                    var truncData = data.filter(function(row,i){
+                                        if (i < 5){
+                                            return row;
+                                        }
+                                    });
+                                    
+                                    columns.forEach(function(column, i){
+                                        
+                                        var col = {}
+                                        col.name = column;
+                                        col.values = []
+                                        $.each(truncData, function(i,r){
+                                           col.values.push(r[column]); 
+                                        });
+                                        preview.push(col);
+    
+                                    });
+                                    
+                                    $.each(preview, function(i, col){
+                                        
+                                        var newCol = document.createElement('div');
+                                        newCol.className = 'span3 trait-column';
+                                        var header = document.createElement('div');
+                                        header.className = 'trait-title';
+                                        header.innerHTML = col.name;
+                                        var examples = document.createElement('div');
+                                        examples.className = 'trait-row-vals';
+                                        $.each(col.values, function(i,v){
+                                            examples.innerHTML += '<p>'+v+'</p>'
+                                        });
+                                        examples.innerHTML += '<p>...</p>'
+                                        var input = document.createElement('div');
+                                        input.className = 'trait-nom-row';
+                                        input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                                         '<option selected value="ignore">Ignore</option>'+
+                                                         '<option value="lat">Latitude</option>'+
+                                                         '<option value="lon">Longitude</option>'+
+                                                         '<option value="species">Species Name</option>'+
+                                                         '<option value="trait_con">Trait (continuous)</option>'+
+                                                         '<option value="trait_cat">Trait (categorical)</option>'+
+                                                         '<option value="env_var_con">Env. Variable (continuous)</option>'+
+                                                         '<option value="env_var_cat">Env. Variable (categorical)</option>'+
+                                                         '</select>';
+                                        
+                                        $(input).find('select option').each(function(){
+                                           if (col.name.toLowerCase() === $(this).val().toLowerCase()){
+                                               $(this).prop('selected', true);
+                                           }
+                                        });
+                                       
+                                        newCol.appendChild(header);
+                                        newCol.appendChild(examples);
+                                        newCol.appendChild(input);
+                                     
+                                        divTraits.appendChild(newCol);
+                                    });
+    
+                                });
+                            })
+                        });
+                        
+                        
                     });
-                    
-                    
-                });
+                }
             });
 
         });
