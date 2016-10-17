@@ -181,8 +181,8 @@ define(
             event.preventDefault();
             var $modal = $('#' + this.id);  // our modal
             var $el = $(event.currentTarget);  // the button clicked
-            var $form = $el.closest('form')
-            var formdata = $form.serializeArray()
+            var $form = $el.closest('form');
+            var formdata = $form.serializeArray();
             // add button pressed
             formdata.push({ name: $el.attr('name'), value: $el.val() });
             // add ajax_load
@@ -223,7 +223,7 @@ define(
         // create "class" SharingModal
         function SharingModal(id) {
             this.id = id || 'sharing-modal';
-        };
+        }
         // InfoModal inherits from Modal
         SharingModal.prototype = new Modal(); // inherit prototype
         SharingModal.prototype.constructor = SharingModal; // use new constructor
@@ -312,8 +312,8 @@ define(
             event.preventDefault();
             var $modal = $('#' + this.id);  // our modal
             var $el = $(event.currentTarget);  // the button clicked
-            var $form = $el.closest('form')
-            var formdata = $form.serializeArray()
+            var $form = $el.closest('form');
+            var formdata = $form.serializeArray();
             // add button pressed
             formdata.push({ name: $el.attr('name'), value: $el.val() });
             // add ajax_load

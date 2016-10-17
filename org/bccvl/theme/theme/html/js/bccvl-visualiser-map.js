@@ -10,18 +10,30 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
         // new list layout events
         $('body').on('click', '.bccvl-list-occurrence-viz, .bccvl-list-absence-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), 'map-'+$(this).data('uuid')+'', 'occurence');
+            var params = {
+                'type': 'occurrence',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), 'map-'+$(this).data('uuid')+'', params);
         });
 
         $('body').on('click', 'a.bccvl-list-auto-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), 'map-'+$(this).data('uuid')+'', 'auto', $(this).data('viz-layer'));
+            var params = {
+                'type': 'auto',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), 'map-'+$(this).data('uuid')+'', params, $(this).data('viz-layer'));
         });
 
         // older events (still in use on experiment pages and a few others)
         $('body').on('click', '.bccvl-occurrence-viz, .bccvl-absence-viz', function(event){
             event.preventDefault();
-            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), 'occurence');
+            var params = {
+                'type': 'occurrence',
+                'mimetype': $(this).data('mimetype')
+            }
+            vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
         });
 
         $('body').on('click', 'a.bccvl-auto-viz', function(event){
@@ -31,17 +43,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 'mimetype': $(this).data('mimetype')
             }
 
-            if (params.type == 'image/geotiff'){
+            if (params.mimetype == 'image/geotiff'){
                 vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));
-            } else if (params.type == 'image/png'){
+            } else if (params.mimetype == 'image/png'){
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (params.type == 'text/csv'){
+            } else if (params.mimetype == 'text/csv'){
                 vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (params.type == 'text/x-r-transcript' || type ==  'application/json' || type == 'text/plain' || type == 'text/x-r' || type == 'application/x-perl') {
+            } else if (params.mimetype == 'text/x-r-transcript' || params.mimetype ==  'application/json' || params.mimetype == 'text/plain' || params.mimetype == 'text/x-r' || params.mimetype == 'application/x-perl') {
                 vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (params.type == 'application/pdf') {
+            } else if (params.mimetype == 'application/pdf') {
                 vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
-            } else if (params.type == 'application/zip') {
+            } else if (params.mimetype == 'application/zip') {
                 vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));                
             }
         });

@@ -243,19 +243,29 @@ define(
                     // clear any existing layers.
                     visLayers.getLayers().clear(); // clear species layers
                     bboxLayer.getSource().clear(); // clear bboxes as well
+                    vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
+                    constraintsLayer.getSource().clear(); // clear the constraint
 
                     var geometries = [];
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
                     $('body').find('input[data-bbox]').each(function(){
                         var type = $(this).data('type');
                         if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
-                            vizcommon.addLayersForDataset($(this).val(), mapid, null, visLayers).then(function(newLayers) {
+                            var data_url = $('a[title="preview this dataset"]')[0].href;
+                            vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
                                 // FIXME: assumes only one layer because of species data
                                 var newLayer = newLayers[0];
                                 vizcommon.addLayerLegend(
                                     map.getTarget(),
                                     newLayer.get('title'),
                                     newLayer.get('bccvl').layer.style.color, null, null);
+
+                                // Draw convex-hull polygon for occurrence dataset in map
+                                if (type == 'DataGenreSpeciesOccurrence') {
+                                    var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
+                                    var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
+                                    vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);
+                                }
                             });
                         } else {
                             var geom = $(this).data('bbox');
@@ -272,7 +282,6 @@ define(
                     });
                     // draw collected geometries
                     vizcommon.drawBBoxes(map, geometries, bboxLayer);
-                        
                 });
 
             });

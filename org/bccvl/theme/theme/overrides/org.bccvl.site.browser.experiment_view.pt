@@ -24,7 +24,7 @@
           <h3>Select an Export Service</h3>
         </div>
         <div class="modal-body">
-          <p>We've made sharing your results with your collaborators and colleagues even easier by allowing one-click export to external repository tools. More services will become available over time.  You can request a specific service you'd like to export to by <a href="http://www.bccvl.org.au/contact-us/" target="_blank" title="Get in contact with BCCVL.">getting in contact</a> with our support team.</p>
+          <p>We've made sharing your results with your collaborators and colleagues even easier by allowing one-click export to external repository tools. More services will become available over time.  You can request a specific service you'd like to export to by <a href="https://support.bccvl.org.au/support/home/" target="_blank" title="Get in contact with BCCVL.">getting in contact</a> with our support team.</p>
           <p><strong>Authorised services:</strong></p>
           <span class="loading-gif spinner"></span>
           <div class="modal-content">
