@@ -474,10 +474,14 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>4</Size>';
                    xmlStylesheet += '</Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                } else {
-                   xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>DEFAULT</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
+                   layername = "DEFAULT";
+                   if (layerdef.dblayer) {
+                       layername = layerdef.dblayer;
+                   }
+                   xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>' + layername + '</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-	           var colorArr = bccvl_common.generateColorArr(layerdef.style);
-	           var steps = layerdef.style.steps;                    
+                   var colorArr = bccvl_common.generateColorArr(layerdef.style);
+                   var steps = layerdef.style.steps;                    
                    // colour range for temperature needs to extend indefinitely negatively and positively.
                    if (layerdef.style.standard_range == 'temperature') {
                        for (var i = 0; i < (colorArr.length-1); i++) {
@@ -775,6 +779,21 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    "transparent": "true",
                    "format": "image/png"
                };
+
+               // Update layers with layer's full name. Save it for referencing the layer.
+               layerdef.dblayer = "";
+               if (!$.isEmptyObject(data.dblayers)) {
+                   var lyr = data.dblayers[layerdef.filename]
+                   if (!$.isEmptyObject(lyr)) {
+                       wms_params["layers"] = lyr['name'];
+                       layerdef.dblayer = lyr['name'];
+                   }
+               }
+
+               // Add forignKey 
+               if (data.foreignKey) {
+                   wms_params["foreignKey"] = data.foreignKey;
+               }
                //if (type != "wms-occurrence") {
                wms_params['SLD_BODY'] = bccvl_common.generateSLD(layerdef);
                // wms_params['SLD_BODY'] = bccvl_common.generateSLD(layer.layer || layer.filename, styleObj.minVal, styleObj.maxVal, styleObj.steps, styleObj.startpoint, styleObj.midpoint, styleObj.endpoint, layer.datatype, style);
