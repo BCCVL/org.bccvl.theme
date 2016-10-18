@@ -45,10 +45,13 @@
                              is_cc python: item_type == 'org.bccvl.content.projectionexperiment'">
             <thead>
               <tr>
-                <th colspan="2">Selected</th>
+                <th colspan="2">Selected<br/> <a href="javascript:void(0);" class="select-all">All</a> / <a href="javascript:void(0);" class="select-none">None</a></th>
                 <th>Species</th>
                 <th>Resolution</th>
-                <th>Threshold</th>
+                <th>Threshold <br/>
+                  <select class="master-select" placeholder="Set all ...">
+                  </select>
+                </th>
                 <th>Min</th>
                 <th>Max</th>
                 <th tal:condition="is_sdm">Algorithm</th>
