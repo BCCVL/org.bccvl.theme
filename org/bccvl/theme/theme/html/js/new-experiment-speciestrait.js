@@ -26,7 +26,7 @@ define(
             var dmurl = portal_url + '/API/dm/v1/metadata';
             
             // setup dataset select widgets
-            var traitsTable = new bccvl.SelectList("data_table");
+            var traitsTable = new bccvl.SelectList("species_traits_dataset");
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
@@ -73,7 +73,7 @@ define(
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 
-                if (e.target.id === 'form-widgets-data_table' && traitsTable.modal.basket.uuids.length > 0) {
+                if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
                     
                     $('#'+e.target.id+' .trait-dataset-summary').empty();
 
