@@ -14,14 +14,12 @@
         <script src="lib/html5shiv/html5shiv.js"></script>
         <![endif]-->
     <style>
-
       .modal.large {
           width: 80%; /* responsive width */
           margin-left: -40%; /* width/2 */
           left: 50%;
           overflow-y: initial ;
       }
-
     </style>
 
     <!-- include portal_url to simplify path referencing -->
@@ -37,7 +35,6 @@
       window.bccvl.config.visualiser = {
           baseUrl: '/_visualiser/',
       };
-
       local = window.location.protocol == 'file:';
       portal_url = document.URL.split('/').slice(0, -1).join('/');
     </script>
@@ -179,19 +176,20 @@
                     <div class="span4">
                       <div id="formfield-form-widgets-species_traits_dataset">
                       </div>
-
+                      
                     </div>
 
-                    <!-- preview area -->
-                    <div class="span8">
-                      <div class="bccvl-preview-pane" id="map1">
-                        <span class="preview-text">Preview Area</span>
-                      </div>
-                    </div>
+                    <!-- preview area 
+                         <div class="span8">
+                           <div class="bccvl-preview-pane" id="map1">
+                             <span class="preview-text">Preview Area</span>
+                           </div>
+                         </div>
+                    -->
                   </div>
                 </fieldset>
               </div>
-
+              
               <!-- page: environmental layers  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-enviro">
                 <fieldset class="tab">
@@ -319,7 +317,6 @@
                 </fieldset>
               </div>
 
-              
               <!-- page: configuration  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-configuration">
                 <fieldset class="tab">
