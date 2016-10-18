@@ -2838,3 +2838,7 @@ div.youtube-frame {
     font-size:1.8em;
     color:#333;
 }
+
+.d3legend.olLegend.ol-unselectable.ol-control.shown .draw-selection, .d3legend.olLegend.ol-unselectable.ol-control.shown .cell-classes {
+    display: none;
+}
