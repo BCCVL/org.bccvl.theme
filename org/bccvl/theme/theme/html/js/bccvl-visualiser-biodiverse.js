@@ -395,13 +395,13 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     //console.log(counts);
 
                     if (Object.keys(counts).length == 1){
-                        var max = Math.max(...obj.values);
+                        var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
                         var min = 0;
                         features.vars[key].range = [min, max];
                         // set up adjacent range count
                         features.vars[key].num = [0, obj.values.length];
                     } else {
-                        var max = Math.max(...obj.values);
+                        var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
                         //var min = Math.min(...obj.values);
                         var min = 0;
                         //features.vars[key].range = [];
