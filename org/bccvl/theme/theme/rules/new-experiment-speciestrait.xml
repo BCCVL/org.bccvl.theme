@@ -26,7 +26,7 @@
         
         <!-- hook in the algorithm list -->
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
-                css:content-children="#form-widgets-algorithms-table"/>
+                css:content-children="#form-widgets-algorithms_env-table"/>
 
         <replace css:theme-children="#algoConfig"
                  css:content-children="#fieldset-parameters"/>
