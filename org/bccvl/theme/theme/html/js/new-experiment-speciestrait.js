@@ -27,6 +27,7 @@ define(
             
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
+            new bccvl.SelectDict("environmental_datasets");
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
