@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip) {
+define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'cesium', 'ol3cesium', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip'],
+    function( $, layout, ol, proj4, layerswitcher, cesium, ol3cesium, progress_bar, d3, bioviz, zip) {
 
         require(['raven'], function(Raven) {
             /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
@@ -1156,6 +1156,13 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                    { map: map,
                      mapTitle: null
                    }, bccvl_common.exportAsImage);
+
+               var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
+               var scene = ol3d.getCesiumScene();
+               scene.terrainProvider = new Cesium.CesiumTerrainProvider({
+                 url: 'https://assets.agi.com/stk-terrain/world'
+               });
+               ol3d.setEnabled(true);
 
                base.resolve(map, visLayers);
 
