@@ -18,11 +18,21 @@ define(
             // setup dataset select widgets
             var projection = new bccvl.SelectDict("projection");
             // Biodiverse uses selectize 
-            var setThresholds = function(v, d){
+            var setThresholds = function(value, item){
+                var selectIdx;
+                $.each($('.master-select')[0].selectize.currentResults.items, function(i, obj){
+                    if (obj.id === value){
+                        selectIdx = i;
+                    }
+                })
                 $.each(projection.$widget.find('select'), function(index, elem){
-                    console.log($(elem)[0].selectize);
-                    $(elem)[0].selectize.addOption({ text: v, value: v })
-                    $(elem)[0].selectize.addItem(v, true);
+                    if (! $(elem).hasClass('master-select')){
+                        $.each($(elem)[0].selectize.currentResults.items, function(i, obj){
+                           if (selectIdx == i){
+                               $(elem)[0].selectize.setValue(obj.id, true);
+                           }
+                        });
+                    }
                 });
             }
             // is this still in use?
@@ -33,14 +43,18 @@ define(
             // re init selectize boxes on widget reload
             projection.$widget.on('widgetChanged', function(event) {
                 $.each(projection.$widget.find('select'), function(index, elem) {
-                    
-                    var $select = $(elem).selectize({create: true,
-                                       persist: false}); 
-                    var selectize = $select[0].selectize;    
-                    
+                                            
                     if ($(elem).hasClass('master-select')){
+                        var $select = $(elem).selectize({create: false,
+                                       persist: false}); 
+                        var selectize = $select[0].selectize;  
+
                         selectize.on('item_add', setThresholds);
-                        selectize.on('option_add', setThresholds);
+                    } else {
+                        var $select = $(elem).selectize({create: true,
+                                       persist: false}); 
+                        var selectize = $select[0].selectize;  
+
                     }
                 });
             });

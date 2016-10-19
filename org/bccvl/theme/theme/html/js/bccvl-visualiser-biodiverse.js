@@ -393,20 +393,31 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     }
                     
                     //console.log(counts);
+                    
+                    var max = function(){
+                        let max = -Infinity
+                        for(let i=0, len=obj.values.length ; i<len; i++) {
+                        let a = obj.values[i]
+                        if (a > max) {
+                            max = a
+                        }
+                      }
+                      return max
+                    }
+                    var min = 0;
 
                     if (Object.keys(counts).length == 1){
-                        var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
-                        var min = 0;
-                        features.vars[key].range = [min, max];
+                       
+                        features.vars[key].range = [min, max()];
                         // set up adjacent range count
                         features.vars[key].num = [0, obj.values.length];
                     } else {
-                        var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
+                        //var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
                         //var min = Math.min(...obj.values);
-                        var min = 0;
+                        //var min = 0;
                         //features.vars[key].range = [];
                         for (i = 0; i <= 10; i++) { 
-                            features.vars[key].range.push( ( ((max-min)/10)*i)+min );
+                            features.vars[key].range.push( ( ((max()-min)/10)*i)+min );
                             // set up adjacent range count arr for counting
                             features.vars[key].num.push(0);
                         }
