@@ -395,14 +395,14 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     //console.log(counts);
                     
                     var max = function(){
-                        let max = -Infinity
-                        for(let i=0, len=obj.values.length ; i<len; i++) {
-                        let a = obj.values[i]
-                        if (a > max) {
-                            max = a
+                        var m = -Infinity
+                        for(var i=0, len=obj.values.length ; i<len; i++) {
+                        var a = obj.values[i]
+                        if (a > m) {
+                            m = a
                         }
                       }
-                      return max
+                      return m
                     }
                     var min = 0;
 
