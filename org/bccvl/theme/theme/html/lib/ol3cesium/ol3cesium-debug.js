@@ -7520,7 +7520,6 @@ ol.proj.equivalent = function(projection1, projection2) {
  * @api stable
  */
 ol.proj.getTransform = function(source, destination) {
-  console.log(source);
   var sourceProjection = ol.proj.get(source);
   var destinationProjection = ol.proj.get(destination);
   return ol.proj.getTransformFromProjections(
