@@ -1,8 +1,8 @@
 
 // JS code to initialise the biodiverse visualisations
 
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'jquery-xmlrpc'],
-    function( $, preview, ol, layerswitcher, vizcommon, d3  ) {
+define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'ol3-layerswitcher', 'cesium', 'bccvl-visualiser-common', 'd3', 'jquery-xmlrpc'],
+    function( $, preview, ol3, layerswitcher, cesium, vizcommon, d3  ) {
         
         // visualiser base url
         var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;

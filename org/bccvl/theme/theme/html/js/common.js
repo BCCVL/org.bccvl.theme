@@ -23,7 +23,7 @@ requirejs.config({
         'selectize':            'lib/selectize/selectize.min',        
         'openlayers3':          'lib/ol3/ol',
         'ol3-layerswitcher':    'lib/ol3/layerswitcher/ol3-layerswitcher',
-        'ol3cesium':           'lib/ol3cesium/ol3cesium-debug',
+        'ol3cesium':            'lib/ol3cesium/ol3cesium-debug',
         'cesium':               'lib/ol3cesium/CesiumUnminified/Cesium',
         'prism':                'lib/prism/prism',
         'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',

@@ -7520,6 +7520,7 @@ ol.proj.equivalent = function(projection1, projection2) {
  * @api stable
  */
 ol.proj.getTransform = function(source, destination) {
+  console.log(source);
   var sourceProjection = ol.proj.get(source);
   var destinationProjection = ol.proj.get(destination);
   return ol.proj.getTransformFromProjections(
@@ -26182,6 +26183,7 @@ olcs.Camera.prototype.setView_ = function(view) {
 
   this.view_ = view;
   if (!goog.isNull(view)) {
+    console.log(view.getProjection());
     var toLonLat = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
     var fromLonLat = ol.proj.getTransform('EPSG:4326', view.getProjection());
     goog.asserts.assert(toLonLat && fromLonLat);
