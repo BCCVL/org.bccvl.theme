@@ -514,11 +514,18 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                            
                            var numRows = data.rows.length;
                            var labels = [];
-                           
+
+                           var valueIndex = -1;
+                           for (var i = 0; i < data.cols.length; i++) {
+                              if (data.cols[i].type == 'Integer' && data.cols[i].name == 'VALUE') {
+                                valueIndex = i;
+                                break;
+                              }
+                           }
+                         
                            $.each( data.rows, function(i, row){
                                //labels.push([]);
-                               var label = ''+(i+1)+':';
-                               
+                               var label = ''+(valueIndex >= 0 ? row[valueIndex] : (i+1))+':';                               
                                $.each( data.cols, function(idx, col){
                                    if (col.type == 'String' && (col.usage == 'Generic' || col.usage == 'Name')){
                                        label = label + ' ' + row[idx];
