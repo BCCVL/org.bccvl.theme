@@ -323,12 +323,13 @@
                     </p>
                   </div>
 
-                  <!-- experiment algo -->
+                  <!-- experiment algo 1 -->
                   <div class="row-fluid">
-
+                    <label><input type="checkbox" name="algorithms-env-select" value="algorithms-env-select"/>Test the effect of environmental variables on traits</label>
+                    
                     <div class="span4"><div class="control-group">
 
-                        <table class="table table-hover bccvl-algorithmtable">
+                        <table class="table table-hover bccvl-algorithmtable-env">
                           <thead>
                             <tr>
                               There are a number of different algorithms available in the BCCVL. You can choose one or many (or even all!) to run your experiment. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default. Extensive support documentation on each algorithm is available under 'Read more' on the information icon.
@@ -345,9 +346,37 @@
                       </div>
                     </div>
                     
-                    <div class="bccvl-algoconfig span8" id="algoConfig">
+                    <div class="bccvl-algoconfig span8" id="algoConfig-env">
                     </div>
                   </div>
+
+                  <!-- experiment algo 2 -->
+                  <div class="row-fluid">
+                    <label><input type="checkbox" name="algorithms-species-select" value="algorithms-species-select"/>Testhow tratis differ among species</label>
+
+                    <div class="span4"><div class="control-group">
+
+                        <table class="table table-hover bccvl-algorithmtable-species">
+                          <thead>
+                            <tr>
+                              There are a number of different algorithms available in the BCCVL. You can choose one or many (or even all!) to run your experiment. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default. Extensive support documentation on each algorithm is available under 'Read more' on the information icon.
+                            </tr>
+                            <tr><th colspan="2"></th>
+                              <th style="text-align:right;">
+                                <a href="javascript:void(0);" class="select-all">All</a> / <a href="javascript:void(0);" class="select-none">None</a>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>                          
+                        </table>
+                      </div>
+                    </div>
+                    
+                    <div class="bccvl-algoconfig span8" id="algoConfig-species">
+                    </div>
+                  </div>
+                    
                 </fieldset>
               </div>
 

@@ -34,7 +34,7 @@ define(
             // revealed depending on whether the algorithm is
             // selected.
 
-            var $algoCheckboxes = $('input[name="form.widgets.algorithm"]');
+            var $algoCheckboxes = $('input[name^="form.widgets.algorithms_"]');
             $.each($algoCheckboxes, function(index, checkbox) {
                 var $checkbox = $(checkbox);
 
