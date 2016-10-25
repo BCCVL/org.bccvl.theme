@@ -184,8 +184,6 @@ define(
             $('body').on('click', '.bccvl-modal-occurrence-viz, .bccvl-modal-auto-viz', function(event){
                 event.preventDefault();
                 var el = $(this);
-                
-                console.log(el);
 
                 $('body').append('<div class="modal hide fade" id="preview-dataset-modal" tabindex="-1" role="dialog" aria-labelledby="meta-modal" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="meta-modal">'+el.data('title')+'</h3></div><div class="modal-body"><span class="loading-gif" style="margin:3m 0;"></span></div></div>');
 
@@ -205,17 +203,20 @@ define(
                     if (el.hasClass('bccvl-modal-occurrence-viz')){
                         var params = {
                             'type': 'occurrence',
-                            'mimetype': el.data('mimetype')
+                            'mimetype': el.data('mimetype'),
+                            'genre': el.data('genre')
                         }
 
                         vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params);
                     } else {
                         var params = {
                             'type': 'auto',
-                            'mimetype': el.data('mimetype')
+                            'mimetype': el.data('mimetype'),
+                            'genre': el.data('genre')
                         }
-                        if (params.mimetype == 'text/csv'){
-                            vizcommon.renderCSV(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'');
+                        if (params.mimetype == 'text/csv' || (params.genre == 'DataGenreTraits' && params.mimetype == 'application/zip' )){
+                            console.log('traits as zip');
+                            vizcommon.renderCSV(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params);
                         } else {
                             vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
                         }

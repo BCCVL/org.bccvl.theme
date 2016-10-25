@@ -23,6 +23,10 @@ a[disabled] {
 .table {
     word-break: break-all;
 }
+.modal .table {
+    word-break: normal;
+    background: #f0f0f0;
+}
 .white-bg {
     background:#FFF;
 }

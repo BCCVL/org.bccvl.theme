@@ -1211,6 +1211,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                 });
                 
                 jqxhr.then(function(data, status, jqXHR) {
+                    console.log(data);
                      // xmlrpc returns an array of results
                     data = data[0];
                     // define local variables
@@ -1755,25 +1756,145 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
            },
            
            // RENDER CSV
-           renderCSV: function(uuid, url, id){
+           renderCSV: function(uuid, url, id, params){
+
                // NEED TO DESTROY ANY EXISTING MAP OR HTML
                var container = $('#'+id);
                if (container.hasClass('active')) {
                    container.empty();
                    map = null;
                }
-               container.height('auto').html('').CSVToTable(
-                   url,
-                   {
-                       tableClass: 'table table-striped',
-                       error: function(jqXHR, textStatus, errorThrown) {
-                           if (jqXHR.status == 0) {
-                               container.html('Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.');
-                           } else {
-                               container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
+               
+               if (params.mimetype == 'application/zip') {
+                   console.log('get metadata');
+                   // request metadata about file
+                    var dfrd = $.Deferred();
+                    var requestStatus = $.Deferred();
+                    var jqxhr = $.Deferred();
+                    
+                    var fetch = function(){
+                        $.ajax({
+                            url: fetchurl,
+                            data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
+                        }).done(function(data, status, jqXHR){
+                            console.log(data);
+                            if(data.status == "COMPLETED"){
+                                requestStatus.resolve(data.status);
+                            } else if (data.status == "FAILED"){
+                                requestStatus.reject(data.reason);
+                            } else {
+                                 setTimeout(function(){
+                                    fetch();
+                                 }, 500);
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            alert('Problem request dataset, please try again later.')
+                        });
+                    }
+                    
+                    requestStatus.then(
+                      function(){
+                        var meta = $.ajax({
+                            url: dmurl,
+                            type: 'GET',
+                            dataType: 'xml json',
+                            converters: {'xml json': $.xmlrpc.parseDocument},
+                            data: {'uuid': uuid}})
+                            .then(function(data, status, jqXHR) {
+                                jqxhr.resolve(data);
+                            });
+                      }, function(jqXHR, textStatus, errorThrown){
+                        alert('Problem preparing dataset for viewing, please try again later.')
+                    });
+                    
+                    jqxhr.then(
+                        function(data, status, jqXHR){
+                            console.log(data[0].file);
+                            data = data[0];
+                            // Extract occurrence dataset from zip file
+                            zip.useWebWorkers = false;
+                            var httpReader = new zip.HttpReader(data.file);
+                            var zipReader = zip.createReader(httpReader, function(reader) {
+                                // get all entries from the zip
+                                reader.getEntries(function(entries) {
+                                    
+                                    for (var i = 0; i < entries.length; i++) {
+                                        if (!entries[i].filename.includes('citation')) {
+                                            continue;
+                                        }
+                                        
+                                        entries[i].getData(new zip.TextWriter(), function(data) {
+                                            //console.log(data);
+                                            var rowData = d3.csvParse(data),
+                                                columns = rowData.columns;
+                                                
+                                            delete rowData.columns;
+                                            
+                                            var table = d3.select("#"+id).append("table"),
+                                                thead = table.append("thead"),
+                                                tbody = table.append("tbody");
+                                            
+                                            table.classed('table table-striped', true);
+                                            
+                                            // Append the header row
+                                            thead.append("tr")
+                                                .selectAll("th")
+                                                .data(columns)
+                                                .enter()
+                                                .append("th")
+                                                    .text(function(column) {
+                                                        return column;
+                                                    });
+                            
+                                            // Create a row for each object in the data
+                                            var rows = tbody.selectAll("tr")
+                                                .data(rowData)
+                                                .enter()
+                                                .append("tr");
+                            
+                                            // Create a cell in each row for each column
+                                            var cells = rows.selectAll("td")
+                                                .data(function(row) {
+                                                    return columns.map(function(column) {
+                                                        return {
+                                                            column: column,
+                                                            value: row[column]
+                                                        };
+                                                    });
+                                                })
+                                                .enter()
+                                                .append("td")
+                                                    .text(function(d) { return d.value; });
+                                        });
+                                    }
+                                    
+                                });
+            
+                            }, function(error) {
+                                // onerror callback
+                                console.log(error);
+                                throw error;
+                            });
+                    
+                        }
+                    );
+                    
+                    fetch();
+                } else {
+                    container.height('auto').html('').CSVToTable(
+                       url,
+                       {
+                           tableClass: 'table table-striped',
+                           error: function(jqXHR, textStatus, errorThrown) {
+                               if (jqXHR.status == 0) {
+                                   container.html('Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.');
+                               } else {
+                                   container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
+                               }
                            }
-                       }
-                   });
+                       });
+                }
+
            },
            
            renderPDF: function(uuid, url, id){
