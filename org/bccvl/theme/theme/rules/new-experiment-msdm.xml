@@ -43,7 +43,7 @@
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
-                 css:content="form-widgets-modelling_region"/>"
+                 css:content="#form-widgets-modelling_region"/>"
 
         <replace css:theme="#formfield-form-widgets-scale_down"
                  css:content="#formfield-form-widgets-scale_down"/>
