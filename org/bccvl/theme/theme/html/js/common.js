@@ -19,7 +19,6 @@ requirejs.config({
         'jquery-form':          'lib/jquery-form/jquery.form.min',
         'jquery-arrayutils':    'lib/jquery-arrayutils/jquery.arrayutils.min',
         'jquery-timer':         'lib/jquery-timer/jquery.timer',
-        'jquery-csvtotable':    'lib/jquery-csvtotable/jquery.csvToTable',
         'selectize':            'lib/selectize/selectize.min',        
         'openlayers3':          'lib/ol3/ol',
         'ol3-layerswitcher':    'lib/ol3/layerswitcher/ol3-layerswitcher',
