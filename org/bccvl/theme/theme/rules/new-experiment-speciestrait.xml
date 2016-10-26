@@ -25,17 +25,17 @@
                  css:content="#formfield-form-widgets-species_traits_dataset" />
         
         <!-- hook in the algorithm list -->
-        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable-env > tbody"
-                css:content-children="#form-widgets-algorithms_env-table"/>
-
-        <replace css:theme-children="#algoConfig-env"
-                 css:content-children="#fieldset-parameters"/>
-
         <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable-species > tbody"
                 css:content-children="#form-widgets-algorithms_species-table"/>
 
         <replace css:theme-children="#algoConfig-species"
-                 css:content-children="#fieldset-parameters"/>
+                 css:content-children="#fieldset-parameters-algorithms_species"/>
+
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable-diff > tbody"
+                css:content-children="#form-widgets-algorithms_diff-table"/>
+
+        <replace css:theme-children="#algoConfig-diff"
+                 css:content-children="#fieldset-parameters-algorithms_diff"/>
         
         <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"

@@ -40,36 +40,40 @@ define(
 
                 // when the checkbox changes, update the config block's visibility
                 $checkbox.change( function(evt) {
+                    var $algoCheckbox = $(evt.target);
+                    // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
+                    var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
+                    var $accordionToggle = $configBlock.find('.accordion-toggle');
+                    var $accordionBody = $configBlock.find('.accordion-body');
+                    if ($configBlock.length > 0) {
+                        // if there is a config block..
+                        if ($algoCheckbox.prop('checked')) {
+                            $configBlock.show(250);
+                            // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
+                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
+                        } else {
+                            // make sure that the accordion closes before hiding it
+                            if ($accordionBody.hasClass('in')) {
+                                $accordionBody.collapse('hide');
+                                $accordionToggle.addClass('collapsed');
+                                $accordionBody.removeClass('in');
+                            }
+                            // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
+                            // deselected - so we put the default value back into the text field when deselected.
+                            $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
+                                $(c).val($(c).attr('data-default'));
+                            });
 
-                    // Hide all previously selected config blocks
-                    $.each($('div.accordion-group:visible'), function(i1, div) {
-                        $accordionGroup = $(div);
-                        var $accordionToggle = $accordionGroup.find('.accordion-toggle');
-                        var $accordionBody = $accordionGroup.find('.accordion-body');
-
-                        // Collapse if necessary
-                        if ($accordionBody.hasClass('in')) {
-                            $accordionBody.collapse('hide');
-                            $accordionToggle.addClass('collapsed');
-                            $accordionBody.removeClass('in');
+                            $configBlock.hide(250);
                         }
-
-                        // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
-                        // deselected - so we put the default value back into the text field when deselected.
-                        $.each($accordionGroup.find('input[type="number"], input[type="text"]'), function(i2, c) {
-                            $(c).val($(c).attr('data-default'));
-                        });
-
-                        // Finally - hide
-                        $accordionGroup.hide(250);
-                    });
-
-                    // Now show the one that was selected
-                    $('.accordion-group[data-function="' + $(this).attr('value') + '"]').show(250);
+                    } else {
+                        if (console && console.log) {
+                            console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
+                        }
+                    }
                 });
-
-                // start with all algo config groups hidden.
-                $('.accordion-group[data-function="' + $(this).attr('value') + '"]').hide(0);
+                // finally, invoke the change handler to get the inital visibility sorted out.
+                $checkbox.change();
             });
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
