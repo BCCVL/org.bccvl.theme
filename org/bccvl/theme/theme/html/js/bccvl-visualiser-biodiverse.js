@@ -696,7 +696,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 
             updateClasses: function (classes) {
                 var list = $('.d3legend:visible .cell-classes');
-                console.log(classes.getArray().length);
+
                 if (classes.getArray().length == 0){
                     list.empty();
                     list.append('<li>No Selection</li>');
@@ -705,25 +705,20 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 
                     var classesPresent = []
                     classes.forEach(function(feature){
-                        console.log(feature);
-                        console.log(feature.getProperties());
-                        if ($.inArray(feature.getProperties().species, classesPresent) == -1){
-                            classesPresent.push(feature.getProperties().species);
-                        }
-                    })
+                        var speciesInCell = feature.getProperties().species.split(',');
+                        $.each(speciesInCell, function(i, species){
+                            if ($.inArray(species, classesPresent) == -1){
+                                classesPresent.push(species);
+                            }
+                        });
+                    });
                     
                     $.each(classesPresent, function(i, species){
                         console.log(species);
                         list.append('<li>'+species+'</li>');
-                    })
+                    });
                 }
-                /*$.each(classes, function(i, feature){
-                    console.log(i)
-                    console.log(feature);
-                    if ($.inArray(feature.getProperties().species, classesPresent) == -1){
-                        classesPresent.push(feature.getProperties().species);
-                    }
-                });*/
+
             },
             
             getVisibleOverlay: function (map, type){
