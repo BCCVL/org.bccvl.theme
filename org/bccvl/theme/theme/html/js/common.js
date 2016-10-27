@@ -30,7 +30,8 @@ requirejs.config({
         'aekos-api':            'js/aekos-api',
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
-        // our own js files        
+        // our own js files
+        'bccvl-api':                  'js/bccvl-api',
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
         'bccvl-modals':               'js/bccvl-modals',

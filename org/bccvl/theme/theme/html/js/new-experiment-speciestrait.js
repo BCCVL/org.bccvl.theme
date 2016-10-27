@@ -6,8 +6,8 @@ define(
      'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
-     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat', 'd3', 'zip'],
-    function($, preview_layout, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, livechat, d3, zip) {
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat', 'd3', 'zip', 'bccvl-api'],
+    function($, preview_layout, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, livechat, d3, zip, bccvlapi) {
 
         $(function() {
 
@@ -21,9 +21,6 @@ define(
 
             // hook up the search fields
             search.init();
-            
-            // dataset manager getMetadata endpoint url
-            var dmurl = portal_url + '/API/dm/v1/metadata';
             
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
@@ -84,13 +81,7 @@ define(
 
                     $.each(traitsTable.modal.basket.uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
-                        var jqxhr = $.ajax({
-                            url: dmurl,
-                            type: 'GET',
-                            dataType: 'xml json',
-                            converters: {'xml json': $.xmlrpc.parseDocument},
-                            data: {'uuid': uuid}
-                        });
+                        var jqxhr = bccvlapi.dm.metadata(uuid)
                         
                         // after getting urls, request file
                         jqxhr.then(function(data, status, jqXHR) {
@@ -244,6 +235,146 @@ define(
                         
                     });
                 }
+            });
+
+
+            // submit button:
+
+            $("button[name='form.buttons.save']").on('click', function(e) {
+                e.preventDefault()
+                // find form
+                var $form = $(e.target.form)
+                // validate form
+                var validator = $form.validate()
+                if (! validator.form()) {
+                    // validation errors .... stop here
+                    return
+                }
+                // find all form values
+                var formvalues = $form.serializeArray()
+                // convert formvalues to object:
+                var params = {
+                    environmental_data: {},
+                    algorithms: {},
+                    columns: {}
+                }
+                var algoparams = {}
+                var env_layers = {}
+                var env_idx_map = {}
+                for (var i=0; i < formvalues.length; i++) {
+                    var param = formvalues[i]
+                    // column definition?
+                    if (param.name.startsWith('trait-nomination_')) {
+                        param.name = param.name.slice('trait-monitanion_'.length)
+                        params.columns[param.name] = param.value
+                        continue
+                    }
+                    // other?
+                    if (param.name.startsWith('form.widgets.')) {
+                        param.name = param.name.slice('form.widgets.'.length)
+                    }
+                    // title, description
+                    if (param.name.startsWith('IDublinCore.')) {
+                        params[param.name.slice('IDublinCore.'.length)] = param.value
+                        continue
+                    }
+                    if (param.name == "species_traits_dataset:list") {
+                        params.traits_data = {
+                            source: 'bccvl',
+                            id: param.value
+                        }
+                        continue
+                    }
+                    if (param.name.startsWith('environmental_datasets.')) {
+                        var name_parts = param.name.split('.')
+                        //
+                        if (name_parts[1] != 'item') {
+                            // skip non item fields
+                            continue
+                        }
+                        var idx = name_parts[2]
+                        // environmental_datasets.item.0
+                        // environmental_datasets.item.0.item:list
+                        if (name_parts.length == 3) {
+                            // a dataset id
+                            env_idx_map[idx] = param.value
+                            continue
+                        }
+                        // a layer id within dataset -> array
+                        if (! env_layers.hasOwnProperty(idx)) {
+                            env_layers[idx] = []
+                        }
+                        env_layers[idx].push(param.value)
+                        continue
+                    }
+                    if (param.name == 'scale_down') {
+                        params[param.name] = param.value === "true" ? true : false
+                        continue
+                    }
+                    if (param.name == 'modelling_region' && param.value) {
+                        params[param.name] = JSON.parse(param.value)
+                        continue
+                    }
+                    if (param.name == 'algorithms_species:list'
+                        || param.name == 'algorithms_diff:list') {
+                        // collect selected algorithms
+                        params.algorithms[param.value] = {}
+                        continue
+                    }
+
+                    var name_parts = param.name.split('.')
+                    if (name_parts.length > 1) {
+                        // should be algo params here
+                        if (! algoparams.hasOwnProperty(name_parts[0])) {
+                            algoparams[name_parts[0]] = {}
+                        }
+                        algoparams[name_parts[0]][name_parts[1]] = param.value
+                        continue
+                    }
+                    
+                }
+                // assign algo params to selected algorithms
+                for (var algoid in params.algorithms) {
+                    params.algorithms[algoid] = algoparams[algoid]
+                }
+                // build env_ds option
+                for (var envds in env_idx_map) {
+                    if (env_layers[envds].length >0) {
+                        params.environmental_data[env_idx_map[envds]] = env_layers[envds]
+                    }
+                }
+                
+                // submit ... disable button
+                $(e.target).prop('disabled', true)                
+                var submit = bccvlapi.em.submittraits(params)
+                $.when(submit).then(
+                    function(data, status, jqxhr) {
+                        // success - redirect to result page
+                        window.location.replace(data.experiment.url)  // simulate redirect rather than click navigate
+                    },
+                    function(jqxhr, status, error) {
+                        // on error update form ...
+                        // status=="error"
+                        // error ... http status string
+                        // jqxhr.status == 503
+                        // errors = jqxhr.responseJSON()
+                        // ct = jqxhr.getResponseHeader('Content-Type')
+                        // l = jqxhr.getResponseHeader('Content-Length')
+
+
+                        // 503 - Service Unavailable ... generic error?
+                        //     {"errors": [{"title": "algorithm_species"}]}
+                        //
+
+                        // 400  - Bad Request
+                        // ... normal parameter error?
+                        alert('Experiment submission failed.\n' + JSON.stringify(jqxhr.resonseJSON(), null, 2))
+
+                        // reactivate button
+                        $(e.target).prop('disabled', false)
+                    }
+                )
+
             });
             
         });
