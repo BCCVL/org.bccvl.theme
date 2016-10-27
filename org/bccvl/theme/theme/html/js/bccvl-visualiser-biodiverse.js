@@ -84,13 +84,6 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                             var grid = new ol.source.Vector({
                                 features: (new ol.format.GeoJSON()).readFeatures(geojson.points)
                             });
-                        
-                            var classesPresent = []
-                            $.each(grid.getFeatures(), function(i, feature){
-                                if ($.inArray(feature.getProperties().species, classesPresent) == -1){
-                                    classesPresent.push(feature.getProperties().species);
-                                }
-                            });
                             
                             var hoverFunction = function(e) {
                                 if (e.dragging) return;
@@ -171,21 +164,21 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                             });
                         
                             // Get selected grid cells collection
-                            selectedGridCells = gridSelect.getFeatures();
+                            var selectedGridCells = gridSelect.getFeatures();
                             
                             selectedGridCells.on('add', function (feature) {
                                 var currentLayer = bioviz.getVisibleOverlay(map);
                                 var property = currentLayer.get('title');
-                                //sum += parseFloat(feature.element.getProperties()[property]);
-                                //vizcommon.updateSum(sum);
+                                console.log(selectedGridCells);
+                                bioviz.updateClasses(selectedGridCells);
                         
                             });
                         
                             selectedGridCells.on('remove', function (feature) {
                                 var currentLayer = bioviz.getVisibleOverlay(map);
                                 var property = currentLayer.get('title');
-                                //sum -= parseFloat(feature.element.getProperties()[property]);
-                                //vizcommon.updateSum(sum);
+
+                                bioviz.updateClasses(gridSelect.getFeatures());
                             });
                         
                             // Add select interaction to map
@@ -291,7 +284,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                             var layercount = 0;
 
                             $.each(geojson.vars, function(key, variable){
-                                bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
+                                bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
                                 layercount++;
                             });
                             
@@ -442,7 +435,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                 return features;
             },
             
-            createBiodiverseLayer: function (i, map, grid, overlayGroup, key, variable, classesPresent, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
+            createBiodiverseLayer: function (i, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
 
                 // Create grid style function
                 var gridStyle = function (feature) {
@@ -490,7 +483,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     .domain(variable.range)
                     .range(colorBank);
 
-                var legend = bioviz.biodiverseLegend(grid, key, variable, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction);
+                var legend = bioviz.biodiverseLegend(grid, key, variable, map, colorScale, colorBank, hoverFunction, drawFunction);
         
                 // Create layer from vector grid and style function
                 // only make first layer visible
@@ -510,7 +503,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
         
             },
             
-            biodiverseLegend: function (grid, key, variable, map, colorScale, classesPresent, colorBank, hoverFunction, drawFunction) {
+            biodiverseLegend: function (grid, key, variable, map, colorScale, colorBank, hoverFunction, drawFunction) {
 
                 function legendSelectCells (d) {
                     var selected;
@@ -546,14 +539,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     legend.className = 'd3legend olLegend ol-unselectable ol-control shown';
                 var drawControl = document.createElement('a');
                     drawControl.setAttribute('href', 'javascript:void()');
-                    drawControl.className = 'draw-selection';
-                    drawControl.innerHTML = 'Draw a Selection';
+                    drawControl.className = 'draw-selection btn btn-small btn-info';
+                    drawControl.innerHTML = '<i class="fa fa-pencil"></i> Draw a Selection';
                     legend.appendChild(drawControl);
-                /*var sumSpan = document.createElement('p');
-                    sumSpan.innerHTML = 'Sum of selection: <strong><span class="sum">0</span></strong>';
-                    legend.appendChild(sumSpan);*/
+                var speciesTitle = document.createElement('p');
+                    speciesTitle.innerHTML = '<strong>Species in Selection:</strong>';
+                    legend.appendChild(speciesTitle);
                 var speciesList = document.createElement('ul');
                     speciesList.className = 'cell-classes';
+                var noSelection = document.createElement('li');
+                    noSelection.innerHTML = 'No selection.';
+                    speciesList.appendChild(noSelection);
                     legend.appendChild(speciesList);
                     
                 var width = 160,
@@ -661,7 +657,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     map.addInteraction(drawFunction);
                 });
         
-                $.each(classesPresent, function(i, cls){
+                /*$.each(classesPresent, function(i, cls){
                     var classItem = document.createElement('li');
                     var classLink = document.createElement('a');
                     classLink.setAttribute('href', "javascript:void(0);");
@@ -693,17 +689,41 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
         
                     classItem.appendChild(classLink);
                     speciesList.appendChild(classItem);
-                });
+                });*/
                 return legend;
             },
             
                 
             updateClasses: function (classes) {
-                $('.info:visible .cell-classes').empty();
-            
-                $.each(classes, function(i, cls){
-                    $('.info:visible .cell-classes').append('<li><a href="javascript:void(0);" title="Select all cells of this class." data-cell-class="'+cls+'" class="cell-class-link">'+cls+'</a></li>');
-                });
+                var list = $('.d3legend:visible .cell-classes');
+                console.log(classes.getArray().length);
+                if (classes.getArray().length == 0){
+                    list.empty();
+                    list.append('<li>No Selection</li>');
+                } else {
+                    list.empty();
+                
+                    var classesPresent = []
+                    classes.forEach(function(feature){
+                        console.log(feature);
+                        console.log(feature.getProperties());
+                        if ($.inArray(feature.getProperties().species, classesPresent) == -1){
+                            classesPresent.push(feature.getProperties().species);
+                        }
+                    })
+                    
+                    $.each(classesPresent, function(i, species){
+                        console.log(species);
+                        list.append('<li>'+species+'</li>');
+                    })
+                }
+                /*$.each(classes, function(i, feature){
+                    console.log(i)
+                    console.log(feature);
+                    if ($.inArray(feature.getProperties().species, classesPresent) == -1){
+                        classesPresent.push(feature.getProperties().species);
+                    }
+                });*/
             },
             
             getVisibleOverlay: function (map, type){

@@ -2843,10 +2843,6 @@ div.youtube-frame {
     color:#333;
 }
 
-.d3legend.olLegend.ol-unselectable.ol-control.shown .draw-selection, .d3legend.olLegend.ol-unselectable.ol-control.shown .cell-classes {
-    display: none;
-}
-
 .trait-dataset-summary .trait-column:nth-child(4n+1) {
     clear: left;
     margin-left: 0;
@@ -2898,4 +2894,26 @@ div.youtube-frame {
     margin-bottom:1.5em;
     border-bottom:1px solid rgba(0,0,0,.15);
     padding-bottom:1.5em;
+}
+.d3legend a i {
+    float: none;
+    margin: 0 .1em 0 0;
+}
+.d3legend p {
+    margin: .75em 0 0;
+    font-size: 0.9em;
+}
+.d3legend ul {
+    list-style-type: none;
+    margin-left: 0;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px #ddd solid;
+    font-size: 0.9em;
+}
+.d3legend ul li {
+    padding-left: 0;
+    padding: 0;
+    margin: 0;
+    line-height: 1.3em;
 }
