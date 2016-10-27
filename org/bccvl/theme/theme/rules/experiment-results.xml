@@ -32,7 +32,7 @@
                  css:content="#bccvl-experimentresults-table"/>
 
         <replace css:theme-children=".experiment-details" css:content-children="#fieldset-default"/>
-        <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters"/>
+        <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters-functions"/>
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

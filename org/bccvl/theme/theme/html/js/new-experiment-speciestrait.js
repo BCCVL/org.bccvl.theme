@@ -6,8 +6,8 @@ define(
      'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
-     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat', 'd3'],
-    function($, preview_layout, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, livechat, d3) {
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat', 'd3', 'zip'],
+    function($, preview_layout, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, livechat, d3, zip) {
 
         $(function() {
 
@@ -40,36 +40,40 @@ define(
 
                 // when the checkbox changes, update the config block's visibility
                 $checkbox.change( function(evt) {
+                    var $algoCheckbox = $(evt.target);
+                    // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
+                    var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
+                    var $accordionToggle = $configBlock.find('.accordion-toggle');
+                    var $accordionBody = $configBlock.find('.accordion-body');
+                    if ($configBlock.length > 0) {
+                        // if there is a config block..
+                        if ($algoCheckbox.prop('checked')) {
+                            $configBlock.show(250);
+                            // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
+                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
+                        } else {
+                            // make sure that the accordion closes before hiding it
+                            if ($accordionBody.hasClass('in')) {
+                                $accordionBody.collapse('hide');
+                                $accordionToggle.addClass('collapsed');
+                                $accordionBody.removeClass('in');
+                            }
+                            // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
+                            // deselected - so we put the default value back into the text field when deselected.
+                            $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
+                                $(c).val($(c).attr('data-default'));
+                            });
 
-                    // Hide all previously selected config blocks
-                    $.each($('div.accordion-group:visible'), function(i1, div) {
-                        $accordionGroup = $(div);
-                        var $accordionToggle = $accordionGroup.find('.accordion-toggle');
-                        var $accordionBody = $accordionGroup.find('.accordion-body');
-
-                        // Collapse if necessary
-                        if ($accordionBody.hasClass('in')) {
-                            $accordionBody.collapse('hide');
-                            $accordionToggle.addClass('collapsed');
-                            $accordionBody.removeClass('in');
+                            $configBlock.hide(250);
                         }
-
-                        // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
-                        // deselected - so we put the default value back into the text field when deselected.
-                        $.each($accordionGroup.find('input[type="number"], input[type="text"]'), function(i2, c) {
-                            $(c).val($(c).attr('data-default'));
-                        });
-
-                        // Finally - hide
-                        $accordionGroup.hide(250);
-                    });
-
-                    // Now show the one that was selected
-                    $('.accordion-group[data-function="' + $(this).attr('value') + '"]').show(250);
+                    } else {
+                        if (console && console.log) {
+                            console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
+                        }
+                    }
                 });
-
-                // start with all algo config groups hidden.
-                $('.accordion-group[data-function="' + $(this).attr('value') + '"]').hide(0);
+                // finally, invoke the change handler to get the inital visibility sorted out.
+                $checkbox.change();
             });
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
@@ -79,112 +83,170 @@ define(
                     $('#'+e.target.id+' .trait-dataset-summary').empty();
 
                     $.each(traitsTable.modal.basket.uuids, function(i, uuid){
-                        var jqxhr = $.Deferred();
-                        
-                        var urls = [];
                         // get file urls using uuid from widget basket
-                        $.ajax({
+                        var jqxhr = $.ajax({
                             url: dmurl,
                             type: 'GET',
                             dataType: 'xml json',
                             converters: {'xml json': $.xmlrpc.parseDocument},
                             data: {'uuid': uuid}
-                        }).done(function(response) {
-                            $.each(response, function(i,d){
-                                urls.push(d.file);
-                            });
-                            jqxhr.resolve(urls);
                         });
                         
                         // after getting urls, request file
                         jqxhr.then(function(data, status, jqXHR) {
-                            
-                            $.each(urls, function(i, url){
-                                
-                                // set up dom node
-                                var div = document.createElement('div');
-                                div.className = 'row-fluid trait-dataset-summary';
-                                var divHeader = document.createElement('div');
-                                divHeader.className = 'trait-dataset-summary-header span2';
-                                divHeader.innerHTML += '<div class="trait-title">Column Header</div><div class="trait-row-vals">Example Values</div><div class="trait-nom-row">Input Type</div>'
-                                div.appendChild(divHeader);
-                                var divTraits = document.createElement('div');
-                                divTraits.className = 'trait-dataset-summary-traits span10'
-                                div.appendChild(divTraits);
-                                e.target.appendChild(div);
-                                
-                                // parse and filter for columns and five rows
-                                d3.csv(url, function(error, data) {
-    
-                                    var preview = [];
-                                    var columns = data.columns;
-                                    var truncData = data.filter(function(row,i){
-                                        if (i < 5){
-                                            return row;
+                            // it's an xmlrpc call.... get first element in array
+                            data = data[0]
+                            /* data keys:
+                                  headers ... all headers in csv
+                                  traits ... all headers with trait variables
+                                  environ ... all headers with environ variables
+                                  mimetype ... application/zip ?
+                                  file ... download url
+                            */
+
+                            // set up dom node
+                            var div = document.createElement('div');
+                            div.className = 'row-fluid trait-dataset-summary';
+                            var divHeader = document.createElement('div');
+                            divHeader.className = 'trait-dataset-summary-header span2';
+                            divHeader.innerHTML += '<div class="trait-title">Column Header</div><div class="trait-row-vals">Example Values</div><div class="trait-nom-row">Input Type</div>'
+                            div.appendChild(divHeader);
+                            var divTraits = document.createElement('div');
+                            divTraits.className = 'trait-dataset-summary-traits span10'
+                            div.appendChild(divTraits);
+                            e.target.appendChild(div);
+
+                            var csv = $.Deferred();
+                            if (data.mimetype == 'application/zip') {
+
+                                // iterate over layers and pick first one as csv data file
+                                // FIXME: should use proper criteria to find traits data file
+                                //        like layer identifier or class etc...
+                                var filename;
+                                for(var layer in data.layers) {
+                                    if (data.layers.hasOwnProperty(layer)) {
+                                        if (data.layers[layer].filename.toLowerCase().indexOf('citation') < 0) {
+                                            filename = data.layers[layer].filename
+                                            break
+                                        }
+                                    }
+                                }
+
+                                // Extract traits data from zip file
+                                zip.useWebWorkers = false;
+                                var httpReader = new zip.HttpReader(data.file);
+                                var zipReader = zip.createReader(httpReader, function(reader) {
+                                    // get all entries from the zip
+                                    reader.getEntries(function(entries) {
+                                        // Look for file that end with filename.
+                                        for (var i = 0; i < entries.length; i++) {
+                                            if (!entries[i].filename.endsWith(filename)) {
+                                                continue;
+                                            }
+                                            // Get the data
+                                            entries[i].getData(new zip.TextWriter(), function(data) {
+                                                // Parse data to extract the coordinates
+                                                var traits = d3.csvParse(data);
+                                                // close the zip reader
+                                                reader.close();
+
+                                                csv.resolve({
+                                                    columns: traits.columns,
+                                                    truncData: traits.filter(function(row, i) {
+                                                        if (i < 5) {
+                                                            return row;
+                                                        }
+                                                    })
+                                                })
+                                                             
+                                            });
                                         }
                                     });
                                     
-                                    columns.forEach(function(column, i){
+                                }, function(error) {
+                                    // onerror callback
+                                    console.log("drawConvexhullPolygon:", error);
+                                    throw error;
+                                });
+                                
+                            } else if (data.mimetype == 'text/csv') {
+                                // parse and filter for columns and five rows
+                                d3.csv(url, function(error, data) {
+                                    var columns = data.columns
+                                    var truncData = data.filter(function(row,i) {
+                                        if (i < 5){
+                                            return row;
+                                        }
+                                    })
+                                    csv.resolve({columns: columns, truncData: truncData})
+                                })
+                            }
+
+                            // continue once we have the csv data....
+                            csv.then(function(params) {
+                                var columns = params.columns
+                                var truncData = params.truncData
+
+                                var preview = [];
+                                columns.forEach(function(column, i){
+                                    
+                                    var col = {}
+                                    col.name = column;
+                                    col.values = []
+                                    $.each(truncData, function(i,r){
+                                        col.values.push(r[column]); 
+                                    });
+                                    preview.push(col);
+                                });
+
+                                $.each(preview, function(i, col){
                                         
-                                        var col = {}
-                                        col.name = column;
-                                        col.values = []
-                                        $.each(truncData, function(i,r){
-                                           col.values.push(r[column]); 
-                                        });
-                                        preview.push(col);
-    
+                                    var newCol = document.createElement('div');
+                                    newCol.className = 'span3 trait-column';
+                                    var header = document.createElement('div');
+                                    header.className = 'trait-title';
+                                    header.innerHTML = col.name;
+                                    var examples = document.createElement('div');
+                                    examples.className = 'trait-row-vals';
+                                    $.each(col.values, function(i,v){
+                                        examples.innerHTML += '<p>'+v+'</p>'
+                                    });
+                                    examples.innerHTML += '<p>...</p>'
+                                    var input = document.createElement('div');
+                                    input.className = 'trait-nom-row';
+                                    input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                        '<option selected value="ignore">Ignore</option>'+
+                                        '<option value="lat">Latitude</option>'+
+                                        '<option value="lon">Longitude</option>'+
+                                        '<option value="species">Species Name</option>'+
+                                        '<option value="trait_con">Trait (continuous)</option>'+
+                                        '<option value="trait_cat">Trait (categorical)</option>'+
+                                        '<option value="env_var_con">Env. Variable (continuous)</option>'+
+                                        '<option value="env_var_cat">Env. Variable (categorical)</option>'+
+                                        '</select>';
+                                    
+                                    $(input).find('select option').each(function(){
+                                        if (col.name.toLowerCase() === $(this).val().toLowerCase()){
+                                            $(this).prop('selected', true);
+                                        }
                                     });
                                     
-                                    $.each(preview, function(i, col){
-                                        
-                                        var newCol = document.createElement('div');
-                                        newCol.className = 'span3 trait-column';
-                                        var header = document.createElement('div');
-                                        header.className = 'trait-title';
-                                        header.innerHTML = col.name;
-                                        var examples = document.createElement('div');
-                                        examples.className = 'trait-row-vals';
-                                        $.each(col.values, function(i,v){
-                                            examples.innerHTML += '<p>'+v+'</p>'
-                                        });
-                                        examples.innerHTML += '<p>...</p>'
-                                        var input = document.createElement('div');
-                                        input.className = 'trait-nom-row';
-                                        input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
-                                                         '<option selected value="ignore">Ignore</option>'+
-                                                         '<option value="lat">Latitude</option>'+
-                                                         '<option value="lon">Longitude</option>'+
-                                                         '<option value="species">Species Name</option>'+
-                                                         '<option value="trait_con">Trait (continuous)</option>'+
-                                                         '<option value="trait_cat">Trait (categorical)</option>'+
-                                                         '<option value="env_var_con">Env. Variable (continuous)</option>'+
-                                                         '<option value="env_var_cat">Env. Variable (categorical)</option>'+
-                                                         '</select>';
-                                        
-                                        $(input).find('select option').each(function(){
-                                           if (col.name.toLowerCase() === $(this).val().toLowerCase()){
-                                               $(this).prop('selected', true);
-                                           }
-                                        });
-                                       
-                                        newCol.appendChild(header);
-                                        newCol.appendChild(examples);
-                                        newCol.appendChild(input);
-                                     
-                                        divTraits.appendChild(newCol);
-                                    });
-    
+                                    newCol.appendChild(header);
+                                    newCol.appendChild(examples);
+                                    newCol.appendChild(input);
+                                    
+                                    divTraits.appendChild(newCol);
                                 });
-                            })
+                                
+                            });
+
                         });
-                        
                         
                     });
                 }
             });
-
+            
         });
-
+        
     }
 );
