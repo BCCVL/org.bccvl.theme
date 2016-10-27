@@ -2884,6 +2884,8 @@ div.youtube-frame {
 }
 .trait-dataset-summary .trait-row-vals p {
     margin: .75em 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .trait-dataset-summary .trait-nom-row select {
     width: 100%;
