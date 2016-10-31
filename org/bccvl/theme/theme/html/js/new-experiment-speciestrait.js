@@ -162,7 +162,7 @@ define(
                                 
                             } else if (data.mimetype == 'text/csv') {
                                 // parse and filter for columns and five rows
-                                d3.csv(url, function(error, data) {
+                                d3.csv(data.file, function(error, data) {
                                     var columns = data.columns
                                     var truncData = data.filter(function(row,i) {
                                         if (i < 5){
