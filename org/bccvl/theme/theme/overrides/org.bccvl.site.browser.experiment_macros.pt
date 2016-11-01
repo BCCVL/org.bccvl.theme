@@ -107,6 +107,11 @@
              tal:attributes="data-toggle toggle;
                              href python:'#tab-details' if toggle else 'view#tab-details'">Details</a>
         </li>
+        <li id="tab-biodiverse-vis"
+            tal:condition="python: context.portal_type in ('org.bccvl.content.biodiverseexperiment', )"
+            tal:attributes="class python: 'active' if current_view == 'experiment_biodiverse_vis' else '';">
+          <a href="experiment_biodiverse_vis#tab-biodiverse-vis">Biodiverse Visualisation</a>
+        </li>
         <li id="tab-overlay"
             tal:attributes="class python: 'active' if current_view == 'experiment_overlay' else '';">
           <a href="experiment_overlay#tab-overlay">Overlay Maps</a>
