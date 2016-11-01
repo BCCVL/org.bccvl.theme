@@ -480,7 +480,7 @@ define(
                 },
                 // --------------------------------------------------------------
                 importGenusDatasets: function(searchString, excluded) {
-                    var  surl = providers.ala.search.searchSpeciesUrl('genus', searchString, 0);
+                    var  surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, 0);
                     
                     $.ajax({
                         dataType: 'jsonp',                       // ..using JSONP instead
@@ -493,7 +493,7 @@ define(
                             
                             // Set pageSize and search for all the species again
                             var pageSize = providers.ala.search.totalRecords(data);
-                            var surl = providers.ala.search.searchSpeciesUrl('genus', searchString, pageSize);
+                            var surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, pageSize);
                             
                             $.ajax({
                                 dataType: 'jsonp',                       // ..using JSONP instead
