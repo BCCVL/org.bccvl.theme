@@ -4,35 +4,25 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- EXPERIMENT RESULTS ========================================= -->
-    <rules css:if-content="#bccvl-experiment-view">
-        <theme href="html/experiment-results.html" />
+    <rules css:if-content="#bccvl-experiment-biodiverse-vis">
+        <theme href="html/experiment-biodiverse-vis.html" />
 
         <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
         <replace
             css:theme-children=".bccvl-breadcrumb .bccvllinks-experiment-view"
             css:content-children="#breadcrumbs-current"
-            />
-
-        <!-- copy oauth select modal -->
-        <before css:theme-children="body" css:content="#oauth-select-modal"/>
+        />
 
         <!-- remove all mocked status blocks -->
         <drop css:theme=".bccvl-status-block" />
 
-        <replace css:theme="#experiment-actions"
-                 css:content="#experiment-actions"/>
         <!-- copy page tabs -->
         <replace css:theme="ul.nav-tabs" css:content="ul.nav-tabs"/>
-
-        <!-- insert template status block -->
-        <before css:theme-children=".bccvl-experimentresults" css:content="#experiment_state"/>
 
         <!-- get the results -->
         <replace css:theme=".bccvl-experimentresults table"
                  css:content="#bccvl-experimentresults-table"/>
 
-        <replace css:theme-children=".experiment-details" css:content-children="#fieldset-default"/>
-        <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters-functions"/>
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

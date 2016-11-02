@@ -27,7 +27,7 @@
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
         <replace css:theme-children="#algoConfig"
-                 css:content-children="#fieldset-parameters"/>
+                 css:content-children="#fieldset-parameters-functions"/>
 
 
         <!-- hook in the occurrences list -->
@@ -43,7 +43,7 @@
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
-                 css:content="form-widgets-modelling_region"/>"
+                 css:content="#form-widgets-modelling_region"/>"
 
         <replace css:theme="#formfield-form-widgets-scale_down"
                  css:content="#formfield-form-widgets-scale_down"/>

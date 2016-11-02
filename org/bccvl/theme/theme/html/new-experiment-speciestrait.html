@@ -143,13 +143,14 @@
               <div class="tab-pane active" id="tab-meta">
                 <fieldset class="tab">
                   <div class="row-fluid">
-                    <p class="span12 bccvl-tab-description">
-                      Give your experiment a title and description.
-                    </p>
-                  </div>
-
-                  <div class="row-fluid">
-                    <div class="span12">
+                    <div class="span6">
+                      <h3>In this experiment, you can analyse the effect of environmental variables on 1 or more species traits, and also test how traits differ among multiple species.</h3>
+                      
+                    </div>
+                    <div class="span6">
+                      <p class="bccvl-tab-description">
+                        Give your experiment a title and description.
+                      </p>
                       <div class="control-group">
                         <input type="text" name="expName" class="bccvl-expname input-block-level" required="required" placeholder="Name for this experiment"/>
                       </div>
@@ -323,15 +324,18 @@
                     </p>
                   </div>
 
-                  <!-- experiment algo -->
+                  <!-- experiment algo 1 -->
                   <div class="row-fluid">
+                    
+                    <div class="span4">
+                      <h5><label><input type="checkbox" name="algorithms-species-select" value="algorithms-species-select"/><strong> Test the effect of environmental variables on traits</strong></label></h5>
+                    
+                      <div class="control-group">
 
-                    <div class="span4"><div class="control-group">
-
-                        <table class="table table-hover bccvl-algorithmtable">
+                        <table class="table table-hover bccvl-algorithmtable-species">
                           <thead>
                             <tr>
-                              There are a number of different algorithms available in the BCCVL. You can choose one or many (or even all!) to run your experiment. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default. Extensive support documentation on each algorithm is available under 'Read more' on the information icon.
+                              The algorithms below can be used to run a model that will test how the species traits are affected by all selected environmental variables. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default.  
                             </tr>
                             <tr><th colspan="2"></th>
                               <th style="text-align:right;">
@@ -345,9 +349,36 @@
                       </div>
                     </div>
                     
-                    <div class="bccvl-algoconfig span8" id="algoConfig">
+                    <div class="bccvl-algoconfig span8" id="algoConfig-species">
                     </div>
                   </div>
+
+                  <!-- experiment algo 2 -->
+                  <div class="row-fluid">
+                    
+                    <div class="span4"><div class="control-group">
+                        <h5><label><input type="checkbox" name="algorithms-diff-select" value="algorithms-diff-select"/><strong> Test how traits differ among species <br/><em>(requires multiple input species)</em></strong></strong></label></h5>
+                        <table class="table table-hover bccvl-algorithmtable-diff">
+                          <thead>
+                            <tr>
+                              This algorithm can be used to run a model that will test how each trait differs amount the different species. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default.
+                            </tr>
+                            <tr><th colspan="2"></th>
+                              <th style="text-align:right;">
+                                <a href="javascript:void(0);" class="select-all">All</a> / <a href="javascript:void(0);" class="select-none">None</a>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>                          
+                        </table>
+                      </div>
+                    </div>
+                    
+                    <div class="bccvl-algoconfig span8" id="algoConfig-diff">
+                    </div>
+                  </div>
+                    
                 </fieldset>
               </div>
 

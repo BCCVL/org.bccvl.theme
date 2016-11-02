@@ -19,7 +19,6 @@ requirejs.config({
         'jquery-form':          'lib/jquery-form/jquery.form.min',
         'jquery-arrayutils':    'lib/jquery-arrayutils/jquery.arrayutils.min',
         'jquery-timer':         'lib/jquery-timer/jquery.timer',
-        'jquery-csvtotable':    'lib/jquery-csvtotable/jquery.csvToTable',
         'selectize':            'lib/selectize/selectize.min',        
         'openlayers3':          'lib/ol3/ol',
         'ol3-layerswitcher':    'lib/ol3/layerswitcher/ol3-layerswitcher',
@@ -33,7 +32,8 @@ requirejs.config({
         'aekos-api':            'js/aekos-api',
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
-        // our own js files        
+        // our own js files
+        'bccvl-api':                  'js/bccvl-api',
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
         'bccvl-modals':               'js/bccvl-modals',

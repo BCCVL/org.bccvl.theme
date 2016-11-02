@@ -124,7 +124,8 @@
                  tal:attributes="href dlinfo/url;
                                  data-uuid item_uuid;
                                  data-title item_title_or_id;
-                                 data-mimetype python:item_obj.format;"
+                                 data-mimetype python:item_obj.format;
+                                 data-genre item_genre;"
                  tal:condition="python: item_obj.format == 'text/csv' and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
@@ -132,7 +133,8 @@
                  tal:attributes="href dlinfo/url;
                                  data-uuid item_uuid;
                                  data-title item_title_or_id;
-                                 data-mimetype python:item_obj.format;"
+                                 data-mimetype python:item_obj.format;
+                                 data-genre item_genre;"
                  tal:condition="python: item_obj.format != 'text/csv' or item_genre == 'DataGenreTraits'">
                 <i class="fa fa-object-ungroup"></i>
               View</a>

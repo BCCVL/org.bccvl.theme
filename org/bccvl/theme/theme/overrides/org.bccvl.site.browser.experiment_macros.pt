@@ -10,46 +10,51 @@
   <body>
 
     <metal:block metal:define-macro="algo_parameters">
-      <fieldset id="fieldset-parameters"
-                tal:define="param_groups view/param_groups|nothing"
-                tal:condition="param_groups">
-        <div class="accordion-group" data-function="bioclim"
-             tal:repeat="group param_groups"
-             tal:attributes="data-function group/toolkit">
-          <div class="accordion-heading">
-            <a class="accordion-toggle collapsed"
-               data-toggle="collapse" data-parent="#algoConfig"
-               href="#accordion_body_bioclim"
-               tal:attributes="href string:#accordion_body_${group/toolkit}"
-               tal:content="group/label">Configuration bioclim</a>
-          </div>
 
-          <div class="accordion-body collapse"
-               id="accordion_body_bioclim"
-               tal:attributes="id string:accordion_body_${group/toolkit}">
-            <div class="accordion-inner bccvl-algo-config">
-              <span class="formHelp"
-                    tal:content="group/description">No configuration options</span>
-              <div class="form-horizontal">
-                 <div class="algo-params">
-                   <tal:block define="view nocall:group">
-                     <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
-                   </tal:block>
-                 </div>
-                 <tal:block tal:repeat="subgroup group/groups">
-                   <div class="paramgroup">
-                     <h3 tal:content="subgroup/label"></h3>
-                     <p tal:content="structure subgroup/description"></p>
-                   <tal:block define="view nocall:subgroup">
-                     <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
-                   </tal:block>
-                   </div>
-                 </tal:block>
+      <tal:block tal:repeat="param_field_name view/param_groups|nothing">
+      
+        <fieldset id="fieldset-parameters"
+                  tal:define="param_groups python:view.param_groups[param_field_name]"
+                  tal:attributes="id string:fieldset-parameters-${param_field_name}"
+                  tal:condition="param_groups">
+          <div class="accordion-group" data-function="bioclim"
+               tal:repeat="group param_groups"
+               tal:attributes="data-function group/toolkit">
+            <div class="accordion-heading">
+              <a class="accordion-toggle collapsed"
+                 data-toggle="collapse" data-parent="#algoConfig"
+                 href="#accordion_body_bioclim"
+                 tal:attributes="href string:#accordion_body_${group/toolkit}"
+                 tal:content="group/label">Configuration bioclim</a>
+            </div>
+            
+            <div class="accordion-body collapse"
+                 id="accordion_body_bioclim"
+                 tal:attributes="id string:accordion_body_${group/toolkit}">
+              <div class="accordion-inner bccvl-algo-config">
+                <span class="formHelp"
+                      tal:content="group/description">No configuration options</span>
+                <div class="form-horizontal">
+                  <div class="algo-params">
+                    <tal:block define="view nocall:group">
+                      <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
+                    </tal:block>
+                  </div>
+                  <tal:block tal:repeat="subgroup group/groups">
+                    <div class="paramgroup">
+                      <h3 tal:content="subgroup/label"></h3>
+                      <p tal:content="structure subgroup/description"></p>
+                      <tal:block define="view nocall:subgroup">
+                        <metal:block use-macro="context/@@ploneform-macros/widget_rendering" />
+                      </tal:block>
+                    </div>
+                  </tal:block>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
+      </tal:block>
     </metal:block>
 
     <metal:block define-macro="experiment_state">
@@ -101,6 +106,11 @@
           <a href="view#tab-details"
              tal:attributes="data-toggle toggle;
                              href python:'#tab-details' if toggle else 'view#tab-details'">Details</a>
+        </li>
+        <li id="tab-biodiverse-vis"
+            tal:condition="python: context.portal_type in ('org.bccvl.content.biodiverseexperiment', )"
+            tal:attributes="class python: 'active' if current_view == 'experiment_biodiverse_vis' else '';">
+          <a href="experiment_biodiverse_vis#tab-biodiverse-vis">Biodiverse Visualisation</a>
         </li>
         <li id="tab-overlay"
             tal:attributes="class python: 'active' if current_view == 'experiment_overlay' else '';">
