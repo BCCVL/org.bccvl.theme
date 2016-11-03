@@ -8,13 +8,13 @@
     <tal:loop tal:repeat="itemList items">
       <tal:loop tal:repeat="item itemList">
         <tal:condition tal:define="category item/category"
-                       tal:condition="python: item['pos'] == 0">
+                       tal:condition="python: item['pos'] == 0 and item['category'].value">
           <tr>
             <td class="span12 bccvl-tab-description" colspan="2" tal:content="category/title"></td>
             <td class="bccvl-table-controls">
               <a class="search" href="javascript:void(0);" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" 
                  tal:attributes="title string:${category/title};
-                                data-content category/data/description;">
+                                data-content category/data/description|nothing;">
                 <i class="fa fa-info-circle"></i></a>
             </td>
           </tr>
