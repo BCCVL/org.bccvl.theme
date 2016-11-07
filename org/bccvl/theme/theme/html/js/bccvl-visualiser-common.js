@@ -128,6 +128,7 @@ define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'proj4', 'ol3-layerswitch
                     toggleOpen: true,
                     singleVisibleOverlay: true
                 });*/
+                
                 // add scaleline
                 var scaleline = new ol.control.ScaleLine({
                     className: 'ol-scale-line'
@@ -135,6 +136,7 @@ define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'proj4', 'ol3-layerswitch
 
                 //map.addControl(layerSwitcher);
                 map.addControl(scaleline);
+                
                 //layerSwitcher.showPanel();
                 
                 var layerListeners = []
@@ -1091,6 +1093,13 @@ define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'proj4', 'ol3-layerswitch
                     title: 'Base Maps',
                     layers: [
                         new ol.layer.Tile({
+                           title: 'OSM',
+                           type: 'base',
+                           preload: 5,
+                           visible: true,
+                           source: new ol.source.OSM()
+                        }),
+                        new ol.layer.Tile({
                           title: 'Mapbox',
                           type: 'base',
                           visible: false,
@@ -1098,13 +1107,6 @@ define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'proj4', 'ol3-layerswitch
                             tileSize: [512, 512],
                             url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
                           })
-                        }),
-                        new ol.layer.Tile({
-                           title: 'OSM',
-                           type: 'base',
-                           preload: 5,
-                           visible: true,
-                           source: new ol.source.OSM()
                         })
                         /*,
                         new ol.layer.Tile({
@@ -1163,16 +1165,44 @@ define(['jquery', 'bccvl-preview-layout', 'ol3cesium', 'proj4', 'ol3-layerswitch
                    { map: map,
                      mapTitle: null
                    }, bccvl_common.exportAsImage);
-                   
-                console.log(map.getView());
-                console.log(map.getView().getProjection());
 
                var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
                var scene = ol3d.getCesiumScene();
                scene.terrainProvider = new Cesium.CesiumTerrainProvider({
                  url: 'https://assets.agi.com/stk-terrain/world'
                });
-               ol3d.setEnabled(true);
+               
+               // add cesium control
+               var cesiumControl = function(opt_options) {
+
+                   var options = opt_options || {};
+            
+                   var button = document.createElement('button');
+                   button.innerHTML = '<i class="fa fa-globe"></i>';
+            
+                   var this_ = this;
+                   var enableCesium = function() {
+                     ol3d.setEnabled(!ol3d.getEnabled());
+                   };
+            
+                   button.addEventListener('click', enableCesium, false);
+                   button.addEventListener('touchstart', enableCesium, false);
+                   
+                   var element = document.createElement('div');
+                   element.className = 'ol-unselectable ol-control ol-enable-cesium';
+                   element.appendChild(button);
+            
+                   ol.control.Control.call(this, {
+                     element: element,
+                     target: options.target
+                   });
+            
+               };
+               ol.inherits(cesiumControl, ol.control.Control);
+               
+               map.addControl(new cesiumControl());
+               
+               //ol3d.setEnabled(true);
 
                base.resolve(map, visLayers);
 

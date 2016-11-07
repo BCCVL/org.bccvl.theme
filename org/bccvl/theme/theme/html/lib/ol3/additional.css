@@ -362,7 +362,7 @@ div.olControlAttribution {
 
 .export-map {
     position: absolute;
-    left: 70px;
+    left: 97px;
     bottom: 16px;
     background-color: rgba(0, 159, 227, .5);
     background-image: none;
@@ -480,4 +480,9 @@ a.ol-popup-closer:hover {
     font-size: 0.9em;
     line-height: 1.1em;
     margin: .4em 0 0;
+}
+.ol-enable-cesium {
+   bottom: 13px;
+   left: 67px;
+   position: absolute;
 }
