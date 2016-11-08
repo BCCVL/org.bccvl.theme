@@ -2917,3 +2917,23 @@ div.youtube-frame {
     margin: 0;
     line-height: 1.3em;
 }
+.biodiverse-visualisation .d3legend, .biodiverse-visualisation .d3legend:hover {
+    margin: 0;
+    border-radius: 0;
+    height: 95%;
+    padding:1.5%;
+    overflow-y: auto;
+    width: 160px;
+}
+.biodiverse-visualisation .species-and-select {
+    margin-top:1.5em;
+}
+.biodiverse-visualisation .ol-zoom {
+    left:200px;
+}
+.biodiverse-visualisation .ol-full-screen {
+    left:222px;
+}
+.biodiverse-visualisation .export-map {
+    left:250px;
+}
