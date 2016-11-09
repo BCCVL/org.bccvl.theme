@@ -2917,6 +2917,10 @@ div.youtube-frame {
     margin: 0;
     line-height: 1.3em;
 }
+.d3legend .legend-cell.selected {
+     stroke:#000;
+     stroke-width:2px;
+}
 .biodiverse-visualisation .d3legend, .biodiverse-visualisation .d3legend:hover {
     margin: 0;
     border-radius: 0;

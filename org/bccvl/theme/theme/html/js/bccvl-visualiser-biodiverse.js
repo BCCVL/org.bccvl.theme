@@ -255,7 +255,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                                 drawFunction.on('drawstart', function (evt) {
                                     // wipe legend selects
                                     d3.selectAll('rect.legend-cell')
-                                        .style({stroke: "#000", "stroke-width": "0px"});
+                                        .attr('class', 'legend-cell');
                             
                                     gridSelect.getFeatures().clear();
                                     
@@ -286,7 +286,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                                 map.on('singleclick', function(evt){
                                     // wipe legend selects
                                     d3.selectAll('rect.legend-cell')
-                                        .style({stroke: "#000", "stroke-width": "0px"});
+                                        .attr('class', 'legend-cell');
                                 });
                                 
                                 var layercount = 0;
@@ -505,6 +505,14 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     visible: (i == 0),
                     style: gridStyle
                 });
+                
+                gridLayer.on('change:visible', function(e) {
+                    if (! gridLayer.getVisible()){
+                        // wipe legend selects
+                        d3.selectAll('.d3legend rect.legend-cell')
+                        .attr('class', 'legend-cell');
+                    }
+                }); 
         
                 // Add grid layer to map
                 overlayGroup.getLayers().push(gridLayer);
@@ -524,13 +532,16 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     
                     // trigger ol cell unselect
                     selected.clear();
-        
+                        
+                    // for some reason this ignores the style attribute, so a classname is used instead
                     // wipe legend selects
-                    d3.selectAll('rect.legend-cell').style({stroke: "#000", "stroke-width": "0px"});
-
+                    d3.selectAll('.d3legend rect.legend-cell')
+                        .attr('class', 'legend-cell');
+                        
                     // display legend cell select
-                    d3.select(this).style({stroke: "#000", "stroke-width": "2px"});
-                    
+                    d3.select(this)
+                        .attr('class', 'legend-cell selected');
+
                     // find and select all matching cells in map
                     $.each(grid.getFeatures(), function(i, feature){
                         // this is value matching and doesnt make sense, need to eval differently
@@ -588,14 +599,25 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                         propOffsets.push(0);
                     }
                 });
+                
+                // I really wish I had a better way to do this.
+                // Because we're trying to display continuous data that's often discrete
+                // we need to accomodate a segment that will never be shown,
+                // but impacts the color range d3 applies to the domain.
+                // In this instance, the segment is 0-n. Here we add
+                // #FFF to the color array to offset the actual data coloring.
+                var offsetColor = colorScale.range();
+                    offsetColor.unshift('#FFFFFF');
+                    offsetColor.pop();
             
                 var threshold = d3.scaleThreshold()
                     .domain(colorScale.domain())
-                    .range(colorScale.range());
+                    .range(offsetColor);
         
                 var svg = d3.select(legend).append("svg")
                     .attr("width", width)
-                    .attr("height", height);
+                    .attr("height", height)
+                    .style('padding-left','1px');
                 //    .attr("style", 'padding-top:20px');
         
                 var g = svg.append("g")
