@@ -27,7 +27,7 @@
                    data-friendlyname="checkbox_algorithm_label"
                    tal:attributes="id item/id;
                                name item/name;
-                               class python: 'required algorithm-checkbox' if view.required else '';
+                               class python: 'require-from-tab algorithm-checkbox' if view.required else '';
                                data-class view/klass;
                                value item/value;
                                title view/title;

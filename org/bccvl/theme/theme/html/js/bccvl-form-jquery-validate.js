@@ -157,6 +157,27 @@ define(
         }, function(params, element) {
             return "This group requires at least "+params[0]+" "+params[3]+" fields to be nominated."
         });
+
+        $.validator.addMethod("requireFromTab", function(value, element, options) {
+            
+            var numReq =  options[0],
+                selector = options[1],
+                tab = $(element).parents('.tab-pane'),
+                numSel = 0;
+            
+            tab.find('input'+selector).each(function(i,el){
+                if($(this).prop('checked')){ numSel += 1 }
+            });
+
+            if (numSel >= numReq) {
+                return true;
+            } else {
+                return false;
+            }
+                
+        }, function(params, element) {
+            return "You must select at least "+params[0]+" "+params[2]+" from this tab."
+        });
         
         // add common class rules
         jQuery.validator.addClassRules({
@@ -186,8 +207,8 @@ define(
             "date": {
                 date: true
             },
-            "algorithm": {
-                require_from_group: [1, ".algorithm-checkbox"]
+            "algorithm-checkbox": {
+                "requireFromTab": [1, ".algorithm-checkbox", "algorithm"]
             },
             "trait-nom": {
                 "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
@@ -212,7 +233,13 @@ define(
                 // drop error labels for radio fields after the table
                 if (element.parents('table').length > 0) {
                     element.parents('table').addClass('error');
-                    error.insertAfter(element.parents('table'));
+                    if (element.hasClass('require-from-tab') ) {
+                        if (! element.parents('.tab').hasClass('error') ){
+                            element.parents('.tab').addClass('error').prepend(error);
+                        }
+                    } else {
+                        error.insertAfter(element.parents('table'));
+                    }
                 } else if (element.hasClass('require-from-group') && element.parents('div').hasClass('selecteditem')) {
                     element.parents('div.selecteditem').addClass('error');
                     error.insertBefore(element.parents('div.selecteditem'));
@@ -324,7 +351,7 @@ define(
             // seems to fail if it can't find a required field, iterate without calling the script to prevent this.
             var errorsOnTab = false;
             var tabCheck = function(){
-                $('fieldset.tab:visible').find('.required, .require-from-group').each(function(){
+                $('fieldset.tab:visible').find('.required, .require-from-group, .require-from-tab').each(function(){
                     if ( $(this).valid() != true ){
                         errorsOnTab = true;
                         $('body a[href="#'+$(this).parents('.tab-pane').attr('id')+'"]').removeClass('completed').addClass('error');
