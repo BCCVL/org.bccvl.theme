@@ -222,7 +222,8 @@ define(
                                         '<option value="lon">Longitude</option>'+
                                         '<option value="species">Species Name</option>'+
                                         '<option value="trait_con">Trait (continuous)</option>'+
-                                        '<option value="trait_cat">Trait (categorical)</option>'+
+                                        '<option value="trait_ord">Trait (ordinal)</option>'+
+                                        '<option value="trait_nom">Trait (nominal)</option>'+
                                         '<option value="env_var_con">Env. Variable (continuous)</option>'+
                                         '<option value="env_var_cat">Env. Variable (categorical)</option>'+
                                         '</select>';

@@ -35,10 +35,11 @@ define(
           return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
         }, 'Please enter a valid number using decimal or scientific notation.');
         
-        $.validator.addMethod("traitsNomination", function(value, element, options) {
+        $.validator.addMethod("requireNFromClass", function(value, element, options) {
             
             var numReq =  options[0];
             var selector = options[1];
+            var desiredVal = options[2];
             
             var selection = [];
             
@@ -48,39 +49,17 @@ define(
                 }
             });
             
-            var hasLat = $.grep(selection, function(v){
-                        return v === 'lat'
-                    }).length === numReq,
-                hasLon = $.grep(selection, function(v){
-                        return v === 'lon'
-                    }).length === numReq,
-                hasSpecies = ($.inArray('species', selection) >= 0),
-                hasTrait; 
+            return $.grep(selection, function(v){
+                        return v === desiredVal
+                    }).length == numReq;
                 
-            if ($.inArray('trait_cat', selection) >= 0) {
-                hasTrait = true;
-            } else if ($.inArray('trait_con', selection) >= 0) {
-                hasTrait = true; 
-            } else {
-                hasTrait = false;
-            }
-                
-            console.log(hasTrait);
-            
-            if(hasLat && hasLon && hasSpecies && hasTrait ) {
-                return true;
-            } else {
-                return false;
-            }
         }, function(params, element) {
-            if ($(element).val() === 'lat' || $(element).val() === 'lon' || $(element).val() === 'species' || $(element).val() === 'trait_con' || $(element).val() === 'trait_cat' ){
-                return 'A required column is missing elsewhere or there is a duplicate.'
-            } else {
-                return 'Nominate one Latitude column, one Longitude column, and at least one each of Species and Trait columns.';
-            }
+            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
         });
         
-        $.validator.addMethod("requireNFromClass", function(value, element, options) {
+        // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
+        // So this is just a duplicate method of the above so that it can be called twice.
+        $.validator.addMethod("requireNFromClassThree", function(value, element, options) {
             
             var numReq =  options[0];
             var selector = options[1];
@@ -143,6 +122,7 @@ define(
             });
             
             $.each(desiredVals, function(i, val){
+
                 var numSel = $.grep(selection, function(v){
                     return v === val
                 }).length;
@@ -213,7 +193,8 @@ define(
             "trait-nom": {
                 "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
                 "requireNFromClassTwo": [1, ".trait-nom", "lat", "Latitude" ],
-                "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_cat", "trait_con"], "Trait"]
+                "requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
+                "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"]
             }
         });
         
