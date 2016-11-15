@@ -249,6 +249,8 @@ define(
             removemodal.bind('body', 'a.remove-dataset-btn');
             var sharingmodal = new modals.SharingModal('sharing-modal');
             sharingmodal.bind('body', 'a.sharing-btn');
+            var layereditmodal = new modals.LayerEditModal('layeredit-modal');
+            layereditmodal.bind('body', 'a.environmentallayers-zip-edit');
             
         });
         
