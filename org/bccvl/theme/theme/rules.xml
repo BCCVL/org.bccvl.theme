@@ -36,6 +36,7 @@
     <xi:include href="rules/password-reset.xml" />
     <xi:include href="rules/account.xml" />
     <xi:include href="rules/register-email.xml" />
+    <xi:include href="rules/oauth2.xml" />
     <!-- <xi:include href="rules/training.xml" /> -->
     <xi:include href="rules/page.xml" />
 
