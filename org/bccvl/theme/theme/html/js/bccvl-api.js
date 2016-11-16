@@ -173,6 +173,23 @@
             data: {uuid: uuid}
         }).promise()
     }
+
+    function export_to_ala(uuid, root=false) {
+        var api_path = 'API/dm/v1/export_to_ala'
+        if (root) {
+            api_path = '/' + api_path
+        }
+        // TODO: should we use portal_url here?
+        var api_url = _concatAndResolveUrl(window.location.href, api_path)
+        return $.ajax({
+            url: api_url,
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({uuid: uuid})
+        }).promise()
+    }
+
     
     // Exposed public methods
     return {
@@ -186,7 +203,8 @@
             metadata: em_metadata
         },
         dm: {
-            metadata: dm_metadata
+            metadata: dm_metadata,
+            export_to_ala: export_to_ala
         },
         job: {
         }

@@ -3,11 +3,11 @@
 //
 define(
     ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
-     'layer-edit-modal', 'bccvl-modals', 'openlayers3',
+     'layer-edit-modal', 'bccvl-modals', 'bccvl-api', 'openlayers3',
      'bootstrap2', 'jquery-tablesorter', 'jquery-form', 'selectize',
      'bbq', 'faceted_view.js', 'selectize-remove-single'],
 
-    function($, vizmap, vizcommon, editmodal, modals) {
+    function($, vizmap, vizcommon, editmodal, modals, bccvlapi) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -251,6 +251,26 @@ define(
             sharingmodal.bind('body', 'a.sharing-btn');
             var layereditmodal = new modals.LayerEditModal('layeredit-modal');
             layereditmodal.bind('body', 'a.environmentallayers-zip-edit');
+
+            $('body').on('click', 'a.ala-edit', function(event) {
+                event.preventDefault();
+                var el = $(this);
+                var dsuuid = el.data('uuid')
+                bccvlapi.dm.export_to_ala(dsuuid).then(
+                    function(data, status, jqxhr) {
+                        // TODO: could also change button and let user decide when to go to Spatial Portal
+                        window.location = data.sandboxUrl
+                    },
+                    function(jqxhr) {
+                        var data = jqxhr.responseJSON
+                        var errors = []
+                        for (var i=0; i < data.errors.length; i++) {
+                            errors.push(data.errors[i].title);
+                        }
+                        alert('Export To ALA failed\n' + errors.join('\n'))
+                    }
+                );
+            });
             
         });
         
