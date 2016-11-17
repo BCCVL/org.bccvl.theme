@@ -107,6 +107,10 @@ define(
                             */
 
                             // set up dom node
+                            var text = document.createElement('div');
+                            text.className = 'row-fluid';
+                            text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
+                            e.target.appendChild(text);
                             var div = document.createElement('div');
                             div.className = 'row-fluid trait-dataset-summary';
                             var divHeader = document.createElement('div');
