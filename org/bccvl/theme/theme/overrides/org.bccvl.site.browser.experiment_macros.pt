@@ -113,10 +113,12 @@
           <a href="experiment_biodiverse_vis#tab-biodiverse-vis">Biodiverse Visualisation</a>
         </li>
         <li id="tab-overlay"
+            tal:condition="python: context.portal_type not in ('org.bccvl.content.speciestraitsexperiment', )"
             tal:attributes="class python: 'active' if current_view == 'experiment_overlay' else '';">
           <a href="experiment_overlay#tab-overlay">Overlay Maps</a>
         </li>
 	<li id="tab-comp"
+            tal:condition="python: context.portal_type not in ('org.bccvl.content.speciestraitsexperiment', )"            
             tal:attributes="class python: 'active' if current_view == 'experiment_compare' else '';">
           <a href="experiment_compare#tab-compare">Compare Maps</a>
         </li>
