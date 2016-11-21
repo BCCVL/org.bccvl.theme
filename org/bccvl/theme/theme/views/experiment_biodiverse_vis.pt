@@ -91,7 +91,7 @@
                                          data-mimetype dlinfo/contenttype;
                                          data-cellsize md/cellsize|nothing;
                                          data-srs md/srs|nothing;
-                                         class string:${item_tools/get_viz_class} btn btn-primary">
+                                         class string:${python: item_tools.get_viz_class(view='biodiverse-viz')} btn btn-primary">
                          <i class="icon-eye-open icon-link icon-white"></i>
                       </a>
 
