@@ -3,7 +3,8 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      tal:define="dataset_tools nocall:context/@@dataset_tools;"
+      tal:define="dataset_tools nocall:context/@@dataset_tools;
+                  checkPermission nocall: context/portal_membership/checkPermission;"
       i18n:domain="plone"
       tal:omit-tag="">
 
@@ -24,13 +25,15 @@
     </li>        
     <li class="tab-datasetsimport"
         tal:define="selected python: 'active' if current_view == 'datasets_import_view' else '';"
-        tal:attributes="class string:tab-datasetsimport ${selected}">
+        tal:attributes="class string:tab-datasetsimport ${selected}"
+        tal:condition="python: checkPermission('org.bccvl: Add Dataset', context)">
       <a href="#"
          tal:attributes="href string:${context/absolute_url}/datasets_import_view"><span>Get Species Data</span></a>
     </li>
     <li class="tab-datasetsupload"
         tal:define="selected python: 'active' if current_view == 'datasets_upload_view' else '';"
-        tal:attributes="class string:tab-datasetsupload ${selected}">
+        tal:attributes="class string:tab-datasetsupload ${selected}"
+        tal:condition="python: checkPermission('org.bccvl: Add Dataset', context)">
       <a href="#"
          tal:attributes="href string:${context/absolute_url}/datasets_upload_view"><span>Upload Dataset</span></a>
     </li>
@@ -151,6 +154,11 @@
                tal:attributes="href string:${item_url}/modal_view">
               <i class="fa fa-info-circle" title="More information for this dataset."></i>
             Info</a>
+            <a class="ala-edit btn btn-info btn-mini" href="#"
+               tal:attributes="data-uuid item_uuid"
+               tal:condition="python: item_editable and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
+              <i class="fa fa-edit" title="Export to ALA Spatial Portal"></i>
+            ALA Spatial Portal</a>            
             <a class="sharing-btn btn btn-info btn-mini" href="#"
                tal:attributes="href string:${item_url}/modal_sharing"
                tal:condition="python: complete and action.get('available')"

@@ -1,0 +1,37 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    if-path="oauth2/authorize/">
+    <!-- USER DETAILS PAGE ============================================ -->
+
+      <!-- <theme href="html/oath2_authorize.html" /> -->
+        <theme href="html/page.html" />      
+
+        <!-- 1. copy page content over -->
+        <replace
+            css:theme-children="div#content-core"
+            css:content-children="#portal-column-content"/>
+
+        <!-- copy flash message -->
+        <replace css:theme-children=".bccvl-flashmessages-info">
+          <xsl:for-each select="//dl[@class='portalMessage error' and not(@style='display:none')]">
+            <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-error">
+              <dt class="label label-important">
+                <xsl:value-of select="./dt" />
+              </dt>
+              <xsl:copy-of select="./dd" />
+            </dl>
+          </xsl:for-each>
+          <xsl:for-each select="//dl[@class='portalMessage info' and not(@style='display:none')]">
+            <dl class="bccvl-flashmessage bccvl-flashmessage-info alert alert-block alert-warning">
+              <dt class="label label-important">
+                <xsl:value-of select="./dt" />
+              </dt>
+              <xsl:copy-of select="./dd" />
+            </dl>
+          </xsl:for-each>
+        </replace>
+        <drop css:content="dl.portalMessage"/>
+
+</rules>

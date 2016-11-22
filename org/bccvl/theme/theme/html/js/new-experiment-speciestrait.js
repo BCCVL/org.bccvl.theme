@@ -373,7 +373,7 @@ define(
                         // status=="error"
                         // error ... http status string
                         // jqxhr.status == 503
-                        // errors = jqxhr.responseJSON()
+                        // errors = jqxhr.responseJSON
                         // ct = jqxhr.getResponseHeader('Content-Type')
                         // l = jqxhr.getResponseHeader('Content-Length')
 
@@ -384,7 +384,7 @@ define(
 
                         // 400  - Bad Request
                         // ... normal parameter error?
-                        alert('Experiment submission failed.\n' + JSON.stringify(jqxhr.resonseJSON(), null, 2))
+                        alert('Experiment submission failed.\n' + JSON.stringify(jqxhr.responseJSON, null, 2))
 
                         // reactivate button
                         $(e.target).prop('disabled', false)
