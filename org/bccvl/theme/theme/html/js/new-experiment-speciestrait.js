@@ -15,6 +15,15 @@ define(
 
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
+            
+            // check for Firefox to avoid ZIP issue
+            if(typeof InstallTrigger !== 'undefined'){
+                $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
+                    '<button type="button" class="close" data-dismiss="alert">×</button>'+
+                    '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
+                    '<p>Currently there are issues preventing the use of Firefox for submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
+                '</div>');
+            }
 
             // hook up the wizard buttons
             wiztabs.init();
@@ -105,6 +114,16 @@ define(
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
                     $(this).prop('checked', false);
                 });
+            });
+            
+            // TODO: move  select-all / select-none into widget?
+            $('#tab-configuration').on('click', 'a.select-all', function(){
+                console.log('what');
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
+            });
+
+            $('#tab-configuration').on('click', 'a.select-none', function(){
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
             var $algoCheckboxes = $('input[name^="form.widgets.algorithms_"]');
@@ -524,35 +543,19 @@ define(
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
                     $('body').find('input[data-bbox]').each(function(){
                         var type = $(this).data('type');
-                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
-                            var data_url = $('a[title="preview this dataset"]')[0].href;
-                            vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
-                                // FIXME: assumes only one layer because of species data
-                                var newLayer = newLayers[0];
-                                vizcommon.addLayerLegend(
-                                    map.getTarget(),
-                                    newLayer.get('title'),
-                                    newLayer.get('bccvl').layer.style.color, null, null);
+                    
 
-                                // Draw convex-hull polygon for occurrence dataset in map
-                                if (type == 'DataGenreSpeciesOccurrence') {
-                                    var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
-                                    var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
-                                    vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);
-                                }
-                            });
-                        } else {
-                            var geom = $(this).data('bbox');
-                            geom = new ol.geom.Polygon([[
-                                [geom.left, geom.bottom],
-                                [geom.right, geom.bottom],
-                                [geom.right, geom.top],
-                                [geom.left, geom.top],
-                                [geom.left, geom.bottom]
-                            ]]);
-                            //geom.type = type;
-                            geometries.push(geom);
-                        }
+                        var geom = $(this).data('bbox');
+                        geom = new ol.geom.Polygon([[
+                            [geom.left, geom.bottom],
+                            [geom.right, geom.bottom],
+                            [geom.right, geom.top],
+                            [geom.left, geom.top],
+                            [geom.left, geom.bottom]
+                        ]]);
+                        geom.type = type;
+                        geometries.push(geom);
+
                     });
                     // draw collected geometries
                     vizcommon.drawBBoxes(map, geometries, bboxLayer);

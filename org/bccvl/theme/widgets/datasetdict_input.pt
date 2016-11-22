@@ -70,14 +70,14 @@
         <!-- TODO: should this one be outside of the div here?
              need to update load script to fetch it as well
              though -->
-        <!-- <input type="hidden" value="" name="form.widgets.name.count" -->
-        <!--        tal:attributes="value repeat/item/number; -->
-        <!--                        name string:${view/name}.count"/> -->
-        <!-- <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected." -->
-        <!--        tal:attributes="name string:${view/name}.empty; -->
-        <!--                        value python: '1' if view.value else ''; -->
-        <!--                        required view/required; -->
-        <!--                        class python: 'required' if view.required else '';"/> -->
+        <input type="hidden" value="" name="form.widgets.name.count"
+               tal:attributes="value repeat/item/number;
+                               name string:${view/name}.count"/>
+        <input required="required" type="hidden" value="" name="form.widgets.empty" data-error-message="A dataset must be selected."
+               tal:attributes="name string:${view/name}.empty;
+                               value python: '1' if view.value else '';
+                               required view/required;
+                               class python: 'required' if view.required else '';"/>
       </div>
     </tal:repeat>
     <!-- <div -->
