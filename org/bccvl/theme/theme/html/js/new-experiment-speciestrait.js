@@ -495,7 +495,7 @@ define(
                 if ($('.constraints-map').not(':visible')) {
                     $('a[href="#tab-geo"]').one('shown', function(evt) {
                         map.updateSize();
-                        world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
+                        var world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
                         // visLayers-> group
                         // bboxLayer
                         // constraintsLayer
@@ -507,9 +507,9 @@ define(
                 // set up constraint tools
                 vizcommon.constraintTools(map, constraintsLayer, 'form-widgets-modelling_region');
 
-                // bind widgets to the constraint map
-                $('.bccvl-new-sdm').on('widgetChanged', function(e){
-                        
+                
+                $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+                    // bind widgets to the constraint map
                     // recreate legend
                     $('#'+map.getTarget()).find('.olLegend').remove();
                     vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
