@@ -1682,9 +1682,6 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                bboxLayer.getSource().clear();
                
                geometries.forEach(function(geometry) {
-                   
-                   console.log(geometry.type);
-                   
                    var style;
                    
                     if (geometry.type == "DataGenreTraits"){
@@ -1731,8 +1728,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
 
                    bboxLayer.getSource().addFeature(feature);
 
-                   /**/
                });
+
+               map.getView().fit(bboxLayer.getSource().getExtent(), map.getSize());
 
            },
 
