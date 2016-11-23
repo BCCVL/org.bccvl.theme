@@ -407,10 +407,6 @@ define(
                         env_layers[idx].push(param.value)
                         continue
                     }
-                    if (param.name == 'scale_down') {
-                        params[param.name] = param.value === "true" ? true : false
-                        continue
-                    }
                     if (param.name == 'modelling_region' && param.value) {
                         params[param.name] = JSON.parse(param.value)
                         continue
