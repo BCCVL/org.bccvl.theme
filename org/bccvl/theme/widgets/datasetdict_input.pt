@@ -80,9 +80,8 @@
                                class python: 'required' if view.required else '';"/>
       </div>
     </tal:repeat>
-    <!-- <div -->
-    <!--      tal:condition="not:view/value"> -->
-    <div>
+
+    <div tal:condition="not:view/value">
       <input type="hidden" value="" name="form.widgets.name.count"
              tal:attributes="value python:len(view.value or ());
                              name string:${view/name}.count"/>
