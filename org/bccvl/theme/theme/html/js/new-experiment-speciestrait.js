@@ -538,19 +538,34 @@ define(
                     var geometries = [];
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
                     $('body').find('input[data-bbox]').each(function(){
-                        var type = $(this).data('type');
-                    
+                        var type = $(this).data('genre');
+                        if (type == 'DataGenreSpeciesOccurrence' ||
+                            type == 'DataGenreSpeciesAbsence' ||
+                            type == 'DataGenreTraits') {
 
-                        var geom = $(this).data('bbox');
-                        geom = new ol.geom.Polygon([[
-                            [geom.left, geom.bottom],
-                            [geom.right, geom.bottom],
-                            [geom.right, geom.top],
-                            [geom.left, geom.top],
-                            [geom.left, geom.bottom]
-                        ]]);
-                        geom.type = type;
-                        geometries.push(geom);
+                            var data_url = $(this).data('url');
+                            vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
+                                // FIXME: assumes only one layer because of species data
+                                var newLayer = newLayers[0];
+                                vizcommon.addLayerLegend(
+                                    map.getTarget(),
+                                    newLayer.get('title'),
+                                    newLayer.get('bccvl').layer.style.color, null, null);
+                                
+                            })
+                        } else {
+
+                            var geom = $(this).data('bbox');
+                            geom = new ol.geom.Polygon([[
+                                [geom.left, geom.bottom],
+                                [geom.right, geom.bottom],
+                                [geom.right, geom.top],
+                                [geom.left, geom.top],
+                                [geom.left, geom.bottom]
+                            ]]);
+                            geom.type = type;
+                            geometries.push(geom);
+                        }
 
                     });
                     // draw collected geometries
