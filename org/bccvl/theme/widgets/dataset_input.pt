@@ -31,7 +31,10 @@
                              name string:${view/name}:list;
                              required view/required;
                              class python: 'item' + ' required' if view.required else '';
-                             data-type itemmd/genre;
+                             data-genre itemmd/genre;
+                             data-uuid item/UID;
+                             data-mimetype itemmd/mimetype;
+                             data-url dlinfo/url;
                              "/>
       <a class="btn pull-right removeitem" href="#"
          tal:condition="python: itemmd['genre'] != 'DataGenreTraits'">

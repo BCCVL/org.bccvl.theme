@@ -471,7 +471,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                var xmlStylesheet;
                if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
                    xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
-                   xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>4</Size>';
+                   xmlStylesheet += '<Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">'+layerdef.style.color+'</CssParameter></Fill></Mark><Size>5</Size>';
                    xmlStylesheet += '</Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                } else {
                    layername = "DEFAULT";
@@ -1281,7 +1281,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                                    'tooltip': '',
                                    'filename': layer.filename
                                };
-                               if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreFP') {
+                               if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP') {
                                    layerdef.legend = 'suitability';
                                    layerdef.unit = ' ';
                                    layerdef.unitfull = 'Environmental suitability';
@@ -1682,8 +1682,31 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                bboxLayer.getSource().clear();
                
                geometries.forEach(function(geometry) {
-
-                   bccvl_common.addLayerLegend(map.getTarget(), 'Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
+                   var style;
+                   
+                    if (geometry.type == "DataGenreTraits"){
+                        bccvl_common.addLayerLegend(map.getTarget(), 'Traits Occurrences', 'rgba(52, 73, 94, 0.9)', null, null);
+                        var style = new ol.style.Style({
+                           fill: new ol.style.Fill({
+                               color: 'rgba(52, 73, 94, 0.2)'
+                           }),
+                           stroke: new ol.style.Stroke({
+                               color: 'rgba(52, 73, 94, 0.9)',
+                               width: 2
+                           })
+                       });
+                    } else if (geometry.type == "DataGenreCC"){
+                        bccvl_common.addLayerLegend(map.getTarget(), 'Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
+                        var style = new ol.style.Style({
+                           fill: new ol.style.Fill({
+                               color: 'rgba(46, 204, 113, 0.2)'
+                           }),
+                           stroke: new ol.style.Stroke({
+                               color: 'rgba(46, 204, 113, 0.9)',
+                               width: 2
+                           })
+                       });
+                    }
 
                    var mapProj = map.getView().getProjection().getCode();
 
@@ -1700,21 +1723,14 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswit
                        ]])
                    });
 
-                   var style = new ol.style.Style({
-                       fill: new ol.style.Fill({
-                           color: 'rgba(46, 204, 113, 0.2)'
-                       }),
-                       stroke: new ol.style.Stroke({
-                           color: 'rgba(46, 204, 113, 0.9)',
-                           width: 2
-                       })
-                   });
+                   
                    feature.setStyle(style);
 
                    bboxLayer.getSource().addFeature(feature);
 
-                   /**/
                });
+
+               map.getView().fit(bboxLayer.getSource().getExtent(), map.getSize());
 
            },
 

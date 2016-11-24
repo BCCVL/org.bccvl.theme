@@ -747,9 +747,9 @@ define(
             } else if ($formType == 'traits-by-species') { 
 
                 $speciesField = $speciesselect.selectize({
-                    valueField: 'scientificName',
-                    labelField: 'scientificName',
-                    searchField: 'scientificName',
+                    valueField: 'speciesName',
+                    labelField: 'speciesName',
+                    searchField: 'speciesName',
                     options: [],
                     create: false,
                     maxItems: 4,

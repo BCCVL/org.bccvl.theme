@@ -15,6 +15,15 @@ define(
 
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
+            
+            // check for Firefox to avoid ZIP issue
+            if(typeof InstallTrigger !== 'undefined'){
+                $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
+                    '<button type="button" class="close" data-dismiss="alert">×</button>'+
+                    '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
+                    '<p>Currently there are issues preventing the use of Firefox for submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
+                '</div>');
+            }
 
             // hook up the wizard buttons
             wiztabs.init();
@@ -25,6 +34,71 @@ define(
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
             new bccvl.SelectDict("environmental_datasets");
+            
+            // -- region selection ---------------------------------
+
+            var xhr;
+            var select_type, $select_type;
+            var select_region, $select_region;
+
+            $select_type = $('#select-region-type').selectize({
+                onChange: function(value) {
+                    if (!value.length) return;
+                    select_region.disable();
+                    select_region.clearOptions();
+                    select_region.load(function(callback) {
+                        xhr && xhr.abort();
+                        xhr = $.ajax({
+                            url: '/_spatial/ws/field/' + value,
+                            success: function(data) {
+                                select_region.enable();
+
+                                var results = [];
+
+                                $.each(data.objects, function (key, feature) {
+
+                                    var match = {
+                                        'name': feature.name,
+                                        'pid': feature.pid
+                                    }
+                                    results.push(match);
+                                });
+                                callback(results);
+                            },
+                            error: function() {
+                                callback();
+                            }
+                        })
+                    });
+                }
+            });
+
+            $select_region = $('#select-region').selectize({
+                valueField: 'pid',
+                labelField: 'name',
+                searchField: ['name'],
+                onChange: function(value){
+                    $.ajax({
+                        url: '/_spatial/ws/shape/geojson/' + value,
+                        success: function(result) {
+                            // have to clean up ALA's geojson format
+                            var geojson = {
+                                'type': 'Feature',
+                                'geometry': result
+                            }
+                            $('#selected-geojson').data('geojson', JSON.stringify(geojson));
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    })
+                }
+            });
+
+            select_region  = $select_region[0].selectize;
+            select_type = $select_type[0].selectize;
+
+            select_region.disable();
 
             // -- hook up algo config -------------------------------
             // algorithm configuration blocks should be hidden and
@@ -40,6 +114,16 @@ define(
                 $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
                     $(this).prop('checked', false);
                 });
+            });
+            
+            // TODO: move  select-all / select-none into widget?
+            $('#tab-configuration').on('click', 'a.select-all', function(){
+                console.log('what');
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
+            });
+
+            $('#tab-configuration').on('click', 'a.select-none', function(){
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
             });
 
             var $algoCheckboxes = $('input[name^="form.widgets.algorithms_"]');
@@ -107,6 +191,10 @@ define(
                             */
 
                             // set up dom node
+                            var text = document.createElement('div');
+                            text.className = 'row-fluid';
+                            text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
+                            e.target.appendChild(text);
                             var div = document.createElement('div');
                             div.className = 'row-fluid trait-dataset-summary';
                             var divHeader = document.createElement('div');
@@ -319,10 +407,6 @@ define(
                         env_layers[idx].push(param.value)
                         continue
                     }
-                    if (param.name == 'scale_down') {
-                        params[param.name] = param.value === "true" ? true : false
-                        continue
-                    }
                     if (param.name == 'modelling_region' && param.value) {
                         params[param.name] = JSON.parse(param.value)
                         continue
@@ -426,7 +510,7 @@ define(
                 if ($('.constraints-map').not(':visible')) {
                     $('a[href="#tab-geo"]').one('shown', function(evt) {
                         map.updateSize();
-                        world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
+                        var world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
                         // visLayers-> group
                         // bboxLayer
                         // constraintsLayer
@@ -438,9 +522,9 @@ define(
                 // set up constraint tools
                 vizcommon.constraintTools(map, constraintsLayer, 'form-widgets-modelling_region');
 
-                // bind widgets to the constraint map
-                $('.bccvl-new-sdm').on('widgetChanged', function(e){
-                        
+                
+                $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+                    // bind widgets to the constraint map
                     // recreate legend
                     $('#'+map.getTarget()).find('.olLegend').remove();
                     vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
@@ -454,9 +538,12 @@ define(
                     var geometries = [];
                     // FIXME: the find is too generic (in case we add bboxes everywhere)
                     $('body').find('input[data-bbox]').each(function(){
-                        var type = $(this).data('type');
-                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesAbsence') {
-                            var data_url = $('a[title="preview this dataset"]')[0].href;
+                        var type = $(this).data('genre');
+                        if (type == 'DataGenreSpeciesOccurrence' ||
+                            type == 'DataGenreSpeciesAbsence' ||
+                            type == 'DataGenreTraits') {
+
+                            var data_url = $(this).data('url');
                             vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
                                 // FIXME: assumes only one layer because of species data
                                 var newLayer = newLayers[0];
@@ -464,15 +551,10 @@ define(
                                     map.getTarget(),
                                     newLayer.get('title'),
                                     newLayer.get('bccvl').layer.style.color, null, null);
-
-                                // Draw convex-hull polygon for occurrence dataset in map
-                                if (type == 'DataGenreSpeciesOccurrence') {
-                                    var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
-                                    var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
-                                    vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);
-                                }
-                            });
+                                
+                            })
                         } else {
+
                             var geom = $(this).data('bbox');
                             geom = new ol.geom.Polygon([[
                                 [geom.left, geom.bottom],
@@ -481,9 +563,10 @@ define(
                                 [geom.left, geom.top],
                                 [geom.left, geom.bottom]
                             ]]);
-                            //geom.type = type;
+                            geom.type = type;
                             geometries.push(geom);
                         }
+
                     });
                     // draw collected geometries
                     vizcommon.drawBBoxes(map, geometries, bboxLayer);
