@@ -88,167 +88,142 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                SLD requests are packed like: Color-Threshold-*colorlevel*-Color...., so the end
                result will always have +1 threshold and +2 color values on top of your desired number of colour values.
             */
-           
-           // TODO: make this local to have better timeout error messages and avoid too short timeouts on some ajax calls
-           // 260815: No longer in use, kept for possible future use.
-           /*commonAjaxSetup: function(){
-              $.ajaxSetup({
-                  timeout: 20000,
-                  error: function(jqXHR, textStatus, errorThrown){
-                      console.log('Error on map: '+textStatus);
-                      if (textStatus ==  'timeout'){
-                          console.log("The request timed out. This can happen for a number of reasons, please try again later.  If the issue persists, contact our support staff via bccvl.org.au.");
-                      }
-                  }
-              });
+           mapRender: function(uuid, url, id, params, visibleLayer) {
+               // CREATE BASE MAP
+               // -------------------------------------------------------------
+               var base_map = bccvl_common.renderBase(id)
+               var map = base_map.map
+               var visLayers = base_map.visLayers
+
+               // add layerswitcher
+               var layerSwitcher = new ol.control.LayerSwitcher({
+                   toggleOpen: true,
+                   singleVisibleOverlay: true
+               });
+               // add scaleline
+               var scaleline = new ol.control.ScaleLine({
+                   className: 'ol-scale-line'
+               });
+
+               map.addControl(layerSwitcher);
+               map.addControl(scaleline);
+               layerSwitcher.showPanel();
                 
-            },*/
-
-            mapRender: function(uuid, url, id, params, visibleLayer) {
-
-              var ready = $.Deferred();
-
-              // CREATE BASE MAP
-              // -------------------------------------------------------------------------------------------
-              // TODO: wrapping in when not necessary?
-              $.when(bccvl_common.renderBase(id)).then(function(map, visLayers) {
-
-                // add layerswitcher
-                var layerSwitcher = new ol.control.LayerSwitcher({
-                    toggleOpen: true,
-                    singleVisibleOverlay: true
-                });
-                // add scaleline
-                var scaleline = new ol.control.ScaleLine({
-                    className: 'ol-scale-line'
-                });
-
-                map.addControl(layerSwitcher);
-                map.addControl(scaleline);
-                layerSwitcher.showPanel();
+               var layerListeners = []
                 
-                var layerListeners = []
-                
-                if (params.type && (params.type == 'auto' || params.type == 'occurrence')){
+               if (params.type && (params.type == 'auto' || params.type == 'occurrence')){
                       
-                    // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
-                    visLayers.getLayers().on('propertychange', function(e, layer){
+                   // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
+                   visLayers.getLayers().on('propertychange', function(e, layer) {
     
-                        // Clean up layer change listeners
-                        for (var i = 0, key; i < layerListeners.length; i++) {
-                            binding = layerListeners[i];
-                            binding[0].unByKey(binding[1]);
-                        }
-                        layerListeners.length = 0;
+                       // Clean up layer change listeners
+                       for (var i = 0, key; i < layerListeners.length; i++) {
+                           binding = layerListeners[i];
+                           binding[0].unByKey(binding[1]);
+                       }
+                       layerListeners.length = 0;
     
-                        visLayers.getLayers().forEach(function(layer) {
-                              // if layer is visible we have to show legend as well
-                              if (layer.getVisible()) {
-                                  $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
-                                  // zoom to extent to first visible layer
-                                  if(layer.getExtent()){
-                                      map.getView().fit(layer.getExtent(), map.getSize());
-                                  }
-                              }
+                       visLayers.getLayers().forEach(function(layer) {
+                           // if layer is visible we have to show legend as well
+                           if (layer.getVisible()) {
+                               $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
+                               // zoom to extent to first visible layer
+                               if(layer.getExtent()){
+                                   map.getView().fit(layer.getExtent(), map.getSize());
+                               }
+                           }
     
-                              layer.on('change:visible', function(e) {
-                                  if (layer.getVisible()){
-                                      var bccvl = layer.get('bccvl');
-                                      // remove existing legend
-                                      $('.olLegend').remove();
-                                      // add new legend to dom tree
-                                      $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
-                                  }
-                              }); 
-                        });
-    
-                    });
+                           layer.on('change:visible', function(e) {
+                               if (layer.getVisible()){
+                                   var bccvl = layer.get('bccvl');
+                                   // remove existing legend
+                                   $('.olLegend').remove();
+                                   // add new legend to dom tree
+                                   $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(bccvl.legend);
+                               }
+                           }); 
+                       });
+                       
+                   });
                 
-                  
-                    // load and add layers to map
-                    bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
-                    // add click control for point return
-                    map.on('singleclick', function(evt){
-                        bccvl_common.getPointInfo(evt);
-                    });
+                   // load and add layers to map
+                   bccvl_common.addLayersForDataset(uuid, url, id, visibleLayer, visLayers);
+                   // add click control for point return
+                   map.on('singleclick', function(evt){
+                       bccvl_common.getPointInfo(evt);
+                   });
                       
-                    map.on('pointermove', function(evt) {
-                        bccvl_common.hoverHandler(evt);
-                    });
+                   map.on('pointermove', function(evt) {
+                       bccvl_common.hoverHandler(evt);
+                   });
 
-                } else if (params.type && params.type == 'biodiverse'){
+               } else if (params.type && params.type == 'biodiverse'){
                     
-                    var cellClasses = [],
-                        selectedGridCells;
+                   var cellClasses = [],
+                       selectedGridCells;
                         
-                    // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
-                    visLayers.getLayers().on('propertychange', function(e, layer){
+                   // register a listener on visLayers list to bind/unbind based on list change (whenever a new layer is added)
+                   visLayers.getLayers().on('propertychange', function(e, layer) {
                     
-                        // Clean up layer change listeners
-                        for (var i = 0, key; i < layerListeners.length; i++) {
-                            binding = layerListeners[i];
-                            binding[0].unByKey(binding[1]);
-                        }
-                        layerListeners.length = 0;
+                       // Clean up layer change listeners
+                       for (var i = 0, key; i < layerListeners.length; i++) {
+                           binding = layerListeners[i];
+                           binding[0].unByKey(binding[1]);
+                       }
+                       layerListeners.length = 0;
+                       
+                       visLayers.getLayers().forEach(function(layer) {
                     
-                        visLayers.getLayers().forEach(function(layer) {
+                           // if layer is visible we have to show legend as well
+                           if (layer.getVisible()) {
+                               
+                               $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('legend'));
+                               
+                               // zoom to extent to first visible layer
+                               if(layer.getSource().getExtent()){
+                                   map.getView().fit(layer.getSource().getExtent(), map.getSize());
+                               }
+                           }
                     
-                            // if layer is visible we have to show legend as well
-                            if (layer.getVisible()) {
-
-                                $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('legend'));
-
-                                // zoom to extent to first visible layer
-                                if(layer.getSource().getExtent()){
-                                    map.getView().fit(layer.getSource().getExtent(), map.getSize());
-                                }
-                            }
-                    
-                            layer.on('change:visible', function(e) {
+                           layer.on('change:visible', function(e) {
                                 
-                                var selected;
+                               var selected;
                     
-                                map.getInteractions().forEach(function (interaction) {
-                                    if(interaction instanceof ol.interaction.Select) { 
+                               map.getInteractions().forEach(function (interaction) {
+                                   if(interaction instanceof ol.interaction.Select) { 
                                        selected = interaction.getFeatures(); 
-                                    }
-                                });
+                                   }
+                               });
                                 
-                                // trigger ol cell unselect
-                                selected.clear();
-                                //bccvl_common.updateSum(0);
-
+                               // trigger ol cell unselect
+                               selected.clear();
+                               //bccvl_common.updateSum(0);
                     
-                                // wipe legend selects
-                                d3.selectAll('rect.legend-cell')
-                                    .style({stroke: "#333", "stroke-width": "0px"});
+                               // wipe legend selects
+                               d3.selectAll('rect.legend-cell')
+                                   .style({stroke: "#333", "stroke-width": "0px"});
                     
-                                if (layer.getVisible()){
-                                      var legend = layer.get('legend');
-                                      // remove existing legend
-                                      $('.olLegend').remove();
-                    
-                                      // add new legend to dom tree
-                                      $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
-                                      
-                                }
-                            }); 
-                        });
-                    
-                    });
+                               if (layer.getVisible()){
+                                   var legend = layer.get('legend');
+                                   // remove existing legend
+                                   $('.olLegend').remove();
+                                   
+                                   // add new legend to dom tree
+                                   $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(legend);
+                               }
+                           }); 
+                       });
+                   });
 
-                    // load and add layers to map
-                    bioviz.addLayersForBiodiverse(map, uuid, url, id, params, visLayers);
+                   // load and add layers to map
+                   bioviz.addLayersForBiodiverse(map, uuid, url, id, params, visLayers);
+                   
+               }
 
-                }
-
-                  
-                  ready.resolve(map, visLayers);
-                  
-              });
-
-              return ready;
-
+               return {
+                   map: map,
+                   visLayers: visLayers
+               }
            },
 
            generateRangeArr: function(styleObj){
@@ -1047,8 +1022,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
            },
 
-           renderBase: function(id){
-               var base = $.Deferred();
+           renderBase: function(id) {
                // RENDER EMPTY MAP
                // CREATE BASE MAP
                // -------------------------------------------------------------------------------------------
@@ -1078,49 +1052,49 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                });
 
                var baseLayers = new ol.layer.Group({
-                    title: 'Base Maps',
-                    layers: [
-                        new ol.layer.Tile({
-                          title: 'Mapbox',
-                          type: 'base',
-                          visible: false,
-                          source: new ol.source.XYZ({
-                            tileSize: [512, 512],
-                            url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
-                          })
-                        }),
-                        new ol.layer.Tile({
+                   title: 'Base Maps',
+                   layers: [
+                       new ol.layer.Tile({
+                           title: 'Mapbox',
+                           type: 'base',
+                           visible: false,
+                           source: new ol.source.XYZ({
+                               tileSize: [512, 512],
+                               url: 'https://api.mapbox.com/styles/v1/wolskis/ciqip8d3o0006bfnjnff9rt4j/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                           })
+                       }),
+                       new ol.layer.Tile({
                            title: 'OSM',
                            type: 'base',
                            preload: 5,
                            visible: true,
                            source: new ol.source.OSM()
-                        })
-                        /*,
-                        new ol.layer.Tile({
-                          title: 'Mapbox',
-                          type: 'base',
-                          source: new ol.source.XYZ({
-                            tileSize: [512, 512],
-                            url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
-                          })
-                        })*/
-                    ]
+                       })
+                       // ,
+                       // new ol.layer.Tile({
+                       //     title: 'Mapbox',
+                       //     type: 'base',
+                       //     source: new ol.source.XYZ({
+                       //         tileSize: [512, 512],
+                       //         url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
+                       //     })
+                       // })
+                   ]
 
                });        
 
                baseLayers.getLayers().forEach(function(lyr) {
-                      if (lyr.get('title') == 'Mapbox'){
-                        lyr.on('precompose', function(evt){
-                          evt.context.globalCompositeOperation = 'lighten';
-                        });
-                      } else {
-                        lyr.on('precompose', function(evt){
-                          evt.context.globalCompositeOperation = 'darken';
-                        });
-                      }
+                   if (lyr.get('title') == 'Mapbox'){
+                       lyr.on('precompose', function(evt){
+                           evt.context.globalCompositeOperation = 'lighten';
+                       });
+                   } else {
+                       lyr.on('precompose', function(evt){
+                           evt.context.globalCompositeOperation = 'darken';
+                       });
+                   }
                });            
-                    
+               
                map = new ol.Map({
                    target: id,
                    layers: [
@@ -1154,9 +1128,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                      mapTitle: null
                    }, bccvl_common.exportAsImage);
 
-               base.resolve(map, visLayers);
-
-               return base;
+               return {
+                   map: map,
+                   visLayers: visLayers
+               }
            },
 
 

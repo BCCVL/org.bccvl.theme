@@ -13,11 +13,10 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common',
         var mapId = $('.bccvl-preview-pane:visible').attr('id');
 
         $(function () {
-          $.when( vizcommon.renderBase(mapId) ).then(function(base, layergroup){
+            var base_map = vizcommon.renderBase(mapId)
+            map = base_map.map
+            visLayers = base_map.visLayers
             
-            map = base;
-            visLayers = layergroup;
-
             vizcommon.createLegendBox(mapId);
             appendBlendControl(mapId);
             // tie up blend control
@@ -26,8 +25,6 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common',
             select.addEventListener('change', function() {
                 map.render();
             });
-
-          });
 
         });
 

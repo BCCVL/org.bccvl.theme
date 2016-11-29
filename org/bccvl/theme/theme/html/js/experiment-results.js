@@ -52,11 +52,8 @@ define(
                     }
 
                     if (params.mimetype == 'image/geotiff'){
-                        $.when(vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'))).then(function(map, visLayers) {
-                            
-                            map.addLayer(constraints);
-
-                        });
+                        var map = vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'))
+                        map.map.addLayer(constraints);
                     }
                 });
             }
