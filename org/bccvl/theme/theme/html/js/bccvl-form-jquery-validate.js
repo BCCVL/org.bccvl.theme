@@ -13,14 +13,7 @@ define(
 
         // use required class as well as attr
         $('[required]').addClass('required');
-        // fallback to shift any remaining parsley error messages
-        $('[data-parsley-error-message]').each(function(){
-            $(this).data('error-message', $(this).data('parsleyErrorMessage'));
-        });
-        // steal any floating parsley data types to use them as class rules
-        $('[data-parsley-type]').each(function(){
-            $(this).addClass(''+$(this).data('parsleyDataType')+'');
-        });
+
         // fallback for type to class
         $('[data-type]').each(function(){
             $(this).addClass(''+$(this).data('type')+'');
