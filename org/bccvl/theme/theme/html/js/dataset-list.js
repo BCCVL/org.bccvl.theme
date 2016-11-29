@@ -3,11 +3,11 @@
 //
 define(
     ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
-     'layer-edit-modal', 'bccvl-modals', 'bccvl-api', 'openlayers3',
+     'bccvl-modals', 'bccvl-api', 'openlayers3',
      'bootstrap2', 'jquery-tablesorter', 'jquery-form', 'selectize',
      'bbq', 'faceted_view.js', 'selectize-remove-single'],
 
-    function($, vizmap, vizcommon, editmodal, modals, bccvlapi) {
+    function($, vizmap, vizcommon, modals, bccvlapi) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -18,9 +18,6 @@ define(
         
         // ==============================================================
         $(function() {
-
-            editmodal.init();
-
 
             $('.bccvl-datasetstable').tablesorter({
                 headers: {
@@ -133,16 +130,17 @@ define(
             $("body").on("click", ".update-dataset-btn", function(event) {
                 event.preventDefault();
                 var datasetURL = $(this).attr('data-url');
-                var updatemetadataURL = datasetURL + '/API/dm/v1/update_metadata?uuid=';
                 var completeURL = datasetURL + '/@@datasets_list_item';
                 var dsRow = $(this).parents('.datasets-list-entry');
-                $.ajax({
-                    url: updatemetadataURL
-                }).then(function(){ 
-                    renderDatasetRow(completeURL, dsRow);
-                }).then(function(){ 
-                    $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
-                });
+                bccvlapi.dm.update_metadata(uuid).then(
+                    function() { 
+                        renderDatasetRow(completeURL, dsRow);
+                    }
+                ).then(
+                    function() { 
+                        $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
+                    }
+                );
             });
 
             // Dateset entry dropdown functions

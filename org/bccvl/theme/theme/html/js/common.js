@@ -55,7 +55,6 @@ requirejs.config({
         'experiment-results':         'js/experiment-results',
         'feedback':                   'js/feedback',
         'homepage':                   'js/homepage',
-        'layer-edit-modal':           'js/layer-edit-modal',
         'login':                      'js/login',
         'new-experiment-biodiverse':  'js/new-experiment-biodiverse',
         'new-experiment-ensemble':    'js/new-experiment-ensemble',
