@@ -159,6 +159,19 @@
         )
     }
 
+    function em_status(uuid, root=false) {
+        return _do_call(
+            'API/em/v1/status',
+            {
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: {uuid: uuid}
+            },
+            root
+        )
+    }
+
     // Datamanager calls
     function dm_metadata(uuid, root=false) {
         return _do_call(
@@ -264,7 +277,8 @@
             submitsdm: submitsdm,
             submitcc: submitcc,
             submittraits: submittraits,
-            metadata: em_metadata
+            metadata: em_metadata,
+            status: em_status
         },
         dm: {
             metadata: dm_metadata,
