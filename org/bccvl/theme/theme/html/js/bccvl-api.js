@@ -142,35 +142,40 @@
     }
 
     function em_metadata(uuid, root=false) {
-        var api_path = 'API/em/v1/metadata'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: 'GET',
-            dataType: 'xml json',
-            converters: {'xml json': $.xmlrpc.parseDocument},
-            data: {uuid: uuid}
-        }).promise()
+        return _do_call(
+            'API/em/v1/metadata',
+            {
+                type: 'GET',
+                dataType: 'xml json',
+                converters: {'xml json': $.xmlrpc.parseDocument},
+                data: {uuid: uuid}
+            },
+            root
+        ).then(
+            function(data, status, jqXHR) {
+                // deref xmlrpc result array
+                return data[0]
+            }
+        )
     }
 
     // Datamanager calls
     function dm_metadata(uuid, root=false) {
-        var api_path = 'API/dm/v1/metadata'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        // TODO: should we use portal_url here?
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: 'GET',
-            dataType: 'xml json',
-            converters: {'xml json': $.xmlrpc.parseDocument},            
-            data: {uuid: uuid}
-        }).promise()
+        return _do_call(
+            'API/dm/v1/metadata',
+            {
+                type: 'GET',
+                dataType: 'xml json',
+                converters: {'xml json': $.xmlrpc.parseDocument},            
+                data: {uuid: uuid}
+            },
+            root
+        ).then(
+            function(data, status, jqXHR) {
+                // deref xmlrpc result array
+                return data[0]
+            }
+        )
     }
 
     function export_to_ala(uuid, root=false) {
