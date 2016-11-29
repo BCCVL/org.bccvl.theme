@@ -2,12 +2,12 @@
 // main JS for the new species trait model experiment page.
 //
 define(
-    ['jquery', 'bccvl-preview-layout', 'bccvl-visualiser-common',
+    ['jquery', 'bccvl-visualiser-common',
      'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
      'bbq', 'faceted_view.js', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api'],
-    function($, preview_layout, vizcommon, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi) {
+    function($, vizcommon, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi) {
 
         $(function() {
 

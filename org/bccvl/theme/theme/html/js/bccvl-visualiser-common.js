@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip'],
-    function( $, layout, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip) {
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip'],
+    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip) {
 
         require(['raven'], function(Raven) {
             /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {

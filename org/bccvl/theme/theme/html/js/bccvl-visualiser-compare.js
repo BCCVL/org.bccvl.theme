@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'jquery-xmlrpc'],
-    function( $, preview, ol, layerswitcher, vizcommon  ) {
+define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'jquery-xmlrpc'],
+    function( $, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
