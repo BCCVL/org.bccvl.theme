@@ -178,6 +178,32 @@
         )
     }
 
+    function dm_get_rat(uuid, layer, root=false) {
+        return _do_call(
+            'API/dm/v1/rat',
+            {
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({uuid: uuid, layer: layer})
+            },
+            root
+        )
+    }
+
+    function dm_update_metadata(uuid, root=false) {
+        return _do_call(
+            'API/dm/v1/update_metadata',
+            {
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: {uuid: uuid}
+            },
+            root
+        )
+    }
+
     function export_to_ala(uuid, root=false) {
         return _do_call(
             'API/dm/v1/export_to_ala',
@@ -242,6 +268,8 @@
         },
         dm: {
             metadata: dm_metadata,
+            get_rat: gm_get_rat,
+            update_metadata: dm_update_metadata,
             export_to_ala: export_to_ala
         },
         job: {
