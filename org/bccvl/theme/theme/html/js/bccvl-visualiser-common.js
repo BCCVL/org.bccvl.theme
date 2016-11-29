@@ -469,13 +469,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var style = $.Deferred();
                
                if (layerdef.legend == 'categories') {
-                   bccvlapi.dm.get_rat(
-                       {
-                           'datasetid': uuid,
-                           'layer': layerdef.token
-                       },
-                       root=true
-                   ).then(
+                   bccvlapi.dm.get_rat(uuid, layerdef.token, true).then(
                        function(data, status, jqXHR) {
                            
                            var numRows = data.rows.length;
