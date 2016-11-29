@@ -36,7 +36,6 @@ requirejs.config({
         'bccvl-form-popover':         'js/bccvl-form-popover',
         'bccvl-modals':               'js/bccvl-modals',
         'bccvl-search':               'js/bccvl-search',
-        'bccvl-stretch':              'js/bccvl-stretch',
         'bccvl-visualiser-common':    'js/bccvl-visualiser-common',
         'bccvl-visualiser-biodiverse':'js/bccvl-visualiser-biodiverse',
         'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
