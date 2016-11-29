@@ -191,6 +191,43 @@
         )
     }
 
+
+    // Visualiser
+
+    var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl
+    var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms'
+    var visualiserFetchUrl = visualiserBaseUrl + 'api/fetch'
+    
+    function visualiser_fetch(data) {
+        var dfrd = $.Deferred()
+
+        var fetch = function() {
+            $.ajax({
+                url: visualiserFetchUrl,
+                data: data
+            }).then(
+                function(data, status, jqXHR) {
+                    if(data.status == "COMPLETED"){
+                        dfrd.resolve(data.status);
+                    } else if (data.status == "FAILED"){
+                        dfrd.reject(data.reason);
+                    } else {
+                        // fetch again
+                        setTimeout(fetch, 500)
+                    }
+                }
+            ).fail(
+                function(jqXHR, textStatus, errorThrown) {
+                    dfrd.reject(jqXHR)
+                }
+            )
+        }
+
+        fetch()
+
+        return dfrd.promise()
+    }
+    
     
     // Exposed public methods
     return {
@@ -208,6 +245,10 @@
             export_to_ala: export_to_ala
         },
         job: {
+        },
+        visualiser: {
+            wms_url: visualiserWMS,
+            fetch: visualiser_fetch
         }
     }
         
