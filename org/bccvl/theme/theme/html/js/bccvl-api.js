@@ -55,22 +55,27 @@
             }
         }
         return url3.join('/');
-    }    
-    
-    // Site Methods
-    function vocabulary(name, root=false) {
-        var api_path = 'API/dm/v1/vocabulary'
+    }
+
+    function _do_call(api_path, ajax_options, root=false) {
         if (root) {
             api_path = '/' + api_path
         }
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            data: {name: name}
-        }).promise()
+        ajax_options['url'] = _concatAndResolveUrl(window.location.href, api_path)
+        return $.ajax(ajax_options).promise()
     }
     
-
+    // Site Methods
+    function vocabulary(name, root=false) {
+        return _do_call(
+            'API/dm/v1/vocabulary',
+            {
+                data: {name: name}
+            },
+            root
+        )
+    }
+    
     // Experiment methos
     function submitsdm(params, root=false) {
         /* params:
@@ -83,18 +88,16 @@
                modelling_region
                algorithms
         */
-        var api_path = 'API/em/v1/submitsdm'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(params)
-        }).promise()
+        return _do_call(
+            'API/em/v1/submitsdm',
+            {
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(params)
+            },
+            root
+        )
     }
 
     function submitcc(params, root=false) {
@@ -105,18 +108,16 @@
                future_climate_datasets
                projection_region
         */
-        var api_path = 'API/em/v1/submitcc'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(params)
-        }).promise()
+        return _do_call(
+            'API/em/v1/submitcc',
+            {
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(params)
+            },
+            root
+        )
     }
     
     function submittraits(params, root=false) {
@@ -128,18 +129,16 @@
                modelling_region
                algorithms
         */
-        var api_path = 'API/em/v1/submittraits'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: "POST",
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(params)
-        }).promise()
+        return _do_call(
+            'API/em/v1/submittraits',
+            {
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(params)
+            },
+            root
+        )
     }
 
     function em_metadata(uuid, root=false) {
@@ -175,19 +174,16 @@
     }
 
     function export_to_ala(uuid, root=false) {
-        var api_path = 'API/dm/v1/export_to_ala'
-        if (root) {
-            api_path = '/' + api_path
-        }
-        // TODO: should we use portal_url here?
-        var api_url = _concatAndResolveUrl(window.location.href, api_path)
-        return $.ajax({
-            url: api_url,
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({uuid: uuid})
-        }).promise()
+        return _do_call(
+            'API/dm/v1/export_to_ala',
+            {
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({uuid: uuid})
+            },
+            root
+        )
     }
 
     
