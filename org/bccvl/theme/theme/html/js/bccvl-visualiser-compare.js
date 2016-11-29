@@ -63,31 +63,32 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common',
             var map = base_map.map
             var visLayers = base_map.visLayers
 
-            $.when(vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers)).then(function(newLayers) {
-                // FIXME: assumes there is only 1 layer
-                var newLayer = newLayers[0];
-                var layerdef = newLayer.get('bccvl').layer;
-                // set layer title and opacity
-                if (typeof algorithm != "undefined") {
-                    container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
-                } else {
-                    container.append('<label>'+layerdef.title+'<br/></label>');
-                }
-
-                newLayer.setOpacity(0.9);
-
-                // if it is the first map, zoom to extent
-                if (maps.length == 1) {
-                    if ( visLayers.getExtent() ){
-                        ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
-                        map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+            vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers).then(
+                function(newLayers) {
+                    // FIXME: assumes there is only 1 layer
+                    var newLayer = newLayers[0];
+                    var layerdef = newLayer.get('bccvl').layer;
+                    // set layer title and opacity
+                    if (typeof algorithm != "undefined") {
+                        container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
                     } else {
-                        visLayers.setExtent(newLayer.getExtent());
-                        map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+                        container.append('<label>'+layerdef.title+'<br/></label>');
+                    }
+
+                    newLayer.setOpacity(0.9);
+
+                    // if it is the first map, zoom to extent
+                    if (maps.length == 1) {
+                        if ( visLayers.getExtent() ){
+                            ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
+                            map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+                        } else {
+                            visLayers.setExtent(newLayer.getExtent());
+                            map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
+                        }
                     }
                 }
-                    
-            });
+            );
 
             // let all maps use the same view
             if (maps.length != 0) {

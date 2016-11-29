@@ -220,39 +220,41 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common',
                 return;
             } 
 
-            $.when(vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers)).then(function(newLayers) {
-                // TODO: rendering legend should be an option or has to happen outside of addLayersForDataset
-                // FIXME: assumes there is only one layer
-                var newLayer = newLayers[0];
-                var layerdef = newLayer.get('bccvl').layer;
+            vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers).then(
+                function(newLayers) {
+                    // TODO: rendering legend should be an option or has to happen outside of addLayersForDataset
+                    // FIXME: assumes there is only one layer
+                    var newLayer = newLayers[0];
+                    var layerdef = newLayer.get('bccvl').layer;
 
-                if (layerdef.type == 'occurrence') {
-                    vizcommon.addLayerLegend(id, layerName, 'occurrence', uuid);
-                    newLayer.setOpacity(1);                    
-                } else {
-                    // copy color range from our styleArray
-                    layerdef.style.startpoint = styleArray[0].startpoint;
-                    layerdef.style.midpoint = styleArray[0].midpoint;
-                    layerdef.style.endpoint = styleArray[0].endpoint;
-
-                    // add metadata to layer title for legend.
-                    if (typeof algo !== "undefined" && typeof species !== "undefined") {
-                      layerdef.title = layerdef.title + ' ('+species+' - '+algo+')';
+                    if (layerdef.type == 'occurrence') {
+                        vizcommon.addLayerLegend(id, layerName, 'occurrence', uuid);
+                        newLayer.setOpacity(1);                    
+                    } else {
+                        // copy color range from our styleArray
+                        layerdef.style.startpoint = styleArray[0].startpoint;
+                        layerdef.style.midpoint = styleArray[0].midpoint;
+                        layerdef.style.endpoint = styleArray[0].endpoint;
+                        
+                        // add metadata to layer title for legend.
+                        if (typeof algo !== "undefined" && typeof species !== "undefined") {
+                            layerdef.title = layerdef.title + ' ('+species+' - '+algo+')';
+                        }
+                        
+                        // TODO: this does not update legend
+                        newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
+                        
+                        // handle our own legend
+                        vizcommon.addLayerLegend(id, layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
+                        
+                        // move used color into used array
+                        usedStyleArray.push(styleArray[0]);
+                        styleArray.shift();
+                        
                     }
-                    
-                    // TODO: this does not update legend
-                    newLayer.getSource().getParams().SLD_BODY = vizcommon.generateSLD(layerdef);
-                    
-                    // handle our own legend
-                    vizcommon.addLayerLegend(id, layerdef.title, styleArray[0].endpoint, uuid, styleArray[0].name);
-                    
-                    // move used color into used array
-                    usedStyleArray.push(styleArray[0]);
-                    styleArray.shift();
-                            
+                    bindLayerListeners(newLayer);
                 }
-                bindLayerListeners(newLayer);
-            });
+            );
         }
     }
 
