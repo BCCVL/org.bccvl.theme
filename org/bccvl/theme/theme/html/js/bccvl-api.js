@@ -185,7 +185,7 @@
                 type: 'GET',
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify({uuid: uuid, layer: layer})
+                data: {uuid: uuid, layer: layer}
             },
             root
         )
@@ -198,7 +198,7 @@
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json',
-                data: {uuid: uuid}
+                data: JSON.stringify({uuid: uuid})
             },
             root
         )
@@ -268,7 +268,7 @@
         },
         dm: {
             metadata: dm_metadata,
-            get_rat: gm_get_rat,
+            get_rat: dm_get_rat,
             update_metadata: dm_update_metadata,
             export_to_ala: export_to_ala
         },
