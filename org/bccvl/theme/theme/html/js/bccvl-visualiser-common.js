@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip'],
-    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip) {
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi) {
 
         require(['raven'], function(Raven) {
             /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
@@ -63,16 +63,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        proj3577Transform.forward,
                                        proj3577Transform.inverse);       
 
-       // visualiser base url
-       var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
-       var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
-
-       // fetch api url
-       var fetchurl = visualiserBaseUrl + 'api/fetch';
-
-       // dataset manager getMetadata endpoint url
-       var dmurl = portal_url + '/API/dm/v1/metadata';
-       
        var layer_vocab = {};
        // FIXME: is there a  race condition possible here?
        //        e.g. layer_vocab is required before it is populated?
@@ -814,7 +804,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var progress = new progress_bar.Progress_bar(document.getElementById('progress-'+id));
                
                var source = new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-                   url: visualiserWMS,
+                   url: bccvlapi.visualiser.wms_url,
                    params: wms_params,
                    serverType: 'mapserver'
                }));
@@ -1171,168 +1161,146 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
 
            addLayersForDataset: function(uuid, url, id, visibleLayer, visLayers) {
-                // styObj ... override given certain styleObj parameters
-                var dfrd = $.Deferred();
-                var requestStatus = $.Deferred();
-                var jqxhr = $.Deferred();
-                
-                var fetch = function(){
-                    $.ajax({
-                        url: fetchurl,
-                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
-                    }).done(function(data, status, jqXHR){
-                        if(data.status == "COMPLETED"){
-                            requestStatus.resolve(data.status);
-                        } else if (data.status == "FAILED"){
-                            requestStatus.reject(data.reason);
-                        } else {
-                             setTimeout(function(){
-                                fetch();
-                             }, 500);
-                        }
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        alert('Problem request dataset, please try again later.')
-                    });
-                }
-                
-                requestStatus.then(
-                  function(){
-                    var meta = $.ajax({
-                        url: dmurl,
-                        type: 'GET',
-                        dataType: 'xml json',
-                        converters: {'xml json': $.xmlrpc.parseDocument},
-                        data: {'uuid': uuid}})
-                        .then(function(data, status, jqXHR) {
-                            jqxhr.resolve(data);
-                        });
-                  }, function(jqXHR, textStatus, errorThrown){
-                    alert('Problem preparing dataset for viewing, please try again later.')
-                });
-                
-                jqxhr.then(function(data, status, jqXHR) {
-                    console.log(data);
-                     // xmlrpc returns an array of results
-                    data = data[0];
-                    // define local variables
-                    var layerdef;
-                         
-                    // check for layers metadata, if none exists then the request is returning a data like a csv file
-                    // TODO: alternative check data.mimetype == 'text/csv' or data.genre
-                    //       or use type passed in as parameter
-                    if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence" || data.genre == "DataGenreTraits") {
-                       // species data  (not a raster)
-                       // TODO: use data.title (needs to be populated)
-                       layerdef = {
-                           'title': data.title || data.description || 'Data Overlay',
-                           'bounds': data.bounds,
-                           'projection': data.srs || 'EPSG:4326'
-                       };
+               // styObj ... override given certain styleObj parameters
+               var dfrd = $.Deferred();
 
-
-                       if (!$.isEmptyObject(data.layers)) {
-                         $.each( data.layers, function(layerid, layer) {
-                            layerdef.filename = layer.filename;
-                            if (layer.bounds) {
-                              layerdef.bounds = layer.bounds;
-                            }
-                         });
-                       }
-
-                        
-                       if (data.genre == "DataGenreSpeciesOccurrence" ||
-                           data.genre == "DataGenreSpeciesCollection" ||
-                           data.genre == "DataGenreTraits") {
-                           layerdef.type = 'occurrence';
-                           layerdef.style = {
-                               color: '#e74c3c'
-                           };
-                       } else if (data.genre == "DataGenreSpeciesAbsence") {
-                           layerdef.type = 'absence';
-                           layerdef.style = {
-                               color: '#3498db'
-                           };
-                       } 
-                        
-                       // there is no legend for csv data
-                       var newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms-occurrence');
-                       // add layer to layers group
-                       visLayers.getLayers().push(newLayer);
-                       dfrd.resolve([newLayer]);
-
-                   } else {
-                       // raster data
-                       // TODO: data.layer could be standard array, as layerid is in layer object as well
-                       var newLayers = [];
-                       $.each( data.layers, function(layerid, layer){
-                           // get layer definition from vocab
-                           layerdef = layer_vocab[layer.layer];
-                           if (typeof layerdef === 'undefined') {
-                               // We don't have a layerdef so let's create a default fallback
-                               // TODO: this may happen in case of experiment outputs (i.e. probability maps) ... they don't have a layer identifier, but a file name
-                               // FIXME: how do I know if it is a probability map or just some undefined layer?
-                               layerdef = {
-                                   'token': layer.layer,
-                                   'title': layer.layer || layer.filename,
-                                   'unitfull': '',
-                                   'unit': '',
-                                   'type': '',  // unused
-                                   'legend': 'default',
-                                   'tooltip': '',
-                                   'filename': layer.filename
-                               };
-                               if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP') {
-                                   layerdef.legend = 'suitability';
-                                   layerdef.unit = ' ';
-                                   layerdef.unitfull = 'Environmental suitability';
-                                   layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
-                               }
-                           } else {
-                               // make a copy of the original object
-                               layerdef = $.extend({}, layerdef);
-                               // for zip files we need the filename associated with the layer
-                               if (layer.filename) {
-                                   layerdef.filename = layer.filename;
-                               }
-                           }
-                           layerdef.bounds = layer.bounds;
-                           layerdef.projection = layer.srs || 'EPSG:4326';
-                           // copy datatype into layer def object
-                           layerdef.datatype = layer.datatype;
-                           // add min / max values
-                           // FIXME: this should go away but some datasets return strings instead of numbers
-                           layerdef.min = Number(layer.min);
-                           layerdef.max = Number(layer.max);
-                           // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
-                           // if visibleLayer is undefined set first layer visible
-                           if (typeof visibleLayer == 'undefined') {
-                               visibleLayer = layer.filename;
-                           }
-                           layerdef.isVisible = layer.filename == visibleLayer;
-                           
-                           $.when( bccvl_common.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
-                               // object to hold legend and color ranges
-                               layerdef.style = styleObj;
-                                
-                               // create legend for this layer
-                               var legend = bccvl_common.createLegend(layerdef);
-                                
-                               // create layer
-                               var newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms', legend);
-                               // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
-                               // add new layer to layer group
-                                
-                               visLayers.getLayers().push(newLayer);
-                               newLayers.push(newLayer);
-                           });
-                           
-                       });
-                       dfrd.resolve(newLayers);
+               bccvlapi.visualiser.fetch(
+                   {
+                       'datasetid': uuid,
+                       'DATA_URL': url,
+                       'INSTALL_TO_DB': false
                    }
-                   
-               });
-               
-               fetch();
+               ).then(
+                   // visualiser fetch went well
+                   function(status) {
+                       return bccvlapi.dm.metadata(uuid, root=true)
+                   },
+                   // visualiser fetch failed
+                   function(error) {
+                       alert('Problem request dataset, please try again later.')
+                       // need to return some error here?
+                   }
+               ).then(
+                   // metadata received
+                   function(data) {
+                       // jquery doesn't call this success handler if there was an error in the previous chain
+                       // define local variables
+                       var layerdef;
+                         
+                       // check for layers metadata, if none exists then the request is returning a data like a csv file
+                       // TODO: alternative check data.mimetype == 'text/csv' or data.genre
+                       //       or use type passed in as parameter
+                       if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence" || data.genre == "DataGenreTraits") {
+                           // species data  (not a raster)
+                           // TODO: use data.title (needs to be populated)
+                           layerdef = {
+                               'title': data.title || data.description || 'Data Overlay',
+                               'bounds': data.bounds,
+                               'projection': data.srs || 'EPSG:4326'
+                           };
+
+
+                           if (!$.isEmptyObject(data.layers)) {
+                               $.each( data.layers, function(layerid, layer) {
+                                   layerdef.filename = layer.filename;
+                                   if (layer.bounds) {
+                                       layerdef.bounds = layer.bounds;
+                                   }
+                               });
+                           }
+
+                        
+                           if (data.genre == "DataGenreSpeciesOccurrence" ||
+                               data.genre == "DataGenreSpeciesCollection" ||
+                               data.genre == "DataGenreTraits") {
+                               layerdef.type = 'occurrence';
+                               layerdef.style = {
+                                   color: '#e74c3c'
+                               };
+                           } else if (data.genre == "DataGenreSpeciesAbsence") {
+                               layerdef.type = 'absence';
+                               layerdef.style = {
+                                   color: '#3498db'
+                               };
+                           } 
+                        
+                           // there is no legend for csv data
+                           var newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms-occurrence');
+                           // add layer to layers group
+                           visLayers.getLayers().push(newLayer);
+                           dfrd.resolve([newLayer]);
+                           
+                       } else {
+                           // raster data
+                           // TODO: data.layer could be standard array, as layerid is in layer object as well
+                           var newLayers = [];
+                           $.each( data.layers, function(layerid, layer){
+                               // get layer definition from vocab
+                               layerdef = layer_vocab[layer.layer];
+                               if (typeof layerdef === 'undefined') {
+                                   // We don't have a layerdef so let's create a default fallback
+                                   // TODO: this may happen in case of experiment outputs (i.e. probability maps) ... they don't have a layer identifier, but a file name
+                                   // FIXME: how do I know if it is a probability map or just some undefined layer?
+                                   layerdef = {
+                                       'token': layer.layer,
+                                       'title': layer.layer || layer.filename,
+                                       'unitfull': '',
+                                       'unit': '',
+                                       'type': '',  // unused
+                                       'legend': 'default',
+                                       'tooltip': '',
+                                       'filename': layer.filename
+                                   };
+                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP') {
+                                       layerdef.legend = 'suitability';
+                                       layerdef.unit = ' ';
+                                       layerdef.unitfull = 'Environmental suitability';
+                                       layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
+                                   }
+                               } else {
+                                   // make a copy of the original object
+                                   layerdef = $.extend({}, layerdef);
+                                   // for zip files we need the filename associated with the layer
+                                   if (layer.filename) {
+                                       layerdef.filename = layer.filename;
+                                   }
+                               }
+                               layerdef.bounds = layer.bounds;
+                               layerdef.projection = layer.srs || 'EPSG:4326';
+                               // copy datatype into layer def object
+                               layerdef.datatype = layer.datatype;
+                               // add min / max values
+                               // FIXME: this should go away but some datasets return strings instead of numbers
+                               layerdef.min = Number(layer.min);
+                               layerdef.max = Number(layer.max);
+                               // DETERMINE VISIBILITY, IF LAYER IS NOMINATED - RENDER IT, IF NOT - DEFAULT TO FIRST
+                               // if visibleLayer is undefined set first layer visible
+                               if (typeof visibleLayer == 'undefined') {
+                                   visibleLayer = layer.filename;
+                               }
+                               layerdef.isVisible = layer.filename == visibleLayer;
+                           
+                               $.when( bccvl_common.createStyleObj(layerdef, uuid) ).then(function(styleObj, layerdef){
+                                   // object to hold legend and color ranges
+                                   layerdef.style = styleObj;
+                                   
+                                   // create legend for this layer
+                                   var legend = bccvl_common.createLegend(layerdef);
+                                   
+                                   // create layer
+                                   var newLayer = bccvl_common.createLayer(id, layerdef, data, 'wms', legend);
+                                   // REMOVE: (uuid, data, layer, layerdef.title, 'wms', layerdef.isVisible, styleObj, legend, layerdef.legend);
+                                   // add new layer to layer group
+                                
+                                   visLayers.getLayers().push(newLayer);
+                                   newLayers.push(newLayer);
+                               });
+                               
+                           });
+                           dfrd.resolve(newLayers);
+                       }
+                   }
+               );
                
                return dfrd;
            },
@@ -1827,88 +1795,67 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                if (params.mimetype == 'application/zip') {
                    console.log('get metadata');
                    // request metadata about file
-                    var dfrd = $.Deferred();
-                    var requestStatus = $.Deferred();
-                    var jqxhr = $.Deferred();
-                    
-                    var fetch = function(){
-                        $.ajax({
-                            url: fetchurl,
-                            data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
-                        }).done(function(data, status, jqXHR){
-                            if(data.status == "COMPLETED"){
-                                requestStatus.resolve(data.status);
-                            } else if (data.status == "FAILED"){
-                                requestStatus.reject(data.reason);
+                   var requestStatus = $.Deferred();
+                   var jqxhr = $.Deferred();
+
+                   bccvlapi.visualiser.fetch(
+                       {
+                           'datasetid': uuid,
+                           'DATA_URL': url,
+                           'INSTALL_TO_DB': false
+                       }
+                   ).then(
+                       function(status) {
+                            return bccvlapi.dm.metadata(uuid, root=true)
+                        },
+                        function(jqXHR, textStatus, errorThrown){
+                            alert('Problem preparing dataset for viewing, please try again later.')
+                        }
+                   ).then(
+                       function(data, status, jqXHR) {
+                           // Extract occurrence dataset from zip file
+                           zip.useWebWorkers = false;
+                           var httpReader = new zip.HttpReader(data.file);
+                           var zipReader = zip.createReader(
+                               httpReader,
+                               function(reader) {
+                                   // get all entries from the zip
+                                   reader.getEntries(function(entries) {
+                                       
+                                       for (var i = 0; i < entries.length; i++) {
+                                           if (!entries[i].filename.includes('citation')) {
+                                               continue;
+                                           }
+                                           
+                                           entries[i].getData(new zip.TextWriter(), function(data) {
+                                               readAndRender(data);
+                                           });
+                                       }
+                                       
+                                   });
+                                   
+                               },
+                               function(error) {
+                                   // onerror callback
+                                   console.log(error);
+                                   throw error;
+                               }
+                           );
+                       }
+                    );
+                } else {
+                    $.ajax(url).then(
+                        function(data) {
+                            readAndRender(data);
+                        },
+                        function(jqXHR, textStatus, errorThrown) {
+                            if (jqXHR.status == 0) {
+                                container.html('Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.');
                             } else {
-                                 setTimeout(function(){
-                                    fetch();
-                                 }, 500);
+                                container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
                             }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                            alert('Problem request dataset, please try again later.')
-                        });
-                    }
-                    
-                    requestStatus.then(
-                      function(){
-                        var meta = $.ajax({
-                            url: dmurl,
-                            type: 'GET',
-                            dataType: 'xml json',
-                            converters: {'xml json': $.xmlrpc.parseDocument},
-                            data: {'uuid': uuid}})
-                            .then(function(data, status, jqXHR) {
-                                jqxhr.resolve(data);
-                            });
-                      }, function(jqXHR, textStatus, errorThrown){
-                        alert('Problem preparing dataset for viewing, please try again later.')
-                    });
-                    
-                    jqxhr.then(
-                        function(data, status, jqXHR){
-                            data = data[0];
-                            // Extract occurrence dataset from zip file
-                            zip.useWebWorkers = false;
-                            var httpReader = new zip.HttpReader(data.file);
-                            var zipReader = zip.createReader(httpReader, function(reader) {
-                                // get all entries from the zip
-                                reader.getEntries(function(entries) {
-                                    
-                                    for (var i = 0; i < entries.length; i++) {
-                                        if (!entries[i].filename.includes('citation')) {
-                                            continue;
-                                        }
-                                        
-                                        entries[i].getData(new zip.TextWriter(), function(data) {
-                                            readAndRender(data);
-                                        });
-                                    }
-                                    
-                                });
-            
-                            }, function(error) {
-                                // onerror callback
-                                console.log(error);
-                                throw error;
-                            });
-                    
                         }
                     );
-                    
-                    fetch();
-                } else {
-                    $.ajax( url )
-                        .done(function(data) {
-                              readAndRender(data);
-                        })
-                        .fail(function(jqXHR, textStatus, errorThrown) {
-                            if (jqXHR.status == 0) {
-                               container.html('Your browser does not support cross-domain-origin requests. This can be fixed by updating or using another browser.');
-                            } else {
-                               container.html('<pre>Problem loading data. Please try again later.</pre>').addClass('active');
-                            }
-                        });
                 }
 
            },
