@@ -469,17 +469,18 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var style = $.Deferred();
                
                if (layerdef.legend == 'categories') {
-                   
-                   $.ajax({
-                       url: portal_url + '/dm/getRAT',
-                       method: 'GET',
-                       datatype: 'json',
-                       data: {'datasetid': uuid, 'layer': layerdef.token},
-                       success: function(data, status, jqXHR){
+                   bccvlapi.dm.get_rat(
+                       {
+                           'datasetid': uuid,
+                           'layer': layerdef.token
+                       },
+                       root=true
+                   ).then(
+                       function(data, status, jqXHR) {
                            
                            var numRows = data.rows.length;
                            var labels = [];
-
+                           
                            var valueIndex = -1;
                            for (var i = 0; i < data.cols.length; i++) {
                               if (data.cols[i].type == 'Integer' && data.cols[i].name == 'VALUE') {
@@ -517,7 +518,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            
                            style.resolve(styleObj, layerdef);
                        }
-                   });
+                   );
                    
                    return style;
                    
@@ -557,7 +558,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    
                    return style;
                    
-               }  else {
+               } else {
                    var standard_range = bccvl_common.getStandardRange(layerdef);
                    if (standard_range == 'suitability'){
                        // suitability uses different styleObj (0..1 without midpoint) and adjusted max for 0..1 ; 0..1000 range
