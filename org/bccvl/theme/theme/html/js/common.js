@@ -35,7 +35,6 @@ requirejs.config({
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
         'bccvl-modals':               'js/bccvl-modals',
-        'bccvl-remove-dataset-modal': 'js/bccvl-remove-dataset-modal',
         'bccvl-remove-experiment-modal': 'js/bccvl-remove-experiment-modal',        
         'bccvl-search':               'js/bccvl-search',
         'bccvl-sharing-modal':        'js/bccvl-sharing-modal',
