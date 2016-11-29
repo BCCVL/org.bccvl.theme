@@ -28,6 +28,7 @@ requirejs.config({
         'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
         'livechat':             'lib/freshdesk/live-chat',
         'aekos-api':            'js/aekos-api',
+        'bccvl-api':            'js/bccvl-api',
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
         // our own js files
