@@ -1,10 +1,10 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
       // AMD
-      define(['jquery'], factory);
+      define(['jquery', 'jquery-xmlrpc'], factory);
   } else if (typeof exports === 'object') {
       // CommonJS
-      module.exports = factory(require('jquery'));
+      module.exports = factory(require('jquery'), require('jquery-xmlrpc'));
   } else {
       // Browser globals (Note: root is window)
       root.returnExports = factory(root.jQuery);
