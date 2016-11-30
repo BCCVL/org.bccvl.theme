@@ -446,12 +446,74 @@ define(
             // close modal on success
             this.replace_content(this.render_modal_load());
         };
+
+
+        // OAuthSelectModal
+        function OAuthSelectModal(id) {
+            this.id = id || 'oauth-select-modal';
+        }
+        // inherit from Modal
+        OAuthSelectModal.prototype = new Modal(); // inherit prototype
+        OAuthSelectModal.prototype.constructor = OAuthSelectModal; // use new constructor
+
+        // click_handler
+        OAuthSelectModal.prototype.click_handler = function(event) {
+            event.preventDefault();
+
+            var $el = $(event.currentTarget);
+            var html = this.render_modal(this.render_modal_load());
+            // remove id from dom
+            $('#' + this.id).remove();
+            // add new modal:
+            $('body').append(html);
+            var $modal = $('#' + this.id);
+            $modal.modal({
+                backdrop: true,
+                keyboard: true,
+                show: true
+            });
+            $modal.on('hidden', function(evt) {
+                $modal.remove();
+            });
+            // load modal content
+            $.ajax($el.attr('href'), {
+                accept: 'text/html',
+                //complete: function(jqXHR, textStatus) {},
+                dataType: 'html',
+                context: this,
+                data: {ajax_load: 1},
+                error: function(jqXHR, textStatus, errorThrown) {
+                    this.replace_content(
+                        '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
+                            '<div class="modal-body">' +                    
+                            '<div class="alert alert-error">Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</div>' +
+                            '</div>' +
+                            '<div class="modal-footer">' +
+                            '</div>'
+                    );
+                },
+                success: function(data, textStatus, jqXHR) {
+                    var self = this;
+                    this.replace_content(data);
+                    // our new modal contains a form ,... let's bind events and for cancel and submit?
+                    var $modal = $('#' + this.id);
+                    $modal.on('click', 'a.btn', function(event) {
+                        event.preventDefault();
+                        $modal.modal('hide');
+                    });
+                }
+            });
+            //$('#' + id).modal('show');
+        };
+
+        
         
         return {
             'InfoModal': InfoModal,
             'RemoveModal': RemoveModal,
             'SharingModal': SharingModal,
-            'LayerEditModal': LayerEditModal
+            'LayerEditModal': LayerEditModal,
+            'OAuthSelectModal': OAuthSelectModal
         };
         
     }

@@ -11,6 +11,8 @@ define(
             removemodal.bind('body', 'a.remove-experiment-btn');
             var sharingmodal = new modals.SharingModal('sharing-modal');
             sharingmodal.bind('body', 'a.sharing-btn');
+            var exportmodal = new modals.OAuthSelectModal('oauth-select-modal');
+            exportmodal.bind('body', 'a.export-btn');
             
             var geojsonObject = $('#form-widgets-modelling_region').val();
             if (geojsonObject) {
@@ -67,45 +69,6 @@ define(
                 $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
             }).on('show', function(){
                 $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-up icon-link"></i> Less');
-            });
-
-            // export result
-            $('a.export-btn').click( function(event ) {
-                event.preventDefault();
-                
-                var url = $(this).attr('href');
-                var $modal = $('#oauth-select-modal');
-                console.log(url);
-                $modal.modal();
-
-                $.ajax( {
-                    url: url,
-                    timeout: 15000,
-                    context: $modal.context, // make this available in callbacks
-                    beforeSend: function( xhr ) {
-                        $(this).find('.spinner').show();
-                    },                    
-                  })
-                  .done(function(data) {
-                      $(this).find('.modal-content').html(data);
-                  })
-                  .fail(function(jqXHR, textStatus) {
-                    if (textStatus == "timeout"){
-                        console.log('request for oauths timed out.')
-                    } else {
-                        console.log(textStatus);
-                        $('#oauth-select-modal').find('.modal-content').html('<div class="alert alert-warning"><p><strong>Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</p>');
-                    }
-                  })
-                  .always(function() {
-                      console.log('oauth modal triggered');
-                      $(this).find('.spinner').hide();
-                  });
-            });
-
-            $('#oauth-select-modal').on('hidden', function(){
-                $(this).removeData('modal');
-                $(this).find('.modal-content').empty();
             });
 
             // send support email

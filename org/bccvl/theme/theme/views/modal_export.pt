@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="bccvl"
+      tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+      tal:omit-tag="">
+  <!-- TODO: use sort of main_template for modal content with slots to fill for different contexts? -->
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Select an Export Service</h3>
+  </div>
+  <div class="modal-body">
+    <p>We've made sharing your results with your collaborators and colleagues even easier by allowing one-click export to external repository tools. More services will become available over time.  You can request a specific service you'd like to export to by <a href="https://support.bccvl.org.au/support/home/" target="_blank" title="Get in contact with BCCVL.">getting in contact</a> with our support team.</p>
+    <p><strong>Authorised services:</strong></p>
+    <div class="modal-content" tal:content="structure context/@@oauthselect">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="btn" href="#"
+       tal:attributes="href string:${navigation_root_url}/@@oauth-preferences" target="_blank"><i class="fa fa-gear"></i> Manage Authorisations</a>
+  </div>
+</html>
