@@ -46,9 +46,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                         data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
                     }).done(function(data, status, jqXHR){
                         if(data.status == "COMPLETED"){
-                            requestStatus.resolve(data.status);
+                            jqxhr.resolve(data.status);
                         } else if (data.status == "FAILED"){
-                            requestStatus.reject(data.reason);
+                            jqxhr.reject(data.reason);
                         } else {
                              setTimeout(function(){
                                 fetch();
@@ -58,21 +58,6 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                         alert('Problem request dataset, please try again later.')
                     });
                 }
-                
-                requestStatus.then(
-                  function(){
-                    var meta = $.ajax({
-                        url: dmurl,
-                        type: 'GET',
-                        dataType: 'xml json',
-                        converters: {'xml json': $.xmlrpc.parseDocument},
-                        data: {'uuid': uuid}})
-                        .then(function(data, status, jqXHR) {
-                            jqxhr.resolve(data);
-                        });
-                  }, function(jqXHR, textStatus, errorThrown){
-                    alert('Problem preparing dataset for viewing, please try again later.')
-                });
                 
                 jqxhr.then(
                     function(){
