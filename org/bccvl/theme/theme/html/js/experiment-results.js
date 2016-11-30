@@ -13,7 +13,6 @@ define(
             sharingmodal.bind('body', 'a.sharing-btn');
             
             var geojsonObject = $('#form-widgets-modelling_region').val();
-
             if (geojsonObject) {
 
                 var source = new ol.source.Vector({
@@ -40,21 +39,12 @@ define(
                     layers: [constraintsLayer]
                 }); 
 
-                // temp fix to wipe common listener off button on this page
-                $('body a.bccvl-auto-viz').unbind('click');
-                // and redo it
-                $('body').on('click', 'a.bccvl-auto-viz', function(event){
-
-                    var params = {
-                        'type': 'auto',
-                        'mimetype': $(this).data('mimetype')
+                // add constraints layer to map after map instance has been created
+                $('body').on('map_created', function(e, map, params) {
+                    if (params.mimetype == 'image/geotiff') {
+                        map.addLayer(constraints);
                     }
-
-                    if (params.mimetype == 'image/geotiff'){
-                        var map = vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'))
-                        map.map.addLayer(constraints);
-                    }
-                });
+                })
             }
 
 
