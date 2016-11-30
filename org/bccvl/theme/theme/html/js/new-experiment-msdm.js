@@ -26,10 +26,6 @@ define(
             expcommon.init_region_selector()
 
             // -- absences + random --------------------------------
-
-
-            // -- set up region constraints
-            $('#form-widgets-modelling_region').attr('readonly', true);
             
             var base_map= vizcommon.renderBase($('.constraints-map').attr('id'))
             var map = base_map.map

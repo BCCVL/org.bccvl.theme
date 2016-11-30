@@ -27,9 +27,6 @@ define(
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
 
-            // -- set up region constraints
-            $('#form-widgets-modelling_region').attr('readonly', true);
-
             // -- set up absence radio buttons
             $('#have_absence').click(function(){
                 $('.bccvl-noabsence-dataset').slideUp(100);
