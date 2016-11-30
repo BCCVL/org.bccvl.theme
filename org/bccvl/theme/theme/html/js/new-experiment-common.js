@@ -1,8 +1,8 @@
 
 
 define(
-    ['jquery', 'selectize', 'selectize-remove-single'],
-    function( $ ) {
+    ['jquery', 'openlayers3', 'bccvl-visualiser-common', 'selectize', 'selectize-remove-single'],
+    function( $, ol, vizcommon ) {
 
         function init_region_selector() {
 
@@ -213,7 +213,7 @@ define(
                 map: map,
                 mapid: mapid,
                 visLayers: visLayers,
-                bboxLayers: bboxLayers,
+                bboxLayer: bboxLayer,
                 constraintsLayer: constraintsLayer,
             }
 
@@ -227,7 +227,7 @@ define(
             var map = cmap.map
             var mapid = cmap.mapid
             var visLayers = cmap.visLayers
-            var bboxLayers = cmap.bboxLayers
+            var bboxLayer = cmap.bboxLayer
             var constraintsLayer = cmap.constraintsLayer
 
             // recreate legend
@@ -243,7 +243,7 @@ define(
             var geometries = [];
 
             $els.each(function() {
-                var type = $(this).data('genre'); ??? msdm is looking for data('type') ?
+                var type = $(this).data('genre');
                 if (type == 'DataGenreSpeciesOccurrence' ||
                     type == 'DataGenreSpeciesAbsence' ||
                     type == 'DataGenreTraits' ||
