@@ -63,6 +63,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        proj3577Transform.forward,
                                        proj3577Transform.inverse);       
 
+       // TODO: sholud be managed by bccvl-api
        var layer_vocab = {};
        // FIXME: is there a  race condition possible here?
        //        e.g. layer_vocab is required before it is populated?
@@ -73,6 +74,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
        });
 
        // convex-hull polygon around occurrence dataset
+       // TODO: should be removed from here.... otherwise we can only have one constraints map
        var occurrence_convexhull_polygon = null;
 
        var bccvl_common = {
