@@ -33,65 +33,10 @@ define(
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
             new bccvl.SelectDict("environmental_datasets");
             
+            // -- hook up algo config -------------------------------
+            expcommon.init_algorithm_selector('input[name^="form.widgets.algorithms_"]', true)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
-
-            // -- hook up algo config -------------------------------
-            // algorithm configuration blocks should be hidden and
-            // revealed depending on whether the algorithm is
-            // selected.
-            
-            // TODO: move  select-all / select-none into widget?
-            $('#tab-configuration').on('click', 'a.select-all', function(){
-                console.log('what');
-                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
-            });
-
-            $('#tab-configuration').on('click', 'a.select-none', function(){
-                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
-            });
-
-            var $algoCheckboxes = $('input[name^="form.widgets.algorithms_"]');
-            $.each($algoCheckboxes, function(index, checkbox) {
-                var $checkbox = $(checkbox);
-
-                // when the checkbox changes, update the config block's visibility
-                $checkbox.change( function(evt) {
-                    var $algoCheckbox = $(evt.target);
-                    // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
-                    var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
-                    var $accordionToggle = $configBlock.find('.accordion-toggle');
-                    var $accordionBody = $configBlock.find('.accordion-body');
-                    if ($configBlock.length > 0) {
-                        // if there is a config block..
-                        if ($algoCheckbox.prop('checked')) {
-                            $configBlock.show(250);
-                            // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
-                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
-                        } else {
-                            // make sure that the accordion closes before hiding it
-                            if ($accordionBody.hasClass('in')) {
-                                $accordionBody.collapse('hide');
-                                $accordionToggle.addClass('collapsed');
-                                $accordionBody.removeClass('in');
-                            }
-                            // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
-                            // deselected - so we put the default value back into the text field when deselected.
-                            $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
-                                $(c).val($(c).attr('data-default'));
-                            });
-
-                            $configBlock.hide(250);
-                        }
-                    } else {
-                        if (console && console.log) {
-                            console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
-                        }
-                    }
-                });
-                // finally, invoke the change handler to get the inital visibility sorted out.
-                $checkbox.change();
-            });
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 
