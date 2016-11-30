@@ -7,27 +7,14 @@ define(
      'bccvl-visualiser-map', 'bccvl-wizard-tabs',
      'bccvl-form-jquery-validate',
      'bccvl-form-popover', 'bbq', 'faceted_view.js',
-     'bccvl-widgets', 'openlayers3', 'jquery-xmlrpc'],
+     'bccvl-widgets', 'openlayers3', 'new-experiment-common'],
     function($, vizcommon, vizmap, wiztabs, formvalidator,
-             popover, bbq, faceted, bccvl, ol) {
+             popover, bbq, faceted, bccvl, ol, expcommon) {
 
         // ==============================================================
         $(function() {
 
             wiztabs.init();         // hook up the wizard buttons
-
-            $('.bccvllinks-datasets').attr('href', portal_url+'/datasets');
-
-            // update validation rules
-            // TODO: this should probably partly be some annotation on the input elements
-            // FIXME: the element doesn't exist on page load.
-            //var el = $('[name="form-widgets-species_absence_dataset"]');
-            //el.rules('add', {'required': '#form-widgets-species_pseudo_absence_points-0:unchecked'});
-            /*var el = $('#form-widgets-species_number_pseudo_absence_points');
-            el.rules('add', 
-                {'required': "#form-widgets-species_pseudo_absence_points-0:checked",
-                             'min': 1}
-            );*/
 
             // setup dataset select widgets
             new bccvl.SelectDict("species_occurrence_collections");
@@ -88,70 +75,7 @@ define(
             });
 
             // -- region selection ---------------------------------
-
-            var xhr;
-            var select_type, $select_type;
-            var select_region, $select_region;
-
-            $select_type = $('#select-region-type').selectize({
-                onChange: function(value) {
-                    if (!value.length) return;
-                    select_region.disable();
-                    select_region.clearOptions();
-                    select_region.load(function(callback) {
-                        xhr && xhr.abort();
-                        xhr = $.ajax({
-                            url: '/_spatial/ws/field/' + value,
-                            success: function(data) {
-                                select_region.enable();
-
-                                var results = [];
-
-                                $.each(data.objects, function (key, feature) {
-
-                                    var match = {
-                                        'name': feature.name,
-                                        'pid': feature.pid
-                                    }
-                                    results.push(match);
-                                });
-                                callback(results);
-                            },
-                            error: function() {
-                                callback();
-                            }
-                        })
-                    });
-                }
-            });
-
-            $select_region = $('#select-region').selectize({
-                valueField: 'pid',
-                labelField: 'name',
-                searchField: ['name'],
-                onChange: function(value){
-                    $.ajax({
-                        url: '/_spatial/ws/shape/geojson/' + value,
-                        success: function(result) {
-                            // have to clean up ALA's geojson format
-                            var geojson = {
-                                'type': 'Feature',
-                                'geometry': result
-                            }
-                            $('#selected-geojson').data('geojson', JSON.stringify(geojson));
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    })
-                }
-            });
-
-            select_region  = $select_region[0].selectize;
-            select_type = $select_type[0].selectize;
-
-            select_region.disable();
-
+            expcommon.init_region_selector()
 
             // -- absences + random --------------------------------
             // TODO: move  select-all / select-none into widget?
@@ -259,6 +183,7 @@ define(
                             
                             // Draw convex-hull polygon for occurrence dataset in map
                             if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection') {
+                                // TODO: can this bit run in a separate even thandler?
                                 var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
                                 var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
                                 vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);

@@ -56,6 +56,7 @@ requirejs.config({
         'feedback':                   'js/feedback',
         'homepage':                   'js/homepage',
         'login':                      'js/login',
+        'new-experiment-common':      'js/new-experiment-common',
         'new-experiment-biodiverse':  'js/new-experiment-biodiverse',
         'new-experiment-ensemble':    'js/new-experiment-ensemble',
         'new-experiment-projection':  'js/new-experiment-projection',
