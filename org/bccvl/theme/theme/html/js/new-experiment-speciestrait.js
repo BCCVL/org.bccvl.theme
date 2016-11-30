@@ -3,11 +3,11 @@
 //
 define(
     ['jquery', 'bccvl-visualiser-common',
-     'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
+     'bccvl-wizard-tabs', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
      'bbq', 'faceted_view.js', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api'],
-    function($, vizcommon, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi) {
+    function($, vizcommon, wiztabs, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi) {
 
         $(function() {
 
@@ -28,9 +28,6 @@ define(
             // hook up the wizard buttons
             wiztabs.init();
 
-            // hook up the search fields
-            search.init();
-            
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
             new bccvl.SelectDict("environmental_datasets");

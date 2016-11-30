@@ -5,17 +5,16 @@
 define(
     ['jquery', 'bccvl-visualiser-common',
      'bccvl-visualiser-map', 'bccvl-wizard-tabs',
-     'bccvl-search', 'bccvl-form-jquery-validate',
+     'bccvl-form-jquery-validate',
      'bccvl-form-popover', 'bbq', 'faceted_view.js',
      'bccvl-widgets', 'openlayers3', 'jquery-xmlrpc', 'livechat'],
-    function($, vizcommon, vizmap, wiztabs, search, formvalidator,
+    function($, vizcommon, vizmap, wiztabs, formvalidator,
              popover, bbq, faceted, bccvl, ol) {
 
         // ==============================================================
         $(function() {
 
             wiztabs.init();         // hook up the wizard buttons
-            search.init();          // hook up the search fields
 
             $('.bccvllinks-datasets').attr('href', portal_url+'/datasets');
 
