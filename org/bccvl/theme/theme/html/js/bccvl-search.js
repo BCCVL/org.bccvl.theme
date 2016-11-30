@@ -72,8 +72,8 @@
 // }
 
 define(
-    ['jquery', 'jquery-xmlrpc', 'bootstrap2', 'aekos-api', 'selectize'],
-    function($, xmlrpc, bs2, aekos, selectize) {
+    ['jquery', 'bootstrap2', 'aekos-api', 'selectize'],
+    function($, bs2, aekos, selectize) {
 
         // --------------------------------------------------------------
         // -- providers -------------------------------------------------
@@ -285,7 +285,7 @@ define(
                         });
                         index += pageSize;
                     } 
-                    location.href = $('.bccvllinks-datasets').attr('href');
+                    location.href = portal_url + '/datasets'
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -508,7 +508,7 @@ define(
                                     if (!importSpeciesDatasets(results)) {
                                         providers.ala.autocomplete.noResultsFound();
                                     }
-                                    location.href = $('.bccvllinks-datasets').attr('href');
+                                    location.href = portal_url + '/datasets'
                                 },
                                 timeout: 60000,
                                 error: displayErrorMessage                                    
