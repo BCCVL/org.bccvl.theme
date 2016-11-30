@@ -46,12 +46,8 @@ define(
 
                     $.each(traitsTable.modal.basket.uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
-                        var jqxhr = bccvlapi.dm.metadata(uuid)
-                        
-                        // after getting urls, request file
-                        jqxhr.then(function(data, status, jqXHR) {
-                            // it's an xmlrpc call.... get first element in array
-                            data = data[0]
+                        bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
+                            // after getting urls, request file
                             /* data keys:
                                   headers ... all headers in csv
                                   traits ... all headers with trait variables
