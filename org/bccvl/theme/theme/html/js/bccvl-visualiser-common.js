@@ -220,6 +220,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    
                }
 
+               $(map.getTargetElement()).trigger('map_created', [map, params])
                return {
                    map: map,
                    visLayers: visLayers
