@@ -2,7 +2,7 @@
 // main JS for the feedback page.
 //
 define(
-    ['jquery', 'bootstrap2', 'bccvl-form-jquery-validate'],
+    ['jquery', 'bootstrap2', 'bccvl-form-jquery-validate', 'bccvl-raven'],
     function($, formValidator) {
         // ==============================================================
         $(function() {

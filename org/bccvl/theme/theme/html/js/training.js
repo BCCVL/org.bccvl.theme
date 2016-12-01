@@ -1,7 +1,8 @@
 //
 // main JS for the training page.
 //
-define(     ['jquery', 'bootstrap2'],
+define(
+    ['jquery', 'bootstrap2', 'bccvl-raven'],
     function( $) {
     // ==============================================================
         $(function() {

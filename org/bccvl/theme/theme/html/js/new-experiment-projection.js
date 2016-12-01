@@ -4,7 +4,7 @@
 define(
     ['jquery', 'bccvl-wizard-tabs',
      'bccvl-form-jquery-validate',
-     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat'],
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'livechat', 'bccvl-raven'],
     function($, wiztabs, formvalidator,
              bbq, faceted, bccvl) {
         // ==============================================================

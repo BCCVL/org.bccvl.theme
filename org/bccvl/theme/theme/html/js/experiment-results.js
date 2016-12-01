@@ -2,7 +2,7 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bccvl-modals', 'bccvl-api', 'bootstrap2'],
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bccvl-modals', 'bccvl-api', 'bootstrap2', 'bccvl-raven'],
     function( $, vizmap, vizcommon, ol, modals, bccvlapi) {
         // ==============================================================
         $(function() {
