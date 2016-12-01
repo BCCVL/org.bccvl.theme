@@ -63,15 +63,13 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        proj3577Transform.forward,
                                        proj3577Transform.inverse);       
 
-       // TODO: sholud be managed by bccvl-api
-       var layer_vocab = {};
-       // FIXME: is there a  race condition possible here?
-       //        e.g. layer_vocab is required before it is populated?
-       $.getJSON(portal_url + "/dm/getVocabulary", {name: 'layer_source'}, function(data, status, xhr) {
+       var layer_vocab_dfrd = bccvlapi.site.vocabulary('layer_source', true).then(function(data, status, xhr) {
+           var layer_vocab = {}
            $.each(data, function(index, value) {
                layer_vocab[value.token] = value;
            });
-       });
+           return layer_vocab
+       })
 
        // convex-hull polygon around occurrence dataset
        // TODO: should be removed from here.... otherwise we can only have one constraints map
@@ -1137,7 +1135,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // styObj ... override given certain styleObj parameters
                var dfrd = $.Deferred();
 
-               bccvlapi.visualiser.fetch(
+               var fetch_dfrd = bccvlapi.visualiser.fetch(
                    {
                        'datasetid': uuid,
                        'DATA_URL': url,
@@ -1153,9 +1151,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        alert('Problem request dataset, please try again later.')
                        // need to return some error here?
                    }
-               ).then(
+               )
+
+               $.when(fetch_dfrd, layer_vocab_dfrd).then(
                    // metadata received
-                   function(data) {
+                   function(data, layer_vocab) {
                        // jquery doesn't call this success handler if there was an error in the previous chain
                        // define local variables
                        var layerdef;
