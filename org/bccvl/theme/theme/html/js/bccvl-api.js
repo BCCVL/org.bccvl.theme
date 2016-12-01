@@ -230,6 +230,19 @@
         )
     }
 
+    function import_trait_data(data, root=false) {
+        // TODO: should use json?
+        return _do_call(
+            'API/dm/v1/import_trait_data',
+            {
+                method: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: data,
+                traditional: true
+            },
+            root
+        )
+    }
 
     // Visualiser
 
@@ -284,7 +297,8 @@
             metadata: dm_metadata,
             get_rat: dm_get_rat,
             update_metadata: dm_update_metadata,
-            export_to_ala: export_to_ala
+            export_to_ala: export_to_ala,
+            import_trat_data: import_trait_data
         },
         job: {
         },
@@ -293,5 +307,12 @@
             fetch: visualiser_fetch
         }
     }
-        
+
 }));
+
+
+// bccvl-search.js API reference ... should use bccvlapi
+
+// TODO: load vocabulary may still be an ajax async issue ... do caching in bccvl-api? (visualiser-common)
+
+// TODO: cleanup xmlrpc.py ... remove unused API methods like getRAT etc...
