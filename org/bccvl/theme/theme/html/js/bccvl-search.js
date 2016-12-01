@@ -1211,7 +1211,10 @@ define(
             if (status === 'timeout') {
                 alert('There was no response to your search query.');
             } else {
-                alert('There was a problem that stopped your query from getting results.');
+                // ignore UNSENT requests
+                if (xhr.readyState != 0) {
+                    alert('There was a problem that stopped your query from getting results.');
+                }
             }
         };
         // --------------------------------------------------------------
