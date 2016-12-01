@@ -244,6 +244,21 @@
         )
     }
 
+    // Job
+
+    function job_state(data, root=false) {
+        return _do_call(
+            'API/job/v1/state',
+            {
+                method: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: data
+            },
+            root
+        )
+    }
+
     // Visualiser
 
     var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl
@@ -301,6 +316,7 @@
             import_trat_data: import_trait_data
         },
         job: {
+            state: job_state
         },
         visualiser: {
             wms_url: visualiserWMS,
