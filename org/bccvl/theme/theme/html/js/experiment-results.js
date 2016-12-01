@@ -121,8 +121,8 @@ define(
             });
         }
 
-        // Poll /jm/getJobStatus for the status of the experiments
-        // This endpoint returns the status of each algorithm
+        // Poll experiment status
+        // This endpoint returns the overall experiment status and the status of each algorithm
         function pollExperimentStatus(expuuid) {
             bccvlapi.em.status(expuuid).then(
                 function(data) {
