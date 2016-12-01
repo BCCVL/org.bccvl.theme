@@ -25,7 +25,7 @@ requirejs.config({
         'prism':                'lib/prism/prism',
         'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',
         'proj4':                'lib/proj4/proj4',
-        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
+        'raven':                'lib/raven/raven.min',
         'livechat':             'lib/freshdesk/live-chat',
         'aekos-api':            'js/aekos-api',
         'bccvl-api':            'js/bccvl-api',
@@ -67,7 +67,9 @@ requirejs.config({
         'search':                     'js/search',
         'training':                     'js/training',
         'youtube':                    'js/youtube',
-        'selectize-remove-single':    'js/selectize-remove-single'
+        'selectize-remove-single':    'js/selectize-remove-single',
+        // dynamic js files
+        'bccvl-raven':                portal_url + '/bccvl-raven'
     },
     shim: {
         'bootstrap2':            ['jquery'],

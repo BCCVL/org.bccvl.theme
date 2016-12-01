@@ -5,25 +5,6 @@
 define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api'],
    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi) {
 
-        require(['raven'], function(Raven) {
-            /*Raven.config('https://7ed3243e68b84bbfa3530b112dbd21e2@sentry.bccvl.org.au/2', {
-                whitelistUrls: [ '\.bccvl\.org\.au/']
-            }).install()
-            
-            $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-                Raven.captureException(new Error(thrownError || jqXHR.statusText), {
-                    extra: {
-                        type: ajaxSettings.type,
-                        url: ajaxSettings.url,
-                        data: ajaxSettings.data,
-                        status: jqXHR.status,
-                        error: thrownError || jqXHR.statusText,
-                        response: jqXHR.responseText.substring(0, 100)
-                    }
-                });
-            });*/
-        });
-
        // define some projections we need
        proj4.defs([
            // alternatively load http://epsg.io/4283.js
