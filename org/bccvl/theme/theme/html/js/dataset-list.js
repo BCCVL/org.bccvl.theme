@@ -93,27 +93,24 @@ define(
                 function update_dataset_row() {
                     // poll all active spinners and update dataset row if completed
                     $.each($(spinner_sel), function(i, spinner) {
-                        var datasetURL = $(spinner).attr('data-url');
-                        var pollURL = datasetURL + '/jm/getJobStatus';
-                        var completeURL = datasetURL + '/@@datasets_list_item';
-                        
-                        // poll status of dataset import
-                        $.ajax({
-                            url: pollURL,
-                            success: function(status) {
+
+                        bccvlapi.job.state({uuid: $(spinner).data('uuid')}).then(
+                            function(status) {
                                 if (status == 'COMPLETED' || status == 'FAILED') {
                                     // The import is complete, now render the row.
+                                    var datasetURL = $(spinner).attr('data-url');
+                                    var completeURL = datasetURL + '/@@datasets_list_item';
                                     renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
                                 }
                             }
-                        });
+                        );
+                        
                     });
                     // restart timer if there are any spinners left
                     if ($(spinner_sel).length) {
                         timer_id = window.setTimeout(update_dataset_row, 5000);
                     }
                 }
-
 
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(evt) {
                     // clear current timeout
