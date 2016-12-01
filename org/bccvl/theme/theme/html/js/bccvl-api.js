@@ -68,7 +68,7 @@
     // Site Methods
     function vocabulary(name, root=false) {
         return _do_call(
-            'API/dm/v1/vocabulary',
+            'API/site/v1/vocabulary',
             {
                 data: {name: name}
             },
