@@ -72,8 +72,8 @@
 // }
 
 define(
-    ['jquery', 'bootstrap2', 'aekos-api', 'selectize'],
-    function($, bs2, aekos, selectize) {
+    ['jquery', 'bootstrap2', 'aekos-api', 'bccvl-api', 'selectize'],
+    function($, bs2, aekos, bccvlapi, selectize) {
 
         // --------------------------------------------------------------
         // -- providers -------------------------------------------------
@@ -801,6 +801,7 @@ define(
                 });
             }
 
+            // TODO: should this be on page?
             $submit.click(function() {
                 var species = speciesFieldSelect.getValue(),
                     traits = traitFieldSelect.getValue(),
@@ -812,21 +813,15 @@ define(
                 }
                 
                 $submit.find('i').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
-                // TODO: need to do manual json encoding if required
-                //       and set contentType to 'application/json'
-                $.ajax({
-                    'url': portal_url + '/API/dm/v1/import_trait_data',
-                    'contentType': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'data': {
+                bccvlapi.dm.import_trait_data(
+                    {
                         'source': 'aekos',
                         'species': species,
                         'traits': traits,
                         'environ': enviro
                     },
-                    'traditional': true,
-                    'method': 'POST',
-                    'importSelection': '',
-                }).then(
+                    true
+                ).then(
                     function(data, textStatus, jqXHR) {
                         console.log(jqXHR);
                         $submit.find('i').removeClass();
