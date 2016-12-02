@@ -325,10 +325,3 @@
     }
 
 }));
-
-
-// bccvl-search.js API reference ... should use bccvlapi
-
-// TODO: load vocabulary may still be an ajax async issue ... do caching in bccvl-api? (visualiser-common)
-
-// TODO: cleanup xmlrpc.py ... remove unused API methods like getRAT etc...
