@@ -219,6 +219,13 @@ define(
                         // refresh the page when the experiment is completed
                         location.reload();
                     }
+                },
+                function(jqXHR) {
+                    // error fetching experiment status
+                    console.log('Fetching experiment status failed: "', jqXHR.status, '"')
+                    window.setTimeout(function() {
+                        pollExperimentStatus(expuuid)
+                    }, 10000) 
                 }
             );
 
