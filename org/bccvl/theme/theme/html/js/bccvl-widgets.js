@@ -301,6 +301,19 @@ define(
                     // TODO: shall we reload the widget?
                 }
             );
+
+            // All/None button
+            this.$widget.on('click', 'a.select-all', function() {
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
+            })
+
+            this.$widget.on('click', 'a.select-none', function() {
+                // boolean attributes have to be removed completely
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
+                    $(this).prop('checked', false);
+                });
+            })
+        
         };
 
         SelectList.prototype.reload_widget = function(params) {

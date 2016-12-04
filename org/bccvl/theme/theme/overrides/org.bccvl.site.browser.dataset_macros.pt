@@ -82,6 +82,7 @@
             <div class="dataset-loading dataset-import span2" 
                  tal:condition="python: klass == 'loading'"
                  tal:attributes="data-url item_url;
+                                 data-uuid item_uuid;
                                  title title;">
             <span class="loading-gif"></span><br/>Loading</div>
             

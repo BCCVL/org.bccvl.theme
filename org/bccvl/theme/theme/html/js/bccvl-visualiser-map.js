@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'prism', 'jquery-xmlrpc'],
-    function( $, preview, ol, layerswitcher, vizcommon  ) {
+define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'prism'],
+    function( $, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -46,13 +46,13 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
             if (params.mimetype == 'image/geotiff'){
                 vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));
             } else if (params.mimetype == 'image/png'){
-                vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
             } else if (params.mimetype == 'text/csv'){
-                vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderCSV($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
             } else if (params.mimetype == 'text/x-r-transcript' || params.mimetype ==  'application/json' || params.mimetype == 'text/plain' || params.mimetype == 'text/x-r' || params.mimetype == 'application/x-perl') {
-                vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderCode($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
             } else if (params.mimetype == 'application/pdf') {
-                vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'));
+                vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
             } else if (params.mimetype == 'application/zip') {
                 vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));                
             }

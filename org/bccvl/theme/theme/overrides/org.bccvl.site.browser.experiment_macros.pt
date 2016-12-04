@@ -69,23 +69,27 @@
              tal:attributes="class klass">
 
             <div class="span12 bccvl-expstatus alert alert-block"
-                 tal:attributes="data-status state"
+                 tal:attributes="data-status state;
+                                 data-uuid context/UID"
                  tal:condition="python: state in ('QUEUED', )">
               <p>This experiment is <strong class="alert-queued-text">queued</strong>.</p>
             </div>
             <div class="span12 bccvl-expstatus alert alert-block"
-                 tal:attributes="data-status state"
+                 tal:attributes="data-status state;
+                                 data-uuid context/UID"
                  tal:condition="python: state in ('RUNNING',)">
               <p>This experiment is <strong class="">running</strong>.</p>
             </div>
             <div class="span12 bccvl-expstatus alert alert-success"
-                 tal:attributes="data-status state"
+                 tal:attributes="data-status state;
+                                 data-uuid context/UID"
                  tal:condition="python: state in ('COMPLETED',)">
               <p>This experiment is <strong>complete</strong>. The
               results are available below</p>
             </div>
             <div class="span12 bccvl-expstatus alert alert-block alert-error"
-                 tal:attributes="data-status state"
+                 tal:attributes="data-status state;
+                                 data-uuid context/UID"
                   tal:condition="python: state in ('FAILED',)">
               <p class="lead">This experiment stopped with an <strong>error</strong>.</p>
             </div>
