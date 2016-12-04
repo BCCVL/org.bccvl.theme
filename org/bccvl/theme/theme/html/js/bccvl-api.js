@@ -313,7 +313,7 @@
             get_rat: dm_get_rat,
             update_metadata: dm_update_metadata,
             export_to_ala: export_to_ala,
-            import_trat_data: import_trait_data
+            import_trait_data: import_trait_data
         },
         job: {
             state: job_state
