@@ -14,17 +14,20 @@
     <div id="content">
       <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
       
-      <div id="content-core">
+      <div id="content-core" class="span8"
+           tal:define="client view/client">
 
+        <img src="++resource++ala_logo.jpg"
+             tal:condition="client/logo_url|nothing"
+             tal:attributes="src client/logo_url"/>
+
+        
         <fieldset
             tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;">
-          <legend tal:condition="view/client"><tal:replace tal:replace="view/client/title">Service</tal:replace> wants to access BCCVL on your behalf</legend>
-          <p tal:condition="view/client"><tal:replace tal:replace="view/client/title">Service</tal:replace> wants to access BCCVL on your behalf</p>
+          <legend tal:condition="client"><tal:replace tal:replace="client/title">Service</tal:replace> wants to access BCCVL on your behalf</legend>
           <div>
-            <p tal:content="view/client/description"
-               tal:condition="view/client">Whatever this service wants to do</p>
-            <p>Explain to user what this means</p>
-            <!-- TODO: good place to put logo here and other client stuff-->
+            <p tal:content="client/description"
+               tal:condition="client">Whatever this service wants to do</p>
             <form>
               <input type="hidden" name="client_id" value=""
                      tal:attributes="value request/client_id|nothing"/>
@@ -39,6 +42,9 @@
               <span tal:replace="structure context/@@authenticator/authenticator"/>
               <button class="btn btn-primary" type="submit" name="action" value="authorize">Authorize<i class="fa fa-check"/></button>
               <button class="btn btn-danger" type="submit" name="action" value="deny">Deny<i class="fa fa-times"/></button>
+              <p class="small muted" tal:condition="python: client.type == 'public'">
+                By authorizing access, <tal:rep tal:replace="client/title">Service</tal:rep> will be able to access BCCVL on your behalf as long as your browser session is logged in to BCCVL. As soon as you log out of BCCVL, <tal:rep tal:replace="client/title">Service</tal:rep> won't be able to access BCCVL on your behalf anymore.
+              </p>
             </form>
           </div>
         </fieldset>
