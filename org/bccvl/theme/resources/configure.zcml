@@ -32,5 +32,11 @@
       file="org.bccvl.site.faceted.checkboxtree.view.js" 
       layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
       />
+
+  <browser:resource
+      name="ala_logo.jpg"
+      file="ALA-logo-2015-CMYK-405x152px.jpg"
+      layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+      />
   
 </configure>
