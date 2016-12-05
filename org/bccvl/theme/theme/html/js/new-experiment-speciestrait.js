@@ -341,7 +341,7 @@ define(
 
 
 
-            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widget-modelling_region')            
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
             
             
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){

@@ -25,7 +25,7 @@ define(
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
 
-            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widget-modelling_region')
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
             
             // bind widgets to the constraint map
             $('.bccvl-new-sdm').on('widgetChanged', function(e){
