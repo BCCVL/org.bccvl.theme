@@ -57,7 +57,10 @@
         return url3.join('/');
     }
 
-    function _do_call(api_path, ajax_options, root=false) {
+    function _do_call(api_path, ajax_options, root) {
+        // many browsers don't support ECMA6 default parameters
+        var root = (typeof root !== 'undefined') ?  root : false;
+        
         if (root) {
             api_path = '/' + api_path
         }
@@ -66,7 +69,7 @@
     }
     
     // Site Methods
-    function vocabulary(name, root=false) {
+    function vocabulary(name, root) {
         return _do_call(
             'API/site/v1/vocabulary',
             {
@@ -77,7 +80,7 @@
     }
     
     // Experiment methos
-    function submitsdm(params, root=false) {
+    function submitsdm(params, root) {
         /* params:
                title
                description
@@ -100,7 +103,7 @@
         )
     }
 
-    function submitcc(params, root=false) {
+    function submitcc(params, root) {
         /* params:
                title
                description
@@ -120,7 +123,7 @@
         )
     }
     
-    function submittraits(params, root=false) {
+    function submittraits(params, root) {
         /* params:
                title
                description
@@ -141,7 +144,7 @@
         )
     }
 
-    function em_metadata(uuid, root=false) {
+    function em_metadata(uuid, root) {
         return _do_call(
             'API/em/v1/metadata',
             {
@@ -159,7 +162,7 @@
         )
     }
 
-    function em_status(uuid, root=false) {
+    function em_status(uuid, root) {
         return _do_call(
             'API/em/v1/status',
             {
@@ -173,7 +176,7 @@
     }
 
     // Datamanager calls
-    function dm_metadata(uuid, root=false) {
+    function dm_metadata(uuid, root) {
         return _do_call(
             'API/dm/v1/metadata',
             {
@@ -191,7 +194,7 @@
         )
     }
 
-    function dm_get_rat(uuid, layer, root=false) {
+    function dm_get_rat(uuid, layer, root) {
         return _do_call(
             'API/dm/v1/rat',
             {
@@ -204,7 +207,7 @@
         )
     }
 
-    function dm_update_metadata(uuid, root=false) {
+    function dm_update_metadata(uuid, root) {
         return _do_call(
             'API/dm/v1/update_metadata',
             {
@@ -217,7 +220,7 @@
         )
     }
 
-    function export_to_ala(uuid, root=false) {
+    function export_to_ala(uuid, root) {
         return _do_call(
             'API/dm/v1/export_to_ala',
             {
@@ -230,7 +233,7 @@
         )
     }
 
-    function import_trait_data(data, root=false) {
+    function import_trait_data(data, root) {
         // TODO: should use json?
         return _do_call(
             'API/dm/v1/import_trait_data',
@@ -246,7 +249,7 @@
 
     // Job
 
-    function job_state(data, root=false) {
+    function job_state(data, root) {
         return _do_call(
             'API/job/v1/state',
             {
