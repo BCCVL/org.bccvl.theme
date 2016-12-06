@@ -129,6 +129,7 @@ define(
                 var datasetURL = $(this).attr('data-url');
                 var completeURL = datasetURL + '/@@datasets_list_item';
                 var dsRow = $(this).parents('.datasets-list-entry');
+                var uuid = dsRow.data('uuid')
                 bccvlapi.dm.update_metadata(uuid).then(
                     function() { 
                         renderDatasetRow(completeURL, dsRow);
