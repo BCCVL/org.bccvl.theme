@@ -4,7 +4,7 @@
 define(
     ['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'bccvl-api'],
     function( $, ol, layerswitcher, vizcommon, d3, bccvlapi  ) {
-        
+
         var bioviz = {
             
             addLayersForBiodiverse: function(map, uuid, url, id, params, overlayGroup){
@@ -98,11 +98,12 @@ define(
                                 var val = Number(feature.getProperties()[property])
                                 
                                 var colorIdx;
-                                $.each(range, function(i, x){
-                                    if (val >= x){
+                                for (var i=range.length; i--;) {
+                                    if (val >= range[i]) {
                                         colorIdx = i;
+                                        break
                                     }
-                                });
+                                }
                                 
                                 var rgb = d3.rgb(colorBank[colorIdx]);
                                 
@@ -134,23 +135,18 @@ define(
                                 style: gridSelectStyle,
                                 name: 'gridSelect'
                             });
+                            gridSelect.set('species_feature_map', {})  // keep track of which feature added which species
                             
                             // Get selected grid cells collection
                             var selectedGridCells = gridSelect.getFeatures();
-                            
-                            selectedGridCells.on('add', function (feature) {
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                var property = currentLayer.get('title');
-                                
-                                bioviz.updateClasses(selectedGridCells);
+
+                            selectedGridCells.on('add', function (event) {
+                                bioviz.updateClasses(gridSelect, event)
                                 
                             });
-                            
-                            selectedGridCells.on('remove', function (feature) {
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                var property = currentLayer.get('title');
-                                
-                                bioviz.updateClasses(gridSelect.getFeatures());
+
+                            selectedGridCells.on('remove', function (event) {
+                                bioviz.updateClasses(gridSelect, event)
                             });
                             
                             // Add select interaction to map
@@ -173,11 +169,12 @@ define(
                                     val = Number(feature.getProperties()[property]);
                                 
                                 var colorIdx;
-                                $.each(range, function(i, x){
-                                    if (val >= x){
+                                for (var i=range.length; i--;) {
+                                    if (val >= range[i]) {
                                         colorIdx = i;
+                                        break
                                     }
-                                });
+                                }
                                 
                                 var rgb = d3.rgb(colorBank[colorIdx]);
                                 
@@ -220,13 +217,11 @@ define(
                                 // wipe legend selects
                                 d3.selectAll('rect.legend-cell')
                                     .attr('class', 'legend-cell');
-                                
-                                gridSelect.getFeatures().clear();
+                                selectedGridCells.clear();
                                 
                             });
                             
                             drawFunction.on('drawend', function (evt) {
-                                
                                 var geometry = evt.feature.getGeometry(),
                                     extent = geometry.getExtent(),
                                     drawCoords = geometry.getCoordinates()[0];
@@ -235,7 +230,7 @@ define(
                                 
                                 grid.forEachFeatureIntersectingExtent(extent, function(feature) {
                                     if (bioviz.pointInPolygon(feature.getGeometry().getCoordinates(), drawCoords)) {
-                                        gridSelect.getFeatures().push(feature);
+                                        selectedGridCells.push(feature);
                                     }
                                 });
                                 
@@ -245,7 +240,6 @@ define(
                                 }, 800);
                             });
                             
-                            
                             // this is not specifically the event we want, but it works
                             map.on('singleclick', function(evt){
                                 // wipe legend selects
@@ -254,12 +248,12 @@ define(
                             });
                             
                             var layercount = 0;
-                            
-                            $.each(geojson.vars, function(key, variable){
-                                bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
-                                layercount++;
-                            });
-                            
+
+                            for(var key in geojson.vars) {
+                                var variable = geojson.vars[key]
+                                bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction)
+                                layercount++
+                            }
                         }
                     }) // d3csv.get
                 }) // then
@@ -301,13 +295,14 @@ define(
                         total: 0
                     }
                 };
-            
-                data.forEach(function(d){
+
+                for (var i=0, length=data.length; i < length; i++) {
+                    var d = data[i]
             
                     var prop = {};
-                    $.each(d, function(k, v){
-                        prop[k.toLowerCase()] = v;
-                    });
+                    for(var k in d) {
+                        prop[k.toLowerCase()] = d[k]
+                    }
 
                     var id = prop.element,
                         x = parseFloat(prop.axis_0), 
@@ -330,80 +325,82 @@ define(
                             'redundancy': redundancy,
                             'rarity': rarity,
                             'endemism': endemism,
-                            'species': prop.species,
+                            'species': prop.species
                         },
                         id: id,
                         geometry: {
                             type: 'Point',
                             coordinates: point
                         }
-                    });
-            
-                });
-                
-                $.each(features.vars, function(key, obj){
-                    features.vars[key].total = obj.values.length;
+                    });            
+                }
+
+                for(var key in features.vars) {
+                    var obj = features.vars[key]
+                    obj.total = obj.values.length;
                     // reduce range to discrete values
                     
                     var counts = {};
-                    for (var i = 0; i < obj.values.length; i++) {
+                    for (var i = 0, length=obj.values.length; i < length; i++) {
                         counts[obj.values[i]] = 1 + (counts[obj.values[i]] || 0);
                     }
                     
                     //console.log(counts);
                     
-                    var max = function(){
+                    var max = function() {
                         var m = -Infinity
                         for(var i=0, len=obj.values.length ; i<len; i++) {
-                        var a = obj.values[i]
-                        if (a > m) {
-                            m = a
+                            var a = obj.values[i]
+                            if (a > m) {
+                                m = a
+                            }
                         }
-                      }
-                      return m
+                        return m
                     }
                     var min = 0;
 
                     if (Object.keys(counts).length == 1){
                        
-                        features.vars[key].range = [min, max()];
+                        obj.range = [min, max()];
                         // set up adjacent range count
-                        features.vars[key].num = [0, obj.values.length];
+                        obj.num = [0, obj.values.length];
                     } else {
                         //var max = obj.values.reduce(function(a, b) { return a >= b ? a : b});
                         //var min = Math.min(...obj.values);
                         //var min = 0;
                         //features.vars[key].range = [];
                         for (i = 0; i <= 10; i++) { 
-                            features.vars[key].range.push( ( ((max()-min)/10)*i)+min );
+                            obj.range.push( ( ((max()-min)/10)*i)+min );
                             // set up adjacent range count arr for counting
-                            features.vars[key].num.push(0);
+                            obj.num.push(0);
                         }
                         // count and store number of records within each discrete collection
-                        $.each(features.vars[key].range, function(i, rangeVal){
-                            $.each(obj.values, function(idx, val){
+                        for(var i=0, len=obj.range.length; i < len; i++) {
+                            var rangeVal = obj.range[i]
+                            for(var idx=0, olen=obj.values.length; idx < olen; idx++) {
+                                var val = obj.values[idx]
                                 if (i == 0){
                                     if (val <= rangeVal)
-                                        features.vars[key].num[i]++; 
+                                        obj.num[i]++; 
                                 } else {
-                                    if (val <= rangeVal && val > features.vars[key].range[i-1]) {
-                                       features.vars[key].num[i]++; 
+                                    if (val <= rangeVal && val > obj.range[i-1]) {
+                                       obj.num[i]++; 
                                     }
-                                }
-                            });
-                        });
+                                }                                
+                            }
+                        }
                     }  
                     
-                    
-                    
-                });
+                }
                 return features;
             },
             
-            createBiodiverseLayer: function (i, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
+            createBiodiverseLayer: function (layerIdx, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction){
 
                 // Create grid style function
                 var gridStyle = function (feature) {
+                    // TODO: could probably pre-calc all styles per feature ... so when OL3 rerenders the image we don't need to regenerate all styles for each single feature
+                    //       see also gridSelectStyle
         
                     // get feature coords and transform back into 4326 (solely for simple grid calc)
                     var coordinate = feature.getGeometry().getCoordinates();
@@ -415,11 +412,12 @@ define(
                         val = Number(feature.getProperties()[key]);
                     
                     var colorIdx;
-                    $.each(variable.range, function(i, x){
-                        if (val >= x){
+                    for (var i=variable.range.length; i--;) {
+                        if (val >= variable.range[i]) {
                             colorIdx = i;
+                            break
                         }
-                    });
+                    }
                     
                     var rgb = d3.rgb(colorBank[colorIdx]);
                     var geom = new ol.geom.Polygon([[
@@ -452,15 +450,27 @@ define(
         
                 // Create layer from vector grid and style function
                 // only make first layer visible
-                var gridLayer = new ol.layer.Vector({
-                    source: grid,
+                // var gridLayer = new ol.layer.Vector({
+                //     source: grid,
+                //     name: key,
+                //     title: key,
+                //     type: 'features',
+                //     legend: legend,
+                //     selectedCells: [],
+                //     visible: (i == 0),
+                //     style: gridStyle
+                // });
+                var gridLayer = new ol.layer.Image({
+                    source: new ol.source.ImageVector({
+                        source: grid,
+                        style: gridStyle
+                    }),
                     name: key,
                     title: key,
                     type: 'features',
                     legend: legend,
                     selectedCells: [],
-                    visible: (i == 0),
-                    style: gridStyle
+                    visible: (layerIdx == 0)
                 });
                 
                 gridLayer.on('change:visible', function(e) {
@@ -500,13 +510,16 @@ define(
                         .attr('class', 'legend-cell selected');
 
                     // find and select all matching cells in map
-                    $.each(grid.getFeatures(), function(i, feature){
+                    for(var i=0, features=grid.getFeatures(), len=features.length;
+                        i < len; i++) {
+                        var feature = features[i]
                         // this is value matching and doesnt make sense, need to eval differently
-                        if(parseFloat(feature.getProperties()[key]) > d[0] && parseFloat(feature.getProperties()[key]) <= d[1]){
+                        var prop = parseFloat(feature.get(key))
+                        if(prop > d[0] && prop <= d[1]) {
+                            // we are updating collection array directly .. no events will be triggered
                             selected.push(feature);
                         }
-                    })
-        
+                    }
                 }
         
                 var legend = document.createElement('div');
@@ -536,26 +549,29 @@ define(
                     propHeights = [],
                     propOffsets = [],
                     ticks = [];
-        
-                $.each(colorScale.domain(), function(i, v){
-                    var barHeight = minHeight+( (height-(10*colorScale.domain().length))/100)*((variable.num[i]/variable.total)*100);
+
+                for(var i=0, domain=colorScale.domain(), len=domain.length;
+                    i < len; i++) {
+                    var v = domain[i]
+
+                    var barHeight = minHeight+( (height-(10*len))/100)*((variable.num[i]/variable.total)*100);
                     propHeights.push(barHeight);
                     
-                    if (typeof colorScale.domain()[i+1] !== "undefined") {
-                        ticks.push(colorScale.domain()[i].toFixed(6)+' - '+colorScale.domain()[i+1].toFixed(6));
+                    if (typeof domain[i+1] !== "undefined") {
+                        ticks.push(domain[i].toFixed(6)+' - '+domain[i+1].toFixed(6));
                     } else {
-                        ticks.push(''+colorScale.domain()[i].toFixed(6)+'');
+                        ticks.push(''+domain[i].toFixed(6)+'');
                     }
-                });
-               
-                $.each(propHeights, function(i,v){
+                }
+
+                for(var i=0, len=propHeights.length; i < len; i++) {
                     if (i != 0) {
                         var offset = propOffsets[i-1] + propHeights[i-1];
                         propOffsets.push(offset);
                     } else {
                         propOffsets.push(0);
-                    }
-                });
+                    }                    
+                }
                 
                 // I really wish I had a better way to do this.
                 // Because we're trying to display continuous data that's often discrete
@@ -605,7 +621,7 @@ define(
                     .attr("class", "caption")
                     .attr("y", -6)
                     .text("Value of cell point");*/
-                
+
                 g.selectAll('rect')
                     .data(colorScale.range().map(function(color) {
                         var d = colorScale.invertExtent(color);
@@ -684,31 +700,45 @@ define(
                 return legend;
             },
             
-                
-            updateClasses: function (classes) {
+            updateClasses: function (gridSelect, event) {
+                var species_feature_map = gridSelect.get('species_feature_map')
+                var feature = event.element
                 var list = $('.d3legend:visible .cell-classes');
 
-                if (classes.getArray().length == 0){
-                    list.empty();
-                    list.append('<li>No Selection</li>');
-                } else {
-                    list.empty();
-                
-                    var classesPresent = []
-                    classes.forEach(function(feature){
-                        var speciesInCell = feature.getProperties().species.split(',');
-                        $.each(speciesInCell, function(i, species){
-                            if ($.inArray(species, classesPresent) == -1){
-                                classesPresent.push(species);
-                            }
-                        });
-                    });
-                    
-                    $.each(classesPresent, function(i, species){
-
-                        list.append('<li>'+species+'</li>');
-                    });
+                if (gridSelect.getFeatures().getLength() == 0) {
+                    list.html('<li>No Selection</li>');
+                    return
                 }
+
+                var speciesInCell = feature.get('species').split(',');
+                var featureid = feature.getId()
+
+                for(var i=0, len=speciesInCell.length; i < len; i++) {
+                    var species = speciesInCell[i]
+
+                    if (event.type == "add") {
+                        if (!species_feature_map.hasOwnProperty(species)) {
+                            species_feature_map[species] = {featureid: null}
+                        } else {
+                            species_feature_map[species][featureid] = null
+                        }
+                    } else if (event.type == "remove") {
+                        if (species_feature_map.hasOwnProperty(species)) {
+                            var obj = species_feature_map[species]
+                            delete obj[featureid]
+                            if (Object.keys(obj).length == 0) {
+                                delete species_feature_map[species]
+                            }
+                        }
+                    }
+                }
+
+                var specieslist = ''
+                for(var i=0, species=Object.keys(species_feature_map).sort(), len=species.length;
+                    i < len; i++) {
+                    specieslist += '<li>' + species[i] + '</li>'
+                }
+                list.html(specieslist)
 
             },
             

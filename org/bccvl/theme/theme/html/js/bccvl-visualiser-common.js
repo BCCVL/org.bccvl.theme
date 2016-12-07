@@ -161,8 +161,14 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                $('#'+map.getTarget()+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('legend'));
                                
                                // zoom to extent to first visible layer
-                               if(layer.getSource().getExtent()){
-                                   map.getView().fit(layer.getSource().getExtent(), map.getSize());
+                               if (layer.getSource() instanceof ol.source.ImageVector) {
+                                   if(layer.getSource().getSource().getExtent()){
+                                       map.getView().fit(layer.getSource().getSource().getExtent(), map.getSize());
+                                   }
+                               } else {
+                                   if(layer.getSource().getExtent()){
+                                       map.getView().fit(layer.getSource().getExtent(), map.getSize());
+                                   }
                                }
                            }
                     
