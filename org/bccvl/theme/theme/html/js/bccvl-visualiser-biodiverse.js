@@ -507,6 +507,7 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
             biodiverseLegend: function (grid, key, variable, map, colorScale, colorBank, hoverFunction, drawFunction) {
 
                 function legendSelectCells (d) {
+                    
                     var selected;
                     
                     map.getInteractions().forEach(function (interaction) {
@@ -515,13 +516,17 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                         }
                     });
                     
-                    // trigger ol cell unselect
-                    selected.clear();
+                    if (! d3.event.shiftKey) {
+                        console.log(d);
+                        // trigger ol cell unselect
+                        selected.clear();
                         
-                    // for some reason this ignores the style attribute, so a classname is used instead
-                    // wipe legend selects
-                    d3.selectAll('.d3legend rect.legend-cell')
-                        .attr('class', 'legend-cell');
+                        // for some reason this ignores the style attribute, so a classname is used instead
+                        // wipe legend selects
+                        d3.selectAll('.d3legend rect.legend-cell')
+                            .attr('class', 'legend-cell');
+                    
+                    }
                         
                     // display legend cell select
                     d3.select(this)
