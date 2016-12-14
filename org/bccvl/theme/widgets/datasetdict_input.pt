@@ -37,7 +37,8 @@
                tal:attributes="value item/id;
                                data-bbox dstool/bbox|nothing;
                                name string:${view/name}.item.${index};
-                               data-type itemmd/genre;
+                               data-url item/dlinfo/url;
+                               data-genre itemmd/genre;
                                "/>
         <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
         <a class=""

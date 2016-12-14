@@ -25,9 +25,10 @@ requirejs.config({
         'prism':                'lib/prism/prism',
         'bbq':                  'lib/jquery-bbq/jquery.ba-bbq',
         'proj4':                'lib/proj4/proj4',
-        'raven':                'https://cdn.ravenjs.com/2.1.1/raven.min',
+        'raven':                'lib/raven/raven.min',
         'livechat':             'lib/freshdesk/live-chat',
         'aekos-api':            'js/aekos-api',
+        'bccvl-api':            'js/bccvl-api',
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
         // our own js files
@@ -35,12 +36,7 @@ requirejs.config({
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
         'bccvl-form-popover':         'js/bccvl-form-popover',
         'bccvl-modals':               'js/bccvl-modals',
-        'bccvl-preview-layout':       'js/bccvl-preview-layout',
-        'bccvl-remove-dataset-modal': 'js/bccvl-remove-dataset-modal',
-        'bccvl-remove-experiment-modal': 'js/bccvl-remove-experiment-modal',        
         'bccvl-search':               'js/bccvl-search',
-        'bccvl-sharing-modal':        'js/bccvl-sharing-modal',
-        'bccvl-stretch':              'js/bccvl-stretch',
         'bccvl-visualiser-common':    'js/bccvl-visualiser-common',
         'bccvl-visualiser-biodiverse':'js/bccvl-visualiser-biodiverse',
         'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
@@ -59,8 +55,8 @@ requirejs.config({
         'experiment-results':         'js/experiment-results',
         'feedback':                   'js/feedback',
         'homepage':                   'js/homepage',
-        'layer-edit-modal':           'js/layer-edit-modal',
         'login':                      'js/login',
+        'new-experiment-common':      'js/new-experiment-common',
         'new-experiment-biodiverse':  'js/new-experiment-biodiverse',
         'new-experiment-ensemble':    'js/new-experiment-ensemble',
         'new-experiment-projection':  'js/new-experiment-projection',
@@ -71,7 +67,9 @@ requirejs.config({
         'search':                     'js/search',
         'training':                     'js/training',
         'youtube':                    'js/youtube',
-        'selectize-remove-single':    'js/selectize-remove-single'
+        'selectize-remove-single':    'js/selectize-remove-single',
+        // dynamic js files
+        'bccvl-raven':                portal_url + '/bccvl-raven'
     },
     shim: {
         'bootstrap2':            ['jquery'],

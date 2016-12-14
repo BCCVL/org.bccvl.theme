@@ -2,7 +2,8 @@
 //
 // main JS for the dashboard page.
 //
-define(     ['jquery', 'bootstrap2', 'bootstrap2-fileupload', 'livechat'],
+define(
+    ['jquery', 'bootstrap2', 'bootstrap2-fileupload', 'livechat', 'bccvl-raven'],
     function( $) {
     // ==============================================================
         $(function() {
