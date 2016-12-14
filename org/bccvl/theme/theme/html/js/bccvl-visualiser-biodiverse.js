@@ -4,6 +4,17 @@
 define(
     ['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'bccvl-api'],
     function( $, ol, layerswitcher, vizcommon, d3, bccvlapi  ) {
+
+        
+        // visualiser base url
+        var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
+        var visualiserWMS = visualiserBaseUrl + 'api/wms/1/wms';
+ 
+        // fetch api url
+        var fetchurl = visualiserBaseUrl + 'api/fetch';
+ 
+        // dataset manager getMetadata endpoint url
+        var dmurl = portal_url + '/API/dm/v1/metadata';
         
         var bioviz = {
             
@@ -18,43 +29,6 @@ define(
                   return d3.select(this[0][last]);
                 };
 
-<<<<<<< HEAD
-                var gridSize = params.cellsize,
-                    dataProj = params.srs.toUpperCase(), 
-                    mapProj = map.getView().getProjection().getCode(),
-                    projection = ol.proj.get(dataProj),
-                    projectionExtent = projection.getExtent(),
-                    size = ol.extent.getWidth(projectionExtent) / 256,
-                    colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013'];
-                    
-                var dfrd = $.Deferred(),
-                    requestStatus = $.Deferred(),
-                    jqxhr = $.Deferred();
-                    //csv = ;
-                
-                var fetch = function(){
-                    $.ajax({
-                        url: fetchurl,
-                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
-                    }).done(function(data, status, jqXHR){
-                        if(data.status == "COMPLETED"){
-                            jqxhr.resolve(data.status);
-                        } else if (data.status == "FAILED"){
-                            jqxhr.reject(data.reason);
-                        } else {
-                             setTimeout(function(){
-                                fetch();
-                             }, 500);
-                        }
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
-                        alert('Problem request dataset, please try again later.')
-                    });
-                }
-                
-                jqxhr.then(
-                    function(){
-                        d3.csv(url, function(error, data) {
-=======
                 var gridSize = params.cellsize
                 var dataProj = params.srs.toUpperCase()
                 var mapProj = map.getView().getProjection().getCode()
@@ -63,7 +37,7 @@ define(
                 var size = ol.extent.getWidth(projectionExtent) / 256
                 var colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013']
 
-
+                
                 bccvlapi.visualiser.fetch({'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}).then(
                     // fetch success
                     function(status) {
@@ -78,232 +52,234 @@ define(
                     d3csv.get(function(error, data) {
                         // data ... csv data
                         if (error) throw error;
->>>>>>> ccf4cea3e0b1e6929665783f35b911a65868bd3c
 
-                        var check = true;
+
+                            var check = true;
                             
-                        if (data.length > 50000) {
-                            check = confirm('Experimental results with greater than 50,000 rows can cause browsers to slow, or even crash, are you sure you want to continue?')
-                        }
-                        if (check == true) {
+                            if (data.length > 50000) {
+                                check = confirm('Experimental results with greater than 50,000 rows can cause browsers to slow, or even crash, are you sure you want to continue?')
+                            }
+                            if (check == true){
+                                
+                                // Convert to GeoJSON
+                                var geojson = bioviz.biodiverseCSVtoJSON(data, dataProj, mapProj); 
+                                
+                                // Create vector grid from GeoJSON
+                                var grid = new ol.source.Vector({
+                                    features: (new ol.format.GeoJSON()).readFeatures(geojson.points)
+                                });
+                                
+                                var hoverFunction = function(e) {
+                                    if (e.dragging) return;
                             
-                            // Convert to GeoJSON
-                            var geojson = bioviz.biodiverseCSVtoJSON(data, dataProj, mapProj); 
-                            
-                            // Create vector grid from GeoJSON
-                            var grid = new ol.source.Vector({
-                                features: (new ol.format.GeoJSON()).readFeatures(geojson.points)
-                            });
-                            
-                            var hoverFunction = function(e) {
-                                if (e.dragging) return;
-                                
-                                featureOverlay.getSource().clear();
-                                
-                                var pixel = map.getEventPixel(e.originalEvent);
-                                var hit = map.hasFeatureAtPixel(pixel);
-                                
-                                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-                                
-                                if(hit){
-                                    map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-                                        featureOverlay.getSource().addFeature(feature);
-                                    });
-                                } else {
                                     featureOverlay.getSource().clear();
+                                       
+                                    var pixel = map.getEventPixel(e.originalEvent);
+                                    var hit = map.hasFeatureAtPixel(pixel);
+                                    
+                                    map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+                            
+                                    if(hit){
+                                        map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                                            featureOverlay.getSource().addFeature(feature);
+                                        });
+                                    } else {
+                                        featureOverlay.getSource().clear();
+                                    }
+                            
+                                    return;
                                 }
                                 
-                                return;
+                                map.on('pointermove', hoverFunction );
+                                
+                                // Create grid selection style
+                                var gridSelectStyle = function (feature, resolution) {
+                            
+                                    // get feature coords and transform back into 4326 (solely for simple grid calc)
+                                    var coordinate = feature.getGeometry().getCoordinates();
+                                        coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
+                            
+                                    var currentLayer = bioviz.getVisibleOverlay(map);
+                            
+                                    var property = currentLayer.get('title');
+                                    var range = geojson.vars[property].range;
+                            
+                                    // subtract half a point to create first point of polygon
+                                    var x = coordinate[0] - gridSize / 2
+                                    var y = coordinate[1] - gridSize / 2
+                                    var val = Number(feature.getProperties()[property])
+
+    
+                                    var colorIdx;
+                                    $.each(range, function(i, x){
+                                        if (val >= x){
+                                            colorIdx = i;
+                                        }
+                                    });
+                                    
+                                    var rgb = d3.rgb(colorBank[colorIdx]);
+                            
+                                    var geom = new ol.geom.Polygon([[
+                                            [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                                        ]]);
+                            
+                                        geom.transform(dataProj,mapProj);
+                            
+                                    return [
+                                        new ol.style.Style({
+                                            stroke: new ol.style.Stroke({
+                                                color: [0, 0, 0, 1],
+                                                width: 0.25 * map.getView().getZoom()
+                                            }),
+                                            fill: new ol.style.Fill({
+                                                color: [rgb.r, rgb.g, rgb.b, .9]
+                                            }),
+                                            geometry: geom
+                                        })
+                                    ];
+                                };
+                            
+                                // Create grid select interaction
+                                var gridSelect = new ol.interaction.Select({
+                                    layers: function (layer) {
+                                      return layer.get('type') == 'features';
+                                    },
+                                    style: gridSelectStyle,
+                                    name: 'gridSelect'
+                                });
+                            
+                                // Get selected grid cells collection
+                                var selectedGridCells = gridSelect.getFeatures();
+                                
+                                selectedGridCells.on('add', function (feature) {
+                                    var currentLayer = bioviz.getVisibleOverlay(map);
+                                    var property = currentLayer.get('title');
+
+                                    bioviz.updateClasses(selectedGridCells);
+                            
+                                });
+                            
+                                selectedGridCells.on('remove', function (feature) {
+                                    var currentLayer = bioviz.getVisibleOverlay(map);
+                                    var property = currentLayer.get('title');
+    
+                                    bioviz.updateClasses(gridSelect.getFeatures());
+                                });
+                            
+                                // Add select interaction to map
+                                map.addInteraction(gridSelect);
+                            
+                                // Create grid selection style
+                                var gridHoverStyle = function (feature, resolution) {
+                                    // get feature coords and transform back into 4326 (solely for simple grid calc)
+                                    var coordinate = feature.getGeometry().getCoordinates();
+                                        coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
+                            
+                                    var currentLayer = bioviz.getVisibleOverlay(map);
+    
+                                    var property = currentLayer.get('title');
+                                    var range = geojson.vars[property].range;
+                                    
+                                    // subtract half a point to create first point of polygon
+                                    var x = coordinate[0] - gridSize / 2,
+                                        y = coordinate[1] - gridSize / 2,
+                                        val = Number(feature.getProperties()[property]);
+    
+                                    var colorIdx;
+                                    $.each(range, function(i, x){
+                                        if (val >= x){
+                                            colorIdx = i;
+                                        }
+                                    });
+                                    
+                                    var rgb = d3.rgb(colorBank[colorIdx]);
+                            
+                                    var geom = new ol.geom.Polygon([[
+                                            [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                                        ]]);
+                            
+                                        geom.transform(dataProj,mapProj);
+                            
+                                    return [
+                                        new ol.style.Style({
+                                            fill: new ol.style.Fill({
+                                                color: [rgb.r, rgb.g, rgb.b, 1]
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: [0, 0, 0, .5],
+                                                width: 0.25 * map.getView().getZoom()
+                                            }),
+                                            geometry: geom
+                                        })
+                                    ];
+                                };
+                            
+                                var features = new ol.Collection();
+                                var featureOverlay = new ol.layer.Vector({
+                                    source: new ol.source.Vector({features: features}),
+                                    name: 'Features',
+                                    type: 'hover-overlay',
+                                    style: gridHoverStyle,
+                                    visible: true
+                                });
+                            
+                                map.addLayer(featureOverlay);
+                                
+                                var drawFunction = new ol.interaction.Draw({
+                                    type: 'Polygon'
+                                });
+                                
+                                drawFunction.on('drawstart', function (evt) {
+                                    // wipe legend selects
+                                    d3.selectAll('rect.legend-cell')
+                                        .attr('class', 'legend-cell');
+                            
+                                    gridSelect.getFeatures().clear();
+                                    
+                                });
+                            
+                                drawFunction.on('drawend', function (evt) {
+                            
+                                    var geometry = evt.feature.getGeometry(),
+                                        extent = geometry.getExtent(),
+                                        drawCoords = geometry.getCoordinates()[0];
+                            
+                                    map.removeInteraction(drawFunction);
+                            
+                                    grid.forEachFeatureIntersectingExtent(extent, function(feature) {
+                                        if (bioviz.pointInPolygon(feature.getGeometry().getCoordinates(), drawCoords)) {
+                                            gridSelect.getFeatures().push(feature);
+                                        }
+                                    });
+                            
+                                    setTimeout(function(){ // Add delay to avoid deselect
+                                        map.on('pointermove', hoverFunction );
+                                        gridSelect.setActive(true);
+                                    }, 800);
+                                });
+                            
+                            
+                                // this is not specifically the event we want, but it works
+                                map.on('singleclick', function(evt){
+                                    // wipe legend selects
+                                    d3.selectAll('rect.legend-cell')
+                                        .attr('class', 'legend-cell');
+                                });
+                                
+                                var layercount = 0;
+    
+                                $.each(geojson.vars, function(key, variable){
+                                    bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
+                                    layercount++;
+                                });
+                                
                             }
-                            
-                            map.on('pointermove', hoverFunction );
-                            
-                            // Create grid selection style
-                            var gridSelectStyle = function (feature, resolution) {
-                                
-                                // get feature coords and transform back into 4326 (solely for simple grid calc)
-                                var coordinate = feature.getGeometry().getCoordinates();
-                                coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
-                                
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                
-                                var property = currentLayer.get('title');
-                                var range = geojson.vars[property].range;
-                                
-                                // subtract half a point to create first point of polygon
-                                var x = coordinate[0] - gridSize / 2
-                                var y = coordinate[1] - gridSize / 2
-                                var val = Number(feature.getProperties()[property])
-                                
-                                var colorIdx;
-                                $.each(range, function(i, x){
-                                    if (val >= x){
-                                        colorIdx = i;
-                                    }
-                                });
-                                
-                                var rgb = d3.rgb(colorBank[colorIdx]);
-                                
-                                var geom = new ol.geom.Polygon([[
-                                    [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
-                                ]]);
-                                
-                                geom.transform(dataProj,mapProj);
-                                
-                                return [
-                                    new ol.style.Style({
-                                        stroke: new ol.style.Stroke({
-                                            color: [0, 0, 0, 1],
-                                            width: 0.25 * map.getView().getZoom()
-                                        }),
-                                        fill: new ol.style.Fill({
-                                            color: [rgb.r, rgb.g, rgb.b, .9]
-                                        }),
-                                        geometry: geom
-                                    })
-                                ];
-                            };
-                            
-                            // Create grid select interaction
-                            var gridSelect = new ol.interaction.Select({
-                                layers: function (layer) {
-                                    return layer.get('type') == 'features';
-                                },
-                                style: gridSelectStyle,
-                                name: 'gridSelect'
-                            });
-                            
-                            // Get selected grid cells collection
-                            var selectedGridCells = gridSelect.getFeatures();
-                            
-                            selectedGridCells.on('add', function (feature) {
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                var property = currentLayer.get('title');
-                                
-                                bioviz.updateClasses(selectedGridCells);
-                                
-                            });
-                            
-                            selectedGridCells.on('remove', function (feature) {
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                var property = currentLayer.get('title');
-                                
-                                bioviz.updateClasses(gridSelect.getFeatures());
-                            });
-                            
-                            // Add select interaction to map
-                            map.addInteraction(gridSelect);
-                            
-                            // Create grid selection style
-                            var gridHoverStyle = function (feature, resolution) {
-                                // get feature coords and transform back into 4326 (solely for simple grid calc)
-                                var coordinate = feature.getGeometry().getCoordinates();
-                                coordinate = ol.proj.transform(coordinate, mapProj, dataProj);
-                                
-                                var currentLayer = bioviz.getVisibleOverlay(map);
-                                
-                                var property = currentLayer.get('title');
-                                var range = geojson.vars[property].range;
-                                
-                                // subtract half a point to create first point of polygon
-                                var x = coordinate[0] - gridSize / 2,
-                                    y = coordinate[1] - gridSize / 2,
-                                    val = Number(feature.getProperties()[property]);
-                                
-                                var colorIdx;
-                                $.each(range, function(i, x){
-                                    if (val >= x){
-                                        colorIdx = i;
-                                    }
-                                });
-                                
-                                var rgb = d3.rgb(colorBank[colorIdx]);
-                                
-                                var geom = new ol.geom.Polygon([[
-                                    [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
-                                ]]);
-                                
-                                geom.transform(dataProj,mapProj);
-                                
-                                return [
-                                    new ol.style.Style({
-                                        fill: new ol.style.Fill({
-                                            color: [rgb.r, rgb.g, rgb.b, 1]
-                                        }),
-                                        stroke: new ol.style.Stroke({
-                                            color: [0, 0, 0, .5],
-                                            width: 0.25 * map.getView().getZoom()
-                                        }),
-                                        geometry: geom
-                                    })
-                                ];
-                            };
-                            
-                            var features = new ol.Collection();
-                            var featureOverlay = new ol.layer.Vector({
-                                source: new ol.source.Vector({features: features}),
-                                name: 'Features',
-                                type: 'hover-overlay',
-                                style: gridHoverStyle,
-                                visible: true
-                            });
-                            
-                            map.addLayer(featureOverlay);
-                            
-                            var drawFunction = new ol.interaction.Draw({
-                                type: 'Polygon'
-                            });
-                            
-                            drawFunction.on('drawstart', function (evt) {
-                                // wipe legend selects
-                                d3.selectAll('rect.legend-cell')
-                                    .attr('class', 'legend-cell');
-                                
-                                gridSelect.getFeatures().clear();
-                                
-                            });
-                            
-                            drawFunction.on('drawend', function (evt) {
-                                
-                                var geometry = evt.feature.getGeometry(),
-                                    extent = geometry.getExtent(),
-                                    drawCoords = geometry.getCoordinates()[0];
-                                
-                                map.removeInteraction(drawFunction);
-                                
-                                grid.forEachFeatureIntersectingExtent(extent, function(feature) {
-                                    if (bioviz.pointInPolygon(feature.getGeometry().getCoordinates(), drawCoords)) {
-                                        gridSelect.getFeatures().push(feature);
-                                    }
-                                });
-                                
-                                setTimeout(function(){ // Add delay to avoid deselect
-                                    map.on('pointermove', hoverFunction );
-                                    gridSelect.setActive(true);
-                                }, 800);
-                            });
-                            
-                            
-                            // this is not specifically the event we want, but it works
-                            map.on('singleclick', function(evt){
-                                // wipe legend selects
-                                d3.selectAll('rect.legend-cell')
-                                    .attr('class', 'legend-cell');
-                            });
-                            
-                            var layercount = 0;
-                            
-                            $.each(geojson.vars, function(key, variable){
-                                bioviz.createBiodiverseLayer(layercount, map, grid, overlayGroup, key, variable, colorBank, dataProj, mapProj, gridSize, hoverFunction, drawFunction);
-                                layercount++;
-                            });
-                            
-                        }
                     }) // d3csv.get
                 }) // then
-            },
-                
-            // Convert data to GeoJSON
+
+           },
+           
+           // Convert data to GeoJSON
             biodiverseCSVtoJSON: function (data, dataProj, mapProj) {
             
                 var features = {}
