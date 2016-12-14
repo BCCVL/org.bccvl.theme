@@ -2,7 +2,7 @@
 // main JS for the knowledgebase page.
 //
 define(
-    ['jquery', 'bootstrap2'],
+    ['jquery', 'bootstrap2', 'bccvl-raven'],
     function( $) {
         // ==============================================================
         $(function() {

@@ -1,8 +1,8 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'jquery-xmlrpc'],
-    function( $, preview, ol, layerswitcher, vizcommon  ) {
+define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common'],
+    function( $, ol, layerswitcher, vizcommon  ) {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -59,9 +59,12 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
             // destroy any floating progress bars (should be destroyed above, this is a fallback)
             $('#progress-'+id).remove();
 
-            $.when(vizcommon.renderBase(id)).then(function(map, visLayers) {
+            var base_map = vizcommon.renderBase(id)
+            var map = base_map.map
+            var visLayers = base_map.visLayers
 
-                $.when(vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers)).then(function(newLayers) {
+            vizcommon.addLayersForDataset(uuid, url, id, undefined, visLayers).then(
+                function(newLayers) {
                     // FIXME: assumes there is only 1 layer
                     var newLayer = newLayers[0];
                     var layerdef = newLayer.get('bccvl').layer;
@@ -77,28 +80,24 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                     // if it is the first map, zoom to extent
                     if (maps.length == 1) {
                         if ( visLayers.getExtent() ){
-                            
                             ol.extent.extend( visLayers.getExtent(), newLayer.getExtent() );
                             map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
                         } else {
-                            
                             visLayers.setExtent(newLayer.getExtent());
                             map.getView().fit(visLayers.getExtent(), map.getSize(), {padding:[20,20,20,20]});
                         }
                     }
-                    
-                });
-
-                // let all maps use the same view
-                if (maps.length != 0) {
-                    map.setView(maps[0].getView());
                 }
-                
-                map.uuid = uuid;
-                maps.push(map);
+            );
 
-            });
-            
+            // let all maps use the same view
+            if (maps.length != 0) {
+                map.setView(maps[0].getView());
+            }
+                
+            map.uuid = uuid;
+            maps.push(map);
+
         }
         
     }

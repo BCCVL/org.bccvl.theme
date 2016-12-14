@@ -3,11 +3,11 @@
 //
 define(
     ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
-     'layer-edit-modal', 'bccvl-modals', 'bccvl-api', 'openlayers3',
+     'bccvl-modals', 'bccvl-api', 'openlayers3',
      'bootstrap2', 'jquery-tablesorter', 'jquery-form', 'selectize',
-     'bbq', 'faceted_view.js', 'selectize-remove-single'],
+     'bbq', 'faceted_view.js', 'selectize-remove-single', 'bccvl-raven'],
 
-    function($, vizmap, vizcommon, editmodal, modals, bccvlapi) {
+    function($, vizmap, vizcommon, modals, bccvlapi) {
 
         $(window).load(function(evt) {
             Faceted.Load(evt, window.location.origin+window.location.pathname+'/');
@@ -18,9 +18,6 @@ define(
         
         // ==============================================================
         $(function() {
-
-            editmodal.init();
-
 
             $('.bccvl-datasetstable').tablesorter({
                 headers: {
@@ -96,27 +93,24 @@ define(
                 function update_dataset_row() {
                     // poll all active spinners and update dataset row if completed
                     $.each($(spinner_sel), function(i, spinner) {
-                        var datasetURL = $(spinner).attr('data-url');
-                        var pollURL = datasetURL + '/jm/getJobStatus';
-                        var completeURL = datasetURL + '/@@datasets_list_item';
-                        
-                        // poll status of dataset import
-                        $.ajax({
-                            url: pollURL,
-                            success: function(status) {
+
+                        bccvlapi.job.state({uuid: $(spinner).data('uuid')}).then(
+                            function(status) {
                                 if (status == 'COMPLETED' || status == 'FAILED') {
                                     // The import is complete, now render the row.
+                                    var datasetURL = $(spinner).attr('data-url');
+                                    var completeURL = datasetURL + '/@@datasets_list_item';
                                     renderDatasetRow(completeURL, $(spinner).parents('.datasets-list-entry'));
                                 }
                             }
-                        });
+                        );
+                        
                     });
                     // restart timer if there are any spinners left
                     if ($(spinner_sel).length) {
                         timer_id = window.setTimeout(update_dataset_row, 5000);
                     }
                 }
-
 
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(evt) {
                     // clear current timeout
@@ -133,16 +127,18 @@ define(
             $("body").on("click", ".update-dataset-btn", function(event) {
                 event.preventDefault();
                 var datasetURL = $(this).attr('data-url');
-                var updatemetadataURL = datasetURL + '/API/dm/v1/update_metadata?uuid=';
                 var completeURL = datasetURL + '/@@datasets_list_item';
                 var dsRow = $(this).parents('.datasets-list-entry');
-                $.ajax({
-                    url: updatemetadataURL
-                }).then(function(){ 
-                    renderDatasetRow(completeURL, dsRow);
-                }).then(function(){ 
-                    $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
-                });
+                var uuid = dsRow.data('uuid')
+                bccvlapi.dm.update_metadata(uuid).then(
+                    function() { 
+                        renderDatasetRow(completeURL, dsRow);
+                    }
+                ).then(
+                    function() { 
+                        $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
+                    }
+                );
             });
 
             // Dateset entry dropdown functions

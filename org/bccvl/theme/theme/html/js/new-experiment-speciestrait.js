@@ -2,12 +2,13 @@
 // main JS for the new species trait model experiment page.
 //
 define(
-    ['jquery', 'bccvl-preview-layout', 'bccvl-visualiser-common',
-     'bccvl-wizard-tabs', 'bccvl-search', 'bccvl-form-jquery-validate',
+    ['jquery', 'bccvl-visualiser-common',
+     'bccvl-wizard-tabs', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
-     'bbq', 'faceted_view.js', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api'],
-    function($, preview_layout, vizcommon, wiztabs, search, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi) {
+     'bbq', 'faceted_view.js', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api',
+     'new-experiment-common', 'bccvl-raven'],
+    function($, vizcommon, wiztabs, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi, expcommon) {
 
         $(function() {
 
@@ -28,145 +29,14 @@ define(
             // hook up the wizard buttons
             wiztabs.init();
 
-            // hook up the search fields
-            search.init();
-            
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
             new bccvl.SelectDict("environmental_datasets");
             
-            // -- region selection ---------------------------------
-
-            var xhr;
-            var select_type, $select_type;
-            var select_region, $select_region;
-
-            $select_type = $('#select-region-type').selectize({
-                onChange: function(value) {
-                    if (!value.length) return;
-                    select_region.disable();
-                    select_region.clearOptions();
-                    select_region.load(function(callback) {
-                        xhr && xhr.abort();
-                        xhr = $.ajax({
-                            url: '/_spatial/ws/field/' + value,
-                            success: function(data) {
-                                select_region.enable();
-
-                                var results = [];
-
-                                $.each(data.objects, function (key, feature) {
-
-                                    var match = {
-                                        'name': feature.name,
-                                        'pid': feature.pid
-                                    }
-                                    results.push(match);
-                                });
-                                callback(results);
-                            },
-                            error: function() {
-                                callback();
-                            }
-                        })
-                    });
-                }
-            });
-
-            $select_region = $('#select-region').selectize({
-                valueField: 'pid',
-                labelField: 'name',
-                searchField: ['name'],
-                onChange: function(value){
-                    $.ajax({
-                        url: '/_spatial/ws/shape/geojson/' + value,
-                        success: function(result) {
-                            // have to clean up ALA's geojson format
-                            var geojson = {
-                                'type': 'Feature',
-                                'geometry': result
-                            }
-                            $('#selected-geojson').data('geojson', JSON.stringify(geojson));
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    })
-                }
-            });
-
-            select_region  = $select_region[0].selectize;
-            select_type = $select_type[0].selectize;
-
-            select_region.disable();
-
             // -- hook up algo config -------------------------------
-            // algorithm configuration blocks should be hidden and
-            // revealed depending on whether the algorithm is
-            // selected.
-            
-            $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-all', function(){
-                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
-            });
-
-            $('#tab-enviro').on('click', '#form-widgets-environmental_datasets a.select-none', function(){
-                // for some reason we have to remove the property as well to get the html to update in chrome, though the UI works fine
-                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
-                    $(this).prop('checked', false);
-                });
-            });
-            
-            // TODO: move  select-all / select-none into widget?
-            $('#tab-configuration').on('click', 'a.select-all', function(){
-                console.log('what');
-                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
-            });
-
-            $('#tab-configuration').on('click', 'a.select-none', function(){
-                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');;  
-            });
-
-            var $algoCheckboxes = $('input[name^="form.widgets.algorithms_"]');
-            $.each($algoCheckboxes, function(index, checkbox) {
-                var $checkbox = $(checkbox);
-
-                // when the checkbox changes, update the config block's visibility
-                $checkbox.change( function(evt) {
-                    var $algoCheckbox = $(evt.target);
-                    // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
-                    var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
-                    var $accordionToggle = $configBlock.find('.accordion-toggle');
-                    var $accordionBody = $configBlock.find('.accordion-body');
-                    if ($configBlock.length > 0) {
-                        // if there is a config block..
-                        if ($algoCheckbox.prop('checked')) {
-                            $configBlock.show(250);
-                            // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
-                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
-                        } else {
-                            // make sure that the accordion closes before hiding it
-                            if ($accordionBody.hasClass('in')) {
-                                $accordionBody.collapse('hide');
-                                $accordionToggle.addClass('collapsed');
-                                $accordionBody.removeClass('in');
-                            }
-                            // This is to avoid validation thinking that there are validation errors on algo conifg items that have been
-                            // deselected - so we put the default value back into the text field when deselected.
-                            $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
-                                $(c).val($(c).attr('data-default'));
-                            });
-
-                            $configBlock.hide(250);
-                        }
-                    } else {
-                        if (console && console.log) {
-                            console.log("no config block located for algorithm/function '" + $algoCheckbox.attr('value') + "'");
-                        }
-                    }
-                });
-                // finally, invoke the change handler to get the inital visibility sorted out.
-                $checkbox.change();
-            });
+            expcommon.init_algorithm_selector('input[name^="form.widgets.algorithms_"]', true)
+            // -- region selection ---------------------------------
+            expcommon.init_region_selector()
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 
@@ -176,12 +46,8 @@ define(
 
                     $.each(traitsTable.modal.basket.uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
-                        var jqxhr = bccvlapi.dm.metadata(uuid)
-                        
-                        // after getting urls, request file
-                        jqxhr.then(function(data, status, jqXHR) {
-                            // it's an xmlrpc call.... get first element in array
-                            data = data[0]
+                        bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
+                            // after getting urls, request file
                             /* data keys:
                                   headers ... all headers in csv
                                   traits ... all headers with trait variables
@@ -472,93 +338,19 @@ define(
                 )
 
             });
+
+
+
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
             
-            $.when(vizcommon.renderBase($('.constraints-map').attr('id'))).then(function(map, visLayers) {
-                // add layers for bboxes and drawing area
-                var features = new ol.Collection(); // drawn feature
-                var constraintsLayer = new ol.layer.Vector({
-                    source: new ol.source.Vector({
-                        wrapX: false,
-                        features: features
-                    }),
-                    id: 'constraints_layer',
-                    style: new ol.style.Style({
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 160, 228, 0.1)'
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(0, 160, 228, 0.9)',
-                            width: 2
-                        })
-                    })
-                });
-                var bboxLayer = new ol.layer.Vector({
-                    source: new ol.source.Vector({wrapX: false}),
-                    id: 'dataset_bounds'
-                });
-                var vectors = new ol.layer.Group({
-                    // extent: ... set to Mercator bounds [-180, -85, +180, +85]
-                    layers: [
-                        bboxLayer,
-                        constraintsLayer
-                    ]
-                });
-                map.addLayer(vectors);
-                var mapid = $('.constraints-map').attr('id');
+            
+            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+                // bind widgets to the constraint map
+                // FIXME: the find is too generic (in case we add bboxes everywhere)
+                expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
 
-                // map.updateSize()
-                if ($('.constraints-map').not(':visible')) {
-                    $('a[href="#tab-geo"]').one('shown', function(evt) {
-                        map.updateSize();
-                        var world = [-20037508.342789244, -19971868.880408563, 20037508.342789244, 19971868.88040853];
-                        // visLayers-> group
-                        // bboxLayer
-                        // constraintsLayer
-                        var bext = bboxLayer.getSource().getExtent();
-                        map.getView().fit(world, map.getSize(), {'constrainResolution': false});
-                    });
-                }
-                
-                // set up constraint tools
-                vizcommon.constraintTools(map, constraintsLayer, 'form-widgets-modelling_region');
-
-                
-                $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
-                    // bind widgets to the constraint map
-                    // recreate legend
-                    $('#'+map.getTarget()).find('.olLegend').remove();
-                    vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
-
-                    // clear any existing layers.
-                    visLayers.getLayers().clear(); // clear species layers
-                    bboxLayer.getSource().clear(); // clear bboxes as well
-                    vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
-                    constraintsLayer.getSource().clear(); // clear the constraint
-
-                    var geometries = [];
-                    // FIXME: the find is too generic (in case we add bboxes everywhere)
-                    $('body').find('input[data-bbox]').each(function(){
-                        var type = $(this).data('type');
-                    
-
-                        var geom = $(this).data('bbox');
-                        geom = new ol.geom.Polygon([[
-                            [geom.left, geom.bottom],
-                            [geom.right, geom.bottom],
-                            [geom.right, geom.top],
-                            [geom.left, geom.top],
-                            [geom.left, geom.bottom]
-                        ]]);
-                        geom.type = type;
-                        geometries.push(geom);
-
-                    });
-                    // draw collected geometries
-                    vizcommon.drawBBoxes(map, geometries, bboxLayer);
-                });
-
-            });
+            })
+            
         });
-        
     }
 );
