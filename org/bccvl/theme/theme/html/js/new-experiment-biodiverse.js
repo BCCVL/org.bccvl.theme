@@ -1,8 +1,10 @@
 
 // JS code to initialise the biodiverse visualisations
 
-define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'jquery-xmlrpc'],
-    function( $, preview, ol, layerswitcher, vizcommon, d3  ) {
+define(
+    ['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'bccvl-api'],
+    function( $, ol, layerswitcher, vizcommon, d3, bccvlapi  ) {
+
         
         // visualiser base url
         var visualiserBaseUrl = window.bccvl.config.visualiser.baseUrl;
@@ -27,41 +29,30 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                   return d3.select(this[0][last]);
                 };
 
-                var gridSize = params.cellsize,
-                    dataProj = params.srs.toUpperCase(), 
-                    mapProj = map.getView().getProjection().getCode(),
-                    projection = ol.proj.get(dataProj),
-                    projectionExtent = projection.getExtent(),
-                    size = ol.extent.getWidth(projectionExtent) / 256,
-                    colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013'];
-                    
-                var dfrd = $.Deferred(),
-                    requestStatus = $.Deferred(),
-                    jqxhr = $.Deferred();
-                    //csv = ;
+                var gridSize = params.cellsize
+                var dataProj = params.srs.toUpperCase()
+                var mapProj = map.getView().getProjection().getCode()
+                var projection = ol.proj.get(dataProj)
+                var projectionExtent = projection.getExtent()
+                var size = ol.extent.getWidth(projectionExtent) / 256
+                var colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013']
+
                 
-                var fetch = function(){
-                    $.ajax({
-                        url: fetchurl,
-                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
-                    }).done(function(data, status, jqXHR){
-                        if(data.status == "COMPLETED"){
-                            jqxhr.resolve(data.status);
-                        } else if (data.status == "FAILED"){
-                            jqxhr.reject(data.reason);
-                        } else {
-                             setTimeout(function(){
-                                fetch();
-                             }, 500);
-                        }
-                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                bccvlapi.visualiser.fetch({'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}).then(
+                    // fetch success
+                    function(status) {
+                        return d3.csv(url)
+                    },
+                    // fetch error
+                    function(reason) {
                         alert('Problem request dataset, please try again later.')
-                    });
-                }
-                
-                jqxhr.then(
-                    function(){
-                        d3.csv(url, function(error, data) {
+                        // TODO: what about passing on errors?
+                    }
+                ).then(function(d3csv) {
+                    d3csv.get(function(error, data) {
+                        // data ... csv data
+                        if (error) throw error;
+
 
                             var check = true;
                             
@@ -114,9 +105,10 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                                     var range = geojson.vars[property].range;
                             
                                     // subtract half a point to create first point of polygon
-                                    var x = coordinate[0] - gridSize / 2,
-                                        y = coordinate[1] - gridSize / 2,
-                                        val = Number(feature.getProperties()[property]);
+                                    var x = coordinate[0] - gridSize / 2
+                                    var y = coordinate[1] - gridSize / 2
+                                    var val = Number(feature.getProperties()[property])
+
     
                                     var colorIdx;
                                     $.each(range, function(i, x){
@@ -282,15 +274,9 @@ define(['jquery', 'bccvl-preview-layout', 'openlayers3', 'ol3-layerswitcher', 'b
                                 });
                                 
                             }
-                        });
-                    
-                    }, function(){
-                        console.log('something is wrong fetching csv');
-                });
-                
-                fetch();
-                
-                return dfrd;
+                    }) // d3csv.get
+                }) // then
+
            },
            
            // Convert data to GeoJSON
