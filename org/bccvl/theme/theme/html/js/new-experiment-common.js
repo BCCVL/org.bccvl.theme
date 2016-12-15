@@ -156,9 +156,14 @@ define(
         }
 
         function init_constraints_map(selector, $tab, fieldname) {
+            
+            console.log(selector);
+            
             var mapid = $(selector).attr('id');
 
             var base_map = vizcommon.renderBase(mapid)
+            
+            console.log(base_map);
             var map = base_map.map
             var visLayers = base_map.visLayers
             
