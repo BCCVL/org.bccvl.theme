@@ -895,7 +895,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if (lgr instanceof ol.layer.Group) {
                        // iterate over layers within group
                        lgr.getLayers().forEach(function(lyr) {
-                           if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                           console.log(lyr.get('type'));
+                           if (lyr.get('type') != 'base' && lyr.get('type') != 'constraint' && lyr.getVisible()) {
                                // only look at visible non base layers
                                // collect titles for visible layers
                                layer = lyr;
