@@ -1046,21 +1046,21 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            })
                        }),
                        new ol.layer.Tile({
+                           title: 'ALA Outline',
+                           type: 'base',
+                           visible: false,
+                           source: new ol.source.TileWMS({
+                            url: 'http://spatial.ala.org.au/geoserver/gwc/service/wms/reflect',
+                            params: {'LAYERS': 'ALA:world', 'FORMAT': 'image/jpeg', 'VERSION':'1.1.1', 'SRS':'EPSG:3857'}
+                          })
+                       }),
+                       new ol.layer.Tile({
                            title: 'OSM',
                            type: 'base',
                            preload: 5,
                            visible: true,
                            source: new ol.source.OSM()
                        })
-                       // ,
-                       // new ol.layer.Tile({
-                       //     title: 'Mapbox',
-                       //     type: 'base',
-                       //     source: new ol.source.XYZ({
-                       //         tileSize: [512, 512],
-                       //         url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
-                       //     })
-                       // })
                    ]
 
                });        
