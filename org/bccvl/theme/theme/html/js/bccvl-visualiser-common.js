@@ -1123,6 +1123,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // styObj ... override given certain styleObj parameters
                var dfrd = $.Deferred();
 
+               // big loading indicator for fetch request, this could be added 
+               // to the fetch function itself if it could reference the map
+               $('#'+id+' .ol-viewport').prepend('<div class="map-loading"></div>');
+               
                var fetch_dfrd = bccvlapi.visualiser.fetch(
                    {
                        'datasetid': uuid,
@@ -1132,10 +1136,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                ).then(
                    // visualiser fetch went well
                    function(status) {
+                       $('#'+id+' .ol-viewport').find('.map-loading').remove();
                        return bccvlapi.dm.metadata(uuid, root=true)
                    },
                    // visualiser fetch failed
                    function(error) {
+                       $('#'+id+' .ol-viewport').find('.map-loading').remove();
                        alert('Problem request dataset, please try again later.')
                        // need to return some error here?
                    }

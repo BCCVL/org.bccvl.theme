@@ -2958,3 +2958,14 @@ div.youtube-frame {
     text-decoration:none;
     background-color: #999;
 }
+.map-loading {
+    background-image: url('../images/bccvl-loader_trans.gif');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: rgba(255,255,255,.75);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: block;
+    z-index: 10000;
+}
