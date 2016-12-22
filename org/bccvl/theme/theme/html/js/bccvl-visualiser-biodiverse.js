@@ -18,6 +18,43 @@ define(
                   return d3.select(this[0][last]);
                 };
 
+<<<<<<< HEAD
+                var gridSize = params.cellsize,
+                    dataProj = params.srs.toUpperCase(), 
+                    mapProj = map.getView().getProjection().getCode(),
+                    projection = ol.proj.get(dataProj),
+                    projectionExtent = projection.getExtent(),
+                    size = ol.extent.getWidth(projectionExtent) / 256,
+                    colorBank = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#6d0021', '#56001a', '#400013'];
+                    
+                var dfrd = $.Deferred(),
+                    requestStatus = $.Deferred(),
+                    jqxhr = $.Deferred();
+                    //csv = ;
+                
+                var fetch = function(){
+                    $.ajax({
+                        url: fetchurl,
+                        data: {'datasetid': uuid, 'DATA_URL': url, 'INSTALL_TO_DB': false}
+                    }).done(function(data, status, jqXHR){
+                        if(data.status == "COMPLETED"){
+                            jqxhr.resolve(data.status);
+                        } else if (data.status == "FAILED"){
+                            jqxhr.reject(data.reason);
+                        } else {
+                             setTimeout(function(){
+                                fetch();
+                             }, 500);
+                        }
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        alert('Problem request dataset, please try again later.')
+                    });
+                }
+                
+                jqxhr.then(
+                    function(){
+                        d3.csv(url, function(error, data) {
+=======
                 var gridSize = params.cellsize
                 var dataProj = params.srs.toUpperCase()
                 var mapProj = map.getView().getProjection().getCode()
@@ -41,6 +78,7 @@ define(
                     d3csv.get(function(error, data) {
                         // data ... csv data
                         if (error) throw error;
+>>>>>>> ccf4cea3e0b1e6929665783f35b911a65868bd3c
 
                         var check = true;
                             
@@ -479,6 +517,7 @@ define(
             biodiverseLegend: function (grid, key, variable, map, colorScale, colorBank, hoverFunction, drawFunction) {
 
                 function legendSelectCells (d) {
+                    
                     var selected;
                     
                     map.getInteractions().forEach(function (interaction) {
@@ -487,13 +526,17 @@ define(
                         }
                     });
                     
-                    // trigger ol cell unselect
-                    selected.clear();
+                    if (! d3.event.shiftKey) {
+                        console.log(d);
+                        // trigger ol cell unselect
+                        selected.clear();
                         
-                    // for some reason this ignores the style attribute, so a classname is used instead
-                    // wipe legend selects
-                    d3.selectAll('.d3legend rect.legend-cell')
-                        .attr('class', 'legend-cell');
+                        // for some reason this ignores the style attribute, so a classname is used instead
+                        // wipe legend selects
+                        d3.selectAll('.d3legend rect.legend-cell')
+                            .attr('class', 'legend-cell');
+                    
+                    }
                         
                     // display legend cell select
                     d3.select(this)

@@ -429,15 +429,18 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
                    var colorArr = bccvl_common.generateColorArr(layerdef.style);
                    var steps = layerdef.style.steps;                    
+                   
+                   console.log(colorArr);
+                   console.log(rangeArr);
                    // colour range for temperature needs to extend indefinitely negatively and positively.
                    if (layerdef.style.standard_range == 'temperature') {
                        for (var i = 0; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                           xmlStylesheet += '<se:Value>'+colorArr[i-1]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                           xmlStylesheet += '<se:Value>'+colorArr[i-1]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    }
