@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api'],
-   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi) {
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas) {
 
        // define some projections we need
        proj4.defs([
@@ -429,18 +429,15 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
                    var colorArr = bccvl_common.generateColorArr(layerdef.style);
                    var steps = layerdef.style.steps;                    
-                   
-                   console.log(colorArr);
-                   console.log(rangeArr);
                    // colour range for temperature needs to extend indefinitely negatively and positively.
                    if (layerdef.style.standard_range == 'temperature') {
                        for (var i = 0; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Value>'+colorArr[i-1]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Value>'+colorArr[i-1]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    }
@@ -659,38 +656,42 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                return legend;
            },
            
-           exportAsImage: function(e) {
-               var map = e.data.map;
-               var mapTitle = e.data.mapTitle;
-               
-               var visible = [];
-               
-               map.getLayers().forEach(function(lgr) {
-                   // assumes that we have only groups on map check that
-                   if (lgr instanceof ol.layer.Group) {
-                       // iterate over layers within group
-                       lgr.getLayers().forEach(function(lyr) {
-                           if (lyr.get('type') != 'base' && lyr.getVisible()) {
-                               // only look at visible non base layers
-                               // collect titles for visible layers
-                               visible.push(lyr.get('title'));
-                           }
-                       });
-                   }
-               });
-               
-               // need to add a map/dataset title here, instead of 'MAP'
-               var imageTitle = 'BCCVL -- ' + mapTitle;
-               // add visible layers into filename
-               imageTitle += ' -- ' + visible.join(", "); 
-               // append filename
-               $(e.target).attr('download', imageTitle+'.png');
-               
-               map.once('postcompose', function(event) {
-                   var canvas = event.context.canvas;
-                   $(e.target).attr('href', canvas.toDataURL('image/png'));
-               });
-               map.renderSync();
+           exportAsImage: function(e, map) {
+              
+              var hiddenEl = $(map.getTargetElement()).find('.export-map-hidden');
+              
+              var visible = [];
+              
+              map.getLayers().forEach(function(lgr) {
+                  // assumes that we have only groups on map check that
+                  if (lgr instanceof ol.layer.Group) {
+                      // iterate over layers within group
+                      lgr.getLayers().forEach(function(lyr) {
+                          if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                              // only look at visible non base layers
+                              // collect titles for visible layers
+                              visible.push(lyr.get('title'));
+                          }
+                      });
+                  }
+              });
+              
+              // need to add a map/dataset title here, instead of 'MAP'
+              var imageTitle = 'BCCVL ';
+              
+              // add visible layers into filename
+              imageTitle += ' -- ' + visible.join(", "); 
+              
+              // append filename
+              hiddenEl.attr('download', imageTitle+'.png');
+              
+              html2canvas(map.getTargetElement(), {
+                  onrendered: function(canvas) {
+                      hiddenEl.attr('href', canvas.toDataURL('image/png'));
+                      hiddenEl[0].click();
+                 }
+              });
+
            },
            
            roundUpToNearestMagnitude: function(x) {
@@ -894,7 +895,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if (lgr instanceof ol.layer.Group) {
                        // iterate over layers within group
                        lgr.getLayers().forEach(function(lyr) {
-                           if (lyr.get('type') != 'base' && lyr.getVisible()) {
+                           console.log(lyr.get('type'));
+                           if (lyr.get('type') != 'base' && lyr.get('type') != 'constraint' && lyr.getVisible()) {
                                // only look at visible non base layers
                                // collect titles for visible layers
                                layer = lyr;
@@ -1044,21 +1046,21 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            })
                        }),
                        new ol.layer.Tile({
+                           title: 'ALA Outline',
+                           type: 'base',
+                           visible: false,
+                           source: new ol.source.TileWMS({
+                            url: 'http://spatial.ala.org.au/geoserver/gwc/service/wms/reflect',
+                            params: {'LAYERS': 'ALA:world', 'FORMAT': 'image/jpeg', 'VERSION':'1.1.1', 'SRS':'EPSG:3857'}
+                          })
+                       }),
+                       new ol.layer.Tile({
                            title: 'OSM',
                            type: 'base',
                            preload: 5,
                            visible: true,
                            source: new ol.source.OSM()
                        })
-                       // ,
-                       // new ol.layer.Tile({
-                       //     title: 'Mapbox',
-                       //     type: 'base',
-                       //     source: new ol.source.XYZ({
-                       //         tileSize: [512, 512],
-                       //         url: 'https://api.mapbox.com/styles/v1/wolskis/cip6egiog000hbbm08tcz5e3n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoid29sc2tpcyIsImEiOiJPTkFISlRnIn0.4Y5-Om3FJ8Ygq11_FafiSw'
-                       //     })
-                       // })
                    ]
 
                });        
@@ -1102,11 +1104,13 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                container.find('.ol-viewport .ol-overlaycontainer-stopevent').append('<div id="progress-'+id+'" class="map-progress-bar"></div>');
 
                // hook up exportAsImage
-               $('#'+id+' .ol-viewport').append('<a class="export-map ol-control" download="map.png" href=""><i class="fa fa-save"></i> Image</a>');
-               $('#'+id+' a.export-map').click(
-                   { map: map,
-                     mapTitle: null
-                   }, bccvl_common.exportAsImage);
+               $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append('<a class="export-map-hidden ol-control" download="map.png" href="" style="opacity:0;">Hidden</a>');
+               $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append('<a class="export-map ol-control" href="javascript:void();"><i class="fa fa-save"></i> Image</a>');
+               
+               $('#'+id+' a.export-map').click(function(e){
+                   e.preventDefault();
+                   bccvl_common.exportAsImage(e, map);
+               });
 
                return {
                    map: map,
@@ -1119,6 +1123,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // styObj ... override given certain styleObj parameters
                var dfrd = $.Deferred();
 
+               // big loading indicator for fetch request, this could be added 
+               // to the fetch function itself if it could reference the map
+               $('#'+id+' .ol-viewport').prepend('<div class="map-loading"></div>');
+               
                var fetch_dfrd = bccvlapi.visualiser.fetch(
                    {
                        'datasetid': uuid,
@@ -1128,10 +1136,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                ).then(
                    // visualiser fetch went well
                    function(status) {
+                       $('#'+id+' .ol-viewport').find('.map-loading').remove();
                        return bccvlapi.dm.metadata(uuid, root=true)
                    },
                    // visualiser fetch failed
                    function(error) {
+                       $('#'+id+' .ol-viewport').find('.map-loading').remove();
                        alert('Problem request dataset, please try again later.')
                        // need to return some error here?
                    }
@@ -1832,4 +1842,3 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
        return bccvl_common;
    }
 );
-

@@ -41,7 +41,13 @@
         <div class="tab-pane bccvl-search-traits" data-form-type="traits-by-species" id="searchTraitsSpecies">
           <div class="bccvl-traitsform-results row-fluid">
             <h4><strong>Find Trait Data by Species</strong></h4>
-            <p>Text explaining what this page does.</p>
+            <p>Using this form, you can import species trait data from the AEKOS (Australian Ecological Knowledge and Observation System) database. 
+            <ol>
+              <li>Search for species using their latin names (you can select multiple species).</li>
+              <li>Once species are selected, available traits will show up.</li>
+              <li>Optional: include environmental data of the species trait records in your import.</li>
+            </ol>
+            </p>
             <div class="row-fluid">
               <div class="span10 offset1 searchTraits_species">
                 <h5>1. Select from available species.</h5>
@@ -82,7 +88,13 @@
         <div class="tab-pane bccvl-search-traits" data-form-type="traits-by-trait" id="searchTraitsTrait">
           <div class="bccvl-traitsform-results row-fluid">
             <h4><strong>Find Trait Data for Species by Trait</strong></h4>
-            <p>Text explaining what this page does.</p>
+            <p>Using this form, you can import species trait data from the AEKOS (Australian Ecological Knowledge and Observation System) database. 
+            <ol>
+              <li>Search for available traits (you can select multiple traits).</li>
+              <li>Once traits are selected, available species with data for these traits will show up.</li>
+              <li>Optional: include environmental data of the species trait records in your import.</li>
+            </ol>
+            </p>
             <div class="row-fluid">
               <div class="span10 offset1 searchTraits_traits">
                 <h5>1. Select from available traits.</h5>

@@ -111,6 +111,10 @@
               <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
               <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
               <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
+              <a class="ala-edit" href="#"
+               tal:attributes="data-uuid item_uuid"
+               tal:condition="python: item_editable and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
+              Export to ALA Spatial Portal</a>
             </div>
           </tal:block>
         </div>
@@ -155,11 +159,6 @@
                tal:attributes="href string:${item_url}/modal_view">
               <i class="fa fa-info-circle" title="More information for this dataset."></i>
             Info</a>
-            <a class="ala-edit btn btn-info btn-mini" href="#"
-               tal:attributes="data-uuid item_uuid"
-               tal:condition="python: item_editable and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
-              <i class="fa fa-edit" title="Export to ALA Spatial Portal"></i>
-            ALA Spatial Portal</a>            
             <a class="sharing-btn btn btn-info btn-mini" href="#"
                tal:attributes="href string:${item_url}/modal_sharing"
                tal:condition="python: complete and action.get('available')"

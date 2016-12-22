@@ -31,6 +31,7 @@ requirejs.config({
         'bccvl-api':            'js/bccvl-api',
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
+        'html2canvas':          'lib/html2canvas/html2canvas.min',
         // our own js files
         'bccvl-api':                  'js/bccvl-api',
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
