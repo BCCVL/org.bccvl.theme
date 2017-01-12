@@ -80,12 +80,12 @@ define(     ['jquery', 'bootstrap2'],
                 });
 
                 // handle tab history - - - - - - - - - - - - - - - -
-
-                var rememberTab = function(tabLink) {
+                // disabled Jan2017 because of interference with faceted search defaults in modals
+                /*var rememberTab = function(tabLink) {
                     if (window.history && window.history.pushState) {
                         window.history.pushState(null, null, $(tabLink).attr('href'));
                     }
-                }
+                }*/
 
                 // define a function to pick the "right" tab
                 var pickTab = function($default) {
@@ -113,15 +113,17 @@ define(     ['jquery', 'bootstrap2'],
 
                 // call the right-tab-picking function
                 pickTab($defaultTab);
-                rememberTab($defaultTab);
+                // disabled Jan2017 because of interference with faceted search defaults in modals
+                // rememberTab($defaultTab);
 
                 // also pick the right tab when the back button is pressed
                 window.addEventListener('popstate', pickTab);
 
                 // put tabs into browser history when clicked (if the browser supports it)
-                $tabs.find('a[data-toggle="tab"]').click( function() {
+                // disabled Jan2017 because of interference with faceted search defaults in modals
+                /*$tabs.find('a[data-toggle="tab"]').click( function() {
                     rememberTab(this);
-                });
+                });*/
             });
             
     
