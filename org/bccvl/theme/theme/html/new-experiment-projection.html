@@ -134,6 +134,7 @@
                 <li class="active"><a href="#tab-meta" data-toggle="tab">Description</a></li>
                 <li><a href="#tab-sdm" data-toggle="tab">Source Model</a></li>
                 <li><a href="#tab-project" data-toggle="tab">Projection</a></li>
+                <li><a href="#tab-geo" data-toggle="tab">Constraints</a></li>
                 <li><a href="#tab-review" data-toggle="tab">Run</a></li>
               </ul>
             </div>
@@ -224,6 +225,76 @@
                       </div>
                     </div>
 
+                  </div>
+                </fieldset>
+              </div>
+              
+              <!-- page: geographical constraints ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
+              <div class="tab-pane active" id="tab-geo">
+                <fieldset class="tab">
+                  <div class="row-fluid">
+                    <p class="span12 bccvl-tab-description">
+                      Define any geographic constraints for the experiment.
+                    </p>
+                    <p>
+                      This tab is optional.<br/>
+                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around all occurrence records - blue on the map). The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
+                    </p>
+                  </div>
+
+                  <div class="row-fluid bccvl-stretch-parent">
+
+                    <!-- list of available data -->
+                    <div class="span4" style="overflow:visible;">
+                      <div class="control-group">
+                        <div class="bccvl-occurrencestable">
+
+
+                          <div class="constraints" id="formfield-form-widgets-modelling_region"></div>
+                          <div class="bccvl-constraint-geojson-input">
+                            <p>Select constraints by pre-defined region</p>
+                            <select id="select-region-type" placeholder="Choose a region type ...">
+                              <option value="">Select A Region Type ...</option>
+                              <option value="cl959">Local Goverment Areas</option>
+                              <option value="cl916">National Resource Management Regions</option>
+                              <option value="cl22">Australian States and Territories</option>
+                              <option value="cl1048">IBRA 7 Regions</option>
+                            </select>
+                            <select id="select-region" placeholder="Find a region ...">
+                              <option value="" selected="selected"></option>
+                            </select>
+                            <a href="javascript:void(0);" class="btn btn-small btn-default draw-geojson" id="selected-geojson"><i class="fa fa-crop"></i> Add To Map</a>&nbsp;
+                            <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
+                          </div>
+                          <hr/>
+
+                          <div class="bccvl-draw-constraints">
+                            <p>Draw constraints on map</p>
+                            <a href="javascript:void(0);" class="btn btn-small btn-default draw-polygon"><i class="fa fa-crop"></i> Draw On Map</a>&nbsp;
+                            <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
+                          </div>
+                          <hr/>
+                          <div class="bccvl-constraint-input">
+                            <p>Define constraints</p>
+                            <input type="text" placeholder="North bounds." class="bounds" name="north-bounds" id="north-bounds"/>
+                            <input type="text" placeholder="East bounds." class="bounds" name="east-bounds" id="east-bounds"/>
+                            <input type="text" placeholder="South bounds." class="bounds" name="south-bounds" id="south-bounds"/>
+                            <input type="text" placeholder="West bounds." class="bounds" name="west-bounds" id="west-bounds"/>
+                            <br/>
+                            <a href="javascript:void(0);" class="btn btn-small btn-default input-polygon"><i class="fa fa-crop"></i> Input Constraints</a>&nbsp;
+                            <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- preview area -->
+                    <div class="span8">
+                      <div class="bccvl-preview-pane constraints-map pre-render-map" id="map4">
+
+                      </div>
+                    </div>
                   </div>
                 </fieldset>
               </div>
