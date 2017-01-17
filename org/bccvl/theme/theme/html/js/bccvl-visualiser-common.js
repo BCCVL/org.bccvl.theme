@@ -239,6 +239,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    for (var i = 1; i < (steps+1); i++) {
                        rangeArr.push(i);
                    }
+               } else if (standard_range == 'misc_categorical') {
+                   var rangeArr = [];
+                   for (var i = 0; i < (steps); i++) {
+                       rangeArr.push(minVal + i);
+                   }
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -289,7 +294,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    // FIXME: generate default color range for suitabilities automatically as we do below if possible
                    // basic prob spectrum
                    var colorArr = ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
-               } else if (standard_range == 'categorical') {
+               } else if (standard_range == 'categorical' || standard_range == 'misc_categorical') {
                    var colorArr = [];
                    for (var i = 0; i < (steps+1); i++) {
                        colorArr.push('#'+bccvl_common.genColor(i+1));
@@ -449,8 +454,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            createStyleObj: function(layerdef, uuid) {
                var styleObj;
                var style = $.Deferred();
-               
-               if (layerdef.legend == 'categories') {
+
+               if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
                    bccvlapi.dm.get_rat(uuid, layerdef.token, true).then(
                        function(data, status, jqXHR) {
                            
@@ -489,8 +494,34 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                midpoint: {},
                                endpoint: {}
                            };
-                           
+
                            styleObj.standard_range = 'categorical';
+                           
+                           style.resolve(styleObj, layerdef);
+                       },
+                       function(data, status, jqXHR){
+                           console.log('RAT failed, no metadata for layertype');
+                           console.log(layerdef);
+                           // count number of rows, number is inclusive so requires offset
+                           var numRows = layerdef.max - layerdef.min + 1;
+                           var labels = [];
+                           for (var i = 0; i < numRows; i++) {
+                               labels.push('Unclassified Layer '+(layerdef.min+i));
+                           }
+                           layerdef.labels = labels;
+                           
+                           layerdef.tooltip = "No layer metadata is available for this dataset. Select a classfication using the Edit options on the dataset search interface for more accurate visualisations."
+
+                           styleObj = {
+                               // get number of rows from layerdef, make equivalent number of steps
+                               minVal: layerdef.min, 
+                               maxVal: layerdef.max,
+                               steps: numRows,
+                               startpoint: null,
+                               midpoint: null,
+                               endpoint: null,
+                               standard_range: 'misc_categorical'
+                           };
                            
                            style.resolve(styleObj, layerdef);
                        }
@@ -589,7 +620,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var legend_step_size = 5;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
-               } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical', 'binary']) > -1) {
+               } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical', 'misc_categorical', 'binary']) > -1) {
                    legend_step_size = 1;
                }
                // Build legend obj
@@ -618,7 +649,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                
                if (layerdef.tooltip && layerdef.tooltip.length > 0) {
                    var popover = '<span class="fa fa-info-circle popover-toggle" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="right" title="' + layerdef.unitfull + '" data-content="' + layerdef.tooltip + '">&nbsp;</span>';
-                   panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
+                   if (standard_range == 'misc_categorical'){
+                       panel.innerHTML += '<h5>Categories '+popover+'</h5>';
+                   } else {
+                       panel.innerHTML += '<h5>' + layerdef.unit + ' '+popover+'</h5>';
+                   }
                } else {
                    if (standard_range == 'binary') {
                        panel.innerHTML += '<h5>Occurrence</h5>';
@@ -626,14 +661,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        panel.innerHTML += '<h5>Mask</h5>';
                    } else if (standard_range == 'suitability') {
                        panel.innerHTML += '<h5>Suitability</h5>';
+                   } else if (standard_range == 'categorical' || standard_range == 'misc_categorical') {
+                       panel.innerHTML += '<h5>Dataset Categories</h5>';
                    } else {
                        panel.innerHTML += '<h5>' + layerdef.unit + '</h5>';                        
                    }
                }
                
                for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
-                   if (standard_range == 'categorical'){
-                       panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+layerdef.labels[i]+'</label>';
+                   if (standard_range == 'categorical' || standard_range == 'misc_categorical' ){
+                       panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>'+layerdef.labels[i]+'</label>';
                    } else if (standard_range == 'binary'){
                        if (rangeArr[i] == 1){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
@@ -895,7 +932,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if (lgr instanceof ol.layer.Group) {
                        // iterate over layers within group
                        lgr.getLayers().forEach(function(lyr) {
-                           console.log(lyr.get('type'));
                            if (lyr.get('type') != 'base' && lyr.get('type') != 'constraint' && lyr.getVisible()) {
                                // only look at visible non base layers
                                // collect titles for visible layers
@@ -1201,7 +1237,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            // raster data
                            // TODO: data.layer could be standard array, as layerid is in layer object as well
                            var newLayers = [];
+
                            $.each( data.layers, function(layerid, layer){
+                               
                                // get layer definition from vocab
                                layerdef = layer_vocab[layer.layer];
                                if (typeof layerdef === 'undefined') {
