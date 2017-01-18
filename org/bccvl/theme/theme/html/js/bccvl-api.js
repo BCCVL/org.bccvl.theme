@@ -280,7 +280,7 @@
                         dfrd.reject(data.reason);
                     } else {
                         // fetch again
-                        setTimeout(fetch, 500)
+                        setTimeout(fetch, 1000)
                     }
                 }
             ).fail(
