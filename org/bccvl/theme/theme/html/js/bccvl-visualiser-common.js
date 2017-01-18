@@ -448,6 +448,13 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                    xmlStylesheet += '</se:Categorize></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>';
                }
+               
+               //simple error message for SLD's that are too long
+               var m = encodeURIComponent(xmlStylesheet).match(/%[89ABab]/g);
+               if ( (xmlStylesheet.length + (m ? m.length : 0)) >= 7000){
+                   alert("We're sorry, this dataset contains too many categories to be visualised in the BCCVL (the resulting WMS requests are too long to process).");
+               }
+               
                return xmlStylesheet;
            },
            
@@ -501,7 +508,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        },
                        function(data, status, jqXHR){
                            console.log('RAT failed, no metadata for layertype');
-                           console.log(layerdef);
                            // count number of rows, number is inclusive so requires offset
                            var numRows = layerdef.max - layerdef.min + 1;
                            var labels = [];
