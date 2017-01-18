@@ -146,15 +146,15 @@
             'API/em/v1/metadata',
             {
                 type: 'GET',
-                dataType: 'xml json',
-                converters: {'xml json': $.xmlrpc.parseDocument},
+                dataType: 'json',
+                contentType: 'application/json',
                 data: {uuid: uuid}
             },
             root
         ).then(
             function(data, status, jqXHR) {
                 // deref xmlrpc result array
-                return data[0]
+                return data
             }
         )
     }
