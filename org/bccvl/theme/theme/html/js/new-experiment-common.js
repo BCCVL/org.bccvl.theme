@@ -281,8 +281,8 @@ define(
                         geometries.push(geom);
                     } else {
                         // Get the region constraint from the SDM experiment as the constraint for
-                        // Climate Change Experiment. Need to transform constraint geometry to E
-                        // PSG:4326 as used in vizcommon.drawBBoxes()
+                        // Climate Change Experiment. Need to transform constraint geometry to
+                        // EPSG:4326 as used in vizcommon.renderPolygonConstraints
                         var sdmexp_id = $(this).attr('value');
                         bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
                             var region_constraint = data['results'][0]['params']['modelling_region'];
@@ -291,13 +291,13 @@ define(
                             if (region_constraint && region_constraint != 'none') {
                                 var geojsonParser = new ol.format.GeoJSON();
                                 var srcProjection = geojsonParser.readProjection(region_constraint);
-                                var features = geojsonParser.readFeatures(region_constraint);
-                                features.forEach(function(feature) {
-                                    geometries.push(feature.getGeometry().transform(srcProjection, 'EPSG:4326'));
-                                });
+                                var feature = geojsonParser.readFeature(region_constraint);
+                                vizcommon.renderPolygonConstraints(
+                                    map, 
+                                    feature.getGeometry().transform(srcProjection, 'EPSG:4326'), 
+                                    constraintsLayer, 
+                                    'EPSG:4326')
                             }
-                            // draw collected geometries
-                            vizcommon.drawBBoxes(map, geometries, bboxLayer);
                         });
                     }
                 }
