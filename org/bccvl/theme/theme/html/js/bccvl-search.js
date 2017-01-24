@@ -534,7 +534,7 @@ define(
                     var list = [];
                     if (rawData) {
                         $.each(rawData, function(index, item) {
-                            list.push(item.scientificName);
+                            list.push(item.speciesName);
                         });
                     }
                     return list;
@@ -999,13 +999,14 @@ define(
                             if (!provider.autocomplete) return;
                             if (!provider.autocomplete.autoUrl) return;
                             var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
-
+                            
                             current_ajax = $.ajax({
                                 // xhrFields: { withCredentials: true }, // not using CORS
                                 dataType: 'jsonp',                       // ..using JSONP instead
                                 //dataType: 'json',
                                 url: autocompleteUrl,
                                 success: function(data) {
+                                    
                                     // either the search provider will have a parseAutoData function,
                                     // which extracts the possible matches from the returned data.
                                     if (provider.autocomplete.parseAutoData) {
@@ -1014,11 +1015,13 @@ define(
                                         if (parsedDataList.length == 0) {
                                             provider.autocomplete.noResultsFound();
                                         }
+
                                         process(parsedDataList);
                                     } else {
                                         // otherwise assume the data is already good
                                         process(data);
                                     }
+                                    
                                     $inputField.removeClass("bccvl-search-spinner");
                                 },
                                 error: function(xhr, status, msg){
