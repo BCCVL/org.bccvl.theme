@@ -212,6 +212,9 @@ color: #ffffff!important;
 .experiment-msdm span {
     color: #9b59b6!important;
 }
+.experiment-mme span {
+    color: #e67e22!important;
+}
 .experiment-cce span {
     color: #4dc345!important;
 }
@@ -246,6 +249,11 @@ color: #ffffff!important;
 }
 .experiment-msdm a:hover, .experiment-msdm a:hover span {
     background: #9b59b6!important;
+    color: white!important;
+    text-decoration: none;
+}
+.experiment-mme a:hover, .experiment-mme a:hover span {
+    background: #e67e22!important;
     color: white!important;
     text-decoration: none;
 }
