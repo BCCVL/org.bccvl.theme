@@ -2977,3 +2977,14 @@ div.youtube-frame {
     display: block;
     z-index: 10000;
 }
+
+.mme-subset {
+    border-bottom:1px solid #ddd;
+    margin-bottom:1em;
+    padding-bottom:1em;
+    float:left;
+}
+
+.mme-subset .bccvl-auto-viz {
+    display:none;
+}

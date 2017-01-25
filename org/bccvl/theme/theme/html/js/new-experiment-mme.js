@@ -13,7 +13,6 @@ define(
 
         // ==============================================================
         $(function() {
-
             wiztabs.init();         // hook up the wizard buttons
 
             // setup dataset select widgets
@@ -28,10 +27,16 @@ define(
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
             
             // bind widgets to the constraint map
-            $('.bccvl-new-sdm').on('widgetChanged', function(e){
+            $('.bccvl-new-mme').on('widgetChanged', function(e){
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
             })
+            
+            
+            $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
+               var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
+               $(e.target).before(subset);
+            });
                         
         });
 
