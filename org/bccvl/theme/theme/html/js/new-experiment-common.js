@@ -118,7 +118,7 @@ define(
                         if ($algoCheckbox.prop('checked')) {
                             $configBlock.show(250);
                             // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
-                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
+                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'sre');
                         } else {
                             // make sure that the accordion closes before hiding it
                             if ($accordionBody.hasClass('in')) {
