@@ -32,6 +32,10 @@
 
         <replace css:theme="#widget-future_climate_datasets" css:content="#formfield-form-widgets-future_climate_datasets"/>
 
+        <!-- pull in geo constraints field -->
+        <replace css:theme="#formfield-form-widgets-projection_region"
+                 css:content="#form-widgets-projection_region"/>"
+
         <!-- hook in the years -->
         <drop css:theme=".test-content"/>
         <!-- <replace css:theme-children="table.bccvl-yearstable" -->

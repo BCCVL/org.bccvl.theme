@@ -1,8 +1,8 @@
 
 
 define(
-    ['jquery', 'openlayers3', 'bccvl-visualiser-common', 'selectize', 'selectize-remove-single'],
-    function( $, ol, vizcommon ) {
+    ['jquery', 'openlayers3', 'bccvl-visualiser-common', 'bccvl-api', 'selectize', 'selectize-remove-single'],
+    function( $, ol, vizcommon, bccvlapi ) {
 
         function init_region_selector() {
 
@@ -118,7 +118,7 @@ define(
                         if ($algoCheckbox.prop('checked')) {
                             $configBlock.show(250);
                             // By default, pa strategy is random when no pseudo absence data. Otherwise is none i.e. do not generate pseudo absence points.
-                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'random');
+                            $('select[name="form.widgets.' + $algoCheckbox.attr('value') + '.pa_strategy:list"]').val($('#have_absence').checked ? 'none' : 'sre');
                         } else {
                             // make sure that the accordion closes before hiding it
                             if ($accordionBody.hasClass('in')) {
@@ -267,18 +267,40 @@ define(
                         }
                     })
                 } else {
-                    var geom = $(this).data('bbox');
-                    geom = new ol.geom.Polygon([[
-                        [geom.left, geom.bottom],
-                        [geom.right, geom.bottom],
-                        [geom.right, geom.top],
-                        [geom.left, geom.top],
-                        [geom.left, geom.bottom]
-                    ]]);
-                    geom.type = type;
-                    geometries.push(geom);
+                    var bbox = $(this).attr('data-bbox');
+                    if (typeof bbox !== typeof undefined && bbox !== false) {
+                        var geom = $(this).data('bbox');
+                        geom = new ol.geom.Polygon([[
+                            [geom.left, geom.bottom],
+                            [geom.right, geom.bottom],
+                            [geom.right, geom.top],
+                            [geom.left, geom.top],
+                            [geom.left, geom.bottom]
+                        ]]);
+                        geom.type = type;
+                        geometries.push(geom);
+                    } else {
+                        // Get the region constraint from the SDM experiment as the constraint for
+                        // Climate Change Experiment. Need to transform constraint geometry to
+                        // EPSG:4326 as used in vizcommon.renderPolygonConstraints
+                        var sdmexp_id = $(this).attr('value');
+                        bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
+                            var region_constraint = data['results'][0]['params']['modelling_region'];
+                            $('#form-widgets-projection_region').val('' + region_constraint + '');
+                            
+                            if (region_constraint && region_constraint != 'none') {
+                                var geojsonParser = new ol.format.GeoJSON();
+                                var srcProjection = geojsonParser.readProjection(region_constraint);
+                                var feature = geojsonParser.readFeature(region_constraint);
+                                vizcommon.renderPolygonConstraints(
+                                    map, 
+                                    feature.getGeometry().transform(srcProjection, 'EPSG:4326'), 
+                                    constraintsLayer, 
+                                    'EPSG:4326')
+                            }
+                        });
+                    }
                 }
-                
             });
             // draw collected geometries
             vizcommon.drawBBoxes(map, geometries, bboxLayer);
