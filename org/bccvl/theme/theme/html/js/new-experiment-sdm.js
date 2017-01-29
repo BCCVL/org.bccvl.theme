@@ -36,7 +36,7 @@ define(
             $('#no_absence').click(function(){
                 $('.bccvl-absencestable').slideUp(100);
                 $('.bccvl-noabsence-dataset').slideDown(100);
-                update_pa_strategy('random');
+                update_pa_strategy('sre');
             });
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
