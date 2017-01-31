@@ -39,9 +39,23 @@ define(
                 update_pa_strategy('sre');
             });
 
+            // Check if there is a pseudo absence dataset.
+            if ($('input[name="form.widgets.species_absence_dataset:list"]').length > 0) {
+                $('#have_absence').prop('checked', true);
+                $('.bccvl-noabsence-dataset').slideUp(100);
+                $('.bccvl-absencestable').slideDown(100);                
+            } else {
+                $('#no_absence').prop('checked', true);
+                $('.bccvl-absencestable').slideUp(100);
+                $('.bccvl-noabsence-dataset').slideDown(100);
+            }
+            
+
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
             
-            
+            // Draw constraint on map if any
+            expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
+
             // bind widgets to the constraint map
             $('.bccvl-new-sdm').on('widgetChanged', function(e){
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
