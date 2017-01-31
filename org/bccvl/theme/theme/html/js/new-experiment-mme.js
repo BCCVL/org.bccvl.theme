@@ -35,7 +35,17 @@ define(
             
             $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
                var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
+               subset.find('input').val('');
                $(e.target).before(subset);
+            });
+            
+            $('.bccvl-new-mme').on('click', '.remove-subset', function(e){
+                if( $('#tab-enviro fieldset').find('.mme-subset').length > 1 ){
+                    $(e.target).parents('.mme-subset').remove(); 
+                } else {
+                    alert('You must have at least one subset defined for this experiment type.');
+                }
+                
             });
                         
         });

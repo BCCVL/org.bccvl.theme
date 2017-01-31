@@ -187,6 +187,38 @@ define(
             return "You must select at least "+params[0]+" "+params[2]+" from this tab."
         });
         
+        $.validator.addMethod("commaAlphaNumeric", function(value, element) {
+          // assume true
+          var result = true;
+          // test for comma seperated range
+          var range = value.split(',');
+          //console.log(range);
+          if ($.type(range) !== "array"){
+              result = false;
+          }
+          $.each(range, function(i,v){
+              // test for all integers
+              //console.log(parseInt(v));
+              if(parseInt(v) === "NaN") {
+                  result = false;
+              }
+              
+              // test for all proper month numbers
+              if(v > 12 || v <= 0){
+                  result = false;
+              }
+              
+              // test for duplicate numbers
+              var count = range.filter(function(value){
+                return v === value;
+              }).length;
+              if (count > 1){
+                  result = false;
+              }
+          });
+          return result;
+        }, 'Please enter one or more month numbers, seperated by commas. Months cannot be repeated.');
+        
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
@@ -224,6 +256,9 @@ define(
                 "requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
                 "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"],
                 "noLongerRequireEnv": [1, ".trait-nom", ["env_var_con", "env_var_cat"]]
+            },
+            "comma-alpha-numeric": {
+                "commaAlphaNumeric": true
             }
         });
         

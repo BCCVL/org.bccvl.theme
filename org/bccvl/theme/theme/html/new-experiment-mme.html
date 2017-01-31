@@ -260,12 +260,12 @@
                     <div class="span4"> 
                       <p><strong>Month Subset</strong></p>
                       <label for="subset_title_1">Title</label>
-                      <input id="subset_title_1" name="subset_title_1" type="text" placeholder="Title for occurrence subset"/>
+                      <input id="subset_title_1" name="subset_title_1" type="text" placeholder="Title for occurrence subset" class="required" required />
                       <label for="subset_1">Months (in desired order, separated by commas)</label>
-                      <input id="subset_1" name="subset_1" type="text" placeholder="e.g. 1,2,3 or 11,12,1"/>
+                      <input id="subset_1" name="subset_1" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />
                     </div>
                     <div class="span8">
-                      
+                      <a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> 
                       <div class="control-group bccvl-environmentaldatatable">
                         <div id="formfield-form-widgets-environmental_datasets">
                           <!-- Modal Dialog layers -->
@@ -282,8 +282,7 @@
                           </div>
                         </div>
                       </div>
-                      
-                      
+
                     </div>
                   </div>
                   
