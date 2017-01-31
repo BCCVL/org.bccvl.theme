@@ -160,11 +160,10 @@
                      Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>
                    <a class="btn btn-default"
-                      tal:define="item_obj item/getObject;
-                                  actions view/new_experiment_actions;"
+                      tal:define="actions view/new_experiment_actions;"
                       tal:attributes="href python:actions[item.portal_type]['action']+'?uuid='+item.UID;
                                       data-friendlyname string:sharing_${item/Title}">
-                     Rerun <i class="fa fa-share-alt" style="color:#4aa3df;" title="Rerun Experiment"></i>
+                     Rerun <i class="fa fa-repeat" style="color:#4aa3df;" title="Rerun Experiment"></i>
                    </a>                   
                  </td>
                  <td tal:attributes="class string:experiment-state ${class_state}">
