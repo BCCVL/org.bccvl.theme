@@ -534,7 +534,7 @@ define(
                     var list = [];
                     if (rawData) {
                         $.each(rawData, function(index, item) {
-                            list.push(item.speciesName);
+                            list.push(item.speciesName + ' ('+item.recordsHeld+')');
                         });
                     }
                     return list;
@@ -708,7 +708,6 @@ define(
                         aekos.getSpeciesByTrait(selectedtraits).then(
                             function(data) {
                                 $.each(data, function(index, species) {
-
                                     speciesFieldSelect.addOption({value: species.name, text: species.name });
 
                                 });
@@ -759,6 +758,14 @@ define(
                             callback(results);
                         });
 
+                    },
+                    render: {
+                        item: function(item, escape) {
+                            return '<div>'+item.speciesName+' ('+item.recordsHeld+')</div>';
+                        },
+                        option: function(item, escape) {
+                            return '<div>'+item.speciesName+' ('+item.recordsHeld+')</div>';
+                        }
                     }
 
                 });
