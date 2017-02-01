@@ -36,6 +36,7 @@ define(
             $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
                var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
                subset.find('input').val('');
+               subset.find('.bccvl-environmentaldatatable .selecteditem').remove();
                $(e.target).before(subset);
             });
             
