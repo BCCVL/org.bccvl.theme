@@ -41,8 +41,11 @@
             }
         } else {
             data = [{'name': 'traitName',
-                     'value': traitName}];
+                     'value': traitName
+            }];
         }
+        data.push({'name': 'pageSize',
+                    value: 10000});
         return $.ajax({
             dataType: 'json',
             url: apiurl + 'getSpeciesByTrait.json',

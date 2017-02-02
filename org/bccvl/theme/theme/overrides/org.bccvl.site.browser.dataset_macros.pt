@@ -113,7 +113,7 @@
               <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
               <a class="ala-edit" href="#"
                tal:attributes="data-uuid item_uuid"
-               tal:condition="python: item_editable and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
+               tal:condition="python: item_editable and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence') and item.job_state in ('COMPLETED', None)">
               Export to ALA Spatial Portal</a>
             </div>
           </tal:block>

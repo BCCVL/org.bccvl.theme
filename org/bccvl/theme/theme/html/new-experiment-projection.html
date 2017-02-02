@@ -233,13 +233,7 @@
               <div class="tab-pane active" id="tab-geo">
                 <fieldset class="tab">
                   <div class="row-fluid">
-                    <p class="span12 bccvl-tab-description">
-                      Define any geographic constraints for the experiment.
-                    </p>
-                    <p>
-                      This tab is optional.<br/>
-                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around all occurrence records - blue on the map). The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
-                    </p>
+                    <p class="span12 bccvl-tab-description">Define any geographic constraints for the experiment.</p>
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">
@@ -252,6 +246,10 @@
 
                           <div class="constraints" id="formfield-form-widgets-projection_region"></div>
                           <div class="bccvl-constraint-geojson-input">
+                            <ul>
+                              <li>Default is the area of the selected SDM (blue outline on map).</li>
+                              <li>Optional to change by selecting pre-defined region or define bounding box.</li>
+                            </ul>
                             <p>Select constraints by pre-defined region</p>
                             <select id="select-region-type" placeholder="Choose a region type ...">
                               <option value="">Select A Region Type ...</option>
