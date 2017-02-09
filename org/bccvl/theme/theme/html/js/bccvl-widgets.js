@@ -102,7 +102,7 @@ define(
                 remote: undefined,
                 multiple: undefined
             }, options);
-
+    
             // make sure the modal dialog is a top level element on the page
             this.$modal.prependTo($('body'));
             // init modal events
@@ -253,7 +253,7 @@ define(
 
         // A widget to select a list of items
         function SelectList(fieldname) {
-
+            
             this.$widget = $("#form-widgets-" + fieldname);
             
             this.settings = {
@@ -275,7 +275,7 @@ define(
                     multiple: this.settings.multiple
                 }
             );
-            
+
             // hook up events
             // open modal
             this.$modaltrigger.click(this.modal_open.bind(this));
@@ -320,6 +320,7 @@ define(
             params.push({name: 'ajax_load', value: 1});
             var $loader = this.$widget.parent().find('span.loader-container img.loader');
             $loader.show(0);
+
             this.$widget.load(
                 this.settings.widgeturl + ' #' + this.settings.widgetid + ' >',
                 params,
@@ -379,6 +380,7 @@ define(
         SelectDict.prototype.modal_apply = function(event) {
             // get selected element
             var selected = this.modal.get_selected();
+
             // we have all the data we need so get rid of the modal
             this.modal.close();
             // build params
