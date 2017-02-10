@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'selectize', 'selectize-remove-single'],
-    function($) {
+    ['jquery', 'bccvl-api', 'selectize', 'selectize-remove-single' ],
+    function($, bccvlapi) {
 
         function truncate($elements) {
             $elements.after('<a class="more-info"><i class="fa fa-chevron-down"></i>Details</a>');
@@ -265,6 +265,7 @@ define(
                 // modal settings
                 modalid: "#" + fieldname + "-modal"
             };
+
             this.$modaltrigger = $("a#" + fieldname + "-popup");
             
             // init modal
@@ -405,10 +406,92 @@ define(
             this.reload_widget(params);
         };
 
+        // A widget to select a dict of items
+        function SelectData(fieldname) {
+            SelectDict.call(this, fieldname);
+        }
+        SelectData.prototype = Object.create(SelectDict.prototype); // inherit prototype        
+        SelectData.prototype.constructor = SelectData; // use new constructor
+        
+        SelectData.prototype.modal_apply = function(event) {
+            // get selected element
+            var selected = this.modal.get_selected();
+
+            // we have all the data we need so get rid of the modal
+            this.modal.close();
+            // build params
+
+            var params = [];
+            $.each(selected, function(idx, uuid) {
+                //var $existing = $('input[value="' + uuid + '"]').closest('.selecteditem');
+                //if ($existing.length > 0) {
+                //    // we have a previously selected item, let's grab all form elements for it
+                //    var data = $existing.find('input,select').serializeArray();
+                //    $.merge(params, data);
+                //    
+                //} else {
+                    // we have got a new item
+                    params.push(uuid);
+                //}                
+            }.bind(this));
+
+            this.reload_widget(params);
+        };
+        
+        SelectData.prototype.reload_widget = function(params) {
+            
+            var $widget = this.$widget;
+            var widgetid = this.settings.widgetid
+            
+            var $loader = this.$widget.find('span.loader-container img.loader');
+            $loader.hide(0);
+            
+            var results = params.map(function(uuid, i){
+                return bccvlapi.dm.metadata(uuid);
+            });
+            
+            $.when.apply(null, results).done(function(...data){
+                
+               console.log(data);
+               $.each(data, function(i, dataset){
+                    console.log(dataset);
+                    var markup = $('<div class="selecteditem">'+
+                                    '<input type="hidden" value="'+dataset.id+'" name="'+widgetid+'.item.'+i+'" class="item" data-bbox="" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
+                                    '<p><strong><span>'+dataset.title+'</span></strong></p>'+
+                                    '<p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>'+
+                                    '<ul class="form.widgets.fieldname.list"></ul>'+
+                                    '</div>');
+                    
+                    $.each(dataset.layers, function(key, layer){
+                       markup.find('ul').append('<li>'+
+                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+dataset.id+'_'+layer.layer+'"/>'+
+                            '<label for="'+dataset.id+'_'+layer.layer+'">'+layer.layer+'</label>'+
+                       '</li>');
+                    });
+                    
+                    $widget.append(markup);
+               });
+            });
+        
+            
+
+            //this.$widget.load(
+            //    this.settings.widgeturl + ' #' + this.settings.widgetid + ' >',
+            //    params,
+            //    function(text, status, xhr) {
+            //        $loader.hide();
+            //        // TODO: pass some metadata in with the HTML response instead.
+            //        var rows = $(text).find('.dataset-rows').data('rows');                    
+            //        // trigger change event on widget update                        
+            //        $(this).trigger('widgetChanged', [rows]);
+            //    }
+            //);
+        };
         
         return ({
             SelectList: SelectList,
-            SelectDict: SelectDict
+            SelectDict: SelectDict,
+            SelectData: SelectData
         });
 
     }

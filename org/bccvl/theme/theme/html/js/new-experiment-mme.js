@@ -17,7 +17,7 @@ define(
 
             // setup dataset select widgets
             new bccvl.SelectDict("species_occurrence_collections");
-            new bccvl.SelectDict("environmental_datasets");
+            //new bccvl.SelectDict("environmental_datasets");
 
             // -- hook up algo config -------------------------------
             expcommon.init_algorithm_selector('input[name="form.widgets.function:list"]', false)
@@ -32,68 +32,116 @@ define(
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
             })
             
+            var subsetNum = 0;
             
             $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
-               var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
-               var modal = $('#environmental_datasets-modal').first().clone();
+               //var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
+               var modal = '<div id="environmental_datasets_'+subsetNum+'-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog">'+
+                                '<div class="modal-header">'+
+                                  '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
+                                  '<h3 id="myModalLabel">Select Environmental Data for This Subset</h3>'+
+                                '</div>'+
+                                '<div id="modal-body" class="modal-body"></div>'+
+                                '<div class="modal-footer">'+
+                                  '<button class="btn btn-primary">Select Layers</button>'+
+                                '</div>'+
+                              '</div>';
+               //
+               //var modalButton = subset.find('.enviro-selection-button');
+               //var numWidget = $('.bccvl-new-mme').find('.mme-subset').length;
+               //var subsetIndex = 'environmental_datasets_'+numWidget;
+            //
+               //// problem use case here if user adds then deletes a subset
+               //// currently just for dev purposes
+               //
+               //subset.find('.bccvl-environmentaldatatable').find('div,input,label').each(function(i, el){
+//
+               //    
+               //     if (typeof $(this).attr('name') !== "undefined"){
+               //         var name = $(this).attr('name').split('.');
+               //         var idx = $.inArray('environmental_datasets', name);
+               //         if (idx){
+               //             name[idx] = subsetIndex;
+               //             $(this).attr('name', name.join('.') );
+               //         }
+               //     }
+               //    
+               //     if (typeof $(this).attr('id') !== "undefined") {
+               //         var newId = $(this).attr('id').split('-');
+               //         var idx = $.inArray('environmental_datasets', newId);
+               //         if (idx){
+               //             newId[idx] = subsetIndex;
+               //             $(this).attr('id', newId.join('-') );
+               //         }
+               //     }
+               //     
+               //     if (typeof $(this).attr('for') !== "undefined") {
+               //         var newFor = $(this).attr('for').split('-');
+               //         var idx = $.inArray('environmental_datasets', newFor);
+               //         if (idx){
+               //             newFor[idx] = subsetIndex;
+               //             $(this).attr('for', newFor.join('-') );
+               //         }
+               //     }
+               //    
+               //    if (typeof $(this).attr('data-fieldname') !== "undefined"){
+               //        var newFieldname = $(this).attr('data-fieldname').split('.');
+               //        var idx = $.inArray('environmental_datasets', newFieldname);
+               //        if(idx){
+               //             newFieldname[idx] = subsetIndex;
+               //             $(this).attr('data-fieldname', newFieldname.join('.') );  
+               //        }
+               //    }
+               //});
+               //
+               //modalButton.attr('id', subsetIndex+'-popup' );
+               //modal.attr('id', subsetIndex+'-modal');
+               //
+               //$('body').prepend(modal);
+               //
+               //subset.find('input').val('');
+               //subset.find('.bccvl-environmentaldatatable .selecteditem').remove();
+               //$(e.target).before(subset);
                
-               var modalButton = subset.find('.enviro-selection-button');
-               var numWidget = $('.bccvl-new-mme').find('.mme-subset').length;
-               var subsetIndex = 'environmental_datasets_'+numWidget;
-            
-               // problem use case here if user adds then deletes a subset
-               // currently just for dev purposes
+               console.log(location);
                
-               subset.find('.bccvl-environmentaldatatable').find('div,input,label').each(function(i, el){
-
-                   
-                    if (typeof $(this).attr('name') !== "undefined"){
-                        var name = $(this).attr('name').split('.');
-                        var idx = $.inArray('environmental_datasets', name);
-                        if (idx){
-                            name[idx] = subsetIndex;
-                            $(this).attr('name', name.join('.') );
-                        }
-                    }
-                   
-                    if (typeof $(this).attr('id') !== "undefined") {
-                        var newId = $(this).attr('id').split('-');
-                        var idx = $.inArray('environmental_datasets', newId);
-                        if (idx){
-                            newId[idx] = subsetIndex;
-                            $(this).attr('id', newId.join('-') );
-                        }
-                    }
+               var subsetMarkup = '<div class="row-fluid mme-subset">'+
+                        '<div class="span8">'+
+                            '<p><strong>Environmental Variables</strong></p>'+
+                            '<div class="control-group bccvl-environmentaldatatable">'+
+                                '<div id="form-widgets-environmental_datasets_'+subsetNum+'" data-multiple="multiple">'+
+                                    '<span class="loader-container">'+
+                                        '<img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader" style="display: inline-block;">'+
+                                    '</span>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="span4">'+
+                          '<a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> '+
+                          '<p><strong>Month Subset</strong></p>'+
+                          '<label for="subset_title_'+subsetNum+'">Title</label>'+
+                          '<input id="subset_title_'+subsetNum+'" name="subset_title_'+subsetNum+'" type="text" placeholder="Title for occurrence subset" class="required" required />'+
+                          '<label for="subset_'+subsetNum+'">Months (in desired order, separated by commas)</label>'+
+                          '<input id="subset_'+subsetNum+'" name="subset_'+subsetNum+'" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />'+
+                        '</div>'+
+                        '<a href="'+location.origin+'/portal_facetconfig/environmental_datasets" id="environmental_datasets_'+subsetNum+'-popup" style="display:none;">Hidden trigger</a>'+
+                    '</div>';
                     
-                    if (typeof $(this).attr('for') !== "undefined") {
-                        var newFor = $(this).attr('for').split('-');
-                        var idx = $.inArray('environmental_datasets', newFor);
-                        if (idx){
-                            newFor[idx] = subsetIndex;
-                            $(this).attr('for', newFor.join('-') );
-                        }
-                    }
-                   
-                   if (typeof $(this).attr('data-fieldname') !== "undefined"){
-                       var newFieldname = $(this).attr('data-fieldname').split('.');
-                       var idx = $.inArray('environmental_datasets', newFieldname);
-                       if(idx){
-                            newFieldname[idx] = subsetIndex;
-                            $(this).attr('data-fieldname', newFieldname.join('.') );  
-                       }
-                   }
-               });
+                $('#subsets').append(subsetMarkup);
+                $('body').prepend(modal);
                
-               modalButton.attr('id', subsetIndex+'-popup' );
-               modal.attr('id', subsetIndex+'-modal');
                
-               $('body').prepend(modal);
+               //alert('break');
                
-               subset.find('input').val('');
-               subset.find('.bccvl-environmentaldatatable .selecteditem').remove();
-               $(e.target).before(subset);
+                var widget = new bccvl.SelectData('environmental_datasets_'+subsetNum+'');
+                
+                widget.$modaltrigger.click()
+                
+                console.log('#environmental_datasets_'+subsetNum+'-popup');
+                console.log($('#environmental_datasets_'+subsetNum+'-popup'));
+                //$('#environmental_datasets_'+subsetNum+'-popup').click();
                
-               new bccvl.SelectDict(subsetIndex);
+                subsetNum += 1;
             });
             
             $('.bccvl-new-mme').on('click', '.remove-subset', function(e){
