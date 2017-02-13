@@ -32,10 +32,12 @@ define(
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
             })
             
+            
+            var subsetsField = $('#form-widgets-environmental_datasets_group');
             var subsetNum = 0;
             
             $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
-               //var subset = $('#tab-enviro fieldset .mme-subset').last().clone(); 
+
                var modal = '<div id="environmental_datasets_'+subsetNum+'-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog">'+
                                 '<div class="modal-header">'+
                                   '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
@@ -102,47 +104,71 @@ define(
                //subset.find('input').val('');
                //subset.find('.bccvl-environmentaldatatable .selecteditem').remove();
                //$(e.target).before(subset);
-               
-               console.log(location);
+              
                
                var subsetMarkup = '<div class="row-fluid mme-subset">'+
-                        '<div class="span8">'+
-                            '<p><strong>Environmental Variables</strong></p>'+
-                            '<div class="control-group bccvl-environmentaldatatable">'+
-                                '<div id="form-widgets-environmental_datasets_'+subsetNum+'" data-multiple="multiple">'+
-                                    '<span class="loader-container">'+
-                                        '<img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader" style="display: inline-block;">'+
-                                    '</span>'+
+                        '<fieldset class="subset">'+
+                            '<div class="span8">'+
+                                '<p><strong>Environmental Variables</strong></p>'+
+                                '<div class="control-group bccvl-environmentaldatatable">'+
+                                    '<div id="form-widgets-environmental_datasets_'+subsetNum+'" data-multiple="multiple">'+
+                                        '<span class="loader-container">'+
+                                            '<img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader" style="display: inline-block;">'+
+                                        '</span>'+
+                                    '</div>'+
                                 '</div>'+
                             '</div>'+
-                        '</div>'+
-                        '<div class="span4">'+
-                          '<a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> '+
-                          '<p><strong>Month Subset</strong></p>'+
-                          '<label for="subset_title_'+subsetNum+'">Title</label>'+
-                          '<input id="subset_title_'+subsetNum+'" name="subset_title_'+subsetNum+'" type="text" placeholder="Title for occurrence subset" class="required" required />'+
-                          '<label for="subset_'+subsetNum+'">Months (in desired order, separated by commas)</label>'+
-                          '<input id="subset_'+subsetNum+'" name="subset_'+subsetNum+'" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />'+
-                        '</div>'+
-                        '<a href="'+location.origin+'/portal_facetconfig/environmental_datasets" id="environmental_datasets_'+subsetNum+'-popup" style="display:none;">Hidden trigger</a>'+
+                            '<div class="span4">'+
+                              '<a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> '+
+                              '<p><strong>Month Subset</strong></p>'+
+                              '<label for="subset_title_'+subsetNum+'">Title</label>'+
+                              '<input id="subset_title_'+subsetNum+'" name="subset_title_'+subsetNum+'" type="text" placeholder="Title for occurrence subset" class="required" required />'+
+                              '<label for="subset_'+subsetNum+'">Months (in desired order, separated by commas)</label>'+
+                              '<input id="subset_'+subsetNum+'" name="subset_'+subsetNum+'" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />'+
+                            '</div>'+
+                            '<a href="'+location.origin+'/portal_facetconfig/environmental_datasets" id="environmental_datasets_'+subsetNum+'-popup" style="display:none;">Hidden trigger</a>'+
+                        '</fieldset>'+
                     '</div>';
                     
                 $('#subsets').append(subsetMarkup);
                 $('body').prepend(modal);
                
-               
-               //alert('break');
-               
                 var widget = new bccvl.SelectData('environmental_datasets_'+subsetNum+'');
                 
                 widget.$modaltrigger.click()
                 
-                console.log('#environmental_datasets_'+subsetNum+'-popup');
-                console.log($('#environmental_datasets_'+subsetNum+'-popup'));
-                //$('#environmental_datasets_'+subsetNum+'-popup').click();
-               
+                // need to add bboxes for the contraints tab to pick up.
+                $('.bccvl-new-mme').trigger('widgetChanged');
+                
+                // this fires on build, instead of the widgets 'modal_apply' event, or something after
+                // must fix
+                serialiseSubsets();
                 subsetNum += 1;
             });
+            
+            $('#subsets').on('change', 'input', function(event, input){
+                serialiseSubsets();
+            });
+            
+            var serialiseSubsets = function(){
+                
+                var selection = []
+                
+                $('#subsets').find('fieldset.subset').each(function(i, fieldset){
+
+                    var subset = [];
+                    $(fieldset).find('input').each(function(i,input){
+                        // checkbox fields not serializing properly?
+                        // this produces an array for the tab, 
+                        // populated by arrays for each fieldset
+                        // whats desired format?
+                        subset.push($(input).serialize());
+                    });
+                    selection.push(subset);
+                });
+                
+                subsetsField.val(selection);
+            };
             
             $('.bccvl-new-mme').on('click', '.remove-subset', function(e){
                 if( $('#tab-enviro fieldset').find('.mme-subset').length > 1 ){
