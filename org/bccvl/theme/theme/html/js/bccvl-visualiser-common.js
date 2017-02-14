@@ -1674,7 +1674,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                width: 2
                            })
                        });
-                    } else if (geometry.type == "DataGenreCC"){
+                    } else if (geometry.type == "DataGenreCC" || geometry.type == "DataGenreE"){
                         bccvl_common.addLayerLegend(map.getTarget(), 'Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
                         var style = new ol.style.Style({
                            fill: new ol.style.Fill({

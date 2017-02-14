@@ -452,28 +452,31 @@ define(
             });
             
             $.when.apply(null, results).done(function(...data){
-                
-               //console.log(data);
+
                $.each(data, function(i, dataset){
-                    //console.log(dataset);
                     var markup = $('<div class="selecteditem">'+
-                                    '<input type="hidden" value="'+dataset.id+'" name="'+widgetid+'.item.'+i+'" class="item" data-bbox="" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
+                                    '<input type="hidden" value="'+dataset.id+'" name="'+widgetid+'.item.'+i+'" class="item" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
                                     '<p><strong><span>'+dataset.title+'</span></strong></p>'+
                                     '<p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>'+
                                     '<ul class="form.widgets.fieldname.list"></ul>'+
                                     '</div>');
                     
                     $.each(dataset.layers, function(key, layer){
-                       markup.find('ul').append('<li>'+
-                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+dataset.id+'_'+layer.layer+'" name="'+dataset.id+'_'+layer.layer+'"/>'+
+                        
+                        var bounds = JSON.stringify(layer.bounds);
+
+                        markup.find('ul').append('<li>'+
+                            "<input type='checkbox' class='require-from-group' checked='checked' value='"+layer.layer+"' id='"+dataset.id+"_"+layer.layer+"' name='"+dataset.id+"_"+layer.layer+"' data-bbox='"+bounds+"' data-genre='"+dataset.genre+"' />"+
                             '<label for="'+dataset.id+'_'+layer.layer+'">'+layer.layer+'</label>'+
-                       '</li>');
+                        '</li>');
                     });
                     
                     $widget.append(markup);
                });
                
                _this.serialize_fields(params);
+               
+               $widget.parents('section.bccvl-experimentdetails').trigger('widgetChanged');
                
             });
             

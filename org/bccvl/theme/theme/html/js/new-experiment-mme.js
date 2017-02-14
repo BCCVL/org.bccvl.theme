@@ -29,7 +29,10 @@ define(
             // bind widgets to the constraint map
             $('.bccvl-new-mme').on('widgetChanged', function(e){
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
-                expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
+
+                var bboxes = $('body').find('input[data-bbox][type="text"], input[data-bbox][type="checkbox"]:checked')
+                
+                expcommon.update_constraints_map(constraints, bboxes)
             })
             
             
@@ -81,16 +84,20 @@ define(
                 
                 subsetsWidget.$modaltrigger.click()
                 
-                // need to add bboxes for the contraints tab to pick up.
-                $('.bccvl-new-mme').trigger('widgetChanged');
-                
                 subsetNum += 1;
             });
             
             $('#subsets').on('change', 'input', function(event, input){
+                
+               // if ($(input).attr('type') == "checkbox" && $(input).prop('checked') == true){
+                    // need to add bboxes for the contraints tab to pick up.
+                    $('.bccvl-new-mme').trigger('widgetChanged');
+                //}
                 //serialiseSubsets();
                 //subsetsWidget.prototype.serialize_fields.call(this /*, args...*/);
                 subsetsWidget.serialize_fields();
+                
+                
             });
             
             $('.bccvl-new-mme').on('click', '.remove-subset', function(e){

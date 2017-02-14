@@ -267,6 +267,7 @@ define(
                         }
                     })
                 } else {
+                    
                     var bbox = $(this).attr('data-bbox');
                     if (typeof bbox !== typeof undefined && bbox !== false) {
                         var geom = $(this).data('bbox');
@@ -280,6 +281,7 @@ define(
                         geom.type = type;
                         geometries.push(geom);
                     } else {
+                        
                         // Get the region constraint from the SDM experiment as the constraint for
                         // Climate Change Experiment. Need to transform constraint geometry to
                         // EPSG:4326 as used in vizcommon.renderPolygonConstraints
