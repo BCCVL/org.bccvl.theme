@@ -440,6 +440,7 @@ define(
         
         SelectData.prototype.reload_widget = function(params) {
             
+            var _this = this;
             var $widget = this.$widget;
             var widgetid = this.settings.widgetid
             
@@ -452,9 +453,9 @@ define(
             
             $.when.apply(null, results).done(function(...data){
                 
-               console.log(data);
+               //console.log(data);
                $.each(data, function(i, dataset){
-                    console.log(dataset);
+                    //console.log(dataset);
                     var markup = $('<div class="selecteditem">'+
                                     '<input type="hidden" value="'+dataset.id+'" name="'+widgetid+'.item.'+i+'" class="item" data-bbox="" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
                                     '<p><strong><span>'+dataset.title+'</span></strong></p>'+
@@ -464,29 +465,48 @@ define(
                     
                     $.each(dataset.layers, function(key, layer){
                        markup.find('ul').append('<li>'+
-                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+dataset.id+'_'+layer.layer+'"/>'+
+                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+dataset.id+'_'+layer.layer+'" name="'+dataset.id+'_'+layer.layer+'"/>'+
                             '<label for="'+dataset.id+'_'+layer.layer+'">'+layer.layer+'</label>'+
                        '</li>');
                     });
                     
                     $widget.append(markup);
                });
+               
+               _this.serialize_fields(params);
+               
             });
-        
             
-
-            //this.$widget.load(
-            //    this.settings.widgeturl + ' #' + this.settings.widgetid + ' >',
-            //    params,
-            //    function(text, status, xhr) {
-            //        $loader.hide();
-            //        // TODO: pass some metadata in with the HTML response instead.
-            //        var rows = $(text).find('.dataset-rows').data('rows');                    
-            //        // trigger change event on widget update                        
-            //        $(this).trigger('widgetChanged', [rows]);
-            //    }
-            //);
+            
+        
         };
+        
+        SelectData.prototype.serialize_fields = function(params) {
+            
+            var $widget = this.$widget;
+            var parentFieldset = $widget.parents('.parent-fieldset');
+            var textfield = parentFieldset.find('textarea.parent-field');
+            
+            var data = {};
+            
+            parentFieldset.find('fieldset').each(function(i, fieldset){
+                
+                var fieldsetname = $(fieldset).data('name');
+                data[fieldsetname] = {};
+                
+                $(fieldset).find('input').each(function(idx, field){
+                    var fieldname = $(field).attr('name');
+                    if ($(field).attr('type') == "checkbox"){
+                        var fieldval = $(field).prop('checked');
+                    } else {
+                        var fieldval = $(field).val();
+                    }
+                    data[fieldsetname][fieldname] = fieldval;
+                });
+            });
+            
+            textfield.val(JSON.stringify(data));
+        }
         
         return ({
             SelectList: SelectList,

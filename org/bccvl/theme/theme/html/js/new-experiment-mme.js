@@ -33,8 +33,9 @@ define(
             })
             
             
-            var subsetsField = $('#form-widgets-environmental_datasets_group');
+            var subsetsField = $('#form-widgets-environmental_datasets-textarea');
             var subsetNum = 0;
+            var subsetsWidget;
             
             $('.bccvl-new-mme').on('click', '#add_subset_button', function(e){
 
@@ -48,66 +49,9 @@ define(
                                   '<button class="btn btn-primary">Select Layers</button>'+
                                 '</div>'+
                               '</div>';
-               //
-               //var modalButton = subset.find('.enviro-selection-button');
-               //var numWidget = $('.bccvl-new-mme').find('.mme-subset').length;
-               //var subsetIndex = 'environmental_datasets_'+numWidget;
-            //
-               //// problem use case here if user adds then deletes a subset
-               //// currently just for dev purposes
-               //
-               //subset.find('.bccvl-environmentaldatatable').find('div,input,label').each(function(i, el){
-//
-               //    
-               //     if (typeof $(this).attr('name') !== "undefined"){
-               //         var name = $(this).attr('name').split('.');
-               //         var idx = $.inArray('environmental_datasets', name);
-               //         if (idx){
-               //             name[idx] = subsetIndex;
-               //             $(this).attr('name', name.join('.') );
-               //         }
-               //     }
-               //    
-               //     if (typeof $(this).attr('id') !== "undefined") {
-               //         var newId = $(this).attr('id').split('-');
-               //         var idx = $.inArray('environmental_datasets', newId);
-               //         if (idx){
-               //             newId[idx] = subsetIndex;
-               //             $(this).attr('id', newId.join('-') );
-               //         }
-               //     }
-               //     
-               //     if (typeof $(this).attr('for') !== "undefined") {
-               //         var newFor = $(this).attr('for').split('-');
-               //         var idx = $.inArray('environmental_datasets', newFor);
-               //         if (idx){
-               //             newFor[idx] = subsetIndex;
-               //             $(this).attr('for', newFor.join('-') );
-               //         }
-               //     }
-               //    
-               //    if (typeof $(this).attr('data-fieldname') !== "undefined"){
-               //        var newFieldname = $(this).attr('data-fieldname').split('.');
-               //        var idx = $.inArray('environmental_datasets', newFieldname);
-               //        if(idx){
-               //             newFieldname[idx] = subsetIndex;
-               //             $(this).attr('data-fieldname', newFieldname.join('.') );  
-               //        }
-               //    }
-               //});
-               //
-               //modalButton.attr('id', subsetIndex+'-popup' );
-               //modal.attr('id', subsetIndex+'-modal');
-               //
-               //$('body').prepend(modal);
-               //
-               //subset.find('input').val('');
-               //subset.find('.bccvl-environmentaldatatable .selecteditem').remove();
-               //$(e.target).before(subset);
-              
                
                var subsetMarkup = '<div class="row-fluid mme-subset">'+
-                        '<fieldset class="subset">'+
+                        '<fieldset class="subset" data-name="form-widgets-environmental_datasets_'+subsetNum+'">'+
                             '<div class="span8">'+
                                 '<p><strong>Environmental Variables</strong></p>'+
                                 '<div class="control-group bccvl-environmentaldatatable">'+
@@ -132,43 +76,22 @@ define(
                     
                 $('#subsets').append(subsetMarkup);
                 $('body').prepend(modal);
-               
-                var widget = new bccvl.SelectData('environmental_datasets_'+subsetNum+'');
                 
-                widget.$modaltrigger.click()
+                subsetsWidget = new bccvl.SelectData('environmental_datasets_'+subsetNum+'');
+                
+                subsetsWidget.$modaltrigger.click()
                 
                 // need to add bboxes for the contraints tab to pick up.
                 $('.bccvl-new-mme').trigger('widgetChanged');
                 
-                // this fires on build, instead of the widgets 'modal_apply' event, or something after
-                // must fix
-                serialiseSubsets();
                 subsetNum += 1;
             });
             
             $('#subsets').on('change', 'input', function(event, input){
-                serialiseSubsets();
+                //serialiseSubsets();
+                //subsetsWidget.prototype.serialize_fields.call(this /*, args...*/);
+                subsetsWidget.serialize_fields();
             });
-            
-            var serialiseSubsets = function(){
-                
-                var selection = []
-                
-                $('#subsets').find('fieldset.subset').each(function(i, fieldset){
-
-                    var subset = [];
-                    $(fieldset).find('input').each(function(i,input){
-                        // checkbox fields not serializing properly?
-                        // this produces an array for the tab, 
-                        // populated by arrays for each fieldset
-                        // whats desired format?
-                        subset.push($(input).serialize());
-                    });
-                    selection.push(subset);
-                });
-                
-                subsetsField.val(selection);
-            };
             
             $('.bccvl-new-mme').on('click', '.remove-subset', function(e){
                 if( $('#tab-enviro fieldset').find('.mme-subset').length > 1 ){
@@ -176,7 +99,7 @@ define(
                 } else {
                     alert('You must have at least one subset defined for this experiment type.');
                 }
-                
+                subsetsWidget.serialize_fields();
             });
                         
         });
