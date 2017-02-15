@@ -110,6 +110,10 @@
               <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
               <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
               <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
+              <p tal:condition="python: item_modified and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')"><small><b>Modified:</b> <tal:r tal:replace="item_modified"></small></p>
+              <p tal:condition="item_obj/part_of|nothing"><small><b>From:</b> 
+                                <tal:replace tal:replace="dsmd/title"
+                                             tal:define="dsmd python: dataset_tools.metadata(uuid=item_obj/part_of)"></tal:replace></small></p>
               <p tal:condition="md/resolution|nothing"><small><b>Resolution:</b> <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></small></p>
               <a class="ala-edit" href="#"
                tal:attributes="data-uuid item_uuid"
