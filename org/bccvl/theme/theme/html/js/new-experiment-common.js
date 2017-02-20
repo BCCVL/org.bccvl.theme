@@ -287,9 +287,9 @@ define(
                         var sdmexp_id = $(this).attr('value');
                         bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
                             var region_constraint = data['results'][0]['params']['modelling_region'];
-                            $('#form-widgets-projection_region').val('' + region_constraint + '');
+                            $('#form-widgets-projection_region').val(region_constraint);
                             
-                            if (region_constraint && region_constraint != 'none') {
+                            if (region_constraint) {
                                 var geojsonParser = new ol.format.GeoJSON();
                                 var srcProjection = geojsonParser.readProjection(region_constraint);
                                 var feature = geojsonParser.readFeature(region_constraint);
