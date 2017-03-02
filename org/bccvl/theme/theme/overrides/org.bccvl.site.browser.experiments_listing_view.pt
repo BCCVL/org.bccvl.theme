@@ -92,32 +92,63 @@
                      tal:attributes="class string:label-${exp/type} label;"/></h5>
                    <ul>
                     <li>
+                      <tal:if condition="python: exp.get('type') in ('BIODIVERSE', 'PROJECTION', 'ENSEMBLE')">
+                        <strong>Input Experiments:</strong> 
+                        <tal:if condition="exp/input_experiments|nothing">
+                          <ul>
+                            <li tal:repeat="inputexp exp/input_experiments">
+                              <span class="bccvl-experiment-parameters" 
+                                    tal:content="inputexp"></span>
+                            </li>
+                          </ul>
+                        </tal:if>                      
+                      </tal:if>
+                      <tal:if condition="python: exp.get('type') not in ('BIODIVERSE', 'PROJECTION', 'ENSEMBLE')">
                       <strong>Input Datasets:</strong> 
                         <ul>
                           <li><span class="taxonomy" tal:content="exp/species_occurrence" /></li>
                           <tal:if condition="exp/species_absence">
-                          <li>
-                            <span class="bccvl-experiment-parameters" tal:content="exp/species_absence" />
-                          </li>
+                            <li>
+                              <span class="bccvl-experiment-parameters" tal:content="exp/species_absence" />
+                            </li>
                           </tal:if>
+                        </ul>
+                      </tal:if>
                     </li>
-                    <li><strong>Algorithms:</strong> <span tal:content="exp/functions" /></li>
-                       <tal:if condition="item/Creator"
+                    <tal:if condition="python: exp.get('type') not in ('BIODIVERSE', 'ENSEMBLE')">
+                      <li><strong>Algorithms:</strong> <span tal:content="exp/functions" /></li>
+                    </tal:if>
+                    <tal:if condition="item/Creator"
                                define="author python:pas_member.info(item_creator)">
                          <li><span><strong>Owner:</strong> <tal:r tal:replace="author/name_or_id"></tal:r></span></li>
-                      </tal:if>
+                    </tal:if>
+                    
                   </ul>
-                  <tal:if condition="python: exp.get('environmental_layers') or exp.get('years') or item.Description">
+                  <tal:if condition="python: exp.get('environmental_layers') or exp.get('future_env_datasets') or exp.get('years') or item.Description">
                    <div class="experiment-more-info" tal:attributes="id item_id">
                     <ul>
+                      <tal:if condition="exp/future_env_datasets|nothing">
+                        <strong>Future Climate Data:</strong> <br/>
+                        <ul>
+                          <li class="bccvl-experiment-parameters"
+                              tal:repeat="ds_title exp/future_env_datasets"
+                              tal:content="ds_title">
+                          </li>
+                        </ul>
+                      </tal:if>                      
                       <tal:if condition="exp/environmental_layers|nothing">
                         <li class="bccvl-experiment-parameters"
                             tal:repeat="dataset exp/environmental_layers">
-                            <strong>Layers:</strong> <br/>
+                            <tal:if condition="python:exp.get('type') != 'PROJECTION'">
+                              <strong>Layers:</strong> <br/>
+                            </tal:if>
+                            <tal:if condition="python:exp.get('type') == 'PROJECTION'">
+                              <strong>Layers of Input Experiment:</strong> <br/>
+                            </tal:if>
                             <tal:repl tal:replace="dataset/title"/>
                           <ul>
                             <li class="bccvl-experiment-parameters"
-                                tal:repeat="layer dataset/layers"
+                                tal:repeat="layer python: sorted(dataset['layers'])"
                                 tal:define="layer_vocab dataset_tools/layer_vocab"
                                 tal:content="python: layer_vocab.getTerm(layer).title if layer in layer_vocab else layer"></li>
                           </ul>
@@ -127,7 +158,10 @@
                         <li class="bccvl-experiment-parameters" tal:content="exp/years"></li>
                       </tal:if>
                       <tal:if condition="item/Description">
-                        <li class="bccvl-experiment-summary" tal:content="item/Description"></li>
+                        <li class="bccvl-experiment-summary">
+                         <strong>Description:</strong> <br/>
+                         <span tal:content="item/Description"></span>
+                        </li>
                       </tal:if>
                      </ul>
                    </div>
@@ -163,6 +197,12 @@
                       data-placement="top">                      
                      Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>
+                   <a class="btn btn-default"
+                      tal:define="actions view/new_experiment_actions;"
+                      tal:attributes="href python:actions[item.portal_type]['action']+'?uuid='+item.UID;
+                                      data-friendlyname string:sharing_${item/Title}">
+                     Rerun <i class="fa fa-repeat" style="color:#4aa3df;" title="Rerun Experiment"></i>
+                   </a>                   
                  </td>
                  <td tal:attributes="class string:experiment-state ${class_state}">
                   <tal:if condition="python:class_state == 'success'">

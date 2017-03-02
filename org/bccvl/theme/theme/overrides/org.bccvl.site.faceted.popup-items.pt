@@ -53,7 +53,7 @@
                       tal:define="layers md/layers|nothing">
                     <small><b>Layers:</b>
                     <ul>
-                      <li tal:repeat="layer layers"
+                      <li tal:repeat="layer python:sorted(layers)"
                           tal:define="layer_vocab python:dataset_tools.layer_vocab"
                           tal:content="python: layer_vocab.getTerm(layer).title if layer in layer_vocab else layer">Layer Title                      
                       </li>
