@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url"
+      tal:omit-tag="">
+  <div id="form-widgets-fieldname"
+       tal:attributes="id string:${view/id};">
+         <textarea id="" name="" class="input-block-level" cols="" rows=""
+                   disabled="" readonly="" placeholder=""
+                   tal:attributes="id string:${view/id}-textarea;
+                                   name view/name;
+                                   data-view-class view/klass;
+                                   title view/title;
+                                   disabled view/disabled;
+                                   cols view/cols;
+                                   rows view/rows;
+                                   readonly view/readonly;"
+                    tal:content="view/value" />
+  </div>
+  <span class="loader-container" tal:condition="not:view/value">
+    <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
+  </span>
+  <a id="fieldname-popup" href="#" class="btn btn-primary btn-large enviro-selection-button"
+     tal:attributes="id string:${view/field/__name__}-popup;
+                     href string:${portal_url}/portal_facetconfig/${view/field/__name__}"><i class="fa fa-plus-circle"></i> Add Subset</a>
+</html>

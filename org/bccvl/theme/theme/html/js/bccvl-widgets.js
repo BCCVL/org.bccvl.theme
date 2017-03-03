@@ -22,14 +22,14 @@ define(
 
         // helper function for selectable behaviour
         function Selectable(elements, multi) {
-            
+
 
             if (multi) {
                 this.multi = true;
             } else {
                 this.multi = false;
             }
-            
+
             this.$elements = $(elements);
             this.$elements.click(function(event) {
                 // get parent row div
@@ -92,17 +92,17 @@ define(
         Basket.prototype.clear = function() {
             this.uuids = [];
         };
-        
+
         function ModalBrowseSelect(modalid, options, selected) {
 
             // FIXME: this becomes a pure id ... no selector?
             this.$modal = $(modalid);
-            
+
             this.settings = $.extend({
                 remote: undefined,
                 multiple: undefined
             }, options);
-    
+
             // make sure the modal dialog is a top level element on the page
             this.$modal.prependTo($('body'));
             // init modal events
@@ -117,7 +117,7 @@ define(
             this.$modal.on('show', function(){
                 this.$modal.find('.modal-body').css('max-height', (window.innerHeight * 0.75));
             }.bind(this));
-            
+
             // TODO: maybe hook up basket directly with selectable object?
             this.basket = new Basket();
         }
@@ -151,7 +151,7 @@ define(
             this.$modal.removeData('modal');
 
             this.$modal.find('.modal-body').empty();
-            Faceted.Cleanup();            
+            Faceted.Cleanup();
         };
 
         // load search interface into modal
@@ -172,7 +172,7 @@ define(
                     var uuid = $(event.target).attr('data-uuid');
                     self.basket.remove(uuid);
                 });
-                
+
                 $(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function(){
 
                     truncate(self.$modal.find('#faceted-results').find('ul.details'));
@@ -195,8 +195,8 @@ define(
                             };
                         });
                     }
-                    
-                }); 
+
+                });
 
                 $(Faceted.Events).bind(Faceted.Events.INITIALIZE, function() {
                     self.$modal.find('.modal-body .selectize').each(function(){
@@ -253,9 +253,9 @@ define(
 
         // A widget to select a list of items
         function SelectList(fieldname) {
-            
+
             this.$widget = $("#form-widgets-" + fieldname);
-            
+
             this.settings = {
                 fieldname: fieldname,
                 multiple: this.$widget.attr('data-multiple'),
@@ -267,7 +267,7 @@ define(
             };
 
             this.$modaltrigger = $("a#" + fieldname + "-popup");
-            
+
             // init modal
             this.modal = new ModalBrowseSelect(
                 this.settings.modalid,
@@ -290,7 +290,7 @@ define(
                     // search for any hidden 'empty-check' fields and update them if an item is removed
 	            var field = $(this).parents('.control-group');
 	            var numDatasets = field.find('.selecteditem').length-1;
-	            
+
 	            if (numDatasets <= 0) {
 	                field.find('.empty-check').val('');
 	            } else {
@@ -314,7 +314,7 @@ define(
                     $(this).prop('checked', false);
                 });
             })
-        
+
         };
 
         SelectList.prototype.reload_widget = function(params) {
@@ -328,8 +328,8 @@ define(
                 function(text, status, xhr) {
                     $loader.hide();
                     // TODO: pass some metadata in with the HTML response instead.
-                    var rows = $(text).find('.dataset-rows').data('rows');                    
-                    // trigger change event on widget update                        
+                    var rows = $(text).find('.dataset-rows').data('rows');
+                    // trigger change event on widget update
                     $(this).trigger('widgetChanged', [rows]);
                 }
             );
@@ -359,7 +359,7 @@ define(
                     // we have a previously selected item, let's grab all form elements for it
                     var data = $existing.find('input,select').serializeArray();
                     $.merge(params, data);
-                    
+
                 } else {
                     // we have got a new item
                     params.push({name: this.settings.widgetname + ':list',
@@ -375,9 +375,9 @@ define(
             SelectList.call(this, fieldname);
         }
         // SelectDict inherits from SelectList
-        SelectDict.prototype = Object.create(SelectList.prototype); // inherit prototype        
+        SelectDict.prototype = Object.create(SelectList.prototype); // inherit prototype
         SelectDict.prototype.constructor = SelectDict; // use new constructor
-        // override modal_apply 
+        // override modal_apply
         SelectDict.prototype.modal_apply = function(event) {
             // get selected element
             var selected = this.modal.get_selected();
@@ -393,13 +393,13 @@ define(
                     // we have a previously selected item, let's grab all form elements for it
                     var data = $existing.find('input,select').serializeArray();
                     $.merge(params, data);
-                    
+
                 } else {
                     // we have got a new item
                     params.push({name: this.settings.widgetname + '.item.' + count,
                                  value: uuid});
                     count += 1;
-                }                
+                }
             }.bind(this));
             params.push({name: this.settings.widgetname + '.count',
                          value: count});
@@ -410,9 +410,9 @@ define(
         function SelectData(fieldname) {
             SelectDict.call(this, fieldname);
         }
-        SelectData.prototype = Object.create(SelectDict.prototype); // inherit prototype        
+        SelectData.prototype = Object.create(SelectDict.prototype); // inherit prototype
         SelectData.prototype.constructor = SelectData; // use new constructor
-        
+
         SelectData.prototype.modal_apply = function(event) {
             // get selected element
             var selected = this.modal.get_selected();
@@ -428,29 +428,29 @@ define(
                 //    // we have a previously selected item, let's grab all form elements for it
                 //    var data = $existing.find('input,select').serializeArray();
                 //    $.merge(params, data);
-                //    
+                //
                 //} else {
                     // we have got a new item
                     params.push(uuid);
-                //}                
+                //}
             }.bind(this));
 
             this.reload_widget(params);
         };
-        
+
         SelectData.prototype.reload_widget = function(params) {
-            
+
             var _this = this;
             var $widget = this.$widget;
             var widgetid = this.settings.widgetid
-            
+
             var $loader = this.$widget.find('span.loader-container img.loader');
             $loader.hide(0);
-            
+
             var results = params.map(function(uuid, i){
                 return bccvlapi.dm.metadata(uuid);
             });
-            
+
             $.when.apply(null, results).done(function(...data){
 
                $.each(data, function(i, dataset){
@@ -460,9 +460,9 @@ define(
                                     '<p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>'+
                                     '<ul class="form.widgets.fieldname.list"></ul>'+
                                     '</div>');
-                    
+
                     $.each(dataset.layers, function(key, layer){
-                        
+
                         var bounds = JSON.stringify(layer.bounds);
 
                         markup.find('ul').append('<li>'+
@@ -470,33 +470,36 @@ define(
                             '<label for="'+dataset.id+'_'+layer.layer+'">'+layer.layer+'</label>'+
                         '</li>');
                     });
-                    
+
                     $widget.append(markup);
                });
-               
+
                _this.serialize_fields(params);
-               
+
                $widget.parents('section.bccvl-experimentdetails').trigger('widgetChanged');
-               
+
             });
-            
-            
-        
+
+
+
         };
-        
+
         SelectData.prototype.serialize_fields = function(params) {
-            
+
             var $widget = this.$widget;
-            var parentFieldset = $widget.parents('.parent-fieldset');
-            var textfield = parentFieldset.find('textarea.parent-field');
-            
+            // TODO: we shouldn't do regxp replace to find textarea...
+            //       better would be to encapsulate the whole textarea and subsets in here
+            var widgetid = this.settings.widgetid.replace(/(.*)_.*/, '$1');
+            var $container = $('#' + widgetid);
+            var $textfield = $('#' + widgetid + '-textarea');
+
             var data = {};
-            
-            parentFieldset.find('fieldset').each(function(i, fieldset){
-                
+
+            $container.find('fieldset').each(function(i, fieldset){
+
                 var fieldsetname = $(fieldset).data('name');
                 data[fieldsetname] = {};
-                
+
                 $(fieldset).find('input').each(function(idx, field){
                     var fieldname = $(field).attr('name');
                     if ($(field).attr('type') == "checkbox"){
@@ -507,10 +510,10 @@ define(
                     data[fieldsetname][fieldname] = fieldval;
                 });
             });
-            
-            textfield.val(JSON.stringify(data));
+
+            $textfield.val(JSON.stringify(data));
         }
-        
+
         return ({
             SelectList: SelectList,
             SelectDict: SelectDict,

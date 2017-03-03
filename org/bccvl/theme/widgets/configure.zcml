@@ -66,6 +66,13 @@
 
     <z3c:widgetTemplate
         mode="input"
+        widget="org.bccvl.site.widgets.interfaces.IDataSubsetsWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasubsets_input.pt"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
         widget="org.bccvl.site.widgets.interfaces.IExperimentResultProjectionWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="experimentresultprojection_input.pt"
@@ -92,7 +99,7 @@
         template="image_input.pt"
         />
     <!-- widget="plone.formwidget.namedfile.interfaces.INamedImageWidget" -->
-    
+
     <z3c:widgetTemplate
         mode="input"
         widget="z3c.form.interfaces.ISubmitWidget"
@@ -120,7 +127,7 @@
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
         template="functionsradio_input.pt"
         />
-    
+
 <!--          layer="plonetheme.sunburst.browser.interfaces.IThemeSpecific"
     for, layer view, field, widget -> context, request, form, field,
     self

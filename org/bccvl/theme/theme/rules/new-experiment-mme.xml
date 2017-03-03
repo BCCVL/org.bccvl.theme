@@ -21,7 +21,7 @@
         <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
 
         <!-- hook in the algorithm list -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
+        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable &gt; tbody"
                  css:content-children="#form-widgets-function-table"/>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
@@ -49,8 +49,8 @@
                  css:content="#formfield-form-widgets-scale_down"/>
 
         <!-- The rest of this is filled in with AJAX -->
-        <replace css:theme="#formfield-form-widgets-environmental_datasets"
-                 css:content="#formfield-form-widgets-environmental_datasets"/>"
+        <replace css:theme="#formfield-form-widgets-datasubsets"
+                 css:content="#formfield-form-widgets-datasubsets"/>"
 
     </rules>
 

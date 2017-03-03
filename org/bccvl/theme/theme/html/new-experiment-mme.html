@@ -8,7 +8,7 @@
 
     <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
-     
+
     <link href="lib/selectize/selectize.bootstrap2.css" rel="stylesheet" />
     <link href="css/general.css" rel="stylesheet" />
     <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
 
     <!-- include portal_url to simplify path referencing -->
     <script src="../plone_javascript_variables.js"></script>
-    
+
     <script id="js-config" type="text/javascript">
       // this block needs to be replaced when served via plone
       window.bccvl || (window.bccvl = {});
@@ -52,7 +52,7 @@
     <script type="text/javascript">
       require(['js/new-experiment-mme']);
     </script>
-    
+
     <script id="google-analytics"></script>
 
   </head>
@@ -159,7 +159,7 @@
 
                       <div class="control-group">
                         <input type="text" name="expName" class="bccvl-expname input-block-level"
-                               required="required" 
+                               required="required"
                                placeholder="Name for this experiment"
                                />
                       </div>
@@ -174,7 +174,7 @@
                 </fieldset>
               </div>
 
-              
+
 
               <!-- page: species occurrences ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-occur">
@@ -217,7 +217,7 @@
                         <div class="alert alert-warning">
                          <strong>You must select an occurence dataset for this experiment type.</strong>
                         </div>
-                            
+
                       </div>
                     </div></div>
 
@@ -233,7 +233,7 @@
                 </fieldset>
               </div>
 
-              
+
 
 
 
@@ -245,41 +245,16 @@
                       Define occurrence subsets and select environmental variables.
                     </p>
                   </div>
-                  
-                  <!--<div class="control-group" id="formfield-form-widgets-scale_down">
-                        <div class="controls">
-                          <label class="checkbox">
-                            <input type="checkbox" id="form-widgets-scale_down-0" name="form.widgets.scale_down:list" class="required" value="selected" checked="checked">
-                            <input name="form.widgets.scale_down-empty-marker" type="hidden" value="1" originalvalue="1">
-                            Scale to highest resolution
-                          </label>
-                        </div>
-                      </div>-->
-                  
-                  <div id="subsets" class="parent-fieldset">
-                    <textarea name="form.widgets.environmental_datasets.textarea" id="form-widgets-environmental_datasets-textarea" class="parent-field" ></textarea>
-                    <hr/>
-                    
-                    
-                  </div>
-                    <!--<div class="span4"> 
-                      <p><strong>Month Subset</strong></p>
-                      <label for="subset_title_1">Title</label>
-                      <input id="subset_title_1" name="subset_title_1" type="text" placeholder="Title for occurrence subset" class="required" required />
-                      <label for="subset_1">Months (in desired order, separated by commas)</label>
-                      <input id="subset_1" name="subset_1" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />
-                    </div>
-                    <div class="span8">
-                      <a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> 
-                      <p><strong>Environmental Variables</strong></p>
-                      <div class="control-group bccvl-environmentaldatatable">
-                        
-                      </div>
 
-                    </div>-->
-                  
-                  <a class="btn btn-large btn-primary" id="add_subset_button" href="javascript:void(0);"><i class="fa fa-plus"></i> Add Subset</a>
-                      
+                  <div id="formfield-form-widgets-datasubsets" class="parent-fieldset">
+
+                    <textarea name="form.widgets.datasubets.textarea" id="form-widgets-datasubsets-textarea" class="parent-field" ></textarea>
+                    <hr/>
+
+                    <a class="btn btn-large btn-primary" id="datasubsets-popup" href="javascript:void(0);"><i class="fa fa-plus"></i> Add Subset</a>
+
+                  </div>
+
                 </fieldset>
               </div>
 
@@ -292,7 +267,7 @@
                     </p>
                     <p>
                       This tab is optional.<br/>
-                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around the occurrence records), which is generated for each species separately. The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.  
+                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around the occurrence records), which is generated for each species separately. The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
                     </p>
                   </div>
 
