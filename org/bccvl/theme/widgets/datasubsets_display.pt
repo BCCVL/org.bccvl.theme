@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="portal_state nocall:context/@@plone_portal_state;
+                  portal_url portal_state/portal_url;
+                  dstools context/@@dataset_tools;"
+      tal:omit-tag="">
+  <div id="form-widgets-fieldname"
+       tal:attributes="id string:${view/id};">
+       <ul>
+           <li tal:repeat="subset view/subsets">
+               <p><span tal:content="subset/subset/title"></span> <span tal:content="python: ','.join(subset['subset']['value'])"></span></p>
+               <ul>
+                   <li tal:repeat="dataset subset/environmental_datasets">
+                       <p tal:define="md python:dstools.metadata(uuid=dataset)"
+                          tal:content="md/title"></p>
+                       <p tal:content="python: ','.join(subset['environmental_datasets'][dataset])"></p>
+                   </li>
+               </ul>
+           </li>
+       </ul>
+  </div>
+</html>

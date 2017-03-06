@@ -72,6 +72,13 @@
         />
 
     <z3c:widgetTemplate
+        mode="display"
+        widget="org.bccvl.site.widgets.interfaces.IDataSubsetsWidget"
+        layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
+        template="datasubsets_display.pt"
+        />
+
+    <z3c:widgetTemplate
         mode="input"
         widget="org.bccvl.site.widgets.interfaces.IExperimentResultProjectionWidget"
         layer="org.bccvl.theme.interfaces.IBCCVLThemeLayer"
