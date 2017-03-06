@@ -515,7 +515,7 @@ define(
 
                         markup.find('ul').append('<li>'+
                             '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'" name="dataset.layer" data-bbox="'+bounds+'" data-genre="'+dataset.genre+'" />'+
-                            '<label for="' + _this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'">'+layer.layer+'</label>'+
+                            '<label for="' + _this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'">'+layer.title+'</label>'+
                         '</li>');
                     });
 
