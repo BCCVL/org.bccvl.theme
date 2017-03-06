@@ -36,80 +36,132 @@ define(
             })
 
 
-            var subsetsField = $('#form-widgets-datasubsets-textarea');
-            var subsetNum = 0;
-            var subsetsWidget;
+            function DataSubsets(fieldname) {
 
-            $('.bccvl-new-mme').on('click', '#datasubsets-popup', function(e) {
+                this.fieldname = fieldname
 
-                e.preventDefault();
+                // used to generate unique subset id's
+                var subsetCount = 0
+                // hold all information
+                var subsets = []
+                // top level widget element
+                var $widget = $('#formfield-form-widgets-' + fieldname)
+                // container to put subset markup in
+                var $container = $('#form-widgets-' + fieldname)
+                // textarea so submit
+                var $textarea = $('#form-widgets-' + fieldname + '-textarea')
 
-               var modal = '<div id="datasubsets_'+subsetNum+'-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog">'+
-                                '<div class="modal-header">'+
-                                  '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-                                  '<h3 id="myModalLabel">Select Environmental Data for This Subset</h3>'+
-                                '</div>'+
-                                '<div id="modal-body" class="modal-body"></div>'+
-                                '<div class="modal-footer">'+
-                                  '<button class="btn btn-primary">Select Layers</button>'+
-                                '</div>'+
-                              '</div>';
-
-               var subsetMarkup = '<div class="row-fluid mme-subset">'+
-                        '<fieldset class="subset" data-name="form-widgets-datasubsets'+subsetNum+'">'+
-                            '<div class="span8">'+
-                                '<p><strong>Environmental Variables</strong></p>'+
-                                '<div class="control-group bccvl-environmentaldatatable">'+
-                                    '<div id="form-widgets-datasubsets_'+subsetNum+'" data-multiple="multiple">'+
-                                        '<span class="loader-container">'+
-                                            '<img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader" style="display: inline-block;">'+
-                                        '</span>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="span4">'+
-                              '<a class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> '+
-                              '<p><strong>Month Subset</strong></p>'+
-                              '<label for="subset_title_'+subsetNum+'">Title</label>'+
-                              '<input id="subset_title_'+subsetNum+'" name="subset_title_'+subsetNum+'" type="text" placeholder="Title for occurrence subset" class="required" required />'+
-                              '<label for="subset_'+subsetNum+'">Months (in desired order, separated by commas)</label>'+
-                              '<input id="subset_'+subsetNum+'" name="subset_'+subsetNum+'" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />'+
-                            '</div>'+
-                            '<a href="'+location.origin+'/portal_facetconfig/environmental_datasets" id="datasubsets_'+subsetNum+'-popup" style="display:none;">Hidden trigger</a>'+
-                        '</fieldset>'+
-                    '</div>';
-
-                $('#form-widgets-datasubsets').append(subsetMarkup);
-                $('body').prepend(modal);
-
-                subsetsWidget = new bccvl.SelectData('datasubsets_'+subsetNum+'');
-
-                subsetsWidget.$modaltrigger.click()
-
-                subsetNum += 1;
-            });
-
-            $('#form-widgets-datasubsets').on('change', 'input', function(event, input){
-
-               // if ($(input).attr('type') == "checkbox" && $(input).prop('checked') == true){
-                    // need to add bboxes for the contraints tab to pick up.
-                    $('.bccvl-new-mme').trigger('widgetChanged');
-                //}
-                //serialiseSubsets();
-                //subsetsWidget.prototype.serialize_fields.call(this /*, args...*/);
-                subsetsWidget.serialize_fields();
-
-
-            });
-
-            $('.bccvl-new-mme').on('click', '.remove-subset', function(e){
-                if( $('#tab-enviro fieldset').find('.mme-subset').length > 1 ){
-                    $(e.target).parents('.mme-subset').remove();
-                } else {
-                    alert('You must have at least one subset defined for this experiment type.');
+                // render modal for subset
+                function getModal(modalid) {
+                    return  '<div id="' + modalid + '" class="modal large hide fade new-experiment" tabindex="-1" role="dialog">' +
+                                '<div class="modal-header">' +
+                                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
+                                    '<h3 id="myModalLabel">Select Environmental Data for This Subset</h3>' +
+                                '</div>' +
+                                '<div id="modal-body" class="modal-body"></div>' +
+                                '<div class="modal-footer">' +
+                                    '<button class="btn btn-primary">Select Layers</button>' +
+                                '</div>' +
+                            '</div>'
                 }
-                subsetsWidget.serialize_fields();
-            });
+
+                // render subset widget - produces markup for SelectData as well
+                function getSubset(fieldname, subsetNum) {
+                    var widgetid = 'form-widgets-' + fieldname + '-' + subsetNum
+                    var datasetwidgetid = widgetid + '-items'
+                    var datasetmodalid = fieldname + '-' + subsetNum + '-items-modal'
+                    return  '<div id="' + widgetid + '" class="row-fluid mme-subset">' +
+                                '<fieldset class="subset">' +
+                                    '<div class="span8">' +
+                                        getModal(datasetmodalid) +
+                                        '<p><strong>Environmental Variables</strong></p>' +
+                                        '<div class="control-group bccvl-environmentaldatatable">' +
+                                            '<div id="' + datasetwidgetid + '" data-multiple="multiple">' +
+                                                '<span class="loader-container">' +
+                                                    '<img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader" style="display: inline-block;">' +
+                                                '</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<a href="'+location.origin+'/portal_facetconfig/environmental_datasets" id="' + fieldname + '-' + subsetNum + '-items-popup" class="btn btn-primary enviro-selection-button">Select Datasets</a>' +
+                                    '</div>' +
+                                    '<div class="span4">' +
+                                        '<a data-subsetnum="' + subsetNum + '" class="btn btn-danger btn-small pull-right remove-subset"><i class="fa fa-times"></i> Remove Subset</a> ' +
+                                        '<p><strong>Month Subset</strong></p>' +
+                                        '<label for="' + widgetid + '-title">Title</label>' +
+                                        '<input id="' + widgetid + '-title" name="subset.title" type="text" placeholder="Title for occurrence subset" class="required" required />' +
+                                        '<label for="' + widgetid + '-value">Months (in desired order, separated by commas)</label>' +
+                                        '<input id="' + widgetid + '-value" name="subset.value" type="text" placeholder="e.g. 1,2,3 or 11,12,1" class="required comma-alpha-numeric" required />' +
+                                    '</div>' +
+                                '</fieldset>' +
+                            '</div>'
+                }
+
+                function updateValue() {
+                    data = []
+                    for (subset of subsets) {
+                        var subsetdata = {
+                            environmental_datasets: subset.datawidget.val(),
+                            subset: {
+                                value: subset.widget.find('input[name="subset.value"]').val().split(','),
+                                title: subset.widget.find('input[name="subset.title"]').val()
+                            }
+                        }
+                        data.push(subsetdata)
+                    }
+                    $textarea.val(JSON.stringify(data, null, 4))
+                }
+
+                $widget.on('click', '#' + fieldname + '-popup', function(e) {
+                    e.preventDefault()
+
+                    var subsetNum = subsetCount++;
+                    // add subset markup
+                    $container.append(getSubset(fieldname, subsetNum))
+                    // reference to widget
+                    var $subsetWidget = $('#form-widgets-' + fieldname + '-' + subsetNum)
+                    // subsets data selector
+                    var dataWidget = new bccvl.SelectData(fieldname + '-' + subsetNum + '-items')
+                    // open modal
+                    dataWidget.$modaltrigger.click()
+                    // keep reference to sub widget
+                    subsets.push({
+                        subsetNum: subsetNum,
+                        widget: $subsetWidget,
+                        datawidget: dataWidget
+                    })
+                    // listen for change events on new subset widget
+                    $subsetWidget.on('change', function(e) {
+                        // some field or selection has changed...
+                        updateValue()
+                    })
+
+                })
+
+                // remov one subset section
+                $widget.on('click', '.remove-subset', function(e) {
+                    // redraw entire list of subsets based on information from
+                    // subsets variable (and/or textarea content)
+                    if( $('#tab-enviro fieldset').find('.mme-subset').length <= 1 ) {
+                        alert('You must have at least one subset defined for this experiment type.');
+                        return
+                    }
+                    //cleanup subsets variable
+                    var subsetNum = parseInt($(e.target).data('subsetnum'))
+                    for(var i = subsets.length -1; i >= 0 ; i--) {
+                        var subset = subsets[i]
+                        if(subset.subsetNum == subsetNum) {
+                            subsets.splice(i, 1)[0];
+                            // remove modal
+                            subset.datawidget.modal.$modal.remove()
+                            subset.widget.remove()
+                        }
+                    }
+                    updateValue()
+                })
+
+            }
+
+            var subsets = new DataSubsets('datasubsets')
 
         });
 

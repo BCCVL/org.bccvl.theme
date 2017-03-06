@@ -284,10 +284,9 @@ define(
             this.modal.$modal.on('modalapply', this.modal_apply.bind(this));
 
             // allow user to remove selected elements
-            $('#' + this.settings.widgetid).on('click', 'a:has(i.icon-remove)',
-                function(event) {
-                    event.preventDefault();
-                    // search for any hidden 'empty-check' fields and update them if an item is removed
+            this.$widget.on('click', 'a:has(i.icon-remove)', function(event) {
+                event.preventDefault();
+                // search for any hidden 'empty-check' fields and update them if an item is removed
 	            var field = $(this).parents('.control-group');
 	            var numDatasets = field.find('.selecteditem').length-1;
 
@@ -296,12 +295,11 @@ define(
 	            } else {
 	                field.find('.empty-check').val(numDatasets);
 	            }
-                    $(this).parents('div.selecteditem').remove();
-                    // trigger change event on widget update
-                    $(event.delegateTarget).trigger('widgetChanged');
-                    // TODO: shall we reload the widget?
-                }
-            );
+                $(this).parents('div.selecteditem').remove();
+                // trigger change event on widget update
+                $(event.delegateTarget).trigger('widgetChanged');
+                // TODO: shall we reload the widget?
+            });
 
             // All/None button
             this.$widget.on('click', 'a.select-all', function() {
@@ -409,6 +407,51 @@ define(
         // A widget to select a dict of items
         function SelectData(fieldname) {
             SelectDict.call(this, fieldname);
+            // keep track of the current value of our widget
+            this.value = {}
+
+            // All/None button
+            var $widget = this.$widget
+            var _this = this
+            $widget.off('click')
+
+            // allow user to remove selected elements
+            this.$widget.on('click', 'a:has(i.icon-remove)', function(event) {
+                event.preventDefault();
+                // search for any hidden 'empty-check' fields and update them if an item is removed
+                var field = $(this).parents('.control-group');
+                var numDatasets = field.find('.selecteditem').length-1;
+
+                if (numDatasets <= 0) {
+                    field.find('.empty-check').val('');
+                } else {
+                    field.find('.empty-check').val(numDatasets);
+                }
+                $(this).parents('div.selecteditem').remove();
+                _this.updateValue()
+                // trigger change event on widget update
+                $(event.delegateTarget).trigger('widgetChanged');
+                // TODO: shall we reload the widget?
+            });
+
+            $widget.on('click', 'a.select-all', function() {
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').prop('checked', 'checked');
+                _this.updateValue()
+            })
+
+            $widget.on('click', 'a.select-none', function() {
+                // boolean attributes have to be removed completely
+                $(this).parents('.selecteditem').find('ul li input[type="checkbox"]').each(function(){
+                    $(this).prop('checked', false);
+                });
+                _this.updateValue()
+            })
+
+            $widget.on('change', 'input', function(e){
+                // intercept changes to layer selection
+                e.stopPropagation()
+                _this.updateValue()
+            })
         }
         SelectData.prototype = Object.create(SelectDict.prototype); // inherit prototype
         SelectData.prototype.constructor = SelectData; // use new constructor
@@ -451,67 +494,81 @@ define(
                 return bccvlapi.dm.metadata(uuid);
             });
 
+            $widget.find('.selecteditem').remove()
+            _this.updateValue()
+
             $.when.apply(null, results).done(function(...data){
 
                $.each(data, function(i, dataset){
                     var markup = $('<div class="selecteditem">'+
-                                    '<input type="hidden" value="'+dataset.id+'" name="'+widgetid+'.item.'+i+'" class="item" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
+                                    '<input type="hidden" value="'+dataset.id+'" name="dataset.uuid" class="item" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
+                                    '<a class="btn pull-right" href="#"><i class="icon-remove"></i></a>' +
                                     '<p><strong><span>'+dataset.title+'</span></strong></p>'+
                                     '<p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>'+
                                     '<ul class="form.widgets.fieldname.list"></ul>'+
                                     '</div>');
 
                     $.each(dataset.layers, function(key, layer){
-
+                        // TODO: get layer title from response
+                        //       -> server side change as well
                         var bounds = JSON.stringify(layer.bounds);
 
                         markup.find('ul').append('<li>'+
-                            "<input type='checkbox' class='require-from-group' checked='checked' value='"+layer.layer+"' id='"+dataset.id+"_"+layer.layer+"' name='"+dataset.id+"_"+layer.layer+"' data-bbox='"+bounds+"' data-genre='"+dataset.genre+"' />"+
-                            '<label for="'+dataset.id+'_'+layer.layer+'">'+layer.layer+'</label>'+
+                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'" name="dataset.layer" data-bbox="'+bounds+'" data-genre="'+dataset.genre+'" />'+
+                            '<label for="' + _this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'">'+layer.layer+'</label>'+
                         '</li>');
                     });
 
                     $widget.append(markup);
                });
-
-               _this.serialize_fields(params);
-
-               $widget.parents('section.bccvl-experimentdetails').trigger('widgetChanged');
-
+               // update our value
+               _this.updateValue()
+               // trigger widgetChanged as well
+               // if not wanted this could be caught by parent widget, and discarded
+               $(_this).trigger('widgetChanged');
             });
-
-
 
         };
 
-        SelectData.prototype.serialize_fields = function(params) {
+        SelectData.prototype.updateValue = function() {
 
-            var $widget = this.$widget;
-            // TODO: we shouldn't do regxp replace to find textarea...
-            //       better would be to encapsulate the whole textarea and subsets in here
-            var widgetid = this.settings.widgetid.replace(/(.*)_.*/, '$1');
-            var $container = $('#' + widgetid);
-            var $textfield = $('#' + widgetid + '-textarea');
+            var data = {}
+            var _this = this
 
-            var data = {};
-
-            $container.find('fieldset').each(function(i, fieldset){
-
-                var fieldsetname = $(fieldset).data('name');
-                data[fieldsetname] = {};
-
-                $(fieldset).find('input').each(function(idx, field){
-                    var fieldname = $(field).attr('name');
-                    if ($(field).attr('type') == "checkbox"){
-                        var fieldval = $(field).prop('checked');
-                    } else {
-                        var fieldval = $(field).val();
+            this.$widget.find('input').each(function(idx, field) {
+                var fieldname = $(field).attr('name')
+                var fieldval
+                if (fieldname == 'dataset.uuid') {
+                    fieldval = $(field).val()
+                    if (!data.hasOwnProperty(fieldval)) {
+                        data[fieldval] = []
                     }
-                    data[fieldsetname][fieldname] = fieldval;
-                });
-            });
+                } else if (fieldname.startsWith('subset_')) {
+                    // TODO: these fields shouldn't come up in here at all
+                    return
+                } else {
+                    // it should be a layer checkbox
+                    if (!field.checked) {
+                        // ignore unchecked
+                        return
+                    }
+                    // layer
+                    fieldval = $(field).val()
+                    // [uuid, layer]
+                    fieldname = field.id.slice(_this.settings.widgetid.length + 1).split('-', 1)
+                    if (!data.hasOwnProperty(fieldname[0])) {
+                        data[fieldname[0]] = []
+                    }
+                    data[fieldname[0]].push(fieldval)
+                }
+            })
 
-            $textfield.val(JSON.stringify(data));
+            this.value = data
+            this.$widget.trigger('change');
+        }
+
+        SelectData.prototype.val = function() {
+            return this.value
         }
 
         return ({
