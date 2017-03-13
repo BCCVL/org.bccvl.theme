@@ -39,7 +39,7 @@
 
         -->
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
-                 css:content="#formfield-form-widgets-species_occurrence_collections" />
+                 css:content="#formfield-form-widgets-species_occurrence_dataset" />
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"

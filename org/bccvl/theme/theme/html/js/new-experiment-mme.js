@@ -16,7 +16,7 @@ define(
             wiztabs.init();         // hook up the wizard buttons
 
             // setup dataset select widgets
-            new bccvl.SelectDict("species_occurrence_collections");
+            new bccvl.SelectList("species_occurrence_dataset");
             //new bccvl.SelectDict("environmental_datasets");
 
             // -- hook up algo config -------------------------------
