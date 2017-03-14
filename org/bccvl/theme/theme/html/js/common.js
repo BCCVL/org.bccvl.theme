@@ -19,7 +19,7 @@ requirejs.config({
         'jquery-form':          'lib/jquery-form/jquery.form.min',
         'jquery-arrayutils':    'lib/jquery-arrayutils/jquery.arrayutils.min',
         'jquery-timer':         'lib/jquery-timer/jquery.timer',
-        'selectize':            'lib/selectize/selectize.min',        
+        'selectize':            'lib/selectize/selectize.min',
         'openlayers3':          'lib/ol3/ol',
         'ol3-layerswitcher':    'lib/ol3/layerswitcher/ol3-layerswitcher',
         'prism':                'lib/prism/prism',
@@ -75,12 +75,13 @@ requirejs.config({
     shim: {
         'bootstrap2':            ['jquery'],
         'bootstrap2-fileupload': ['jquery', 'bootstrap2'],
-        'jquery-xmlrpc':        ['jquery'],
-        'jquery-tablesorter':   ['jquery'],
-        'jquery-arrayutils':    ['jquery'],
-        'jquery-timer':         ['jquery'],
-        'raven':                ['jquery'],
-        'zip': { exports:'zip'}, 
+        'jquery-xmlrpc':         ['jquery'],
+        'jquery-tablesorter':    ['jquery'],
+        'jquery-arrayutils':     ['jquery'],
+        'jquery-timer':          ['jquery'],
+        'bbq':                   ['jquery'],
+        'raven':                 ['jquery'],
+        'zip': { exports:'zip'},
     }
 });
 
