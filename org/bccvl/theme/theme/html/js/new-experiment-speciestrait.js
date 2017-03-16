@@ -6,7 +6,7 @@ define(
      'bccvl-wizard-tabs', 'bccvl-form-jquery-validate',
      'jquery-tablesorter', 'jquery-arrayutils',
      'bccvl-form-popover', 'bccvl-visualiser-map',
-     'bbq', 'faceted_view.js', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api',
+     'bbq', 'faceted_view', 'bccvl-widgets', 'openlayers3', 'livechat', 'd3', 'zip', 'bccvl-api',
      'new-experiment-common', 'bccvl-raven'],
     function($, vizcommon, wiztabs, formvalidator, tablesorter, arrayutils, popover, vizmap, bbq, faceted, bccvl, ol, livechat, d3, zip, bccvlapi, expcommon) {
 

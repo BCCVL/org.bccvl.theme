@@ -6,7 +6,7 @@ define(
     ['jquery', 'bccvl-visualiser-common',
      'bccvl-visualiser-map', 'bccvl-wizard-tabs',
      'bccvl-form-jquery-validate',
-     'bccvl-form-popover', 'bbq', 'faceted_view.js',
+     'bccvl-form-popover', 'bbq', 'faceted_view',
      'bccvl-widgets', 'openlayers3', 'new-experiment-common', 'bccvl-raven'],
     function($, vizcommon, vizmap, wiztabs, formvalidator,
              popover, bbq, faceted, bccvl, ol, expcommon) {
