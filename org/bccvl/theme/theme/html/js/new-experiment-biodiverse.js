@@ -17,7 +17,7 @@ define(
 
             // setup dataset select widgets
             var projection = new bccvl.SelectDict("projection");
-            // Biodiverse uses selectize 
+            // Biodiverse uses selectize
             var setThresholds = function(value, item){
                 var selectIdx;
                 $.each($('.master-select')[0].selectize.currentResults.items, function(i, obj){
@@ -43,22 +43,22 @@ define(
             // re init selectize boxes on widget reload
             projection.$widget.on('widgetChanged', function(event) {
                 $.each(projection.$widget.find('select'), function(index, elem) {
-                                            
+
                     if ($(elem).hasClass('master-select')){
                         var $select = $(elem).selectize({create: false,
-                                       persist: false}); 
-                        var selectize = $select[0].selectize;  
+                                       persist: false});
+                        var selectize = $select[0].selectize;
 
                         selectize.on('item_add', setThresholds);
                     } else {
                         var $select = $(elem).selectize({create: true,
-                                       persist: false}); 
-                        var selectize = $select[0].selectize;  
+                                       persist: false});
+                        var selectize = $select[0].selectize;
 
                     }
                 });
             });
-            
+
             // TODO: move  select-all / select-none into widget?
             $('#tab-source-projection').on('click', '#form-widgets-projection a.select-all', function(){
                 $(this).parents('.selecteditem').find('.selecteddatasets input[type="checkbox"]').prop('checked', 'checked');

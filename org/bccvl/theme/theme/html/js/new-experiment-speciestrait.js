@@ -16,7 +16,7 @@ define(
 
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
-            
+
             // check for Firefox to avoid ZIP issue
             if(typeof InstallTrigger !== 'undefined'){
                 $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
@@ -32,16 +32,16 @@ define(
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
             new bccvl.SelectDict("environmental_datasets");
-            
+
             // -- hook up algo config -------------------------------
             expcommon.init_algorithm_selector('input[name^="form.widgets.algorithms_"]', true)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
-                
+
                 if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
-                    
+
                     $('#'+e.target.id+' .trait-dataset-summary').empty();
 
                     $.each(traitsTable.modal.basket.uuids, function(i, uuid){
@@ -114,17 +114,17 @@ define(
                                                         }
                                                     })
                                                 })
-                                                             
+
                                             });
                                         }
                                     });
-                                    
+
                                 }, function(error) {
                                     // onerror callback
                                     console.log("drawConvexhullPolygon:", error);
                                     throw error;
                                 });
-                                
+
                             } else if (data.mimetype == 'text/csv') {
                                 // parse and filter for columns and five rows
                                 d3.csv(data.file, function(error, data) {
@@ -145,18 +145,18 @@ define(
 
                                 var preview = [];
                                 columns.forEach(function(column, i){
-                                    
+
                                     var col = {}
                                     col.name = column;
                                     col.values = []
                                     $.each(truncData, function(i,r){
-                                        col.values.push(r[column]); 
+                                        col.values.push(r[column]);
                                     });
                                     preview.push(col);
                                 });
 
                                 $.each(preview, function(i, col){
-                                        
+
                                     var newCol = document.createElement('div');
                                     newCol.className = 'span3 trait-column';
                                     var header = document.createElement('div');
@@ -181,24 +181,24 @@ define(
                                         '<option value="env_var_con">Env. Variable (continuous)</option>'+
                                         '<option value="env_var_cat">Env. Variable (categorical)</option>'+
                                         '</select>';
-                                    
+
                                     $(input).find('select option').each(function(){
                                         if (col.name.toLowerCase() === $(this).val().toLowerCase()){
                                             $(this).prop('selected', true);
                                         }
                                     });
-                                    
+
                                     newCol.appendChild(header);
                                     newCol.appendChild(examples);
                                     newCol.appendChild(input);
-                                    
+
                                     divTraits.appendChild(newCol);
                                 });
-                                
+
                             });
 
                         });
-                        
+
                     });
                 }
             });
@@ -293,7 +293,7 @@ define(
                         algoparams[name_parts[0]][name_parts[1]] = param.value
                         continue
                     }
-                    
+
                 }
                 // assign algo params to selected algorithms
                 for (var algoid in params.algorithms) {
@@ -305,9 +305,9 @@ define(
                         params.environmental_data[env_idx_map[envds]] = env_layers[envds]
                     }
                 }
-                
+
                 // submit ... disable button
-                $(e.target).prop('disabled', true)                
+                $(e.target).prop('disabled', true)
                 var submit = bccvlapi.em.submittraits(params)
                 $.when(submit).then(
                     function(data, status, jqxhr) {
@@ -341,16 +341,16 @@ define(
 
 
 
-            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
-            
-            
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
+
+
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 // bind widgets to the constraint map
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
 
             })
-            
+
         });
     }
 );

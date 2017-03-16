@@ -15,7 +15,7 @@ define(
         $(window).unload(function() {
             Faceted.Unload();
         });
-        
+
         // ==============================================================
         $(function() {
 
@@ -74,7 +74,7 @@ define(
             //     }).prop('selected', true);
             //     $('#datasets-filter-form').submit();
             // });
-            
+
             // check for Firefox to avoid ZIP issue
             if(typeof InstallTrigger !== 'undefined' == true){
                 $('.bccvl-main .alert').after('<div class="alert alert-block alert-error fade in">'+
@@ -104,7 +104,7 @@ define(
                                 }
                             }
                         );
-                        
+
                     });
                     // restart timer if there are any spinners left
                     if ($(spinner_sel).length) {
@@ -121,9 +121,9 @@ define(
                         timer_id = window.setTimeout(update_dataset_row, 5000);
                     }
                 });
-                
+
             }();
-            
+
             $("body").on("click", ".update-dataset-btn", function(event) {
                 event.preventDefault();
                 var datasetURL = $(this).attr('data-url');
@@ -131,11 +131,11 @@ define(
                 var dsRow = $(this).parents('.datasets-list-entry');
                 var uuid = dsRow.data('uuid')
                 bccvlapi.dm.update_metadata(uuid).then(
-                    function() { 
+                    function() {
                         renderDatasetRow(completeURL, dsRow);
                     }
                 ).then(
-                    function() { 
+                    function() {
                         $(Faceted.Events).trigger(Faceted.Events.AJAX_QUERY_SUCCESS);
                     }
                 );
@@ -204,7 +204,7 @@ define(
                     $(this).find('.modal-body').height(''+(window.innerHeight*0.75)+'px');
 
                     $('#preview-dataset-modal .modal-body').html('<div class="bccvl-modal-preview-pane" id="modal-map-'+el.data('uuid')+'"></div>');
-                    
+
                     if (el.hasClass('bccvl-modal-occurrence-viz')){
                         var params = {
                             'type': 'occurrence',
@@ -226,7 +226,7 @@ define(
                             vizcommon.mapRender(el.data('uuid'), el.attr('href'), 'modal-map-'+el.data('uuid')+'', params, el.data('viz-layer'));
                         }
                     }
-                }); 
+                });
 
                 $('#preview-dataset-modal').on('hidden', function(){
                     $('#preview-dataset-modal').remove();
@@ -243,7 +243,7 @@ define(
                 });
 
 
-                
+
             });
 
             // Request metadata for datasets
@@ -276,9 +276,9 @@ define(
                     }
                 );
             });
-            
+
         });
-        
+
         function renderDatasetRow(completeURL, $tr) {
             return $.ajax({
                 url: completeURL,

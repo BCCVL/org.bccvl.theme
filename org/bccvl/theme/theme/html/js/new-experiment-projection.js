@@ -20,9 +20,9 @@ define(
             // setup dataset select widgets
             new bccvl.SelectDict("species_distribution_models");
             new bccvl.SelectList("future_climate_datasets");
-            
-            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-projection_region')            
-            
+
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-projection_region')
+
             // bind widgets to the constraint map
             $('.bccvl-new-projection').on('widgetChanged', function(e){
                 // Look for selected SDM experiment

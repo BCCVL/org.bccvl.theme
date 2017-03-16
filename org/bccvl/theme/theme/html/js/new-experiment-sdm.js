@@ -43,16 +43,16 @@ define(
             if ($('input[name="form.widgets.species_absence_dataset:list"]').length > 0) {
                 $('#have_absence').prop('checked', true);
                 $('.bccvl-noabsence-dataset').slideUp(100);
-                $('.bccvl-absencestable').slideDown(100);                
+                $('.bccvl-absencestable').slideDown(100);
             } else {
                 $('#no_absence').prop('checked', true);
                 $('.bccvl-absencestable').slideUp(100);
                 $('.bccvl-noabsence-dataset').slideDown(100);
             }
-            
 
-            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')            
-            
+
+            var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
+
             // Draw constraint on map if any
             expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
 
@@ -73,7 +73,7 @@ define(
                     // Set new option
                     $('select[name="form.widgets.' + $checkbox.attr('value') + '.pa_strategy:list"]').val(strategyname);
                 }
-            });            
+            });
         }
 
     }
