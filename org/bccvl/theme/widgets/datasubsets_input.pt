@@ -7,7 +7,7 @@
       tal:omit-tag="">
   <div id="form-widgets-fieldname"
        tal:attributes="id string:${view/id};">
-         <textarea id="" name="" class="input-block-level" cols="" rows=""
+         <input type="hidden" id="" name="" class="input-block-level" cols="" rows=""
                    disabled="" readonly="" placeholder=""
                    tal:attributes="id string:${view/id}-textarea;
                                    name view/name;
