@@ -71,7 +71,8 @@ requirejs.config({
         'youtube':                    'js/youtube',
         'selectize-remove-single':    'js/selectize-remove-single',
         // dynamic js files
-        'bccvl-raven':                portal_url + '/bccvl-raven'
+        'bccvl-raven':                portal_url + '/bccvl-raven',
+        'faceted_view':               portal_url + '/faceted_view'
     },
     shim: {
         'bootstrap2':            ['jquery'],
@@ -81,6 +82,7 @@ requirejs.config({
         'jquery-arrayutils':     ['jquery'],
         'jquery-timer':          ['jquery'],
         'bbq':                   ['jquery'],
+        'faceted_view':          ['jquery'],
         'raven':                 ['jquery'],
         'zip': { exports:'zip'},
     }
