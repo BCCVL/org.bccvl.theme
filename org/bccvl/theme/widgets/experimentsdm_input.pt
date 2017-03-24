@@ -108,6 +108,6 @@
   <a id="fieldname-popup" href="#" class="btn btn-primary btn-large"
      tal:attributes="id string:${view/field/__name__}-popup;
                      href string:${portal_url}/portal_facetconfig/${view/field/__name__}">
-    <i class="fa fa-plus-circle"></i> Select SDM Experiment
+    <i class="fa fa-plus-circle"></i> Select Experiment
   </a>
 </html>
