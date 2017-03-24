@@ -13,7 +13,7 @@ define(
         $(function() {
 
             console.log('species trait model experiment page behaviour loaded.');
-
+            
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
 
@@ -37,14 +37,25 @@ define(
             expcommon.init_algorithm_selector('input[name^="form.widgets.algorithms_"]', true)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
-
-            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
-
-                if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
-
-                    $('#'+e.target.id+' .trait-dataset-summary').empty();
-
-                    $.each(traitsTable.modal.basket.uuids, function(i, uuid){
+            
+            var getParameterByName = function(name, url) {
+                if (!url) {
+                  url = window.location.href;
+                }
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+            
+            var isRerun = getParameterByName('uuid');
+            
+            var initTraitsNominationUI = function(target, uuids){
+                    $('#'+target+' .trait-dataset-summary').empty();
+                    var target = document.getElementById(target);
+                    $.each(uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
                         bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
                             // after getting urls, request file
@@ -60,7 +71,7 @@ define(
                             var text = document.createElement('div');
                             text.className = 'row-fluid';
                             text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
-                            e.target.appendChild(text);
+                            target.appendChild(text);
                             var div = document.createElement('div');
                             div.className = 'row-fluid trait-dataset-summary';
                             var divHeader = document.createElement('div');
@@ -70,7 +81,7 @@ define(
                             var divTraits = document.createElement('div');
                             divTraits.className = 'trait-dataset-summary-traits span10'
                             div.appendChild(divTraits);
-                            e.target.appendChild(div);
+                            target.appendChild(div);
 
                             var csv = $.Deferred();
                             if (data.mimetype == 'application/zip') {
@@ -200,6 +211,15 @@ define(
                         });
 
                     });
+            }
+
+            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+                if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
+                    initTraitsNominationUI(e.target.id, traitsTable.modal.basket.uuids); 
+                } else if (isRerun){
+                    var uuids = []
+                    uuids.push($('#form-widgets-species_traits_dataset .selecteditem input[type="hidden"]').data('uuid'));
+                    initTraitsNominationUI('form-widgets-species_traits_dataset', uuids); 
                 }
             });
 
@@ -350,7 +370,8 @@ define(
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
 
             })
-
+            
+            $('.bccvl-new-speciestrait').trigger('widgetChanged');
         });
     }
 );
