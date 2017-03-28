@@ -8,7 +8,7 @@
   <div id="form-widgets-fieldname"
        tal:attributes="id string:${view/id};">
          <input type="hidden" id="" name="" class="input-block-level" cols="" rows=""
-                   disabled="" readonly="" placeholder=""
+                   disabled="" readonly="" placeholder="" value=""
                    tal:attributes="id string:${view/id}-textarea;
                                    name view/name;
                                    data-view-class view/klass;
@@ -16,8 +16,9 @@
                                    disabled view/disabled;
                                    cols view/cols;
                                    rows view/rows;
-                                   readonly view/readonly;"
-                    tal:content="view/value" />
+                                   readonly view/readonly;
+                                   value view/value;"
+        />
   </div>
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>
