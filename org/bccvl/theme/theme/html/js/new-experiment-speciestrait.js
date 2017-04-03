@@ -28,6 +28,9 @@ define(
 
             // hook up the wizard buttons
             wiztabs.init();
+            
+            // set up validator var
+            var validator;
 
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
@@ -53,8 +56,10 @@ define(
             var isRerun = getParameterByName('uuid');
             
             var initTraitsNominationUI = function(target, uuids){
-                    $('#'+target+' .trait-dataset-summary').empty();
-                    var target = document.getElementById(target);
+                    $('#nomination-table').empty();
+                    //var target = document.getElementById(target);
+                    var target = $('#nomination-table')[0];
+                    var isGLMM = $('#form-widgets-algorithms_species-2').prop('checked');
                     $.each(uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
                         bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
@@ -181,17 +186,36 @@ define(
                                     examples.innerHTML += '<p>...</p>'
                                     var input = document.createElement('div');
                                     input.className = 'trait-nom-row';
-                                    input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
-                                        '<option selected value="ignore">Ignore</option>'+
-                                        '<option value="lat">Latitude</option>'+
-                                        '<option value="lon">Longitude</option>'+
-                                        '<option value="species">Species Name</option>'+
-                                        '<option value="trait_con">Trait (continuous)</option>'+
-                                        '<option value="trait_ord">Trait (ordinal)</option>'+
-                                        '<option value="trait_nom">Trait (nominal)</option>'+
-                                        '<option value="env_var_con">Env. Variable (continuous)</option>'+
-                                        '<option value="env_var_cat">Env. Variable (categorical)</option>'+
-                                        '</select>';
+                                    console.log(isGLMM);
+                                    if(isGLMM){
+                                        input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                            '<option selected value="ignore">Ignore</option>'+
+                                            '<option value="lat">Latitude</option>'+
+                                            '<option value="lon">Longitude</option>'+
+                                            '<option value="species">Species Name</option>'+
+                                            '<option value="trait_con">Trait (continuous)</option>'+
+                                            '<option value="trait_ord">Trait (ordinal)</option>'+
+                                            '<option value="trait_nom">Trait (nominal)</option>'+
+                                            '<option value="env_var_con">Fixed Factor (continuous)</option>'+
+                                            '<option value="env_var_cat">Fixed Factor (categorical)</option>'+
+                                            '<option value="random_con" class="glmm">Random Factor (continuous, GLMM only)</option>'+
+                                            '<option value="random_cat" class="glmm">Random Factor (categorical, GLMM only)</option>'+
+                                            '</select>';
+                                    } else {
+                                         input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                            '<option selected value="ignore">Ignore</option>'+
+                                            '<option value="lat">Latitude</option>'+
+                                            '<option value="lon">Longitude</option>'+
+                                            '<option value="species">Species Name</option>'+
+                                            '<option value="trait_con">Trait (continuous)</option>'+
+                                            '<option value="trait_ord">Trait (ordinal)</option>'+
+                                            '<option value="trait_nom">Trait (nominal)</option>'+
+                                            '<option value="env_var_con">Fixed Factor (continuous)</option>'+
+                                            '<option value="env_var_cat">Fixed Factor (categorical)</option>'+
+                                            '<option value="random_con" class="glmm" disabled>Random Factor (continuous, GLMM only)</option>'+
+                                            '<option value="random_cat" class="glmm" disabled>Random Factor (categorical, GLMM only)</option>'+
+                                            '</select>';
+                                    }
 
                                     $(input).find('select option').each(function(){
                                         if (col.name.toLowerCase() === $(this).val().toLowerCase()){
@@ -222,7 +246,19 @@ define(
                     initTraitsNominationUI('form-widgets-species_traits_dataset', uuids); 
                 }
             });
-
+            
+            
+            $('.bccvl-new-speciestrait').on('click', '#form-widgets-algorithms_species-2', function(){
+                if($(this).prop('checked')){
+                    $('select.trait-nom option.glmm').prop('disabled', false);
+                } else {
+                    $('select.trait-nom option.glmm').prop('disabled', true);
+                }
+                if ($(this).parents('form').find('select.trait-nom').length < 0){
+                    validator = $(this).parents('form').validate();
+                    validator.element('select.trait-nom');
+                }
+            });
 
             // submit button:
 
