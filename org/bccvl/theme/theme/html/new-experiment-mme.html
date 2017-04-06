@@ -150,7 +150,7 @@
 
                   <div class="row-fluid">
                     <div class="span6">
-                      <h3>In this experiment, you can investigate the potential distribution of multiple species under current climatic conditions. It is important to note that this experiment does not run multiple species in the same model, but rather runs multiple individual SDMs on each species.</h3>
+                      <h3>In this experiment, you can divide your occurrence dataset in multiple subsets for different months and investigate how the potential distribution of a species changes throughout the year.</h3>
                     </div>
                     <div class="span6">
                       <p class="bccvl-tab-description">
@@ -267,7 +267,7 @@
                     </p>
                     <p>
                       This tab is optional.<br/>
-                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around the occurrence records), which is generated for each species separately. The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
+                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around the occurrence records), which is generated for each subset separately. The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
                     </p>
                   </div>
 
@@ -345,7 +345,12 @@
                       <table class="table table-hover bccvl-algorithmtable">
                         <thead>
                           <tr>
-                            There are a number of different algorithms available in the BCCVL. You can choose one algorithm in your experiment. It will use this algorithm to run a SDM for each of your species. Once selected you can optionally change the configuration options for the algorithm, or you can leave them set to their defaults. Extensive support documentation on each algorithm is available under 'Read more' on the information icon.
+                            There are a number of different algorithms available in the BCCVL. 
+                            <ul>
+                              <li>You can choose one algorithm in your experiment.</li>
+                              <li>Once selected, you can change the pseudo-absence generation method, and other configuration options for this algorithm.</li>
+                              <li>Click the 'i' icon for more information on each algorithm.</li>
+                            </ul>
                           </tr>
                           <!--<tr><th <th colspan="2">
                           </th>
