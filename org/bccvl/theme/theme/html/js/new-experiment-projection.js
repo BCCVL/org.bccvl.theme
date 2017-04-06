@@ -16,6 +16,8 @@ define(
 
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
+            // -- psuedo absence controls ---------------------------------
+            expcommon.init_pa_controls()
 
             // setup dataset select widgets
             new bccvl.SelectDict("species_distribution_models");
