@@ -217,6 +217,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                if (standard_range == 'rainfall'){
                    // rainfall BOM standard range
                    var rangeArr = [0,200,300,400,500,600,800,1000,1200,1600,2000,2400,3200];
+               } else if (standard_range == 'monrainfall'){
+                   // rainfall BOM standard range
+                   var rangeArr = [0,100,200,300,400,500,600,700,800,900,1000,1100,1200];
                } else if (standard_range == 'temperature') {
                    // temperature BOM standard range
                    var rangeArr = [-6,-3,0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45];
@@ -285,6 +288,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                if (standard_range == 'rainfall'){
                    // rainfall BOM standard colours
                    var colorArr = ['#FFFFFF','#fffee8','#fefdd1','#f6f8ab','#daeca2','#c1e3a3','#a8dba4','#8cd1a4','#6fc9a5','#45c1a4','#00b4a5','#00999a','#017b7d','#005b5c'];
+               } else if (standard_range == 'monrainfall'){
+                   // monthly rainfall colours
+                   var colorArr = ['#FFFFFF','#f0fcff','#d9f8ff','#bff3ff','#a3edff','#86e5ff','#6fdbff','#5bccfb','#4eb8f5','#439eec','#3b81e2','#3562d8','#3146ce','#2d2ec6'];
                } else if (standard_range == 'temperature') {
                    // temperature BOM standard colours
                    // rangeArr =           [-6,        -3,       0,         3,        6,         9,        12,       15,       18,       21,      24,       27,       30,       33,       36,        39,       42,     45];
@@ -401,7 +407,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
            getStandardRange: function(layerdef) {
                var standard_range;
-               if ($.inArray(layerdef.legend, ['rainfall', 'temperature', 'suitability']) > -1) {
+               if ($.inArray(layerdef.legend, ['rainfall', 'monrainfall', 'temperature', 'suitability']) > -1) {
                    return layerdef.legend;
                } else if(typeof layerdef.legend === 'undefined') {
                    if (layerdef.datatype == 'continuous') {
@@ -626,7 +632,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var legend_step_size = 5;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
-               } else if ($.inArray(standard_range, ['rainfall', 'temperature', 'categorical', 'misc_categorical', 'binary']) > -1) {
+               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary']) > -1) {
                    legend_step_size = 1;
                }
                // Build legend obj
@@ -1184,7 +1190,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    // visualiser fetch failed
                    function(error) {
                        $('#'+id+' .ol-viewport').find('.map-loading').remove();
-                       alert('Problem request dataset, please try again later.')
+                       alert('Problem requesting dataset, please try again later.')
                        // need to return some error here?
                    }
                )

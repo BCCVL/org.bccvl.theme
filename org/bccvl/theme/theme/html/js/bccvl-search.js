@@ -1022,20 +1022,17 @@ define(
                                         if (parsedDataList.length == 0) {
                                             provider.autocomplete.noResultsFound();
                                         }
-
                                         process(parsedDataList);
                                     } else {
                                         // otherwise assume the data is already good
                                         process(data);
                                     }
-                                    
                                     $inputField.removeClass("bccvl-search-spinner");
                                 },
                                 error: function(xhr, status, msg){
                                     $inputField.removeClass("bccvl-search-spinner");
                                     if (status != 'abort'){
                                         provider.autocomplete.noResultsFound(unexpectedErrorMsg($sourceField.val()));
-                                        process(parsedDataList);
                                     }
                                 }
                             });

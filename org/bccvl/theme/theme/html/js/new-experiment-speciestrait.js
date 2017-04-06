@@ -13,7 +13,7 @@ define(
         $(function() {
 
             console.log('species trait model experiment page behaviour loaded.');
-
+            
             // hook up stretchers
             //stretch.init({ topPad: 60, bottomPad: 10 });
 
@@ -28,6 +28,9 @@ define(
 
             // hook up the wizard buttons
             wiztabs.init();
+            
+            // set up validator var
+            var validator;
 
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
@@ -37,14 +40,27 @@ define(
             expcommon.init_algorithm_selector('input[name^="form.widgets.algorithms_"]', true)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
-
-            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
-
-                if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
-
-                    $('#'+e.target.id+' .trait-dataset-summary').empty();
-
-                    $.each(traitsTable.modal.basket.uuids, function(i, uuid){
+            
+            var getParameterByName = function(name, url) {
+                if (!url) {
+                  url = window.location.href;
+                }
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+            
+            var isRerun = getParameterByName('uuid');
+            
+            var initTraitsNominationUI = function(target, uuids){
+                    $('#nomination-table').empty();
+                    //var target = document.getElementById(target);
+                    var target = $('#nomination-table')[0];
+                    var isGLMM = $('#form-widgets-algorithms_species-2').prop('checked');
+                    $.each(uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
                         bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
                             // after getting urls, request file
@@ -60,7 +76,7 @@ define(
                             var text = document.createElement('div');
                             text.className = 'row-fluid';
                             text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
-                            e.target.appendChild(text);
+                            target.appendChild(text);
                             var div = document.createElement('div');
                             div.className = 'row-fluid trait-dataset-summary';
                             var divHeader = document.createElement('div');
@@ -70,7 +86,7 @@ define(
                             var divTraits = document.createElement('div');
                             divTraits.className = 'trait-dataset-summary-traits span10'
                             div.appendChild(divTraits);
-                            e.target.appendChild(div);
+                            target.appendChild(div);
 
                             var csv = $.Deferred();
                             if (data.mimetype == 'application/zip') {
@@ -170,17 +186,36 @@ define(
                                     examples.innerHTML += '<p>...</p>'
                                     var input = document.createElement('div');
                                     input.className = 'trait-nom-row';
-                                    input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
-                                        '<option selected value="ignore">Ignore</option>'+
-                                        '<option value="lat">Latitude</option>'+
-                                        '<option value="lon">Longitude</option>'+
-                                        '<option value="species">Species Name</option>'+
-                                        '<option value="trait_con">Trait (continuous)</option>'+
-                                        '<option value="trait_ord">Trait (ordinal)</option>'+
-                                        '<option value="trait_nom">Trait (nominal)</option>'+
-                                        '<option value="env_var_con">Env. Variable (continuous)</option>'+
-                                        '<option value="env_var_cat">Env. Variable (categorical)</option>'+
-                                        '</select>';
+                                    console.log(isGLMM);
+                                    if(isGLMM){
+                                        input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                            '<option selected value="ignore">Ignore</option>'+
+                                            '<option value="lat">Latitude</option>'+
+                                            '<option value="lon">Longitude</option>'+
+                                            '<option value="species">Species Name</option>'+
+                                            '<option value="trait_con">Trait (continuous)</option>'+
+                                            '<option value="trait_ord">Trait (ordinal)</option>'+
+                                            '<option value="trait_nom">Trait (nominal)</option>'+
+                                            '<option value="env_var_con">Fixed Factor (continuous)</option>'+
+                                            '<option value="env_var_cat">Fixed Factor (categorical)</option>'+
+                                            '<option value="random_con" class="glmm">Random Factor (continuous, GLMM only)</option>'+
+                                            '<option value="random_cat" class="glmm">Random Factor (categorical, GLMM only)</option>'+
+                                            '</select>';
+                                    } else {
+                                         input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                            '<option selected value="ignore">Ignore</option>'+
+                                            '<option value="lat">Latitude</option>'+
+                                            '<option value="lon">Longitude</option>'+
+                                            '<option value="species">Species Name</option>'+
+                                            '<option value="trait_con">Trait (continuous)</option>'+
+                                            '<option value="trait_ord">Trait (ordinal)</option>'+
+                                            '<option value="trait_nom">Trait (nominal)</option>'+
+                                            '<option value="env_var_con">Fixed Factor (continuous)</option>'+
+                                            '<option value="env_var_cat">Fixed Factor (categorical)</option>'+
+                                            '<option value="random_con" class="glmm" disabled>Random Factor (continuous, GLMM only)</option>'+
+                                            '<option value="random_cat" class="glmm" disabled>Random Factor (categorical, GLMM only)</option>'+
+                                            '</select>';
+                                    }
 
                                     $(input).find('select option').each(function(){
                                         if (col.name.toLowerCase() === $(this).val().toLowerCase()){
@@ -200,9 +235,30 @@ define(
                         });
 
                     });
+            }
+
+            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+                if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
+                    initTraitsNominationUI(e.target.id, traitsTable.modal.basket.uuids); 
+                } else if (isRerun){
+                    var uuids = []
+                    uuids.push($('#form-widgets-species_traits_dataset .selecteditem input[type="hidden"]').data('uuid'));
+                    initTraitsNominationUI('form-widgets-species_traits_dataset', uuids); 
                 }
             });
-
+            
+            
+            $('.bccvl-new-speciestrait').on('click', '#form-widgets-algorithms_species-2', function(){
+                if($(this).prop('checked')){
+                    $('select.trait-nom option.glmm').prop('disabled', false);
+                } else {
+                    $('select.trait-nom option.glmm').prop('disabled', true);
+                }
+                if ($(this).parents('form').find('select.trait-nom').length < 0){
+                    validator = $(this).parents('form').validate();
+                    validator.element('select.trait-nom');
+                }
+            });
 
             // submit button:
 
@@ -350,7 +406,8 @@ define(
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
 
             })
-
+            
+            $('.bccvl-new-speciestrait').trigger('widgetChanged');
         });
     }
 );
