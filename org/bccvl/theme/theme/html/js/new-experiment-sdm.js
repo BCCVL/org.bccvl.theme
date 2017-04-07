@@ -26,6 +26,8 @@ define(
             expcommon.init_algorithm_selector('input[name="form.widgets.functions:list"]', true)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
+            // -- psuedo absence controls ---------------------------------
+            expcommon.init_pa_controls()
 
             // -- set up absence radio buttons
             $('#have_absence').click(function(){

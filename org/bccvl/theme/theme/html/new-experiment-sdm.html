@@ -277,8 +277,63 @@
                       </div>
 
                        <div class="bccvl-noabsence-dataset alert alert-info" style="display:none;">
-                         <p><strong>You can skip this tab.</strong></p>
                          <p>Pseudo-absence points will be generated for the experiment.  Please see the alogrithm configuration settings to adjust your selected pseudo-absence strategy.</strong>
+                        
+                         <div class="paramgroup leader" id="pa_controls">
+                            <h3>Pseudo Absence Configuration</h3>
+                            <p>Select and configure your strategy. <a href="https://support.bccvl.org.au/support/solutions/articles/6000127043-absence-data" target="_blank">Read More ...</a></p>
+                            <div class="control-group" data-fieldname="pa_ratio_fieldgroup" id="pa_ratio_fieldgroup">
+                              <label for="pa_ratio" class="control-label">
+                                Absence-presence ratio
+                                <i class="fa fa-info-circle" data-title="absence-presence ratio" data-content="ratio of absence to presence points" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title=""></i>
+                              </label>
+                              <div class="controls">
+                                <input id="pa_ratio" name="pa_ratio" class="text-widget decimal-field" value="1" type="text" data-default="1" min="0">
+                              </div>
+                            </div>
+                            <div class="control-group" data-fieldname="pa_strategy_fieldgroup" id="pa_strategy_fieldgroup">
+                              <label for="pa_strategy" class="control-label">
+                                Pseudo-absence strategy
+                                <i class="fa fa-info-circle" data-title="pseudo-absence strategy" data-content="strategy to generate pseudo-absence points: random; SRE (in sites with contrasting conditions to presences); disk (within a minimum and maximum distance from presences)" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title=""></i>
+                              </label>
+                              <div class="controls">
+                                <select id="pa_strategy" name="pa_strategy:list" class="select-widget required choice-field" size="1" aria-required="true">
+                                  <option id="pa_strategy-0" value="random">Random</option>
+                                  <option id="pa_strategy-1" value="sre" selected="selected">SRE</option>
+                                  <option id="pa_strategy-2" value="disk">Disk</option>
+                                  <option id="pa_strategy-3" value="none">None</option>
+                                </select>
+                                <input name="pa_strategy-empty-marker" type="hidden" value="1">
+                              </div>
+                            </div>
+                            <div class="control-group" data-fieldname="pa_sre_quant_fieldgroup" id="pa_sre_quant_fieldgroup">
+                              <label for="pa_sre_quant" class="control-label">
+                                Pseudo-absence SRE quantile 
+                                <i class="fa fa-info-circle" data-title="pseudo-absence SRE quantile" data-content="quantile used for 'SRE' pseudo-absence generation strategy; default is 0.025" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title=""></i>
+                              </label>
+                              <div class="controls">
+                              <input id="pa_sre_quant" name="pa_sre_quant" class="text-widget decimal-field" value="" type="text" data-default="" min="0">
+                              </div>
+                            </div>
+                            <div class="control-group" data-fieldname="pa_disk_min_fieldgroup" id="pa_disk_min_fieldgroup">
+                              <label for="pa_disk_min" class="control-label">
+                                Pseudo-absence disk minimum distance (m)
+                                <i class="fa fa-info-circle" data-title="pseudo-absence disk minimum distance (m)" data-content="minimum distance (m) to presences for 'disk' pseudo-absence generation strategy" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title=""></i>
+                              </label>
+                              <div class="controls">
+                              <input id="pa_disk_min" name="pa_disk_min" class="text-widget decimal-field" value="0" type="text" data-default="0" min="0">
+                              </div>
+                            </div>
+                            <div class="control-group" data-fieldname="pa_disk_max_fieldgroup" id="pa_disk_max_fieldgroup">
+                              <label for="pa_disk_max" class="control-label">
+                                Pseudo-absence disk maximum distance (m)
+                                <i class="fa fa-info-circle" data-title="pseudo-absence disk maximum distance (m)" data-content="maximum distance (m) to presences for 'disk' pseudo-absence generation strategy" data-toggle="popover" data-container="body" data-trigger="hover" data-original-title="" title=""></i>
+                              </label>
+                              <div class="controls">
+                              <input id="pa_disk_max" name="pa_disk_max" class="text-widget decimal-field" value="" type="text" data-default="" min="0">
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -2801,6 +2801,13 @@ div.youtube-frame {
     padding: 0 1em 2em;
     border-bottom: 1px solid #ddd;
 }
+.paramgroup.leader {
+    padding: 0;
+}
+.paramgroup.leader h3 {
+    color:black;
+    font-size:1.3em;
+}
 .paramgroup .form-horizontal .control-label {
     line-height: 1.1em;
     padding-top:0;

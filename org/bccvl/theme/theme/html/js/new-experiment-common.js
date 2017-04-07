@@ -308,12 +308,24 @@ define(
             // draw collected geometries
             vizcommon.drawBBoxes(map, geometries, bboxLayer);
         }
+        
+        function init_pa_controls () {
+            $('#pa_controls').on('change', 'input, select', function(e){
+                var fieldtype = $(this).attr('id');
+                var val = $(this).val();
+                
+                $('[id*="'+fieldtype+'"]').each(function(){
+                    $(this).val(val);   
+                });
+            });
+        }
             
         return {
             init_region_selector: init_region_selector,
             init_algorithm_selector: init_algorithm_selector,
             init_constraints_map: init_constraints_map,
-            update_constraints_map: update_constraints_map
+            update_constraints_map: update_constraints_map,
+            init_pa_controls: init_pa_controls
         }
     }
 )

@@ -24,6 +24,8 @@ define(
             expcommon.init_algorithm_selector('input[name="form.widgets.function:list"]', false)
             // -- region selection ---------------------------------
             expcommon.init_region_selector()
+            // -- psuedo absence controls ---------------------------------
+            expcommon.init_pa_controls()
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
 
