@@ -2,8 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas'],
-   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas) {
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf) {
 
        // define some projections we need
        proj4.defs([
@@ -1577,11 +1577,23 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            constraintTools: function(map, constraintsLayer, field_id) {
+               
+               // set up accordion-like functionality for the UI
+               $('input[type="radio"][name="constraints_type"]').change(function(){
+                  $('.constraint-method').find('input[type="radio"][name="constraints_type"]').each(function(){
+                     if($(this).prop('checked')){
+                         $(this).parents('.constraint-method').find('.config').slideDown();
+                     } else {
+                         $(this).parents('.constraint-method').find('.config').slideUp();
+                     }
+                  })
+               });
+               
                $('.btn.draw-polygon').on('click', function(){
                    //map.un('singleclick', bccvl_common.getPointInfo);
                    bccvl_common.drawConstraints($(this), map, constraintsLayer);
                });
-               $('.btn.input-polygon').on('click',  function(){
+               /*$('.btn.input-polygon').on('click',  function(){
                    var coords = {};
                    coords.north = parseFloat($('#north-bounds').val());
                    coords.east = parseFloat($('#east-bounds').val());
@@ -1589,7 +1601,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    coords.west = parseFloat($('#west-bounds').val());
 
                    bccvl_common.inputConstraints($(this), map, coords, constraintsLayer);
-               });
+               });*/
+               
+               
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
 
@@ -1603,9 +1617,23 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                $('.btn.draw-geojson').on('click', function(e){
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
+               $('.btn.add-offset').on('click', function(e){
+                   
+                   var offsetSize = $('#region-offset').val();
+                   if(offsetSize){
+                       var geojson = JSON.parse($(this).data('geojson'));
+                       var buffered = turf.buffer(geojson, offsetSize, 'kilometers');
+                       var newgeo = JSON.stringify(buffered);
+                       
+                       bccvl_common.renderGeojsonConstraints($(this), map, newgeo, constraintsLayer);
+                   } else {
+                       $('#region-offset').addClass('required error');
+                   }
+                   
+               });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
                    // update coordinate inputs
-                   if (evt.type == 'removefeature') {
+                   /*if (evt.type == 'removefeature') {
                        $('#north-bounds').val('');
                        $('#east-bounds').val('');
                        $('#south-bounds').val('');
@@ -1620,7 +1648,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        $('#east-bounds').val(newext[2].toFixed(6));
                        $('#south-bounds').val(newext[1].toFixed(6));
                        $('#west-bounds').val(newext[0].toFixed(6));
-                   }
+                   }*/
                    // update hidden geojson field
                    if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');

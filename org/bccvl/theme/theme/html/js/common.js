@@ -32,6 +32,7 @@ requirejs.config({
         'd3':                   'lib/d3/d3.min.js_4.2.2',
         'zip':                  'lib/zip/zip.min',
         'html2canvas':          'lib/html2canvas/html2canvas.min',
+        'turf':                 'lib/turfjs/turf.min',
         // our own js files
         'bccvl-api':                  'js/bccvl-api',
         'bccvl-form-jquery-validate': 'js/bccvl-form-jquery-validate',
@@ -63,10 +64,10 @@ requirejs.config({
         'new-experiment-projection':  'js/new-experiment-projection',
         'new-experiment-sdm':         'js/new-experiment-sdm',
         'new-experiment-msdm':        'js/new-experiment-msdm',
-        'new-experiment-speciestrait': 'js/new-experiment-speciestrait',
+        'new-experiment-speciestrait':'js/new-experiment-speciestrait',
         'password-reset':             'js/password-reset',
         'search':                     'js/search',
-        'training':                     'js/training',
+        'training':                   'js/training',
         'youtube':                    'js/youtube',
         'selectize-remove-single':    'js/selectize-remove-single',
         // dynamic js files

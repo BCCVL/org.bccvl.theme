@@ -424,47 +424,62 @@
 
                     <!-- list of available data -->
                     <div class="span4" style="overflow:visible;">
-                      <div class="control-group">
-                        <div class="bccvl-occurrencestable">
-
-
+                      <input id="form-widgets-modelling_region" name="form.widgets.modelling_region" value="" class="hidden-widget" type="hidden">
+                      <div class="constraint-method">
+                        <input type="radio" value="region_no_offset" name="constraints_type" id="region_no_offset"/>
+                        <label for="region_no_offset" >Select constraints by pre-defined region</label>
+                        
+                        <div id="select-region" class="config" style="display:none;">
                           <div class="constraints" id="formfield-form-widgets-modelling_region"></div>
                           <div class="bccvl-constraint-geojson-input">
-                            <p>Select constraints by pre-defined region</p>
-                            <select id="select-region-type" placeholder="Choose a region type ...">
+                            <select id="select-region-type" class="select-region-type" placeholder="Choose a region type ...">
                               <option value="">Select A Region Type ...</option>
                               <option value="cl959">Local Goverment Areas</option>
                               <option value="cl916">National Resource Management Regions</option>
                               <option value="cl22">Australian States and Territories</option>
                               <option value="cl1048">IBRA 7 Regions</option>
                             </select>
-                            <select id="select-region" placeholder="Find a region ...">
+                            <select id="select-region" class="select-region" placeholder="Find a region ...">
                               <option value="" selected="selected"></option>
                             </select>
                             <a href="javascript:void(0);" class="btn btn-small btn-default draw-geojson" id="selected-geojson"><i class="fa fa-crop"></i> Add To Map</a>&nbsp;
                             <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
-                          <hr/>
-
+                          
+                          <input type="text" name="region-offset" id="region-offset" />
+                          <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-region-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                          
+                        </div>
+                      </div>
+                      
+                      <hr/>
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="use_enviro_env" name="constraints_type" id="use_enviro_env" />
+                        <label for="use_enviro_env" >Use Environmental Envelope</label>
+                      </div>
+                      
+                      <hr/>
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" />
+                        <label for="use_convex_hull" >Use Convex Hull</label>
+                      </div>
+                      
+                      <hr/>
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="drawn_constraint" name="constraints_type" id="drawn_constraint" />
+                        <label for="drawn_constraint" >Draw Constraints on Map</label>
+  
+                        <div id="draw-region" class="config" style="display:none;">
                           <div class="bccvl-draw-constraints">
-                            <p>Draw constraints on map</p>
                             <a href="javascript:void(0);" class="btn btn-small btn-default draw-polygon"><i class="fa fa-crop"></i> Draw On Map</a>&nbsp;
                             <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
-                          <hr/>
-                          <div class="bccvl-constraint-input">
-                            <p>Define constraints</p>
-                            <input type="text" placeholder="North bounds." class="bounds" name="north-bounds" id="north-bounds"/>
-                            <input type="text" placeholder="East bounds." class="bounds" name="east-bounds" id="east-bounds"/>
-                            <input type="text" placeholder="South bounds." class="bounds" name="south-bounds" id="south-bounds"/>
-                            <input type="text" placeholder="West bounds." class="bounds" name="west-bounds" id="west-bounds"/>
-                            <br/>
-                            <a href="javascript:void(0);" class="btn btn-small btn-default input-polygon"><i class="fa fa-crop"></i> Input Constraints</a>&nbsp;
-                            <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
-                          </div>
-
                         </div>
                       </div>
+                      
                     </div>
 
                     <!-- preview area -->
