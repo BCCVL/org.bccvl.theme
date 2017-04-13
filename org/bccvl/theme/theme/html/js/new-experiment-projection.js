@@ -20,8 +20,50 @@ define(
             expcommon.init_pa_controls()
 
             // setup dataset select widgets
-            new bccvl.SelectDict("species_distribution_models");
+            var sdmmodel = new bccvl.SelectDict("species_distribution_models");
             new bccvl.SelectList("future_climate_datasets");
+
+            // Biodiverse uses selectize
+            var setThresholds = function(value, item){
+                var selectIdx;
+                $.each($('.master-select')[0].selectize.currentResults.items, function(i, obj){
+                    if (obj.id === value){
+                        selectIdx = i;
+                    }
+                })
+                $.each(sdmmodel.$widget.find('select'), function(index, elem){
+                    if (! $(elem).hasClass('master-select')){
+                        $.each($(elem)[0].selectize.currentResults.items, function(i, obj){
+                           if (selectIdx == i){
+                               $(elem)[0].selectize.setValue(obj.id, true);
+                           }
+                        });
+                    }
+                });
+            }
+            // is this still in use?
+            $.each(sdmmodel.$widget.find('select'), function(index, elem) {
+                $(elem).selectize({create: true,
+                                   persist: false});
+            });
+            // re init selectize boxes on widget reload
+            sdmmodel.$widget.on('widgetChanged', function(event) {
+                $.each(sdmmodel.$widget.find('select'), function(index, elem) {
+
+                    if ($(elem).hasClass('master-select')){
+                        var $select = $(elem).selectize({create: false,
+                                       persist: false});
+                        var selectize = $select[0].selectize;
+
+                        selectize.on('item_add', setThresholds);
+                    } else {
+                        var $select = $(elem).selectize({create: true,
+                                       persist: false});
+                        var selectize = $select[0].selectize;
+
+                    }
+                });
+            });
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-projection_region')
 
@@ -32,7 +74,6 @@ define(
             })
 
         });
-
 
     }
 );
