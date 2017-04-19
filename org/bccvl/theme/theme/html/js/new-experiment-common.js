@@ -18,8 +18,8 @@ define(
                     select_region.load(function(callback) {
                         xhr && xhr.abort();
                         xhr = $.ajax({
-                            //url: 'https://app.bccvl.org.au/_spatial/ws/field/' + value,
-                            url: '/_spatial/ws/field/' + value,
+                            url: 'https://app.bccvl.org.au/_spatial/ws/field/' + value,
+                            //url: '/_spatial/ws/field/' + value,
                             success: function(data) {
                                 select_region.enable();
                                 
@@ -49,8 +49,8 @@ define(
                 searchField: ['name'],
                 onChange: function(value){
                     $.ajax({
-                        //url: 'https://app.bccvl.org.au/_spatial/ws/shape/geojson/' + value,
-                        url: '/_spatial/ws/shape/geojson/' + value,
+                        url: 'https://app.bccvl.org.au/_spatial/ws/shape/geojson/' + value,
+                        //url: '/_spatial/ws/shape/geojson/' + value,
                         success: function(result) {
                             // have to clean up ALA's geojson format
                             var geojson = {
