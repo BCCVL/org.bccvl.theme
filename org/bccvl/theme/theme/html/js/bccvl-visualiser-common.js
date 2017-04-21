@@ -2,7 +2,8 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 
+        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf) {
 
        // define some projections we need
@@ -1588,44 +1589,59 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                      }
                   })
                });
+               
+               
                $('input[type="radio"]#use_convex_hull').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
                  if($(this).prop('checked')){
-                     
-                 } else {
-                     
+                    var selected = $('#form-widgets-species_occurrence_dataset .selected-item input');
+
+                    if (occurrence_convexhull_polygon != null) {
+                      bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon, 
+                        constraintsLayer, map.getView().getProjection().getCode());
+                    } else {
+                        alert('No occurence selection could be found to generate a convex hull polygon. Please return to the occurrences tab and make a selection.');
+                    }
                  }
                });
+               
+               
                $('input[type="radio"]#use_enviro_env').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
                  if($(this).prop('checked')){
                      
                     var extent; 
                     
-                    $('body').find('input[data-bbox]').each(function(){
-                        var geom = $(this).data('bbox');
-                        geom = new ol.geom.Polygon([[
-                            [geom.left, geom.bottom],
-                            [geom.right, geom.bottom],
-                            [geom.right, geom.top],
-                            [geom.left, geom.top],
-                            [geom.left, geom.bottom]
-                        ]]);
-                        geom.type = $(this).data('genre');
-                        
-                        console.log(extent);
-                        console.log(geom);
-                        if (typeof extent !== "undefined"){
-                            extent = ol.extent.getIntersection(extent, geom.getExtent());
-                        } else {
-                            extent = geom.getExtent();
-                        }
-                    });
+                    var bboxes = $('body').find('input[data-bbox]');
                     
-                    var geojson = new ol.format.GeoJSON();
-                    var feat = new ol.geom.Polygon.fromExtent(extent);
-
-                    bccvl_common.renderPolygonConstraints(map, feat, constraintsLayer, 'EPSG:4326')
+                    if(bboxes.length > 0){
+                        $('body').find('input[data-bbox]').each(function(){
+                            var geom = $(this).data('bbox');
+                            geom = new ol.geom.Polygon([[
+                                [geom.left, geom.bottom],
+                                [geom.right, geom.bottom],
+                                [geom.right, geom.top],
+                                [geom.left, geom.top],
+                                [geom.left, geom.bottom]
+                            ]]);
+                            geom.type = $(this).data('genre');
+                            
+                            if (typeof extent !== "undefined"){
+                                extent = ol.extent.getIntersection(extent, geom.getExtent());
+                            } else {
+                                extent = geom.getExtent();
+                            }
+                        });
+                        
+                        var geojson = new ol.format.GeoJSON();
+                        var feat = new ol.geom.Polygon.fromExtent(extent);
+    
+                        bccvl_common.renderPolygonConstraints(map, feat, constraintsLayer, 'EPSG:4326');
+                    } else {
+                        alert('No selections made on previous tabs. Please select occurence and environmental datasets.');
+                    }
+                    
+                    
 
                  }
                });
