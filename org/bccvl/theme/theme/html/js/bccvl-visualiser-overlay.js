@@ -31,7 +31,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
         $('body').on('click', 'a.bccvl-compare-viz', function(event){
             event.preventDefault();
             var viztype = $(this).data('viz-type') || 'auto';
-            addNewLayer($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'), $(this).data('algorithm'), $(this).data('species'));
+            addNewLayer($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), viztype, $(this).data('layername'), $(this).data('subset'), $(this).data('algorithm'), $(this).data('species'));
             $(this).removeClass('bccvl-compare-viz').addClass('bccvl-remove-viz');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
         });

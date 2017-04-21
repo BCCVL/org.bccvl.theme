@@ -54,6 +54,7 @@
                                      data-uuid item/UID;
                                      data-mimetype dlinfo/contenttype;
                                      data-layername item/Title;
+                                     data-subset result_folder/job_params/subset|nothing;
                                      data-algorithm result_folder/job_params/function|nothing;
                                      data-viztype python: 'occurrence' if item.BCCDataGenre in ('DataGenreSpeciesOccurrence', 'DataGenreSpeciesAbsence', 'DataGenreSpeciesCollection') else 'auto';"
                      tal:condition="python: dlinfo['contenttype'] not
@@ -92,8 +93,8 @@
                       </p>
                     </tal:block>
                     <tal:block tal:condition="python: 'function' in result.job_params">
-                      <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span>
-                        <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                      <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span></p>
+                      <p><span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
                     </tal:block>
                     <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                       <p><span>Emissions Scenario: <tal:replace
@@ -143,6 +144,7 @@
                                          data-uuid item/UID;
                                          data-mimetype dlinfo/contenttype;
                                          data-layername item/Title;
+                                         data-subset result/job_params/subset|nothing;
                                          data-algorithm result/job_params/function|nothing;
                                          data-species species;"
                          tal:condition="python: dlinfo['contenttype'] not
