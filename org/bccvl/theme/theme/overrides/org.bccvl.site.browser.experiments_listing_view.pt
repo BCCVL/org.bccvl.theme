@@ -136,21 +136,38 @@
                           </li>
                         </ul>
                       </tal:if>                      
-                      <tal:if condition="exp/environmental_layers|nothing">
+                      <tal:if condition="exp/environmental_layers|nothing"
+                        tal:define="exptype python:exp.get('type')">
                         <li class="bccvl-experiment-parameters"
                             tal:repeat="dataset exp/environmental_layers">
-                            <tal:if condition="python:exp.get('type') != 'PROJECTION'">
-                              <strong>Layers:</strong> <br/>
-                            </tal:if>
-                            <tal:if condition="python:exp.get('type') == 'PROJECTION'">
+                            <tal:if condition="python:exptype == 'PROJECTION'">
                               <strong>Layers of Input Experiment:</strong> <br/>
+                            </tal:if>
+                            <tal:if condition="python:exptype == 'Migratory Modelling'">
+                              <strong>Subset Layers:</strong> <br/>
+                            </tal:if>                            
+                            <tal:if condition="python:exptype not in ('PROJECTION', 'Migratory Modelling')">
+                              <strong>Layers:</strong> <br/>
                             </tal:if>
                             <tal:repl tal:replace="dataset/title"/>
                           <ul>
-                            <li class="bccvl-experiment-parameters"
-                                tal:repeat="layer python: sorted(dataset['layers'])"
-                                tal:define="layer_vocab dataset_tools/layer_vocab"
-                                tal:content="python: layer_vocab.getTerm(layer).title if layer in layer_vocab else layer"></li>
+                            <tal:if condition="python:exptype == 'Migratory Modelling'"
+                                    tal:repeat="subdataset dataset/layers">
+                              <li class="bccvl-experiment-parameters"
+                                  tal:content="subdataset/title"></li>
+                              <ul>                
+                                <li class="bccvl-experiment-parameters"
+                                    tal:repeat="sublayer subdataset/layers"
+                                    tal:define="layer_vocab dataset_tools/layer_vocab"
+                                    tal:content="python: layer_vocab.getTerm(sublayer).title if sublayer in layer_vocab else sublayer"></li>
+                              </ul>
+                            </tal:if>
+                            <tal:if condition="python:exptype != 'Migratory Modelling'">
+                              <li class="bccvl-experiment-parameters"
+                                  tal:repeat="layer python: sorted(dataset['layers'])"
+                                  tal:define="layer_vocab dataset_tools/layer_vocab"
+                                  tal:content="python: layer_vocab.getTerm(layer).title if layer in layer_vocab else layer"></li>
+                            </tal:if>
                           </ul>
                         </li>
                       </tal:if>
