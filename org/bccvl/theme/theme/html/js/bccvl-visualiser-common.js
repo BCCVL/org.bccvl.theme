@@ -2,8 +2,9 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas'],
-   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas) {
+define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar', 
+        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf) {
 
        // define some projections we need
        proj4.defs([
@@ -1577,18 +1578,76 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            constraintTools: function(map, constraintsLayer, field_id) {
+               
+               // set up accordion-like functionality for the UI
+               $('input[type="radio"][name="constraints_type"]').change(function(){
+                  $('.constraint-method').find('input[type="radio"][name="constraints_type"]').each(function(){
+                     if($(this).prop('checked')){
+                         $(this).parents('.constraint-method').find('.config').slideDown();
+                     } else {
+                         $(this).parents('.constraint-method').find('.config').slideUp();
+                     }
+                  })
+               });
+               
+               
+               $('input[type="radio"]#use_convex_hull').change(function(){
+                 bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                 if($(this).prop('checked')){
+                    var selected = $('#form-widgets-species_occurrence_dataset .selected-item input');
+
+                    if (occurrence_convexhull_polygon != null) {
+                      bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon, 
+                        constraintsLayer, map.getView().getProjection().getCode());
+                    } else {
+                        alert('No occurence selection could be found to generate a convex hull polygon. Please return to the occurrences tab and make a selection.');
+                    }
+                 }
+               });
+               
+               
+               $('input[type="radio"]#use_enviro_env').change(function(){
+                 bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                 if($(this).prop('checked')){
+                     
+                    var extent; 
+                    
+                    var bboxes = $('body').find('input[data-bbox]');
+                    
+                    if(bboxes.length > 0){
+                        $('body').find('input[data-bbox]').each(function(){
+                            var geom = $(this).data('bbox');
+                            geom = new ol.geom.Polygon([[
+                                [geom.left, geom.bottom],
+                                [geom.right, geom.bottom],
+                                [geom.right, geom.top],
+                                [geom.left, geom.top],
+                                [geom.left, geom.bottom]
+                            ]]);
+                            geom.type = $(this).data('genre');
+                            
+                            if (typeof extent !== "undefined"){
+                                extent = ol.extent.getIntersection(extent, geom.getExtent());
+                            } else {
+                                extent = geom.getExtent();
+                            }
+                        });
+                        
+                        var geojson = new ol.format.GeoJSON();
+                        var feat = new ol.geom.Polygon.fromExtent(extent);
+    
+                        bccvl_common.renderPolygonConstraints(map, feat, constraintsLayer, 'EPSG:4326');
+                    } else {
+                        alert('No selections made on previous tabs. Please select occurence and environmental datasets.');
+                    }
+                    
+                    
+
+                 }
+               });
                $('.btn.draw-polygon').on('click', function(){
                    //map.un('singleclick', bccvl_common.getPointInfo);
                    bccvl_common.drawConstraints($(this), map, constraintsLayer);
-               });
-               $('.btn.input-polygon').on('click',  function(){
-                   var coords = {};
-                   coords.north = parseFloat($('#north-bounds').val());
-                   coords.east = parseFloat($('#east-bounds').val());
-                   coords.south = parseFloat($('#south-bounds').val());
-                   coords.west = parseFloat($('#west-bounds').val());
-
-                   bccvl_common.inputConstraints($(this), map, coords, constraintsLayer);
                });
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
@@ -1603,24 +1662,21 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                $('.btn.draw-geojson').on('click', function(e){
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
-               constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
-                   // update coordinate inputs
-                   if (evt.type == 'removefeature') {
-                       $('#north-bounds').val('');
-                       $('#east-bounds').val('');
-                       $('#south-bounds').val('');
-                       $('#west-bounds').val('');
+               $('.btn.add-offset').on('click', function(e){
+
+                   var offsetSize = $('#region-offset').val();
+                   if(offsetSize){
+                       
+                       var geojson = JSON.parse($(this).data('geojson'));
+                       var buffered = turf.buffer(geojson, offsetSize, 'kilometers');
+                       var newgeo = JSON.stringify(buffered);
+                       
+                       bccvl_common.renderGeojsonConstraints($(this), map, newgeo, constraintsLayer);
                    } else {
-                       var geom = evt.feature.getGeometry();
-                       var ext = geom.getExtent();
-                       var mapProj = map.getView().getProjection().getCode();
-                       var transfn = ol.proj.getTransform(mapProj, 'EPSG:4326');
-                       var newext = ol.extent.applyTransform(ext, transfn);
-                       $('#north-bounds').val(newext[3].toFixed(6));
-                       $('#east-bounds').val(newext[2].toFixed(6));
-                       $('#south-bounds').val(newext[1].toFixed(6));
-                       $('#west-bounds').val(newext[0].toFixed(6));
-                   }
+                       $('#region-offset').addClass('required error');
+                   } 
+               });
+               constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
                    // update hidden geojson field
                    if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');
@@ -1646,7 +1702,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
            },
-
            /************************************************
             * project extent from crs to crs, and clip
             * given extent to extent of from crs

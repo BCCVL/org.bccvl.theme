@@ -18,6 +18,7 @@ define(
                     select_region.load(function(callback) {
                         xhr && xhr.abort();
                         xhr = $.ajax({
+                            //url: 'https://app.bccvl.org.au/_spatial/ws/field/' + value,
                             url: '/_spatial/ws/field/' + value,
                             success: function(data) {
                                 select_region.enable();
@@ -42,12 +43,13 @@ define(
                 }
             });
 
-            $select_region = $('#select-region').selectize({
+            $select_region = $('.select-region').selectize({
                 valueField: 'pid',
                 labelField: 'name',
                 searchField: ['name'],
                 onChange: function(value){
                     $.ajax({
+                        //url: 'https://app.bccvl.org.au/_spatial/ws/shape/geojson/' + value,
                         url: '/_spatial/ws/shape/geojson/' + value,
                         success: function(result) {
                             // have to clean up ALA's geojson format
@@ -55,7 +57,7 @@ define(
                                 'type': 'Feature',
                                 'geometry': result
                             }
-                            $('#selected-geojson').data('geojson', JSON.stringify(geojson));
+                            $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
                         },
                         error: function(error) {
                             console.log(error);
