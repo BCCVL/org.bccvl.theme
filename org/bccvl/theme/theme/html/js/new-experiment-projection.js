@@ -28,7 +28,9 @@ define(
             // bind widgets to the constraint map
             $('.bccvl-new-projection').on('widgetChanged', function(e){
                 // Look for selected SDM experiment
-                expcommon.update_constraints_map(constraints, $('body').find('.selectedexperiment').find('input[type="hidden"]'))
+                if (! $("#form-widgets-modelling_region").val()){
+                    expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
+                }
             })
 
         });
