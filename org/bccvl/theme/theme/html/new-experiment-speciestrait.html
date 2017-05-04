@@ -343,6 +343,14 @@
 
                     <!-- list of available data -->
                     <div class="span4" style="overflow:visible;">
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" checked />
+                        <label for="use_convex_hull" >Use Convex Hull</label>
+                      </div>
+                      
+                      <hr/> 
+                      
                       <div class="constraint-method">
                         <input type="radio" value="region_no_offset" name="constraints_type" id="region_no_offset"/>
                         <label for="region_no_offset" >Select constraints by pre-defined region</label>
@@ -379,12 +387,7 @@
                       
                       <hr/>
                       
-                      <div class="constraint-method">
-                        <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" />
-                        <label for="use_convex_hull" >Use Convex Hull</label>
-                      </div>
                       
-                      <hr/>
                       
                       <div class="constraint-method">
                         <input type="radio" value="drawn_constraint" name="constraints_type" id="drawn_constraint" />
