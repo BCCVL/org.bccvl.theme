@@ -402,10 +402,11 @@ define(
 
             $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
                 // bind widgets to the constraint map
+
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
-                if (! $("#form-widgets-modelling_region").val()){
-                    expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'))
-                }
+                expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
+                // always default to convex hull after a selection.
+                $("#use_convex_hull").prop('checked', true);
 
             })
             
