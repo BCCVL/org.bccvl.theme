@@ -27,14 +27,17 @@ define(
             expcommon.init_pa_controls()
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
-
+            
+            // Draw constraint on map if any
+            expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
+            
             // bind widgets to the constraint map
             $('.bccvl-new-mme').on('widgetChanged', function(e){
+
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
-
-                var bboxes = $('body').find('input[data-bbox][type="text"], input[data-bbox][type="checkbox"]:checked')
-
-                expcommon.update_constraints_map(constraints, bboxes)
+                if (! $("#form-widgets-modelling_region").val()){
+                    expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
+                }
             })
 
 
