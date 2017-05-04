@@ -46,13 +46,26 @@
                 <th colspan="2">Selected</th>
                 <th>Species</th>
                 <th>Resolution</th>
+                <th>Threshold <br/>
+                  <select class="master-select" placeholder="Set all ...">
+                    <option value="" selected>Set all ... </option>
+                    <option value="Maximise TPR+TNR">Maximise TPR+TNR</option>
+                    <option value="Maximise PPV+NPV">Maximise PPV+NPV</option>
+                    <option value="Balance all errors">Balance all errors</option>
+                    <option value="TPR = TNR">TPR = TNR</option>
+                    <option value="0.5">0.5</option>
+                  </select>
+                </th>
+                <th>Min</th>
+                <th>Max</th>                
                 <th>Algorithm</th>
               </tr>
             </thead>
             <tbody>
           <tal:repeat tal:repeat="subitem item/subitems">
             <tr class="selectedmodels row-fluid"
-                 tal:define="modelobj subitem/item/getObject;
+                 tal:define="index repeat/subitem/index;
+                             modelobj subitem/item/getObject;
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
@@ -69,6 +82,25 @@
               <td>
                 <span tal:content="python: dataset_tools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
               </td>
+              <td>
+                <select name="form.widgets.fieldname.item.0.item.0.threshold"
+                        tal:attributes="name string:${view/name}.item.${index}.item.0.threshold;">
+                  <tal:block tal:repeat="threshold subitem/thresholds">
+                    <option value=""
+                            tal:define="value python:subitem['thresholds'][threshold];
+                                        thlabel subitem/threshold/label|nothing;"
+                            tal:attributes="value threshold;
+                                            selected python:thlabel == threshold"
+                            tal:content="string:${threshold} (${value})"/>
+                  </tal:block>
+                </select>
+              </td>
+              <td>
+                <span tal:content="subitem/layermd/min|nothing">Min</span>
+              </td>
+              <td>
+                <span tal:content="subitem/layermd/max|nothing">Max</span>
+              </td>              
               <td>
                 <span tal:content="python: modelobj.__parent__.job_params['function']">Algorithm id</span>
               </td>
