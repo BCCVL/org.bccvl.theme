@@ -583,33 +583,31 @@ define(
                     list = []
 
                     $.each(rawData, function(index, item) {
-                        // classs : "species"
-                        // commonName : "Leersia hexandra"
-                        // id : "1096033990"
-                        // imageUrl : "http://ecoinformatics.org.au/sites/default/files/TERN189x80.png"
-                        // moreInfoUrl : "http://aekos.org.au/FIXME"
-                        // recordsHeld : 123
-                        // scientificName : "science Leersia hexandra"
+                        // id: "868412238",
+                        // speciesName: "Ctenophorus isolepis",
+                        // recordsHeld: 630
                         result = {
-                            'title': item.commonName + ' <i class="taxonomy">' + item.scientificName + '</i>',
-                            'description': ' (' + item.classs + ') ' + item.recordsHeld + ' occurrences from AEKOS',
+                            'title': item.speciesName,
+                            'description': item.recordsHeld + ' occurrences from AEKOS',
                             'actions': {
                                 'viz': item.moreInfoUrl,
-                                'alaimport': '?import=Import&lsid=' + encodeURIComponent(item.scientificName) + "&common=" + encodeURIComponent(item.commonName) + "&taxon=" + encodeURIComponent(item.scientificName) + "&searchOccurrence_source=aekos",
+                                'alaimport': '?import=Import&lsid=' + encodeURIComponent(item.speciesName) + "&searchOccurrence_source=aekos",
                             },
-                            'friendlyName': item.commonName + ' ' + item.scientificName,
-                            'rank': item.classs,
+                            'friendlyName': item.speciesName,
+                            'rank': '',
                             'genus': '',
                             'family': '',
                             'occCount': item.recordsHeld,
-                            'thumbUrl': item.moreInfoUrl,
+                            'thumbUrl': '',
                         };
+
                         list.push(result);
                     });
                     return list;
                 },
                 getData: function(nextIndex, selectedItem, pageSize) {
-                    return aekos.speciesSummary(selectedItem);
+                    // Need to remove the number of records at end of the string
+                    return aekos.speciesSummary(selectedItem.replace(/ \(\d+\)$/, ""));
                 }
             }
         };
