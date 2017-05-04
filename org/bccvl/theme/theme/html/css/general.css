@@ -2976,3 +2976,11 @@ div.youtube-frame {
     display: block;
     z-index: 10000;
 }
+.constraint-method input[type="radio"]{
+    display: inline-block;
+    margin: .35em .35em;
+}
+.constraint-method label{
+    display: inline-block;
+    margin: .35em 0;
+}
