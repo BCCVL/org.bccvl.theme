@@ -43,7 +43,7 @@ define(
 
                 // add constraints layer to map after map instance has been created
                 $('body').on('map_created', function(e, map, params) {
-                    if (params.mimetype == 'image/geotiff') {
+                    if (params.mimetype == 'image/geotiff' || params.mimetype == 'image/tiff') {
                         map.addLayer(constraints);
                     }
                 })
