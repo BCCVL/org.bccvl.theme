@@ -346,7 +346,8 @@ define(
                         if (! algoparams.hasOwnProperty(name_parts[0])) {
                             algoparams[name_parts[0]] = {}
                         }
-                        algoparams[name_parts[0]][name_parts[1]] = param.value
+                        // strip of ':list' at end of param name
+                        algoparams[name_parts[0]][name_parts[1].replace(/:list$/g, '')] = param.value
                         continue
                     }
 
