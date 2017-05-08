@@ -43,7 +43,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common',
                 'mimetype': $(this).data('mimetype')
             }
 
-            if (params.mimetype == 'image/geotiff'){
+            if (params.mimetype == 'image/geotiff' || params.mimetype == 'image/tiff'){
                 vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));
             } else if (params.mimetype == 'image/png'){
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
