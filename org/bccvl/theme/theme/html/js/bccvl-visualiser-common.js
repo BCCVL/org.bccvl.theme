@@ -1616,20 +1616,22 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                     
                     if(bboxes.length > 0){
                         $('body').find('input[data-bbox]').each(function(){
-                            var geom = $(this).data('bbox');
-                            geom = new ol.geom.Polygon([[
-                                [geom.left, geom.bottom],
-                                [geom.right, geom.bottom],
-                                [geom.right, geom.top],
-                                [geom.left, geom.top],
-                                [geom.left, geom.bottom]
-                            ]]);
-                            geom.type = $(this).data('genre');
-                            
-                            if (typeof extent !== "undefined"){
-                                extent = ol.extent.getIntersection(extent, geom.getExtent());
-                            } else {
-                                extent = geom.getExtent();
+                            if($(this).data('genre') != 'DataGenreSpeciesOccurrence' && $(this).data('genre') != 'DataGenreSpeciesAbsence') {
+                                var geom = $(this).data('bbox');
+                                geom = new ol.geom.Polygon([[
+                                    [geom.left, geom.bottom],
+                                    [geom.right, geom.bottom],
+                                    [geom.right, geom.top],
+                                    [geom.left, geom.top],
+                                    [geom.left, geom.bottom]
+                                ]]);
+                                geom.type = $(this).data('genre');
+                                
+                                if (typeof extent !== "undefined"){
+                                    extent = ol.extent.getIntersection(extent, geom.getExtent());
+                                } else {
+                                    extent = geom.getExtent();
+                                }
                             }
                         });
                         
@@ -1654,10 +1656,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
+                       console.log($('input[type="radio"]#use_convex_hull'));
                       bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon, 
                         constraintsLayer, map.getView().getProjection().getCode());
+                      $('input[type="radio"]#use_convex_hull').prop('checked', true);
                    }
-
+                   
                });
                $('.btn.draw-geojson').on('click', function(e){
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
