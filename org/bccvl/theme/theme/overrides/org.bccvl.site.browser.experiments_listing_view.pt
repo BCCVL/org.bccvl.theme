@@ -143,15 +143,15 @@
                             <tal:if condition="python:exptype == 'PROJECTION'">
                               <strong>Layers of Input Experiment:</strong> <br/>
                             </tal:if>
-                            <tal:if condition="python:exptype == 'Migratory Modelling'">
+                            <tal:if condition="python:exptype == 'MIGRATORY'">
                               <strong>Subset Layers:</strong> <br/>
                             </tal:if>                            
-                            <tal:if condition="python:exptype not in ('PROJECTION', 'Migratory Modelling')">
+                            <tal:if condition="python:exptype not in ('PROJECTION', 'MIGRATORY')">
                               <strong>Layers:</strong> <br/>
                             </tal:if>
                             <tal:repl tal:replace="dataset/title"/>
                           <ul>
-                            <tal:if condition="python:exptype == 'Migratory Modelling'"
+                            <tal:if condition="python:exptype == 'MIGRATORY'"
                                     tal:repeat="subdataset dataset/layers">
                               <li class="bccvl-experiment-parameters"
                                   tal:content="subdataset/title"></li>
@@ -162,7 +162,7 @@
                                     tal:content="python: layer_vocab.getTerm(sublayer).title if sublayer in layer_vocab else sublayer"></li>
                               </ul>
                             </tal:if>
-                            <tal:if condition="python:exptype != 'Migratory Modelling'">
+                            <tal:if condition="python:exptype != 'MIGRATORY'">
                               <li class="bccvl-experiment-parameters"
                                   tal:repeat="layer python: sorted(dataset['layers'])"
                                   tal:define="layer_vocab dataset_tools/layer_vocab"
