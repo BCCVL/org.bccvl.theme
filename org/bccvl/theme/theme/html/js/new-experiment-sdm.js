@@ -38,7 +38,7 @@ define(
             $('#no_absence').click(function(){
                 $('.bccvl-absencestable').slideUp(100);
                 $('.bccvl-noabsence-dataset').slideDown(100);
-                update_pa_strategy('sre');
+                update_pa_strategy('random');
             });
 
             // Check if there is a pseudo absence dataset.
