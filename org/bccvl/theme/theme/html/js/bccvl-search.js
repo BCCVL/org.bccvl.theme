@@ -591,7 +591,7 @@ define(
                             'description': item.recordsHeld + ' occurrences from AEKOS',
                             'actions': {
                                 'viz': item.moreInfoUrl,
-                                'alaimport': '?import=Import&lsid=' + encodeURIComponent(item.speciesName) + "&searchOccurrence_source=aekos",
+                                'alaimport': '?import=Import&lsid=' + encodeURIComponent(item.speciesName) + "&taxon=" + encodeURIComponent(item.speciesName) + "&searchOccurrence_source=aekos",
                             },
                             'friendlyName': item.speciesName,
                             'rank': '',
