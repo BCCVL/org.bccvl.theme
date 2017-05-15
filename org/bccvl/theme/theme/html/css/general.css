@@ -280,6 +280,11 @@ p.label {
     color: white;
     padding: 4px 5px 2px 4px;
 }
+.label.label-MIGRATORY {
+    background-color: #e67e22;
+    color: white;
+    padding: 4px 5px 2px 4px;
+}
 .label.label-PROJECTION {
     background-color: #4dc345;
     color: white;
