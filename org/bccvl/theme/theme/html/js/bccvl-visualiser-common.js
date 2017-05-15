@@ -248,6 +248,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    for (var i = 0; i < (steps); i++) {
                        rangeArr.push(minVal + i);
                    }
+               } else if (standard_range == 'probability-difference'){
+                   // rainfall BOM standard range
+                   var rangeArr = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
+               } else if (standard_range == 'range-change'){
+                   // rainfall BOM standard range
+                   var rangeArr = [0,1,2,3];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -310,7 +316,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var colorArr = ['#e74c3c'];
                } else if (standard_range == 'absence') {
                    var colorArr = ['#3498db'];
-                   
+               } else if (standard_range == 'range-change') {
+                   var colorArr = ['#f08013', '#FFFFFF', '#164dca', '#41c127'];
+               } else if (standard_range == 'probability-difference') {
+                   var colorArr = ['#FFFFFF', '#e1edf8', '#cce1f4', '#9bc4e9','#82b4e4','#68a5de','#4e96d8','#3788d3','#227cce','#1072ca','#1171cb','#046ac8'];
                } else {
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
@@ -633,7 +642,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var legend_step_size = 5;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
-               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary']) > -1) {
+               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change']) > -1) {
                    legend_step_size = 1;
                }
                // Build legend obj
