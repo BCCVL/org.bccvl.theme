@@ -1899,7 +1899,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                    reader.getEntries(function(entries) {
                                        
                                        for (var i = 0; i < entries.length; i++) {
-                                           if (!entries[i].filename.includes('citation')) {
+                                           if (entries[i].filename.includes('citation')) {
                                                continue;
                                            }
                                            
