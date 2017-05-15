@@ -77,6 +77,11 @@ define(
                             text.className = 'row-fluid';
                             text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
                             target.appendChild(text);
+                            var errorDiv = document.createElement('div');
+                            errorDiv.setAttribute('id', 'errorMessages');
+                            errorDiv.className = 'alert alert-danger';
+                            errorDiv.style.display = 'none';
+                            target.appendChild(errorDiv);
                             var div = document.createElement('div');
                             div.className = 'row-fluid trait-dataset-summary';
                             var divHeader = document.createElement('div');
@@ -412,6 +417,17 @@ define(
             })
             
             $('.bccvl-new-speciestrait').trigger('widgetChanged');
+            
+            $('.bccvl-new-speciestrait').on('change', 'select.trait-nom', function(e){
+                // find form
+                var $form = $(e.target.form)
+                // validate form
+                var validator = $form.validate()
+                $('select.trait-nom').each(function(el){
+                    validator.element($(this));
+                });
+                
+            })
         });
     }
 );
