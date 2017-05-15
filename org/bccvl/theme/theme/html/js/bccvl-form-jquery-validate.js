@@ -288,6 +288,9 @@ define(
                 } else if (element.hasClass('require-from-group') && element.parents('div').hasClass('selecteditem')) {
                     element.parents('div.selecteditem').addClass('error');
                     error.insertBefore(element.parents('div.selecteditem'));
+                } else if (element.parents('#nomination-table').length > 0){
+                    $('#errorMessages').html(error).show();
+                    //element.parents('#nomination-table').find('#errorMessages')
                 } else {
                     error.insertAfter(element);
                 }
@@ -298,7 +301,9 @@ define(
                     $(element).parents('table').removeClass('error');
                 } else if ($(element).hasClass('require-from-group') && $(element).parents('div').hasClass('selecteditem')) {
                     $(element).parents('div.selecteditem').removeClass('error');
-                }
+                } else if (element.parents('#nomination-table').length > 0){
+                    $('#errorMessages').hide();
+                } 
             },
             // this is default behaviour
             submitHandler: function(form){

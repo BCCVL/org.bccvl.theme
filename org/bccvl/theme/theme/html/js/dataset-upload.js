@@ -73,7 +73,11 @@ define(
             $('.modal').on('show', function () {
                 $("body").addClass("modal-open");
             });
-
+            
+            $('input[required="required"]').parents('.control-group').find('.control-label').each(function(){
+                var label = $(this).text();
+                $(this).text(label+' (required)');
+            });
         });
 
     // ==============================================================
