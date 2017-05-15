@@ -69,8 +69,11 @@ define(
 
             // bind widgets to the constraint map
             $('.bccvl-new-projection').on('widgetChanged', function(e){
+
                 // Look for selected SDM experiment
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
+                expcommon.update_constraints_map(constraints, $('body').find('.selectedexperiment').find('input[type="hidden"]'));
+                // update any environmental selections
                 expcommon.update_constraints_map(constraints, $('body').find('input[data-bbox]'));
                 // always default to convex hull after a selection.
                 $("#use_convex_hull").prop('checked', true);
