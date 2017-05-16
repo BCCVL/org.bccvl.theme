@@ -51,7 +51,29 @@ define(
                 $('.bccvl-absencestable').slideUp(100);
                 $('.bccvl-noabsence-dataset').slideDown(100);
             }
-
+            
+            // Change default PA settings for algorithm based on user PA selection
+            $('.bccvl-new-sdm').on('change', '#have_absence', function(){
+                if($(this).prop('checked')){
+                    $('.paramgroup').find('select').each(function(){
+                      var sel = $(this);
+                      if(sel.attr('id').indexOf('pa-strategy')){
+                          sel.val('none');
+                      }
+                    })
+                }
+            });
+                    
+            $('.bccvl-new-sdm').on('change', '#no_absence', function(){
+                if($(this).prop('checked')){
+                    $('.paramgroup').find('select').each(function(){
+                      var sel = $(this);
+                      if(sel.attr('id').indexOf('pa-strategy')){
+                          sel.val('random');
+                      }
+                    })
+                }
+            });
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
 

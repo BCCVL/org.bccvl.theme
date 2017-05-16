@@ -266,7 +266,7 @@ define(
                     $(element).parents('table').removeClass('error');
                 } else if ($(element).hasClass('require-from-group') && $(element).parents('div').hasClass('selecteditem')) {
                     $(element).parents('div.selecteditem').removeClass('error');
-                } else if (element.parents('#nomination-table').length > 0){
+                } else if ( $(element).parents('#nomination-table').length > 0){
                     $('#errorMessages').hide();
                 } 
             },
