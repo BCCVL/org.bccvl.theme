@@ -2984,3 +2984,13 @@ div.youtube-frame {
     display: inline-block;
     margin: .35em 0;
 }
+.geojson-offset {
+    margin-top:1em;
+}
+.geojson-offset input {
+    width:50px;
+    margin-bottom:0;
+}
+.geojson-offset a.btn {
+    margin-left:1em;
+}

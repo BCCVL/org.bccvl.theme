@@ -1406,9 +1406,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                draw = new ol.interaction.Draw({
                    source: constraintsLayer.getSource(),
-                   type: /** @type {ol.geom.GeometryType} */ 'LineString',
-                   geometryFunction: geometryFunction,
-                   maxPoints: 2
+                   type: /** @type {ol.geom.GeometryType} */ 'Polygon',
+                   //geometryFunction: geometryFunction,
+                   //maxPoints: 2
                });
 
                draw.on('drawstart', function(evt){
@@ -1424,44 +1424,45 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                map.addInteraction(draw);
            },
-
-           inputConstraints: function(el, map, coords, constraintsLayer){
-
-               // clear layer
-               constraintsLayer.getSource().clear();
-
-               var bounds = [
-                   [coords.west, coords.north], 
-                   [coords.east, coords.north], 
-                   [coords.east, coords.south], 
-                   [coords.west, coords.south],
-                   [coords.west, coords.north]
-               ];
-
-               var polygon = new ol.geom.Polygon([bounds]);
-               var mapProj = map.getView().getProjection().getCode();
-               polygon.transform('EPSG:4326', mapProj);
-
-               var feature = new ol.Feature({
-                   geometry: polygon
-               });
-
-               feature.setId('geo_constraints');
-
-               var style = new ol.style.Style({
-                   fill: new ol.style.Fill({
-                       color: 'rgba(0, 160, 228, 0.1)'
-                   }),
-                   stroke: new ol.style.Stroke({
-                       color: 'rgba(0, 160, 228, 0.9)',
-                       width: 2
-                   })
-               });
-
-               feature.setStyle(style);
-               constraintsLayer.getSource().addFeature(feature);
-
-           },
+    
+            // no longer in use
+           //inputConstraints: function(el, map, coords, constraintsLayer){
+//
+           //    // clear layer
+           //    constraintsLayer.getSource().clear();
+//
+           //    var bounds = [
+           //        [coords.west, coords.north], 
+           //        [coords.east, coords.north], 
+           //        [coords.east, coords.south], 
+           //        [coords.west, coords.south],
+           //        [coords.west, coords.north]
+           //    ];
+//
+           //    var polygon = new ol.geom.Polygon([bounds]);
+           //    var mapProj = map.getView().getProjection().getCode();
+           //    polygon.transform('EPSG:4326', mapProj);
+//
+           //    var feature = new ol.Feature({
+           //        geometry: polygon
+           //    });
+//
+           //    feature.setId('geo_constraints');
+//
+           //    var style = new ol.style.Style({
+           //        fill: new ol.style.Fill({
+           //            color: 'rgba(0, 160, 228, 0.1)'
+           //        }),
+           //        stroke: new ol.style.Stroke({
+           //            color: 'rgba(0, 160, 228, 0.9)',
+           //            width: 2
+           //        })
+           //    });
+//
+           //    feature.setStyle(style);
+           //    constraintsLayer.getSource().addFeature(feature);
+//
+           //},
 
            renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
 
