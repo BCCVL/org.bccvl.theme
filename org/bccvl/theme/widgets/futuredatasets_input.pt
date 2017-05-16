@@ -25,9 +25,11 @@
       <tal:repeat tal:repeat="item view/items">
         <div class="selecteditem"
              tal:define="layer item/title;
-                         brain item/title;">
+                         itemob item/brain/getObject;
+                         dstool itemob/@@dataset_tools;">
           <input type="hidden" value="" name="form.widgets.fieldname:list" class="item"
                  tal:attributes="value item/uuid;
+                                 data-bbox dstool/bbox|nothing;
                                  name string:${view/name}:list;"/>
           <a class="btn pull-right" href="#"><i class="icon-remove"></i></a>
           <p><strong><span class="selected-option"
