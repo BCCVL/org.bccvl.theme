@@ -140,6 +140,7 @@
                                          data-uuid item/UID;
                                          data-mimetype dlinfo/contenttype;
                                          data-layername item/Title;
+                                         data-subset result/job_params/subset|nothing;
                                          data-algorithm result/job_params/function|nothing;
                                          data-species species;"
                          tal:condition="python: dlinfo['contenttype'] not

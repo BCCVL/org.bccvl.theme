@@ -212,6 +212,9 @@ color: #ffffff!important;
 .experiment-msdm span {
     color: #9b59b6!important;
 }
+.experiment-mme span {
+    color: #e67e22!important;
+}
 .experiment-cce span {
     color: #4dc345!important;
 }
@@ -249,6 +252,11 @@ color: #ffffff!important;
     color: white!important;
     text-decoration: none;
 }
+.experiment-mme a:hover, .experiment-mme a:hover span {
+    background: #e67e22!important;
+    color: white!important;
+    text-decoration: none;
+}
 .experiment-ensemble a:hover, .experiment-ensemble a:hover span {
     background: #34495e!important;
     color: white!important;
@@ -269,6 +277,11 @@ p.label {
 }
 .label.label-STM {
     background-color: #eca21e;
+    color: white;
+    padding: 4px 5px 2px 4px;
+}
+.label.label-MIGRATORY {
+    background-color: #e67e22;
     color: white;
     padding: 4px 5px 2px 4px;
 }
@@ -2984,6 +2997,18 @@ div.youtube-frame {
     display: inline-block;
     margin: .35em 0;
 }
+
+.mme-subset {
+    border-bottom:1px solid #ddd;
+    margin-bottom:1em;
+    padding-bottom:1em;
+    float:left;
+}
+
+.mme-subset .bccvl-auto-viz {
+    display:none;
+}
+
 .geojson-offset {
     margin-top:1em;
 }
