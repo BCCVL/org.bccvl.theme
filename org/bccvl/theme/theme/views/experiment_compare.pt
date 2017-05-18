@@ -146,7 +146,8 @@
                                          data-layername item/Title;
                                          data-subset result/job_params/subset|nothing;
                                          data-algorithm result/job_params/function|nothing;
-                                         data-species species;"
+                                         data-species species;
+                                         data-genre item/BCCDataGenre|nothing;"
                          tal:condition="python: dlinfo['contenttype'] not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>
