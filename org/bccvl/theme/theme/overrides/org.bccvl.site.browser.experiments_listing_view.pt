@@ -171,6 +171,16 @@
                           </ul>
                         </li>
                       </tal:if>
+                      <tal:if condition="exp/traits_dataset_params|nothing">
+                        <strong>Trait dataset configuration:</strong> <br/>
+                        <ul>
+                          <li tal:repeat="(key, val) exp/traits_dataset_params">
+                            <span class="bccvl-experiment-parameters" 
+                                  tal:content="python: key + ' - ' + val"></span>
+                          </li>
+                        </ul>
+                      </tal:if>
+
                       <tal:if condition="exp/years|nothing">
                         <li class="bccvl-experiment-parameters" tal:content="exp/years"></li>
                       </tal:if>
