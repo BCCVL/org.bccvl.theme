@@ -56,6 +56,7 @@
                                      data-layername item/Title;
                                      data-subset result_folder/job_params/subset|nothing;
                                      data-algorithm result_folder/job_params/function|nothing;
+                                     data-constraint python: 'constraint' if item.BCCDataGenre in ('DataGenreCP_ENVLOP', 'DataGenreFP_ENVLOP') else None;
                                      data-viztype python: 'occurrence' if item.BCCDataGenre in ('DataGenreSpeciesOccurrence', 'DataGenreSpeciesAbsence', 'DataGenreSpeciesCollection') else 'auto';"
                      tal:condition="python: dlinfo['contenttype'] not
                                     in (None, 'None', 'application/octet-stream', 'application/x-r-data', 'txt/html', 'text/html')">
@@ -146,8 +147,8 @@
                                          data-layername item/Title;
                                          data-subset result/job_params/subset|nothing;
                                          data-algorithm result/job_params/function|nothing;
-                                         data-species species;
-                                         data-genre item/BCCDataGenre|nothing;"
+                                         data-constraint python: 'constraint' if item.BCCDataGenre in ('DataGenreCP_ENVLOP', 'DataGenreFP_ENVLOP') else None;
+                                         data-species species;"
                          tal:condition="python: dlinfo['contenttype'] not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>

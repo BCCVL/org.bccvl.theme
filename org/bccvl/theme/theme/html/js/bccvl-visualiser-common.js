@@ -1278,7 +1278,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        'tooltip': '',
                                        'filename': layer.filename
                                    };
-                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP') {
+                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP' || data.genre == 'DataGenreFP_ENVLOP') {
                                        layerdef.legend = 'suitability';
                                        layerdef.unit = ' ';
                                        layerdef.unitfull = 'Environmental suitability';

@@ -11,9 +11,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
             var viztype = $(this).data('viz-type') || 'auto';
-            var genre = $(this).data('genre')
-            var constraint = (genre && genre == 'DataGenreCP_ENVLOP') ? 'unconstraint': undefined;
-            var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm'), constraint]
+            var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm'), $(this).data('constraint')]
                 .filter(function(n){return n != undefined})
                 .join(" - ");
             renderNewMap($(this).data('uuid'),$(this).attr('href'), 'minimap_'+$(this).data('uuid'), viztype, $(this).data('layername'), label);
