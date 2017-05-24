@@ -1900,9 +1900,18 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                     var cells = rows.selectAll("td")
                         .data(function(row) {
                             return columns.map(function(column) {
+                                
+                                // check if value is a number
+                                // round to 3 decimal places if so
+                                var val = row[column];
+                                var isNum = Number.isNaN(val);
+                                if (isNum){
+                                    val = parseFloat(val).toFixed(3);
+                                } 
+
                                 return {
                                     column: column,
-                                    value: row[column]
+                                    value: val
                                 };
                             });
                         })
