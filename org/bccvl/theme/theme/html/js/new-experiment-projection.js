@@ -78,6 +78,8 @@ define(
                 // always default to convex hull after a selection.
                 $("#use_convex_hull").prop('checked', true);
             })
+            
+            $('.bccvl-new-projection').trigger('widgetChanged');
 
         });
 

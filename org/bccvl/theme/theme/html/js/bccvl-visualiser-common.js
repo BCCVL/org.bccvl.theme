@@ -1517,6 +1517,17 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
+               
+               // Convert and write to geojson for offset tools.
+               var featureGroup = constraintsLayer.getSource().getFeatures();
+                  
+               var geojson  = new ol.format.GeoJSON();
+
+               var as_geojson = geojson.writeFeatures(featureGroup, {
+                 featureProjection: 'EPSG:3857',
+                 dataProjection: 'EPSG:4326'
+               });
+               $('#add-conv-hull-offset').data('geojson', as_geojson);
 
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
            }, 
@@ -1666,7 +1677,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
-                       console.log($('input[type="radio"]#use_convex_hull'));
+
                       bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon, 
                         constraintsLayer, map.getView().getProjection().getCode());
                       $('input[type="radio"]#use_convex_hull').prop('checked', true);
@@ -1678,7 +1689,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                });
                $('.btn.add-offset').on('click', function(e){
 
-                   var offsetSize = $('#region-offset').val();
+                   var offsetSize = $(this).parent().find('.region-offset').val();
                    if(offsetSize){
                        
                        var geojson = JSON.parse($(this).data('geojson'));
@@ -1687,7 +1698,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        
                        bccvl_common.renderGeojsonConstraints($(this), map, newgeo, constraintsLayer);
                    } else {
-                       $('#region-offset').addClass('required error');
+                       $(this).parent().find('.region-offset').addClass('required error');
                    } 
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {

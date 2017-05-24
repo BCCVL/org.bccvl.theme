@@ -348,6 +348,10 @@
                       <div class="constraint-method">
                         <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" checked />
                         <label for="use_convex_hull" >Use Convex Hull</label>
+                        <div class="geojson-offset">
+                          <input type="text" name="region-offset" class="region-offset" /> KM
+                          <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                        </div>
                       </div>
                       
                       <hr/> 
@@ -373,7 +377,7 @@
                             <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon"><i class="fa fa-times"></i> Clear</a>
                           </div>
                           <div class="geojson-offset">
-                            <input type="text" name="region-offset" id="region-offset" /> KM
+                            <input type="text" name="region-offset" class="region-offset" /> KM
                             <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-region-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
                           </div>
                         </div>
