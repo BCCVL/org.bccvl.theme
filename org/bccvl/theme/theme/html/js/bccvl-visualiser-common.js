@@ -1278,7 +1278,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        'tooltip': '',
                                        'filename': layer.filename
                                    };
-                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP') {
+                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP' || data.genre == 'DataGenreFP_ENVLOP') {
                                        layerdef.legend = 'suitability';
                                        layerdef.unit = ' ';
                                        layerdef.unitfull = 'Environmental suitability';
@@ -1760,7 +1760,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                width: 2
                            })
                        });
-                    } else if (geometry.type == "DataGenreCC"){
+                    } else if (geometry.type == "DataGenreCC" || geometry.type == "DataGenreE"){
                         bccvl_common.addLayerLegend(map.getTarget(), 'Climate/Env. Dataset', 'rgba(46, 204, 113, 0.9)', null, null);
                         var style = new ol.style.Style({
                            fill: new ol.style.Fill({

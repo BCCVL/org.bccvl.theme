@@ -20,6 +20,7 @@
     <xi:include href="rules/experiment-biodiverse-vis.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-msdm.xml" />
+    <xi:include href="rules/new-experiment-mme.xml" />
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/new-experiment-biodiverse.xml" />
     <xi:include href="rules/new-experiment-speciestrait.xml" />

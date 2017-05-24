@@ -81,6 +81,7 @@ define(
             
             $('.bccvl-new-projection').trigger('widgetChanged');
 
+            $('.bccvl-new-projection').trigger('widgetChanged');
         });
 
     }

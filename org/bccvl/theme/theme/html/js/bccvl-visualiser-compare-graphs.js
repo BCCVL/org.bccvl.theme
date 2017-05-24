@@ -16,7 +16,7 @@ define(['jquery', 'bccvl-visualiser-common'],
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), 'minigraph_'+$(this).data('uuid'));
             } 
             if (typeof $(this).data('algorithm') !== 'undefined') {
-                var label = [$(this).data('species'), $(this).data('algorithm')]
+                var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm')]
                     .filter(function(n){return n != undefined})
                     .join(" - ");
                 $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'<br/> (<em>'+label+'</em>)</label>');
