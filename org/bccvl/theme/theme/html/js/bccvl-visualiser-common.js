@@ -1497,6 +1497,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                constraintsLayer.getSource().clear();
 
                var feature = new ol.Feature({geometry: geomObject});
+               
+               var coordinates = feature.getGeometry().getCoordinates();
 
                // Do projection only if they are in different projection
                if (projCode != map.getView().getProjection().getCode()) {
@@ -1518,6 +1520,24 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
                
+               var wgs84Sphere = new ol.Sphere(6378137);
+               var sourceProj = map.getView().getProjection();
+               var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
+                    sourceProj, 'EPSG:4326'));
+               var coordinates = geom.getLinearRing(0).getCoordinates();
+               var area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+
+               var output;
+               if (area > 10000) {
+                 output = (Math.round(area / 1000000 * 100) / 100) +
+                     ' ' + 'km<sup>2</sup>';
+               } else {
+                 output = (Math.round(area * 100) / 100) +
+                     ' ' + 'm<sup>2</sup>';
+               }
+               
+               $('label[for="use_convex_hull"]').html('Use Convex Hull <em>(estimated area '+output+')</em>');
+              
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
                   
@@ -1527,6 +1547,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                  featureProjection: 'EPSG:3857',
                  dataProjection: 'EPSG:4326'
                });
+               
                $('#add-conv-hull-offset').data('geojson', as_geojson);
 
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
@@ -1544,6 +1565,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                   var hull1 = [vhull];
                   var polygonHull = new ol.geom.Polygon(hull1);
                   // Save the polygon and render it on map
+                  
                   bccvl_common.setOccurrencePolygon(polygonHull);
                   bccvl_common.renderPolygonConstraints(map, polygonHull, constraintsLayer, 'EPSG:4326');
               }
