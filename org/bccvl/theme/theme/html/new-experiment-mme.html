@@ -249,7 +249,7 @@
                     <div class="span4"><div class="control-group">
 
                        <div class="bccvl-noabsence-dataset alert alert-info">
-                         <p>Pseudo-absence points will be generated for the experiment.  You can change the pseudo-absence strategy used in the experiment below, or for adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
+                         <p>Pseudo-absence points will be generated for the experiment.  You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
                         
                          <div class="paramgroup leader" id="pa_controls">
                             <h3>Pseudo Absence Configuration</h3>
@@ -352,10 +352,15 @@
                     <p class="span12 bccvl-tab-description">
                       Define any geographic constraints for the experiment.
                     </p>
-                    <p>
-                      This tab is optional.<br/>
-                      Here you can constrain your model output to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. The default constraint is the convex hull (= smallest polygon around the occurrence records), which is generated for each subset separately. The green box indicates the area of the selected environmental/climate variables. If this area is smaller than the convex hull, the model will only be trained in that area. If you do not want to change the geographic extent of your model simply click next.
-                    </p>
+                       <ul>
+                         <li>The model will be trained using data from the constrained area.</li>
+                         <li>Default is convex hull (=minimum polygon) around occurrence records (blue area on the map).</li>
+                         <li>Environmental envelope is the area of selected environmental variables (green box on the map).</li>
+                         <li>Results will include a map for the constraint area and the environmental envelope (unconstrained area).</li>
+                      </ul>
+                      <p>
+                        <a href="https://support.ehelp.edu.au/solution/articles/6000173076-setting-the-constraint-area" target="_blank">Read More ...</a>
+                      </p>
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">

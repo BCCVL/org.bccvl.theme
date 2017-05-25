@@ -3019,3 +3019,7 @@ div.youtube-frame {
 .geojson-offset a.btn {
     margin-left:1em;
 }
+
+.tab ul {
+    display:inline-block;
+}

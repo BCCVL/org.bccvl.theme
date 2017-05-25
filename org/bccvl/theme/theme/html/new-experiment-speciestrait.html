@@ -334,10 +334,15 @@
                     <p class="span12 bccvl-tab-description">
                       Define any geographic constraints for the experiment.
                     </p>
-                    <p>
-                      This tab is optional.<br/>
-                      Here you can constrain the input data to a particular pre-defined area or region (e.g. Queensland), or by drawing or entering in bounding box coordinates. Only the data records in the constrained area will be used. If you want to use all the data and not constrain your model simply click next.
-                    </p>
+                     <ul>
+                         <li>The model will be trained using data from the constrained area.</li>
+                         <li>Default is convex hull (=minimum polygon) around occurrence records (blue area on the map).</li>
+                         <li>Environmental envelope is the area of selected environmental variables (green box on the map).</li>
+                         <li>Results will include a map for the constraint area and the environmental envelope (unconstrained area).</li>
+                      </ul>
+                      <p>
+                        <a href="https://support.ehelp.edu.au/solution/articles/6000173076-setting-the-constraint-area" target="_blank">Read More ...</a>
+                      </p>
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">
