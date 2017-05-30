@@ -69,9 +69,9 @@
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
-                       name="form.widgets.fieldname.item.0.item:list"
+                       name="form.widgets.fieldname.item.0.item.0.uuid"
                        tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item.0.item:list;
+                                       name string:${view/name}.item.0.item.${index}.uuid;
                                        required view/required;
                                        checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
@@ -84,7 +84,7 @@
               </td>
               <td>
                 <select name="form.widgets.fieldname.item.0.item.0.threshold"
-                        tal:attributes="name string:${view/name}.item.${index}.item.0.threshold;">
+                        tal:attributes="name string:${view/name}.item.0.item.${index}.threshold;">
                   <tal:block tal:repeat="threshold subitem/thresholds">
                     <option value=""
                             tal:define="value python:subitem['thresholds'][threshold];
@@ -106,6 +106,9 @@
               </td>
             </tr>
           </tal:repeat>
+          <input type="hidden" value="" name="from.widgets.name.item.0.count" tal:condition="item/subitems"
+                 tal:attributes="value python: len(item['subitems']);
+                                 name string:${view/name}.item.0.count"/>
           <tr class="selectedmodels row-fluid"
               tal:condition="not: item/subitems">
             <td colspan="5"><span>No suitable datasets available within this experiment</span></td>

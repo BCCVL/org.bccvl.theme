@@ -145,7 +145,7 @@
                          adapters -->
                     <ul>
                       <tal:block tal:condition="dsuuid"
-                                 tal:define="dsuuid result/job_params/species_occurrence_dataset|nothing">
+                                 tal:define="dsuuid result/job_params/species_occurrence_dataset|result/job_params/species_distribution_models|nothing">
                         <li tal:condition="species"
                             tal:define="dsmd python: dataset_tools.metadata(uuid=dsuuid);
                                         species dsmd/species/scientificName|nothing">
