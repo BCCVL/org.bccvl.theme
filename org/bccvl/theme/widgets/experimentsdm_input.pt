@@ -71,7 +71,7 @@
                 <input type="checkbox" value=""
                        name="form.widgets.fieldname.item"
                        tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item
+                                       name string:${view/name}.item;
                                        data_name string:${view/name}.item.0.item.${index}.uuid;
                                        required view/required;
                                        checked subitem/selected;"/>&nbsp;
