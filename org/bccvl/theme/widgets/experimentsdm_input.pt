@@ -69,9 +69,10 @@
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
-                       name="form.widgets.fieldname.item.0.item.0.uuid"
+                       name="form.widgets.fieldname.item"
                        tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item.0.item.${index}.uuid;
+                                       name string:${view/name}.item
+                                       data_name string:${view/name}.item.0.item.${index}.uuid;
                                        required view/required;
                                        checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
