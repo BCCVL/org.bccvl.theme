@@ -153,6 +153,12 @@
                           <tal:replace tal:replace="species">Species</tal:replace>
                         </li>
                       </tal:block>
+                      <tal:block tal:condition="python: 'subset' in result.job_params">
+                        <li tal:condition="result/job_params/subset">
+                          <strong>Data Subset: </strong>
+                          <tal:replace tal:replace="result/job_params/subset">Subset1 (1,2,3)</tal:replace>
+                        </li>
+                      </tal:block>
                       <tal:block tal:condition="python: 'function' in result.job_params">
                         <li tal:condition="result/job_params/function">
                           <strong>Algorithm: </strong>
