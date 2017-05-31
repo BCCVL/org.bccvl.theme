@@ -70,8 +70,10 @@
               <td>
                 <input type="checkbox" value=""
                        name='form.widgets.fieldname.item.0.item.0.uuid'
+                       group='form.widgets.fieldname'
                        tal:attributes="value subitem/uuid;
                                        name string:${view/name}.item.0.item.${index}.uuid;
+                                       group string:${view/name};
                                        checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
               </td>
