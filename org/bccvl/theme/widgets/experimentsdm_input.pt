@@ -69,11 +69,10 @@
                              modelmd python:dataset_tools.bccvlmd(modelobj)">
               <td>
                 <input type="checkbox" value=""
-                       name='form.widgets.fieldname.item.0.item.0.uuid'
-                       group='form.widgets.fieldname'
-                       tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item.0.item.${index}.uuid;
-                                       group string:${view/name};
+                       name='form.widgets.fieldname.item.0.selection:list'
+                       tal:attributes="value index;
+                                       name string:${view/name}.item.0.selection:list;
+                                       required view/required;
                                        checked subitem/selected;"/>&nbsp;
                 <span tal:content="python: dataset_tools.genre_title(modelmd['genre'])">Model Title</span>
               </td>
@@ -97,6 +96,12 @@
                 </select>
               </td>
               <td>
+                <input type="hidden" value="" 
+                       name="form.widgets.fieldname.item.0.item.0.uuid" 
+                       tal:attributes="value subitem/uuid;
+                                       name string:${view/name}.item.0.item.${index}.uuid;"/>
+              </td>
+              <td>
                 <span tal:content="subitem/layermd/min|nothing">Min</span>
               </td>
               <td>
@@ -107,9 +112,6 @@
               </td>
             </tr>
           </tal:repeat>
-          <input type="hidden" value="" name="from.widgets.name.item.0.count" tal:condition="item/subitems"
-                 tal:attributes="value python: len(item['subitems']);
-                                 name string:${view/name}.item.0.count"/>
           <tr class="selectedmodels row-fluid"
               tal:condition="not: item/subitems">
             <td colspan="5"><span>No suitable datasets available within this experiment</span></td>
