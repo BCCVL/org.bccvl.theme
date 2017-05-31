@@ -94,14 +94,23 @@
                     </tal:block>
                     <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
                       <p><span>Emissions Scenario: <tal:replace
-                               tal:replace="result/job_params/emsc">bioclim</tal:replace></span>
-                          <span>Circulation Model: <tal:replace
-                                tal:replace="result/job_params/gcm">bioclim</tal:replace></span>
-                          <span>Year: <tal:replace
-                                tal:replace="result/job_params/year">bioclim</tal:replace></span>
-                          <span>State: <tal:replace tal:replace="result/@@dataset_tools/job_state"></tal:replace></span></p>
+                               tal:replace="result/job_params/emsc">bioclim</tal:replace>
+                      </span></p>
+                      <p><span>Circulation Model: <tal:replace
+                                tal:replace="result/job_params/gcm">bioclim</tal:replace>
+                      </span></p>
+                      <p><span>Year: <tal:replace
+                                tal:replace="result/job_params/year">bioclim</tal:replace>
+                      </span></p>
+                      <p><span>State: <tal:replace 
+                                tal:replace="result/@@dataset_tools/job_state"></tal:replace>
+                      </span></p>
                     </tal:block>
-                    
+                    <tal:block tal:condition="python: 'subset' in result.job_params">
+                      <p><span>Data Subset:
+                        <tal:replace tal:replace="result/job_params/subset">Subset-name</tal:replace>
+                      </span></p>
+                    </tal:block>
                   </div>
                 </div>
                 
