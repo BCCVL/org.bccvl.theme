@@ -45,6 +45,7 @@
               <tr>
                 <th colspan="2">Selected</th>
                 <th>Species</th>
+                <th>Data Subset</th>
                 <th>Resolution</th>
                 <th>Threshold <br/>
                   <select class="master-select" placeholder="Set all ...">
@@ -80,6 +81,9 @@
                 <span tal:content="modelmd/species/scientificName">Species data</span>
               </td>
               <td>
+                <span tal:content="python: modelobj.__parent__.job_params.get('subset')">Data Subset</span>
+              </td>
+              <td>
                 <span tal:content="python: dataset_tools.resolution_vocab.getTerm(modelmd['resolution']).title">Resolution data</span>
               </td>
               <td>
@@ -96,12 +100,6 @@
                 </select>
               </td>
               <td>
-                <input type="hidden" value="" 
-                       name="form.widgets.fieldname.item.0.item.0.uuid" 
-                       tal:attributes="value subitem/uuid;
-                                       name string:${view/name}.item.0.item.${index}.uuid;"/>
-              </td>
-              <td>
                 <span tal:content="subitem/layermd/min|nothing">Min</span>
               </td>
               <td>
@@ -109,6 +107,12 @@
               </td>              
               <td>
                 <span tal:content="python: modelobj.__parent__.job_params['function']">Algorithm id</span>
+              </td>
+              <td>
+                <input type="hidden" value="" 
+                       name="form.widgets.fieldname.item.0.item.0.uuid" 
+                       tal:attributes="value subitem/uuid;
+                                       name string:${view/name}.item.0.item.${index}.uuid;"/>
               </td>
             </tr>
           </tal:repeat>
