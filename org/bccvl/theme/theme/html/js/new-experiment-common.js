@@ -22,11 +22,11 @@ define(
                             url: '/_spatial/ws/field/' + value,
                             success: function(data) {
                                 select_region.enable();
-                                
+
                                 var results = [];
-                                
+
                                 $.each(data.objects, function (key, feature) {
-                                    
+
                                     var match = {
                                         'name': feature.name,
                                         'pid': feature.pid
@@ -106,7 +106,7 @@ define(
                             $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
                                 $(c).val($(c).attr('data-default'));
                             });
-                            
+
                             $configBlock.hide(250);
                         });
                     }
@@ -153,18 +153,18 @@ define(
             })
 
             $algoCheckboxes.parents('table').on('click', 'a.select-none', function() {
-                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change'); 
+                $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');
             })
-            
+
         }
 
         function init_constraints_map(selector, $tab, fieldname) {
-            
+
             var mapid = $(selector).attr('id');
             var base_map = vizcommon.renderBase(mapid)
             var map = base_map.map
             var visLayers = base_map.visLayers
-            
+
             // add layers for bboxes and drawing area
             var features = new ol.Collection(); // drawn feature
             var constraintsLayer = new ol.layer.Vector({
@@ -236,13 +236,13 @@ define(
             // recreate legend
             $('#'+map.getTarget()).find('.olLegend').remove();
             vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
-                
+
             // clear any existing layers.
             visLayers.getLayers().clear(); // clear species layers
             bboxLayer.getSource().clear(); // clear bboxes as well
             vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
             constraintsLayer.getSource().clear(); // clear the constraint
-                
+
             var geometries = [];
 
             $els.each(function() {
@@ -251,7 +251,7 @@ define(
                     type == 'DataGenreSpeciesAbsence' ||
                     type == 'DataGenreTraits' ||
                     type == 'DataGenreSpeciesCollection') {
-                        
+
                     var data_url = $(this).data('url');
                     vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
                         // FIXME: assumes only one layer because of species data
@@ -270,7 +270,7 @@ define(
                         }
                     })
                 } else {
-                    
+
                     var bbox = $(this).attr('data-bbox');
                     if (typeof bbox !== typeof undefined && bbox !== false) {
                         var geom = $(this).data('bbox');
@@ -284,7 +284,7 @@ define(
                         geom.type = type;
                         geometries.push(geom);
                     } else {
-                        
+
                         // Get the region constraint from the SDM experiment as the constraint for
                         // Climate Change Experiment. Need to transform constraint geometry to
                         // EPSG:4326 as used in vizcommon.renderPolygonConstraints
@@ -310,18 +310,18 @@ define(
             // draw collected geometries
             vizcommon.drawBBoxes(map, geometries, bboxLayer);
         }
-        
+
         function init_pa_controls () {
             $('#pa_controls').on('change', 'input, select', function(e){
                 var fieldtype = $(this).attr('id');
                 var val = $(this).val();
-                
+
                 $('[id*="'+fieldtype+'"]').each(function(){
-                    $(this).val(val);   
+                    $(this).val(val);
                 });
             });
         }
-            
+
         return {
             init_region_selector: init_region_selector,
             init_algorithm_selector: init_algorithm_selector,
@@ -332,4 +332,4 @@ define(
     }
 )
 
-       
+
