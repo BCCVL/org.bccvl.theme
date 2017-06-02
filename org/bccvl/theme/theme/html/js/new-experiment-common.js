@@ -297,10 +297,12 @@ define(
                                 var geojsonParser = new ol.format.GeoJSON();
                                 var srcProjection = geojsonParser.readProjection(region_constraint);
                                 var feature = geojsonParser.readFeature(region_constraint);
+                                var occurrence_polygon = feature.getGeometry().transform(srcProjection, 'EPSG:4326')
+                                vizcommon.setOccurrencePolygon(occurrence_polygon)
                                 vizcommon.renderPolygonConstraints(
-                                    map, 
-                                    feature.getGeometry().transform(srcProjection, 'EPSG:4326'), 
-                                    constraintsLayer, 
+                                    map,
+                                    occurrence_polygon,
+                                    constraintsLayer,
                                     'EPSG:4326')
                             }
                         });

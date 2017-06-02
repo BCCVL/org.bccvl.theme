@@ -138,7 +138,7 @@
                                  data-title item_title_or_id;
                                  data-mimetype python:item_obj.format;
                                  data-genre item_genre;"
-                 tal:condition="python: item_obj.format == 'text/csv' and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence')">
+                 tal:condition="python: item_obj.format == 'text/csv' and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence','DataGenreSpeciesCollection')">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#" class="bccvl-modal-auto-viz btn btn-primary btn-mini"
