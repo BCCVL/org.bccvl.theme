@@ -248,9 +248,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    for (var i = 0; i < (steps); i++) {
                        rangeArr.push(minVal + i);
                    }
-               } else if (standard_range == 'probability-difference'){
-                   // rainfall BOM standard range
-                   var rangeArr = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
                } else if (standard_range == 'range-change'){
                    // rainfall BOM standard range
                    var rangeArr = [0,1,2,3];
@@ -317,9 +314,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'absence') {
                    var colorArr = ['#3498db'];
                } else if (standard_range == 'range-change') {
-                   var colorArr = ['#f08013', '#FFFFFF', '#164dca', '#41c127'];
-               } else if (standard_range == 'probability-difference') {
-                   var colorArr = ['#FFFFFF', '#e1edf8', '#cce1f4', '#9bc4e9','#82b4e4','#68a5de','#4e96d8','#3788d3','#227cce','#1072ca','#1171cb','#046ac8'];
+                   var colorArr = ['#FFFFFF', '#f08013', '#FFFFFF', '#164dca', '#41c127'];
                } else {
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
@@ -417,7 +412,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
            getStandardRange: function(layerdef) {
                var standard_range;
-               if ($.inArray(layerdef.legend, ['rainfall', 'monrainfall', 'temperature', 'suitability']) > -1) {
+               if ($.inArray(layerdef.legend, ['rainfall', 'monrainfall', 'temperature', 'suitability', 'probability-difference', 'range-change']) > -1) {
                    return layerdef.legend;
                } else if(typeof layerdef.legend === 'undefined') {
                    if (layerdef.datatype == 'continuous') {
@@ -478,7 +473,31 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var styleObj;
                var style = $.Deferred();
 
-               if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
+               if (layerdef.legend == 'range-change') {
+                    // if it is a range-change we have a fixed set of categories
+                    styleObj = {
+                        minval: 0,
+                        maxVal: 3,
+                        steps: 4,
+                        startpoint: {},
+                        midpoint: {},
+                        endpoint: {},
+                        // FIXME: standard_range is quite chaotic,.... sometimes it is generic,
+                        //        in other places too specific (e.g. createLegend assumes it is a ClampingMask if standard_range=='discrete')
+                        // standard_range: 'categorical'
+                        standard_range: 'range-change'
+                    }
+                    // also our labels are fixd
+                    layerdef.labels = [
+                        'Contraction',
+                        'Absent no change',
+                        'Present no change',
+                        'Expansion'
+                    ]
+                    style.resolve(styleObj, layerdef)
+                    return style
+
+               } else if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
                    bccvlapi.dm.get_rat(uuid, layerdef.token, true).then(
                        function(data, status, jqXHR) {
 
@@ -600,7 +619,17 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            midpoint: null,
                            endpoint: null
                        };
-                   } else if (standard_range == 'default') {
+                    } else if (standard_range == 'probability-difference') {
+                        // values between -1.0 and 1.0
+                        styleObj = {
+                            minVal: -1.0,
+                            maxVal: 1.0,
+                            steps: 10,
+                            startpoint: {r:240, g:128, b:19},
+                            midpoint: null,
+                            endpoint: {r:65, g:193, b:39}
+                        }
+                    } else if (standard_range == 'default') {
                        // standard raster
                        styleObj = {
                            minVal: layerdef.min,
@@ -642,7 +671,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var legend_step_size = 5;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
-               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change']) > -1) {
+               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference']) > -1) {
                    legend_step_size = 1;
                }
                // Build legend obj
@@ -691,7 +720,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                }
 
                for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
-                   if (standard_range == 'categorical' || standard_range == 'misc_categorical' ){
+                   if (standard_range == 'categorical' || standard_range == 'misc_categorical' || standard_range == 'range-change'){
                        panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>'+layerdef.labels[i]+'</label>';
                    } else if (standard_range == 'binary'){
                        if (rangeArr[i] == 1){
@@ -1536,7 +1565,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                      ' ' + 'm<sup>2</sup>';
                }
 
-               $('label[for="use_convex_hull"]').html('Use Convex Hull <em>(estimated area '+output+')</em>');
+               $('label[for="use_convex_hull"] > em').html('(estimated area '+output+')');
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
