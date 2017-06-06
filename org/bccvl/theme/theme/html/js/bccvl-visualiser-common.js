@@ -417,7 +417,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
            getStandardRange: function(layerdef) {
                var standard_range;
-               if ($.inArray(layerdef.legend, ['rainfall', 'monrainfall', 'temperature', 'suitability']) > -1) {
+               if ($.inArray(layerdef.legend, ['rainfall', 'monrainfall', 'temperature', 'suitability', 'probability-difference', 'range-change']) > -1) {
                    return layerdef.legend;
                } else if(typeof layerdef.legend === 'undefined') {
                    if (layerdef.datatype == 'continuous') {
