@@ -133,7 +133,7 @@
                 <li><a href="#tab-nomination" data-toggle="tab">Configuration</a></li>
                 <li><a href="#tab-enviro" data-toggle="tab">Climate &amp; Environmental Data</a></li>
                 <li><a href="#tab-geo" data-toggle="tab">Constraints</a></li>
-                
+
                 <li><a href="#tab-review" data-toggle="tab">Run</a></li>
               </ul>
             </div>
@@ -148,7 +148,7 @@
                     <div class="span6">
                       <h3>In this experiment, you can analyse the effect of environmental variables on 1 or more species traits, and also test how traits differ among multiple species.</h3>
                       <a href="https://support.bccvl.org.au/support/solutions/articles/6000083195-species-trait-modelling-experiment" target="_blank">Check our Support page for guidance on this experiment.</a>
-                    
+
                     </div>
                     <div class="span6">
                       <p class="bccvl-tab-description">
@@ -164,8 +164,8 @@
                   </div>
                 </fieldset>
               </div>
-              
-              
+
+
               <!-- page: configuration  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-configuration">
                 <fieldset class="tab">
@@ -177,16 +177,16 @@
 
                   <!-- experiment algo 1 -->
                   <div class="row-fluid">
-                    
+
                     <div class="span4">
                       <h5><strong> Test the effect of environmental variables on traits</strong></h5>
-                    
+
                       <div class="control-group">
 
                         <table class="table table-hover bccvl-algorithmtable-species">
                           <thead>
                             <tr>
-                              The algorithms below can be used to run a model that will test how the species traits are affected by all selected environmental variables. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default.  
+                              The algorithms below can be used to run a model that will test how the species traits are affected by all selected environmental variables. Once selected you can change the configuration options for each algorithm, however you don't have to do this as all options are set to default.
                             </tr>
                             <tr><th colspan="2"></th>
                               <th style="text-align:right;">
@@ -195,18 +195,18 @@
                             </tr>
                           </thead>
                           <tbody>
-                          </tbody>                          
+                          </tbody>
                         </table>
                       </div>
                     </div>
-                    
+
                     <div class="bccvl-algoconfig span8" id="algoConfig-species">
                     </div>
                   </div>
 
                   <!-- experiment algo 2 -->
                   <div class="row-fluid">
-                    
+
                     <div class="span4"><div class="control-group">
                         <h5><strong> Test how traits differ among species <br/><em>(requires multiple input species)</em></strong></h5>
                         <table class="table table-hover bccvl-algorithmtable-diff">
@@ -221,15 +221,15 @@
                             </tr>
                           </thead>
                           <tbody>
-                          </tbody>                          
+                          </tbody>
                         </table>
                       </div>
                     </div>
-                    
+
                     <div class="bccvl-algoconfig span8" id="algoConfig-diff">
                     </div>
                   </div>
-                    
+
                 </fieldset>
               </div>
 
@@ -248,7 +248,7 @@
                     <div id="formfield-form-widgets-species_traits_dataset">
                     </div>
 
-                    <!-- preview area 
+                    <!-- preview area
                          <div class="span8">
                            <div class="bccvl-preview-pane" id="map1">
                              <span class="preview-text">Preview Area</span>
@@ -258,7 +258,7 @@
                   </div>
                 </fieldset>
               </div>
-              
+
                             <!-- page: source datasets  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane" id="tab-nomination">
                 <fieldset class="tab">
@@ -275,7 +275,7 @@
                   </div>
                 </fieldset>
               </div>
-              
+
               <!-- page: environmental layers  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ -->
               <div class="tab-pane active" id="tab-enviro">
                 <fieldset class="tab">
@@ -313,7 +313,7 @@
                      <div class="alert alert-warning">
                          <strong>Required</strong> </br>if you have not selected any environmental variables in the Input Datasets tab.
                      </div>
-                      
+
                     </div>
 
                     <!-- preview area -->
@@ -349,7 +349,7 @@
 
                     <!-- list of available data -->
                     <div class="span4" style="overflow:visible;">
-                      
+
                       <div class="constraint-method">
                         <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" checked />
                         <label for="use_convex_hull" >Use Convex Hull</label>
@@ -358,13 +358,13 @@
                           <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
                         </div>
                       </div>
-                      
-                      <hr/> 
-                      
+
+                      <hr/>
+
                       <div class="constraint-method">
                         <input type="radio" value="region_no_offset" name="constraints_type" id="region_no_offset"/>
                         <label for="region_no_offset" >Select constraints by pre-defined region</label>
-                        
+
                         <div id="select-region" class="config" style="display:none;">
                           <div class="constraints" id="formfield-form-widgets-modelling_region"></div>
                           <div class="bccvl-constraint-geojson-input">
@@ -387,22 +387,22 @@
                           </div>
                         </div>
                       </div>
-                      
+
                       <hr/>
-                      
+
                       <div class="constraint-method">
                         <input type="radio" value="use_enviro_env" name="constraints_type" id="use_enviro_env" />
                         <label for="use_enviro_env" >Use Environmental Envelope</label>
                       </div>
-                      
+
                       <hr/>
-                      
-                      
-                      
+
+
+
                       <div class="constraint-method">
                         <input type="radio" value="drawn_constraint" name="constraints_type" id="drawn_constraint" />
                         <label for="drawn_constraint" >Draw Constraints on Map</label>
-  
+
                         <div id="draw-region" class="config" style="display:none;">
                           <div class="bccvl-draw-constraints">
                             <a href="javascript:void(0);" class="btn btn-small btn-default draw-polygon"><i class="fa fa-share-alt"></i> Draw On Map</a>&nbsp;
@@ -410,7 +410,7 @@
                           </div>
                         </div>
                       </div>
-                      
+
                     </div>
 
                     <!-- preview area -->
