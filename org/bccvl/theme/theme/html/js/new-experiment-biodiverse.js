@@ -54,6 +54,16 @@ define(
                         var $select = $(elem).selectize({create: true,
                                        persist: false});
                         var selectize = $select[0].selectize;
+                        
+                        selectize.addOption([
+                            { value: "Maximise TPR+TNR", text: "Maximise TPR+TNR" },
+                            { value: "Maximise PPV+NPV", text: "Maximise PPV+NPV" },
+                            { value: "Balance all errors", text: "Balance all errors" },
+                            { value: "TPR = TNR", text: "TPR = TNR" },
+                            { value: "0.5", text: "0.5" }
+                        ]);
+                        
+                        selectize.refreshOptions(false);
 
                     }
                 });
