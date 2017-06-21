@@ -895,7 +895,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                if (bounds && proj){
                    var extent = bccvl_common.transformExtent(bounds, proj, 'EPSG:3857');
-                   newLayer.setExtent(extent);
+                   if (extent) {
+                       newLayer.setExtent(extent);
+                   }
                }
 
                return newLayer;
@@ -1784,6 +1786,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
             * given extent to extent of from crs
             */
            transformExtent: function(extent, fromcrs, tocrs) {
+               var proj = ol.proj.get(fromcrs);
+               if (!proj) {
+                   return null;
+               }
                var ret = ol.extent.getIntersection(extent, ol.proj.get(fromcrs).getExtent());
                if (fromcrs != tocrs) {
                    ret = ol.proj.transformExtent(ret, fromcrs, tocrs);
