@@ -43,13 +43,13 @@
                  tal:attributes="class string:table ${python: 'error' if error else ''};">
             <thead>
               <tr>
-                <th colspan="2">Selected</th>
+                <th colspan="2">Selected <br/> <a href="javascript:void(0);" class="select-all">All</a> / <a href="javascript:void(0);" class="select-none">None</a></th>
                 <th>Species</th>
                 <th>Data Subset</th>
                 <th>Resolution</th>
                 <th>Threshold <br/>
                   <select class="master-select" placeholder="Set all ...">
-                    <option value="" selected>Set all ... </option>
+                    <option value="Use Recommended" selected>Use Recommended</option>
                     <option value="Maximise TPR+TNR">Maximise TPR+TNR</option>
                     <option value="Maximise PPV+NPV">Maximise PPV+NPV</option>
                     <option value="Balance all errors">Balance all errors</option>

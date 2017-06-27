@@ -625,9 +625,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                             minVal: -1.0,
                             maxVal: 1.0,
                             steps: 10,
-                            startpoint: {r:240, g:128, b:19},
-                            midpoint: null,
-                            endpoint: {r:65, g:193, b:39}
+                            startpoint: {r:180, g:20, b:20},
+                            midpoint: {r:255, g:255, b:255},
+                            endpoint: {r:10, g:130, b:230}
                         }
                     } else if (standard_range == 'default') {
                        // standard raster
@@ -895,7 +895,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                if (bounds && proj){
                    var extent = bccvl_common.transformExtent(bounds, proj, 'EPSG:3857');
-                   newLayer.setExtent(extent);
+                   if (extent) {
+                       newLayer.setExtent(extent);
+                   }
                }
 
                return newLayer;
@@ -1784,6 +1786,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
             * given extent to extent of from crs
             */
            transformExtent: function(extent, fromcrs, tocrs) {
+               var proj = ol.proj.get(fromcrs);
+               if (!proj) {
+                   return null;
+               }
                var ret = ol.extent.getIntersection(extent, ol.proj.get(fromcrs).getExtent());
                if (fromcrs != tocrs) {
                    ret = ol.proj.transformExtent(ret, fromcrs, tocrs);
@@ -1934,11 +1940,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                 // check if value is a number
                                 // round to 3 decimal places if so
                                 var val = row[column];
-                                var isNum = Number.isNaN(val);
-                                if (isNum){
-                                    val = parseFloat(val).toFixed(3);
-                                }
+                                var parsed = Number.parseFloat(val);
+                                var notNumber = Number.isNaN(parsed);
 
+                                if (! notNumber){
+                                    val = parsed.toFixed(3);
+                                }
                                 return {
                                     column: column,
                                     value: val
