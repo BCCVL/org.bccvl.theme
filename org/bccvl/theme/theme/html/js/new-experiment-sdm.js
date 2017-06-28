@@ -57,7 +57,7 @@ define(
                 if($(this).prop('checked')){
                     $('.paramgroup').find('select').each(function(){
                       var sel = $(this);
-                      if(sel.attr('id').indexOf('pa-strategy')){
+                      if(sel.attr('id').indexOf('pa-strategy') > -1){
                           sel.val('none');
                       }
                     })
@@ -68,7 +68,7 @@ define(
                 if($(this).prop('checked')){
                     $('.paramgroup').find('select').each(function(){
                       var sel = $(this);
-                      if(sel.attr('id').indexOf('pa-strategy')){
+                      if(sel.attr('id').indexOf('pa-strategy') > -1){
                           sel.val('random');
                       }
                     })
