@@ -1567,7 +1567,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                      ' ' + 'm<sup>2</sup>';
                }
 
-               $('label[for="use_convex_hull"] > em').html('(estimated area '+output+')');
+               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
