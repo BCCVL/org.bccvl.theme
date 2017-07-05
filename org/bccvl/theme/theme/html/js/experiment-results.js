@@ -6,7 +6,9 @@ define(
     function( $, vizmap, vizcommon, ol, modals, bccvlapi) {
         // ==============================================================
         $(function() {
-
+            
+            var infomodal = new modals.InfoModal('info-modal');
+            infomodal.bind('body', "[data-toggle='InfoModal']");
             var removemodal = new modals.RemoveModal('remove-modal');
             removemodal.bind('body', 'a.remove-experiment-btn');
             var sharingmodal = new modals.SharingModal('sharing-modal');
