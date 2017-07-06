@@ -251,6 +251,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'range-change'){
                    // rainfall BOM standard range
                    var rangeArr = [0,1,2,3];
+               } else if (standard_range == 'probability-difference'){  
+                   rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -315,6 +317,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var colorArr = ['#3498db'];
                } else if (standard_range == 'range-change') {
                    var colorArr = ['#FFFFFF', '#f08013', '#FFFFFF', '#164dca', '#41c127'];
+               } else if (standard_range == 'probability-difference') {
+                   // rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+                   var colorArr = ['#B41414', '#C34343', '#D27272', '#E1A1A1', '#F0D0D0', '#FFFFFF', '#e7f2fb', '#CEE6FA', '#9DCDF5', '#6CB4F0', '#3B9BEB', '#0A82E6'];
                } else {
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
@@ -619,16 +624,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            midpoint: null,
                            endpoint: null
                        };
-                    } else if (standard_range == 'probability-difference') {
-                        // values between -1.0 and 1.0
-                        styleObj = {
-                            minVal: -1.0,
-                            maxVal: 1.0,
-                            steps: 9,
-                            startpoint: {r:180, g:20, b:20},
-                            midpoint: {r:255, g:255, b:255},
-                            endpoint: {r:10, g:130, b:230}
-                        }
+                   //} else if (standard_range == 'probability-difference') {
+                   //    // values between -1.0 and 1.0
+                   //    styleObj = {
+                   //        minVal: -1.0,
+                   //        maxVal: 1.0,
+                   //        steps: 9,
+                   //        startpoint: {r:180, g:20, b:20},
+                   //        midpoint: {r:255, g:255, b:255},
+                   //        endpoint: {r:10, g:130, b:230}
+                   //    }
                     } else if (standard_range == 'default') {
                        // standard raster
                        styleObj = {
