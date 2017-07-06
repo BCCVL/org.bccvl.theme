@@ -624,7 +624,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                         styleObj = {
                             minVal: -1.0,
                             maxVal: 1.0,
-                            steps: 10,
+                            steps: 9,
                             startpoint: {r:180, g:20, b:20},
                             midpoint: {r:255, g:255, b:255},
                             endpoint: {r:10, g:130, b:230}
