@@ -127,6 +127,13 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
+                    <a class="fine btn btn-mini btn-info download-btn"
+                       title="Download Exp Metadata"
+                       href="#downloadurl"
+                       tal:attributes="href string:${result/getURL}/expmetadata.txt;">
+                      <i class="fa fa-download icon-link"></i> Metadata
+                    </a>
+
                     <tal:block tal:define="state result_tools/job_state"
                                tal:condition="python:state == 'FAILED'">
                       <a class="fine btn btn-mini btn-info email-support-btn"
