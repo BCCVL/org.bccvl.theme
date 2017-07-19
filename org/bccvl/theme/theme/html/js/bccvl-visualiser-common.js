@@ -1455,7 +1455,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    evt.feature.setId('geo_constraints');
                    // interaction finished, free up mouse events
                    map.removeInteraction(draw);
+                   
+                   var geom = evt.feature.getGeometry();
                    //map.on('singleclick', bccvl_common.getPointInfo)
+                   bccvl_common.estimateGeoArea(map, geom);
                });
 
                map.addInteraction(draw);
@@ -1500,7 +1503,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 //
            //},
 
-           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
+           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer, isPredefinedRegion){
 
                // clear layer
                constraintsLayer.getSource().clear();
@@ -1520,11 +1523,37 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        width: 2
                    })
                });
-
+               
+               // don't attempt to calc area if it's a predefined region
+               if (! isPredefinedRegion){
+                   bccvl_common.estimateGeoArea(map, feature.getGeometry());
+               }
+               
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-
+        
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
+           },
+           
+           estimateGeoArea: function(map, geomObject){
+               
+               var wgs84Sphere = new ol.Sphere(6378137);
+               var sourceProj = map.getView().getProjection();
+               var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
+                    sourceProj, 'EPSG:4326'));
+               var coordinates = geom.getLinearRing(0).getCoordinates();
+               var area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+
+               var output;
+               if (area > 10000) {
+                 output = (Math.round(area / 1000000 * 100) / 100) +
+                     ' ' + 'km<sup>2</sup>';
+               } else {
+                 output = (Math.round(area * 100) / 100) +
+                     ' ' + 'm<sup>2</sup>';
+               }
+
+               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');  
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
@@ -1555,24 +1584,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-
-               var wgs84Sphere = new ol.Sphere(6378137);
-               var sourceProj = map.getView().getProjection();
-               var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
-                    sourceProj, 'EPSG:4326'));
-               var coordinates = geom.getLinearRing(0).getCoordinates();
-               var area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
-
-               var output;
-               if (area > 10000) {
-                 output = (Math.round(area / 1000000 * 100) / 100) +
-                     ' ' + 'km<sup>2</sup>';
-               } else {
-                 output = (Math.round(area * 100) / 100) +
-                     ' ' + 'm<sup>2</sup>';
-               }
-
-               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');
+               
+               bccvl_common.estimateGeoArea(map, geomObject);
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
@@ -1661,6 +1674,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // set up accordion-like functionality for the UI
                $('input[type="radio"][name="constraints_type"]').change(function(){
                   $('.constraint-method').find('input[type="radio"][name="constraints_type"]').each(function(){
+                     $('#estimated-area > em').html('');
                      if($(this).prop('checked')){
                          $(this).parents('.constraint-method').find('.config').slideDown();
                      } else {
@@ -1672,7 +1686,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                $('input[type="radio"]#use_convex_hull').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                     
                  if($(this).prop('checked')){
+                    $(this).parents('.constraint-method').find('.geojson-offset').slideDown();
+                    
                     var selected = $('#form-widgets-species_occurrence_dataset .selected-item input');
 
                     if (occurrence_convexhull_polygon != null) {
@@ -1682,7 +1699,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                         alert('No occurence selection could be found to generate a convex hull polygon. Please return to the occurrences tab and make a selection.');
                     }
-                 }
+                 } 
                });
 
 
@@ -1695,9 +1712,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                     var bboxes = $('body').find('input[data-bbox]');
 
                     if(bboxes.length > 0){
+                        var geom;
                         $('body').find('input[data-bbox]').each(function(){
                             if($(this).data('genre') != 'DataGenreSpeciesOccurrence' && $(this).data('genre') != 'DataGenreSpeciesAbsence') {
-                                var geom = $(this).data('bbox');
+                                geom = $(this).data('bbox');
                                 geom = new ol.geom.Polygon([[
                                     [geom.left, geom.bottom],
                                     [geom.right, geom.bottom],
@@ -1715,10 +1733,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                             }
                         });
 
-                        var geojson = new ol.format.GeoJSON();
-                        var feat = new ol.geom.Polygon.fromExtent(extent);
+                        //var geojson = new ol.format.GeoJSON();
+                        //var feat = new ol.geom.Polygon.fromExtent(extent);
 
-                        bccvl_common.renderPolygonConstraints(map, feat, constraintsLayer, 'EPSG:4326');
+                        bccvl_common.renderPolygonConstraints(map, geom, constraintsLayer, 'EPSG:4326');
                     } else {
                         alert('No selections made on previous tabs. Please select occurence and environmental datasets.');
                     }
@@ -1744,7 +1762,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                });
                $('.btn.draw-geojson').on('click', function(e){
-                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
+                  var isPredefinedRegion = false;
+                  if (e.target.id === "selected-geojson"){
+                    isPredefinedRegion = true;
+                  }
+                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer, isPredefinedRegion);
                });
                $('.btn.add-offset').on('click', function(e){
 

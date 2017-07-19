@@ -26,10 +26,11 @@ define(
                                 var results = [];
 
                                 $.each(data.objects, function (key, feature) {
-
+                                    //console.log(feature.area_km);
                                     var match = {
                                         'name': feature.name,
-                                        'pid': feature.pid
+                                        'pid': feature.pid,
+                                        'area_km': Math.round(feature.area_km)
                                     }
                                     results.push(match);
                                 });
@@ -47,22 +48,47 @@ define(
                 valueField: 'pid',
                 labelField: 'name',
                 searchField: ['name'],
+                render: {
+                    item: function(data) {
+                        return "<div data-value='"+data.value+"' data-area='"+data.area_km+"' class='item'>"+data.name+" </div>";
+                    }
+                },
                 onChange: function(value){
+                    
                     $.ajax({
                         //url: 'https://app.bccvl.org.au/_spatial/ws/shape/geojson/' + value,
                         url: '/_spatial/ws/shape/geojson/' + value,
                         success: function(result) {
+
                             // have to clean up ALA's geojson format
                             var geojson = {
                                 'type': 'Feature',
                                 'geometry': result
                             }
                             $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
+                            
+                            
                         },
                         error: function(error) {
                             console.log(error);
                         }
                     })
+                },
+                onItemRemove: function(value) {
+                    $('#estimated-area > em').html('');
+                },
+                onItemAdd: function(value, $item){
+                    $('#estimated-area > em').html('Estimated area '+$item.data('area')+'km<sup>2</sup> <hr/>');
+                    console.log($item.data('area'));
+                    console.log($item.data('area') > 500000);
+                    if ($item.data('area') > 500000){
+                        console.log('does this run');
+                        $('input.region-offset, #add-region-offset').attr('disabled', true);
+                        $('#add-region-offset').after('<span class="region-offset-error"><small>&nbsp; Too large to apply offset.</small></span>')
+                    } else {
+                        $('input.region-offset, #add-region-offset').attr('disabled', false);
+                        $('span.region-offset-error').remove();
+                    }
                 }
             });
 
