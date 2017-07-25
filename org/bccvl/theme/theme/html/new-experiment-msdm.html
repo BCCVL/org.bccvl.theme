@@ -249,11 +249,11 @@
                     <div class="span4"><div class="control-group">
 
                        <div class="bccvl-noabsence-dataset alert alert-info">
-                         <p>Pseudo-absence points will be generated for the experiment. You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
-
+                         <p>Pseudo-absence points will be generated for the experiment.  You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
+                         <p>Select and configure your strategy. <a href="https://support.bccvl.org.au/support/solutions/articles/6000127043-absence-data" target="_blank">Read More ...</a></p>
+                            
                          <div class="paramgroup leader" id="pa_controls">
-                            <h3>Pseudo Absence Configuration</h3>
-                            <p>Select and configure your strategy. <a href="https://support.bccvl.org.au/support/solutions/articles/6000127043-absence-data" target="_blank">Read More ...</a></p>
+                            <h3>Pseudo Absence Configuration (PA models)</h3>
                             <div class="control-group" data-fieldname="pa_ratio_fieldgroup" id="pa_ratio_fieldgroup">
                               <label for="pa_ratio" class="control-label">
                                 Absence-presence ratio
@@ -305,9 +305,18 @@
                               <input id="pa_disk_max" name="pa_disk_max" class="text-widget decimal-field" value="" type="text" data-default="" min="0">
                               </div>
                             </div>
+                            <hr/>
+                            <h3>Background Configuration (Maxent only)</h3>
+                            <div class="control-group" data-fieldname="pa_maxent_background" id="pa_maxent_background">
+                              <label for="pa_maxent_background_points" class="control-label">
+                                Number of background points
+                              </label>
+                              <div class="controls">
+                                <input id="pa_maxent_background_points" name="pa_disk_max" class="text-widget decimal-field" value="10000" type="text" data-default="10000" min="0">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     </div>
 
                     <!-- preview area -->
