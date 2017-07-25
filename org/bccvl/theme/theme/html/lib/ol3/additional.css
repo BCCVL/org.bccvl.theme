@@ -315,6 +315,16 @@ div.olControlAttribution {
     line-height: 1.3em;
     white-space: nowrap;
 }
+.overlay-map .ol-viewport .ol-control.ol-blend-control {
+    left:10px;
+    right:auto;
+}
+.overlay-map .olLegend a.ol-button {
+    top:62px;
+}
+.overlay-map .olLegend .panel {
+     top:70px;   
+}
 .ol-blend-control select, .ol-blend-control label{
     display: inline-block;
     font-size: 1.1em;
