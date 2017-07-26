@@ -87,7 +87,7 @@ define(
         providers['gbif'] = {
             autocomplete: {
                 autoUrl: function(autocompleteString) {
-                    return ('gbif/auto.json?q=' + encodeURIComponent(autocompleteString));
+                    return ('https://api.gbif.org/v1/species/suggest?q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -141,14 +141,14 @@ define(
                     var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
                     
-                    return ('gbif/search.json?name=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                    return ('https://api.gbif.org/v1/species?name=' + encodeURIComponent(searchString) + '&offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(genusKey, start, pageSize) {
                     // To search for all the species belong to a given genus 
                     startIndex = start || 0;
                     pageSize = pageSize || 10;                            
-                    return ('gbif/species.json?genusKey=' + encodeURIComponent(genusKey) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                    return ('https://api.gbif.org/v1/species/' + encodeURIComponent(genusKey) + '/children?offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
@@ -223,7 +223,7 @@ define(
                                 gbifImportArgs += 'taxon=' + encodeURIComponent(item.scientificName) + "&";
                                 gbifImportArgs += 'searchOccurrence_source=' + encodeURIComponent('gbif');
                                 
-                                result.actions.viz = 'http://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
+                                result.actions.viz = 'https://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
                                 result.actions.alaimport = document.URL + gbifImportArgs;
                             }
                             list.push(result);
@@ -306,7 +306,7 @@ define(
                 autoUrl: function(autocompleteString) {
                     // geoOnly=true  -> only return items that have some geographically mapped records attached
                     // idxType=TAXON -> only items that are actually living things (not collection records, or people, or whatever)
-                    return ('ala/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                    return ('https://bie.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -385,11 +385,11 @@ define(
                     if (rankSupplied == 'genus') {
                         filter = '(rank:species+OR+rank:genus)';
                     }
-                    return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
+                    return ('https://bie.ala.org.au/ws/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
+                    return ('https://bie.ala.org.au/ws/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
@@ -468,7 +468,7 @@ define(
                                     alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
                                 }
                                 
-                                result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
+                                result.actions.viz = 'https://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
                                 result.actions.alaimport = document.URL + alaImportArgs;
                             }
                             list.push(result);
