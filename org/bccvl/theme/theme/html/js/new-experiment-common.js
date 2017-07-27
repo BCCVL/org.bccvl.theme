@@ -18,8 +18,7 @@ define(
                     select_region.load(function(callback) {
                         xhr && xhr.abort();
                         xhr = $.ajax({
-                            //url: 'https://app.bccvl.org.au/_spatial/ws/field/' + value,
-                            url: '/_spatial/ws/field/' + value,
+                            url: 'https://spatial.ala.org.au/ws/field/' + value,
                             success: function(data) {
                                 select_region.enable();
 
@@ -54,25 +53,28 @@ define(
                     }
                 },
                 onChange: function(value){
-                    
-                    $.ajax({
-                        //url: 'https://app.bccvl.org.au/_spatial/ws/shape/geojson/' + value,
-                        url: '/_spatial/ws/shape/geojson/' + value,
-                        success: function(result) {
 
-                            // have to clean up ALA's geojson format
-                            var geojson = {
-                                'type': 'Feature',
-                                'geometry': result
+                    if (value) {
+                        // value may be empty in case we just changed type of region
+
+                        $.ajax({
+                            url: 'https://spatial.ala.org.au/ws/shape/geojson/' + value,
+                            success: function(result) {
+
+                                // have to clean up ALA's geojson format
+                                var geojson = {
+                                    'type': 'Feature',
+                                    'geometry': result
+                                }
+                                $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
+
+
+                            },
+                            error: function(error) {
+                                console.log(error);
                             }
-                            $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
-                            
-                            
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    })
+                        })
+                    }
                 },
                 onItemRemove: function(value) {
                     $('#estimated-area > em').html('');

@@ -53,8 +53,8 @@
                     
                   </div>
                 </div>
-                
-                <tal:block tal:define="item result_tools/get_primary_output"
+
+                <tal:block tal:define="item result_tools/get_biodiverse_output"
                            tal:condition="nocall:item">
                   <div class="row-fluid experiment-result-contents"
                        tal:define="item_obj item/getObject;
