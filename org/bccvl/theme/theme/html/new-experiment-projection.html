@@ -235,20 +235,42 @@
               <div class="tab-pane active" id="tab-geo">
                 <fieldset class="tab">
                   <div class="row-fluid">
-                    <p class="span12 bccvl-tab-description">Define any geographic constraints for the experiment.</p>
+                    <p class="span12 bccvl-tab-description">
+                      Define any geographic constraints for the experiment.
+                    </p>
+                     <ul>
+                        <li>The projection will by default use the constrained area from the SDM selected.</li>
+                        <li>Convex hull (=minimum polygon) around occurrence records (blue area on the map) including offset if this was selected in SDM experiment.</li>
+                        <li>Environmental envelope is the area of selected climate projection (green box on the map).</li>
+                        <li>Results will include a map for the constraint area and the environmental envelope (unconstrained area).</li>
+                      </ul>
+                      <p>
+                        <a href="https://support.bccvl.org.au/support/solutions/articles/6000173076-setting-the-constraint-area" target="_blank">Read More ...</a>
+                      </p>
                   </div>
 
                   <div class="row-fluid bccvl-stretch-parent">
+                    
+                    <div id="estimated-area">
+                        <em></em>
+                    </div>
 
                     <!-- list of available data -->
                     <div class="span4" style="overflow:visible;">
+                      
+                      <div id="estimated-area">
+                        <em></em>
+                      </div>
+                    
                       <input id="form-widgets-projection_region" name="form.widgets.projection_region" value="" class="hidden-widget" type="hidden">
                       <div class="constraint-method">
                         <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" checked />
-                        <label for="use_convex_hull">Use Source SDM Experiment Constraint <em></em></label>
-                        <div class="geojson-offset">
-                          <input type="text" name="region-offset" class="region-offset" /> KM
-                          <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                        <label for="use_convex_hull">Use Source SDM Experiment Constraint</label>
+                        <div class="config">
+                          <div class="geojson-offset">
+                            <input type="text" name="region-offset" class="region-offset" /> KM
+                            <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                          </div>
                         </div>
                       </div>
 
@@ -267,6 +289,9 @@
                               <option value="cl916">National Resource Management Regions</option>
                               <option value="cl22">Australian States and Territories</option>
                               <option value="cl1048">IBRA 7 Regions</option>
+                              <option value="cl1057">River Regions</option>
+                              <option value="cl1058">Drainage Divisions Level 1</option>
+                              <option value="cl1059">Drainage Divisions Level 2</option>
                             </select>
                             <select id="select-region" class="select-region" placeholder="Find a region ...">
                               <option value="" selected="selected"></option>

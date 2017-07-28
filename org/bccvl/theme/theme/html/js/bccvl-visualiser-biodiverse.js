@@ -282,12 +282,12 @@ define(
                         num: [],
                         total: 0
                     },
-                    'redundancy':{
+                    /*'redundancy':{
                         values: [],
                         range: [],
                         num: [],
                         total: 0
-                    },
+                    },*/
                     'rarity':{
                         values: [],
                         range: [],
@@ -314,12 +314,12 @@ define(
                         y = parseFloat(prop.axis_1),
                         point = ol.proj.transform([x, y], dataProj, mapProj),
                         richness = parseFloat(prop.rarew_richness),
-                        redundancy = parseFloat(prop.redundancy_all),
+                        //redundancy = parseFloat(prop.redundancy_all),
                         rarity = parseFloat(prop.rarew_cwe),
                         endemism = parseFloat(prop.endw_cwe);
             
                     features.vars.richness.values.push(richness);
-                    features.vars.redundancy.values.push(redundancy);
+                    //features.vars.redundancy.values.push(redundancy);
                     features.vars.rarity.values.push(rarity);
                     features.vars.endemism.values.push(endemism);
             
@@ -327,7 +327,7 @@ define(
                         type: 'Feature',
                         properties: {
                             'richness': richness,
-                            'redundancy': redundancy,
+                            //'redundancy': redundancy,
                             'rarity': rarity,
                             'endemism': endemism,
                             'species': prop.species,

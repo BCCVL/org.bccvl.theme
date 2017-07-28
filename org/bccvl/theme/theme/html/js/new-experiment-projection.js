@@ -26,6 +26,7 @@ define(
             // Biodiverse uses selectize
             var setThresholds = function(value, item){
                 var selectIdx;
+                
                 $.each($('.master-select')[0].selectize.currentResults.items, function(i, obj){
                     if (obj.id === value){
                         selectIdx = i;
@@ -33,6 +34,8 @@ define(
                 })
                 $.each(sdmmodel.$widget.find('select'), function(index, elem){
                     if (! $(elem).hasClass('master-select')){
+                        console.log($(elem)[0].selectize);
+                        console.log($(elem)[0].selectize.currentResults);
                         $.each($(elem)[0].selectize.currentResults.items, function(i, obj){
                            if (selectIdx == i){
                                $(elem)[0].selectize.setValue(obj.id, true);
@@ -60,6 +63,16 @@ define(
                         var $select = $(elem).selectize({create: true,
                                        persist: false});
                         var selectize = $select[0].selectize;
+                        
+                        selectize.addOption([
+                            { value: "Maximise TPR+TNR", text: "Maximise TPR+TNR" },
+                            { value: "Maximise PPV+NPV", text: "Maximise PPV+NPV" },
+                            { value: "Balance all errors", text: "Balance all errors" },
+                            { value: "TPR = TNR", text: "TPR = TNR" },
+                            { value: "0.5", text: "0.5" }
+                        ]);
+                        
+                        selectize.refreshOptions(false);
 
                     }
                 });
@@ -78,6 +91,18 @@ define(
                 // always default to convex hull after a selection.
                 $("#use_convex_hull").prop('checked', true);
             })
+            
+            // TODO: move  select-all / select-none into widget?
+            $('#tab-sdm').on('click', '#form-widgets-species_distribution_models a.select-all', function(){
+                $(this).parents('.selecteditem').find('input[type="checkbox"]').prop('checked', 'checked');
+            });
+
+            $('#tab-sdm').on('click', '#form-widgets-species_distribution_models a.select-none', function(){
+                // for some reason we have to remove the property as well to get the html to update in chrome, though the UI works fine
+                $(this).parents('.selecteditem').find('input[type="checkbox"]').each(function(){
+                    $(this).prop('checked', false);
+                });
+            });
             
             $('.bccvl-new-projection').trigger('widgetChanged');
 

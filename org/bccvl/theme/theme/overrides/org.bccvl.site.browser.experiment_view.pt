@@ -127,6 +127,13 @@
                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
                       <i class="fa fa-download icon-link"></i> Download
                     </a>
+                    <a class="fine btn btn-mini btn-info download-btn"
+                       title="Download Exp Metadata"
+                       href="#downloadurl"
+                       tal:attributes="href string:${result/getURL}/expmetadata.txt;">
+                      <i class="fa fa-download icon-link"></i> Metadata
+                    </a>
+
                     <tal:block tal:define="state result_tools/job_state"
                                tal:condition="python:state == 'FAILED'">
                       <a class="fine btn btn-mini btn-info email-support-btn"
@@ -190,6 +197,8 @@
                         <li tal:condition="python:state == 'FAILED'">
                           <strong>Reason: </strong>
                           <tal:replace tal:replace="reason"></tal:replace>
+                          <br/>
+                          <a href="https://support.bccvl.org.au/support/solutions/articles/6000176148-why-did-my-experiment-or-model-fail" target="_blank">See known issues for failed models</a>
                         </li>                            
                       </tal:block>
                     </ul>

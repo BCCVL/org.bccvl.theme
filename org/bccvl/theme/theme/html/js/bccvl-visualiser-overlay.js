@@ -17,6 +17,14 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
             map = base_map.map
             visLayers = base_map.visLayers
             
+            // add layerswitcher
+            var layerSwitcher = new ol.control.LayerSwitcher({
+                toggleOpen: true,
+                singleVisibleOverlay: true
+            });
+            
+            map.addControl(layerSwitcher);
+            
             vizcommon.createLegendBox(mapId);
             appendBlendControl(mapId);
             // tie up blend control

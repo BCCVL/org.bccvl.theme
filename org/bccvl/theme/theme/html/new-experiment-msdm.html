@@ -249,11 +249,11 @@
                     <div class="span4"><div class="control-group">
 
                        <div class="bccvl-noabsence-dataset alert alert-info">
-                         <p>Pseudo-absence points will be generated for the experiment. You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
-
+                         <p>Pseudo-absence points will be generated for the experiment.  You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>
+                         <p>Select and configure your strategy. <a href="https://support.bccvl.org.au/support/solutions/articles/6000127043-absence-data" target="_blank">Read More ...</a></p>
+                            
                          <div class="paramgroup leader" id="pa_controls">
-                            <h3>Pseudo Absence Configuration</h3>
-                            <p>Select and configure your strategy. <a href="https://support.bccvl.org.au/support/solutions/articles/6000127043-absence-data" target="_blank">Read More ...</a></p>
+                            <h3>Pseudo Absence Configuration (PA models)</h3>
                             <div class="control-group" data-fieldname="pa_ratio_fieldgroup" id="pa_ratio_fieldgroup">
                               <label for="pa_ratio" class="control-label">
                                 Absence-presence ratio
@@ -305,9 +305,18 @@
                               <input id="pa_disk_max" name="pa_disk_max" class="text-widget decimal-field" value="" type="text" data-default="" min="0">
                               </div>
                             </div>
+                            <hr/>
+                            <h3>Background Configuration (Maxent only)</h3>
+                            <div class="control-group" data-fieldname="pa_maxent_background" id="pa_maxent_background">
+                              <label for="pa_maxent_background_points" class="control-label">
+                                Number of background points
+                              </label>
+                              <div class="controls">
+                                <input id="pa_maxent_background_points" name="pa_disk_max" class="text-widget decimal-field" value="10000" type="text" data-default="10000" min="0">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
                     </div>
 
                     <!-- preview area -->
@@ -390,12 +399,12 @@
                     </p>
                      <ul>
                          <li>The model will be trained using data from the constrained area.</li>
-                         <li>Default is convex hull (=minimum polygon) around occurrence records (blue area on the map).</li>
+                         <li>Default is convex hull (=minimum polygon) around occurrence records (blue area on the map) generated for each species separately.</li>
                          <li>Environmental envelope is the area of selected environmental variables (green box on the map).</li>
                          <li>Results will include a map for the constraint area and the environmental envelope (unconstrained area).</li>
                       </ul>
                       <p>
-                        <a href="https://support.ehelp.edu.au/solution/articles/6000173076-setting-the-constraint-area" target="_blank">Read More ...</a>
+                        <a href="https://support.bccvl.org.au/support/solutions/articles/6000173076-setting-the-constraint-area" target="_blank">Read More ...</a>
                       </p>
                   </div>
 
@@ -403,13 +412,19 @@
 
                     <!-- list of available data -->
                     <div class="span4" style="overflow:visible;">
+                      
+                      <div id="estimated-area">
+                        <em></em>
+                      </div>
 
                       <div class="constraint-method">
                         <input type="radio" value="use_convex_hull" name="constraints_type" id="use_convex_hull" checked/>
-                        <label for="use_convex_hull">Use Convex Hull <em></em></label>
-                        <div class="geojson-offset">
-                          <input type="text" name="region-offset" class="region-offset" /> KM
-                          <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                        <label for="use_convex_hull">Use Convex Hull</label>
+                        <div class="config">
+                          <div class="geojson-offset">
+                            <input type="text" name="region-offset" class="region-offset" /> KM
+                            <a href="javascript:void(0);" class="btn btn-small btn-default add-offset" id="add-conv-hull-offset"><i class="fa fa-expand"></i> Add Offset</a>&nbsp;
+                          </div>
                         </div>
                       </div>
 
@@ -428,6 +443,9 @@
                               <option value="cl916">National Resource Management Regions</option>
                               <option value="cl22">Australian States and Territories</option>
                               <option value="cl1048">IBRA 7 Regions</option>
+                              <option value="cl1057">River Regions</option>
+                              <option value="cl1058">Drainage Divisions Level 1</option>
+                              <option value="cl1059">Drainage Divisions Level 2</option>
                             </select>
                             <select id="select-region" class="select-region" placeholder="Find a region ...">
                               <option value="" selected="selected"></option>

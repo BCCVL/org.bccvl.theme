@@ -87,7 +87,7 @@ define(
         providers['gbif'] = {
             autocomplete: {
                 autoUrl: function(autocompleteString) {
-                    return ('gbif/auto.json?q=' + encodeURIComponent(autocompleteString));
+                    return ('https://api.gbif.org/v1/species/suggest?q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -141,14 +141,14 @@ define(
                     var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
                     
-                    return ('gbif/search.json?name=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                    return ('https://api.gbif.org/v1/species?name=' + encodeURIComponent(searchString) + '&offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(genusKey, start, pageSize) {
                     // To search for all the species belong to a given genus 
                     startIndex = start || 0;
                     pageSize = pageSize || 10;                            
-                    return ('gbif/species.json?genusKey=' + encodeURIComponent(genusKey) + '&start=' + startIndex + '&pageSize=' + pageSize);
+                    return ('https://api.gbif.org/v1/species/' + encodeURIComponent(genusKey) + '/children?offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
@@ -223,7 +223,7 @@ define(
                                 gbifImportArgs += 'taxon=' + encodeURIComponent(item.scientificName) + "&";
                                 gbifImportArgs += 'searchOccurrence_source=' + encodeURIComponent('gbif');
                                 
-                                result.actions.viz = 'http://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
+                                result.actions.viz = 'https://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
                                 result.actions.alaimport = document.URL + gbifImportArgs;
                             }
                             list.push(result);
@@ -256,36 +256,46 @@ define(
                 },
                 // --------------------------------------------------------------                                                
                 importGenusDatasets: function(searchString, excluded) {
-                    var pageSize = 40;
-                    var endOfRecords = false;
-                    
                     var $resultTable = $('.bccvl-search-results');                        
                     var genusKey = $resultTable.data('data-genusKey');  
-                    var index = 0;
-                    while (!endOfRecords) {
+
+                    var find_species_to_import = function(index, pageSize) {
                         var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
-                        $.ajax({
-                            async: false,
-                            dataType: 'jsonp',                       // ..using JSONP instead
+                        return $.ajax({
+                            dataType: 'jsonp',
                             url: surl,
-                            success: function(data) {
+                            timeout: 60000
+                        }).then(
+                            function(data) {
                                 if (providers.gbif.search.statusError(data)){
                                     providers.gbif.autocomplete.noResultsFound(unexpectedErrorMsg('gbif'));
                                     return
                                 }
                                 // Import all the species datasets
-                                endOfRecords = data.endOfRecords;
                                 var results = providers.gbif.search.parseSearchData(data, searchString, excluded);
                                 if (!importSpeciesDatasets(results)) {
-                                    providers.gbif.autocomplete.noResultsFound();
+                                    // if no more records and index==0 
+                                    if (data.endOfRecords && index == 0) {
+                                        providers.gbif.autocomplete.noResultsFound();
+                                    }
+                                } else {
+                                    // import success
+                                    if (!data.endOfRecords) {
+                                        // there is more to come
+                                        find_species_to_import(index + pageSize, pageSize)
+                                    } else {
+                                        // we are done ....
+                                        location.href = portal_url + '/datasets'
+                                    }
                                 }
+                                
                             },
-                            timeout: 60000,
-                            error: displayErrorMessage                                    
-                        });
-                        index += pageSize;
-                    } 
-                    location.href = portal_url + '/datasets'
+                            displayErrorMessage
+                        )
+                    }
+
+                    find_species_to_import(0, 40)
+                    
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,7 +306,7 @@ define(
                 autoUrl: function(autocompleteString) {
                     // geoOnly=true  -> only return items that have some geographically mapped records attached
                     // idxType=TAXON -> only items that are actually living things (not collection records, or people, or whatever)
-                    return ('ala/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                    return ('https://bie.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -375,11 +385,11 @@ define(
                     if (rankSupplied == 'genus') {
                         filter = '(rank:species+OR+rank:genus)';
                     }
-                    return ('ala/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
+                    return ('https://bie.ala.org.au/ws/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    return ('ala/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
+                    return ('https://bie.ala.org.au/ws/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {                        
@@ -458,7 +468,7 @@ define(
                                     alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
                                 }
                                 
-                                result.actions.viz = 'http://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
+                                result.actions.viz = 'https://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
                                 result.actions.alaimport = document.URL + alaImportArgs;
                             }
                             list.push(result);
@@ -485,38 +495,42 @@ define(
                     $.ajax({
                         dataType: 'jsonp',                       // ..using JSONP instead
                         url: surl,
-                        success: function(data) {
+                        timeout: 60000
+                    }).then(
+                        // genus search success
+                        function(data) {
                             if (providers.ala.search.statusError(data)){
                                 providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
-                                return
+                                return data
                             }
                             
                             // Set pageSize and search for all the species again
                             var pageSize = providers.ala.search.totalRecords(data);
                             var surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, pageSize);
                             
-                            $.ajax({
+                            return $.ajax({
                                 dataType: 'jsonp',                       // ..using JSONP instead
                                 url: surl,
-                                success: function(data) {
-                                    if (providers.ala.search.statusError(data)){
-                                        providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
-                                        return
-                                    }
-                                    // Import all the species datasets
-                                    var results = providers.ala.search.parseSearchData(data, searchString, excluded);
-                                    if (!importSpeciesDatasets(results)) {
-                                        providers.ala.autocomplete.noResultsFound();
-                                    }
-                                    location.href = portal_url + '/datasets'
-                                },
-                                timeout: 60000,
-                                error: displayErrorMessage                                    
-                            });    
+                                timeout: 60000
+                            })
                         },
-                        timeout: 60000,
-                        error: displayErrorMessage                            
-                    });
+                        displayErrorMessage
+                    ).then(
+                        // import all species for genus
+                        function(data) {
+                            if (providers.ala.search.statusError(data)){
+                                providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
+                                return
+                            }
+                            // Import all the species datasets
+                            var results = providers.ala.search.parseSearchData(data, searchString, excluded);
+                            if (!importSpeciesDatasets(results)) {
+                                providers.ala.autocomplete.noResultsFound();
+                            }
+                            location.href = portal_url + '/datasets'
+                        },
+                        displayErrorMessage
+                    )
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
