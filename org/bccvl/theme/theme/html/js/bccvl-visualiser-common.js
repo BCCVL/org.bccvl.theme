@@ -251,6 +251,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'range-change'){
                    // rainfall BOM standard range
                    var rangeArr = [0,1,2,3];
+               } else if (standard_range == 'probability-difference'){  
+                   rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -315,6 +317,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var colorArr = ['#3498db'];
                } else if (standard_range == 'range-change') {
                    var colorArr = ['#FFFFFF', '#f08013', '#FFFFFF', '#164dca', '#41c127'];
+               } else if (standard_range == 'probability-difference') {
+                   // rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+                   var colorArr = ['#B41414', '#C34343', '#D27272', '#E1A1A1', '#F0D0D0', '#FFFFFF', '#e7f2fb', '#CEE6FA', '#9DCDF5', '#6CB4F0', '#3B9BEB', '#0A82E6'];
                } else {
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
@@ -619,16 +624,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            midpoint: null,
                            endpoint: null
                        };
-                    } else if (standard_range == 'probability-difference') {
-                        // values between -1.0 and 1.0
-                        styleObj = {
-                            minVal: -1.0,
-                            maxVal: 1.0,
-                            steps: 10,
-                            startpoint: {r:180, g:20, b:20},
-                            midpoint: {r:255, g:255, b:255},
-                            endpoint: {r:10, g:130, b:230}
-                        }
+                   //} else if (standard_range == 'probability-difference') {
+                   //    // values between -1.0 and 1.0
+                   //    styleObj = {
+                   //        minVal: -1.0,
+                   //        maxVal: 1.0,
+                   //        steps: 9,
+                   //        startpoint: {r:180, g:20, b:20},
+                   //        midpoint: {r:255, g:255, b:255},
+                   //        endpoint: {r:10, g:130, b:230}
+                   //    }
                     } else if (standard_range == 'default') {
                        // standard raster
                        styleObj = {
@@ -1139,7 +1144,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            type: 'base',
                            visible: false,
                            source: new ol.source.TileWMS({
-                            url: 'http://spatial.ala.org.au/geoserver/gwc/service/wms/reflect',
+                            url: 'https://spatial.ala.org.au/geoserver/gwc/service/wms/reflect',
                             params: {'LAYERS': 'ALA:world', 'FORMAT': 'image/jpeg', 'VERSION':'1.1.1', 'SRS':'EPSG:3857'}
                           })
                        }),
@@ -1246,7 +1251,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        // check for layers metadata, if none exists then the request is returning a data like a csv file
                        // TODO: alternative check data.mimetype == 'text/csv' or data.genre
                        //       or use type passed in as parameter
-                       if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesAbsence" || data.genre == "DataGenreTraits") {
+                       if ($.isEmptyObject(data.layers) || data.genre == "DataGenreSpeciesOccurrence" || data.genre == "DataGenreSpeciesCollection" || data.genre == "DataGenreSpeciesAbsence" || data.genre == "DataGenreTraits") {
                            // species data  (not a raster)
                            // TODO: use data.title (needs to be populated)
                            layerdef = {
@@ -1450,7 +1455,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    evt.feature.setId('geo_constraints');
                    // interaction finished, free up mouse events
                    map.removeInteraction(draw);
+                   
+                   var geom = evt.feature.getGeometry();
                    //map.on('singleclick', bccvl_common.getPointInfo)
+                   bccvl_common.estimateGeoArea(map, geom);
                });
 
                map.addInteraction(draw);
@@ -1495,7 +1503,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 //
            //},
 
-           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
+           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer, isPredefinedRegion){
 
                // clear layer
                constraintsLayer.getSource().clear();
@@ -1515,11 +1523,37 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        width: 2
                    })
                });
-
+               
+               // don't attempt to calc area if it's a predefined region
+               if (! isPredefinedRegion){
+                   bccvl_common.estimateGeoArea(map, feature.getGeometry());
+               }
+               
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-
+        
                map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
+           },
+           
+           estimateGeoArea: function(map, geomObject){
+               
+               var wgs84Sphere = new ol.Sphere(6378137);
+               var sourceProj = map.getView().getProjection();
+               var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
+                    sourceProj, 'EPSG:4326'));
+               var coordinates = geom.getLinearRing(0).getCoordinates();
+               var area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
+
+               var output;
+               if (area > 10000) {
+                 output = (Math.round(area / 1000000 * 100) / 100) +
+                     ' ' + 'km<sup>2</sup>';
+               } else {
+                 output = (Math.round(area * 100) / 100) +
+                     ' ' + 'm<sup>2</sup>';
+               }
+
+               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');  
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
@@ -1550,24 +1584,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-
-               var wgs84Sphere = new ol.Sphere(6378137);
-               var sourceProj = map.getView().getProjection();
-               var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
-                    sourceProj, 'EPSG:4326'));
-               var coordinates = geom.getLinearRing(0).getCoordinates();
-               var area = Math.abs(wgs84Sphere.geodesicArea(coordinates));
-
-               var output;
-               if (area > 10000) {
-                 output = (Math.round(area / 1000000 * 100) / 100) +
-                     ' ' + 'km<sup>2</sup>';
-               } else {
-                 output = (Math.round(area * 100) / 100) +
-                     ' ' + 'm<sup>2</sup>';
-               }
-
-               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');
+               
+               bccvl_common.estimateGeoArea(map, geomObject);
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
@@ -1656,6 +1674,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // set up accordion-like functionality for the UI
                $('input[type="radio"][name="constraints_type"]').change(function(){
                   $('.constraint-method').find('input[type="radio"][name="constraints_type"]').each(function(){
+                     $('#estimated-area > em').html('');
                      if($(this).prop('checked')){
                          $(this).parents('.constraint-method').find('.config').slideDown();
                      } else {
@@ -1667,7 +1686,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                $('input[type="radio"]#use_convex_hull').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                     
                  if($(this).prop('checked')){
+                    $(this).parents('.constraint-method').find('.geojson-offset').slideDown();
+                    
                     var selected = $('#form-widgets-species_occurrence_dataset .selected-item input');
 
                     if (occurrence_convexhull_polygon != null) {
@@ -1677,7 +1699,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                         alert('No occurence selection could be found to generate a convex hull polygon. Please return to the occurrences tab and make a selection.');
                     }
-                 }
+                 } 
                });
 
 
@@ -1690,9 +1712,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                     var bboxes = $('body').find('input[data-bbox]');
 
                     if(bboxes.length > 0){
+                        var geom;
                         $('body').find('input[data-bbox]').each(function(){
                             if($(this).data('genre') != 'DataGenreSpeciesOccurrence' && $(this).data('genre') != 'DataGenreSpeciesAbsence') {
-                                var geom = $(this).data('bbox');
+                                geom = $(this).data('bbox');
                                 geom = new ol.geom.Polygon([[
                                     [geom.left, geom.bottom],
                                     [geom.right, geom.bottom],
@@ -1710,10 +1733,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                             }
                         });
 
-                        var geojson = new ol.format.GeoJSON();
-                        var feat = new ol.geom.Polygon.fromExtent(extent);
+                        //var geojson = new ol.format.GeoJSON();
+                        //var feat = new ol.geom.Polygon.fromExtent(extent);
 
-                        bccvl_common.renderPolygonConstraints(map, feat, constraintsLayer, 'EPSG:4326');
+                        bccvl_common.renderPolygonConstraints(map, geom, constraintsLayer, 'EPSG:4326');
                     } else {
                         alert('No selections made on previous tabs. Please select occurence and environmental datasets.');
                     }
@@ -1739,7 +1762,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                });
                $('.btn.draw-geojson').on('click', function(e){
-                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
+                  var isPredefinedRegion = false;
+                  if (e.target.id === "selected-geojson"){
+                    isPredefinedRegion = true;
+                  }
+                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer, isPredefinedRegion);
                });
                $('.btn.add-offset').on('click', function(e){
 
