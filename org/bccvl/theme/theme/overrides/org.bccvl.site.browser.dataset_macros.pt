@@ -107,7 +107,7 @@
                    tal:condition="python: item_obj.format != 'text/csv'">Title</a>
 
               </h4>
-              <p tal:condition="item_description"><small tal:content="item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
+              <p tal:condition="item_description"><small tal:content="structure item_description">Observed occurrences for Pig (Sus scrofa), imported from ALA on 08/09/2014</small></p>
               <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
               <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
               <p tal:condition="python: item_modified and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence','DataGenreSpeciesCollection','DataGenreTraits')"><small><b>Modified:</b> <tal:r tal:replace="item_modified"></small></p>
