@@ -80,7 +80,7 @@ define(
             });
             
             $('#climatecurrent-widgets-resolution, #environmental-widgets-resolution').each(function(){
-                $(this).prepend('<option value="" selected>Please Select ...</option>');
+                $(this).prepend('<option value=""  disabled selected>Please Select ...</option>');
             })
         });
 

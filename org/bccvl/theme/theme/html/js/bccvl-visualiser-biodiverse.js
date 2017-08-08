@@ -34,7 +34,7 @@ define(
                     },
                     // fetch error
                     function(reason) {
-                        alert('Problem requesting dataset, please try again later.')
+                        alert('Problem requesting map or file.  This may be due to poor internet connectivity or heavy traffic, please try again later.')
                         // TODO: what about passing on errors?
                     }
                 ).then(function(d3csv) {
