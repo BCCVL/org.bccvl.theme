@@ -78,6 +78,10 @@ define(
                 var label = $(this).text();
                 $(this).text(label+' (required)');
             });
+            
+            $('#climatecurrent-widgets-resolution, #environmental-widgets-resolution').each(function(){
+                $(this).prepend('<option value="" selected>Please Select ...</option>');
+            })
         });
 
     // ==============================================================
