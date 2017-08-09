@@ -147,7 +147,7 @@
                                  data-title item_title_or_id;
                                  data-mimetype python:item_obj.format;
                                  data-genre item_genre;"
-                 tal:condition="python: item_obj.format not in ('text/csv', 'application/zip') or item_genre == 'DataGenreTraits'">
+                 tal:condition="python: item_obj.format not in ('text/csv', 'application/zip') or item_genre in ('DataGenreTraits', 'DataGenreCC', 'DataGenreFC', 'DataGenreE')">
                 <i class="fa fa-object-ungroup"></i>
               View</a>
               <a href="#"
