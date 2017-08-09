@@ -1236,7 +1236,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    // visualiser fetch failed
                    function(error) {
                        $('#'+id+' .ol-viewport').find('.map-loading').remove();
-                       alert('Problem requesting dataset, please try again later.')
+                       alert('Problem requesting map or file.  This may be due to poor internet connectivity or heavy traffic, please try again later.')
                        // need to return some error here?
                    }
                )
