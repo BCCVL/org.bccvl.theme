@@ -92,7 +92,7 @@
                   <td tal:condition="not: is_bd">
                     <ul>
                       <li tal:repeat="layer subitem/md/layers_used"
-                          tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title">Layer title</li>
+                          tal:content="python: dataset_tools.layer_title(layer)">Layer title</li>
                     </ul>
                   </td>
                   <td tal:condition="is_bd">
