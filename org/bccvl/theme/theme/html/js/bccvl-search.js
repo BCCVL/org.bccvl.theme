@@ -540,7 +540,7 @@ define(
             autocomplete: {
                 autoUrl: function(autocompleteString) {
                     // auto complete for species
-                    return (aekos.getApiUrl() + '/speciesAutocomplete.json?q=' + encodeURIComponent(autocompleteString));
+                    return (aekos.getApiUrl() + 'speciesAutocomplete.json?rows=20&q=' + encodeURIComponent(autocompleteString));
                 },
                 parseAutoData: function(rawData) {
                     // auto comeplete display / suggestion
@@ -580,7 +580,7 @@ define(
             },
             search: {
                 searchUrl: function(selectedItem, start, pageSize) {
-                    return (aekos.getApiUrl() + '/GET /v1/speciesSummary.json?speciesName=' + encodeURIComponent(selectedItem));
+                    return (aekos.getApiUrl() + '/GET /v2/speciesSummary.json?speciesName=' + encodeURIComponent(selectedItem));
                 },
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
                     // ???
@@ -1021,8 +1021,8 @@ define(
                             
                             current_ajax = $.ajax({
                                 // xhrFields: { withCredentials: true }, // not using CORS
-                                dataType: 'jsonp',                       // ..using JSONP instead
-                                //dataType: 'json',
+                                //dataType: 'jsonp',                       // ..using JSONP instead
+                                dataType: 'json',
                                 url: autocompleteUrl,
                                 success: function(data) {
                                     

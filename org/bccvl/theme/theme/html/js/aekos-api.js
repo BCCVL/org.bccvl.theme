@@ -18,7 +18,42 @@
     }
 }(function($) {
 
-    var apiurl = "https://api.aekos.org.au/v1/";
+    var apiurl = "https://test.api.aekos.org.au/v2/";
+
+    // Unquote string (utility)
+    function unquote(value) {
+        if (value.charAt(0) == '"' && value.charAt(value.length - 1) == '"') return value.substring(1, value.length - 1);
+        return value;
+    }
+
+    // parse a link header
+    function parseLinkHeader(header) {
+        var linkexp = /<[^>]*>\s*(\s*;\s*[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*")))*(,|$)/g;
+        var paramexp = /[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*"))/g;
+
+        var matches = header.match(linkexp);
+        var rels = new Object();
+        for (i = 0; i < matches.length; i++) {
+            var split = matches[i].split('>');
+            var href = split[0].substring(1);
+            var ps = split[1];
+            var link = new Object();
+            link.href = href;
+            var s = ps.match(paramexp);
+            for (j = 0; j < s.length; j++) {
+                var p = s[j];
+                var paramsplit = p.split('=');
+                var name = paramsplit[0];
+                link[name] = unquote(paramsplit[1]);
+            }
+
+            if (link.rel != undefined) {
+                rels[link.rel] = link;
+            }
+        }
+
+        return rels;
+    }
 
     function getApiUrl() {
         return apiurl;
@@ -31,151 +66,174 @@
         }).promise();
     };
 
-    function getSpeciesByTrait(traitName) {
-        var data = [];
-        if (traitName.constructor === Array) {
-            var arrayLength = traitName.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'traitName',
-                           'value': traitName[i]});
-            }
-        } else {
-            data = [{'name': 'traitName',
-                     'value': traitName
-            }];
+    // Get the json results with list of records
+    function getDataPages(linkurl, params, methodType) {
+        var request = $.Deferred();
+        var newData = [];
+
+        var getData = function(url){
+            $.ajax({
+                dataType: 'json',
+                url: url,
+                data: methodType == 'POST' ? JSON.stringify(params) : params,
+                type: methodType
+            }).done(function(data, textStatus, jqxhr){
+                $.each(data, function(index, item) {
+                        newData.push(item);
+                });
+
+                // Get the next url from the link header
+                var nexturl = '';
+                var link = jqxhr.getResponseHeader('link');
+                if (link) {
+                    linkitem = parseLinkHeader(link)
+                    if (linkitem["next"]) {
+                        nexturl = linkitem["next"]["href"];
+                    }
+                }
+
+                if (nexturl) {
+                    getData(nexturl);
+                } else {
+                    // request is resolved when there is no next url in link header
+                    request.resolve(newData);
+                }
+            });
         }
-        data.push({'name': 'pageSize',
-                    value: 10000});
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'getSpeciesByTrait.json',
-            data: data
-        }).promise();
+
+        getData(linkurl);
+        return request;
     };
+
+    // Get the json results with response and response-header.
+    function getDataResponses(linkurl, params, methodType) {
+        var request = $.Deferred();
+        var newData = {};
+        newData.response = [];
+        newData.responseHeader  = {};
+
+        var getData = function(url){
+            $.ajax({
+                dataType: 'json',
+                url: url,
+                data: methodType == 'POST' ? JSON.stringify(params) : params,
+                type: methodType
+            }).done(function(data, textStatus, jqxhr){
+                $.each(data.response, function(index, item) {
+                        newData.response.push(item);
+                });
+                newData.responseHeader = data.responseHeader;
+
+                // Get the next url from the link header
+                var nexturl = '';
+                var link = jqxhr.getResponseHeader('link');
+                if (link) {
+                    linkitem = parseLinkHeader(link)
+                    if (linkitem["next"]) {
+                        nexturl = linkitem["next"]["href"];
+                    }
+                }
+
+                if (nexturl) {
+                    getData(nexturl);
+                } else {
+                    // request is resolved when there is no next url in link header
+                    request.resolve([newData]);
+                }
+            });
+        }
+
+        getData(linkurl);
+        return request;
+    };    
+
+    function getSpeciesByTrait(traitName) {
+        var data = {};
+        if (traitName.constructor === Array) {
+            data.traitNames = traitName;
+        }
+        else {
+            data.traitNames = [traitName];
+        }
+
+        var url = apiurl + 'getSpeciesByTrait.json?pageSize=1000';
+        return getDataPages(url, data, 'POST');
+    };
+
 
     function getTraitsBySpecies(speciesName) {
-        var data = [];
+        var data = {};
         if (speciesName.constructor === Array) {
-            var arrayLength = speciesName.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'speciesName',
-                           'value': speciesName[i]});
-            }
+            data.speciesNames = speciesName;
         } else {
-            data = [{'name': 'speciesName',
-                     'value': speciesName}];
+            data.speciesNames = [speciesName];
         }
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'getTraitsBySpecies.json',
-            data: data
-        }).promise();
-    };
+
+        var url = apiurl + 'getTraitsBySpecies.json?pageSize=1000';
+        return getDataPages(url, data, 'POST');
+   };
 
     function getEnvironmentBySpecies(speciesName) {
-        var data = [];
+        var data = {};
         if (speciesName.constructor === Array) {
-            var arrayLength = speciesName.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'speciesName',
-                           'value': speciesName[i]});
-            }
-        } else {
-            data = [{'name': 'speciesName',
-                     'value': speciesName}];
+            data.speciesNames = speciesName;
         }
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'getEnvironmentBySpecies.json',
-            data: data
-        }).promise();
+        else {
+            data.speciesNames = [speciesName]
+        }
+
+        var url = apiurl + 'getEnvironmentBySpecies.json?pageSize=1000';
+        return getDataPages(url, data, 'POST');
     };
 
     function speciesSummary(speciesName) {
-        var data = [];
+        var data = {};
         if (speciesName.constructor === Array) {
-            var arrayLength = speciesName.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'speciesName',
-                           'value': speciesName[i]});
-            }
+            data.speciesNames = speciesName;
         } else {
-            data = [{'name': 'speciesName',
-                     'value': speciesName}];
+            data.speciesNames = [speciesName];
         }
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'speciesSummary.json',
-            data: data
-        }).promise();
-    }
+        var url = apiurl + 'speciesSummary.json';
+        return getDataPages(url, data, 'POST');
+    };
     
     function speciesAutocomplete(q) {
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'speciesAutocomplete.json',
-            data: {
-                'q': q
-            }
-        }).promise();
+        var url = apiurl + 'speciesAutocomplete.json?rows=1000';
+        return getDataPages(url, {'q': q}, 'GET');
     };
 
     function getTraitDataBySpecies(speciesArr, traitArr) {
-        var data = [];
+        var data = {}
         if (speciesArr.constructor === Array) {
-            var arrayLength = speciesArr.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'speciesName',
-                           'value': speciesArr[i]});
-            }
-        } else {
-            data.push({'name': 'speciesName',
-                     'value': speciesArr});
+            data.speciesNames = speciesArr;
         }
+        else {
+            data.speciesNames = [speciesArr];
+        }
+
         if (traitArr.constructor === Array) {
-            var arrayLength = traitArr.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'traitName',
-                           'value': traitArr[i]});
-            }
+            data.traitNames = traitArr;
         } else {
-            data.push({'name': 'traitName',
-                     'value': traitArr});
+            data.traitNames = [traitArr];
         }
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'traitData.json',
-            data: data
-        }).promise();
+        var url = apiurl + 'traitData.json?rows=100';
+        return getDataResponses(url, data, 'POST');
     };
 
     function getTraitDataByEnviro(speciesArr, enviroArr) {
-        var data = [];
+        var data = {};
         if (speciesArr.constructor === Array) {
-            var arrayLength = speciesArr.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'speciesName',
-                           'value': speciesArr[i]});
-            }
+            data.speciesNames = speciesArr;
         } else {
-            data.push({'name': 'speciesName',
-                     'value': speciesArr});
+            data.speciesNames = [speciesArr];
         }
         if (enviroArr.constructor === Array) {
-            var arrayLength = enviroArr.length;
-            for (var i = 0; i < arrayLength; i++) {
-                data.push({'name': 'envVarName',
-                           'value': enviroArr[i]});
-            }
+            data.varNames = enviroArr;
         } else {
-            data.push({'name': 'envVarName',
-                     'value': enviroArr});
+            data.varNames = [enviroArr];
         }
-        return $.ajax({
-            dataType: 'json',
-            url: apiurl + 'environmentData.json',
-            data: data
-        }).promise();
+        var url = apiurl + 'environmentData.json?rows=100';
+        return getDataResponses(url, data, 'POST');
     };
 
     return {
