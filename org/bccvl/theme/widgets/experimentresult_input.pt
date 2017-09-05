@@ -3,7 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:define="portal_state nocall:context/@@plone_portal_state;
-                  portal_url portal_state/portal_url"      
+                  portal_url portal_state/portal_url"
       tal:omit-tag="">
   <div id="fieldname-modal" class="modal large hide fade new-experiment" tabindex="-1" role="dialog"
        tal:attributes="id string:${view/field/__name__}-modal">
@@ -14,7 +14,7 @@
     </div>
     <div id="modal-body" class="modal-body"></div>
     <div class="modal-footer">
-       
+
       <button class="btn btn-primary">Select Experiment</button>
     </div>
   </div>
@@ -43,7 +43,7 @@
                  tal:define="item_type item/brain/portal_type;
                              is_sdm python: item_type == 'org.bccvl.content.sdmexperiment';
                              is_cc python: item_type == 'org.bccvl.content.projectionexperiment';
-                             is_bd python: item_type == 'org.bccvl.content.biodiverseexperiment'">            
+                             is_bd python: item_type == 'org.bccvl.content.biodiverseexperiment'">
             <thead>
               <tr>
                 <th colspan="2">Selected</th>
@@ -92,9 +92,9 @@
                   <td tal:condition="not: is_bd">
                     <ul>
                       <li tal:repeat="layer subitem/md/layers_used"
-                          tal:content="python: dataset_tools.layer_vocab.getTerm(layer).title">Layer title</li>
+                          tal:content="python: dataset_tools.layer_title(layer)">Layer title</li>
                     </ul>
-                  </td>                                       
+                  </td>
                   <td tal:condition="is_bd">
                     <span tal:content="python: dataset_tools.genre_vocab.getTerm(subitem['md']['genre']).title">EMSC</span>
                   </td>
@@ -112,11 +112,11 @@
                  tal:attributes="id string:${view/id}:list-error;
                                  for string:${view/id}:list;"
                  tal:condition="error"
-                 tal:content="structure error/render">This field is required.</label>          
+                 tal:content="structure error/render">This field is required.</label>
         </div>
       </div>
       <input type="hidden" value="" name="form.widgets.name.count"
-             tal:condition="repeat/item/end"                  
+             tal:condition="repeat/item/end"
              tal:attributes="value repeat/item/number;
                              name string:${view/name}.count"/>
     </tal:block>
@@ -126,7 +126,7 @@
              tal:attributes="name string:${view/name}.empty;
                              required view/required;
                              class python: 'required' if view.required else '';"/>
-    </div>    
+    </div>
   </div>
   <span class="loader-container" tal:condition="not:view/value">
     <img src="/bccvl/++resource++bccvl/images/bccvl-loader.gif" alt="BCCVL" class="loader"/>

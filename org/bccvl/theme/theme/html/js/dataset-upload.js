@@ -74,14 +74,11 @@ define(
                 $("body").addClass("modal-open");
             });
             
-            $('input[required="required"]').parents('.control-group').find('.control-label').each(function(){
+            $('[required="required"]').parents('.control-group').find('.control-label').each(function(){
                 var label = $(this).text();
                 $(this).text(label+' (required)');
-            });
-            
-            $('#climatecurrent-widgets-resolution, #environmental-widgets-resolution').each(function(){
-                $(this).prepend('<option value=""  disabled selected>Please Select ...</option>');
             })
+            
         });
 
     // ==============================================================
