@@ -70,6 +70,8 @@
     function getDataPages(linkurl, params, methodType) {
         var request = $.Deferred();
         var newData = [];
+        var retries = 0;
+        var nexturl = linkurl;
 
         var getData = function(url){
             $.ajax({
@@ -77,13 +79,15 @@
                 url: url,
                 data: methodType == 'POST' ? JSON.stringify(params) : params,
                 type: methodType
-            }).done(function(data, textStatus, jqxhr){
+            })
+            .done(function(data, textStatus, jqxhr){
                 $.each(data, function(index, item) {
                         newData.push(item);
                 });
 
                 // Get the next url from the link header
-                var nexturl = '';
+                nexturl = '';
+                retries = 0;
                 var link = jqxhr.getResponseHeader('link');
                 if (link) {
                     linkitem = parseLinkHeader(link)
@@ -98,10 +102,18 @@
                     // request is resolved when there is no next url in link header
                     request.resolve(newData);
                 }
+            })
+            .fail(function(jqxhr, textStatus, errmsg){
+                retries += 1;
+                if (retries <= 3) {
+                    getData(nexturl);
+                } else {
+                    alert("Error: Fail to get data from Aekos: " + nexturl);
+                }
             });
         }
 
-        getData(linkurl);
+        getData(nexturl);
         return request;
     };
 
@@ -111,6 +123,8 @@
         var newData = {};
         newData.response = [];
         newData.responseHeader  = {};
+        var retries = 0;
+        var nexturl = linkurl;
 
         var getData = function(url){
             $.ajax({
@@ -118,14 +132,16 @@
                 url: url,
                 data: methodType == 'POST' ? JSON.stringify(params) : params,
                 type: methodType
-            }).done(function(data, textStatus, jqxhr){
+            })
+            .done(function(data, textStatus, jqxhr){
                 $.each(data.response, function(index, item) {
                         newData.response.push(item);
                 });
                 newData.responseHeader = data.responseHeader;
 
                 // Get the next url from the link header
-                var nexturl = '';
+                nexturl = '';
+                retries = 0;
                 var link = jqxhr.getResponseHeader('link');
                 if (link) {
                     linkitem = parseLinkHeader(link)
@@ -140,10 +156,18 @@
                     // request is resolved when there is no next url in link header
                     request.resolve([newData]);
                 }
+            })
+            .fail(function(jqxhr, textStatus, errmsg){
+                retries += 1;
+                if (retries <= 3) {
+                    getData(nexturl);
+                } else {
+                    alert("Error: Fail to get data from Aekos: " + nexturl );
+                }
             });
         }
 
-        getData(linkurl);
+        getData(nexturl);
         return request;
     };    
 
@@ -156,7 +180,7 @@
             data.traitNames = [traitName];
         }
 
-        var url = apiurl + 'getSpeciesByTrait.json?pageSize=1000';
+        var url = apiurl + 'getSpeciesByTrait.json?pageSize=20';
         return getDataPages(url, data, 'POST');
     };
 
@@ -169,7 +193,7 @@
             data.speciesNames = [speciesName];
         }
 
-        var url = apiurl + 'getTraitsBySpecies.json?pageSize=1000';
+        var url = apiurl + 'getTraitsBySpecies.json?pageSize=20';
         return getDataPages(url, data, 'POST');
    };
 
@@ -182,7 +206,7 @@
             data.speciesNames = [speciesName]
         }
 
-        var url = apiurl + 'getEnvironmentBySpecies.json?pageSize=1000';
+        var url = apiurl + 'getEnvironmentBySpecies.json?pageSize=20';
         return getDataPages(url, data, 'POST');
     };
 
@@ -198,7 +222,7 @@
     };
     
     function speciesAutocomplete(q) {
-        var url = apiurl + 'speciesAutocomplete.json?rows=1000';
+        var url = apiurl + 'speciesAutocomplete.json?rows=200';
         return getDataPages(url, {'q': q}, 'GET');
     };
 
@@ -216,7 +240,7 @@
         } else {
             data.traitNames = [traitArr];
         }
-        var url = apiurl + 'traitData.json?rows=100';
+        var url = apiurl + 'traitData.json?rows=20';
         return getDataResponses(url, data, 'POST');
     };
 
@@ -232,7 +256,7 @@
         } else {
             data.varNames = [enviroArr];
         }
-        var url = apiurl + 'environmentData.json?rows=100';
+        var url = apiurl + 'environmentData.json?rows=20';
         return getDataResponses(url, data, 'POST');
     };
 
