@@ -180,7 +180,7 @@
             data.traitNames = [traitName];
         }
 
-        var url = apiurl + 'getSpeciesByTrait.json?pageSize=20';
+        var url = apiurl + 'getSpeciesByTrait.json?pageSize=200';
         return getDataPages(url, data, 'POST');
     };
 
