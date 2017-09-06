@@ -69,6 +69,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
                     // FIXME: assumes there is only 1 layer
                     var newLayer = newLayers[0];
                     var layerdef = newLayer.get('bccvl').layer;
+
                     // set layer title and opacity
                     if (typeof algorithm != "undefined") {
                         container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');

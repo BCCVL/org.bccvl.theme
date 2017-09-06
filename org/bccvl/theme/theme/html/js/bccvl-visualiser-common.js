@@ -210,6 +210,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            generateRangeArr: function(styleObj){
+               
+               console.log(styleObj);
                var standard_range = styleObj.standard_range;
                var minVal = styleObj.minVal;
                var maxVal = styleObj.maxVal;
@@ -253,6 +255,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var rangeArr = [0,1,2,3];
                } else if (standard_range == 'probability-difference'){  
                    rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+               } else if (standard_range == 'pH'){
+                   // rainfall BOM standard range
+                   var rangeArr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -299,8 +304,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var colorArr = ['#FFFFFF','#f0fcff','#d9f8ff','#bff3ff','#a3edff','#86e5ff','#6fdbff','#5bccfb','#4eb8f5','#439eec','#3b81e2','#3562d8','#3146ce','#2d2ec6'];
                } else if (standard_range == 'temperature') {
                    // temperature BOM standard colours
-                   // rangeArr =           [-6,        -3,       0,         3,        6,         9,        12,       15,       18,       21,      24,       27,       30,       33,       36,        39,       42,     45];
-                   var colorArr = ['#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e', '#993300'];
+                   // rangeArr =  [      <-6,        -6,       -3,       0,         3,        6,        9,       12,       15,       18,       21,      24,       27,        30,       33,       36,       39,       42,      45 ];
+                   var colorArr = ['#650065', '#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e'];
                } else if (standard_range == 'suitability' && startpoint == null) {
                    // apply standard suitability coloring only if we don't have a color range set up
                    // FIXME: generate default color range for suitabilities automatically as we do below if possible
@@ -320,6 +325,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'probability-difference') {
                    // rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                    var colorArr = ['#B41414', '#C34343', '#D27272', '#E1A1A1', '#F0D0D0', '#FFFFFF', '#e7f2fb', '#CEE6FA', '#9DCDF5', '#6CB4F0', '#3B9BEB', '#0A82E6'];
+               } else if (standard_range == 'pH') {
+                   // rangeArr =  [        0,         1,         2,         3,         4,         5,         6,         7,         8,         9,        10,        11,        12,        13,        14]
+                   var colorArr = ['#ee1c25', '#f26722', '#f8c611', '#f4ec1b', '#b4d433', '#83c240', '#4db748', '#33a949', '#21b569', '#09bab4', '#4591cb', '#3853a4', '#5952a2', '#62469d', '#462c83'];
                } else {
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
@@ -436,6 +444,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
            //generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
            generateSLD: function(layerdef) {
+ 
+               if(layerdef.legend == "pH"){
+                   layerdef.style.standard_range="pH"
+               }
+               
                var xmlStylesheet;
                if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
                    xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
@@ -665,6 +678,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            createLegend: function(layerdef) {
+               if(layerdef.legend == "pH"){
+                   layerdef.style.standard_range="pH"
+               }
                // create a legend for given values
 
                // Get hex color range and map values
@@ -676,7 +692,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var legend_step_size = 5;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
-               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference']) > -1) {
+               } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH']) > -1) {
                    legend_step_size = 1;
                }
                // Build legend obj
@@ -800,6 +816,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            // create new OL layer from layer metadata data object
            // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
            createLayer: function(id, layerdef, data, type, legend) {
+               
                var uuid = data.id;
                var title = layerdef.title;
                var visible = layerdef.isVisible;
@@ -1247,7 +1264,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        // jquery doesn't call this success handler if there was an error in the previous chain
                        // define local variables
                        var layerdef;
-
+                        
+                        console.log(data);
                        // check for layers metadata, if none exists then the request is returning a data like a csv file
                        // TODO: alternative check data.mimetype == 'text/csv' or data.genre
                        //       or use type passed in as parameter
