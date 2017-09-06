@@ -307,7 +307,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'temperature') {
                    // temperature BOM standard colours
                    // rangeArr =  [      <-6,        -6,       -3,       0,         3,        6,        9,       12,       15,       18,       21,      24,       27,        30,       33,       36,       39,       42,      45 ];
-                   var colorArr = ['#650065', '#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e'];
+                   var colorArr = ['#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e', '#6d4218'];
                } else if (standard_range == 'suitability' && startpoint == null) {
                    // apply standard suitability coloring only if we don't have a color range set up
                    // FIXME: generate default color range for suitabilities automatically as we do below if possible
@@ -472,7 +472,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var steps = layerdef.style.steps;
                    // colour range for temperature needs to extend indefinitely negatively and positively.
                    if (layerdef.style.standard_range == 'temperature') {
-                       for (var i = 0; i < (colorArr.length-1); i++) {
+                       for (var i = 1; i < (colorArr.length-1); i++) {
                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
                        }
                        xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
@@ -691,6 +691,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    layerdef.style.standard_range="boolean"
                }
                // create a legend for given values
+               
+               console.log(layerdef.style);
 
                // Get hex color range and map values
                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
@@ -757,6 +759,14 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
                        }
 
+                   } else if (standard_range == 'temperature'){
+                       if (i == (rangeArr.length-1)){
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                       } else if (i == 0) {
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                       } else {
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                       }
                    } else {
                        if (i == (rangeArr.length-1)){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
