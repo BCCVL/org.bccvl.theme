@@ -238,15 +238,15 @@
                                    item_tools nocall:itemobj/@@dataset_tools;
                                    md item_tools/metadata|nothing">
                     <div class="span9 bccvl-table-label">
-                      <h5 tal:content="item/Title">Item Title</h5>
-                      <p><span tal:content="item/Description">Dataset short description</span>
+                      <h5 tal:content="item/Description">Dataset short description</h5>
+                      <p><small><span tal:content="item/Title">Item Title</span>
                       <span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span>
                       <span tal:condition="md/scientificname|nothing">species:<i tal:content="md/scientificname"></i></span>
                       <!-- <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p> -->
                       <!-- <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p> -->
-                      <span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span></p>
+                      <!-- <span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span></p> -->
                       <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
-                      
+                      </small></p>
                     </div>
                     <div class="bccvl-table-controls span3"
                          tal:define="dlinfo item_tools/get_download_info;
