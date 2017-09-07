@@ -297,6 +297,17 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var startpoint = styleObj.startpoint;
                var midpoint = styleObj.midpoint;
                var endpoint = styleObj.endpoint;
+               
+               // convert to five-point scheme, this is currently only in use for default/no metadata datasets
+               if (typeof styleObj.secondpoint != 'undefined' || typeof styleObj.fourthpoint != 'undefined' ) {
+                   var secondpoint = styleObj.secondpoint;
+                   var fourthpoint = styleObj.fourthpoint;
+               } else {
+                   var secondpoint = null;
+                   var fourthpoint = null;
+               }
+               
+               
                var steps = styleObj.steps;
                if (standard_range == 'rainfall'){
                    // rainfall BOM standard colours
@@ -332,8 +343,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var colorArr = ['#ee1c25', '#f26722', '#f8c611', '#f4ec1b', '#b4d433', '#83c240', '#4db748', '#33a949', '#21b569', '#09bab4', '#4591cb', '#3853a4', '#5952a2', '#62469d', '#462c83'];
                } else if (standard_range == 'boolean') {
                    // rangeArr =  [        0,         1,]
-                   var colorArr = ['#4db748', '#4591cb',];
+                   var colorArr = ['#4db748', '#4591cb'];
                } else {
+
                    // utility functions to convert RGB values into hex values for SLD styling.
                    function byte2Hex(n) {
                        var nybHexString = "0123456789ABCDEF";
@@ -344,9 +356,72 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
 
                    var colorArr = [];
+                   
+                   if (midpoint != null && secondpoint != null && fourthpoint != null){
 
-                   if (midpoint != null){
-                       // White to red spectrum
+                       // first section
+                       for (var i = 0; i < (steps/4); i++) {
+                           // red
+                           var redInt = (startpoint.r - secondpoint.r)/(steps/4);
+                           var redVal = startpoint.r - (redInt*i);
+                           // green
+                           var greenInt = (startpoint.g - secondpoint.g)/(steps/4);
+                           var greenVal = startpoint.g - (greenInt*i);
+                           // blue
+                           var blueInt = (startpoint.b - secondpoint.b)/(steps/4);
+                           var blueVal = startpoint.b - (blueInt*i);
+
+                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                       }
+                       
+                       // second section
+                       for (var i = 0; i < (steps/4); i++) {
+                           // red
+                           var redInt = (secondpoint.r - midpoint.r)/(steps/4);
+                           var redVal = secondpoint.r - (redInt*i);
+                           // green
+                           var greenInt = (secondpoint.g - midpoint.g)/(steps/4);
+                           var greenVal = secondpoint.g - (greenInt*i);
+                           // blue
+                           var blueInt = (secondpoint.b - midpoint.b)/(steps/4);
+                           var blueVal = secondpoint.b - (blueInt*i);
+
+                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                       }
+                       
+                       // third section
+                       for (var i = 0; i < (steps/4); i++) {
+                           // red
+                           var redInt = (midpoint.r - fourthpoint.r)/(steps/4);
+                           var redVal = midpoint.r - (redInt*i);
+                           // green
+                           var greenInt = (midpoint.g - fourthpoint.g)/(steps/4);
+                           var greenVal = midpoint.g - (greenInt*i);
+                           // blue
+                           var blueInt = (midpoint.b - fourthpoint.b)/(steps/4);
+                           var blueVal = midpoint.b - (blueInt*i);
+
+                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                       }
+
+                       // fourth section
+                       for (var i = 0; i < ((steps/4)+1); i++) {
+                           // red
+                           var redInt = (fourthpoint.r - endpoint.r)/(steps/4);
+                           var redVal = fourthpoint.r - (redInt*i);
+                           // green
+                           var greenInt = (fourthpoint.g - endpoint.g)/(steps/4);
+                           var greenVal = fourthpoint.g - (greenInt*i);
+                           // blue
+                           var blueInt = (fourthpoint.b - endpoint.b)/(steps/4);
+                           var blueVal = fourthpoint.b - (blueInt*i);
+
+                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                       }
+                       
+                   } else if (midpoint != null){
+
+                       // White to red spectrum fallback
                        if (startpoint==undefined) {
                            var startpoint = {};
                            startpoint.r = 255;
@@ -365,6 +440,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            endpoint.g = 0;
                            endpoint.b = 0;
                        }
+                       
+                       // otherwise use supplied
 
                        // first half
                        for (var i = 0; i < ((steps/2)+1); i++) {
@@ -395,7 +472,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                            colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                        }
+
                    } else {
+
                        // White to red spectrum
                        if (startpoint==undefined) {
                            var startpoint = {};
@@ -660,9 +739,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            minVal: layerdef.min,
                            maxVal: layerdef.max,
                            steps: 20,
-                           startpoint: {r:255,g:255,b:255},
-                           midpoint: {r:231,g:76,b:60},
-                           endpoint: {r:192,g:57,b:43}
+                           startpoint: {r:2,g:95,b:201},
+                           secondpoint: {r:2,g:201,b:166},
+                           midpoint: {r:62,g:193,b:48},
+                           fourthpoint: {r:240,g:255,b:0},
+                           endpoint: {r:235,g:61,b:0}
                        };
                    } else {
                        // a predefined color scheme
@@ -691,8 +772,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    layerdef.style.standard_range="boolean"
                }
                // create a legend for given values
-               
-               console.log(layerdef.style);
 
                // Get hex color range and map values
                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
@@ -700,7 +779,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var standard_range = layerdef.style.standard_range;
                var steps = layerdef.style.steps;
                // determine step size for legend
-               var legend_step_size = 5;
+               var legend_step_size = (rangeArr.length-1)/10;
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
                } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH', 'boolean']) > -1) {
@@ -768,6 +847,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        }
                    } else {
+
                        if (i == (rangeArr.length-1)){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
                        } else if (i == 0) {
