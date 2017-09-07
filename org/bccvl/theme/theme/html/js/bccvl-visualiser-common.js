@@ -601,6 +601,25 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                     style.resolve(styleObj, layerdef)
                     return style
 
+               } else if (layerdef.legend == 'binary'){
+
+                   styleObj = {
+                       // need to define the min as slightly more than zero
+                       // due to SLD matching spec.
+                       minVal: 0.0000001,
+                       maxVal: 1,
+                       steps: 1,
+                       startpoint: null,
+                       midpoint: null,
+                       endpoint: null
+                   };
+
+                   styleObj.standard_range = 'binary';
+
+                   style.resolve(styleObj, layerdef);
+
+                   return style;
+
                } else if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
                    bccvlapi.dm.get_rat(uuid, layerdef.token, true).then(
                        function(data, status, jqXHR) {
@@ -671,25 +690,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            style.resolve(styleObj, layerdef);
                        }
                    );
-
-                   return style;
-
-               } else if (layerdef.legend == 'binary'){
-
-                   styleObj = {
-                       // need to define the min as slightly more than zero
-                       // due to SLD matching spec.
-                       minVal: 0.0000001,
-                       maxVal: 1,
-                       steps: 1,
-                       startpoint: null,
-                       midpoint: null,
-                       endpoint: null
-                   };
-
-                   styleObj.standard_range = 'binary';
-
-                   style.resolve(styleObj, layerdef);
 
                    return style;
 
