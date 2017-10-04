@@ -20,7 +20,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
             // add layerswitcher
             var layerSwitcher = new ol.control.LayerSwitcher({
                 toggleOpen: true,
-                singleVisibleOverlay: true
+                singleVisibleOverlay: false
             });
             
             map.addControl(layerSwitcher);

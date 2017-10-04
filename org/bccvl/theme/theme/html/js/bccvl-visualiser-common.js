@@ -250,15 +250,15 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        rangeArr.push(minVal + i);
                    }
                } else if (standard_range == 'range-change'){
-                   // rainfall BOM standard range
+
                    var rangeArr = [0,1,2,3];
                } else if (standard_range == 'probability-difference'){  
                    rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else if (standard_range == 'pH'){
-                   // rainfall BOM standard range
+
                    var rangeArr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
                } else if (standard_range == 'boolean'){
-                   // rainfall BOM standard range
+
                    var rangeArr = [0,1];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
@@ -549,12 +549,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
                    var colorArr = bccvl_common.generateColorArr(layerdef.style);
                    var steps = layerdef.style.steps;
-                   // colour range for temperature needs to extend indefinitely negatively and positively.
-                   if (layerdef.style.standard_range == 'temperature') {
-                       for (var i = 1; i < (colorArr.length-1); i++) {
-                           xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
+
+                   if (layerdef.style.standard_range == 'boolean') {
+                       for (var i = 0; i < colorArr.length; i++) {
+                           xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                        }
-                       xmlStylesheet += '<se:Value>'+colorArr[colorArr.length-1]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
@@ -833,6 +832,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                for (var i = 0; i < (rangeArr.length); i = i+legend_step_size) {
                    if (standard_range == 'categorical' || standard_range == 'misc_categorical' || standard_range == 'range-change'){
                        panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>'+layerdef.labels[i]+'</label>';
+                   } else if (standard_range == 'boolean'){
+                      panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+rangeArr[i]+'</label>';
                    } else if (standard_range == 'binary'){
                        if (rangeArr[i] == 1){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
