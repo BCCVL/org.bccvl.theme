@@ -619,6 +619,31 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                    return style;
 
+               } else if (layerdef.legend == 'boolean' && layerdef.datatype == 'discrete'){
+
+                   // count number of rows, number is inclusive so requires offset
+                   var numRows = layerdef.max - layerdef.min + 1;
+                   var labels = [];
+                   for (var i = 0; i < numRows; i++) {
+                       labels.push('Boolean '+(layerdef.min+i));
+                   }
+                   layerdef.labels = labels;
+                   
+                   styleObj = {
+                       // get number of rows from layerdef, make equivalent number of steps
+                       minVal: layerdef.min,
+                       maxVal: layerdef.max,
+                       steps: numRows,
+                       startpoint: null,
+                       midpoint: null,
+                       endpoint: null,
+                       standard_range: 'boolean'
+                   };
+
+                   style.resolve(styleObj, layerdef);
+                   
+                   return style;
+
                } else if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
                    bccvlapi.dm.get_rat(uuid, layerdef.token, true).then(
                        function(data, status, jqXHR) {
@@ -673,7 +698,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            }
                            layerdef.labels = labels;
 
-                           layerdef.tooltip = "No layer metadata is available for this dataset. Select a classfication using the Edit options on the dataset search interface for more accurate visualisations."
+                           layerdef.tooltip = "No layer metadata is available for this dataset. Select a classification using the Edit options on the dataset search interface for more accurate visualisations."
 
                            styleObj = {
                                // get number of rows from layerdef, make equivalent number of steps
