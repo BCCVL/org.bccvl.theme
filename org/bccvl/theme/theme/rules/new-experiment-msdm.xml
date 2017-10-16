@@ -27,7 +27,7 @@
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
         <replace css:theme-children="#algoConfig"
-                 css:content-children="#fieldset-parameters-functions"/>
+                 css:content-children="#fieldset-parameters-function"/>
 
 
         <!-- hook in the occurrences list -->
