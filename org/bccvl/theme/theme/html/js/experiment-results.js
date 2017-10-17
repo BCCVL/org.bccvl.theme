@@ -16,6 +16,19 @@ define(
             var exportmodal = new modals.OAuthSelectModal('oauth-select-modal');
             exportmodal.bind('body', 'a.export-btn');
             
+            // trait dataset parameter configuration
+            var paramsCount = $("input[name='form.widgets.species_traits_dataset_params.count']").val();
+            var speciesDataset = $('#formfield-form-widgets-species_traits_dataset');
+            if (paramsCount && speciesDataset) {
+                speciesParamsDiv = '<div class="control-group" data-fieldname="form.widgets.species_traits_dataset_params" id="formfield-form-widgets-species_traits_dataset_params"><label for="form-widgets-species_traits_dataset_params" class="control-label">Trait Dataset Configuration</label></div>'
+                for (var i = 0; i < paramsCount; i++) {
+                    pname = sprintf("input[name='form.widgets.species_traits_dataset_params.key.%s']", i);
+                    pvalue = sprintf("input[name='form.widgets.species_traits_dataset_params.%s']", i);
+                    speciesParamsDiv += sprintf('<ul><li>%s</li></ul>', $(pname).val() + ' - ' + $(pvalue).val());
+                }
+                speciesDataset.after(speciesParamsDiv);
+            }
+
             var geojsonObject = $('#form-widgets-modelling_region').val();
             if (geojsonObject) {
 
@@ -121,6 +134,13 @@ define(
                     affix.removeClass('affix');
                 }
             });
+        }
+
+        function sprintf(format) {
+            for (var i = 1; i < arguments.length; i++) {
+                format = format.replace(/%s/, arguments[i]);
+            }
+            return format;
         }
 
         // Poll experiment status
