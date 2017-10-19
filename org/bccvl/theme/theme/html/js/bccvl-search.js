@@ -857,6 +857,9 @@ define(
                 $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
 
                 $.when(
+                    // TODO: a single quick check whether there are any results is good enough
+                    //       no need to download the whole dataset which could be large
+                    //       and takes a long time
                     aekos.getTraitDataBySpecies(species, traits),
                     aekos.getTraitDataByEnviro(species, enviro)
                 ).done(function(traitData, enviroData) {
