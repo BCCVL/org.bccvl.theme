@@ -1945,6 +1945,30 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        if (data.properties == null) {
                            data.properties = {};
                        }
+
+                       var constraint_method = $(".constraint-method").has('input[type="radio"][name="constraints_type"]:checked');
+                       var method = constraint_method.find('input[type="radio"][name="constraints_type"]').val();
+                       var methodname = constraint_method.find("label[for='" + method + "']").text();
+                       var offset = constraint_method.find('input[type="text"][name="region-offset"]').val();
+
+                       data.properties['constraint_method'] = {title: methodname, id: method};
+                       if (typeof offset != 'undefined') {
+                          data.properties['region_offset'] = offset;
+                       }
+
+                       if (method == 'region_no_offset') {
+                          var region_type = constraint_method.find('#select-region-type').find('option:selected');
+                          var region_name = constraint_method.find('.select-region').find('option:selected');
+
+                          if (typeof region_type != "undefined") {
+                            data.properties['region_type'] = {title: region_type.text(), id: region_type.val()};
+                          }
+                          if (typeof region_name != "undefined") {
+                            data.properties['region_name'] = {title: region_name.text(), id: region_name.val()};
+                          }
+                       }
+
+
                        data = JSON.stringify(data);
                        $('#' + field_id).val('' + data + '');
                    }

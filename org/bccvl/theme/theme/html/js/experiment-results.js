@@ -20,11 +20,11 @@ define(
             var paramsCount = $("input[name='form.widgets.species_traits_dataset_params.count']").val();
             var speciesDataset = $('#formfield-form-widgets-species_traits_dataset');
             if (paramsCount && speciesDataset) {
-                speciesParamsDiv = '<div class="control-group" data-fieldname="form.widgets.species_traits_dataset_params" id="formfield-form-widgets-species_traits_dataset_params"><label for="form-widgets-species_traits_dataset_params" class="control-label">Trait Dataset Configuration</label></div>'
+                var speciesParamsDiv = '<div class="control-group" data-fieldname="form.widgets.species_traits_dataset_params" id="formfield-form-widgets-species_traits_dataset_params"><label for="form-widgets-species_traits_dataset_params" class="control-label">Trait Dataset Configuration</label></div>';
                 for (var i = 0; i < paramsCount; i++) {
-                    pname = sprintf("input[name='form.widgets.species_traits_dataset_params.key.%s']", i);
-                    pvalue = sprintf("input[name='form.widgets.species_traits_dataset_params.%s']", i);
-                    speciesParamsDiv += sprintf('<ul><li>%s</li></ul>', $(pname).val() + ' - ' + $(pvalue).val());
+                    var pname = sprintf("input[name='form.widgets.species_traits_dataset_params.key.%s']", i);
+                    var pvalue = sprintf("input[name='form.widgets.species_traits_dataset_params.%s']", i);
+                    speciesParamsDiv += sprintf('<ul><li>%s - %s</li></ul>', $(pname).val(), $(pvalue).val());
                 }
                 speciesDataset.after(speciesParamsDiv);
             }
@@ -35,6 +35,21 @@ define(
                 var source = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
                 });
+
+                // Display the contraint region properties
+                var regionParamsDiv = '<div class="control-group" data-fieldname="form.widgets.region_constraint_properties" id="formfield-form-widgets-region_constraint_properties"><label for="form-widgets-region_constraint_properties" class="control-label">Region Constraint Configuration</label></div>';
+                var properties = source.getFeatures()[0].getProperties();
+                for (var pname of ['constraint_method', 'region_offset', 'region_type', 'region_name']) {
+                    if (properties.hasOwnProperty(pname)) {
+                        if (pname == 'region_offset') {
+                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname]);
+                        }
+                        else {
+                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname].title);
+                        }
+                    }
+                }
+                $('#form-widgets-modelling_region').after(regionParamsDiv);
 
                 var constraintsLayer = new ol.layer.Vector({
                     source: source,
