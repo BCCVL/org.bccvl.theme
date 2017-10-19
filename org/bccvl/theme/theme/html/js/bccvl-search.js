@@ -580,10 +580,10 @@ define(
             },
             search: {
                 searchUrl: function(selectedItem, start, pageSize) {
-                    return (aekos.getApiUrl() + '/GET /v2/speciesSummary.json?speciesName=' + encodeURIComponent(selectedItem));
+                    // not used for aekos, because we use the aekos api module in getData
                 },
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    // ???
+                    // not used in aekos, because there is no find species for genus feature
 
                 },
                 statusError: function(data) {
