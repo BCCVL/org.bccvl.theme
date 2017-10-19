@@ -712,10 +712,7 @@ define(
                     // clear current select
                     speciesFieldSelect.clearOptions();
 
-                    var selectedtraits = [];
-                    $.each($(this).serializeArray(), function(index, elem) {
-                        selectedtraits.push(elem.value);
-                    });
+                    var selectedtraits = traitFieldSelect.items.slice()
                     if (selectedtraits && selectedtraits.length) {
                         aekos.getSpeciesByTrait(selectedtraits).then(
                             function(data) {
@@ -739,10 +736,7 @@ define(
                     // clear current select
                     enviroFieldSelect.clearOptions();
 
-                    var selectedspecies = []
-                    $.each($(this).serializeArray(), function(index, elem) {
-                        selectedspecies.push(elem.value);
-                    });
+                    var selectedspecies = speciesFieldSelect.items.slice();
                     if (selectedspecies && selectedspecies.length) {
                         aekos.getEnvironmentBySpecies(selectedspecies).then(
                             function(data) {
@@ -789,10 +783,8 @@ define(
                     // clear current select
                     traitFieldSelect.clearOptions();
 
-                    var selectedspecies = [];
-                    $.each($(this).serializeArray(), function(index, elem) {
-                        selectedspecies.push(elem.value);
-                    });
+                    // speciesFieldSelect = $(this)[0].selectize
+                    var selectedspecies = speciesFieldSelect.items.slice();
                     if (selectedspecies && selectedspecies.length) {
                         aekos.getTraitsBySpecies(selectedspecies).then(
                             function(data) {
@@ -822,9 +814,9 @@ define(
 
             // TODO: should this be on page?
             $submit.click(function() {
-                var species = speciesFieldSelect.getValue(),
-                    traits = traitFieldSelect.getValue(),
-                    enviro = enviroFieldSelect.getValue();
+                var species = speciesFieldSelect.items.slice(),
+                    traits = traitFieldSelect.items.slice(),
+                    enviro = enviroFieldSelect.items.slice();
 
                 // make sure species is an array
                 if (! species instanceof Array) {
@@ -854,13 +846,13 @@ define(
                         $submit.find('i').removeClass();
                     }
                 );
-                    
+
             });
 
             $importSelection.click(function(){
-                var species = speciesFieldSelect.getValue(),
-                    traits  = traitFieldSelect.getValue(),
-                    enviro  = enviroFieldSelect.getValue();
+                var species = speciesFieldSelect.items.slice(),
+                    traits  = traitFieldSelect.items.slice(),
+                    enviro  = enviroFieldSelect.items.slice();
 
                 $importSelection.find('i.fa').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
 
