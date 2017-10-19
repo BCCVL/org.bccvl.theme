@@ -140,21 +140,21 @@ define(
                     var splitItems = selectedItem.split(/<\/?i>/);
                     var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
-                    
+
                     return ('https://api.gbif.org/v1/species?name=' + encodeURIComponent(searchString) + '&offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(genusKey, start, pageSize) {
-                    // To search for all the species belong to a given genus 
+                    // To search for all the species belong to a given genus
                     startIndex = start || 0;
-                    pageSize = pageSize || 10;                            
+                    pageSize = pageSize || 10;
                     return ('https://api.gbif.org/v1/species/' + encodeURIComponent(genusKey) + '/children?offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
-                statusError: function(data) {                        
+                statusError: function(data) {
                     return !('results' in data)
                 },
-                // - - - - - - - - - - - - - - - - - - - - - - - - -                        
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
                 totalRecords: function(data) {
                     if (typeof(data.endOfRecords) != 'undefined' && !data.endOfRecords) {
                         return data.offset + (2 * data.limit);
@@ -169,29 +169,29 @@ define(
                         var included = [];
                         var searchStringWords = searchString.toLowerCase().split(" ");
                         $.each(rawData.results, function(index, item) {
-                            
+
                             // Skip if it is already included
                             if (typeof(item.nubKey) == 'undefined' || $.inArray(item.nubKey, included) != -1) {
                                 // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
                                 return true;
                             }
-                            
+
                             // Skip if its status is not accepted
                             if (typeof(item.taxonomicStatus) == 'undefined' || item.taxonomicStatus != 'ACCEPTED') {
                                 return true;
                             }
-                            
+
                             // Check if it is alreday included for import in other search
                             if ($.inArray(item.nubKey, excluded) != -1) {
                                 return true;
-                            }                                    
-                            
+                            }
+
                             // Skip if rank is undefined. Only interested in species or genus
                             if (typeof(item.rank) == 'undefined' || (item.rank != 'SPECIES' && item.rank != 'GENUS'))
                             {
                                 return true;
                             }
-                            
+
                             // build the proper data object
                             result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                             result.title = item.scientificName;
@@ -201,28 +201,28 @@ define(
                             result.family = item.family;
                             result.nubKey = item.nubKey;
                             result.genusKey = item.genusKey;
-                            
+
                             if (item.vernacularName) {
                                 result.title = item.vernacularName + ' <i class="taxonomy">' + item.scientificName + '</i>';
                                 result.friendlyname = item.vernacularName + ' ' + item.scientificName;
                             }
-                            
+
                             if (item.nubKey) {
                                 included.push(item.nubKey);
                                 excluded.push(item.nubKey);
-                            } 
+                            }
 
                             if (item.rank) {
                                 result.description += ' (' + item.rank + ')';
                             }
-                            
+
                             // now get the actions sorted. For GBIF, lsid is the taxonKey/nubKey i.e. speciesKey, genusKey
                             if (item.nubKey) {
                                 var gbifImportArgs = '?import=Import&';
                                 gbifImportArgs += 'lsid=' + encodeURIComponent(item.nubKey) + "&";
                                 gbifImportArgs += 'taxon=' + encodeURIComponent(item.scientificName) + "&";
                                 gbifImportArgs += 'searchOccurrence_source=' + encodeURIComponent('gbif');
-                                
+
                                 result.actions.viz = 'https://www.gbif.org/species/' + encodeURIComponent(item.nubKey);
                                 result.actions.alaimport = document.URL + gbifImportArgs;
                             }
@@ -233,31 +233,31 @@ define(
                 },
                 // --------------------------------------------------------------
                 getData: function(nextIndex, selectedItem, pageSize) {
-                    // Get species data from GBIF 
+                    // Get species data from GBIF
                     var searchUrl = providers.gbif.search.searchUrl(selectedItem, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
-                    
+
                     return $.ajax({
                         dataType: 'jsonp',
                         url: searchUrl,
                         timeout: 60000
                     });
-                },                        
+                },
                 // --------------------------------------------------------------
                 getGenusSpecies: function(genusKey, nextIndex, pageSize) {
                     var surl = providers.gbif.search.searchSpeciesUrl(genusKey, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
-                    
+
                     return $.ajax({
                         dataType: 'jsonp',
                         url: surl,
                         timeout: 60000
                     });
                 },
-                // --------------------------------------------------------------                                                
+                // --------------------------------------------------------------
                 importGenusDatasets: function(searchString, excluded) {
-                    var $resultTable = $('.bccvl-search-results');                        
-                    var genusKey = $resultTable.data('data-genusKey');  
+                    var $resultTable = $('.bccvl-search-results');
+                    var genusKey = $resultTable.data('data-genusKey');
 
                     var find_species_to_import = function(index, pageSize) {
                         var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
@@ -274,7 +274,7 @@ define(
                                 // Import all the species datasets
                                 var results = providers.gbif.search.parseSearchData(data, searchString, excluded);
                                 if (!importSpeciesDatasets(results)) {
-                                    // if no more records and index==0 
+                                    // if no more records and index==0
                                     if (data.endOfRecords && index == 0) {
                                         providers.gbif.autocomplete.noResultsFound();
                                     }
@@ -288,14 +288,14 @@ define(
                                         location.href = portal_url + '/datasets'
                                     }
                                 }
-                                
+
                             },
                             displayErrorMessage
                         )
                     }
 
                     find_species_to_import(0, 40)
-                    
+
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -335,7 +335,7 @@ define(
                                 var sortedNameString = item.commonName.split(/,\s*/).sort( function(a, b) {
                                     return a.length - b.length;
                                 }).join(', ');
-                                
+
                                 if (sortedNameString.length > 100) {
                                     name = name + ' ' + sortedNameString.substring(0,99) + '...';
                                 } else {
@@ -392,25 +392,25 @@ define(
                     return ('https://bie.ala.org.au/ws/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
-                statusError: function(data) {                        
+                statusError: function(data) {
                     return data['searchResults']['status'] == 'ERROR';
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 totalRecords: function(data) {
                     return data['searchResults']['totalRecords'];
-                },                        
+                },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseSearchData: function(rawData, searchString, excluded) {
                     var list = [];
                     if (rawData.searchResults && rawData.searchResults.results) {
                         var included = [];
                         var searchStringWords = searchString.toLowerCase().split(" ");
-                        $.each(rawData.searchResults.results, function(index, item) {                                   
+                        $.each(rawData.searchResults.results, function(index, item) {
                             // Skip if there is no occurrence count
                             if (item.occurrenceCount == undefined || item.occurrenceCount <= 0) {
                                 return true;
                             }
-                            
+
                             // build the proper data object
                             result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
                             result.title = item.name;
@@ -418,12 +418,12 @@ define(
                             result.rank = item.rank;
                             result.genus = item.genus;
                             result.family = item.family;
-                            
+
                             if (item.commonNameSingle) {
                                 result.title = item.commonNameSingle + ' <i class="taxonomy">' + item.name + '</i>';
                                 result.friendlyname = item.commonNameSingle + ' ' + item.name;
                             }
-                            
+
                             // ALA actually performs an 'OR' search on all terms provided.
                             // So, if we search for say 'Macropus Rufus' we would get back all species containing the
                             // word 'macropus' and also all species containing the word 'rufus'.
@@ -439,10 +439,10 @@ define(
                                 // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
                                 return true;
                             }
-                            
+
                             if (item.guid && item.guid.length > 0) {
                                 included.push(item.guid);
-                            } 
+                            }
 
                             if (item.rank) {
                                 result.description += ' (' + item.rank + ')';
@@ -457,7 +457,7 @@ define(
                             } else if (item.thumbnailUrl) {
                                 result.thumbUrl = item.thumbnailUrl;
                             }
-                            
+
                             // now get the actions sorted.
                             if (item.guid) {
                                 var alaImportArgs = '?import=Import&';
@@ -467,7 +467,7 @@ define(
                                 if (item.commonNameSingle) {
                                     alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
                                 }
-                                
+
                                 result.actions.viz = 'https://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
                                 result.actions.alaimport = document.URL + alaImportArgs;
                             }
@@ -478,10 +478,10 @@ define(
                 },
                 // --------------------------------------------------------------
                 getData: function(nextIndex, selectedItem, pageSize) {
-                    // Get species data from ALA. 
+                    // Get species data from ALA.
                     var searchUrl = providers.ala.search.searchUrl(selectedItem, nextIndex, pageSize);
                     $('.bccvl-results-spinner').css('display', 'block');
-                    
+
                     return $.ajax({
                         dataType: 'jsonp',
                         url: searchUrl,
@@ -491,7 +491,7 @@ define(
                 // --------------------------------------------------------------
                 importGenusDatasets: function(searchString, excluded) {
                     var  surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, 0);
-                    
+
                     $.ajax({
                         dataType: 'jsonp',                       // ..using JSONP instead
                         url: surl,
@@ -503,11 +503,11 @@ define(
                                 providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
                                 return data
                             }
-                            
+
                             // Set pageSize and search for all the species again
                             var pageSize = providers.ala.search.totalRecords(data);
                             var surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, pageSize);
-                            
+
                             return $.ajax({
                                 dataType: 'jsonp',                       // ..using JSONP instead
                                 url: surl,
@@ -575,7 +575,7 @@ define(
                 },
                 cleanAutoItem: function(selectedItem) {
                     // the string will always have <i>sciname</i> at the start, so..
-                    return selectedItem.split(/<\/?i>/)[1];                    
+                    return selectedItem.split(/<\/?i>/)[1];
                 }
             },
             search: {
@@ -584,7 +584,7 @@ define(
                 },
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
                     // ???
-                    
+
                 },
                 statusError: function(data) {
                     // check if data contains error condition
@@ -633,14 +633,14 @@ define(
         function init() {
             enableForms();
             enableTraitsForms();
-            
+
         };
-        
+
         function enableTraitsForms() {
             // call enableForm() on each form in the dom
             var $traitSearchForm = $('.bccvl-search-traits');
             $.each($traitSearchForm, function(index, form) { enableTraitsForm(form); });
-            
+
         };
 
         function enableTraitsForm(formElement) {
@@ -669,7 +669,7 @@ define(
             var $traitfield, traitFieldSelect, $speciesField, speciesFieldSelect, $enviroField, enviroFieldSelect;
 
             // init selectize fields
-            if ($speciesselect && $speciesselect.length && $formType != 'traits-by-species') { 
+            if ($speciesselect && $speciesselect.length && $formType != 'traits-by-species') {
                 $speciesField = $speciesselect.selectize();
                 speciesFieldSelect = $speciesField[0].selectize;
             }
@@ -678,13 +678,13 @@ define(
                 traitFieldSelect = $traitfield[0].selectize;
             }
             // init environmental var field
-            if ($environmentselect && $environmentselect.length) {  
+            if ($environmentselect && $environmentselect.length) {
                 $enviroField = $environmentselect.selectize();
                 enviroFieldSelect = $enviroField[0].selectize;
             }
 
 
-            // END COMMON 
+            // END COMMON
 
             // TRAITS BY TRAIT FORM
 
@@ -698,10 +698,10 @@ define(
                     $.each(data, function(index, trait) {
 
                         traitFieldSelect.addOption({value: trait.code, text: trait.label })
-                        
+
                     });
                     traitFieldSelect.refreshOptions();
-                    
+
                 });
 
                 // watch selection change event on traits
@@ -734,7 +734,7 @@ define(
                 // this works via sites where species occurred.
                 // TODO: keep selected env vars if possible
                 $speciesselect.on('change', function(event) {
-                    
+
 
                     // clear current select
                     enviroFieldSelect.clearOptions();
@@ -755,7 +755,7 @@ define(
                     }
                 });
 
-            } else if ($formType == 'traits-by-species') { 
+            } else if ($formType == 'traits-by-species') {
 
                 $speciesField = $speciesselect.selectize({
                     valueField: 'speciesName',
@@ -815,7 +815,7 @@ define(
                     }
                 });
 
-                $traitsselect.on('change', function(event) { 
+                $traitsselect.on('change', function(event) {
                     enviroFieldSelect.focus();
                 });
             }
@@ -830,7 +830,7 @@ define(
                 if (! species instanceof Array) {
                     species = species.split(',');
                 }
-                
+
                 $submit.find('i').removeClass().addClass('fa fa-spinner fa-pulse fa-fw');
                 bccvlapi.dm.import_trait_data(
                     {
@@ -868,7 +868,7 @@ define(
                     aekos.getTraitDataBySpecies(species, traits),
                     aekos.getTraitDataByEnviro(species, enviro)
                 ).done(function(traitData, enviroData) {
-                    var traitResponse = traitData[0].response, 
+                    var traitResponse = traitData[0].response,
                         enviroResponse = enviroData[0].response;
 
                     if (traitData[0].responseHeader.numFound > 0 && enviroData[0].responseHeader.numFound > 0 ) {
@@ -903,7 +903,7 @@ define(
                     }
                 });
             });
-            
+
         };
 
         // --------------------------------------------------------------
@@ -952,7 +952,7 @@ define(
             var loading = false;    // Indicate if we are still loading from ALA
             $(window).on('scroll', function(e) {
                 if (isNearScreenBottom()) {
-                    var $resultTable = $('.bccvl-search-results');                        
+                    var $resultTable = $('.bccvl-search-results');
                     if (!loading && $resultTable) {
                         var totalRecords = $resultTable.data('data-totalRecords');
                         var nextIndex = $resultTable.data('data-nextIndex');
@@ -973,10 +973,10 @@ define(
                 var $el = $(e.currentTarget);
                 var provider = providers[$sourceField.val()];
 
-                // reset the excluded list 
+                // reset the excluded list
                 excludedList = [];
 
-                // For genus, import all species datasets 
+                // For genus, import all species datasets
                 if ($el.attr('data-rank').toLowerCase() == 'genus') {
                     provider.search.importGenusDatasets($inputField.val(), excludedList);
                 }
@@ -986,7 +986,7 @@ define(
             });
 
             // switch on twitter bootstrap autocomplete
-            // only do search 
+            // only do search
             (function() {
                 var delay = 500;
                 var timeout;
@@ -1005,12 +1005,12 @@ define(
                             if (typeof(current_ajax) != "undefined"){
                                 current_ajax.abort();
                             }
-                            
+
                             // do nothing if input field is empty and hide spinner
                             if ($.trim($inputField.val()) == ''){
                                 $inputField.removeClass("bccvl-search-spinner");
                                 return;
-                            } 
+                            }
 
                             $inputField.addClass("bccvl-search-spinner");
                             var provider = providers[$sourceField.val()];
@@ -1018,14 +1018,14 @@ define(
                             if (!provider.autocomplete) return;
                             if (!provider.autocomplete.autoUrl) return;
                             var autocompleteUrl = provider.autocomplete.autoUrl(queryStr);
-                            
+
                             current_ajax = $.ajax({
                                 // xhrFields: { withCredentials: true }, // not using CORS
                                 //dataType: 'jsonp',                       // ..using JSONP instead
                                 dataType: 'json',
                                 url: autocompleteUrl,
                                 success: function(data) {
-                                    
+
                                     // either the search provider will have a parseAutoData function,
                                     // which extracts the possible matches from the returned data.
                                     if (provider.autocomplete.parseAutoData) {
@@ -1049,7 +1049,7 @@ define(
                                 }
                             });
                         }, delay);
-                        
+
                     },
                     updater: function(selectedItem) {
                         // returns the value to put into the text box
@@ -1063,7 +1063,7 @@ define(
 
                         // do nothing if input field is empty
                         if ($.trim($inputField.val()) == '') return;
-                        
+
                         // Display the result data
                         excludedList = [];
                         // start search
@@ -1072,15 +1072,15 @@ define(
                     }
                 });
             })();
-            // --------------------------------------------------------------           
+            // --------------------------------------------------------------
             function isNearScreenBottom() {
                 return ($(window).height() >= 0.7 * ($(document).height() - $(window).scrollTop()));
             }
-            // --------------------------------------------------------------   
+            // --------------------------------------------------------------
             function isScrollBarShown() {
                 return ($(window).height() < $(document).height());
             }
-            // -------------------------------------------------------------- 
+            // --------------------------------------------------------------
             function displayMoreData(nextIndex, totalRecords, selectedItem, genusKey) {
                 // totalRecords < 0 means we start a new search so clear the result area
                 if (totalRecords < 0) {
@@ -1107,7 +1107,7 @@ define(
                             $('.bccvl-search-results').data('data-selectedItem', selectedItem);
                             $('.bccvl-search-results').data("data-nextIndex", nextIndex + pageSize);
                             $('.bccvl-search-results').data("data-genusKey", genusKey);
-                            
+
                             // For GBIF, if a genus is selected, need to display its associated species.
                             if (dataSrc == 'gbif' && res.length > 0){
                                 item = res[0];
@@ -1116,7 +1116,7 @@ define(
                                     $('.bccvl-search-results').data("data-genusKey", item.genusKey);
                                 }
                             }
-                        }                           
+                        }
                     });
                     results.fail(displayErrorMessage);
                     results.always(function(xhr, status) {
@@ -1124,11 +1124,11 @@ define(
                         if (status == "success" && (!isScrollBarShown() || isNearScreenBottom())) {
                             displayMoreData(nextIndex + pageSize, totalRecords, selectedItem);
                         }
-                    });                            
+                    });
                 }
 
             }
-            // -------------------------------------------------------------- 
+            // --------------------------------------------------------------
             function displayData(data, provider, dataSrc, searchString, resultsField) {
                 var results = null;
                 if (provider.search.statusError(data)){
@@ -1143,9 +1143,9 @@ define(
                     }
                 }
                 // get rid of spinner
-                $('.bccvl-results-spinner').css('display', 'none');                    
+                $('.bccvl-results-spinner').css('display', 'none');
                 return results;
-            } 
+            }
         };
         // --------------------------------------------------------------
         displayResults = function(results, domElement) {
