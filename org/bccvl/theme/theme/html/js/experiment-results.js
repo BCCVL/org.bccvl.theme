@@ -37,7 +37,7 @@ define(
                 });
 
                 // Display the contraint region properties
-                var regionParamsDiv = '<div class="control-group" data-fieldname="form.widgets.region_constraint_properties" id="formfield-form-widgets-region_constraint_properties"><label for="form-widgets-region_constraint_properties" class="control-label">Region Constraint Configuration</label></div>';
+                var regionParamsDiv = '<div class="control-group" name="region_constraint_properties" id="region_constraint_properties"><label for="region_constraint_properties" class="control-label">Region Constraint Configuration</label></div>';
                 var properties = source.getFeatures()[0].getProperties();
                 for (var pname of ['constraint_method', 'region_offset', 'region_type', 'region_name']) {
                     if (properties.hasOwnProperty(pname)) {
