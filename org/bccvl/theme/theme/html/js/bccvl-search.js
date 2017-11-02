@@ -238,7 +238,7 @@ define(
                     $('.bccvl-results-spinner').css('display', 'block');
 
                     return $.ajax({
-                        dataType: 'jsonp',
+                        dataType: 'json',
                         url: searchUrl,
                         timeout: 60000
                     });
@@ -249,7 +249,7 @@ define(
                     $('.bccvl-results-spinner').css('display', 'block');
 
                     return $.ajax({
-                        dataType: 'jsonp',
+                        dataType: 'json',
                         url: surl,
                         timeout: 60000
                     });
@@ -262,7 +262,7 @@ define(
                     var find_species_to_import = function(index, pageSize) {
                         var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
                         return $.ajax({
-                            dataType: 'jsonp',
+                            dataType: 'json',
                             url: surl,
                             timeout: 60000
                         }).then(
@@ -483,7 +483,7 @@ define(
                     $('.bccvl-results-spinner').css('display', 'block');
 
                     return $.ajax({
-                        dataType: 'jsonp',
+                        dataType: 'json',
                         url: searchUrl,
                         timeout: 60000
                     });
@@ -493,7 +493,7 @@ define(
                     var  surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, 0);
 
                     $.ajax({
-                        dataType: 'jsonp',                       // ..using JSONP instead
+                        dataType: 'json',                       // ..using JSONP instead
                         url: surl,
                         timeout: 60000
                     }).then(
@@ -509,7 +509,7 @@ define(
                             var surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, pageSize);
 
                             return $.ajax({
-                                dataType: 'jsonp',                       // ..using JSONP instead
+                                dataType: 'json',                       // ..using JSONP instead
                                 url: surl,
                                 timeout: 60000
                             })
