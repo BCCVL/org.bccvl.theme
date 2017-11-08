@@ -72,12 +72,11 @@
                     <div class="span9 bccvl-table-label"
                            tal:define="md python:dataset_tools.metadata(item_obj)">
                                        
-                      <h5><span tal:content="item/Title">Item Title</span></h5>
-                      <p><span tal:content="item/Description">Dataset short description</span>
-                      <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
-                      <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
-                      <span tal:condition="md/resolution|nothing">Resolution: <i tal:content="md/resolution"></i></span></p>
-
+                      <h5><span tal:content="item/Description">Dataset short description</span></h5>
+                      <p><small><span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span></small></p>
+                      <p><small><span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span></small></p>
+                      <p><small><span tal:condition="md/resolution|nothing">Resolution: <i tal:content="md/resolution"></i></span></small></p>
+                      <p><small><span tal:content="item/Title">Item Title</span></small></p>
                     </div>
                     <div class="bccvl-table-controls span3"
                          tal:define="dlinfo python: dataset_tools.get_download_info(item_obj);

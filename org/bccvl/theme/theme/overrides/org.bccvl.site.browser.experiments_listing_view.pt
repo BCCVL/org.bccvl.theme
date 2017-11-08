@@ -230,6 +230,11 @@
                                       data-friendlyname string:sharing_${item/Title}">
                      Rerun <i class="fa fa-repeat" style="color:#4aa3df;" title="Rerun Experiment"></i>
                    </a>                   
+                    <a class="btn btn-default download-btn"
+                       title="Download experiment result"
+                       tal:attributes="href string:${item_url}/@@resultdownload;">
+                     Download <i class="fa fa-download"></i>
+                    </a>                   
                  </td>
                  <td tal:attributes="class string:experiment-state ${class_state}">
                   <tal:if condition="python:class_state == 'success'">
