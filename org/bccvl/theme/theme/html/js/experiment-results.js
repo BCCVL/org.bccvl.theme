@@ -29,7 +29,13 @@ define(
                 speciesDataset.after(speciesParamsDiv);
             }
 
-            var geojsonObject = $('#form-widgets-modelling_region').val();
+            var geojsonId = '#form-widgets-modelling_region';
+            var geojsonObject = $(geojsonId).val();
+            if (geojsonObject == undefined) {
+                geojsonId = '#form-widgets-projection_region';
+                geojsonObject = $(geojsonId).val();
+            }
+
             if (geojsonObject) {
 
                 var source = new ol.source.Vector({
@@ -49,7 +55,7 @@ define(
                         }
                     }
                 }
-                $('#form-widgets-modelling_region').after(regionParamsDiv);
+                $(geojsonId).after(regionParamsDiv);
 
                 var constraintsLayer = new ol.layer.Vector({
                     source: source,
