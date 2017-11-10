@@ -1462,6 +1462,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        layerdef.unitfull = 'Environmental suitability';
                                        layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
                                    }
+                                   else if (data.genre == 'DataGenreENDW_RICHNESS') {
+                                        layerdef.title = "Species Richness";
+                                   }
                                } else {
                                    // make a copy of the original object
                                    layerdef = $.extend({}, layerdef);
