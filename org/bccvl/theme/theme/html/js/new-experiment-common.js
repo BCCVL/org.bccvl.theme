@@ -290,7 +290,7 @@ define(
                             newLayer.get('bccvl').layer.style.color, null, null);
 
                         // Draw convex-hull polygon for occurrence dataset in map
-                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection') {
+                        if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection' || type == 'DataGenreTraits') {
                             // TODO: can this bit run in a separate even thandler?
                             var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
                             var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file

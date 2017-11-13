@@ -16,12 +16,46 @@ define(
             var exportmodal = new modals.OAuthSelectModal('oauth-select-modal');
             exportmodal.bind('body', 'a.export-btn');
             
-            var geojsonObject = $('#form-widgets-modelling_region').val();
+            // trait dataset parameter configuration
+            var paramsCount = $("input[name='form.widgets.species_traits_dataset_params.count']").val();
+            var speciesDataset = $('#formfield-form-widgets-species_traits_dataset');
+            if (paramsCount && speciesDataset) {
+                var speciesParamsDiv = '<div class="control-group" data-fieldname="form.widgets.species_traits_dataset_params" id="formfield-form-widgets-species_traits_dataset_params"><label for="form-widgets-species_traits_dataset_params" class="control-label">Trait Dataset Configuration</label></div>';
+                for (var i = 0; i < paramsCount; i++) {
+                    var pname = sprintf("input[name='form.widgets.species_traits_dataset_params.key.%s']", i);
+                    var pvalue = sprintf("input[name='form.widgets.species_traits_dataset_params.%s']", i);
+                    speciesParamsDiv += sprintf('<ul><li>%s - %s</li></ul>', $(pname).val(), $(pvalue).val());
+                }
+                speciesDataset.after(speciesParamsDiv);
+            }
+
+            var geojsonId = '#form-widgets-modelling_region';
+            var geojsonObject = $(geojsonId).val();
+            if (geojsonObject == undefined) {
+                geojsonId = '#form-widgets-projection_region';
+                geojsonObject = $(geojsonId).val();
+            }
+
             if (geojsonObject) {
 
                 var source = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
                 });
+
+                // Display the contraint region properties
+                var regionParamsDiv = '<div class="control-group" name="region_constraint_properties" id="region_constraint_properties"><label for="region_constraint_properties" class="control-label">Region Constraint Configuration</label></div>';
+                var properties = source.getFeatures()[0].getProperties();
+                for (var pname of ['constraint_method', 'region_offset', 'region_type', 'region_name']) {
+                    if (properties.hasOwnProperty(pname)) {
+                        if (pname == 'region_offset') {
+                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname]);
+                        }
+                        else {
+                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname].title);
+                        }
+                    }
+                }
+                $(geojsonId).after(regionParamsDiv);
 
                 var constraintsLayer = new ol.layer.Vector({
                     source: source,
@@ -121,6 +155,13 @@ define(
                     affix.removeClass('affix');
                 }
             });
+        }
+
+        function sprintf(format) {
+            for (var i = 1; i < arguments.length; i++) {
+                format = format.replace(/%s/, arguments[i]);
+            }
+            return format;
         }
 
         // Poll experiment status
