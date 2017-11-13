@@ -253,13 +253,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                    var rangeArr = [0,1,2,3];
                } else if (standard_range == 'probability-difference'){  
-                   rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+                   var rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else if (standard_range == 'pH'){
 
                    var rangeArr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
                } else if (standard_range == 'boolean'){
 
                    var rangeArr = [0,1];
+               } else if (steps == 1){
+                   // generic single value 
+                   var rangeArr = [minVal];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -344,6 +347,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'boolean') {
                    // rangeArr =  [        0,         1,]
                    var colorArr = ['#4db748', '#4591cb'];
+               } else if (steps == 1){
+                   //generic single value
+                   var colorArr = ['#fd3d00'];
                } else {
 
                    // utility functions to convert RGB values into hex values for SLD styling.
@@ -761,18 +767,30 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        var calcSteps = 20;
                        if (layerdef.max - layerdef.min == 0){
                            calcSteps = 1;
+                           
+                           styleObj = {
+                               minVal: layerdef.min,
+                               maxVal: layerdef.max,
+                               steps: calcSteps,
+                               startpoint: null,
+                               secondpoint: null,
+                               midpoint: null,
+                               fourthpoint: null,
+                               endpoint: {r:235,g:61,b:0}
+                           };
+                       } else {
+                           // standard raster
+                           styleObj = {
+                               minVal: layerdef.min,
+                               maxVal: layerdef.max,
+                               steps: calcSteps,
+                               startpoint: {r:2,g:95,b:201},
+                               secondpoint: {r:2,g:201,b:166},
+                               midpoint: {r:62,g:193,b:48},
+                               fourthpoint: {r:240,g:255,b:0},
+                               endpoint: {r:235,g:61,b:0}
+                           };
                        }
-                       // standard raster
-                       styleObj = {
-                           minVal: layerdef.min,
-                           maxVal: layerdef.max,
-                           steps: calcSteps,
-                           startpoint: {r:2,g:95,b:201},
-                           secondpoint: {r:2,g:201,b:166},
-                           midpoint: {r:62,g:193,b:48},
-                           fourthpoint: {r:240,g:255,b:0},
-                           endpoint: {r:235,g:61,b:0}
-                       };
                    } else {
                        // a predefined color scheme
                        styleObj = {
@@ -807,16 +825,13 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var standard_range = layerdef.style.standard_range;
                var steps = layerdef.style.steps;
                // determine step size for legend
-               var legend_step_size;
-               if (steps == 1){
-                   legend_step_size = 1;
-               } else {
-                   legend_step_size = (rangeArr.length-1)/10;
-               }
+               var legend_step_size = (rangeArr.length-1)/10;
                
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
                } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH', 'boolean']) > -1) {
+                   legend_step_size = 1;
+               } else if (steps == 1){
                    legend_step_size = 1;
                }
                // Build legend obj
