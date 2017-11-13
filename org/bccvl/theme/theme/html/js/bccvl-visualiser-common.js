@@ -758,11 +758,15 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    //        endpoint: {r:10, g:130, b:230}
                    //    }
                     } else if (standard_range == 'default') {
+                       var calcSteps = 20;
+                       if (layerdef.max - layerdef.min == 0){
+                           calcSteps = 1;
+                       }
                        // standard raster
                        styleObj = {
                            minVal: layerdef.min,
                            maxVal: layerdef.max,
-                           steps: 20,
+                           steps: calcSteps,
                            startpoint: {r:2,g:95,b:201},
                            secondpoint: {r:2,g:201,b:166},
                            midpoint: {r:62,g:193,b:48},
@@ -875,11 +879,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    } else {
 
                        if (i == (rangeArr.length-1)){
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;+</label>';
                        } else if (i == 0) {
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 5)+'</label>';
                        } else {
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 5)+'</label>';
                        }
                    }
                }
