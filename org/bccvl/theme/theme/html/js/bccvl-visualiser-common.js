@@ -560,6 +560,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        for (var i = 0; i < colorArr.length; i++) {
                            xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                        }
+                   } else if (steps == 1 && rangeArr.length == 1){
+                        xmlStylesheet += '<se:Threshold>'+rangeArr[0]+'</se:Threshold><se:Value>'+colorArr[0]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
@@ -897,6 +899,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        } else {
                            panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        }
+                   } else if (legend_step_size == 1 && steps == 1){
+                       panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;</label>';
+
                    } else {
 
                        if (i == (rangeArr.length-1)){
