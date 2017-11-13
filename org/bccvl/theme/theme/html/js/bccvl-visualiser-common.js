@@ -807,7 +807,13 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var standard_range = layerdef.style.standard_range;
                var steps = layerdef.style.steps;
                // determine step size for legend
-               var legend_step_size = (rangeArr.length-1)/10;
+               var legend_step_size;
+               if (steps == 1){
+                   legend_step_size = 1;
+               } else {
+                   legend_step_size = (rangeArr.length-1)/10;
+               }
+               
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
                } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH', 'boolean']) > -1) {
