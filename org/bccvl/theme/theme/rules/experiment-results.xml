@@ -34,6 +34,7 @@
         <replace css:theme-children=".experiment-details" css:content-children="#fieldset-default"/>
         <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters-functions" css:if-content="#fieldset-parameters-functions"/>
         <replace css:theme-children=".experiment-configuration" css:content-children="#fieldset-parameters-algorithms_species" css:if-content= "#fieldset-parameters-algorithms_species"/>
+        <replace css:theme-children=".experiment-configuration2" css:content-children="#fieldset-parameters-algorithms_diff" css:if-content= "#fieldset-parameters-algorithms_diff"/>
 
         <!-- place-holder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
