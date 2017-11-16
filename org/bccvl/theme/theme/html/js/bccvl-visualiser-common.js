@@ -1771,7 +1771,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
                
-               bccvl_common.estimateGeoArea(map, geomObject);
+               bccvl_common.estimateGeoArea(map, feature.getGeometry());
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
