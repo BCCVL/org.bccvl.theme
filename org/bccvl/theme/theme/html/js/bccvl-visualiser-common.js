@@ -1732,20 +1732,18 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
-
                // clear layer
                constraintsLayer.getSource().clear();
 
                var feature = new ol.Feature({geometry: geomObject});
-
-               var coordinates = feature.getGeometry().getCoordinates();
+               
+               var bounds;
 
                // Do projection only if they are in different projection
                if (projCode != map.getView().getProjection().getCode()) {
-                  feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
+                  // convert geomotry to rectangle and project to map
+                  bounds = bccvl_common.transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', map.getView().getProjection());
                }
-
-               feature.setId('geo_constraints');
 
                var style = new ol.style.Style({
                    fill: new ol.style.Fill({
@@ -1756,7 +1754,20 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        width: 2
                    })
                });
-
+               
+               //redefine feature
+               var feature = new ol.Feature({
+                   geometry: new ol.geom.Polygon([[
+                       ol.extent.getBottomLeft(bounds),
+                       ol.extent.getBottomRight(bounds),
+                       ol.extent.getTopRight(bounds),
+                       ol.extent.getTopLeft(bounds),
+                       ol.extent.getBottomLeft(bounds)
+                   ]])
+               });
+               
+               feature.setId('geo_constraints');
+            
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
                
