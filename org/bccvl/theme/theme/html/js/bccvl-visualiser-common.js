@@ -253,13 +253,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                    var rangeArr = [0,1,2,3];
                } else if (standard_range == 'probability-difference'){  
-                   rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+                   var rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else if (standard_range == 'pH'){
 
                    var rangeArr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
                } else if (standard_range == 'boolean'){
 
                    var rangeArr = [0,1];
+               } else if (steps == 1){
+                   // generic single value 
+                   var rangeArr = [minVal];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
                    if (minVal==undefined) minVal = 0;
@@ -344,6 +347,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                } else if (standard_range == 'boolean') {
                    // rangeArr =  [        0,         1,]
                    var colorArr = ['#4db748', '#4591cb'];
+               } else if (steps == 1){
+                   //generic single value
+                   var colorArr = ['#fd3d00'];
                } else {
 
                    // utility functions to convert RGB values into hex values for SLD styling.
@@ -554,6 +560,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        for (var i = 0; i < colorArr.length; i++) {
                            xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                        }
+                   } else if (steps == 1 && rangeArr.length == 1){
+                        xmlStylesheet += '<se:Value>'+colorArr[0]+'</se:Value><se:Threshold>'+rangeArr[0]+'</se:Threshold><se:Value>'+colorArr[0]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
@@ -758,17 +766,33 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    //        endpoint: {r:10, g:130, b:230}
                    //    }
                     } else if (standard_range == 'default') {
-                       // standard raster
-                       styleObj = {
-                           minVal: layerdef.min,
-                           maxVal: layerdef.max,
-                           steps: 20,
-                           startpoint: {r:2,g:95,b:201},
-                           secondpoint: {r:2,g:201,b:166},
-                           midpoint: {r:62,g:193,b:48},
-                           fourthpoint: {r:240,g:255,b:0},
-                           endpoint: {r:235,g:61,b:0}
-                       };
+                       var calcSteps = 20;
+                       if (layerdef.max - layerdef.min == 0){
+                           calcSteps = 1;
+                           
+                           styleObj = {
+                               minVal: layerdef.min,
+                               maxVal: layerdef.max,
+                               steps: calcSteps,
+                               startpoint: null,
+                               secondpoint: null,
+                               midpoint: null,
+                               fourthpoint: null,
+                               endpoint: {r:235,g:61,b:0}
+                           };
+                       } else {
+                           // standard raster
+                           styleObj = {
+                               minVal: layerdef.min,
+                               maxVal: layerdef.max,
+                               steps: calcSteps,
+                               startpoint: {r:2,g:95,b:201},
+                               secondpoint: {r:2,g:201,b:166},
+                               midpoint: {r:62,g:193,b:48},
+                               fourthpoint: {r:240,g:255,b:0},
+                               endpoint: {r:235,g:61,b:0}
+                           };
+                       }
                    } else {
                        // a predefined color scheme
                        styleObj = {
@@ -804,9 +828,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                var steps = layerdef.style.steps;
                // determine step size for legend
                var legend_step_size = (rangeArr.length-1)/10;
+               
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
                } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH', 'boolean']) > -1) {
+                   legend_step_size = 1;
+               } else if (steps == 1){
                    legend_step_size = 1;
                }
                // Build legend obj
@@ -872,14 +899,17 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        } else {
                            panel.innerHTML += '<label><i style="background:'+colorArr[i+1]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
                        }
+                   } else if (legend_step_size == 1 && steps == 1){
+                       panel.innerHTML += '<label><i style="background:'+colorArr[0]+'"></i>&nbsp;'+rangeArr[0]+'&nbsp;</label>';
+
                    } else {
 
                        if (i == (rangeArr.length-1)){
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;+</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;+</label>';
                        } else if (i == 0) {
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;&lt;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 5)+'</label>';
                        } else {
-                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 2)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 2)+'</label>';
+                           panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>&nbsp;'+bccvl_common.numPrec(rangeArr[i], 5)+'&nbsp;-&nbsp;'+bccvl_common.numPrec(rangeArr[i+legend_step_size], 5)+'</label>';
                        }
                    }
                }
@@ -1462,6 +1492,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                        layerdef.unitfull = 'Environmental suitability';
                                        layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
                                    }
+                                   else if (data.genre == 'DataGenreENDW_RICHNESS') {
+                                        layerdef.title = "Species Richness";
+                                   }
                                } else {
                                    // make a copy of the original object
                                    layerdef = $.extend({}, layerdef);
@@ -1699,20 +1732,20 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
-
                // clear layer
                constraintsLayer.getSource().clear();
 
                var feature = new ol.Feature({geometry: geomObject});
-
-               var coordinates = feature.getGeometry().getCoordinates();
+               
+               var bounds;
 
                // Do projection only if they are in different projection
                if (projCode != map.getView().getProjection().getCode()) {
+                  // convert geomotry to rectangle and project to map
+                  bounds = bccvl_common.transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', map.getView().getProjection());
+                  
                   feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
                }
-
-               feature.setId('geo_constraints');
 
                var style = new ol.style.Style({
                    fill: new ol.style.Fill({
@@ -1724,10 +1757,34 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    })
                });
 
+               // redefine feature if it didn't project properly
+               // use extent bounds/coordinates specifically and dump feature
+               var projectionFailed = false;
+               
+               $.each(feature.getGeometry().getExtent(), function(i,n){
+                   if(isNaN(n)){
+                       projectionFailed = true;
+                   }
+               })
+               
+               if (projectionFailed){
+                   feature = new ol.Feature({
+                       geometry: new ol.geom.Polygon([[
+                           ol.extent.getBottomLeft(bounds),
+                           ol.extent.getBottomRight(bounds),
+                           ol.extent.getTopRight(bounds),
+                           ol.extent.getTopLeft(bounds),
+                           ol.extent.getBottomLeft(bounds)
+                       ]])
+                   });
+               }
+               
+               feature.setId('geo_constraints');
+            
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
                
-               bccvl_common.estimateGeoArea(map, geomObject);
+               bccvl_common.estimateGeoArea(map, feature.getGeometry());
 
                // Convert and write to geojson for offset tools.
                var featureGroup = constraintsLayer.getSource().getFeatures();
