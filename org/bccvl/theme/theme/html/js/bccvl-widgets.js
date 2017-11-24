@@ -513,10 +513,12 @@ define(
                         //       -> server side change as well
                         var bounds = JSON.stringify(layer.bounds);
 
-                        markup.find('ul').append('<li>'+
-                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'" name="dataset.layer" data-bbox="'+bounds+'" data-genre="'+dataset.genre+'" />'+
+                        var el = $('<li>'+
+                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-' + layer.layer + '" name="dataset.layer" data-genre="'+dataset.genre+'" data-bbox="'+bounds+'" />'+
                             '<label for="' + _this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'">'+layer.title+'</label>'+
                         '</li>');
+                        el.children(0).attr('data-bbox', bounds);
+                        markup.find('ul').append(el);
                     });
 
                     $widget.append(markup);
