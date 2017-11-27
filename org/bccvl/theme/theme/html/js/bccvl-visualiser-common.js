@@ -561,7 +561,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            xmlStylesheet += '<se:Threshold>'+rangeArr[i]+'</se:Threshold><se:Value>'+colorArr[i]+'</se:Value>';
                        }
                    } else if (steps == 1 && rangeArr.length == 1){
-                        xmlStylesheet += '<se:Value>'+colorArr[0]+'</se:Value><se:Threshold>'+rangeArr[0]+'</se:Threshold><se:Value>'+colorArr[0]+'</se:Value>';
+                        xmlStylesheet += '<se:Value>#FFFFFF</se:Value><se:Threshold>'+rangeArr[0]+'</se:Threshold><se:Value>'+colorArr[0]+'</se:Value>';
                    } else {
                        for (var i = 0; i < (colorArr.length-1); i++) {
                            xmlStylesheet += '<se:Value>'+colorArr[i]+'</se:Value><se:Threshold>'+rangeArr[i]+'</se:Threshold>';
@@ -887,7 +887,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    } else if (standard_range == 'boolean'){
                       panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>'+rangeArr[i]+'</label>';
                    } else if (standard_range == 'binary'){
-                       if (rangeArr[i] == 1){
+                       if (rangeArr[i] > 0){
                            panel.innerHTML += '<label><i style="background:'+colorArr[i]+'"></i>True</label>';
                        }
 
