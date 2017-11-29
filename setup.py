@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='org.bccvl.theme',
-    setup_requires=['guscmversion'],
-    guscmversion=True,
+    setup_requires=['setuptools_scm'],
+    use_scm_version=True,
     description="BCCVL Diazo Theme",
     long_description=(open("README.rst").read() + "\n" +
                       open("CHANGELOG.rst").read()),
