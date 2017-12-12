@@ -89,8 +89,30 @@ define(
                 $("#use_convex_hull").prop('checked', true);
 
             })
+            
+            // check for experiment rerun and reinit validation
+            var uuid = getUrlVars()["uuid"];
+            
+            if(typeof uuid !== "undefined"){
+                 $('.bccvl-new-sdm, .bccvl-jqueryvalidate').trigger('widgetChanged');
+                 $('.bccvl-jqueryvalidate').valid();
+            }
+            
 
         });
+        
+        function getUrlVars()
+        {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for(var i = 0; i < hashes.length; i++)
+            {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
 
         // ==============================================================
         function update_pa_strategy(strategyname) {
