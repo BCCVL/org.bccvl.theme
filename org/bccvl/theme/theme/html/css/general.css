@@ -3023,3 +3023,9 @@ div.youtube-frame {
 .tab ul {
     display:inline-block;
 }
+
+#modal-select-buttons {
+    right: 40px;
+    top: 15px;
+    position: absolute;
+}

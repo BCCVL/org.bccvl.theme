@@ -31,6 +31,26 @@ define(
 
                     datasets.$widget.empty();
                 });
+                
+            $('body').on('click', '#datasets-modal #modal-select-buttons a.select-all', function(e){
+                e.preventDefault();
+            
+                $(this).parents('#datasets-modal').find('input.modal-item-checkbox').each(function(){
+                    if ($(this).prop('checked') == false){
+                        $(this).trigger('click');
+                    }
+                });
+            });
+            
+            $('body').on('click', '#datasets-modal #modal-select-buttons a.select-none', function(e){
+                e.preventDefault();
+                
+                $(this).parents('#datasets-modal').find('input.modal-item-checkbox').each(function(){
+                   if ($(this).prop('checked') == true){
+                        $(this).trigger('click');
+                    }
+                });
+            });
 
         });
     }
