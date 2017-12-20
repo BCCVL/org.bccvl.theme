@@ -1974,7 +1974,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if(offsetSize){
 
                        var geojson = JSON.parse($(this).data('geojson'));
-                       var buffered = turf.buffer(geojson, offsetSize, 'kilometers');
+                       var buffered = turf.buffer(geojson, offsetSize, {"units":"kilometers"});
                        var newgeo = JSON.stringify(buffered);
 
                        bccvl_common.renderGeojsonConstraints($(this), map, newgeo, constraintsLayer);

@@ -56,8 +56,7 @@ define(
                         }
                     },
                     onChange: function(value){
-                        // disable button to wait for results to calc
-                        $('.draw-geojson').attr('disabled', true).find('i').removeClass('fa-crop').addClass('fa-spinner fa-spin');
+                        
                         // value may be empty in case we just changed type of region
                         if (value && value.length >= 1) {
                             
@@ -68,10 +67,13 @@ define(
                             var individualPolygons = [];
                                 
                             $.each(value, function(i, id){
-                                console.log('--- new request ---');
+
+                                // disable button to wait for results to calc
+                                $('.draw-geojson').attr('disabled', true).find('i').removeClass('fa-crop').addClass('fa-spinner fa-spin');
                                 $.ajax({
                                     url: 'https://spatial.ala.org.au/ws/shape/geojson/' + id,
                                     success: function(result) {
+                                    
                                         // push geometries into array
                                         multiPolygons.push(result);
                                         
