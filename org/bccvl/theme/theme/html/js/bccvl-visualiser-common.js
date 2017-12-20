@@ -5,7 +5,7 @@
 define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
         'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf) {
-
+        
        // define some projections we need
        proj4.defs([
            // alternatively load http://epsg.io/4283.js
@@ -1700,9 +1700,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                });
                
                // don't attempt to calc area if it's a predefined region
-               if (! isPredefinedRegion){
-                   bccvl_common.estimateGeoArea(map, feature.getGeometry());
-               }
+               //if (! isPredefinedRegion){
+               //    bccvl_common.estimateGeoArea(map, feature.getGeometry());
+               //}
                
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
@@ -1950,6 +1950,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                });
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                  
 
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
