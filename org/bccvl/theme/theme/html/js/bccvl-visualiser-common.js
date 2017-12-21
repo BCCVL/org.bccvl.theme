@@ -1974,6 +1974,19 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if(offsetSize){
 
                        var geojson = JSON.parse($(this).data('geojson'));
+                       
+                       var simpPoly = [];
+                       
+                       $.each(geojson.geometry.coordinates, function(i, poly){
+                           var poly = turf.polygon(poly);
+                           var options = {tolerance: 0.01, highQuality: false, mutate: true};
+                           var simplified = turf.simplify(poly, options);
+                           
+                           simpPoly.push(simplified.geometry.coordinates);
+                       });
+
+                       geojson.geometry.coordinates = simpPoly;
+                       
                        var buffered = turf.buffer(geojson, offsetSize, {"units":"kilometers"});
                        var newgeo = JSON.stringify(buffered);
 

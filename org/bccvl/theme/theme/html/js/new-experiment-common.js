@@ -95,6 +95,9 @@ define(
                                                 }
                                             }
 
+                                            // helper function to remove any redundant coords
+                                            geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
+                                            
                                             requests.resolve(geojson);
                                         }
                                     },
@@ -117,9 +120,17 @@ define(
                         $('#estimated-area > em').html('');
                     },
                     onItemAdd: function(value, $item){
-                        $('#estimated-area > em').html('Estimated area '+$item.data('area')+'km<sup>2</sup> <hr/>');
+                        
+                        if( $('#estimated-area').data('area')){
+                            var newArea = $('#estimated-area').data('area') + $item.data('area');
+                            $('#estimated-area').data('area', newArea); 
+                        } else {
+                            $('#estimated-area').data('area', $item.data('area'));
+                        }
+                        
+                        $('#estimated-area > em').html('Estimated area '+$('#estimated-area').data('area')+'km<sup>2</sup> <hr/>');
                         if ($item.data('area') > 500000){
-                            console.log('does this run');
+
                             $('input.region-offset, #add-region-offset').attr('disabled', true);
                             $('#add-region-offset').after('<span class="region-offset-error"><small>&nbsp; Too large to apply offset.</small></span>')
                         } else {
