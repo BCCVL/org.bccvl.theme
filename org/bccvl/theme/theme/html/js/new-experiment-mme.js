@@ -138,7 +138,6 @@ define(
                     $subsetWidget.on('change', function(e) {
                         // some field or selection has changed...
                         updateValue();
-                        $(this).trigger('widgetChanged', []);
                     })
 
                 })
@@ -163,7 +162,6 @@ define(
                         }
                     }
                     updateValue();
-                    $(this).trigger('widgetChanged', []);
                 })
 
             }
