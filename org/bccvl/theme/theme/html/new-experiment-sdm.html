@@ -510,6 +510,25 @@
                           </div>
                         </div>
                       </div>
+                      
+                      <hr/>
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="upload_shp_file" name="constraints_type" id="upload_shp_file" />
+                        <label for="upload_shp_file" >Upload Shapefile</label>
+                        
+                        <div id="upload-shape" class="config" style="display:none;">
+                           <input type="file" id="file" accept=".zip">
+                           <input type="text" placeholder="Default : 4326" id="epsg">
+                           <input type="text" placeholder="Set your desired encoding UTF-8, Big5, Big5-HKSCS ... " id="encoding">
+                           <br/>
+                           <div class="btn-group">
+                             <a href="javascript:void(0);" class="btn btn-small btn-default convert-shapefile"><i class="fa fa-refresh"></i> Convert to Geojson</a>
+                             <a href="javascript:void(0);" class="btn btn-small btn-default upload-shape"><i class="fa fa-share-alt"></i> Preview On Map</a>
+                           </div>
+                        </div>
+                      </div>
+
 
                     </div>
 

@@ -1,8 +1,8 @@
 
 
 define(
-    ['jquery', 'openlayers3', 'bccvl-visualiser-common', 'bccvl-api', 'selectize', 'selectize-remove-single', 'turf'],
-    function( $, ol, vizcommon, bccvlapi, selectize, selectize_remove_single, turf ) {
+    ['jquery', 'openlayers3', 'proj4', 'bccvl-visualiser-common', 'bccvl-api', 'selectize', 'selectize-remove-single', 'turf'],
+    function( $, ol, proj4, vizcommon, bccvlapi, selectize, selectize_remove_single, turf ) {
 
         var newExp_common = {
             
@@ -73,13 +73,13 @@ define(
                                 $.ajax({
                                     url: 'https://spatial.ala.org.au/ws/shape/geojson/' + id,
                                     success: function(result) {
-                                    
+                                        
                                         // push geometries into array
                                         multiPolygons.push(result);
                                         
                                         // if array is as long as request, assume all requests complete
                                         if(multiPolygons.length == value.length){
-                                            
+                                            console.log(multiPolygons)
                                             // loop list of multi-polygon regions and withdraw individual polygon regions
                                             $.each(multiPolygons, function(idx, multiPolygon){
                                                 $.each(multiPolygon.coordinates, function(index, poly){
@@ -98,6 +98,7 @@ define(
                                             // helper function to remove any redundant coords
                                             geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
                                             
+                                            console.log(geojson);
                                             requests.resolve(geojson);
                                         }
                                     },

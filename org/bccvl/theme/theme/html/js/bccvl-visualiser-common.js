@@ -3,8 +3,8 @@
 
 // PROJ4 needs to be loaded after OL3
 define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
-        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf'],
-   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf) {
+        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf', 'shp2geojson'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf, shp2geojson) {
         
        // define some projections we need
        proj4.defs([
@@ -1678,7 +1678,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 //
            //},
 
-           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer, isPredefinedRegion){
+           renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
 
                // clear layer
                constraintsLayer.getSource().clear();
@@ -1698,11 +1698,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        width: 2
                    })
                });
-               
-               // don't attempt to calc area if it's a predefined region
-               //if (! isPredefinedRegion){
-               //    bccvl_common.estimateGeoArea(map, feature.getGeometry());
-               //}
                
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
@@ -1732,6 +1727,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
+
                // clear layer
                constraintsLayer.getSource().clear();
 
@@ -1944,6 +1940,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                  }
                });
+               
+               $('input[type="radio"]#upload_shp_file').change(function(){
+                 bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                     
+                 if($(this).prop('checked')){
+
+                 } else {
+                     $('#upload-shape').find('input').val('');
+                 }
+               });
                $('.btn.draw-polygon').on('click', function(){
                    //map.un('singleclick', bccvl_common.getPointInfo);
                    bccvl_common.drawConstraints($(this), map, constraintsLayer);
@@ -1962,11 +1968,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                });
                $('.btn.draw-geojson').on('click', function(e){
-                  var isPredefinedRegion = false;
-                  if (e.target.id === "selected-geojson"){
-                    isPredefinedRegion = true;
-                  }
-                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer, isPredefinedRegion);
+
+                  bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
                $('.btn.add-offset').on('click', function(e){
 
@@ -2000,10 +2003,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');
                    } else {
+                       
                        //encode to geoJson and write to textarea input
                        var feature = evt.feature;
                        var format = new ol.format.GeoJSON();
                        var data = format.writeFeatureObject(feature);
+
                        // TODO: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
                        data.crs = {
                            'type': 'name',
@@ -2044,6 +2049,110 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        $('#' + field_id).val('' + data + '');
                    }
                });
+               
+               var file;
+               
+               $('.convert-shapefile').click(function(){
+
+                   var _this = $(this);
+                   //do some stuff for validation
+        			if(file.size > 0) {
+        				
+                        // TODO: validate preceeding fields, especially zip file.
+                   
+                        var epsg = ($('#epsg').val() == '') ? 4326 : $('#epsg').val(),
+            			    encoding = ($('#encoding').val() == '') ? 'UTF-8' : $('#encoding').val();
+            			if(file.name.split('.')[1] == 'zip') {
+            				
+            				shp2geojson({
+            					url: file,
+            					encoding: encoding,
+            					EPSG: epsg
+            				}, function(data) {
+            					
+            					// need to clean geojson into a single shape
+            					
+            					var geojson;
+                                var polygons = [];
+            					
+            					// loop list of multi-polygon regions and withdraw individual polygon regions
+                                $.each(data.features, function(i, feature){
+                                    $.each(feature.geometry.coordinates, function(index, poly){
+                                        polygons.push(poly);
+                                    });
+                                });
+                                
+                                geojson = {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'MultiPolygon',
+                                        'coordinates': [polygons]
+                                    }
+                                }
+                                
+                                // helper function to remove any redundant coords
+                                geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
+                                
+                                bccvl_common.renderGeojsonConstraints($(this), map, geojson, constraintsLayer);
+    
+                                //_this.parents('.constraint-method').find('.upload-shape').data('geojson', JSON.stringify(geojson));
+                                
+                                
+                                
+                                
+                                
+            					// manually add shp2geojson()'s return to map
+            					/*
+            					
+            					// clear layer
+                                constraintsLayer.getSource().clear();
+                                
+            					var features = (new ol.format.GeoJSON()).readFeatures(data, {
+                                    featureProjection: 'EPSG:3857'
+                                });
+                                
+                                console.log(features);
+                                
+                                // loop through all features, calculating group extent (could also transform bbox)
+                                // add ID and set style to each
+                                var extent = features[0].getGeometry().getExtent().slice(0);
+                                $.each(features, function(i,feature){ 
+                                    
+                                    ol.extent.extend(extent,feature.getGeometry().getExtent());
+                                    
+                                    feature.setId('geo_constraints_'+i);
+                                    
+                                    var style = new ol.style.Style({
+                                        fill: new ol.style.Fill({
+                                            color: 'rgba(0, 160, 228, 0.1)'
+                                        }),
+                                        stroke: new ol.style.Stroke({
+                                            color: 'rgba(0, 160, 228, 0.9)',
+                                            width: 2
+                                        })
+                                    });
+                                    feature.setStyle(style);
+                                });
+                                
+                                constraintsLayer.getSource().addFeatures(features);
+                         
+                                map.getView().fit(extent, map.getSize(), {padding: [50,50,50,50]});*/
+                                
+            				});
+            			} else {
+            				alert('not a zip file');
+            			}
+        			}
+               });
+               
+               $("#file").change(function(evt) {
+        			file = evt.target.files[0];
+        	   });
+               
+               $('.upload-shape').click(function(e){
+                   e.preventDefault();
+                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
+               })
            },
            /************************************************
             * project extent from crs to crs, and clip
