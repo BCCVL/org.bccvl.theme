@@ -500,24 +500,27 @@ define(
             $.when.apply(null, results).done(function(...data){
 
                $.each(data, function(i, dataset){
+               		if (typeof dataset.layers === 'undefined') {
+            			return true;
+		            }
+
+               	    var bbox = JSON.stringify(dataset.layers[Object.keys(dataset.layers)[0]].bounds);
                     var markup = $('<div class="selecteditem">'+
-                                    '<input type="hidden" value="'+dataset.id+'" name="dataset.uuid" class="item" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'">'+
+                                    '<input type="hidden" value="'+dataset.id+'" name="dataset.uuid" class="item" data-url="'+dataset.file+'" data-genre="'+dataset.genre+'" />'+
                                     '<a class="btn pull-right" href="#"><i class="icon-remove"></i></a>' +
                                     '<p><strong><span>'+dataset.title+'</span></strong></p>'+
                                     '<p><small><a href="javascript:void(0);" class="select-all">Select All</a>&nbsp;/&nbsp;<a href="javascript:void(0);" class="select-none">Select None</a></small></p>'+
                                     '<ul class="form.widgets.fieldname.list"></ul>'+
                                     '</div>');
+                    markup.find('input').attr('data-bbox', bbox);
 
                     $.each(dataset.layers, function(key, layer){
                         // TODO: get layer title from response
                         //       -> server side change as well
-                        var bounds = JSON.stringify(layer.bounds);
-
                         var el = $('<li>'+
-                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-' + layer.layer + '" name="dataset.layer" data-genre="'+dataset.genre+'" data-bbox="'+bounds+'" />'+
+                            '<input type="checkbox" class="require-from-group" checked="checked" value="'+layer.layer+'" id="'+_this.settings.widgetid + '-' +dataset.id+'-' + layer.layer + '" name="dataset.layer" data-genre="'+dataset.genre+'" />'+
                             '<label for="' + _this.settings.widgetid + '-' +dataset.id+'-'+layer.layer+'">'+layer.title+'</label>'+
                         '</li>');
-                        el.children(0).attr('data-bbox', bounds);
                         markup.find('ul').append(el);
                     });
 
@@ -527,7 +530,7 @@ define(
                _this.updateValue()
                // trigger widgetChanged as well
                // if not wanted this could be caught by parent widget, and discarded
-               $(_this).trigger('widgetChanged');
+               _this.$widget.trigger('widgetChanged');
             });
 
         };

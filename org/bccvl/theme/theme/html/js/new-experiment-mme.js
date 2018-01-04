@@ -137,7 +137,7 @@ define(
                     // listen for change events on new subset widget
                     $subsetWidget.on('change', function(e) {
                         // some field or selection has changed...
-                        updateValue()
+                        updateValue();
                     })
 
                 })
@@ -161,7 +161,7 @@ define(
                             subset.widget.remove()
                         }
                     }
-                    updateValue()
+                    updateValue();
                 })
 
             }
