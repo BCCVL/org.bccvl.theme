@@ -2997,7 +2997,22 @@ div.youtube-frame {
     display: inline-block;
     margin: .35em 0;
 }
-
+.constraint-method .form-horizontal .control-label {
+    width: 80px;
+    padding-left: 5px;
+    text-align: left;
+    padding-top: 0;
+}
+.constraint-method .form-horizontal .control-group {
+    margin-bottom:5px;
+}
+.constraint-method .form-horizontal .control-group .controls {
+    margin-left: 80px;
+}
+.constraint-method .form-horizontal .control-group .btn  {
+    margin-left: 5px;
+    
+}
 .mme-subset {
     border-bottom:1px solid #ddd;
     margin-bottom:1em;

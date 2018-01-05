@@ -2050,22 +2050,22 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
                
-               var file;
+               var shapefile;
                
-               $('.convert-shapefile').click(function(){
+               $('.upload-shape').click(function(){
 
                    var _this = $(this);
                    //do some stuff for validation
-        			if(file.size > 0) {
+        			if(shapefile.size > 0) {
         				
                         // TODO: validate preceeding fields, especially zip file.
                    
-                        var epsg = ($('#epsg').val() == '') ? 4326 : $('#epsg').val(),
-            			    encoding = ($('#encoding').val() == '') ? 'UTF-8' : $('#encoding').val();
-            			if(file.name.split('.')[1] == 'zip') {
+                        var epsg = ($('#shapefile_epsg').val() == '') ? 4326 : $('#shapefile_epsg').val(),
+            			    encoding = ($('#shapefile_encoding').val() == '') ? 'UTF-8' : $('#shapefile_encoding').val();
+            			if(shapefile.name.split('.')[1] == 'zip') {
             				
             				shp2geojson({
-            					url: file,
+            					url: shapefile,
             					encoding: encoding,
             					EPSG: epsg
             				}, function(data) {
@@ -2145,14 +2145,14 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
         			}
                });
                
-               $("#file").change(function(evt) {
-        			file = evt.target.files[0];
+               $("#upload_file").change(function(evt) {
+        			shapefile = evt.target.files[0];
         	   });
                
-               $('.upload-shape').click(function(e){
-                   e.preventDefault();
-                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
-               })
+               //$('').click(function(e){
+               //    e.preventDefault();
+               //    bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
+               //})
            },
            /************************************************
             * project extent from crs to crs, and clip
