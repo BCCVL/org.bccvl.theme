@@ -96,6 +96,13 @@ define(
             if(typeof uuid !== "undefined"){
                  $('.bccvl-new-sdm, .bccvl-jqueryvalidate').trigger('widgetChanged');
                  $('.bccvl-jqueryvalidate').valid();
+                 
+                 // -- hook up algo config -------------------------------
+                expcommon.init_algorithm_selector('input[name="form.widgets.functions:list"]', true)
+                // -- region selection ---------------------------------
+                expcommon.init_region_selector()
+                // -- psuedo absence controls ---------------------------------
+                expcommon.init_pa_controls()
             }
             
 
