@@ -1679,7 +1679,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            //},
 
            renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
-
+               
                // clear layer
                constraintsLayer.getSource().clear();
 
@@ -2044,7 +2044,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                           }
                        }
 
-
                        data = JSON.stringify(data);
                        $('#' + field_id).val('' + data + '');
                    }
@@ -2078,7 +2077,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
             					// loop list of multi-polygon regions and withdraw individual polygon regions
                                 $.each(data.features, function(i, feature){
                                     $.each(feature.geometry.coordinates, function(index, poly){
-                                        polygons.push(poly);
+                                        polygons.push([poly]);
                                     });
                                 });
                                 
@@ -2086,13 +2085,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                     'type': 'Feature',
                                     'geometry': {
                                         'type': 'MultiPolygon',
-                                        'coordinates': [polygons]
+                                        'coordinates': polygons
                                     }
                                 }
-                                
                                 // helper function to remove any redundant coords
                                 geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
-                                
+
                                 bccvl_common.renderGeojsonConstraints($(this), map, geojson, constraintsLayer);
     
                                 //_this.parents('.constraint-method').find('.upload-shape').data('geojson', JSON.stringify(geojson));

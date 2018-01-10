@@ -79,7 +79,7 @@ define(
                                         
                                         // if array is as long as request, assume all requests complete
                                         if(multiPolygons.length == value.length){
-                                            console.log(multiPolygons)
+
                                             // loop list of multi-polygon regions and withdraw individual polygon regions
                                             $.each(multiPolygons, function(idx, multiPolygon){
                                                 $.each(multiPolygon.coordinates, function(index, poly){
@@ -97,8 +97,7 @@ define(
 
                                             // helper function to remove any redundant coords
                                             geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
-                                            
-                                            console.log(geojson);
+
                                             requests.resolve(geojson);
                                         }
                                     },
