@@ -36,6 +36,7 @@
                              item_creator item/Creator;
                              item_modified item/ModificationDate;
                              item_description item/Description;
+                             item_obj item/getObject;
                              md python:dataset_tools.metadata(item);
                              ">
               <div class="cell">
@@ -63,8 +64,7 @@
                   <li tal:condition="python: item.portal_type == 'org.bccvl.content.multispeciesdataset'">
                     <small><b>Species:</b></small>
                     <ul>
-                      <li tal:repeat="part item_obj/parts"
-                          tal:define="item_obj item/getObject">
+                      <li tal:repeat="part item_obj/parts">
                         <tal:replace tal:replace="dsmd/species/scientificName|string: Unknown Species"
                                      tal:define="dsmd python: dataset_tools.metadata(uuid=part)"></tal:replace>
                       </li>
@@ -74,6 +74,10 @@
                   tal:define="author python:pas_member.info(item_creator)"
                   tal:content="author/name_or_id">Bob Dobalina</span></small></li>
                   <li><small><b>Modified:</b> <span tal:content="python:toLocalizedTime(item_modified,long_format=1)">August 16, 2001 at 23:35:59</span></small></li>
+                  <li tal:condition="item_obj/part_of|nothing"><small><b>From:</b>
+                    <tal:replace tal:replace="dsmd/title"
+                                 tal:define="dsmd python: dataset_tools.metadata(uuid=item_obj.part_of)"></tal:replace></small></li>
+
                   
                 </ul>
               </div>
