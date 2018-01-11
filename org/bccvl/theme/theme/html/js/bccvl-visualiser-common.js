@@ -1999,15 +1999,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
+                   
                    // update hidden geojson field
                    if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');
                    } else {
                        
                        //encode to geoJson and write to textarea input
-                       var feature = evt.feature;
+                       var features = constraintsLayer.getSource().getFeatures();
                        var format = new ol.format.GeoJSON();
-                       var data = format.writeFeatureObject(feature);
+                       var data = format.writeFeaturesObject(features);
 
                        // TODO: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
                        data.crs = {
@@ -2069,8 +2070,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
             					EPSG: epsg
             				}, function(data) {
             					
-            					// need to clean geojson into a single shape
+            					//
+            					//  MANUALLY FLATTENED SHAPE
+            					//
             					
+            					// need to clean geojson into a single shape
+            					/*
             					var geojson;
                                 var polygons = [];
             					
@@ -2092,15 +2097,12 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                 geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
 
                                 bccvl_common.renderGeojsonConstraints($(this), map, geojson, constraintsLayer);
-    
-                                //_this.parents('.constraint-method').find('.upload-shape').data('geojson', JSON.stringify(geojson));
+                                */
                                 
                                 
-                                
-                                
-                                
-            					// manually add shp2geojson()'s return to map
-            					/*
+                                //
+            					// UNMODIFIED SHP2GEOJSON SHAPE
+            					//
             					
             					// clear layer
                                 constraintsLayer.getSource().clear();
@@ -2109,32 +2111,42 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                     featureProjection: 'EPSG:3857'
                                 });
                                 
-                                console.log(features);
-                                
                                 // loop through all features, calculating group extent (could also transform bbox)
                                 // add ID and set style to each
                                 var extent = features[0].getGeometry().getExtent().slice(0);
                                 $.each(features, function(i,feature){ 
-                                    
+
                                     ol.extent.extend(extent,feature.getGeometry().getExtent());
                                     
                                     feature.setId('geo_constraints_'+i);
                                     
-                                    var style = new ol.style.Style({
-                                        fill: new ol.style.Fill({
-                                            color: 'rgba(0, 160, 228, 0.1)'
+                                    var styles = {
+                                        'MultiPolygon': new ol.style.Style({
+                                            fill: new ol.style.Fill({
+                                                color: 'rgba(0, 160, 228, 0.1)'
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: 'rgba(0, 160, 228, 0.9)',
+                                                width: 2
+                                            })
                                         }),
-                                        stroke: new ol.style.Stroke({
-                                            color: 'rgba(0, 160, 228, 0.9)',
-                                            width: 2
+                                        'Polygon': new ol.style.Style({
+                                            fill: new ol.style.Fill({
+                                                color: 'rgba(0, 160, 228, 0.1)'
+                                            }),
+                                            stroke: new ol.style.Stroke({
+                                                color: 'rgba(0, 160, 228, 0.9)',
+                                                width: 2
+                                            })
                                         })
-                                    });
-                                    feature.setStyle(style);
+                                    }
+                                    
+                                    feature.setStyle(styles[feature.getGeometry().getType()]);
                                 });
                                 
                                 constraintsLayer.getSource().addFeatures(features);
                          
-                                map.getView().fit(extent, map.getSize(), {padding: [50,50,50,50]});*/
+                                map.getView().fit(extent, map.getSize(), {padding: [50,50,50,50]});
                                 
             				});
             			} else {
