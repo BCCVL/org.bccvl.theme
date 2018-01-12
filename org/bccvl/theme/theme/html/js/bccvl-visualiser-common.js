@@ -1445,6 +1445,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                            if (data.genre == "DataGenreSpeciesOccurrence" ||
                                data.genre == "DataGenreSpeciesCollection" ||
+                               data.genre == "DataGenreSpeciesOccurEnv" ||
                                data.genre == "DataGenreTraits") {
                                layerdef.type = 'occurrence';
                                layerdef.style = {
