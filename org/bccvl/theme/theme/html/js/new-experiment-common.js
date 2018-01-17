@@ -283,7 +283,7 @@ define(
                         // bboxLayer
                         // constraintsLayer
                         var bext = bboxLayer.getSource().getExtent();
-                        map.getView().fit(world, map.getSize(), {'constrainResolution': false});
+                        map.getView().fit(world, {size: map.getSize(), 'constrainResolution': false});
                     });
                 }
     
@@ -303,92 +303,96 @@ define(
             update_constraints_map: function(cmap, $els) {
                 // cmap ... whatever init_constraints_map returned
                 // els ... elements with dataset infos
-    
-                // unpack cmap
-                var map = cmap.map
-                var mapid = cmap.mapid
-                var visLayers = cmap.visLayers
-                var bboxLayer = cmap.bboxLayer
-                var constraintsLayer = cmap.constraintsLayer
-    
-                // recreate legend
-                $('#'+map.getTarget()).find('.olLegend').remove();
-                vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
-    
-                // clear any existing layers.
-                visLayers.getLayers().clear(); // clear species layers
-                bboxLayer.getSource().clear(); // clear bboxes as well
-                vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
-                constraintsLayer.getSource().clear(); // clear the constraint
-    
-                var geometries = [];
-    
-                $els.each(function() {
-                    var type = $(this).data('genre');
-                    if (type == 'DataGenreSpeciesOccurrence' ||
-                        type == 'DataGenreSpeciesAbsence' ||
-                        type == 'DataGenreTraits' ||
-                        type == 'DataGenreSpeciesCollection') {
-    
-                        var data_url = $(this).data('url');
-                        vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
-                            // FIXME: assumes only one layer because of species data
-                            var newLayer = newLayers[0];
-                            vizcommon.addLayerLegend(
-                                map.getTarget(),
-                                newLayer.get('title'),
-                                newLayer.get('bccvl').layer.style.color, null, null);
-    
-                            // Draw convex-hull polygon for occurrence dataset in map
-                            if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection' || type == 'DataGenreTraits') {
-                                // TODO: can this bit run in a separate even thandler?
-                                var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
-                                var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
-                                vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);
-                            }
-                        })
-                    } else {
-    
-                        var bbox = $(this).attr('data-bbox');
-                        if (typeof bbox !== typeof undefined && bbox !== false) {
-                            var geom = $(this).data('bbox');
-                            geom = new ol.geom.Polygon([[
-                                [geom.left, geom.bottom],
-                                [geom.right, geom.bottom],
-                                [geom.right, geom.top],
-                                [geom.left, geom.top],
-                                [geom.left, geom.bottom]
-                            ]]);
-                            geom.type = type;
-                            geometries.push(geom);
-                        } else {
-    
-                            // Get the region constraint from the SDM experiment as the constraint for
-                            // Climate Change Experiment. Need to transform constraint geometry to
-                            // EPSG:4326 as used in vizcommon.renderPolygonConstraints
-                            var sdmexp_id = $(this).attr('value');
-                            bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
-                                var region_constraint = data['results'][0]['params']['modelling_region'];
-                                $('#form-widgets-projection_region').val(region_constraint);
-    
-                                if (region_constraint) {
-                                    var geojsonParser = new ol.format.GeoJSON();
-                                    var srcProjection = geojsonParser.readProjection(region_constraint);
-                                    var feature = geojsonParser.readFeature(region_constraint);
-                                    var occurrence_polygon = feature.getGeometry().transform(srcProjection, 'EPSG:4326')
-                                    vizcommon.setOccurrencePolygon(occurrence_polygon)
-                                    vizcommon.renderPolygonConstraints(
-                                        map,
-                                        occurrence_polygon,
-                                        constraintsLayer,
-                                        'EPSG:4326')
+
+                if($els.length > 0){
+                    // unpack cmap
+                    var map = cmap.map
+                    var mapid = cmap.mapid
+                    var visLayers = cmap.visLayers
+                    var bboxLayer = cmap.bboxLayer
+                    var constraintsLayer = cmap.constraintsLayer
+        
+                    // recreate legend
+                    $('#'+map.getTarget()).find('.olLegend').remove();
+                    vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
+        
+                    // clear any existing layers.
+                    visLayers.getLayers().clear(); // clear species layers
+                    bboxLayer.getSource().clear(); // clear bboxes as well
+                    vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
+                    constraintsLayer.getSource().clear(); // clear the constraint
+        
+                    var geometries = [];
+        
+                    $els.each(function() {
+                        var type = $(this).data('genre');
+                        if (type == 'DataGenreSpeciesOccurrence' ||
+                            type == 'DataGenreSpeciesAbsence' ||
+                            type == 'DataGenreTraits' ||
+                            type == 'DataGenreSpeciesCollection') {
+        
+                            var data_url = $(this).data('url');
+                            vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
+                                // FIXME: assumes only one layer because of species data
+                                var newLayer = newLayers[0];
+                                vizcommon.addLayerLegend(
+                                    map.getTarget(),
+                                    newLayer.get('title'),
+                                    newLayer.get('bccvl').layer.style.color, null, null);
+        
+                                // Draw convex-hull polygon for occurrence dataset in map
+                                if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection' || type == 'DataGenreTraits') {
+                                    // TODO: can this bit run in a separate even thandler?
+                                    var mimetype = newLayer.get('bccvl').data.mimetype;   // dataset mimetype
+                                    var filename = newLayer.get('bccvl').layer.filename;  // layer filename for zip file
+                                    vizcommon.drawConvexhullPolygon(data_url, filename, mimetype, map, constraintsLayer);
                                 }
-                            });
+                            })
+                        } else {
+        
+                            var bbox = $(this).attr('data-bbox');
+                            if (typeof bbox !== typeof undefined && bbox !== false) {
+                                var geom = $(this).data('bbox');
+                                geom = new ol.geom.Polygon([[
+                                    [geom.left, geom.bottom],
+                                    [geom.right, geom.bottom],
+                                    [geom.right, geom.top],
+                                    [geom.left, geom.top],
+                                    [geom.left, geom.bottom]
+                                ]]);
+                                geom.type = type;
+                                geometries.push(geom);
+                            } else {
+        
+                                // Get the region constraint from the SDM experiment as the constraint for
+                                // Climate Change Experiment. Need to transform constraint geometry to
+                                // EPSG:4326 as used in vizcommon.renderPolygonConstraints
+                                var sdmexp_id = $(this).attr('value');
+                                bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
+                                    var region_constraint = data['results'][0]['params']['modelling_region'];
+                                    $('#form-widgets-projection_region').val(region_constraint);
+        
+                                    if (region_constraint) {
+                                        var geojsonParser = new ol.format.GeoJSON();
+                                        var srcProjection = geojsonParser.readProjection(region_constraint);
+                                        var feature = geojsonParser.readFeature(region_constraint);
+                                        var occurrence_polygon = feature.getGeometry().transform(srcProjection, 'EPSG:4326')
+                                        vizcommon.setOccurrencePolygon(occurrence_polygon)
+                                        vizcommon.renderPolygonConstraints(
+                                            map,
+                                            occurrence_polygon,
+                                            constraintsLayer,
+                                            'EPSG:4326')
+                                    }
+                                });
+                            }
                         }
+                    });
+                    if(geometries.length > 0){
+                        // draw collected geometries
+                        vizcommon.drawBBoxes(map, geometries, bboxLayer);
                     }
-                });
-                // draw collected geometries
-                vizcommon.drawBBoxes(map, geometries, bboxLayer);
+                }
             },
 
             init_pa_controls: function() {

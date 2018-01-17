@@ -33,14 +33,7 @@ requirejs.config({
         'zip':                          'lib/zip/zip.min',
         'html2canvas':                  'lib/html2canvas/html2canvas.min',
         'turf':                         'lib/turfjs/turf.min',
-        
-        //shp2geojson
-        
-        'shp2geojson':                  'lib/shp2geojson/preview',
-        'shp2geojson-pre':              'lib/shp2geojson/preprocess', 
-        'jszip':                        'lib/jszip/jszip', 
-        'jszip-utils':                  'lib/jszip/jszip-utils', 
-        'jszip-utils-ie':               'lib/jszip/jszip-utils-ie',
+        'shpjs':                        'lib/shpjs/shp',
         
         // our own js files
         'bccvl-api':                  'js/bccvl-api',

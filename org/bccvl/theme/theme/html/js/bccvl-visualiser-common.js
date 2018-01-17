@@ -3,8 +3,8 @@
 
 // PROJ4 needs to be loaded after OL3
 define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
-        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf', 'shp2geojson'],
-   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf, shp2geojson) {
+        'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf', 'shpjs'],
+   function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf, shp) {
         
        // define some projections we need
        proj4.defs([
@@ -56,6 +56,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
        // convex-hull polygon around occurrence dataset
        // TODO: should be removed from here.... otherwise we can only have one constraints map
        var occurrence_convexhull_polygon = null;
+       
+       // Australia Bounds
+       var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
+       var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
+       var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
 
        var bccvl_common = {
 
@@ -111,7 +116,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                $('#'+id+' .ol-viewport .ol-overlaycontainer-stopevent').append(layer.get('bccvl').legend);
                                // zoom to extent to first visible layer
                                if(layer.getExtent()){
-                                   map.getView().fit(layer.getExtent(), map.getSize());
+                                   map.getView().fit(layer.getExtent(), {size: map.getSize()});
                                }
                            }
 
@@ -163,7 +168,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                                // zoom to extent to first visible layer
                                if(layer.getSource().getExtent()){
-                                   map.getView().fit(layer.getSource().getExtent(), map.getSize());
+                                   map.getView().fit(layer.getSource().getExtent(), {size: map.getSize()});
                                }
                            }
 
@@ -1276,11 +1281,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                // -------------------------------------------------------------------------------------------
                var map;
 
-               // Australia Bounds
-               var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
-               var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
-               var australia_bounds = new ol.extent.boundingExtent([aus_SW, aus_NE]);
-
                // NEED TO DESTROY ANY EXISTING MAP
                var container = $('#'+id);
                if (container.hasClass('active')) {
@@ -1356,7 +1356,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                });
 
                // zoom to Australia
-               map.getView().fit(australia_bounds, map.getSize());
+               map.getView().fit(australia_bounds, {size: map.getSize()});
 
                // add fullscreen toggle control
                var fullScreenToggle = new ol.control.FullScreen();
@@ -1702,7 +1702,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
         
-               map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
+               map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
            },
            
            estimateGeoArea: function(map, geomObject){
@@ -1732,7 +1732,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                constraintsLayer.getSource().clear();
 
                var feature = new ol.Feature({geometry: geomObject});
-               
+
                var bounds;
 
                // Do projection only if they are in different projection
@@ -1794,7 +1794,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                $('#add-conv-hull-offset').data('geojson', as_geojson);
 
-               map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), {padding: [50,50,50,50]});
+               map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
            },
 
            setOccurrencePolygon: function(polygon) {
@@ -2009,7 +2009,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        var features = constraintsLayer.getSource().getFeatures();
                        var format = new ol.format.GeoJSON();
                        var data = format.writeFeaturesObject(features);
-
+                        
                        // TODO: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
                        data.crs = {
                            'type': 'name',
@@ -2050,119 +2050,87 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
                
-               var shapefile;
-               
-               $('.upload-shape').click(function(){
-
-                   var _this = $(this);
-                   //do some stuff for validation
-        			if(shapefile.size > 0) {
-        				
-                        // TODO: validate preceeding fields, especially zip file.
+               $("#upload_file").change(function(evt) {
                    
-                        var epsg = ($('#shapefile_epsg').val() == '') ? 4326 : $('#shapefile_epsg').val(),
-            			    encoding = ($('#shapefile_encoding').val() == '') ? 'UTF-8' : $('#shapefile_encoding').val();
-            			if(shapefile.name.split('.')[1] == 'zip') {
-            				
-            				shp2geojson({
-            					url: shapefile,
-            					encoding: encoding,
-            					EPSG: epsg
-            				}, function(data) {
-            					
-            					//
-            					//  MANUALLY FLATTENED SHAPE
-            					//
-            					
-            					// need to clean geojson into a single shape
-            					/*
-            					var geojson;
-                                var polygons = [];
-            					
-            					// loop list of multi-polygon regions and withdraw individual polygon regions
-                                $.each(data.features, function(i, feature){
-                                    $.each(feature.geometry.coordinates, function(index, poly){
-                                        polygons.push([poly]);
+                   $('#upload-shape').hide(0, function(){
+                       $('#upload_spinner').show(0);
+                   });
+                   
+        			var shapefile = evt.target.files[0];
+        			
+        			if(shapefile.size > 0) {
+        			    // Check for the various File API support.
+                        if (window.File && window.FileReader && window.FileList && window.Blob) {
+
+                            var reader = new FileReader();
+
+                            reader.onload = function(e) {
+                                var arrayBuffer = reader.result;
+                                
+                                shp(arrayBuffer).then(function(geojson){
+                                    // clear layer
+                                    constraintsLayer.getSource().clear();
+                                    
+                					var features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+                                        featureProjection: 'EPSG:3857'
+                                    });
+                                    
+                                    // loop through all features, calculating group extent (could also transform bbox)
+                                    // add ID and set style to each
+                                    var extent = features[0].getGeometry().getExtent().slice(0);
+                                    $.each(features, function(i,feature){ 
+                                        
+                                        ol.extent.extend(extent,feature.getGeometry().getExtent());
+                                        
+                                        feature.setId('geo_constraints_'+i);
+                                        
+                                        var styles = {
+                                            'MultiPolygon': new ol.style.Style({
+                                                fill: new ol.style.Fill({
+                                                    color: 'rgba(0, 160, 228, 0.1)'
+                                                }),
+                                                stroke: new ol.style.Stroke({
+                                                    color: 'rgba(0, 160, 228, 0.9)',
+                                                    width: 2
+                                                })
+                                            }),
+                                            'Polygon': new ol.style.Style({
+                                                fill: new ol.style.Fill({
+                                                    color: 'rgba(0, 160, 228, 0.1)'
+                                                }),
+                                                stroke: new ol.style.Stroke({
+                                                    color: 'rgba(0, 160, 228, 0.9)',
+                                                    width: 2
+                                                })
+                                            })
+                                        }
+                                        
+                                        feature.setStyle(styles[feature.getGeometry().getType()]);
+                                    });
+                                    
+                                    constraintsLayer.getSource().addFeatures(features);
+                             
+                                    map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
+                                    
+                                    $('#upload_spinner').hide(0, function(){
+                                       $('#upload-shape').show(0);
                                     });
                                 });
-                                
-                                geojson = {
-                                    'type': 'Feature',
-                                    'geometry': {
-                                        'type': 'MultiPolygon',
-                                        'coordinates': polygons
-                                    }
-                                }
-                                // helper function to remove any redundant coords
-                                geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
-
-                                bccvl_common.renderGeojsonConstraints($(this), map, geojson, constraintsLayer);
-                                */
-                                
-                                
-                                //
-            					// UNMODIFIED SHP2GEOJSON SHAPE
-            					//
-            					
-            					// clear layer
-                                constraintsLayer.getSource().clear();
-                                
-            					var features = (new ol.format.GeoJSON()).readFeatures(data, {
-                                    featureProjection: 'EPSG:3857'
-                                });
-                                
-                                // loop through all features, calculating group extent (could also transform bbox)
-                                // add ID and set style to each
-                                var extent = features[0].getGeometry().getExtent().slice(0);
-                                $.each(features, function(i,feature){ 
-
-                                    ol.extent.extend(extent,feature.getGeometry().getExtent());
-                                    
-                                    feature.setId('geo_constraints_'+i);
-                                    
-                                    var styles = {
-                                        'MultiPolygon': new ol.style.Style({
-                                            fill: new ol.style.Fill({
-                                                color: 'rgba(0, 160, 228, 0.1)'
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'rgba(0, 160, 228, 0.9)',
-                                                width: 2
-                                            })
-                                        }),
-                                        'Polygon': new ol.style.Style({
-                                            fill: new ol.style.Fill({
-                                                color: 'rgba(0, 160, 228, 0.1)'
-                                            }),
-                                            stroke: new ol.style.Stroke({
-                                                color: 'rgba(0, 160, 228, 0.9)',
-                                                width: 2
-                                            })
-                                        })
-                                    }
-                                    
-                                    feature.setStyle(styles[feature.getGeometry().getType()]);
-                                });
-                                
-                                constraintsLayer.getSource().addFeatures(features);
-                         
-                                map.getView().fit(extent, map.getSize(), {padding: [50,50,50,50]});
-                                
-            				});
-            			} else {
-            				alert('not a zip file');
-            			}
+                            }
+                            
+                            reader.readAsArrayBuffer(shapefile);
+                                                      
+                        } else {
+                          alert('The File APIs are not fully supported in this browser.');
+                          $('#upload_spinner').hide(0, function(){
+                             $('#upload-shape').show(0);
+                          });
+                        }
+        				
+                       
         			}
-               });
-               
-               $("#upload_file").change(function(evt) {
-        			shapefile = evt.target.files[0];
         	   });
                
-               //$('').click(function(e){
-               //    e.preventDefault();
-               //    bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
-               //})
            },
            /************************************************
             * project extent from crs to crs, and clip
@@ -2183,7 +2151,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            drawBBoxes: function(map, geometries, bboxLayer) {
-
+                console.log(geometries);
                // clear any existing features
                bboxLayer.getSource().clear();
 
@@ -2235,8 +2203,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    bboxLayer.getSource().addFeature(feature);
 
                });
+               
+               console.log(bboxLayer.getSource().getExtent());
+               console.log(bboxLayer.getSource().getFeatures());
 
-               map.getView().fit(bboxLayer.getSource().getExtent(), map.getSize());
+               map.getView().fit(bboxLayer.getSource().getExtent(), {size: map.getSize()});
 
            },
 
