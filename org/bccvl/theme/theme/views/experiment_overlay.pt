@@ -78,7 +78,7 @@
                 <tal:loop tal:repeat="item python:dataset_tools.experiment_results(result.getObject())">
                   <div class="row-fluid experiment-result-contents"
                         tal:define="item_obj item/getObject;
-                                    item_desc python:item.Description if item.Description != 'Occurrence points with environmental data' else 'Occurrence records (map)';">
+                                    item_desc python:item.Description if item.BCCDataGenre != 'DataGenreSpeciesOccurEnv' else 'Occurrence records (map)';">
                     <div class="span9 bccvl-table-label"
                            tal:define="md python:dataset_tools.metadata(item_obj)">
                                        

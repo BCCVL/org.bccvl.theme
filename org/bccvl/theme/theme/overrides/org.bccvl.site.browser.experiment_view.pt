@@ -190,6 +190,43 @@
               <div class="collapse" tal:attributes="id string:${result/getId}-body">
                 <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
                   <div class="row-fluid experiment-result-contents"
+                       tal:condition="python: item.BCCDataGenre == 'DataGenreSpeciesOccurEnv'"
+                       tal:define="itemobj item/getObject;
+                                   item_tools nocall:itemobj/@@dataset_tools;
+                                   md item_tools/metadata|nothing">
+                    <div class="span9 bccvl-table-label">
+                      <h5>Input occurrence records (map)</h5>
+                      <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
+                      <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
+                      <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
+                    </div>
+                    <div class="bccvl-table-controls span3"
+                         tal:define="dlinfo item_tools/get_download_info;
+                                     downloadurl dlinfo/url;">
+                      <a class="fine btn btn-info"
+                         title="Download this file"
+                         href="#downloadurl"
+                         tal:condition="dlinfo/available"
+                         tal:attributes="href downloadurl;">
+                        <i class="icon-download-alt icon-link icon-white"></i>
+                      </a>
+                      <a class="bccvl-occurrence-viz btn btn-primary"
+                         title="Preview this file"
+                         href="#downloadurl"
+                         data-mimetype="application/octet-stream"
+                         data-uuid="a uuid"
+                         tal:attributes="href downloadurl;
+                                         data-uuid item/UID;
+                                         data-mimetype item/format;
+                                         data-cellsize md/cellsize|nothing;
+                                         data-srs md/srs|nothing"
+                         tal:condition="python: item.format not
+                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                        <i class="icon-eye-open icon-link icon-white"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row-fluid experiment-result-contents"
                        tal:define="itemobj item/getObject;
                                    item_tools nocall:itemobj/@@dataset_tools;
                                    md item_tools/metadata|nothing">
@@ -224,43 +261,6 @@
                                          data-cellsize md/cellsize|nothing;
                                          data-srs md/srs|nothing;
                                          class string:${item_tools/get_viz_class} btn btn-primary"
-                         tal:condition="python: item.format not
-                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                        <i class="icon-eye-open icon-link icon-white"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row-fluid experiment-result-contents"
-                       tal:condition="python: item.Description() == 'Occurrence points with environmental data'"
-                       tal:define="itemobj item/getObject;
-                                   item_tools nocall:itemobj/@@dataset_tools;
-                                   md item_tools/metadata|nothing">
-                    <div class="span9 bccvl-table-label">
-                      <h5>Input occurrence records (map)</h5>
-                      <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
-                      <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
-                      <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
-                    </div>
-                    <div class="bccvl-table-controls span3"
-                         tal:define="dlinfo item_tools/get_download_info;
-                                     downloadurl dlinfo/url;">
-                      <a class="fine btn btn-info"
-                         title="Download this file"
-                         href="#downloadurl"
-                         tal:condition="dlinfo/available"
-                         tal:attributes="href downloadurl;">
-                        <i class="icon-download-alt icon-link icon-white"></i>
-                      </a>
-                      <a class="bccvl-occurrence-viz btn btn-primary"
-                         title="Preview this file"
-                         href="#downloadurl"
-                         data-mimetype="application/octet-stream"
-                         data-uuid="a uuid"
-                         tal:attributes="href downloadurl;
-                                         data-uuid item/UID;
-                                         data-mimetype item/format;
-                                         data-cellsize md/cellsize|nothing;
-                                         data-srs md/srs|nothing"
                          tal:condition="python: item.format not
                                         in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                         <i class="icon-eye-open icon-link icon-white"></i>
