@@ -59,50 +59,6 @@
         <!-- Algorithm parameter fieldsets -->
         <metal:parameters use-macro="context/@@experiment-macros/algo_parameters"/>
         <div id="bccvl-experimentresults-table" >
-          <tal:expinput tal:condition="python: context.portal_type in ('org.bccvl.content.sdmexperiment', 'org.bccvl.content.msdmexperiment')">
-            <h5 class="results-title">Experiment Inputs</h5>
-            <div class="bccvl-experimenttable-accordion accordion-group">
-              <!-- occurrence/absence dataset -->
-              <tal:loop tal:repeat="item dataset_tools/experiment_inputs">
-                <div class="row-fluid experiment-result-contents"
-                     tal:define="item_obj item/getObject|nothing;
-                                 item_desc item/Description;
-                                 result_folder python: item_obj.__parent__;
-                                 md python:dataset_tools.metadata(item_obj);">
-                  <div class="span9 bccvl-table-label">
-                    <h5 tal:content="item/Title">Item Title</h5>
-                    <p><span tal:condition="item_desc"
-                             tal:content="item_desc">Dataset short description</span>
-                      <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
-                      <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
-                      <span tal:condition="result_folder/job_params/function|nothing">Algorithm: <i tal:content="result_folder/job_params/function"></i></span>
-                    </p>
-                  </div>
-                  <div class="bccvl-table-controls span3"
-                       tal:define="dlinfo python:dataset_tools.get_download_info(item_obj);
-                                   downloadurl dlinfo/url;">
-                    <a class="bccvl-occurrence-viz btn btn-primary"
-                       title="Preview this file"
-                       href="#downloadurl"
-                       data-viz-type="occurrence"
-                       data-mimetype="application/octet-tream"
-                       data-uuid="a uuid"
-                       tal:attributes="href downloadurl;
-                                       data-uuid item/UID;
-                                       data-mimetype dlinfo/contenttype;
-                                       data-layername item/Title;
-                                       data-algorithm result_folder/job_params/function|nothing;
-                                       data-viztype python: 'occurrence' if item.BCCDataGenre in ('DataGenreSpeciesOccurrence', 'DataGenreSpeciesAbsence', 'DataGenreSpeciesCollection') else 'auto';"
-                       tal:condition="python: dlinfo['contenttype'] not
-                                      in (None, 'None', 'application/octet-stream', 'application/x-r-data', 'txt/html', 'text/html')">
-                      <i class="icon-eye-open icon-link icon-white"></i>
-                    </a>
-                  </div>
-                </div>
-              </tal:loop>
-            </div>
-          </tal:expinput>
-
 
           <h5 class="results-title">Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
@@ -233,6 +189,43 @@
               
               <div class="collapse" tal:attributes="id string:${result/getId}-body">
                 <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
+                  <div class="row-fluid experiment-result-contents"
+                       tal:condition="python: item.BCCDataGenre == 'DataGenreSpeciesOccurEnv'"
+                       tal:define="itemobj item/getObject;
+                                   item_tools nocall:itemobj/@@dataset_tools;
+                                   md item_tools/metadata|nothing">
+                    <div class="span9 bccvl-table-label">
+                      <h5>Input occurrence records (map)</h5>
+                      <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
+                      <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
+                      <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
+                    </div>
+                    <div class="bccvl-table-controls span3"
+                         tal:define="dlinfo item_tools/get_download_info;
+                                     downloadurl dlinfo/url;">
+                      <a class="fine btn btn-info"
+                         title="Download this file"
+                         href="#downloadurl"
+                         tal:condition="dlinfo/available"
+                         tal:attributes="href downloadurl;">
+                        <i class="icon-download-alt icon-link icon-white"></i>
+                      </a>
+                      <a class="bccvl-occurrence-viz btn btn-primary"
+                         title="Preview this file"
+                         href="#downloadurl"
+                         data-mimetype="application/octet-stream"
+                         data-uuid="a uuid"
+                         tal:attributes="href downloadurl;
+                                         data-uuid item/UID;
+                                         data-mimetype item/format;
+                                         data-cellsize md/cellsize|nothing;
+                                         data-srs md/srs|nothing"
+                         tal:condition="python: item.format not
+                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                        <i class="icon-eye-open icon-link icon-white"></i>
+                      </a>
+                    </div>
+                  </div>
                   <div class="row-fluid experiment-result-contents"
                        tal:define="itemobj item/getObject;
                                    item_tools nocall:itemobj/@@dataset_tools;

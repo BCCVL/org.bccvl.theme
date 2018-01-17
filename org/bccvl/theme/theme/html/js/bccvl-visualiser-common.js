@@ -1445,6 +1445,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                            if (data.genre == "DataGenreSpeciesOccurrence" ||
                                data.genre == "DataGenreSpeciesCollection" ||
+                               data.genre == "DataGenreSpeciesOccurEnv" ||
                                data.genre == "DataGenreTraits") {
                                layerdef.type = 'occurrence';
                                layerdef.style = {
@@ -2019,6 +2020,11 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                            }
                        };
                        // FIXME: workaround for rgdal, which can't pars 'null' properties
+                       data.features.forEach(function(feature) {
+                            if (feature.properties == null) {
+                              feature.properties = {};
+                            }
+                       });
                        if (data.properties == null) {
                            data.properties = {};
                        }
