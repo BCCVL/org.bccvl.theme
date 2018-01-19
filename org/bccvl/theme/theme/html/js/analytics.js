@@ -62,6 +62,10 @@ require(['jquery'], function($) {
              var label = $(this).data('friendlyname');
             _gaq.push(['_trackEvent', 'Experiments Page', 'View Experiment', label ]);
         });
+        $('section.bccvl-experimentlist').on('click', '.bccvl-table-controls .experiment-rerun-btn', function(){
+             var label = $(this).data('uuid');
+            _gaq.push(['_trackEvent', 'Experiments Page', 'Rerun Experiment', label ]);
+        });
 
         // Knowledge base events
         $('section.bccvl-knowledgebase').on('click', '.bccvl-kbsearchcontent a.title_link', function(){
@@ -91,6 +95,10 @@ require(['jquery'], function($) {
         $('section.bccvl-new-ensemble .bccvl-wizardtabs a[data-toggle="tab"]').on('shown', function(e){
             var label = $(e.target).text()+' - '+$(e.relatedTarget).text();
             _gaq.push(['_trackEvent', 'New Ensemble Experiment', 'Tab Change', label ]);
+        });
+        $('input[name="constraints_type"]').on('click', function(e){
+            var label = $(e.target).attr('id');
+            _gaq.push(['_trackEvent', 'New Experiment', 'Constraint Selection', label ]);
         });
 
         $('section.bccvl-new-sdm').on('click', 'button.bccvllinks-experiment-start', function(){
@@ -129,6 +137,10 @@ require(['jquery'], function($) {
         // Generic events to track
         $('.bccvl-main').on('click', 'a.export-map', function(){
              _gaq.push(['_trackEvent', 'Map Interaction', 'Image Export', $(this).attr('download') ]);
+        });
+        $('#portal-globalnav').on('click', 'a', function(){
+             var label = $(this).text();
+             _gaq.push(['_trackEvent', 'Main nav', 'Click', label ]);
         });
 
         // login events
