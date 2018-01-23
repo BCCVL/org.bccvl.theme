@@ -2100,16 +2100,20 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        $('#' + field_id).val('' + data + '');
                    }
                });
-
-               $("#upload_file").change(function(evt) {
-
-                   $('#upload-shape').hide(0, function(){
+               
+               var shapefile = null;
+               
+               $('#draw-shapefile').click(function(){
+                   
+                    $('#upload-shape').hide(0, function(){
                        $('#upload_spinner').show(0);
-                   });
-
-        			var shapefile = evt.target.files[0];
-
-        			if(shapefile.size > 0) {
+                    });
+                    if(shapefile == null) {
+                        alert('You must add a shapefile using the file select dialog.');
+                          $('#upload_spinner').hide(0, function(){
+                             $('#upload-shape').show(0);
+                          });
+                    } else if(shapefile.size > 0) {
         			    // Check for the various File API support.
                         if (window.File && window.FileReader && window.FileList && window.Blob) {
 
@@ -2117,24 +2121,24 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                             reader.onload = function(e) {
                                 var arrayBuffer = reader.result;
-
+                                
                                 shp(arrayBuffer).then(function(geojson){
                                     // clear layer
                                     constraintsLayer.getSource().clear();
-
+                                    
                 					var features = (new ol.format.GeoJSON()).readFeatures(geojson, {
                                         featureProjection: 'EPSG:3857'
                                     });
-
+                                    
                                     // loop through all features, calculating group extent (could also transform bbox)
                                     // add ID and set style to each
                                     var extent = features[0].getGeometry().getExtent().slice(0);
-                                    $.each(features, function(i,feature) {
-
+                                    $.each(features, function(i,feature){ 
+                                        
                                         ol.extent.extend(extent,feature.getGeometry().getExtent());
-
+                                        
                                         feature.setId('geo_constraints_'+i);
-
+                                        
                                         var styles = {
                                             'MultiPolygon': new ol.style.Style({
                                                 fill: new ol.style.Fill({
@@ -2155,35 +2159,45 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                                                 })
                                             })
                                         }
-
+                                        
                                         feature.setStyle(styles[feature.getGeometry().getType()]);
                                     });
-
+                                    
                                     constraintsLayer.getSource().addFeatures(features);
-
+                             
                                     map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
-
+                                    
                                     $('#upload_spinner').hide(0, function(){
                                        $('#upload-shape').show(0);
                                     });
                                 });
                             }
-
+                            
                             reader.readAsArrayBuffer(shapefile);
-
+                                                      
                         } else {
                           alert('The File APIs are not fully supported in this browser.');
                           $('#upload_spinner').hide(0, function(){
                              $('#upload-shape').show(0);
                           });
                         }
-
-
+        				
+                       
+        			} else {
+        			    alert('You must add a shapefile using the file select dialog.')
         			}
+               });
+               
+               $("#upload_file").change(function(evt) {
+                   shapefile = evt.target.files[0];
         	   });
-
+        	   
+        	   $('#remove-shapefile').click(function(){
+        	       $('#upload_file').val('');
+        	       shapefile = null;
+        	   });
+               
            },
-
            /************************************************
             * get a proj4 projection object for wkt or
             * fall back to epsg code (which may be a default value).
