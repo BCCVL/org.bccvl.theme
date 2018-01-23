@@ -28,6 +28,7 @@
         <replace css:theme="#speciesabundance" css:content="#speciesabundance"/>
         <replace css:theme="#speciesoccurrence" css:content="#speciesoccurrence"/>
         <replace css:theme="#multispeciesoccurrence" css:content="#multispeciesoccurrence"/>
+        <replace css:theme="#multispeciesabsence" css:content="#multispeciesabsence"/>
         <replace css:theme="#climatecurrent" css:content="#climatecurrent"/>
         <replace css:theme="#environmental" css:content="#environmental"/>
         <replace css:theme="#climatefuture" css:content="#climatefuture"/>
