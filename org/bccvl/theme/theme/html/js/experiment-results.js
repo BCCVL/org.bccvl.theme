@@ -138,23 +138,30 @@ define(
             var offsetLeft = affix.offset().left;
             var affixWidth = affix.innerWidth() - 10;
             var affixHeight = affix.outerHeight();
+            
+            affix.each(function(){
+                var _this = $(this);
+                _this.css({
+                    'max-height': affixHeight,
+                    'overflow-y': 'auto'
+                });
+                
+                $(window).scroll(function(){
 
-            affix.css({
-                'max-height': affixHeight,
-                'overflow-y': 'auto'
-            });
+                    if( ($(window).scrollTop() - 15) > offsetTop) {
+                        
+                        _this.addClass('affix');
+                        _this.css({
+                            'left': offsetLeft,
+                            'width': affixWidth
+                        });
+                    } else {
+                        _this.removeClass('affix');
+                    }
+                });
+            })
 
-            $(window).scroll(function(){
-                if( ($(window).scrollTop() - 15) > offsetTop) {
-                    affix.addClass('affix');
-                    affix.css({
-                        'left': offsetLeft,
-                        'width': affixWidth
-                    });
-                } else {
-                    affix.removeClass('affix');
-                }
-            });
+            
         }
 
         function sprintf(format) {
