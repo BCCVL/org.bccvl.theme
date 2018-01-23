@@ -2087,15 +2087,19 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
                
-               $("#upload_file").change(function(evt) {
+               var shapefile = null;
+               
+               $('#draw-shapefile').click(function(){
                    
-                   $('#upload-shape').hide(0, function(){
+                    $('#upload-shape').hide(0, function(){
                        $('#upload_spinner').show(0);
-                   });
-                   
-        			var shapefile = evt.target.files[0];
-        			
-        			if(shapefile.size > 0) {
+                    });
+                    if(shapefile == null) {
+                        alert('You must add a shapefile using the file select dialog.');
+                          $('#upload_spinner').hide(0, function(){
+                             $('#upload-shape').show(0);
+                          });
+                    } else if(shapefile.size > 0) {
         			    // Check for the various File API support.
                         if (window.File && window.FileReader && window.FileList && window.Blob) {
 
@@ -2165,7 +2169,18 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                         }
         				
                        
+        			} else {
+        			    alert('You must add a shapefile using the file select dialog.')
         			}
+               });
+               
+               $("#upload_file").change(function(evt) {
+                   shapefile = evt.target.files[0];
+        	   });
+        	   
+        	   $('#remove-shapefile').click(function(){
+        	       $('#upload_file').val('');
+        	       shapefile = null;
         	   });
                
            },

@@ -476,6 +476,29 @@
                       </div>
                     </div>
                     
+                    <hr/>
+                      
+                      <div class="constraint-method">
+                        <input type="radio" value="upload_shp_file" name="constraints_type" id="upload_shp_file" />
+                        <label for="upload_shp_file" >Upload Shapefile</label>
+                        <div id="upload_spinner" style="display:none;"><span style="display:block; padding-top:1em; text-align:center;"><i class="fa fa-spin fa-spinner fa-2x"></i></span></div>
+                        <div id="upload-shape" class="config form-horizontal" style="display:none;">
+                          <div class="control-group">
+                            <label class="control-label" for="upload_file">File</label>
+                            <div class="controls">
+                           
+                             <input type="file" id="upload_file" accept=".zip">
+                            </div>
+                          </div>
+                          <div class="control-group">
+                            <div class="controls">
+                              <a href="javascript:void(0);" class="btn btn-small btn-default" id="draw-shapefile"><i class="fa fa-crop"></i> Add To Map</a>&nbsp;
+                              <a href="javascript:void(0);" class="btn btn-small btn-danger remove-polygon" id="remove-shapefile"><i class="fa fa-times"></i> Clear</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
                   </div>
 
                   <!-- preview area -->
