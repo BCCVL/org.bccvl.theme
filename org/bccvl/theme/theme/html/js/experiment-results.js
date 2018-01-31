@@ -37,21 +37,22 @@ define(
             }
 
             if (geojsonObject) {
-
                 var source = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
                 });
 
                 // Display the contraint region properties
                 var regionParamsDiv = '<div class="control-group" name="region_constraint_properties" id="region_constraint_properties"><label for="region_constraint_properties" class="control-label">Region Constraint Configuration</label></div>';
-                var properties = source.getFeatures()[0].getProperties();
-                for (var pname of ['constraint_method', 'region_offset', 'region_type', 'region_name']) {
-                    if (properties.hasOwnProperty(pname)) {
-                        if (pname == 'region_offset') {
-                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname]);
-                        }
-                        else {
-                            regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname].title);
+                var properties = JSON.parse(geojsonObject).properties;
+                if (properties != undefined) {
+                    for (var pname of ['constraint_method', 'region_offset', 'region_type', 'region_name']) {
+                        if (properties.hasOwnProperty(pname)) {
+                            if (pname == 'region_offset') {
+                                regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname]);
+                            }
+                            else {
+                                regionParamsDiv += sprintf('<ul><li>%s: %s</li></ul>', pname, properties[pname].title);
+                            }
                         }
                     }
                 }
