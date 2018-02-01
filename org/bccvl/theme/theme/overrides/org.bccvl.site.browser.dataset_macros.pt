@@ -111,7 +111,7 @@
               <p tal:condition="md/scientificname|nothing"><small><b>Species:</b> <tal:r tal:replace="md/scientificname">Sus scrofa</tal:r></small></p>
               <p tal:condition="md/rows|nothing"><small><b>Rows:</b> <tal:r tal:replace="md/rows"></tal:r></small></p>
               <p tal:condition="python: item_modified and item_genre in ('DataGenreSpeciesOccurrence','DataGenreSpeciesAbsence','DataGenreSpeciesCollection',
-              'DataGenreSpeciesAbsenceCollection', 'DataGenreTraits')"><small><b>Modified:</b> <tal:r tal:replace="item_modified"></small></p>
+              'DataGenreSpeciesAbsenceCollection', 'DataGenreTraits', 'DataGenreCC', 'DataGenreE', 'DataGenreFC')"><small><b>Modified:</b> <tal:r tal:replace="item_modified"></small></p>
               <p tal:condition="item_obj/part_of|nothing"><small><b>From:</b>
                                 <tal:replace tal:replace="dsmd/title"
                                              tal:define="dsmd python: dataset_tools.metadata(uuid=item_obj.part_of)"></tal:replace></small></p>
