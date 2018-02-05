@@ -1799,7 +1799,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                  featureProjection: 'EPSG:3857',
                  dataProjection: 'EPSG:4326'
                });
-
+               
                $('#add-conv-hull-offset').data('geojson', as_geojson);
 
                map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
@@ -2081,7 +2081,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                             data.properties['region_name'] = {title: region_name.text(), id: region_name.val()};
                           }
                        }
-
+                       console.log(data);
                        data = JSON.stringify(data);
                        $('#' + field_id).val('' + data + '');
                    }
@@ -2203,7 +2203,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            drawBBoxes: function(map, geometries, bboxLayer) {
-                console.log(geometries);
+
                // clear any existing features
                bboxLayer.getSource().clear();
 
@@ -2255,9 +2255,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    bboxLayer.getSource().addFeature(feature);
 
                });
-               
-               console.log(bboxLayer.getSource().getExtent());
-               console.log(bboxLayer.getSource().getFeatures());
 
                map.getView().fit(bboxLayer.getSource().getExtent(), {size: map.getSize()});
 
