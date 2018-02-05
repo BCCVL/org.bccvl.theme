@@ -41,6 +41,10 @@
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
                  css:content="#formfield-form-widgets-species_occurrence_collections" />
 
+        <!-- hook in the absences list -->
+        <replace css:theme="#formfield-form-widgets-species_absence_collection"
+                 css:content="#formfield-form-widgets-species_absence_collection"/>"                 
+
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
                  css:content="#form-widgets-modelling_region"/>"

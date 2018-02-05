@@ -1451,7 +1451,8 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                layerdef.style = {
                                    color: '#e74c3c'
                                };
-                           } else if (data.genre == "DataGenreSpeciesAbsence") {
+                           } else if (data.genre == "DataGenreSpeciesAbsence" || 
+                                      data.genre == "DataGenreSpeciesAbsenceCollection") {
                                layerdef.type = 'absence';
                                layerdef.style = {
                                    color: '#3498db'
