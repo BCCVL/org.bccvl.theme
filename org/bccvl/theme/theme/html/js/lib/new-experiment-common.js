@@ -431,12 +431,14 @@ define(
 
             init_pa_controls: function() {
                 $('#pa_controls').on('change', 'input, select', function(e){
+                    
                     var fieldtype = $(this).attr('id');
                     var val = $(this).val();
 
-                    $('[id*="'+fieldtype+'"]').each(function(){
+                    $('select[id*="'+fieldtype+'"]').not($(this)).each(function(){
                         $(this).val(val);
                     });
+                    
                 });
             }
         };
