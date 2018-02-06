@@ -247,34 +247,6 @@
                   <div class="row-fluid bccvl-stretch-parent">
                     <!-- list of available data -->
                     <div class="span4"><div class="control-group">
-                      <p><strong>Do you have a true absence dataset for your experiment?</strong></p>
-                      <div class="form-inline if-absence-radios">
-                        <label for="have_absence" class="inline">
-                          <input type="radio" value="yes" name="if_absence" id="have_absence"/> Yes
-                        </label>
-                        <label for="no_absence" class="inline">
-                          <input type="radio" value="no" name="if_absence" id="no_absence"/> No
-                        </label>
-                      </div>
-
-                      <div class="bccvl-absencestable" style="display:none;">
-                        <div id="formfield-form-widgets-species_absence_dataset">
-                          <!-- Modal Dialog absences -->
-                          <div id="species_absence_dataset-modal" class="modal large hide fade" tabindex="-1" role="dialog">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                              <h3 id="myModalLabel">Select a Species Absence Dataset</h3>
-                            </div>
-                            <div id="modal-body" class="modal-body"></div>
-                            <div class="modal-footer">
-                              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                              <button class="btn btn-primary">Select Dataset</button>
-                            </div>
-
-                          </div>
-                        </div>
-                        <p>By default, BCCVL will only use the selected absence dataset to run the model. If you want to create additional pseudo-absence points, you can do so for each algorithm separately by changing the configuration options on the Algorithm tab.</p>
-                      </div>
 
                        <div class="bccvl-noabsence-dataset alert alert-info">
                          <p>Pseudo-absence points will be generated for the experiment.  You can change the pseudo-absence strategy used in the experiment below, or adjust for particular algorithms in the configuration settings on the Algorithm tab.</strong>

@@ -40,10 +40,6 @@
         -->
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
                  css:content="#formfield-form-widgets-species_occurrence_dataset" />
-        
-        <!-- hook in the absences list -->
-        <replace css:theme="#formfield-form-widgets-species_absence_dataset"
-                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
