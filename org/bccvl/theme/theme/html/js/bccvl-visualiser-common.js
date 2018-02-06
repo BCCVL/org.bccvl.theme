@@ -2082,7 +2082,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                             data.properties['region_name'] = {title: region_name.text(), id: region_name.val()};
                           }
                        }
-                       console.log(data);
+
                        data = JSON.stringify(data);
                        $('#' + field_id).val('' + data + '');
                    }
