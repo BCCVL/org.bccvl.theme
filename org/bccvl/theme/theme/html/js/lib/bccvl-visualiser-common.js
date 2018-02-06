@@ -2,7 +2,7 @@
 // JS code to initialise the visualiser map
 
 // PROJ4 needs to be loaded after OL3
-define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
+define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
         'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf', 'shpjs'],
    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf, shp) {
         
@@ -1451,8 +1451,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                layerdef.style = {
                                    color: '#e74c3c'
                                };
-                           } else if (data.genre == "DataGenreSpeciesAbsence" || 
-                                      data.genre == "DataGenreSpeciesAbsenceCollection") {
+                           } else if (data.genre == "DataGenreSpeciesAbsence") {
                                layerdef.type = 'absence';
                                layerdef.style = {
                                    color: '#3498db'
@@ -1681,10 +1680,16 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            //},
 
            renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
-
+               
                // clear layer
                constraintsLayer.getSource().clear();
-               
+
+               var feature = (new ol.format.GeoJSON()).readFeature(geojsonObject);
+
+               feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
+
+               feature.setId('geo_constraints');
+
                var style = new ol.style.Style({
                    fill: new ol.style.Fill({
                        color: 'rgba(0, 160, 228, 0.1)'
@@ -1695,23 +1700,10 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    })
                });
                
-               var features = (new ol.format.GeoJSON()).readFeatures(geojsonObject, {
-                    featureProjection: 'EPSG:3857'
-                });
-               
-               var extent = features[0].getGeometry().getExtent().slice(0);
-
-               $.each(features, function(i, feature){
-                   ol.extent.extend(extent,feature.getGeometry().getExtent());
-
-                   feature.setId('geo_constraints_'+i);
-                   feature.setStyle(style);
-               });
-
-               constraintsLayer.getSource().addFeatures(features);
+               feature.setStyle(style);
+               constraintsLayer.getSource().addFeature(feature);
         
-               map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
-
+               map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
            },
            
            estimateGeoArea: function(map, geomObject){
@@ -1800,7 +1792,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                  featureProjection: 'EPSG:3857',
                  dataProjection: 'EPSG:4326'
                });
-               
+
                $('#add-conv-hull-offset').data('geojson', as_geojson);
 
                map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
@@ -1917,11 +1909,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
 
                     if(bboxes.length > 0){
                         var geom;
-                        var hasEnviro = false;
                         $('body').find('input[data-bbox]').each(function(){
-                            if(['DataGenreCC','DataGenreFC','DataGenreE'].indexOf($(this).data('genre')) > -1){
-                                hasEnviro = true;
-                            }
                             if($(this).data('genre') != 'DataGenreSpeciesOccurrence' && $(this).data('genre') != 'DataGenreSpeciesAbsence') {
                                 geom = $(this).data('bbox');
                                 geom = new ol.geom.Polygon([[
@@ -1940,10 +1928,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                 }
                             }
                         });
-                        
-                        if(! hasEnviro){
-                            alert('No environmental selections made. Please select at least one environmental dataset.');
-                        }
 
                         //var geojson = new ol.format.GeoJSON();
                         //var feat = new ol.geom.Polygon.fromExtent(extent);
@@ -1989,39 +1973,23 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                   bccvl_common.renderGeojsonConstraints($(this), map, $(this).data('geojson'), constraintsLayer);
                });
                $('.btn.add-offset').on('click', function(e){
-                    
+
                    var offsetSize = $(this).parent().find('.region-offset').val();
                    if(offsetSize){
+
                        var geojson = JSON.parse($(this).data('geojson'));
                        
-                       if(geojson.type == "Feature"){
-                           var simpPoly = [];
-                           $.each(geojson.geometry.coordinates, function(i, poly){
-                               var poly = turf.polygon(poly);
-                               var options = {tolerance: 0.01, highQuality: false, mutate: true};
-                               var simplified = turf.simplify(poly, options);
-                               
-                               simpPoly.push(simplified.geometry.coordinates);
-                           });
-                           geojson.geometry.coordinates = simpPoly;
-                       } else if (geojson.type  == "FeatureCollection"){
-                           $.each(geojson.features, function(i, feature){
-                               var simpPoly = [];
-                               $.each(feature.geometry.coordinates, function(j, poly){
-                                   
-                                   // this is a bit silly, but turf requires a double embedded array
-                                   // for a polygon object, but that object will fail if used in 
-                                   // turf.buffer(), so we have to embed then retrieve it
-                                   var poly = turf.polygon([poly]);
-                                   var options = {tolerance: 0.01, highQuality: false, mutate: true};
-                                   var simplified = turf.simplify(poly, options);
-                                   
-                                   simpPoly.push(simplified.geometry.coordinates);
+                       var simpPoly = [];
+                       
+                       $.each(geojson.geometry.coordinates, function(i, poly){
+                           var poly = turf.polygon(poly);
+                           var options = {tolerance: 0.01, highQuality: false, mutate: true};
+                           var simplified = turf.simplify(poly, options);
+                           
+                           simpPoly.push(simplified.geometry.coordinates);
+                       });
 
-                                   feature.geometry.coordinates = simpPoly[0];
-                               });
-                           })
-                       }
+                       geojson.geometry.coordinates = simpPoly;
                        
                        var buffered = turf.buffer(geojson, offsetSize, {"units":"kilometers"});
                        var newgeo = JSON.stringify(buffered);
@@ -2088,19 +2056,15 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    }
                });
                
-               var shapefile = null;
-               
-               $('#draw-shapefile').click(function(){
+               $("#upload_file").change(function(evt) {
                    
-                    $('#upload-shape').hide(0, function(){
+                   $('#upload-shape').hide(0, function(){
                        $('#upload_spinner').show(0);
-                    });
-                    if(shapefile == null) {
-                        alert('You must add a shapefile using the file select dialog.');
-                          $('#upload_spinner').hide(0, function(){
-                             $('#upload-shape').show(0);
-                          });
-                    } else if(shapefile.size > 0) {
+                   });
+                   
+        			var shapefile = evt.target.files[0];
+        			
+        			if(shapefile.size > 0) {
         			    // Check for the various File API support.
                         if (window.File && window.FileReader && window.FileList && window.Blob) {
 
@@ -2170,18 +2134,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                         }
         				
                        
-        			} else {
-        			    alert('You must add a shapefile using the file select dialog.')
         			}
-               });
-               
-               $("#upload_file").change(function(evt) {
-                   shapefile = evt.target.files[0];
-        	   });
-        	   
-        	   $('#remove-shapefile').click(function(){
-        	       $('#upload_file').val('');
-        	       shapefile = null;
         	   });
                
            },
@@ -2213,7 +2166,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            },
 
            drawBBoxes: function(map, geometries, bboxLayer) {
-
+                console.log(geometries);
                // clear any existing features
                bboxLayer.getSource().clear();
 
@@ -2265,6 +2218,9 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                    bboxLayer.getSource().addFeature(feature);
 
                });
+               
+               console.log(bboxLayer.getSource().getExtent());
+               console.log(bboxLayer.getSource().getFeatures());
 
                map.getView().fit(bboxLayer.getSource().getExtent(), {size: map.getSize()});
 

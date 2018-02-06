@@ -1,7 +1,7 @@
 
 
 define(
-    ['jquery', 'openlayers3', 'proj4', 'bccvl-visualiser-common', 'bccvl-api', 'selectize', 'selectize-remove-single', 'turf'],
+    ['jquery', 'openlayers', 'proj4', 'bccvl-visualiser-common', 'bccvl-api', 'selectize', 'selectize-remove-single', 'turf'],
     function( $, ol, proj4, vizcommon, bccvlapi, selectize, selectize_remove_single, turf ) {
 
         var newExp_common = {
@@ -97,7 +97,7 @@ define(
 
                                             // helper function to remove any redundant coords
                                             geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
-                                            
+
                                             requests.resolve(geojson);
                                         }
                                     },
@@ -111,7 +111,6 @@ define(
                             });
                             
                             $.when(requests).done(function (geojson){
-
                                 $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
                                 $('.draw-geojson').attr('disabled', false).find('i').removeClass('fa-spinner fa-spin').addClass('fa-crop');
                             });
@@ -398,14 +397,12 @@ define(
 
             init_pa_controls: function() {
                 $('#pa_controls').on('change', 'input, select', function(e){
-                    
                     var fieldtype = $(this).attr('id');
                     var val = $(this).val();
-
-                    $('select[id*="'+fieldtype+'"]').not($(this)).each(function(){
+    
+                    $('[id*="'+fieldtype+'"]').each(function(){
                         $(this).val(val);
                     });
-                    
                 });
             }
         };

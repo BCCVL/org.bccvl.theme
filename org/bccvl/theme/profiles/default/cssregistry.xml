@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<object name="portal_css">
+
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/bootstrap/css/bootstrap.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                />
+
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/bootstrap/css/bootstrap-responsive.css"
+                bundle="bccvl" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/bootstrap/css/bootstrap.css"
+                />
+                
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/bootstrap-fileupload/bootstrap-fileupload.css"
+                bundle="bccvl" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/bootstrap/css/bootstrap-responsive.css"
+                />            
+                
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
+                bundle="bccvl" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/bootstrap-fileupload/bootstrap-fileupload.css"
+                />
+    
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/fontawesome/css/font-awesome.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
+                />                
+                
+    <stylesheet id="++theme++org.bccvl.theme/html/css/fonts.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/fontawesome/css/font-awesome.css"
+                />
+                
+    <stylesheet id="++theme++org.bccvl.theme/html/css/general.css"
+                bundle="bccvl" applyPrefix="True" compression="full" cookable="False"
+                insert-after="++theme++org.bccvl.theme/html/css/fonts.css"
+                />
+
+    <!-- don't include faceted-view css if theme is enabled -->
+    <stylesheet id="++resource++eea.faceted-navigation.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++org.bccvl.site.faceted.userselect.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++org.bccvl.site.faceted.pathselect.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++org.bccvl.site.faceted.checkboxtree.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.text.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.tal.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.tagscloud.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.sorting.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.select.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.resultsperpage.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.resultsfilter.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.range.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.radio.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.portlet.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.path.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.etag.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.debug.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.daterange.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.date.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.criteria.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.checkbox.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.autocomplete.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+    <stylesheet id="++resource++eea.facetednavigation.widgets.alphabets.view.css"
+                expression="not:request/HTTP_X_THEME_ENABLED | nothing"
+                />
+
+</object>
