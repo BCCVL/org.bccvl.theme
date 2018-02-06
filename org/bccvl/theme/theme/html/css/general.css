@@ -3044,3 +3044,7 @@ div.youtube-frame {
     top: 15px;
     position: absolute;
 }
+
+.result-input-table thead th {
+    vertical-align:top;
+}
