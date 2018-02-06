@@ -38,3 +38,4 @@ nosetests.xml
 
 # Unignore js lib folder (lib is ignored by default)
 !lib
+org/bccvl/theme/theme/html/node_modules
