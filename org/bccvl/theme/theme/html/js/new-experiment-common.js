@@ -97,7 +97,7 @@ define(
 
                                             // helper function to remove any redundant coords
                                             geojson.geometry.coordinates = turf.cleanCoords(geojson).geometry.coordinates;
-
+                                            
                                             requests.resolve(geojson);
                                         }
                                     },
@@ -111,6 +111,7 @@ define(
                             });
                             
                             $.when(requests).done(function (geojson){
+
                                 $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
                                 $('.draw-geojson').attr('disabled', false).find('i').removeClass('fa-spinner fa-spin').addClass('fa-crop');
                             });

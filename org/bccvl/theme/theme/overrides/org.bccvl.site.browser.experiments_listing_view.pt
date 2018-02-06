@@ -224,10 +224,11 @@
                       data-placement="top">                      
                      Delete <i class="fa fa-times" style="color:#e74c3c;" title="Remove Experiment"></i>
                    </a>
-                   <a class="btn btn-default"
+                   <a class="btn btn-default experiment-rerun-btn"
                       tal:define="actions view/new_experiment_actions;"
                       tal:attributes="href python:actions[item.portal_type]['action']+'?uuid='+item.UID;
-                                      data-friendlyname string:sharing_${item/Title}">
+                                      data-friendlyname string:sharing_${item/Title};
+                                      data-uuid string:${item/UID}">
                      Rerun <i class="fa fa-repeat" style="color:#4aa3df;" title="Rerun Experiment"></i>
                    </a>                   
                     <a class="btn btn-default download-btn"
