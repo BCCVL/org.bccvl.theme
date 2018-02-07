@@ -3,7 +3,7 @@
 //
 define(
     ['jquery', 'bccvl-form-jquery-validate', 'bootstrap2', 'bootstrap2-fileupload',
-     'bccvl-form-popover', 'livechat', 'bccvl-raven'],
+     'bccvl-form-popover'],
     function($, formvalidator ) {
         // ==============================================================
         $(function() {

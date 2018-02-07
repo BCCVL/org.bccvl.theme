@@ -3,10 +3,8 @@
 //
 define(
     ['jquery', 'bccvl-wizard-tabs', 'bccvl-form-jquery-validate',
-     'jquery-tablesorter', 'jquery-arrayutils',
-     'bbq', 'faceted_view', 'bccvl-widgets', 'livechat', 'bccvl-raven'],
-    function($, wiztabs, formvalidator, tablesorter, arryutils,
-             bbq, faceted, bccvl) {
+     'jquery.tablesorter', 'bccvl-widgets'],
+    function($, wiztabs, formvalidator, tablesorter, bccvl) {
 
         $(function() {
 
