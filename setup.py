@@ -1,10 +1,30 @@
+from distutils.command.build import build
+
 from setuptools import setup, find_packages
+
+
+class NPMBuild(build):
+
+    def run(self):
+        import os
+        import subprocess
+        kwargs = {
+            'cwd': os.path.join(os.getcwd(), 'org/bccvl/theme/theme/html')
+        }
+        subprocess.check_call(["npm", "install"], **kwargs)
+        subprocess.check_call(["npm", "run", "clean"], **kwargs)
+        subprocess.check_call(["npm", "run", "build"], **kwargs)
+        subprocess.check_call(["npm", "run", "cleandev"], **kwargs)
+        build.run(self)
 
 
 setup(
     name='org.bccvl.theme',
     setup_requires=['setuptools_scm'],
     use_scm_version=True,
+    cmdclass={
+        'build': NPMBuild
+    },
     description="BCCVL Diazo Theme",
     long_description=(open("README.rst").read() + "\n" +
                       open("CHANGELOG.rst").read()),
