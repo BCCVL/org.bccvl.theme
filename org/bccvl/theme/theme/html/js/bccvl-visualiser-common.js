@@ -16,7 +16,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            ['EPSG:3577', '+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs']
        ]);
 
-       // tell ol3 about the projections
+       // tell ol about the projections
        var proj4283 = proj4('EPSG:4283');
        ol.proj.addProjection(new ol.proj.Projection({
            code: 'EPSG:4283',
@@ -44,6 +44,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
        ol.proj.addCoordinateTransforms('EPSG:3577', 'EPSG:3857',
                                        proj3577Transform.forward,
                                        proj3577Transform.inverse);
+                                       
 
        var layer_vocab_dfrd = bccvlapi.site.vocabulary('layer_source', true).then(function(data, status, xhr) {
            var layer_vocab = {}
@@ -976,7 +977,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
            // create new OL layer from layer metadata data object
            // createLayer: function(uuid, data, layer, title, type, visible, styleObj, legend, style) {
            createLayer: function(id, layerdef, data, type, legend) {
-               
+
                var uuid = data.id;
                var title = layerdef.title;
                var visible = layerdef.isVisible;
@@ -989,7 +990,7 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                        layerdef.bounds.top
                    ];
                    var proj = layerdef.projection;
-               }
+               } 
 
                // data ... dataset metadata
                // layer ... layer metadata
@@ -1431,7 +1432,6 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
                                'bounds': data.bounds,
                                'projection': data.srs || 'EPSG:4326'
                            };
-
 
                            if (!$.isEmptyObject(data.layers)) {
                                $.each( data.layers, function(layerid, layer) {
@@ -2191,8 +2191,17 @@ define(['jquery', 'openlayers3', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser
             */
            transformExtent: function(extent, fromcrs, tocrs) {
                var proj = ol.proj.get(fromcrs);
+
                if (!proj) {
-                   return null;
+                   // no matching projection, return transformed bounding box instead
+                   var bboxExtent = new ol.extent.boundingExtent(extent);
+
+                   if (isFinite(bboxExtent[0]) && isFinite(bboxExtent[1]) && isFinite(bboxExtent[2]) && isFinite(bboxExtent[3]) ){
+                       return ol.proj.transformExtent(bboxExtent, fromcrs, tocrs);
+                   } else {
+                       // could not successfully transform bbox, so return epsg3857 extent and fit to whole world
+                       return [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
+                   }
                }
                var ret = ol.extent.getIntersection(extent, ol.proj.get(fromcrs).getExtent());
                if (fromcrs != tocrs) {
