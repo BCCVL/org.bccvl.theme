@@ -26,7 +26,6 @@
     <xi:include href="rules/new-experiment-speciestrait.xml" />
     <xi:include href="rules/new-experiment-ensemble.xml" />
     <xi:include href="rules/dashboard.xml" />
-    <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
@@ -38,7 +37,6 @@
     <xi:include href="rules/account.xml" />
     <xi:include href="rules/register-email.xml" />
     <xi:include href="rules/oauth2.xml" />
-    <!-- <xi:include href="rules/training.xml" /> -->
     <xi:include href="rules/page.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
