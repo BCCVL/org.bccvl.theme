@@ -6,6 +6,14 @@
     <!-- EXPERIMENT RESULTS ========================================= -->
     <rules css:if-content="#bccvl-experiment-overlay">
         <theme href="html/experiment-overlay.html" />
+        
+        <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/experiment-results.js"></script>
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/bccvl-visualiser-overlay.js"></script>
+          </replace>
+        </rules>
 
         <!-- get the experiment name for the breadcrumb trail from plone's breadcrumb trail -->
         <replace
