@@ -127,11 +127,11 @@ body {
 
 @font-face{
   font-family:"FrutigerNextBlack";
-  src:url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.eot");
-  src:url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.eot#iefix") format("eot"),
-      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.svg") format("svg"),
-      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.woff") format("woff"),
-      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.ttf") format("truetype");
+  src:url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.eot');
+  src:url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.eot#iefix') format("eot"),
+      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.svg') format("svg"),
+      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.woff') format("woff"),
+      url('++theme++org.bccvl.theme/html/fonts/frutiger_next_black.ttf') format("truetype");
   font-weight: 900;
 }
 .open, .open strong {
