@@ -16,9 +16,14 @@
                 insert-after="++theme++org.bccvl.theme/html/lib/bootstrap/css/bootstrap-responsive.css"
                 />
 
-    <stylesheet id="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/selectize/selectize.default.css"
                 bundle="bccvl" compression="full"
                 insert-after="++theme++org.bccvl.theme/html/lib/bootstrap-fileupload/bootstrap-fileupload.css"
+                />
+
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
+                bundle="bccvl" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/selectize/selectize.default.css"
                 />
 
     <stylesheet id="++theme++org.bccvl.theme/html/lib/fontawesome/css/font-awesome.css"
@@ -31,9 +36,24 @@
                 insert-after="++theme++org.bccvl.theme/html/lib/fontawesome/css/font-awesome.css"
                 />
 
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/ol3/ol.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/css/fonts.css"
+                />
+
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/ol3/layerswitcher/ol3-layerswitcher.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/ol3/ol.css"
+                />
+
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/ol3/additional.css"
+                bundle="bccvl" applyPrefix="True" compression="full"
+                insert-after="++theme++org.bccvl.theme/html/lib/ol3/layerswitcher/ol3-layerswitcher.css"
+                />
+
     <stylesheet id="++theme++org.bccvl.theme/html/css/general.css"
                 bundle="bccvl" applyPrefix="True" compression="full" cookable="False"
-                insert-after="++theme++org.bccvl.theme/html/css/fonts.css"
+                insert-after="++theme++org.bccvl.theme/html/lib/ol3/additional.css"
                 />
 
     <!-- don't include faceted-view css if theme is enabled -->
