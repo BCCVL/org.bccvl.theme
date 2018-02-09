@@ -2,7 +2,7 @@
 // main JS for the login page.
 //
 define(
-    ['jquery', 'bootstrap2'],
+    ['jquery'],
     function( $) {
         // ==============================================================
         $(function() {
@@ -10,7 +10,7 @@ define(
 
             // delay iframe loading until after document is ready, resize on parent
             var iHeight;
-            var iWidth; 
+            var iWidth;
 
             $('iframe').each(function(i){
                 $(this).attr('src',$(this).data('src'));

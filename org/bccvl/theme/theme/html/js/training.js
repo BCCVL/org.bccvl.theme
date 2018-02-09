@@ -2,7 +2,7 @@
 // main JS for the training page.
 //
 define(
-    ['jquery', 'bootstrap2'],
+    ['jquery'],
     function( $) {
     // ==============================================================
         $(function() {

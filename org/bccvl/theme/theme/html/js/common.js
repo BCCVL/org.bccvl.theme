@@ -70,8 +70,6 @@ requirejs.config({
     },
     shim: {
         'jquery':                               {'exports': 'jQuery'},
-        'bootstrap2':                           {'deps': ['jquery'], 'exports': 'jQuery'},
-        'bootstrap2-fileupload':                {'deps': ['bootstrap2'], 'exports': 'jQuery.fileupload'},
         'jquery-xmlrpc':                        ['jquery'],
         'jquery.tablesorter':                   ['jquery'],
         'jquery-arrayutils':                    ['jquery'],

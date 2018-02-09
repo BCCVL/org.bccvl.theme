@@ -2,7 +2,7 @@
 // Javascript to perform validation.
 //
 define(
-    ['jquery', 'jquery-validation', 'bootstrap2'],
+    ['jquery', 'jquery-validation'],
     function( $) {
         // ==============================================================
 
@@ -27,152 +27,152 @@ define(
           // allow any non-whitespace characters as the host part
           return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
         }, 'Please enter a valid number using decimal or scientific notation.');
-        
+
         $.validator.addMethod("requireNFromClass", function(value, element, options) {
-            
+
             var numReq =  options[0];
             var selector = options[1];
             var desiredVal = options[2];
-            
+
             var selection = [];
-            
+
             $(selector, element.form).filter(function(){
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
-            
+
             return $.grep(selection, function(v){
                         return v === desiredVal
                     }).length == numReq;
-                
+
         }, function(params, element) {
             return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
         });
-        
+
         // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
         // So this is just a duplicate method of the above so that it can be called twice.
         $.validator.addMethod("requireNFromClassTwo", function(value, element, options) {
-            
+
             var numReq =  options[0];
             var selector = options[1];
             var desiredVal = options[2];
-            
+
             var selection = [];
-            
+
             $(selector, element.form).filter(function(){
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
-            
+
             return $.grep(selection, function(v){
                         return v === desiredVal
                     }).length == numReq;
-                
+
         }, function(params, element) {
             return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
         });
-        
+
          // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
         // So this is just a duplicate method of the above so that it can be called twice.
         $.validator.addMethod("requireNFromClassThree", function(value, element, options) {
-            
+
             var numReq =  options[0];
             var selector = options[1];
             var desiredVal = options[2];
-            
+
             var selection = [];
-            
+
             $(selector, element.form).filter(function(){
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
-            
+
             return $.grep(selection, function(v){
                         return v === desiredVal
                     }).length == numReq;
-                
+
         }, function(params, element) {
             return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
         });
-        
+
         $.validator.addMethod("noLongerRequireEnv", function(value, element, options) {
 
             var numReq =  options[0];
             var selector = options[1];
             var desiredVals = options[2]
-            
+
             var selection = [];
-            
+
             //var isValid = false;
-            
+
             $(selector, element.form).filter(function(){
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
-            
+
             $.each(desiredVals, function(i, val){
 
                 var numSel = $.grep(selection, function(v){
                     return v === val
                 }).length;
-                
+
                 if (numSel >= numReq){
                     console.log('env var set, no longer require CC nom');
                     $('input[name="form.widgets.environmental_datasets.empty"]').removeClass('required').attr('required', false);
                     $('#tab-enviro fieldset.tab').find('input').valid();
                 }
             })
-            
+
             return true;
-                
+
         }, function(params, element) {
             return "Validation error, field required on another tab is not operating correctly."
         });
-        
+
         $.validator.addMethod("requireAtLeastNOfFromClass", function(value, element, options) {
-            
+
             var numReq =  options[0];
             var selector = options[1];
             var desiredVals = options[2]
-            
+
             var selection = [];
-            
+
             var isValid = false;
-            
+
             $(selector, element.form).filter(function(){
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
-            
+
             $.each(desiredVals, function(i, val){
 
                 var numSel = $.grep(selection, function(v){
                     return v === val
                 }).length;
-                
+
                 if (numSel >= numReq){
                     isValid = true;
                 }
             })
-            
+
             return isValid;
-                
+
         }, function(params, element) {
             return "This group requires at least "+params[0]+" "+params[3]+" fields to be nominated."
         });
 
         $.validator.addMethod("requireFromTab", function(value, element, options) {
-            
+
             var numReq =  options[0],
                 selector = options[1],
                 tab = $(element).parents('.tab-pane'),
                 numSel = 0;
-            
+
             tab.find('input'+selector).each(function(i,el){
                 if($(this).prop('checked')){ numSel += 1 }
             });
@@ -182,11 +182,11 @@ define(
             } else {
                 return false;
             }
-                
+
         }, function(params, element) {
             return "You must select at least "+params[0]+" "+params[2]+" from this tab."
         });
-        
+
         $.validator.addMethod("commaAlphaNumeric", function(value, element) {
           // assume true
           var result = true;
@@ -202,12 +202,12 @@ define(
               if(parseInt(v) === "NaN") {
                   result = false;
               }
-              
+
               // test for all proper month numbers
               if(v > 12 || v <= 0){
                   result = false;
               }
-              
+
               // test for duplicate numbers
               var count = range.filter(function(value){
                 return v === value;
@@ -218,7 +218,7 @@ define(
           });
           return result;
         }, 'Please enter one or more month numbers, seperated by commas. Months cannot be repeated.');
-        
+
         // add common class rules
         jQuery.validator.addClassRules({
             "number": {
@@ -261,8 +261,8 @@ define(
                 "commaAlphaNumeric": true
             }
         });
-        
-        
+
+
 
         console.log('validation behaviour loaded');
 
@@ -303,7 +303,7 @@ define(
                     $(element).parents('div.selecteditem').removeClass('error');
                 } else if ( $(element).parents('#nomination-table').length > 0){
                     $('#errorMessages').hide();
-                } 
+                }
             },
             // this is default behaviour
             submitHandler: function(form){
@@ -381,10 +381,10 @@ define(
                         required: 'You must select at least one.'
                     }
                 });
-            });             
+            });
         });
 
-           
+
 
         // use error messages from element attributes (if they exist).
         form.find('.required[data-error-message]').each(function(){

@@ -2,7 +2,7 @@
 // main JS for the dataset upload page.
 //
 define(
-    ['jquery', 'bccvl-form-jquery-validate', 'bootstrap2', 'bootstrap2-fileupload',
+    ['jquery', 'bccvl-form-jquery-validate',
      'bccvl-form-popover'],
     function($, formvalidator ) {
         // ==============================================================
@@ -51,7 +51,7 @@ define(
                 $('div.bccvl-datasetupload-prompt').addClass('hidden');
             });
 
-            
+
 
             $("input[id$='-widgets-legalcheckbox-0']").change(function() {
                 var idprefix = this.id.split('-')[0];
@@ -73,12 +73,12 @@ define(
             $('.modal').on('show', function () {
                 $("body").addClass("modal-open");
             });
-            
+
             $('[required="required"]').parents('.control-group').find('.control-label').each(function(){
                 var label = $(this).text();
                 $(this).text(label+' (required)');
             })
-            
+
         });
 
     // ==============================================================

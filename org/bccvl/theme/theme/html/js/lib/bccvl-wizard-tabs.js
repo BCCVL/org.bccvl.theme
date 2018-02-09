@@ -5,7 +5,7 @@
 // idea is that the tabs are different pages in a 'wizard'
 // style interface).
 
-define(     ['jquery', 'bootstrap2'],
+define(     ['jquery'],
     function( $) {
         // ==========================================================
 
@@ -125,8 +125,8 @@ define(     ['jquery', 'bootstrap2'],
                     rememberTab(this);
                 });*/
             });
-            
-    
+
+
             //
             // finally, fade the tab contents in.
             //

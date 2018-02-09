@@ -3,8 +3,8 @@
 //
 define(
     ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common',
-     'bccvl-modals', 'bccvl-api', 'openlayers',
-     'bootstrap2', 'jquery.tablesorter', 'jquery-form', 'selectize',
+     'bccvl-modals', 'bccvl-api',
+     'jquery.tablesorter', 'jquery-form', 'selectize',
      'selectize-remove-single'],
 
     function($, vizmap, vizcommon, modals, bccvlapi) {

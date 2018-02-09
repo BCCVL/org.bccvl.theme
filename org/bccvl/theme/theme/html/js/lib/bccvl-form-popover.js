@@ -2,11 +2,11 @@
 // JS to handle for form field description popover
 //
 define(
-    ['jquery', 'bootstrap2'],
-    function($, bootstrap) {
+    ['jquery'],
+    function($) {
 
         // configure popovers
-        $('.bccvl-algorithmtable [data-toggle="popover"]').popover({ 
+        $('.bccvl-algorithmtable [data-toggle="popover"]').popover({
                 html: true,
                 trigger: 'click'
         });

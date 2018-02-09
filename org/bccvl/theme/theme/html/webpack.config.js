@@ -33,17 +33,15 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
-  
+
   // external dependencies ... webpack won't try to bulid them into the js files,
   // but assumes that external deps are available at runtime.
   // TODO: figure out how this config option works ... will webpack issue a require cal in case we define
   //       external dep as amd?, will it check global namespace for variable to decide whether lib needs to be loaded?
   externals: {
-     'bootstrap2': 'jQuery',
-     'bootstrap2-fileupload': 'jQuery.fileupload',
      'jquery': 'jQuery'
   },
-  
+
   resolve: {
     // options for resolving module requests
     // (does not apply to resolving to loaders)
@@ -70,7 +68,7 @@ module.exports = {
       'turf': path.resolve(__dirname, 'lib/turfjs/turf.min.js')
     }
   },
-  
+
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common-chunks',

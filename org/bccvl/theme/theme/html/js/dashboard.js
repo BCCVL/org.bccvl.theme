@@ -3,7 +3,7 @@
 // main JS for the dashboard page.
 //
 define(
-    ['jquery', 'bootstrap2', 'bootstrap2-fileupload'],
+    ['jquery'],
     function( $) {
     // ==============================================================
         $(function() {
