@@ -269,10 +269,20 @@ define(
             this.$modaltrigger = $("a#" + fieldname + "-popup");
 
             // init modal
+            var remote = this.$modaltrigger.attr('href')
+            // For MM experiment, only use diffrent facet config to list on;y datasets that has month column
+            if (remote && location.pathname == '/experiments/newMigratoryModelling') {
+                if (fieldname == 'species_occurrence_dataset') {
+                    remote = remote.replace(fieldname, 'species_occurrence_month_dataset')
+                } 
+                else if (fieldname == 'species_absence_dataset') {
+                    remote = remote.replace(fieldname, 'species_absence_month_dataset')
+                }
+            }
             this.modal = new ModalBrowseSelect(
                 this.settings.modalid,
                 {
-                    remote: this.$modaltrigger.attr('href'),
+                    remote: remote,
                     multiple: this.settings.multiple
                 }
             );
