@@ -11,8 +11,6 @@ requirejs.config({
     paths: {
         'jquery-ui':                    'lib/jquery-ui/jquery-ui.min',
         'jquery-xmlrpc':                'lib/jquery-xmlrpc/jquery.xmlrpc.min',
-        'bootstrap2':                   'lib/bootstrap/js/bootstrap.min',
-        'bootstrap2-fileupload':        'lib/bootstrap-fileupload/bootstrap-fileupload.min',
         'jquery-validation':            'lib/jquery-validate/jquery.validate.min',
         'jquery.tablesorter':           'lib/jquery-tablesorter/jquery.tablesorter',
         'jquery-form':                  'lib/jquery-form/jquery.form.min',
