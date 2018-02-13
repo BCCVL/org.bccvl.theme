@@ -10,6 +10,8 @@ class JSBuild(Command):
 
     description = "pre-compile js bundles"
 
+    user_options = []
+
     def initialize_options(self):
         pass
 
