@@ -8,7 +8,7 @@ define(
 
     function($, modals) {
 
-        $(document).ready(function() {
+        $(function() {
             var infomodal = new modals.InfoModal('info-modal');
             infomodal.bind("[data-toggle='InfoModal']");
         });

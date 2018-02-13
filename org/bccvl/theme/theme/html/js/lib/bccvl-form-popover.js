@@ -5,6 +5,9 @@ define(
     ['jquery'],
     function($) {
 
+        // document ready
+        $(function() {
+
         // configure popovers
         $('.bccvl-algorithmtable [data-toggle="popover"]').popover({
                 html: true,
@@ -25,5 +28,7 @@ define(
                 $('[data-toggle="popover"]').popover('hide');
             }
         });
+
+        }); // document ready
     }
 );

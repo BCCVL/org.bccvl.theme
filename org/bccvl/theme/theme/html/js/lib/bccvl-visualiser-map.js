@@ -4,6 +4,9 @@
 define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'prismjs'],
     function( $, ol, layerswitcher, vizcommon  ) {
 
+        // document ready
+        $(function() {
+
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -54,19 +57,19 @@ define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common', 
             } else if (params.mimetype == 'application/pdf') {
                 vizcommon.renderPDF($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params);
             } else if (params.mimetype == 'application/zip') {
-                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));                
+                vizcommon.mapRender($(this).data('uuid'),$(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer'));
             }
         });
-        
+
         $('body').on('click', 'a.bccvl-biodiverse-viz', function(event){
             event.preventDefault();
             var params = {
                 'type': 'biodiverse',
                 'mimetype' : $(this).data('mimetype'),
-                'srs' : $(this).data('srs'), 
+                'srs' : $(this).data('srs'),
                 'cellsize' : $(this).data('cellsize')
             }
-            
+
             if ($(this).data('mimetype') == 'text/csv'){
                 vizcommon.mapRender($(this).data('uuid'), $(this).attr('href'), $('.bccvl-preview-pane:visible').attr('id'), params, $(this).data('viz-layer') );
             }
@@ -81,6 +84,7 @@ define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common', 
         }).on('hidden', function(e) {
             e.stopPropagation();
         });
-        
+
+        }); // document ready
     }
 );

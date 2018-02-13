@@ -7,7 +7,7 @@ define(
         // ==============================================================
 
 
-        // TODOS
+        // document ready
         $(function() {
 
 
@@ -220,7 +220,7 @@ define(
         }, 'Please enter one or more month numbers, seperated by commas. Months cannot be repeated.');
 
         // add common class rules
-        jQuery.validator.addClassRules({
+        $.validator.addClassRules({
             "number": {
                 number: true
             },
@@ -416,7 +416,7 @@ define(
 
         });
 
-            // ==============================================================
+        // document ready
         });
 
     }
