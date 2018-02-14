@@ -9,6 +9,14 @@
                     login_failed/">
       
         <theme href="html/login.html" />
+        
+        <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/login.js"></script>
+          </replace>
+        </rules>
+        
         <replace css:theme="#aaf-login" css:content="#fieldset-aaf-login" />
         <replace css:theme="#site-login" css:content="#fieldset-site-login" />
         <replace css:theme="#new-user" css:content="#login-new-user" />

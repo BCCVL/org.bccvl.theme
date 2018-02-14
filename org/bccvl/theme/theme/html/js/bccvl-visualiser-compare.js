@@ -1,8 +1,11 @@
 
 // JS code to initialise the visualiser map
 
-define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common'],
+define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common'],
     function( $, ol, layerswitcher, vizcommon  ) {
+
+        // document ready
+        $(function() {
 
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
@@ -11,7 +14,7 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
             event.preventDefault();
             $('.bccvl-preview-pane:visible').append('<div class="minimap" id="minimap_'+$(this).data('uuid')+'"></div>');
             var viztype = $(this).data('viz-type') || 'auto';
-            var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm'), $(this).data('emsc'), 
+            var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm'), $(this).data('emsc'),
                          $(this).data('gcm'), $(this).data('year'), $(this).data('constraint')]
                 .filter(function(n){return n != undefined})
                 .join(" - ");
@@ -31,20 +34,22 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
                     maps.splice(idx, 1);
                 }
             }
-            //delete window.maps[uuid];  
+            //delete window.maps[uuid];
             $(this).removeClass('bccvl-remove-viz').addClass('bccvl-compare-viz');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
         });
 
+        }); // document ready
+
         /* Global configuration */
         // ----------------------------------------------------------------
         var maps = [];
-        
+
         // RENDER EMPTY MAP
         function renderNewMap(uuid, url, id, type, layerName, algorithm){
             // CREATE BASE MAP
             // -------------------------------------------------------------------------------------------
-            
+
             // NEED TO DESTROY ANY EXISTING MAP
             var container = $('#'+id);
             if (container.hasClass('active')) {
@@ -96,11 +101,11 @@ define(['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common']
             if (maps.length != 0) {
                 map.setView(maps[0].getView());
             }
-                
+
             map.uuid = uuid;
             maps.push(map);
 
         }
-        
+
     }
 );

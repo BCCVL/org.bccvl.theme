@@ -2,7 +2,7 @@
 // JS code to initialise the biodiverse visualisations
 
 define(
-    ['jquery', 'openlayers3', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'bccvl-api'],
+    ['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common', 'd3', 'bccvl-api'],
     function( $, ol, layerswitcher, vizcommon, d3, bccvlapi  ) {
         
         var bioviz = {

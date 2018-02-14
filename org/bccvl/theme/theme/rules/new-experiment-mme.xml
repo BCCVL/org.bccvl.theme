@@ -6,6 +6,13 @@
     <!-- NEW SDM EXPERIMENT ========================================= -->
     <rules if-path="newMigratoryModelling/">"
         <theme href="html/new-experiment-mme.html" />
+        
+        <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/new-experiment-mme.js"></script>
+          </replace>
+        </rules>
 
         <!-- hook in the new experiment form's attributes -->
         <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
@@ -40,10 +47,6 @@
         -->
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
                  css:content="#formfield-form-widgets-species_occurrence_dataset" />
-        
-        <!-- hook in the absences list -->
-        <replace css:theme="#formfield-form-widgets-species_absence_dataset"
-                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
 
          <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"

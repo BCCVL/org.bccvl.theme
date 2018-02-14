@@ -25,5 +25,18 @@
 
   </genericsetup:upgradeSteps>
 
+    <genericsetup:upgradeSteps
+      source="111"
+      destination="120"
+      profile="org.bccvl.theme:default">
+
+    <genericsetup:upgradeDepends
+        title="Upgrade profile to version 120"
+        description="Move js and css to resource registries"
+        import_steps="skins jsregistry cssregistry plone.app.registry plone.app.theming"
+        />
+
+  </genericsetup:upgradeSteps>
+
 
 </configure>

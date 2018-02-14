@@ -4,11 +4,11 @@
 // TODO: load whole modal via ajax? or just content?
 //
 define(
-    ['jquery', 'bccvl-modals', 'bootstrap2', 'bccvl-raven'],
+    ['jquery', 'bccvl-modals'],
 
     function($, modals) {
 
-        $(document).ready(function() {
+        $(function() {
             var infomodal = new modals.InfoModal('info-modal');
             infomodal.bind("[data-toggle='InfoModal']");
         });

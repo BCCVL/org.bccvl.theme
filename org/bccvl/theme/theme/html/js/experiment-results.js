@@ -2,11 +2,11 @@
 // main JS for the experiment results page.
 //
 define(
-    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers3', 'bccvl-modals', 'bccvl-api', 'bootstrap2', 'bccvl-raven'],
+    ['jquery', 'bccvl-visualiser-map', 'bccvl-visualiser-common', 'openlayers', 'bccvl-modals', 'bccvl-api'],
     function( $, vizmap, vizcommon, ol, modals, bccvlapi) {
         // ==============================================================
         $(function() {
-            
+
             var infomodal = new modals.InfoModal('info-modal');
             infomodal.bind('body', "[data-toggle='InfoModal']");
             var removemodal = new modals.RemoveModal('remove-modal');
@@ -15,7 +15,7 @@ define(
             sharingmodal.bind('body', 'a.sharing-btn');
             var exportmodal = new modals.OAuthSelectModal('oauth-select-modal');
             exportmodal.bind('body', 'a.export-btn');
-            
+
             // trait dataset parameter configuration
             var paramsCount = $("input[name='form.widgets.species_traits_dataset_params.count']").val();
             var speciesDataset = $('#formfield-form-widgets-species_traits_dataset');
@@ -72,11 +72,11 @@ define(
                         })
                     })
                 });
-                
+
                 var constraints = new ol.layer.Group({
                     title: 'Constraints',
                     layers: [constraintsLayer]
-                }); 
+                });
 
                 // add constraints layer to map after map instance has been created
                 $('body').on('map_created', function(e, map, params) {
@@ -101,7 +101,7 @@ define(
                 $urlTab[0].focus(); // convince IE to put focus on the current tab, rather than some random other tab *rolls eyes at IE*
                 $urlTab[0].blur();  // then remove the ugly focus rectangle *rolls eyes at IE*
             }
-            
+
             $('.bccvl-experimenttable-accordion').on('hide', function(){
                 $(this).find('.expand-btn').html('<i class="fa fa-chevron-circle-down icon-link"></i> More');
             }).on('show', function(){
@@ -111,7 +111,7 @@ define(
             // send support email
             $('a.email-support-btn').click( function(event ) {
                 event.preventDefault();
-                
+
                 var url = $(this).attr('href');
                 $.ajax( {
                     url: url,
@@ -132,25 +132,25 @@ define(
         if (window.innerWidth > 767 && $('.affixed-map').length > 0){
             setupAffix();
         }
-        
+
         function setupAffix() {
             var affix = $('.affixed-map');
             var offsetTop = affix.offset().top;
             var offsetLeft = affix.offset().left;
             var affixWidth = affix.innerWidth() - 10;
             var affixHeight = affix.outerHeight();
-            
+
             affix.each(function(){
                 var _this = $(this);
                 _this.css({
                     'max-height': affixHeight,
                     'overflow-y': 'auto'
                 });
-                
+
                 $(window).scroll(function(){
 
                     if( ($(window).scrollTop() - 15) > offsetTop) {
-                        
+
                         _this.addClass('affix');
                         _this.css({
                             'left': offsetLeft,
@@ -162,7 +162,7 @@ define(
                 });
             })
 
-            
+
         }
 
         function sprintf(format) {
@@ -265,7 +265,7 @@ define(
                         // call again
                         window.setTimeout(function() {
                             pollExperimentStatus(expuuid)
-                        }, 5000) 
+                        }, 5000)
                     } else {
                         // refresh the page when the experiment is completed
                         location.reload();
@@ -276,7 +276,7 @@ define(
                     console.log('Fetching experiment status failed: "', jqXHR.status, '"')
                     window.setTimeout(function() {
                         pollExperimentStatus(expuuid)
-                    }, 10000) 
+                    }, 10000)
                 }
             );
 

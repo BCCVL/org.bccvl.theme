@@ -6,12 +6,12 @@
 //
 // THESE ARE CUSTOM TRACKING EVENTS FOR ANALYTICS REPORTING
 // CODE IS INCLUDED VIA PLONE INTERFACE, NOT REQUIREJS
-// THIS FILE IS MERELY USED AS A LOGICAL STORAGE SPACE 
+// THIS FILE IS MERELY USED AS A LOGICAL STORAGE SPACE
 // FOR DEVS TO FIND EVENTS AND TRACK THEM.
 //
 
 require(['jquery'], function($) {
-    $(document).ready(function(){
+    $(function(){
 
         // Datasets page events
         $('section.bccvl-datasetlist').on('click', '.datasets-list-entry .dropdown-button', function(){
@@ -37,7 +37,7 @@ require(['jquery'], function($) {
             var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&').join(' ');
             _gaq.push(['_trackEvent', 'Datasets Browse Interface', 'No Results', query ]);
         }
-        
+
 
         // Dataset import page
         $('section.bccvl-datasetimport').on('change', '.bccvl-datasetimportform input[name="searchOccurrence_query"]', function(){
@@ -47,7 +47,7 @@ require(['jquery'], function($) {
             var label = $(this).data('friendlyname');
             _gaq.push(['_trackEvent', 'Datasets Import Interface', 'Submit', label ]);
         });
-        
+
         // Dataset upload page
         $('section.bccvl-datasetupload').on('change', '#upload-dataset-type', function(){
             _gaq.push(['_trackEvent', 'Datasets Upload Interface', 'Type Selection', $(this).val() ]);

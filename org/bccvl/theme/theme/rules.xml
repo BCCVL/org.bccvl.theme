@@ -26,7 +26,6 @@
     <xi:include href="rules/new-experiment-speciestrait.xml" />
     <xi:include href="rules/new-experiment-ensemble.xml" />
     <xi:include href="rules/dashboard.xml" />
-    <xi:include href="rules/knowledgebase.xml" />
     <xi:include href="rules/search.xml" />
     <xi:include href="rules/login.xml" />
     <xi:include href="rules/edit-environmental-layers-metadata.xml" />
@@ -38,7 +37,6 @@
     <xi:include href="rules/account.xml" />
     <xi:include href="rules/register-email.xml" />
     <xi:include href="rules/oauth2.xml" />
-    <!-- <xi:include href="rules/training.xml" /> -->
     <xi:include href="rules/page.xml" />
 
     <!-- view the unthemed page when using 127.0.0.1 as host header -->
@@ -94,26 +92,49 @@
     <!--drop all non-plone content ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <drop css:theme=".non-plone" />
 
-    <!-- inject manifest js config ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <replace css:theme-children="#js-config">
+    <!-- replace all css in theme -->
+    <replace css:theme="#portal_css" content="/html/head/link[@rel='stylesheet']"/>
+
+    <!-- add js -->
+    <before css:theme="#portal_js">
+      <!-- for some reason before does not allow rendering non xsl content -->
+      <xsl:element name="script">
+        <xsl:attribute name="id">js-config</xsl:attribute>
+        <xsl:attribute name="type">text/javascript</xsl:attribute>
         window.bccvl || (window.bccvl = {});
         window.bccvl.config || (window.bccvl.config = {});
-        window.bccvl.config.data_mover = {
-            baseUrl: '<xsl:value-of select="$portal_base_url" />/dv',
-        };
         window.bccvl.config.visualiser = {
-            baseUrl: '<xsl:value-of select="$visualiser_base_url" />',
+            baseUrl: '<xsl:value-of select="$visualiser_base_url" />'
         };
+        var local = false;
+      </xsl:element>
+      <xsl:element name="script">
+        <xsl:attribute name="type">text/javascript</xsl:attribute>
+        <xsl:attribute name="src">../plone_javascript_variables.js</xsl:attribute>
+      </xsl:element>
+    </before>
 
-        local = false;
-    </replace>
+    <!--inject facated js if in debug mode -->
+    <!-- TODO: requirejs is activated if instance runs in debug mode ....
+               this means, that the commons-chunk bundle is being excluded
+               for require to work , js registry must be in development mode as well -->
+    <rules if="$is_debug">
+      <!--add require js -->
+      <before css:theme="#portal_js">
+        <!--load require before jquery, so that jquery can register with require -->
+        <script type="text/javascript" src="++theme++org.bccvl.theme/html/lib/require/require.js"></script>
+        <script type="text/javascript" src="++theme++org.bccvl.theme/html/js/common.js"></script>
+      </before>
+    </rules>
+    <!-- just copy all over in non debug mode where we don't use require -->
+    <replace css:theme="#portal_js" content="/html/head/script"/>
 
     <!-- set title for page -->
     <replace theme="/html/head/title" content="/html/head/title"/>
 
     <!-- push plone "portalMessage" content into the theme -->
     <replace css:theme-children=".bccvl-flashmessages">
-      <xsl:for-each select="//dl[contains(@class,'portalMessage') and not (@id = 'kssPortalMessage')]">
+      <xsl:for-each select="id('portal-column-content')//dl[contains(@class,'portalMessage') and not (@id = 'kssPortalMessage')]">
         <!-- warning, error, info -->
         <xsl:variable name="msgtype">
           <xsl:choose>

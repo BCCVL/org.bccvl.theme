@@ -1,11 +1,3 @@
-
-@import url('fonts.css');
-@import url('../lib/fontawesome/css/font-awesome.min.css');
-@import url('../lib/selectize/selectize.default.css');
-@import url('../lib/ol3/ol.css');
-@import url('../lib/ol3/layerswitcher/ol3-layerswitcher.css');
-@import url('../lib/ol3/additional.css');
-
 body {
     background:#333333;
     font-size:13px;
@@ -298,7 +290,7 @@ p.label {
 .label.label-MSDM {
     background-color: #9b59b6;
     color: white;
-    padding: 4px 5px 2px 4px;  
+    padding: 4px 5px 2px 4px;
 }
 td.date-time {
     word-break:normal;
@@ -322,7 +314,7 @@ a.more-info i {
 }
 div.loader {
     text-align: center;
-    background-image: url('../images/bccvl-loader.gif');
+    background-image: url('++theme++org.bccvl.theme/html/images/bccvl-loader.gif');
     background-repeat: no-repeat;
     background-position: center center;
     height: 100px;
@@ -340,7 +332,7 @@ div.loader {
 }
 
 .logo-icon {
-    background-image:url('../images/bccvl_logo_beta.png');
+    background-image:url('++theme++org.bccvl.theme/html/images/bccvl_logo_beta.png');
     background-repeat: no-repeat;
     background-position: left center;
     display:inline-block;
@@ -350,7 +342,7 @@ div.loader {
     height:100px;
 }
 .aaf-icon {
-    background-image:url('../images/aaf_white.png');
+    background-image:url('++theme++org.bccvl.theme/html/images/aaf_white.png');
     background-repeat: no-repeat;
     background-position: left center;
     display:inline-block;
@@ -660,7 +652,7 @@ div.loader {
 }
 
 .bccvl-search-spinner {
-    background:#FFFFFF url(../images/ajax-loader.gif) no-repeat 4px 4px;
+    background:#FFFFFF url('++theme++org.bccvl.theme/html/images/ajax-loader.gif') no-repeat 4px 4px;
     padding:4px 4px 4px 22px;
     height:18px;
     background-position: right center;
@@ -675,7 +667,7 @@ div.loader {
 }
 
 .bccvl-small-spinner {
-    background: url(../images/ajax-loader.gif) no-repeat 4px 4px;
+    background: url('++theme++org.bccvl.theme/html/images/ajax-loader.gif') no-repeat 4px 4px;
     padding: 4px 4px 0px 22px;
     height: 15px;
     background-position: right center;
@@ -1079,15 +1071,15 @@ a.expand-btn:focus {
 }
 
 a.figshare-export-link {
-    background-image: url("++resource++bccvl/images/figshare-main-new.png");
+    background-image: url("++theme++org.bccvl.theme/html/images/figshare-main-new.png");
 }
 
 a.googledrive-export-link {
-    background-image: url("++resource++bccvl/images/googledrive.png");
+    background-image: url("++theme++org.bccvl.theme/html/images/googledrive.png");
 }
 
 a.dropbox-export-link {
-    background-image: url("++resource++bccvl/images/dropbox.png");
+    background-image: url("++theme++org.bccvl.theme/html/images/dropbox.png");
 }
 
 a.result-export-link {
@@ -1180,7 +1172,7 @@ a.result-export-link:hover {
     margin-top: 3px;
     line-height: 14px;
     vertical-align: text-top;
-    background-image: url("++resource++bccvl/lib/bootstrap/img/glyphicons-halflings.png");
+    background-image: url("++theme++org.bccvl.theme/html/lib/bootstrap/img/glyphicons-halflings.png");
     background-position: 14px 14px;
     background-repeat: no-repeat;
 }
@@ -1786,7 +1778,7 @@ body.home>.white-bg {
 }
 span.loading-gif {
     text-align: center;
-    background-image: url('../images/bccvl-loader.gif');
+    background-image: url('++theme++org.bccvl.theme/html/images/bccvl-loader.gif');
     background-repeat: no-repeat;
     background-position: center center;
     height: 100px;
@@ -2030,7 +2022,7 @@ span.loading-gif {
     line-height: 1.2em
 }
 .datasets-table-row .loading-gif {
-    background-image: url('../images/bccvl-loader_trans32.gif');
+    background-image: url('++theme++org.bccvl.theme/html/images/bccvl-loader_trans32.gif');
     background-repeat: no-repeat;
     background-position: center center;
     height: 32px;
@@ -2793,7 +2785,7 @@ section.bccvl-training .tabbable .nav-tabs a {
 }
 div.youtube-frame {
     text-align: center;
-    background-image: url('../images/bccvl-loader_trans.gif');
+    background-image: url('++theme++org.bccvl.theme/html/images/bccvl-loader_trans.gif');
     background-repeat: no-repeat;
     background-position: center center;
     background-color:#ecf0f1;
@@ -2877,7 +2869,7 @@ div.youtube-frame {
     padding:1em 0;
 }
 .trait-dataset-summary .trait-dataset-summary-header .trait-row-vals {
-    padding-top:.75em;    
+    padding-top:.75em;
 }
 .trait-dataset-summary .trait-dataset-summary-header .trait-nom-row {
     padding-top:.5em;
@@ -2961,7 +2953,7 @@ div.youtube-frame {
     left:250px;
 }
 .ala-edit {
-    background-image:url('../images/ALA_logo_icon.png');
+    background-image:url('++theme++org.bccvl.theme/html/images/ALA_logo_icon.png');
     background-position: 5px 4px;
     background-size: 18px;
     background-repeat: no-repeat;
@@ -2979,7 +2971,7 @@ div.youtube-frame {
     background-color: #999;
 }
 .map-loading {
-    background-image: url('../images/bccvl-loader_trans.gif');
+    background-image: url('++theme++org.bccvl.theme/html/images/bccvl-loader_trans.gif');
     background-repeat: no-repeat;
     background-position: center center;
     background-color: rgba(255,255,255,.75);
@@ -3011,7 +3003,7 @@ div.youtube-frame {
 }
 .constraint-method .form-horizontal .control-group .btn  {
     margin-left: 5px;
-    
+
 }
 .mme-subset {
     border-bottom:1px solid #ddd;
@@ -3043,4 +3035,8 @@ div.youtube-frame {
     right: 40px;
     top: 15px;
     position: absolute;
+}
+
+.result-input-table thead th {
+    vertical-align:top;
 }

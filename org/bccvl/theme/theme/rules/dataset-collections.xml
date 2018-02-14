@@ -7,6 +7,13 @@
     <rules if-path="datasets_collection_list/" >
 
       <theme href="html/dataset-collections.html" />
+      
+      <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/dataset-collections.js"></script>
+          </replace>
+      </rules>
 
       <!-- Datasets sub navigation -->
       <replace css:theme="#datasets_tabs" css:content="#datasets-nav"/>
