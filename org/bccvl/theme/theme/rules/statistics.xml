@@ -4,7 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- SITE STATS ============================================= -->
-    <rules if-path="statistics/">
+    <rules if-path="statistics/
+                    slowstatistics/">
 
         <theme href="html/statistics.html" />
 
