@@ -4,30 +4,37 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <!-- NEW SDM EXPERIMENT ========================================= -->
-    <rules if-path="newSpeciesDistribution/">"
+    <rules if-path="newSpeciesDistribution/">
         <theme href="html/new-experiment-sdm.html" />
+        
+        <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/new-experiment-sdm.js"></script>
+          </replace>
+        </rules>
 
         <!-- hook in the new experiment form's attributes -->
-        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
+        <copy attributes="name action enctype method" css:theme="#experimentSetup" content="id('form')" />
 
         <!-- hook in the submit (save) button -->
-        <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
+        <copy attributes="name value" css:theme="#experimentSetup button[type=submit]" content="id('form-buttons-save')" />
 
         <!-- hook in title field -->
-        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+        <copy attributes="name value" css:theme="#expName" content="id('form-widgets-IDublinCore-title')" />
 
         <!-- hook in description field -->
-        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
-        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+        <replace css:theme-children="#expDescription" content-children="id('form-widgets-IDublinCore-description')" />
+        <copy attributes="name value" css:theme="#expDescription" content="id('form-widgets-IDublinCore-description')" />
 
         <!-- hook in the algorithm list -->
-        <replace css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable > tbody"
-                 css:content-children="#form-widgets-functions-table"/>
+        <replace css:theme-children="#expAlgorithmTable > tbody"
+                 content-children="id('form-widgets-functions-table')"/>
 
         <!-- loop through the algorithm configs, poking the config blocks into the accordion -->
 
         <replace css:theme-children="#algoConfig"
-                 css:content-children="#fieldset-parameters-functions"/>
+                 content-children="id('fieldset-parameters-functions')"/>
 
 
         <!-- hook in the occurrences list -->
@@ -39,22 +46,22 @@
 
         -->
         <replace css:theme="#formfield-form-widgets-species_occurrence_dataset"
-                 css:content="#formfield-form-widgets-species_occurrence_dataset" />
+                 content="id('formfield-form-widgets-species_occurrence_dataset')" />
 
         <!-- hook in the absences list -->
         <replace css:theme="#formfield-form-widgets-species_absence_dataset"
-                 css:content="#formfield-form-widgets-species_absence_dataset"/>"
+                 content="id('formfield-form-widgets-species_absence_dataset')"/>
         <!-- pull in geo constraints field -->
         <replace css:theme="#formfield-form-widgets-modelling_region"
-                 css:content="#form-widgets-modelling_region"/>"
+                 content="id('form-widgets-modelling_region')"/>
 
 
         <replace css:theme="#formfield-form-widgets-scale_down"
-                 css:content="#formfield-form-widgets-scale_down"/>
+                 content="id('formfield-form-widgets-scale_down')"/>
 
         <!-- The rest of this is filled in with AJAX -->
         <replace css:theme="#formfield-form-widgets-environmental_datasets"
-                 css:content="#formfield-form-widgets-environmental_datasets"/>"
+                 content="id('formfield-form-widgets-environmental_datasets')"/>
 
     </rules>
 

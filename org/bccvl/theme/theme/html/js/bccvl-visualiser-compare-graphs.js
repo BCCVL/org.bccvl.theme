@@ -4,6 +4,8 @@
 define(['jquery', 'bccvl-visualiser-common'],
     function( $, vizcommon  ) {
 
+        // document ready
+        $(function() {
         // REGISTER CLICK EVENT
         // -------------------------------------------------------------------------------------------
 
@@ -14,7 +16,7 @@ define(['jquery', 'bccvl-visualiser-common'],
 
             if (type == 'image/png'){
                 vizcommon.renderPng($(this).data('uuid'), $(this).attr('href'), 'minigraph_'+$(this).data('uuid'));
-            } 
+            }
             if (typeof $(this).data('algorithm') !== 'undefined') {
                 var label = [$(this).data('species'), $(this).data('subset'), $(this).data('algorithm')]
                     .filter(function(n){return n != undefined})
@@ -23,7 +25,7 @@ define(['jquery', 'bccvl-visualiser-common'],
             } else {
                 $('#minigraph_'+$(this).data('uuid')).append('<label>'+$(this).data('layername')+'</label>');
             }
-            
+
 
             $(this).removeClass('bccvl-compare-graph').addClass('bccvl-remove-graph');
             $(this).find('i').removeClass('icon-eye-open').addClass('icon-eye-close');
@@ -36,8 +38,10 @@ define(['jquery', 'bccvl-visualiser-common'],
 
             $(this).removeClass('bccvl-remove-graph').addClass('bccvl-compare-graph');
             $(this).find('i').removeClass('icon-eye-close').addClass('icon-eye-open');
-            
+
         });
-        
+
+        }); // document ready
+
     }
 );

@@ -3,8 +3,8 @@
 //
 
 define(
-    ['jquery', 'bootstrap2'],
-    function($, bootstrap) {
+    ['jquery'],
+    function($) {
 
         // Modal object
         // properties:
@@ -18,7 +18,7 @@ define(
         // the initial html to render before content is loaded via ajax
         Modal.prototype.render_modal_load = function() {
             var html = '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                    '<div class="modal-body">' +                    
+                    '<div class="modal-body">' +
                     '<span class="loading-gif"></span>' +
                     '</div>' +
                     '<div class="modal-footer">' +
@@ -53,7 +53,7 @@ define(
                 $modal.children().fadeIn(300);
             });
         };
-        
+
 
         // InfoModal
         //   used to render various info modal dialogs
@@ -66,8 +66,8 @@ define(
         InfoModal.prototype.constructor = InfoModal; // use new constructor
 
         // TODO: click_handler is very generic for all ajax modals
-        //       make this part of base class .... 
-        // click_handler for InfoModal 
+        //       make this part of base class ....
+        // click_handler for InfoModal
         InfoModal.prototype.click_handler = function(event) {
             event.preventDefault();
 
@@ -96,7 +96,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -121,7 +121,7 @@ define(
         RemoveModal.prototype = new Modal(); // inherit prototype
         RemoveModal.prototype.constructor = RemoveModal; // use new constructor
 
-        // click_handler for RemoveModal 
+        // click_handler for RemoveModal
         RemoveModal.prototype.click_handler = function(event) {
             event.preventDefault();
 
@@ -150,7 +150,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -195,7 +195,7 @@ define(
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 this.replace_content(
                     '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                        '<div class="modal-body">' +                    
+                        '<div class="modal-body">' +
                         '<div class="alert alert-error">Fetching remote content failed</div>' +
                         '</div>' +
                         '<div class="modal-footer">' +
@@ -228,7 +228,7 @@ define(
         SharingModal.prototype = new Modal(); // inherit prototype
         SharingModal.prototype.constructor = SharingModal; // use new constructor
 
-        // click_handler for RemoveModal 
+        // click_handler for RemoveModal
         SharingModal.prototype.click_handler = function(event) {
             event.preventDefault();
 
@@ -257,7 +257,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -326,7 +326,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -343,7 +343,7 @@ define(
             // close modal on success
             this.replace_content(this.render_modal_load());
         };
-        
+
 
         // LayerEditModal
         //   used to render various remove modal dialogs
@@ -355,7 +355,7 @@ define(
         LayerEditModal.prototype = new Modal(); // inherit prototype
         LayerEditModal.prototype.constructor = LayerEditModal; // use new constructor
 
-        // click_handler for RemoveModal 
+        // click_handler for RemoveModal
         LayerEditModal.prototype.click_handler = function(event) {
             event.preventDefault();
 
@@ -384,7 +384,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -407,7 +407,7 @@ define(
             });
             //$('#' + id).modal('show');
         };
-        
+
         // handle form event inside modal
         LayerEditModal.prototype.submit_handler = function(event) {
             // submit runs inside modal .... check return value and redirect to wherever response says
@@ -429,7 +429,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Fetching remote content failed</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -485,7 +485,7 @@ define(
                 error: function(jqXHR, textStatus, errorThrown) {
                     this.replace_content(
                         '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div>' +
-                            '<div class="modal-body">' +                    
+                            '<div class="modal-body">' +
                             '<div class="alert alert-error">Error requesting authorisations.</strong></p><p>Please try again later.  If the issue persists, contact our support staff via bccvl.org.au.</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -506,8 +506,8 @@ define(
             //$('#' + id).modal('show');
         };
 
-        
-        
+
+
         return {
             'InfoModal': InfoModal,
             'RemoveModal': RemoveModal,
@@ -515,6 +515,6 @@ define(
             'LayerEditModal': LayerEditModal,
             'OAuthSelectModal': OAuthSelectModal
         };
-        
+
     }
 );

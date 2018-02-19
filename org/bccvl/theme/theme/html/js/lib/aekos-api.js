@@ -4,19 +4,18 @@
 //        - simplify things, e.g. duplicate code for array parameter preparation
 //        - usage examples with in/output?
 //        - tests needed here?
-(function(factory) {
-    if (typeof exports === 'object') {
-	// Node/CommonJS
-        factory(require('jquery'));
-    } else if (typeof define === 'function' && define.amd) {
-	// AMD
-        define(['jquery'], factory);        
-    } else {
-	// Browser globals
-        // TODO: need to add return value to some global namespace (window.aekos for browser and whatever for nodejs (maybe) ?)
-        window.aekos = factory(jQuery);
-    }
-}(function($) {
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+      // AMD
+      define(['jquery'], factory);
+  } else if (typeof exports === 'object') {
+      // CommonJS
+      module.exports = factory(require('jquery'));
+  } else {
+      // Browser globals (Note: root is window)
+      root.returnExports = factory(root.jQuery);
+  }
+}(this, function($) {
 
     var apiurl = "https://test.api.aekos.org.au/v2/";
 
@@ -58,7 +57,7 @@
     function getApiUrl() {
         return apiurl;
     };
-    
+
     function getTraitVocab() {
         return $.ajax({
             dataType: 'json',
@@ -169,7 +168,7 @@
 
         getData(nexturl);
         return request;
-    };    
+    };
 
     function getSpeciesByTrait(traitName) {
         var data = {};
@@ -220,7 +219,7 @@
         var url = apiurl + 'speciesSummary.json';
         return getDataPages(url, data, 'POST');
     };
-    
+
     function speciesAutocomplete(q) {
         var url = apiurl + 'speciesAutocomplete.json?rows=200';
         return getDataPages(url, {'q': q}, 'GET');
@@ -271,5 +270,5 @@
         'getTraitDataBySpecies': getTraitDataBySpecies,
         'getTraitDataByEnviro': getTraitDataByEnviro,
     }
-    
+
 }));

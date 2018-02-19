@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+    <javascript id="++theme++org.bccvl.theme/html/lib/jquery/jquery-1.11.1.min.js"
+                bundle="bccvl" compression="none"
+                insert-before="++resource++eea.faceted-navigation.js"
+                />
+
+    <javascript id="++theme++org.bccvl.theme/html/lib/jquery-bbq/jquery.ba-bbq.js"
+                bundle="bccvl"
+                insert-after="++theme++org.bccvl.theme/html/lib/jquery/jquery-1.11.1.min.js"
+                />
+
+    <javascript id="++theme++org.bccvl.theme/html/lib/bootstrap/js/bootstrap.min.js"
+                bundle="bccvl" compression="none"
+                insert-after="++theme++org.bccvl.theme/html/lib/jquery-bbq/jquery.ba-bbq.js"
+                />
+
+    <javascript id="++theme++org.bccvl.theme/html/lib/bootstrap-fileupload/bootstrap-fileupload.min.js"
+                bundle="bccvl" compression="none"
+                insert-after="++theme++org.bccvl.theme/html/lib/bootstrap/js/bootstrap.min.js"
+                />
+
+    <javascript id="++theme++org.bccvl.theme/html/lib/freshdesk/live-chat.js"
+                bundle="bccvl" compression="none"
+                insert-bottom=""
+                />
+
+    <!-- raven must be loaded through require if available -->
+    <javascript id="++theme++org.bccvl.theme/html/lib/raven/raven.min.js"
+                bundle="bccvl" compression="none" expression="not:request/response/debug_mode"
+                insert-bottom=""
+                />
+
+    <javascript id="bccvl-raven.js"
+                bundle="bccvl" compression="none" expression="not:request/response/debug_mode"
+                insert-after="++theme++org.bccvl.theme/html/lib/raven/raven.min.js"
+                />
+
+    <javascript id="++theme++org.bccvl.theme/html/dist/common-chunks.js"
+                cookable="False" compression="none" expression="not:request/response/debug_mode"
+                bundle="bccvl"
+                insert-bottom=""
+                />
+
+    <!--<javascript id="++resource++bccvl/dist/dashboard.js"-->
+    <!--            />-->
+
+</object>

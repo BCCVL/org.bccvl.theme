@@ -72,8 +72,8 @@
 // }
 
 define(
-    ['jquery', 'bootstrap2', 'aekos-api', 'bccvl-api', 'selectize'],
-    function($, bs2, aekos, bccvlapi, selectize) {
+    ['jquery', 'aekos-api', 'bccvl-api', 'selectize'],
+    function($, aekos, bccvlapi, selectize) {
 
         // --------------------------------------------------------------
         // -- providers -------------------------------------------------

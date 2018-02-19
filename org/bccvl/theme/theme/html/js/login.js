@@ -2,7 +2,7 @@
 // main JS for the login page.
 //
 define(
-    ['jquery', 'bootstrap2', 'bccvl-raven'],
+    ['jquery'],
     function( $) {
         // ==============================================================
         $(function() {
@@ -43,7 +43,7 @@ define(
                     return false;
                 };
             });
-            
+
         });
         // ==============================================================
     }

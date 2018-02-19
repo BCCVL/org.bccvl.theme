@@ -2,7 +2,7 @@
 // main JS for the experiment list page.
 //
 define(
-    ['jquery', 'bccvl-modals', 'bootstrap2', 'jquery-tablesorter', 'livechat', 'bccvl-raven'],
+    ['jquery', 'bccvl-modals', 'jquery.tablesorter'],
     function($, modals) {
         // ==============================================================
         $(function() {

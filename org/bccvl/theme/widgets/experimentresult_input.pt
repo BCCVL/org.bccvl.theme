@@ -41,14 +41,14 @@
              tal:content="item/title">Experiment Title</h4>
           <!-- List of Datesets within experiment -->
           <table class="table"
-                 tal:attributes="class string:table ${python: 'error' if error else ''};"
+                 tal:attributes="class string:table result-input-table ${python: 'error' if error else ''};"
                  tal:define="item_type item/brain/portal_type;
                              is_sdm python: item_type == 'org.bccvl.content.sdmexperiment';
                              is_cc python: item_type == 'org.bccvl.content.projectionexperiment';
                              is_bd python: item_type == 'org.bccvl.content.biodiverseexperiment'">
             <thead>
               <tr>
-                <th colspan="2">Selected</th>
+                <th colspan="2">Selected <br/> <small><a href="javascript:void(0);" class="select-all">All</a> / <a href="javascript:void(0);" class="select-none">None</a></small></th>
                 <th tal:condition="not: is_bd">Species</th>
                 <th tal:condition="not: is_bd">Resolution</th>
                 <th tal:condition="python: is_sdm or is_cc">Algorithm</th>

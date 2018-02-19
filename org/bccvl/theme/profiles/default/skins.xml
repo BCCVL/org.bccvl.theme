@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object name="portal_skins" meta_type="Plone Skins Tool" default_theme="bccvl.theme">
+  <skin-path name="bccvl.theme" based-on="Sunburst Theme">
+  </skin-path>
+</object>
+<!-- TODO: create uninstall for this here -->
