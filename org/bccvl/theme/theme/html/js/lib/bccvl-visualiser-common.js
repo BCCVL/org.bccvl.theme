@@ -5,7 +5,7 @@
 define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-progress-bar',
         'd3', 'bccvl-visualiser-biodiverse', 'zip', 'bccvl-api', 'html2canvas', 'turf', 'shpjs'],
    function( $, ol, proj4, layerswitcher, progress_bar, d3, bioviz, zip, bccvlapi, html2canvas, turf, shp) {
-        
+
        // define some projections we need
        proj4.defs([
            // alternatively load http://epsg.io/4283.js
@@ -44,7 +44,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
        ol.proj.addCoordinateTransforms('EPSG:3577', 'EPSG:3857',
                                        proj3577Transform.forward,
                                        proj3577Transform.inverse);
-                                       
+
 
        var layer_vocab_dfrd = bccvlapi.site.vocabulary('layer_source', true).then(function(data, status, xhr) {
            var layer_vocab = {}
@@ -57,7 +57,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
        // convex-hull polygon around occurrence dataset
        // TODO: should be removed from here.... otherwise we can only have one constraints map
        var occurrence_convexhull_polygon = null;
-       
+
        // Australia Bounds
        var aus_SW = ol.proj.transform([110, -44], 'EPSG:4326', 'EPSG:3857');
        var aus_NE = ol.proj.transform([157, -10.4], 'EPSG:4326', 'EPSG:3857');
@@ -216,7 +216,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
            },
 
            generateRangeArr: function(styleObj){
-               
+
                var standard_range = styleObj.standard_range;
                var minVal = styleObj.minVal;
                var maxVal = styleObj.maxVal;
@@ -258,7 +258,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                } else if (standard_range == 'range-change'){
 
                    var rangeArr = [0,1,2,3];
-               } else if (standard_range == 'probability-difference'){  
+               } else if (standard_range == 'probability-difference'){
                    var rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
                } else if (standard_range == 'pH'){
 
@@ -267,7 +267,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                    var rangeArr = [0,1];
                } else if (steps == 1){
-                   // generic single value 
+                   // generic single value
                    var rangeArr = [minVal];
                } else {
                    // dummy max and min values, eventually replaced with relative-to-layer values
@@ -306,7 +306,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                var startpoint = styleObj.startpoint;
                var midpoint = styleObj.midpoint;
                var endpoint = styleObj.endpoint;
-               
+
                // convert to five-point scheme, this is currently only in use for default/no metadata datasets
                if (typeof styleObj.secondpoint != 'undefined' || typeof styleObj.fourthpoint != 'undefined' ) {
                    var secondpoint = styleObj.secondpoint;
@@ -315,8 +315,8 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    var secondpoint = null;
                    var fourthpoint = null;
                }
-               
-               
+
+
                var steps = styleObj.steps;
                if (standard_range == 'rainfall'){
                    // rainfall BOM standard colours
@@ -368,7 +368,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    }
 
                    var colorArr = [];
-                   
+
                    if (midpoint != null && secondpoint != null && fourthpoint != null){
 
                        // first section
@@ -385,7 +385,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                            colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                        }
-                       
+
                        // second section
                        for (var i = 0; i < (steps/4); i++) {
                            // red
@@ -400,7 +400,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                            colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                        }
-                       
+
                        // third section
                        for (var i = 0; i < (steps/4); i++) {
                            // red
@@ -430,7 +430,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                            colorArr.push(RGB2Color(redVal,greenVal,blueVal));
                        }
-                       
+
                    } else if (midpoint != null){
 
                        // White to red spectrum fallback
@@ -452,7 +452,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                            endpoint.g = 0;
                            endpoint.b = 0;
                        }
-                       
+
                        // otherwise use supplied
 
                        // first half
@@ -540,13 +540,13 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
            //generateSLD: function(filename, minVal, maxVal, steps, startpoint, midpoint, endpoint, layertype, layerstyle ) {
            generateSLD: function(layerdef) {
- 
+
                if(layerdef.legend == "pH"){
                    layerdef.style.standard_range="pH"
                } else if(layerdef.legend == "boolean"){
                    layerdef.style.standard_range="boolean"
                }
-               
+
                var xmlStylesheet;
                if (layerdef.type == 'occurrence' || layerdef.type == 'absence') {
                    xmlStylesheet = '<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"><NamedLayer><Name>DEFAULT</Name><UserStyle><Title></Title><FeatureTypeStyle><Rule><PointSymbolizer><Graphic>';
@@ -642,7 +642,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        labels.push('Boolean '+(layerdef.min+i));
                    }
                    layerdef.labels = labels;
-                   
+
                    styleObj = {
                        // get number of rows from layerdef, make equivalent number of steps
                        minVal: layerdef.min,
@@ -655,7 +655,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    };
 
                    style.resolve(styleObj, layerdef);
-                   
+
                    return style;
 
                } else if (layerdef.legend == 'categories' || layerdef.datatype == 'categorical' || layerdef.datatype == 'discrete') {
@@ -775,7 +775,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        var calcSteps = 20;
                        if (layerdef.max - layerdef.min == 0){
                            calcSteps = 1;
-                           
+
                            styleObj = {
                                minVal: layerdef.min,
                                maxVal: layerdef.max,
@@ -834,7 +834,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                var steps = layerdef.style.steps;
                // determine step size for legend
                var legend_step_size = (rangeArr.length-1)/10;
-               
+
                if (standard_range == 'suitability') {
                    legend_step_size = 2;
                } else if ($.inArray(standard_range, ['rainfall', 'monrainfall', 'temperature', 'categorical', 'misc_categorical', 'binary', 'range-change', 'probability-difference', 'pH', 'boolean']) > -1) {
@@ -1420,7 +1420,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        // jquery doesn't call this success handler if there was an error in the previous chain
                        // define local variables
                        var layerdef;
-                        
+
                        // check for layers metadata, if none exists then the request is returning a data like a csv file
                        // TODO: alternative check data.mimetype == 'text/csv' or data.genre
                        //       or use type passed in as parameter
@@ -1631,7 +1631,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    evt.feature.setId('geo_constraints');
                    // interaction finished, free up mouse events
                    map.removeInteraction(draw);
-                   
+
                    var geom = evt.feature.getGeometry();
                    //map.on('singleclick', bccvl_common.getPointInfo)
                    bccvl_common.estimateGeoArea(map, geom);
@@ -1680,7 +1680,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
            //},
 
            renderGeojsonConstraints: function(el, map, geojsonObject, constraintsLayer){
-               
+
                // clear layer
                constraintsLayer.getSource().clear();
 
@@ -1699,15 +1699,15 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        width: 2
                    })
                });
-               
+
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-        
+
                map.getView().fit(feature.getGeometry().getExtent(), {size: map.getSize(), padding: [50,50,50,50]});
            },
-           
+
            estimateGeoArea: function(map, geomObject){
-               
+
                var wgs84Sphere = new ol.Sphere(6378137);
                var sourceProj = map.getView().getProjection();
                var geom = /** @type {ol.geom.Polygon} */(geomObject.clone().transform(
@@ -1724,7 +1724,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                      ' ' + 'm<sup>2</sup>';
                }
 
-               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');  
+               $('#estimated-area > em').html('Estimated area '+output+' <hr/>');
            },
 
            renderPolygonConstraints: function(map, geomObject, constraintsLayer, projCode){
@@ -1740,7 +1740,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                if (projCode != map.getView().getProjection().getCode()) {
                   // convert geomotry to rectangle and project to map
                   bounds = bccvl_common.transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', map.getView().getProjection());
-                  
+
                   feature.getGeometry().transform('EPSG:4326',map.getView().getProjection());
                }
 
@@ -1757,13 +1757,13 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                // redefine feature if it didn't project properly
                // use extent bounds/coordinates specifically and dump feature
                var projectionFailed = false;
-               
+
                $.each(feature.getGeometry().getExtent(), function(i,n){
                    if(isNaN(n)){
                        projectionFailed = true;
                    }
                })
-               
+
                if (projectionFailed){
                    feature = new ol.Feature({
                        geometry: new ol.geom.Polygon([[
@@ -1775,12 +1775,12 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        ]])
                    });
                }
-               
+
                feature.setId('geo_constraints');
-            
+
                feature.setStyle(style);
                constraintsLayer.getSource().addFeature(feature);
-               
+
                bccvl_common.estimateGeoArea(map, feature.getGeometry());
 
                // Convert and write to geojson for offset tools.
@@ -1882,10 +1882,10 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                $('input[type="radio"]#use_convex_hull').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
-                     
+
                  if($(this).prop('checked')){
                     $(this).parents('.constraint-method').find('.geojson-offset').slideDown();
-                    
+
                     var selected = $('#form-widgets-species_occurrence_dataset .selected-item input');
 
                     if (occurrence_convexhull_polygon != null) {
@@ -1895,7 +1895,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                         alert('No occurence selection could be found to generate a convex hull polygon. Please return to the occurrences tab and make a selection.');
                     }
-                 } 
+                 }
                });
 
 
@@ -1941,10 +1941,10 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                  }
                });
-               
+
                $('input[type="radio"]#upload_shp_file').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
-                     
+
                  if($(this).prop('checked')){
 
                  } else {
@@ -1957,7 +1957,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                });
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
-                  
+
 
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
@@ -1978,19 +1978,19 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    if(offsetSize){
 
                        var geojson = JSON.parse($(this).data('geojson'));
-                       
+
                        var simpPoly = [];
-                       
+
                        $.each(geojson.geometry.coordinates, function(i, poly){
                            var poly = turf.polygon(poly);
                            var options = {tolerance: 0.01, highQuality: false, mutate: true};
                            var simplified = turf.simplify(poly, options);
-                           
+
                            simpPoly.push(simplified.geometry.coordinates);
                        });
 
                        geojson.geometry.coordinates = simpPoly;
-                       
+
                        var buffered = turf.buffer(geojson, offsetSize, {"units":"kilometers"});
                        var newgeo = JSON.stringify(buffered);
 
@@ -2000,17 +2000,17 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    }
                });
                constraintsLayer.getSource().on(['addfeature', 'removefeature', 'changefeature'], function(evt) {
-                   
+
                    // update hidden geojson field
                    if (evt.type == 'removefeature') {
                        $('#' + field_id).val('');
                    } else {
-                       
+
                        //encode to geoJson and write to textarea input
                        var features = constraintsLayer.getSource().getFeatures();
                        var format = new ol.format.GeoJSON();
                        var data = format.writeFeaturesObject(features);
-                        
+
                        // TODO: OL3 GeoJSON formatter does not set CRS on feature or geometry  :(
                        data.crs = {
                            'type': 'name',
@@ -2055,15 +2055,15 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        $('#' + field_id).val('' + data + '');
                    }
                });
-               
+
                $("#upload_file").change(function(evt) {
-                   
+
                    $('#upload-shape').hide(0, function(){
                        $('#upload_spinner').show(0);
                    });
-                   
+
         			var shapefile = evt.target.files[0];
-        			
+
         			if(shapefile.size > 0) {
         			    // Check for the various File API support.
                         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -2072,24 +2072,24 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                             reader.onload = function(e) {
                                 var arrayBuffer = reader.result;
-                                
+
                                 shp(arrayBuffer).then(function(geojson){
                                     // clear layer
                                     constraintsLayer.getSource().clear();
-                                    
+
                 					var features = (new ol.format.GeoJSON()).readFeatures(geojson, {
                                         featureProjection: 'EPSG:3857'
                                     });
-                                    
+
                                     // loop through all features, calculating group extent (could also transform bbox)
                                     // add ID and set style to each
                                     var extent = features[0].getGeometry().getExtent().slice(0);
-                                    $.each(features, function(i,feature){ 
-                                        
+                                    $.each(features, function(i,feature) {
+
                                         ol.extent.extend(extent,feature.getGeometry().getExtent());
-                                        
+
                                         feature.setId('geo_constraints_'+i);
-                                        
+
                                         var styles = {
                                             'MultiPolygon': new ol.style.Style({
                                                 fill: new ol.style.Fill({
@@ -2110,33 +2110,33 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                                                 })
                                             })
                                         }
-                                        
+
                                         feature.setStyle(styles[feature.getGeometry().getType()]);
                                     });
-                                    
+
                                     constraintsLayer.getSource().addFeatures(features);
-                             
+
                                     map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
-                                    
+
                                     $('#upload_spinner').hide(0, function(){
                                        $('#upload-shape').show(0);
                                     });
                                 });
                             }
-                            
+
                             reader.readAsArrayBuffer(shapefile);
-                                                      
+
                         } else {
                           alert('The File APIs are not fully supported in this browser.');
                           $('#upload_spinner').hide(0, function(){
                              $('#upload-shape').show(0);
                           });
                         }
-        				
-                       
+
+
         			}
         	   });
-               
+
            },
            /************************************************
             * project extent from crs to crs, and clip
@@ -2218,7 +2218,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    bboxLayer.getSource().addFeature(feature);
 
                });
-               
+
                console.log(bboxLayer.getSource().getExtent());
                console.log(bboxLayer.getSource().getFeatures());
 
