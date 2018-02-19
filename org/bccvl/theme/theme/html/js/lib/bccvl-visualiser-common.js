@@ -990,7 +990,8 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        layerdef.bounds.top
                    ];
                    var proj = layerdef.projection;
-               } 
+                   var projwkt = layerdef.projwkt;
+               }
 
                // data ... dataset metadata
                // layer ... layer metadata
@@ -1076,8 +1077,8 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                });
                //}
 
-               if (bounds && proj){
-                   var extent = bccvl_common.transformExtent(bounds, proj, 'EPSG:3857');
+               if (bounds && (proj || projwkt)) {
+                   var extent = bccvl_common.transformExtent(bounds, proj, 'EPSG:3857', projwkt);
                    if (extent) {
                        newLayer.setExtent(extent);
                    }
@@ -1430,7 +1431,8 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                            layerdef = {
                                'title': data.title || data.description || 'Data Overlay',
                                'bounds': data.bounds,
-                               'projection': data.srs || 'EPSG:4326'
+                               'projection': data.srs || 'EPSG:4326',
+                               'projwkt': data.projection
                            };
 
                            if (!$.isEmptyObject(data.layers)) {
@@ -1506,6 +1508,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                                }
                                layerdef.bounds = layer.bounds;
                                layerdef.projection = layer.srs || 'EPSG:4326';
+                               layerdef.projwkt = layer.projection;
                                // copy datatype into layer def object
                                layerdef.datatype = layer.datatype;
                                // add min / max values
@@ -2138,30 +2141,50 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
         	   });
 
            },
+
+           /************************************************
+            * get a proj4 projection object for wkt or
+            * fall back to epsg code (which may be a default value).
+            * returns null in case proj4 can't create a projection
+            * for either.
+            */
+           getProj4(epsg, wkt) {
+               try {
+                   return proj4(wkt);
+               } catch (error) {
+               }
+               try {
+                   return proj4(epsg);
+               } catch (error) {
+                   return null;
+               }
+           },
+
            /************************************************
             * project extent from crs to crs, and clip
             * given extent to extent of from crs
             */
-           transformExtent: function(extent, fromcrs, tocrs) {
-               var proj = ol.proj.get(fromcrs);
+           transformExtent: function(extent, fromcrs, tocrs, fromwkt) {
+               var proj = bccvl_common.getProj4(fromcrs, fromwkt);
+               var toproj = bccvl_common.getProj4(tocrs, null);
 
-               if (!proj) {
-                   // no matching projection, return transformed bounding box instead
-                   var bboxExtent = new ol.extent.boundingExtent(extent);
-
-                   if (isFinite(bboxExtent[0]) && isFinite(bboxExtent[1]) && isFinite(bboxExtent[2]) && isFinite(bboxExtent[3]) ){
-                       return ol.proj.transformExtent(bboxExtent, fromcrs, tocrs);
-                   } else {
-                       // could not successfully transform bbox, so return epsg3857 extent and fit to whole world
-                       return [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
-                   }
+               if (!proj || !toproj) {
+                   // no matching projection, we don't know how to transform the extent
+                   // so return epsg3857 extent and fit to whole world
+                   return [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
                }
-               var ret = ol.extent.getIntersection(extent, ol.proj.get(fromcrs).getExtent());
-               if (fromcrs != tocrs) {
-                   ret = ol.proj.transformExtent(ret, fromcrs, tocrs);
-                   // make sure result bbox is within target crs
-                   ret = ol.extent.getIntersection(ret, ol.proj.get(tocrs).getExtent());
+               // transform extent [minx, miny, maxx, maxy]
+               var min = proj4(proj, toproj).forward(extent.slice(0,2));
+               var max = proj4(proj, toproj).forward(extent.slice(2,4));
+               // build new extent
+               ret = min.concat(max);
+               // check ret
+               if (ret.some(function(el) { return !isFinite(el) })) {
+                   // some elements are out of range
+                   // return full extent of target crs
+                   return ol.proj.get(tocrs).getExtent();
                }
+               // should be all good now
                return ret;
            },
 
