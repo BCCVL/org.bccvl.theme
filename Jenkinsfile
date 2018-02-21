@@ -13,8 +13,8 @@ if (env.BRANCH_NAME == 'master') {
             stage('Package') {
                 if (publishPackage(currentBuild.result, env.BRANCH_NAME)) {
                     // install nodejs to build wheel
-                    sh 'curl -sL https://deb.nodesource.com/setup_9.x | bash -'
-                    sh 'apt-get install -y nodejs'
+                    sh 'curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -'
+                    sh 'sudo apt-get install -y nodejs'
                     // build and publish wheel
                     withVirtualenv() {
                         sh 'rm -fr build dist'
