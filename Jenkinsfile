@@ -8,17 +8,15 @@ if (env.BRANCH_NAME == 'master') {
             checkout scm
         }
         // TODO: we should do some package verification here?
-        def img = docker.image('python:2')
-        img.inside() {
-            stage('Package') {
-                if (publishPackage(currentBuild.result, env.BRANCH_NAME)) {
-                    // install nodejs to build wheel
-                    sh 'curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -'
-                    sh 'sudo apt-get install -y nodejs'
-                    // build and publish wheel
-                    withVirtualenv() {
-                        sh 'rm -fr build dist'
-                        sh '${VIRTUALENV}/bin/python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
+        def img = docker.image('hub.bccvl.org.au/bccvl/python_node:2')
+        docker.withRegistry('https://hub.bccvl.org.au', 'hub.bccvl.org.au') {
+            img.inside() {
+                stage('Package') {
+                    if (publishPackage(currentBuild.result, env.BRANCH_NAME)) {
+                        withVirtualenv() {
+                            sh 'rm -fr build dist'
+                            sh '${VIRTUALENV}/bin/python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
+                        }
                     }
                 }
             }
