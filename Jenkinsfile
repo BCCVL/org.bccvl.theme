@@ -12,6 +12,10 @@ if (env.BRANCH_NAME == 'master') {
         img.inside() {
             stage('Package') {
                 if (publishPackage(currentBuild.result, env.BRANCH_NAME)) {
+                    // install nodejs to build wheel
+                    sh 'curl -sL https://deb.nodesource.com/setup_9.x | bash -'
+                    sh 'apt-get install -y nodejs'
+                    // build and publish wheel
                     withVirtualenv() {
                         sh 'rm -fr build dist'
                         sh '${VIRTUALENV}/bin/python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
