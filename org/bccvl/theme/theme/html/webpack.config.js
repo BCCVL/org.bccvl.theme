@@ -42,6 +42,26 @@ module.exports = {
      'jquery': 'jQuery'
   },
 
+  module: {
+    rules: [
+      {
+        // zip.min.js expects this to be window instance
+        test: path.resolve(__dirname, 'lib/zip/zip.min.js'),
+        use: [
+          {
+            loader: 'imports-loader',
+            options: 'this=>window'
+          },
+          // zip.min.js doesn't export itself
+          {
+            loader: 'exports-loader',
+            options: 'window.zip'
+          }
+        ]
+      }
+    ]
+  },
+
   resolve: {
     // options for resolving module requests
     // (does not apply to resolving to loaders)
@@ -54,7 +74,6 @@ module.exports = {
       "lib/ol3/layerswitcher",
       "lib/proj4",
       "lib/selectize",
-      "lib/zip"
       //"lib",
       //path.resolve(__dirname, "app")
     ],
@@ -65,7 +84,8 @@ module.exports = {
       'openlayers': path.resolve(__dirname, 'lib/ol3/ol.js'),
       'prismjs': path.resolve(__dirname, 'lib/prism/prism.js'),
       'shpjs': path.resolve(__dirname, 'lib/shpjs/shp.js'),
-      'turf': path.resolve(__dirname, 'lib/turfjs/turf.min.js')
+      'turf': path.resolve(__dirname, 'lib/turfjs/turf.min.js'),
+      'zip': path.resolve(__dirname, 'lib/zip/zip.min.js')
     }
   },
 
