@@ -6,11 +6,11 @@
     <!-- NEW PROJECTION EXPERIMENT ================================== -->
     <rules if-path="newProjection/">
         <theme href="html/new-experiment-projection.html" />
-        
+
         <rules if-not="$is_debug">
           <!-- load page js without require -->
           <replace css:theme="#page_js">
-            <script type="text/javascript" src="++theme++org.bccvl.theme/html/dist/new-experiment-projection.js"></script>
+            <script type="text/javascript" src="{$portal_base_url}/++theme++org.bccvl.theme/html/dist/new-experiment-projection.js"></script>
           </replace>
         </rules>
 
