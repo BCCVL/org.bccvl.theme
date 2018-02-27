@@ -5,12 +5,12 @@ define(
     function( $, ol, proj4, vizcommon, bccvlapi, selectize, selectize_remove_single, turf ) {
 
         var newExp_common = {
-            
+
             init_region_selector: function () {
-                
+
                 var select_type, $select_type;
                 var select_region, $select_region;
-    
+
                 $select_type = $('#select-region-type').selectize({
                     onChange: function(value) {
                         var xhr;
@@ -23,9 +23,9 @@ define(
                                 url: 'https://spatial.ala.org.au/ws/field/' + value,
                                 success: function(data) {
                                     select_region.enable();
-    
+
                                     var results = [];
-    
+
                                     $.each(data.objects, function (key, feature) {
                                         //console.log(feature.area_km);
                                         var match = {
@@ -44,7 +44,7 @@ define(
                         });
                     }
                 });
-    
+
                 $select_region = $('.select-region').selectize({
                     valueField: 'pid',
                     labelField: 'name',
@@ -56,16 +56,16 @@ define(
                         }
                     },
                     onChange: function(value){
-                        
+
                         // value may be empty in case we just changed type of region
                         if (value && value.length >= 1) {
-                            
+
                             var requests = $.Deferred();
-                            
+
                             var geojson;
                             var multiPolygons = [];
                             var individualPolygons = [];
-                                
+
                             $.each(value, function(i, id){
 
                                 // disable button to wait for results to calc
@@ -73,10 +73,10 @@ define(
                                 $.ajax({
                                     url: 'https://spatial.ala.org.au/ws/shape/geojson/' + id,
                                     success: function(result) {
-                                        
+
                                         // push geometries into array
                                         multiPolygons.push(result);
-                                        
+
                                         // if array is as long as request, assume all requests complete
                                         if(multiPolygons.length == value.length){
 
@@ -86,7 +86,7 @@ define(
                                                     individualPolygons.push(poly);
                                                 });
                                             });
-                                            
+
                                             geojson = {
                                                 'type': 'Feature',
                                                 'geometry': {
@@ -107,9 +107,9 @@ define(
                                         console.log(error);
                                     }
                                 });
-                                
+
                             });
-                            
+
                             $.when(requests).done(function (geojson){
                                 $('#selected-geojson, #add-region-offset').data('geojson', JSON.stringify(geojson));
                                 $('.draw-geojson').attr('disabled', false).find('i').removeClass('fa-spinner fa-spin').addClass('fa-crop');
@@ -120,14 +120,14 @@ define(
                         $('#estimated-area > em').html('');
                     },
                     onItemAdd: function(value, $item){
-                        
+
                         if( $('#estimated-area').data('area')){
                             var newArea = $('#estimated-area').data('area') + $item.data('area');
-                            $('#estimated-area').data('area', newArea); 
+                            $('#estimated-area').data('area', newArea);
                         } else {
                             $('#estimated-area').data('area', $item.data('area'));
                         }
-                        
+
                         $('#estimated-area > em').html('Estimated area '+$('#estimated-area').data('area')+'km<sup>2</sup> <hr/>');
                         if ($item.data('area') > 500000){
 
@@ -139,16 +139,16 @@ define(
                         }
                     }
                 });
-    
+
                 select_region  = $select_region[0].selectize;
                 select_type = $select_type[0].selectize;
-    
+
                 select_region.disable();
-                
+
                 $('.btn.remove-polygon').on('click', function(){
                     select_region.clear(false);
                 });
-    
+
             },
 
 
@@ -160,12 +160,12 @@ define(
                 var $algoCheckboxes = $(selector);
                 $.each($algoCheckboxes, function(index, checkbox) {
                     var $checkbox = $(checkbox);
-    
+
                     // when the checkbox changes, update the config block's visibility
                     $checkbox.change(function(evt) {
                         var $algoCheckbox = $(evt.target);
                         // the config block is the accordion-group that has the checkbox's "value" as its data-function attribute.
-    
+
                         if (!multi) {
                             // for single select we have to deactivate all other config blocks
                             var $visibleBlocks = $('#algoConfig .accordion-group:visible');
@@ -184,11 +184,11 @@ define(
                                 $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
                                     $(c).val($(c).attr('data-default'));
                                 });
-    
+
                                 $configBlock.hide(250);
                             });
                         }
-    
+
                         // make selected config block visible
                         var $configBlock = $('.accordion-group[data-function="' + $algoCheckbox.attr('value') + '"]');
                         var $accordionBody = $configBlock.find('.accordion-body');
@@ -212,7 +212,7 @@ define(
                                 $.each($configBlock.find('input[type="number"], input[type="text"]'), function(i, c) {
                                     $(c).val($(c).attr('data-default'));
                                 });
-    
+
                                 $configBlock.hide(250);
                             }
                         } else {
@@ -224,25 +224,25 @@ define(
                     // finally, invoke the change handler to get the inital visibility sorted out.
                     $checkbox.change();
                 });
-    
+
                 // hookup all/none buttons/links
                 $algoCheckboxes.parents('table').on('click', 'a.select-all', function() {
                     $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', 'checked').trigger('change');
                 })
-    
+
                 $algoCheckboxes.parents('table').on('click', 'a.select-none', function() {
                     $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false).trigger('change');
                 })
-    
+
             },
 
             init_constraints_map: function(selector, $tab, fieldname) {
-    
+
                 var mapid = $(selector).attr('id');
                 var base_map = vizcommon.renderBase(mapid)
                 var map = base_map.map
                 var visLayers = base_map.visLayers
-    
+
                 // add layers for bboxes and drawing area
                 var features = new ol.Collection(); // drawn feature
                 var constraintsLayer = new ol.layer.Vector({
@@ -273,7 +273,7 @@ define(
                     ]
                 });
                 map.addLayer(vectors);
-    
+
                 // map.updateSize()
                 if ($('.constraints-map').not(':visible')) {
                     $tab.one('shown', function(evt) {
@@ -286,10 +286,10 @@ define(
                         map.getView().fit(world, {size: map.getSize(), 'constrainResolution': false});
                     });
                 }
-    
+
                 // set up constraint tools
                 vizcommon.constraintTools(map, constraintsLayer, fieldname);
-    
+
                 return {
                     map: map,
                     mapid: mapid,
@@ -297,7 +297,7 @@ define(
                     bboxLayer: bboxLayer,
                     constraintsLayer: constraintsLayer,
                 }
-    
+
             },
 
             update_constraints_map: function(cmap, $els) {
@@ -311,26 +311,26 @@ define(
                     var visLayers = cmap.visLayers
                     var bboxLayer = cmap.bboxLayer
                     var constraintsLayer = cmap.constraintsLayer
-        
+
                     // recreate legend
                     $('#'+map.getTarget()).find('.olLegend').remove();
                     vizcommon.createLegendBox(map.getTarget(), 'Selected Datasets');
-        
+
                     // clear any existing layers.
                     visLayers.getLayers().clear(); // clear species layers
                     bboxLayer.getSource().clear(); // clear bboxes as well
                     vizcommon.setOccurrencePolygon(null); // reset the occurrence convex-hull polygon
                     constraintsLayer.getSource().clear(); // clear the constraint
-        
+
                     var geometries = [];
-        
+
                     $els.each(function() {
                         var type = $(this).data('genre');
                         if (type == 'DataGenreSpeciesOccurrence' ||
                             type == 'DataGenreSpeciesAbsence' ||
                             type == 'DataGenreTraits' ||
                             type == 'DataGenreSpeciesCollection') {
-        
+
                             var data_url = $(this).data('url');
                             vizcommon.addLayersForDataset($(this).val(), data_url, mapid, null, visLayers).then(function(newLayers) {
                                 // FIXME: assumes only one layer because of species data
@@ -339,7 +339,7 @@ define(
                                     map.getTarget(),
                                     newLayer.get('title'),
                                     newLayer.get('bccvl').layer.style.color, null, null);
-        
+
                                 // Draw convex-hull polygon for occurrence dataset in map
                                 if (type == 'DataGenreSpeciesOccurrence' || type == 'DataGenreSpeciesCollection' || type == 'DataGenreTraits') {
                                     // TODO: can this bit run in a separate even thandler?
@@ -349,7 +349,7 @@ define(
                                 }
                             })
                         } else {
-        
+
                             var bbox = $(this).attr('data-bbox');
                             if (typeof bbox !== typeof undefined && bbox !== false) {
                                 var geom = $(this).data('bbox');
@@ -363,7 +363,7 @@ define(
                                 geom.type = type;
                                 geometries.push(geom);
                             } else {
-        
+
                                 // Get the region constraint from the SDM experiment as the constraint for
                                 // Climate Change Experiment. Need to transform constraint geometry to
                                 // EPSG:4326 as used in vizcommon.renderPolygonConstraints
@@ -371,8 +371,9 @@ define(
                                 bccvlapi.em.metadata(sdmexp_id).then(function(data, status, jqXHR){
                                     var region_constraint = data['results'][0]['params']['modelling_region'];
                                     $('#form-widgets-projection_region').val(region_constraint);
-        
+
                                     if (region_constraint) {
+                                        region_constaint = JSON.parse(region_constraint);
                                         var geojsonParser = new ol.format.GeoJSON();
                                         var srcProjection = geojsonParser.readProjection(region_constraint);
                                         var features = geojsonParser.readFeatures(region_constraint, {featureProjection: 'EPSG:4326'});
@@ -432,7 +433,7 @@ define(
                 $('#pa_controls').on('change', 'input, select', function(e){
                     var fieldtype = $(this).attr('id');
                     var val = $(this).val();
-    
+
                     $('[id*="'+fieldtype+'"]').each(function(){
                         $(this).val(val);
                     });
@@ -440,13 +441,13 @@ define(
             }
         };
         return newExp_common;
-            
+
             //init_region_selector: init_region_selector,
             //init_algorithm_selector: init_algorithm_selector,
             //init_constraints_map: init_constraints_map,
             //update_constraints_map: update_constraints_map,
             //init_pa_controls: init_pa_controls
-        
+
     }
 )
 
