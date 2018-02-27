@@ -375,14 +375,47 @@ define(
                                     if (region_constraint) {
                                         var geojsonParser = new ol.format.GeoJSON();
                                         var srcProjection = geojsonParser.readProjection(region_constraint);
-                                        var feature = geojsonParser.readFeature(region_constraint);
-                                        var occurrence_polygon = feature.getGeometry().transform(srcProjection, 'EPSG:4326')
-                                        vizcommon.setOccurrencePolygon(occurrence_polygon)
+                                        var features = geojsonParser.readFeatures(region_constraint, {featureProjection: 'EPSG:4326'});
+                                        //var occurrence_polygon = feature.getGeometry().transform(srcProjection, 'EPSG:4326')
+                                        /*vizcommon.setOccurrencePolygon(occurrence_polygon)
                                         vizcommon.renderPolygonConstraints(
                                             map,
                                             occurrence_polygon,
                                             constraintsLayer,
-                                            'EPSG:4326')
+                                            'EPSG:4326')*/
+                                        
+                                        var styles = {
+                                            'MultiPolygon': new ol.style.Style({
+                                                fill: new ol.style.Fill({
+                                                    color: 'rgba(0, 160, 228, 0.1)'
+                                                }),
+                                                stroke: new ol.style.Stroke({
+                                                    color: 'rgba(0, 160, 228, 0.9)',
+                                                    width: 2
+                                                })
+                                            }),
+                                            'Polygon': new ol.style.Style({
+                                                fill: new ol.style.Fill({
+                                                    color: 'rgba(0, 160, 228, 0.1)'
+                                                }),
+                                                stroke: new ol.style.Stroke({
+                                                    color: 'rgba(0, 160, 228, 0.9)',
+                                                    width: 2
+                                                })
+                                            })
+                                        }
+                                        var extent = features[0].getGeometry().getExtent().slice(0);
+                                        
+                                        $.each(features, function(i,feature) {
+
+                                            ol.extent.extend(extent,feature.getGeometry().getExtent());
+    
+                                            feature.setId('geo_constraints_'+i);
+    
+                                            feature.setStyle(styles[feature.getGeometry().getType()]);
+                                        });
+                            
+                                        constraintsLayer.getSource().addFeatures(features);
                                     }
                                 });
                             }

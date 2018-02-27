@@ -664,41 +664,61 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                            var numRows = data.rows.length;
                            var labels = [];
-
-                           var valueIndex = -1;
-                           for (var i = 0; i < data.cols.length; i++) {
-                              if (data.cols[i].type == 'Integer' && data.cols[i].name == 'VALUE') {
-                                valueIndex = i;
-                                break;
-                              }
-                           }
-
-                           $.each( data.rows, function(i, row){
-                               //labels.push([]);
-                               var label = ''+(valueIndex >= 0 ? row[valueIndex] : (i+1))+':';
-                               $.each( data.cols, function(idx, col){
-                                   if (col.type == 'String' && (col.usage == 'Generic' || col.usage == 'Name')){
-                                       label = label + ' ' + row[idx];
-                                   }
-                               });
-
-                               labels.push(label);
-
+                           var hasDataForStyle = false;
+                           
+                           $.each(data.cols, function(i, col){
+                               if (col.usage == 'Generic' || col.usage == 'Name'){
+                                   hasDataForStyle = true;
+                               } 
                            });
+                           
+                           if (hasDataForStyle){
 
-                           layerdef.labels = labels;
-
-                           // categorial styleobj
-                           styleObj = {
-                               minVal: 1,
-                               maxVal: numRows,
-                               steps: numRows,
-                               startpoint: {},
-                               midpoint: {},
-                               endpoint: {}
-                           };
-
-                           styleObj.standard_range = 'categorical';
+                               var valueIndex = -1;
+                               for (var i = 0; i < data.cols.length; i++) {
+                                  if (data.cols[i].type == 'Integer' && data.cols[i].name == 'VALUE') {
+                                    valueIndex = i;
+                                    break;
+                                  }
+                               }
+    
+                               $.each( data.rows, function(i, row){
+                                   //labels.push([]);
+                                   var label = ''+(valueIndex >= 0 ? row[valueIndex] : (i+1))+':';
+                                   $.each( data.cols, function(idx, col){
+                                       if (col.type == 'String' && (col.usage == 'Generic' || col.usage == 'Name')){
+                                           label = label + ' ' + row[idx];
+                                       }
+                                   });
+    
+                                   labels.push(label);
+    
+                               });
+    
+                               layerdef.labels = labels;
+            
+                               // categorial styleobj
+                               styleObj = {
+                                   minVal: 1,
+                                   maxVal: numRows,
+                                   steps: numRows,
+                                   startpoint: {},
+                                   midpoint: {},
+                                   endpoint: {}
+                               };
+    
+                               styleObj.standard_range = 'categorical';
+                           } else {
+                               // nothing useful to style e.g. histogram
+                               styleObj = {
+                                   minVal: 0,
+                                   maxVal: 1,
+                                   steps: 1,
+                                   startpoint: {},
+                                   midpoint: {},
+                                   endpoint: {}
+                               };
+                           }
 
                            style.resolve(styleObj, layerdef);
                        },
