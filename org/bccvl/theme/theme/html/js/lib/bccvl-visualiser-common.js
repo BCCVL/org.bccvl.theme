@@ -2355,7 +2355,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                                 var parsed = Number.parseFloat(val);
                                 var notNumber = Number.isNaN(parsed);
 
-                                if (! notNumber){
+                                if (! notNumber && column.toUpperCase() != 'DATE'){
                                     val = parsed.toFixed(3);
                                 }
                                 return {
