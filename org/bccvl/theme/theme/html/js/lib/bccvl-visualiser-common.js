@@ -2390,8 +2390,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                         }
                    ).then(
                        function(data, status, jqXHR) {  
-                           // test for github
-                           
+
                            // Extract occurrence dataset from zip file
                            zip.useWebWorkers = false;
                            var httpReader = new zip.HttpReader(data.file);
