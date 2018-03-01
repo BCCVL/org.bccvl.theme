@@ -2389,7 +2389,9 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                             alert('Problem preparing dataset for viewing, please try again later.')
                         }
                    ).then(
-                       function(data, status, jqXHR) {
+                       function(data, status, jqXHR) {  
+                           // test for github
+                           
                            // Extract occurrence dataset from zip file
                            zip.useWebWorkers = false;
                            var httpReader = new zip.HttpReader(data.file);
