@@ -76,13 +76,14 @@ define(
             // });
 
             // check for Firefox to avoid ZIP issue
-            if(typeof InstallTrigger !== 'undefined' == true){
-                $('.bccvl-main .alert').after('<div class="alert alert-block alert-error fade in">'+
-                    '<button type="button" class="close" data-dismiss="alert">×</button>'+
-                    '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
-                    '<p>Currently there are issues preventing the use of Firefox in submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
-                '</div>');
-            }
+            // this isssue has been resolved
+            //if(typeof InstallTrigger !== 'undefined' == true){
+            //    $('.bccvl-main .alert').after('<div class="alert alert-block alert-error fade in">'+
+            //        '<button type="button" class="close" data-dismiss="alert">×</button>'+
+            //        '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
+            //        '<p>Currently there are issues preventing the use of Firefox in submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
+            //    '</div>');
+            //}
 
             // Identify datasets that are currently importing.
             // These are the spinner icons.

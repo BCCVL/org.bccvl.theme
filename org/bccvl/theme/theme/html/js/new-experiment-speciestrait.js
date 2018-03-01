@@ -18,13 +18,14 @@ define(
             //stretch.init({ topPad: 60, bottomPad: 10 });
 
             // check for Firefox to avoid ZIP issue
-            if(typeof InstallTrigger !== 'undefined'){
-                $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
-                    '<button type="button" class="close" data-dismiss="alert">×</button>'+
-                    '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
-                    '<p>Currently there are issues preventing the use of Firefox for submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
-                '</div>');
-            }
+            // this issue has been resolved
+            //if(typeof InstallTrigger !== 'undefined'){
+            //    $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
+            //        '<button type="button" class="close" data-dismiss="alert">×</button>'+
+            //        '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
+            //        '<p>Currently there are issues preventing the use of Firefox for submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
+            //    '</div>');
+            //}
 
             // hook up the wizard buttons
             wiztabs.init();
