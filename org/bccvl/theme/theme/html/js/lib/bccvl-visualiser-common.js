@@ -2003,16 +2003,38 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        var geojson = JSON.parse($(this).data('geojson'));
 
                        var simpPoly = [];
+                       if(geojson.type == "Feature"){
+                           $.each(geojson.geometry.coordinates, function(i, poly){
+                               var turfpoly = turf.polygon(poly);
+                               var options = {tolerance: 0.01, highQuality: false, mutate: true};
+                               var simplified = turf.simplify(turfpoly, options);
+    
+                               simpPoly.push(simplified.geometry.coordinates);
+                           });
+    
+                           geojson.geometry.coordinates = simpPoly;
+                       } else if (geojson.type == "FeatureCollection"){
+                            $.each(geojson.features, function(i, feature){
 
-                       $.each(geojson.geometry.coordinates, function(i, poly){
-                           var poly = turf.polygon(poly);
-                           var options = {tolerance: 0.01, highQuality: false, mutate: true};
-                           var simplified = turf.simplify(poly, options);
+                                $.each(feature.geometry.coordinates, function(i, poly){
 
-                           simpPoly.push(simplified.geometry.coordinates);
-                       });
-
-                       geojson.geometry.coordinates = simpPoly;
+                                   var turfpoly = turf.polygon([poly]);
+                                   var options = {tolerance: 0.01, highQuality: false, mutate: true};
+                                   var simplified = turf.simplify(turfpoly, options);
+        
+                                   simpPoly.push(simplified.geometry.coordinates);
+                               });
+                            });
+                           
+                           // rebuild geojson into expected format
+                           var geojson = {
+                               type: "Feature",
+                               geometry: {
+                                   type: "MultiPolygon",
+                                   coordinates: simpPoly
+                               }
+                           }
+                       }
 
                        var buffered = turf.buffer(geojson, offsetSize, {"units":"kilometers"});
                        var newgeo = JSON.stringify(buffered);
@@ -2209,7 +2231,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
            },
 
            drawBBoxes: function(map, geometries, bboxLayer) {
-                console.log(geometries);
+
                // clear any existing features
                bboxLayer.getSource().clear();
 
@@ -2261,9 +2283,6 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    bboxLayer.getSource().addFeature(feature);
 
                });
-
-               console.log(bboxLayer.getSource().getExtent());
-               console.log(bboxLayer.getSource().getFeatures());
 
                map.getView().fit(bboxLayer.getSource().getExtent(), {size: map.getSize()});
 
