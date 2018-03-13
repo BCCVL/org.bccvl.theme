@@ -21,9 +21,14 @@
                 insert-after="++theme++org.bccvl.theme/html/lib/bootstrap-fileupload/bootstrap-fileupload.css"
                 />
 
+    <stylesheet id="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
+                bundle="bccvl" compression="full" remove="true" 
+                insert-after="++theme++org.bccvl.theme/html/lib/selectize/selectize.default.css"
+                />
+
     <stylesheet id="++theme++org.bccvl.theme/html/lib/fontawesome/css/font-awesome.css"
                 bundle="bccvl" applyPrefix="True" compression="full"
-                insert-after="++theme++org.bccvl.theme/html/lib/selectize/selectize.default.css"
+                insert-after="++theme++org.bccvl.theme/html/lib/selectize/selectize.bootstrap2.css"
                 />
 
     <stylesheet id="++theme++org.bccvl.theme/html/css/fonts.css"
