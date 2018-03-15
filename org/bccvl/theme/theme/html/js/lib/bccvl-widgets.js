@@ -387,6 +387,7 @@ define(
         SelectDict.prototype.constructor = SelectDict; // use new constructor
         // override modal_apply
         SelectDict.prototype.modal_apply = function(event) {
+
             // get selected element
             var selected = this.modal.get_selected();
 
@@ -412,10 +413,27 @@ define(
             params.push({name: this.settings.widgetname + '.count',
                          value: count});
             this.reload_widget(params);
+            
+            // All/None button
+            var $widget = this.$widget
+            var _this = this
+            $widget.off('click')
+            
+            $widget.on('click', 'a.select-all', function() {
+                $(this).parents('.selecteditem').find('.selectedmodels input[type="checkbox"]').prop('checked', 'checked');
+            })
+
+            $widget.on('click', 'a.select-none', function() {
+                // boolean attributes have to be removed completely
+                $(this).parents('.selecteditem').find('.selectedmodels input[type="checkbox"]').each(function(){
+                    $(this).prop('checked', false);
+                });
+            })
         };
 
         // A widget to select a dict of items
         function SelectData(fieldname) {
+
             SelectDict.call(this, fieldname);
             // keep track of the current value of our widget
             this.value = {}
