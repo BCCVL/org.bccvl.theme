@@ -410,12 +410,12 @@ define(
             $widget.off('click')
             
             $widget.on('click', 'a.select-all', function() {
-                $(this).parents('.selecteditem').find('.selectedmodels input[type="checkbox"]').prop('checked', 'checked');
+                $(this).parents('.selecteditem').find('input[type="checkbox"]').prop('checked', 'checked');
             })
 
             $widget.on('click', 'a.select-none', function() {
                 // boolean attributes have to be removed completely
-                $(this).parents('.selecteditem').find('.selectedmodels input[type="checkbox"]').each(function(){
+                $(this).parents('.selecteditem').find('input[type="checkbox"]').each(function(){
                     $(this).prop('checked', false);
                 });
             })
