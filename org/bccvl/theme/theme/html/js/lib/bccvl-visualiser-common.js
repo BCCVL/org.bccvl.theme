@@ -2216,6 +2216,14 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    return [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
                }
 
+               // Clip the extent to epsg 3857
+               if (tocrs == "EPSG:3857") {
+                  extent[1] = Math.max(extent[1], -85.06);
+                  extent[3] = Math.min(extent[3], 85.06);
+                  extent[0] = Math.max(extent[0], -179.99);
+                  extent[2] = Math.min(extent[2], 179.99);
+               }
+
                var center = ol.extent.getCenter(extent);
                // build list of coordinates
                // include center coordinates to make sure we include coordinates
