@@ -2215,11 +2215,33 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    // so return epsg3857 extent and fit to whole world
                    return [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
                }
-               // transform extent [minx, miny, maxx, maxy]
-               var min = proj4(proj, toproj).forward(extent.slice(0,2));
-               var max = proj4(proj, toproj).forward(extent.slice(2,4));
-               // build new extent
-               ret = min.concat(max);
+
+               var center = ol.extent.getCenter(extent);
+               // build list of coordinates
+               // include center coordinates to make sure we include coordinates
+               // that may lie outside of corner bounds (e.g. albers -> pseudo mercator)
+               var coordinates = [
+                   ol.extent.getBottomLeft(extent),
+                   ol.extent.getBottomRight(extent),
+                   ol.extent.getTopRight(extent),
+                   ol.extent.getTopLeft(extent),
+                   // add center coordinate pairs
+                   // bottom center
+                   [extent[0], center[1]],
+                   // top center
+                   [extent[2], center[1]],
+                   // center left
+                   [center[0], extent[1]],
+                   // center right
+                   [center[0], extent[3]]
+               ];
+               // transform all coordinate pairs
+               coordinates = coordinates.map(function(coord) {
+                   return proj4(proj, toproj).forward(coord);
+               });
+               // build extent
+               var ret = ol.extent.boundingExtent(coordinates);
+
                // check ret
                if (ret.some(function(el) { return !isFinite(el) })) {
                    // some elements are out of range
