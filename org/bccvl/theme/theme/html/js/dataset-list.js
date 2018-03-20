@@ -37,6 +37,7 @@ define(
 
             $('select.selectize').selectize({
                 plugins: ['remove_button', 'remove_single_button'],
+                sortField: "text",
                 render: {
                     'option': function(data, escape) {
                         var opt_class="option"
@@ -48,8 +49,8 @@ define(
                         if (typeof data.count !== 'undefined') {
                             opt_text += ' <span class="badge">' + data.count + '</span>';
                         }
-			return opt_text + '</div>';
-		    },
+			            return opt_text + '</div>';
+		            },
                     'item': function(data, escape) {
                         var item_text = '<div class="item">' + escape(data[this.settings.labelField]);
                         if (typeof data.count !== 'undefined') {
