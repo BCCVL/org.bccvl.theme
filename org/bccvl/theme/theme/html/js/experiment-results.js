@@ -85,7 +85,7 @@ define(
                     if (params.mimetype == 'image/geotiff' || params.mimetype == 'image/tiff') {
                         map.addLayer(constraints);
                     }
-                })
+                });
             }
 
 
@@ -128,12 +128,12 @@ define(
                 });
             });
 
-        });
+            // CUSTOM AFFIX, BOOTSTRAP 2.3.2 IS BORKED.
+            if (window.innerWidth > 767 && $('.affixed-map').length > 0){
+                setupAffix();
+            }
 
-        // CUSTOM AFFIX, BOOTSTRAP 2.3.2 IS BORKED.
-        if (window.innerWidth > 767 && $('.affixed-map').length > 0){
-            setupAffix();
-        }
+        });
 
         function setupAffix() {
             var affix = $('.affixed-map');
