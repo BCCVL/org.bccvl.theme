@@ -1,10 +1,10 @@
 <footer id="portal-footer">
     <div class="container-fluid">
         <small>
-            <a href="http://www.bccvl.org.au/about/legal/terms-of-use/">Terms and Conditions</a> |
-            <a href="https://support.bccvl.org.au/support/home">Help</a> |
-            <a href="https://support.bccvl.org.au/support/solutions/articles/6000085181">Contact Support</a> |
-            <a href="http://www.bccvl.org.au">BCCVL Website</a>
+            <a href="http://www.bccvl.org.au/about/legal/terms-of-use/" target="_blank">Terms and Conditions</a> |
+            <a href="https://support.bccvl.org.au/support/home" target="_blank">Help</a> |
+            <a href="http://www.bccvl.org.au/contact/" target="_blank">Contact Support</a> |
+            <a href="http://www.bccvl.org.au" target="_blank">BCCVL Website</a>
         </small>
     </div>
     <div>
