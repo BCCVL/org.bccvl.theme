@@ -6,7 +6,8 @@
     <!-- DASHBOARD ============================================= -->
     <rules if-path="login/
                     login_form/
-                    login_failed/">
+                    login_failed/
+                    require_login/">
 
         <theme href="html/login.html" />
 
