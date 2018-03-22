@@ -18,7 +18,9 @@
   <div tal:condition="not:services">
     <div class="alert alert-warning">
       <p><strong>No authorisations for export services found!</strong></p>
-      <p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p><p>Click the <strong>Manage Authorisations</strong> button below to see your authorisations.</p>
+      <p>To export your experiment results to an exterior service you must first authorise that service in your user preferences.</p>
+      <p><a target="_blank" tal:attributes="href string:${context/portal_url}/@@oauth-preferences">
+          Click to see your authorisations.</a></p>
     </div>
   </div>
 </html>
