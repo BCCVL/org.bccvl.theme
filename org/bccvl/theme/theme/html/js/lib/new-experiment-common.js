@@ -435,7 +435,7 @@ define(
                     var fieldtype = $(this).attr('id');
                     var val = $(this).val();
 
-                    $('select[id*="'+fieldtype+'"]').not($(this)).each(function(){
+                    $('[id*="'+fieldtype+'"]').each(function(){
                         $(this).val(val);
                     });
                     
