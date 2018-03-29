@@ -435,7 +435,7 @@ define(
                     var fieldtype = $(this).attr('id');
                     var val = $(this).val();
 
-                    $('[id*="'+fieldtype+'"]').each(function(){
+                    $('input[id*="'+fieldtype+'"], select[id*="'+fieldtype+'"]').each(function(){
                         $(this).val(val);
                     });
                     
