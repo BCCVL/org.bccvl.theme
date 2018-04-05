@@ -2368,16 +2368,17 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    }
                });
            },
-
+           
            // RENDER CSV
            renderCSV: function(uuid, url, id, params){
-
+               console.log(id);
+               console.log('blah');
                // NEED TO DESTROY ANY EXISTING MAP OR HTML
                var container = $('#'+id);
-               if (container.hasClass('active')) {
+              // if (container.hasClass('active')) {
                    container.empty();
                    map = null;
-               }
+              // }
 
                var readAndRender = function(data){
                     var rowData = d3.csvParse(data),
