@@ -10,10 +10,12 @@ define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common'],
         var map;
         var visLayers;
 
-        var mapId = $('.bccvl-preview-pane:visible').attr('id');
 
         // document ready
         $(function () {
+            
+            var mapId = $('.bccvl-preview-pane:visible').attr('id');
+            
             var base_map = vizcommon.renderBase(mapId)
             map = base_map.map
             visLayers = base_map.visLayers
