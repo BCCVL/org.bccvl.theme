@@ -105,7 +105,7 @@
                                          data-layername item/Title;
                                          data-subset result/job_params/subset|nothing;
                                          data-algorithm result/job_params/function|nothing;
-                                         data-constraint python: 'unconstraint' if item.BCCDataGenre in ('DataGenreCP_ENVLOP', 'DataGenreFP_ENVLOP') else None;
+                                         data-constraint python: 'unconstrainted' if item.BCCDataGenre in ('DataGenreCP_ENVLOP', 'DataGenreFP_ENVLOP') else None;
                                          data-species species;
                                          data-emsc result/job_params/emsc|nothing;
                                          data-gcm result/job_params/gcm|nothing;
