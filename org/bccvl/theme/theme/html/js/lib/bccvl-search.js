@@ -84,6 +84,181 @@ define(
         // --------------------------------------------------------------
         var providers = {};
 
+        providers['obis'] = {
+            autocomplete: {
+                autoUrl: function(autocompleteString) {
+                    return ('https://backend.iobis.org/completetname?q=' + encodeURIComponent(autocompleteString));
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                parseAutoData: function(rawData) {
+                    var list = [];
+                    if (rawData) {
+                        $.each(rawData, function(index, item) {
+                            // each item in the autoCompleteList is a taxon.  so it
+                            // only needs to show up once in the suggestion list.
+                            if (typeof(item.id) == 'undefined') {
+                                return true;
+                            }
+                            //var name = ' (' + item.rank + ')';
+                            var name = '<i>' + item.name + '</i>';
+                            list.push(name);
+                        });
+                    }
+                    return list;
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                noResultsFound: function(reason) {
+                    var $desc = $('.bccvl-labelfade-description');
+                    if (reason){
+                        $desc.html(reason);
+                    }
+                    else {
+                        $desc.html('No Results Found');
+                    }
+                    $desc.show();
+                    $desc.removeClass('bccvl-read');
+                    $desc.addClass('bccvl-unread');
+                    setTimeout(function() {
+                        $desc.removeClass('bccvl-unread');
+                        $desc.addClass('bccvl-read');
+                    }, 5000);
+                    setTimeout(function(){
+                        $desc.hide();
+                    }, 8000);
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                cleanAutoItem: function(selectedItem) {
+                    // the string will always have <i>sciname</i> at the start, so..
+                    return selectedItem.split(/<\/?i>/)[1];
+                }
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+            },
+            search: {
+                searchUrl: function(selectedItem, start, pageSize) {
+                    startIndex = start || 0;
+                    pageSize = pageSize || 10;
+                    var splitItems = selectedItem.split(/<\/?i>/);
+                    var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
+                    var searchString = splitItems[1].replace(/\(|\)/g, '');
+                    return ('https://api.iobis.org/taxon?scientificname=' + encodeURIComponent(searchString));
+                    //return ('https://api.obis.org/v1/species?name=' + encodeURIComponent(searchString) + '&offset=' + startIndex + '&limit=' + pageSize);
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                searchSpeciesUrl: function(genusKey, start, pageSize) {
+                    // To search for all the species belong to a given genus
+                    startIndex = start || 0;
+                    pageSize = pageSize || 10;
+                    return ('https://backend.iobis.org/children/' + encodeURIComponent(genusKey) + '?offset=' + startIndex + '&limit=' + pageSize);
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                statusError: function(data) {
+                    return !('results' in data || data.length > 0)
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                totalRecords: function(data) {
+                    if (typeof(data.endOfRecords) != 'undefined' && !data.endOfRecords) {
+                        return data.offset + (2 * data.limit);
+                    }
+                    return data.offset;
+                },
+                // - - - - - - - - - - - - - - - - - - - - - - - - -
+                parseSearchData: function(rawData, searchString, excluded) {
+                    var list = [];
+
+                    if (rawData.results) {
+                        var included = [];
+                        var searchStringWords = searchString.toLowerCase().split(" ");
+                        $.each(rawData.results, function(index, item) {
+
+                            // Skip if it is already included
+                            if (typeof(item.id) == 'undefined' || $.inArray(item.id, included) != -1) {
+                                // See the jQuery docs, this is like 'continue' inside a $.each (yeh!)
+                                return true;
+                            }
+
+                            // Skip if its status is not accepted
+                            //if (typeof(item.taxonomicStatus) == 'undefined' || item.taxonomicStatus != 'ACCEPTED') {
+                            //    return true;
+                            //}
+
+                            // Check if it is alreday included for import in other search
+                            if ($.inArray(item.id, excluded) != -1) {
+                                return true;
+                            }
+
+                            // Skip if rank is undefined. Only interested in species or genus
+                            if (typeof(item.rank_name) == 'undefined')
+                            {
+                                return true;
+                            }
+
+                            // build the proper data object
+                            result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
+                            result.title = item.tname;
+                            result.friendlyname = item.tname;
+                            result.rank = item.rank_name;
+                            result.genus = item.genus;
+                            result.family = item.family;
+                            result.id = item.id;
+                            result.genusKey = item.rank_name == 'Genus'? item.id : -1;
+                            result.parentId = item.parent_id;
+
+                            //if (item.vernacularName) {
+                            //    result.title = item.vernacularName + ' <i class="taxonomy">' + item.scientificName + '</i>';
+                            //    result.friendlyname = item.vernacularName + ' ' + item.scientificName;
+                            //}
+
+                            if (item.id) {
+                                included.push(item.id);
+                                excluded.push(item.id);
+                            }
+
+                            if (item.rank_name) {
+                                result.description += ' (' + item.rank_name + ')';
+                            }
+
+                            // now get the actions sorted. For obis, lsid is the obis ID
+                            if (item.id) {
+                                var obisImportArgs = '?import=Import&';
+                                obisImportArgs += 'lsid=' + encodeURIComponent(item.id) + "&";
+                                obisImportArgs += 'taxon=' + encodeURIComponent(item.tname) + "&";
+                                obisImportArgs += 'searchOccurrence_source=' + encodeURIComponent('obis');
+
+                                result.actions.viz = 'https://www.obis.org/species/' + encodeURIComponent(item.id);
+                                result.actions.alaimport = document.URL + obisImportArgs;
+                            }
+                            list.push(result);
+                        });
+                    }
+                    return list;
+                },
+                // --------------------------------------------------------------
+                getData: function(nextIndex, selectedItem, pageSize) {
+                    // Get species data from obis
+                    var searchUrl = providers.obis.search.searchUrl(selectedItem, nextIndex, pageSize);
+                    $('.bccvl-results-spinner').css('display', 'block');
+
+                    return $.ajax({
+                        dataType: 'json',
+                        url: searchUrl,
+                        timeout: 60000
+                    });
+                },
+                // --------------------------------------------------------------
+                getGenusSpecies: function(genusKey, nextIndex, pageSize) {
+                    var surl = providers.obis.search.searchSpeciesUrl(genusKey, nextIndex, pageSize);
+                    $('.bccvl-results-spinner').css('display', 'block');
+
+                    return $.ajax({
+                        dataType: 'json',
+                        url: surl,
+                        timeout: 60000
+                    });
+                },
+            }
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        };
+
         providers['gbif'] = {
             autocomplete: {
                 autoUrl: function(autocompleteString) {
@@ -1104,9 +1279,9 @@ define(
                             $('.bccvl-search-results').data("data-genusKey", genusKey);
 
                             // For GBIF, if a genus is selected, need to display its associated species.
-                            if (dataSrc == 'gbif' && res.length > 0){
+                            if ((dataSrc == 'gbif' || dataSrc == 'obis') && res.length > 0){
                                 item = res[0];
-                                if (item.rank == 'GENUS'){
+                                if (item.rank.toUpperCase() == 'GENUS'){
                                     displayMoreData(0, pageSize, selectedItem, item.genusKey);
                                     $('.bccvl-search-results').data("data-genusKey", item.genusKey);
                                 }
