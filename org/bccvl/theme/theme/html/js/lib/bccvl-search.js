@@ -255,6 +255,48 @@ define(
                         timeout: 60000
                     });
                 },
+                importGenusDatasets: function(searchString, excluded) {
+                    var $resultTable = $('.bccvl-search-results');
+                    var genusKey = $resultTable.data('data-genusKey');
+
+                    var find_species_to_import = function(index, pageSize) {
+                        var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
+                        return $.ajax({
+                            dataType: 'json',
+                            url: surl,
+                            timeout: 60000
+                        }).then(
+                            function(data) {
+                                if (providers.gbif.search.statusError(data)){
+                                    providers.gbif.autocomplete.noResultsFound(unexpectedErrorMsg('gbif'));
+                                    return
+                                }
+                                // Import all the species datasets
+                                var results = providers.gbif.search.parseSearchData(data, searchString, excluded);
+                                if (!importSpeciesDatasets(results)) {
+                                    // if no more records and index==0
+                                    if (data.endOfRecords && index == 0) {
+                                        providers.gbif.autocomplete.noResultsFound();
+                                    }
+                                } else {
+                                    // import success
+                                    if (!data.endOfRecords) {
+                                        // there is more to come
+                                        find_species_to_import(index + pageSize, pageSize)
+                                    } else {
+                                        // we are done ....
+                                        location.href = portal_url + '/datasets'
+                                    }
+                                }
+
+                            },
+                            displayErrorMessage
+                        )
+                    }
+
+                    find_species_to_import(0, 40)
+
+                },                
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
         };
