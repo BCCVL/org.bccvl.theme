@@ -2231,7 +2231,7 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                }
 
                // Clip the extent to epsg 3857
-               if (tocrs == "EPSG:3857") {
+               if (tocrs == "EPSG:3857" && (proj.oProj.units == 'degree' || proj.oProj.units == 'degrees')) {
                   extent[1] = Math.max(extent[1], -85.06);
                   extent[3] = Math.min(extent[3], 85.06);
                   extent[0] = Math.max(extent[0], -179.99);
