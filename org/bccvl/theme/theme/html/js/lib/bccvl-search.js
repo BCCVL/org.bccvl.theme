@@ -141,14 +141,11 @@ define(
                     var rankSupplied = splitItems[0].split(/\((.*)\)/)[1];
                     var searchString = splitItems[1].replace(/\(|\)/g, '');
                     return ('https://api.iobis.org/taxon?scientificname=' + encodeURIComponent(searchString));
-                    //return ('https://api.obis.org/v1/species?name=' + encodeURIComponent(searchString) + '&offset=' + startIndex + '&limit=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(genusKey, start, pageSize) {
                     // To search for all the species belong to a given genus
-                    startIndex = start || 0;
-                    pageSize = pageSize || 10;
-                    return ('https://backend.iobis.org/children/' + encodeURIComponent(genusKey) + '?offset=' + startIndex + '&limit=' + pageSize);
+                    return ('https://backend.iobis.org/children/' + encodeURIComponent(genusKey));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {
@@ -200,7 +197,7 @@ define(
                             result.genus = item.genus;
                             result.family = item.family;
                             result.id = item.id;
-                            result.genusKey = item.rank_name == 'Genus'? item.id : -1;
+                            result.genusKey = item.rank_name.toUpperCase() == 'GENUS'? item.id : -1;
                             result.parentId = item.parent_id;
 
                             //if (item.vernacularName) {
@@ -233,6 +230,51 @@ define(
                     return list;
                 },
                 // --------------------------------------------------------------
+                parseSearchChildrenData: function(rawData, searchString, excluded, parentid)
+                {
+                    list = [];
+                    $.each(rawData, function(index, item) {
+                        // Skip if rank is undefined. Only interested in species or genus
+                        if (typeof(item.rank_name) == 'undefined' || (item.rank_name.toUpperCase() != 'SPECIES' && item.rank_name.toUpperCase() != 'GENUS'))
+                        {
+                            return true;
+                        }
+
+                        // skip if there is no record
+                        if (item.records <= 0) {
+                            return true;
+                        }
+
+                        // build the proper data object
+                        result = { title: "", description: "", actions: {}, friendlyname: "", rank: "", genus: "", family: "" };
+                        result.title = item.tname;
+                        result.friendlyname = item.tname;
+                        result.rank = item.rank_name;
+                        //result.genus = searchString;
+                        //result.family = item.family;
+                        result.id = item.id;
+                        //result.genusKey = parentid;
+                        result.parentId = parentid
+
+                        if (item.rank_name) {
+                            result.description += ' (' + item.rank_name + ')';
+                        }
+
+                        // now get the actions sorted. For GBIF, lsid is the taxonKey/nubKey i.e. speciesKey, genusKey
+                        if (item.id) {
+                            var obisImportArgs = '?import=Import&';
+                            obisImportArgs += 'lsid=' + encodeURIComponent(item.id) + "&";
+                            obisImportArgs += 'taxon=' + encodeURIComponent(item.tname) + "&";
+                            obisImportArgs += 'searchOccurrence_source=' + encodeURIComponent('obis');
+
+                            result.actions.viz = 'https://www.obis.org/species/' + encodeURIComponent(item.id);
+                            result.actions.alaimport = document.URL + obisImportArgs;
+                        }
+                        list.push(result);
+                    });
+                    return list;
+                },
+                // --------------------------------------------------------------
                 getData: function(nextIndex, selectedItem, pageSize) {
                     // Get species data from obis
                     var searchUrl = providers.obis.search.searchUrl(selectedItem, nextIndex, pageSize);
@@ -260,33 +302,27 @@ define(
                     var genusKey = $resultTable.data('data-genusKey');
 
                     var find_species_to_import = function(index, pageSize) {
-                        var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
+                        var  surl = providers.obis.search.searchSpeciesUrl(genusKey, index, pageSize);
                         return $.ajax({
                             dataType: 'json',
                             url: surl,
                             timeout: 60000
                         }).then(
                             function(data) {
-                                if (providers.gbif.search.statusError(data)){
-                                    providers.gbif.autocomplete.noResultsFound(unexpectedErrorMsg('gbif'));
+                                if (providers.obis.search.statusError(data)){
+                                    providers.obis.autocomplete.noResultsFound(unexpectedErrorMsg('obis'));
                                     return
                                 }
                                 // Import all the species datasets
-                                var results = providers.gbif.search.parseSearchData(data, searchString, excluded);
+                                var results = providers.obis.search.parseSearchChildrenData(data, searchString, excluded, genusKey);
                                 if (!importSpeciesDatasets(results)) {
                                     // if no more records and index==0
                                     if (data.endOfRecords && index == 0) {
-                                        providers.gbif.autocomplete.noResultsFound();
+                                        providers.obis.autocomplete.noResultsFound();
                                     }
                                 } else {
                                     // import success
-                                    if (!data.endOfRecords) {
-                                        // there is more to come
-                                        find_species_to_import(index + pageSize, pageSize)
-                                    } else {
-                                        // we are done ....
-                                        location.href = portal_url + '/datasets'
-                                    }
+                                    location.href = portal_url + '/datasets'
                                 }
 
                             },
