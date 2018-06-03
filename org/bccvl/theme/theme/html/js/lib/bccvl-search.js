@@ -1470,19 +1470,18 @@ define(
         // --------------------------------------------------------------
         importSpeciesDatasets = function(results) {
             // Import all the species datasets from the search results
-            var deferred;
             var deferreds = [];
             $.each(results, function(index, item) {
                 $.each(item.actions, function(action, actionParam) {
                     if (action == 'alaimport') {
-                        deferred = $.Deferred();
-                        deferreds.push(deferred);
-
-                        $.get(actionParam).always(deferred.resolve);
-                        // To do: pass the result back to each deferred
-                        //$.get(actionParam).always(function(result) {
-                        //        deferred.resolve(result);
-                        //});
+                        function import_dataset() {
+                            var deferred = $.Deferred();
+                            deferreds.push(deferred);
+                            $.get(actionParam).always(function(result) {
+                                    deferred.resolve(result);
+                            });
+                        }
+                        import_dataset();
                     }
                 });
             });
