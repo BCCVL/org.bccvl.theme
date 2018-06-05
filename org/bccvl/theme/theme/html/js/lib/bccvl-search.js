@@ -1477,10 +1477,24 @@ define(
                         function import_dataset() {
                             var deferred = $.Deferred();
                             deferreds.push(deferred);
-                            $.get(actionParam).always(function(result) {
-                                    deferred.resolve(result);
-                            });
-                        }
+                            function request_dataset(retries) {
+                                retries = retries + 1;
+                                $.get(actionParam).then(
+                                    function(result) {
+                                        deferred.resolve(result);
+                                    },
+                                    function(result) {
+                                        if (retries >= 3) {
+                                            deferred.resolve(result);
+                                        }
+                                        else {
+                                            request_dataset(retries);
+                                        }
+                                    }
+                                )
+                            };
+                            request_dataset(0);
+                        };
                         import_dataset();
                     }
                 });
