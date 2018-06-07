@@ -303,6 +303,7 @@ define(
 
                     var find_species_to_import = function(index, pageSize) {
                         var  surl = providers.obis.search.searchSpeciesUrl(genusKey, index, pageSize);
+                        $('.bccvl-results-spinner').css('display', 'block');
                         return $.ajax({
                             dataType: 'json',
                             url: surl,
