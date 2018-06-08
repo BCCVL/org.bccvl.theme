@@ -23,6 +23,54 @@
 
       <div id="bccvl-experiment-overlay">
         <div id="bccvl-experimentresults-table" >
+
+          <div class="experiment-inputs"
+               tal:condition="python: context.portal_type in ('org.bccvl.content.projectionexperiment', )">
+            <h5 class="results-title">Experiment Inputs</h5>
+            <div class="bccvl-experimenttable-accordion accordion-group">
+              <!-- occurrence/absence dataset -->
+              <tal:loop tal:repeat="item dataset_tools/experiment_inputs">
+                <div class="row-fluid experiment-result-contents"
+                     tal:define="item_obj item/getObject|nothing;
+                                 item_desc item/Description;
+                                 result_folder python: item_obj.__parent__;
+                                 md python:dataset_tools.metadata(item_obj);">
+                  <div class="span9 bccvl-table-label">
+                    <h5 tal:content="item/Title">Item Title</h5>
+                    <p><span tal:condition="item_desc"
+                             tal:content="item_desc">Dataset short description</span>
+                      <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
+                      <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
+                      <span tal:condition="result_folder/job_params/function|nothing">Algorithm: <i tal:content="result_folder/job_params/function"></i></span>
+                    </p>
+                  </div>
+                  <div class="bccvl-table-controls span3"
+                       tal:define="dlinfo python:dataset_tools.get_download_info(item_obj);
+                                   downloadurl dlinfo/url;">
+                    <a class="bccvl-compare-viz btn btn-primary"
+                       title="Preview this file"
+                       href="#downloadurl"
+                       data-viz-type="occurrence"
+                       data-mimetype="application/octet-tream"
+                       data-uuid="a uuid"
+                       tal:attributes="href downloadurl;
+                                       data-uuid item/UID;
+                                       data-mimetype dlinfo/contenttype;
+                                       data-layername item/Title;
+                                       data-subset result_folder/job_params/subset|nothing;
+                                       data-algorithm result_folder/job_params/function|nothing;
+                                       data-constraint python: 'unconstraint' if item.BCCDataGenre in ('DataGenreCP_ENVLOP', 'DataGenreFP_ENVLOP') else None;
+                                       data-viztype python: 'occurrence' if item.BCCDataGenre in ('DataGenreSpeciesOccurrence', 'DataGenreSpeciesAbsence', 'DataGenreSpeciesCollection') else 'auto';"
+                       tal:condition="python: dlinfo['contenttype'] not
+                                      in (None, 'None', 'application/octet-stream', 'application/x-r-data', 'txt/html', 'text/html')">
+                      <i class="icon-eye-open icon-link icon-white"></i>
+                    </a>
+                  </div>
+                </div>
+              </tal:loop>
+            </div>
+          </div>
+
           <h5 class="results-title">Visualisable Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
             <div class="bccvl-experimenttable-accordion accordion-group"
