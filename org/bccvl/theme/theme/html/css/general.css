@@ -1948,7 +1948,7 @@ span.loading-gif {
     opacity:.5;
     color:white;
 }
-.faceted-zero-count-hidden {
+.faceted-zero-count-hidden .faceted-select-item-disabled {
     display:none;
 }
 .faceted-sorting-widget .field {
