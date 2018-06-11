@@ -39,6 +39,7 @@
         <replace css:theme="#climatecurrent" css:content="#climatecurrent"/>
         <replace css:theme="#environmental" css:content="#environmental"/>
         <replace css:theme="#climatefuture" css:content="#climatefuture"/>
+        <replace css:theme="#environmentalfuture" css:content="#environmentalfuture"/>
         <replace css:theme="#speciestrait" css:content="#speciestrait"/>
 
     </rules>
