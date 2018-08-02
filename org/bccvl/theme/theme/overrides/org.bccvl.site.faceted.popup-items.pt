@@ -50,7 +50,7 @@
                   <li tal:condition="md/resolution|nothing"><small><b>Resolution: <tal:r tal:replace="python: dataset_tools.resolution_vocab.getTerm(md['resolution']).title"></tal:r></b></small></li>
                   <li tal:condition="md/emsc|nothing"><small><b>Emmission Scenario: <tal:r tal:replace="md/emsc"></tal:r></b></small></li>
                   <li tal:condition="md/gcm|nothing"><small><b>Global Circulation Model: <tal:r tal:replace="md/gcm"></tal:r></b></small></li>
-                  <li tal:condition="layers"
+                  <li tal:condition="python: item.portal_type != 'org.bccvl.content.multispeciesdataset' and layers"
                       tal:define="layers md/layers|nothing">
                     <small><b>Layers:</b>
                     <ul>
