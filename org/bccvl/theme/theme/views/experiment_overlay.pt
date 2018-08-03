@@ -23,7 +23,6 @@
 
       <div id="bccvl-experiment-overlay">
         <div id="bccvl-experimentresults-table" >
-
           <div class="experiment-inputs"
                tal:condition="python: context.portal_type in ('org.bccvl.content.projectionexperiment', )">
             <h5 class="results-title">Experiment Inputs</h5>
@@ -36,12 +35,12 @@
                                  result_folder python: item_obj.__parent__;
                                  md python:dataset_tools.metadata(item_obj);">
                   <div class="span9 bccvl-table-label">
-                    <h5 tal:content="item/Title">Item Title</h5>
                     <p><span tal:condition="item_desc"
                              tal:content="item_desc">Dataset short description</span>
                       <span tal:condition="md/rows|nothing">Rows: <i tal:content="md/rows"></i></span>
                       <span tal:condition="md/species/scientificName|nothing">Species: <i tal:content="md/species/scientificName"></i></span>
                       <span tal:condition="result_folder/job_params/function|nothing">Algorithm: <i tal:content="result_folder/job_params/function"></i></span>
+                      <span tal:content="item/Title">Item Title</span>
                     </p>
                   </div>
                   <div class="bccvl-table-controls span3"
