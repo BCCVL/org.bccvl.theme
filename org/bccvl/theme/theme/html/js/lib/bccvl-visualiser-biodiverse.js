@@ -423,7 +423,7 @@ define(
                     
                     var rgb = d3.rgb(colorBank[colorIdx]);
                     var geom = new ol.geom.Polygon([[
-                            [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y]
+                            [x,y], [x, y + gridSize], [x + gridSize, y + gridSize], [x + gridSize, y], [x, y]
                         ]]);
         
                         geom.transform(dataProj,mapProj);
