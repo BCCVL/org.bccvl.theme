@@ -122,10 +122,11 @@
                           <tal:replace tal:replace="result/job_params/subset">Subset1 (1,2,3)</tal:replace>
                         </li>
                       </tal:block>
-                      <tal:block tal:condition="python: 'function' in result.job_params">
-                        <li tal:condition="result/job_params/function">
+                      <tal:block tal:condition="function"
+                                 tal:define="function result/job_params/function|result/job_params/algorithm|nothing">
+                        <li>
                           <strong>Algorithm: </strong>
-                          <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace>
+                          <tal:replace tal:replace="function">bioclim</tal:replace>
                         </li>
                       </tal:block>
                       <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
