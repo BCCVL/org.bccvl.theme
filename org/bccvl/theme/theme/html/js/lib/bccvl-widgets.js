@@ -325,7 +325,11 @@ define(
 
         };
 
-        SelectList.prototype.reload_widget = function(params) {
+        /**
+         * @param {{name: string, value: any}[]} params Parameters to send to server
+         * @param {() => any} [callback] Callback to execute upon successful reload
+         */
+        SelectList.prototype.reload_widget = function(params, callback) {
             params.push({name: 'ajax_load', value: 1});
             var $loader = this.$widget.parent().find('span.loader-container img.loader');
             $loader.show(0);
@@ -339,17 +343,25 @@ define(
                     var rows = $(text).find('.dataset-rows').data('rows');
                     // trigger change event on widget update
                     $(this).trigger('widgetChanged', [rows]);
+
+                    // If callback defined, run it
+                    callback && callback();
                 }
             );
         };
 
-        SelectList.prototype.modal_open = function(event) {
-            event.preventDefault();
+        SelectList.prototype.get_uuids = function() {
             // get currently selected uuids
-            uuids = [];
+            var uuids = [];
             $.each(this.$widget.find('input.item'), function(idx, element) {
                 uuids.push($(element).val());
             });
+            return uuids;
+        }
+
+        SelectList.prototype.modal_open = function(event) {
+            event.preventDefault();
+            var uuids = this.get_uuids();
             // show modal
             this.modal.show(uuids);
         };
@@ -387,37 +399,112 @@ define(
         SelectDict.prototype.constructor = SelectDict; // use new constructor
         // override modal_apply
         SelectDict.prototype.modal_apply = function(event) {
+            var _this = this;
+
+            function buildParams(selectedUuids) {
+                var count = parseInt($('[name="' + _this.settings.widgetname + '.count"]').val()) || 0;
+                var params = [];
+                $.each(selectedUuids, function(idx, uuid) {
+                    var $existing = $('input[value="' + uuid + '"]').closest('.selecteditem');
+                    if ($existing.length > 0) {
+                        // we have a previously selected item, let's grab all form elements for it
+                        var data = $existing.find('input,select').serializeArray();
+                        $.merge(params, data);
+    
+                    } else {
+                        // we have got a new item
+                        params.push({name: _this.settings.widgetname + '.item.' + count,
+                                     value: uuid});
+                        count += 1;
+                    }
+                }.bind(_this));
+                params.push({name: _this.settings.widgetname + '.count',
+                             value: count});
+                return params;
+            }
 
             // get selected element
             var selected = this.modal.get_selected();
 
             // we have all the data we need so get rid of the modal
             this.modal.close();
-            // build params
-            var count = parseInt($('[name="' + this.settings.widgetname + '.count"]').val()) || 0;
-            var params = [];
-            $.each(selected, function(idx, uuid) {
-                var $existing = $('input[value="' + uuid + '"]').closest('.selecteditem');
-                if ($existing.length > 0) {
-                    // we have a previously selected item, let's grab all form elements for it
-                    var data = $existing.find('input,select').serializeArray();
-                    $.merge(params, data);
 
-                } else {
-                    // we have got a new item
-                    params.push({name: this.settings.widgetname + '.item.' + count,
-                                 value: uuid});
-                    count += 1;
-                }
-            }.bind(this));
-            params.push({name: this.settings.widgetname + '.count',
-                         value: count});
+            // Reload widget on apply
+            var params = buildParams(selected);
             this.reload_widget(params);
             
             // All/None button
             var $widget = this.$widget
-            var _this = this
             $widget.off('click')
+            
+            // allow user to remove selected elements
+            $widget.on('click', 'a:has(i.icon-remove)', function(event) {
+                var $el = $(this);
+
+                event.preventDefault();
+
+                // search for any hidden 'empty-check' fields and update them if an item is removed
+                var field = $el.parents('.control-group');
+                var selectedItems = field.find('.selecteditem');
+	            var numDatasets = selectedItems.length-1;
+
+	            if (numDatasets <= 0) {
+	                field.find('.empty-check').val('');
+	            } else {
+	                field.find('.empty-check').val(numDatasets);
+                }
+                
+                // Remove the UUID for the one that we are attempting to remove
+                var uuids = _this.get_uuids();
+                var uuidToRemove = $el.parents('div.selecteditem').find('input.item').val();
+
+                var filteredUuids = uuids.filter(function(uuid) {
+                    return uuid !== uuidToRemove;
+                });
+
+                // Read checkbox checked state in each selected item
+                /** @type {{ [uuid: string]: { [id: string] : boolean }[] }} */
+                var checkedState = {};
+                selectedItems.each(function(_i, el) {
+                    var $el = $(el);
+                    var uuid = $el.find('input.item').val();
+                    var checkboxStates = (checkedState[uuid] = {});
+                    
+                    // Map all checkboxes to their checked states
+                    $el.find('input[type="checkbox"]')
+                        .each(function(_j, inputEl) {
+                            var $inputEl = $(inputEl);
+                            checkboxStates[$inputEl.prop('id')] = $inputEl.prop('checked');
+                        });
+                });
+
+                // Reload the widget so that any messages rendered server-side
+                // are also shown
+                var params = buildParams(filteredUuids);
+                _this.reload_widget(params, function() {
+                    // Recover all selected checkbox states after reload
+                    var newItems = _this.$widget.find('.selecteditem');
+
+                    newItems.each(function(_i, el) {
+                        var $el = $(el);
+                        var uuid = $el.find('input.item').val();
+                        var checkboxStates = checkedState[uuid];
+
+                        // If states are not found, ignore
+                        if (!checkboxStates) {
+                            return;
+                        }
+
+                        // Set checkboxes to prior state
+                        $el.find('input[type="checkbox"]')
+                            .each(function(_j, inputEl) {
+                                var $inputEl = $(inputEl);
+                                var checked = checkboxStates[$inputEl.prop('id')];
+                                $inputEl.prop('checked', checked);
+                            });
+                    });
+                });
+            });
             
             $widget.on('click', 'a.select-all', function() {
                 $(this).parents('.selecteditem').find('input[type="checkbox"]').prop('checked', 'checked');
