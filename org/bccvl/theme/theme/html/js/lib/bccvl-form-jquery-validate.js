@@ -219,6 +219,55 @@ define(
           return result;
         }, 'Please enter one or more month numbers, seperated by commas. Months cannot be repeated.');
 
+        /**
+         * Checks that the pre-defined region option for constraint area is
+         * actually properly filled out.
+         * 
+         * The "constraint area: pre-defined region" validator should be applied
+         * to `<input type="radio" name="constraints_type">` elements.
+         * 
+         * Note that this validator does assume the DOM structure of the form,
+         * and thus will probably need to be modified when the widgets that
+         * generate the form change
+         * 
+         * @param {string | undefined} value
+         * @param {Element} element
+         */
+        function constraintArea_predefinedRegion(value, element) {
+            // This validation rule only applies when the type is "pre-defined
+            // region" which is defined as "region_no_offset"
+            if (value !== "region_no_offset") {
+                return true;
+            }
+            
+            // Validation rule doesn't seem to get the actual checked element,
+            // so we need to traverse DOM to find this
+            var $checkedEl =
+                $("input[name='constraints_type']:checked", $(element).closest(".constraint-method").parent());
+
+            // The pre-defined region fields are inside `#select-region` which
+            // should be a sibling of the input element
+            var $selectRegion = $checkedEl.siblings("#select-region");
+
+            // Check that we actually have the information set in the <input>
+            // field that encodes the region (`#form-widgets-modelling_region`)
+            var regionVal = $("#form-widgets-modelling_region", $selectRegion).val();
+
+            // If not present, then it fails validation
+            if (!regionVal || regionVal.length === 0) {
+                return false;
+            }
+
+            // If everything passes, then we say that it's okay
+            return true;
+        }
+
+        $.validator.addMethod(
+            "constraintArea_predefinedRegion", 
+            constraintArea_predefinedRegion, 
+            "Please select a pre-defined region and click 'Add To Map' to confirm."
+        );
+
         // add common class rules
         $.validator.addClassRules({
             "number": {
@@ -291,6 +340,10 @@ define(
                 } else if (element.parents('#nomination-table').length > 0){
                     $('#errorMessages').html(error).show();
                     //element.parents('#nomination-table').find('#errorMessages')
+                } else if (element.parents(".constraint-method").length > 0) {
+                    // For the constraint area check, we place the error above
+                    // the constraint area selection group
+                    element.parents(".constraint-method").parent().prepend(error);
                 } else {
                     error.insertAfter(element);
                 }
@@ -326,17 +379,20 @@ define(
                     // add error or complete classes to headers
                     $.each(errorFields, function(i){
                         // convert array object into jquery object
-                        var element = $(this)[0].element;
+                        var $element = $(this.element);
                         // find error's tabs, used for rest of function
-                        var tabId = $(element).parents('.tab-pane').attr('id');
+                        var tabId = $element.parents('.tab-pane').attr('id');
                         // generate error messages for top panel
                         var errorMessage;
-                        if (typeof $(element).data('errorMessage') !== "undefined"){
-                            errorMessage = $(element).data('errorMessage');
-                        } else if (typeof $(element).data('friendlyName') !== "undefined"){
-                            errorMessage = $(element).data('friendlyName');
-                        } else if (typeof $(element).attr('placeholder') !== "undefined"){
-                            errorMessage = $(element).attr('placeholder');
+                        if (typeof $element.data('errorMessage') !== "undefined"){
+                            errorMessage = $element.data('errorMessage');
+                        } else if (typeof $element.data('friendlyName') !== "undefined"){
+                            errorMessage = $element.data('friendlyName');
+                        } else if (typeof $element.attr('placeholder') !== "undefined"){
+                            errorMessage = $element.attr('placeholder');
+                        } else if ($element.closest(".constraint-method").length > 0) {
+                            // Special case for constraint area pre-defined region
+                            errorMessage = this.message;
                         } else {
                             errorMessage = "Problem with field.";
                         }
@@ -369,6 +425,9 @@ define(
                     });
                     //alert('There are errors or incomplete fields in the form that need to be addressed before the experiment can begin.');
                 }
+            },
+            rules: {
+                "constraints_type": "constraintArea_predefinedRegion"
             }
         });
 
@@ -407,13 +466,59 @@ define(
                         $('body a[href="#'+$(this).parents('.tab-pane').attr('id')+'"]').removeClass('completed').addClass('error');
                     }
                 });
+
+                // If the constraints type input fields are present, we also
+                // run validation
+                var $constraintsType = $("input[name='constraints_type']", form);
+
+                if ($constraintsType.length > 0) {
+                    // Run the validation function on the element
+                    var constraintAreaValid = $constraintsType.valid();
+
+                    if (!constraintAreaValid) {
+                        errorsOnTab = true;
+                    }
+                }
             };
             $.when( tabCheck() ).done(function(){
-                if (errorsOnTab == false){
-                    $('.bccvl-wizardtabs .nav-tabs li.active a[data-toggle="tab"]').removeClass('error').addClass('completed');
+                var $tab = $('.bccvl-wizardtabs .nav-tabs li.active a[data-toggle="tab"]');
+
+                if (errorsOnTab){
+                    // Highlight error
+                    $tab.removeClass('completed').addClass('error');
+                } else {
+                    // Remove error and highlight as done
+                    $tab.removeClass('error').addClass('completed');
                 }
             });
 
+        });
+
+        // Re-run validation when map selection made for constraint areas
+        //
+        // The click event handler here has been namespaced under
+        // `.bccvl-form-jquery-validate` so that it can be manipulated without
+        // conflicting with other handlers
+        $(".btn.draw-geojson").on("click.bccvl-form-jquery-validate", function(e) {
+            // Look for constraint method input fields
+            var $constraintMethod = $(this).closest(".constraint-method");
+
+            if ($constraintMethod.length === 0) {
+                // No constraint method input fields found, bailing out
+                return;
+            }
+
+            var $constraintsType = $("input[name='constraints_type']", $constraintMethod);
+
+            // Run validation which should automatically handle the
+            // success/error condition rendering
+            //
+            // Note that we run this in the next event loop cycle because the
+            // region information would not have been inserted into the hidden
+            // <input> field at this very moment in time
+            setTimeout(function() {
+                $constraintsType.valid();
+            }, 0);
         });
 
         // document ready
