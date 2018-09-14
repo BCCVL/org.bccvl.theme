@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "build:watch": "webpack --config webpack.config.js --watch",
     "cleandev": "rm -fr ./node_modules",
     "clean": "rm -fr ./dist"
   },
