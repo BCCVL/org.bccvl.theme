@@ -1921,6 +1921,18 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                  }
                });
 
+                // "Select constraints by pre-defined region" option
+                //
+                // We need to clear the actual layer because this option doesn't do that
+                // automatically and we also need to ensure that what the user actually sets is what
+                // is encoded into the form and sent to the server (rather than sending the convex
+                // hull polygon by default)
+                $('input[type="radio"]#region_no_offset').change(function() {
+                    var $this = $(this);
+
+                    // Wipe constraints polygon
+                    bccvl_common.removeConstraints($this, map, constraintsLayer);
+                });
 
                $('input[type="radio"]#use_enviro_env').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
