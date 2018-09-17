@@ -1981,15 +1981,18 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
 
-
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
-
-                      bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon,
-                        constraintsLayer, map.getView().getProjection().getCode());
-                      $('input[type="radio"]#use_convex_hull').prop('checked', true);
-                   }
-
+                        bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon,
+                            constraintsLayer, map.getView().getProjection().getCode());
+                        
+                        // Since we've now reset to the original constraints, change the accordion
+                        // to open the convex hull option by setting it checked and triggering the
+                        // change event (which handles the rest of the accordion)
+                        $('input[type="radio"]#use_convex_hull')
+                            .prop('checked', true)
+                            .trigger('change');
+                    }
                });
                $('.btn.draw-geojson').on('click', function(e){
 
