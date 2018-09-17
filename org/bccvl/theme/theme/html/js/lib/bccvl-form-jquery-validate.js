@@ -469,7 +469,7 @@ define(
 
                 // If the constraints type input fields are present, we also
                 // run validation
-                var $constraintsType = $("input[name='constraints_type']", form);
+                var $constraintsType = $("input[name='constraints_type']", $('fieldset.tab:visible'));
 
                 if ($constraintsType.length > 0) {
                     // Run the validation function on the element
