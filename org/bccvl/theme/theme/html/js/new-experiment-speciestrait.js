@@ -32,6 +32,7 @@ define(
             
             // set up validator var
             var validator;
+            var g_speciesList = [];
 
             // setup dataset select widgets
             var traitsTable = new bccvl.SelectList("species_traits_dataset");
@@ -128,13 +129,21 @@ define(
                                                 // close the zip reader
                                                 reader.close();
 
+                                                // Get the species from the trait data
+                                                var speciesList = [];
+                                                trait.forEach(function(row) {
+                                                    if (speciesList.indexOf(row.species) < 0) {
+                                                        speciesList.push(row.species);
+                                                    }
+                                                })
                                                 csv.resolve({
                                                     columns: traits.columns,
                                                     truncData: traits.filter(function(row, i) {
                                                         if (i < 5) {
                                                             return row;
                                                         }
-                                                    })
+                                                    }),
+                                                    speciesList: speciesList
                                                 })
 
                                             });
@@ -156,12 +165,19 @@ define(
                                             return row;
                                         }
                                     })
-                                    csv.resolve({columns: columns, truncData: truncData})
+                                    var speciesList = [];
+                                    data.forEach(function(row) {
+                                        if (speciesList.indexOf(row.species) < 0) {
+                                            speciesList.push(row.species);
+                                        }
+                                    })
+                                    csv.resolve({columns: columns, truncData: truncData, speciesList: speciesList})
                                 })
                             }
 
                             // continue once we have the csv data....
                             csv.then(function(params) {
+                                g_speciesList = params.speciesList
                                 var columns = params.columns
                                 var truncData = params.truncData
 
@@ -291,9 +307,13 @@ define(
                 var env_idx_map = {}
                 for (var i=0; i < formvalues.length; i++) {
                     var param = formvalues[i]
+
+                    // list of species 
+                    params.species_list = g_speciesList;
+                                        
                     // column definition?
                     if (param.name.startsWith('trait-nomination_')) {
-                        param.name = param.name.slice('trait-monitanion_'.length)
+                        param.name = param.name.slice('trait-nomination_'.length)
                         params.columns[param.name] = param.value
                         continue
                     }

@@ -116,6 +116,14 @@
                           <tal:replace tal:replace="species">Species</tal:replace>
                         </li>
                       </tal:block>
+                      <tal:block tal:condition="dsuuid"
+                                 tal:define="dsuuid result/job_params/traits_dataset|nothing">
+                        <li tal:condition="species"
+                            tal:define="species result/job_params/species|nothing">
+                          <strong>Species: </strong>
+                          <tal:replace tal:replace="species">Species</tal:replace>
+                        </li>
+                      </tal:block>
                       <tal:block tal:condition="python: 'subset' in result.job_params">
                         <li tal:condition="result/job_params/subset">
                           <strong>Data Subset: </strong>
