@@ -131,7 +131,7 @@ define(
 
                                                 // Get the species from the trait data
                                                 var speciesList = [];
-                                                trait.forEach(function(row) {
+                                                traits.forEach(function(row) {
                                                     if (speciesList.indexOf(row.species) < 0) {
                                                         speciesList.push(row.species);
                                                     }
