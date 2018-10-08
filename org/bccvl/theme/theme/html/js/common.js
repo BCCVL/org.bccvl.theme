@@ -45,6 +45,7 @@ requirejs.config({
 
         'bccvl-visualiser-compare-graphs': 'js/bccvl-visualiser-compare-graphs',
         'bccvl-visualiser-compare':   'js/bccvl-visualiser-compare',
+        'bccvl-visualiser-data-exploration': 'js/bccvl-visualiser-data-exploration',
         'bccvl-visualiser-overlay':   'js/bccvl-visualiser-overlay',
         'dashboard':                  'js/dashboard',
         'dataset-collections':        'js/dataset-collections',
