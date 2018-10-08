@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     'bccvl-visualiser-compare': './js/bccvl-visualiser-compare.js',
     'bccvl-visualiser-compare-graphs': './js/bccvl-visualiser-compare-graphs.js',
+    'bccvl-visualiser-data-exploration': './js/bccvl-visualiser-data-exploration.js',
     'bccvl-visualiser-overlay': './js/bccvl-visualiser-overlay.js',
     'dashboard': './js/dashboard.js',
     'dataset-collections': './js/dataset-collections.js',
