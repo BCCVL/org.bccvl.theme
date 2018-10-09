@@ -142,7 +142,6 @@ define(['jquery', 'bccvl-visualiser-common'],
                 // streamlined into switch block
                 switch (type) {
                     case "image/png":
-                        // NOTE: `uuid` is unused in render function
                         vizcommon.renderPng(uuid, resourceUrl, id);
                         break;
 
@@ -155,12 +154,10 @@ define(['jquery', 'bccvl-visualiser-common'],
                     case "text/plain":
                     case "text/x-r":
                     case "application/x-perl":
-                        // NOTE: `uuid` is unused in render function
                         vizcommon.renderCode(uuid, resourceUrl, id);
                         break;
                         
                         case "application/pdf":
-                        // NOTE: `uuid` is unused in render function
                         vizcommon.renderPDF(uuid, resourceUrl, id);
                         break;
 
