@@ -93,7 +93,7 @@
                     <a class="fine btn btn-info" title="Download this file" href="#downloadurl" tal:attributes="href downloadurl;">
                       <i class="icon-download-alt icon-link icon-white"></i>
                     </a>
-                    <a class="bccvl-compare-graph btn btn-primary" title="Preview this file" href="#downloadurl"
+                    <a class="bccvl-data-exploration btn btn-primary" title="Preview this file" href="#downloadurl"
                           data-viz-type="auto"
                           data-mimetype="application/octet-tream"
                           data-uuid="a uuid"
@@ -101,8 +101,7 @@
                                           data-uuid item/UID;
                                           data-mimetype dlinfo/contenttype;
                                           data-layername item/Title;
-                                          data-subset result/job_params/subset|nothing;
-                                          data-algorithm result/job_params/function|nothing;"
+                                          data-subset result/job_params/subset|nothing;"
                           tal:condition="python: dlinfo['contenttype'] not
                                           in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
                       <i class="icon-eye-open icon-link icon-white"></i>
