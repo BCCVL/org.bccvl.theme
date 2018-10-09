@@ -64,7 +64,7 @@
                   </div>
                   <div class="experiment-details">
                     <h5>
-                      <tal:replace tal:replace="result/Title">Result Title</tal:replace>
+                      <tal:replace tal:replace="python: result.Title().replace(' - exploration_plot ', ' - ')">Result Title</tal:replace>
                     </h5>
                     <tal:block tal:condition="python: 'function' in result.job_params">
                       <p><span>Algorithm: <tal:replace tal:replace="result/job_params/function">bioclim</tal:replace></span>
