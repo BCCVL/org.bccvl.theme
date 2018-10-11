@@ -18,6 +18,7 @@
     <xi:include href="rules/experiment-compare.xml" />
     <xi:include href="rules/experiment-compare-graphs.xml" />
     <xi:include href="rules/experiment-biodiverse-vis.xml" />
+    <xi:include href="rules/experiment-data-exploration.xml" />
     <xi:include href="rules/new-experiment-sdm.xml" />
     <xi:include href="rules/new-experiment-msdm.xml" />
     <xi:include href="rules/new-experiment-mme.xml" />
