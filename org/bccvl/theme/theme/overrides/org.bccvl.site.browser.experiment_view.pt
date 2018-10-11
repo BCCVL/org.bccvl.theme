@@ -62,224 +62,228 @@
 
           <h5 class="results-title">Experiment Results</h5>
           <tal:block tal:repeat="result context/@@folderListing">
-            
-            <div class="bccvl-experimenttable-accordion accordion-group">
+            <tal:block tal:define="function result/job_params/function|result/job_params/algorithm|nothing"
+                      tal:condition="python: function != 'exploration_plot'">
               
-              <div class="experiment-accordion-heading" 
-                   tal:attributes="data-target string:#${result/getId}-body;
-                                   data-uuid result/UID"
-                   tal:define="result_tools nocall:result/@@dataset_tools">
-                <div tal:attributes="class result_tools/job_state|string:info;">
-                  <div class="bccvl-table-controls">
-                    <a class="fine btn btn-mini btn-inverse export-btn"
-                       title="Export this result"
-                       href="#exporturl"
-                       tal:attributes="href string:${result/getURL}/modal_export">
-                      <i class="fa fa-cloud-upload icon-link"></i> Export
-                    </a>
-                    <a class="fine btn btn-mini btn-info download-btn"
-                       title="Download this result"
-                       href="#downloadurl"
-                       tal:attributes="href string:${result/getURL}/@@resultdownload;">
-                      <i class="fa fa-download icon-link"></i> Download
-                    </a>
-                    <a class="fine btn btn-mini btn-info download-btn"
-                       title="Download Exp Metadata"
-                       href="#downloadurl"
-                       tal:attributes="href string:${result/getURL}/expmetadata.txt;">
-                      <i class="fa fa-download icon-link"></i> Metadata
-                    </a>
-
-                    <tal:block tal:define="state result_tools/job_state"
-                               tal:condition="python:state == 'FAILED'">
-                      <a class="fine btn btn-mini btn-info email-support-btn"
-                         title="Send an email to BCCVL for support regarding this experiment"
-                         href="#emailsupporturl"
-                         tal:attributes="href string:${navigation_root_url}/API/site/v1/send_support_email?url=${result/getURL};">
-                        <i class="fa fa-envelope-o icon-link"></i> Support
+              <div class="bccvl-experimenttable-accordion accordion-group">
+                
+                <div class="experiment-accordion-heading" 
+                    tal:attributes="data-target string:#${result/getId}-body;
+                                    data-uuid result/UID"
+                    tal:define="result_tools nocall:result/@@dataset_tools">
+                  <div tal:attributes="class result_tools/job_state|string:info;">
+                    <div class="bccvl-table-controls">
+                      <a class="fine btn btn-mini btn-inverse export-btn"
+                        title="Export this result"
+                        href="#exporturl"
+                        tal:attributes="href string:${result/getURL}/modal_export">
+                        <i class="fa fa-cloud-upload icon-link"></i> Export
                       </a>
-                    </tal:block>
-                  </div>
+                      <a class="fine btn btn-mini btn-info download-btn"
+                        title="Download this result"
+                        href="#downloadurl"
+                        tal:attributes="href string:${result/getURL}/@@resultdownload;">
+                        <i class="fa fa-download icon-link"></i> Download
+                      </a>
+                      <a class="fine btn btn-mini btn-info download-btn"
+                        title="Download Exp Metadata"
+                        href="#downloadurl"
+                        tal:attributes="href string:${result/getURL}/expmetadata.txt;">
+                        <i class="fa fa-download icon-link"></i> Metadata
+                      </a>
 
-                  <div class="experiment-details">
-                    <h5><tal:replace tal:replace="result/Title">Result
-                    Title</tal:replace></h5>
-                    <!-- FIXME: get a better condition or use
-                         adapters -->
-                    <ul>
-                      <tal:block tal:condition="dsuuid"
-                                 tal:define="dsuuid result/job_params/species_occurrence_dataset|result/job_params/species_distribution_models|nothing">
-                        <li tal:condition="species"
-                            tal:define="dsmd python: dataset_tools.metadata(uuid=dsuuid);
-                                        species dsmd/species/scientificName|nothing">
-                          <strong>Species: </strong>
-                          <tal:replace tal:replace="species">Species</tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:condition="dsuuid"
-                                 tal:define="dsuuid result/job_params/traits_dataset|nothing">
-                        <li tal:condition="species"
-                            tal:define="species result/job_params/species|nothing">
-                          <strong>Species: </strong>
-                          <tal:replace tal:replace="species">Species</tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:condition="python: 'subset' in result.job_params">
-                        <li tal:condition="result/job_params/subset">
-                          <strong>Data Subset: </strong>
-                          <tal:replace tal:replace="result/job_params/subset">Subset1 (1,2,3)</tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:condition="function"
-                                 tal:define="function result/job_params/function|result/job_params/algorithm|nothing">
-                        <li>
-                          <strong>Algorithm: </strong>
-                          <tal:replace tal:replace="function">bioclim</tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
-                        <!-- TODO: species in job_params/species_distribution_models -->
-                        <li>
-                          <strong>Emissions Scenario: </strong>
-                          <tal:replace tal:replace="result/job_params/emsc">bioclim</tal:replace>
-                        </li>
-                        <li>
-                          <strong>Circulation Model: </strong>
-                          <tal:replace tal:replace="result/job_params/gcm">bioclim</tal:replace>
-                        </li>
-                        <li>
-                          <strong>Year: </strong>
-                          <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
-                        </li>
-                      </tal:block>
-                      <tal:block tal:define="state result_tools/job_state; 
-                                             reason result_tools/job_progress"
-                                 tal:condition="state">
-                        <li>
-                          <strong>State: </strong>
-                          <tal:replace tal:replace="state"></tal:replace>
-                        </li>
-                        <li tal:condition="python:state == 'FAILED'">
-                          <strong>Reason: </strong>
-                          <tal:replace tal:replace="reason"></tal:replace>
-                          <br/>
-                          <a href="https://support.bccvl.org.au/support/solutions/articles/6000176148-why-did-my-experiment-or-model-fail" target="_blank">See known issues for failed models</a>
-                        </li>                            
-                      </tal:block>
-                    </ul>
-                    <tal:block tal:define="item result_tools/get_primary_output"
-                               tal:condition="nocall:item">
-                      <div tal:define="item_obj item/getObject;
-                                       dlinfo item_obj/dataset_tools/get_download_info;
-                                       downloadurl dlinfo/url;">
-                        <a class="bccvl-auto-viz btn btn-primary"
-                           title="Preview this file"
-                           href="#downloadurl"
-                           data-mimetype="application/octet-stream"
-                           data-uuid="a uuid"
-                           tal:attributes="href downloadurl;
-                                           data-uuid item/UID;
-                                           data-mimetype item/format">
-                          <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
+                      <tal:block tal:define="state result_tools/job_state"
+                                tal:condition="python:state == 'FAILED'">
+                        <a class="fine btn btn-mini btn-info email-support-btn"
+                          title="Send an email to BCCVL for support regarding this experiment"
+                          href="#emailsupporturl"
+                          tal:attributes="href string:${navigation_root_url}/API/site/v1/send_support_email?url=${result/getURL};">
+                          <i class="fa fa-envelope-o icon-link"></i> Support
                         </a>
-                      </div>
-                    </tal:block>
-                    <a class="expand-btn"
-                       title="Expand results"
-                       href="javascript:void(0)"
-                       data-toggle="collapse" 
-                        data-parent="#bccvl-experimentresults-table"
-                       tal:attributes="data-target string:#${result/getId}-body">
-                      <i class="fa fa-chevron-circle-down icon-link"></i> More
-                    </a>
+                      </tal:block>
+                    </div>
+
+                    <div class="experiment-details">
+                      <h5><tal:replace tal:replace="result/Title">Result
+                      Title</tal:replace></h5>
+                      <!-- FIXME: get a better condition or use
+                          adapters -->
+                      <ul>
+                        <tal:block tal:condition="dsuuid"
+                                  tal:define="dsuuid result/job_params/species_occurrence_dataset|result/job_params/species_distribution_models|nothing">
+                          <li tal:condition="species"
+                              tal:define="dsmd python: dataset_tools.metadata(uuid=dsuuid);
+                                          species dsmd/species/scientificName|nothing">
+                            <strong>Species: </strong>
+                            <tal:replace tal:replace="species">Species</tal:replace>
+                          </li>
+                        </tal:block>
+                        <tal:block tal:condition="dsuuid"
+                                  tal:define="dsuuid result/job_params/traits_dataset|nothing">
+                          <li tal:condition="species"
+                              tal:define="species result/job_params/species|nothing">
+                            <strong>Species: </strong>
+                            <tal:replace tal:replace="species">Species</tal:replace>
+                          </li>
+                        </tal:block>
+                        <tal:block tal:condition="python: 'subset' in result.job_params">
+                          <li tal:condition="result/job_params/subset">
+                            <strong>Data Subset: </strong>
+                            <tal:replace tal:replace="result/job_params/subset">Subset1 (1,2,3)</tal:replace>
+                          </li>
+                        </tal:block>
+                        <tal:block tal:condition="function"
+                                  tal:define="function result/job_params/function|result/job_params/algorithm|nothing">
+                          <li>
+                            <strong>Algorithm: </strong>
+                            <tal:replace tal:replace="function">bioclim</tal:replace>
+                          </li>
+                        </tal:block>
+                        <tal:block tal:condition="python: 'future_climate_datasets' in result.job_params">
+                          <!-- TODO: species in job_params/species_distribution_models -->
+                          <li>
+                            <strong>Emissions Scenario: </strong>
+                            <tal:replace tal:replace="result/job_params/emsc">bioclim</tal:replace>
+                          </li>
+                          <li>
+                            <strong>Circulation Model: </strong>
+                            <tal:replace tal:replace="result/job_params/gcm">bioclim</tal:replace>
+                          </li>
+                          <li>
+                            <strong>Year: </strong>
+                            <tal:replace tal:replace="result/job_params/year">bioclim</tal:replace>
+                          </li>
+                        </tal:block>
+                        <tal:block tal:define="state result_tools/job_state; 
+                                              reason result_tools/job_progress"
+                                  tal:condition="state">
+                          <li>
+                            <strong>State: </strong>
+                            <tal:replace tal:replace="state"></tal:replace>
+                          </li>
+                          <li tal:condition="python:state == 'FAILED'">
+                            <strong>Reason: </strong>
+                            <tal:replace tal:replace="reason"></tal:replace>
+                            <br/>
+                            <a href="https://support.bccvl.org.au/support/solutions/articles/6000176148-why-did-my-experiment-or-model-fail" target="_blank">See known issues for failed models</a>
+                          </li>                            
+                        </tal:block>
+                      </ul>
+                      <tal:block tal:define="item result_tools/get_primary_output"
+                                tal:condition="nocall:item">
+                        <div tal:define="item_obj item/getObject;
+                                        dlinfo item_obj/dataset_tools/get_download_info;
+                                        downloadurl dlinfo/url;">
+                          <a class="bccvl-auto-viz btn btn-primary"
+                            title="Preview this file"
+                            href="#downloadurl"
+                            data-mimetype="application/octet-stream"
+                            data-uuid="a uuid"
+                            tal:attributes="href downloadurl;
+                                            data-uuid item/UID;
+                                            data-mimetype item/format">
+                            <i class="icon-eye-open icon-link icon-white"></i> Preview Primary Output
+                          </a>
+                        </div>
+                      </tal:block>
+                      <a class="expand-btn"
+                        title="Expand results"
+                        href="javascript:void(0)"
+                        data-toggle="collapse" 
+                          data-parent="#bccvl-experimentresults-table"
+                        tal:attributes="data-target string:#${result/getId}-body">
+                        <i class="fa fa-chevron-circle-down icon-link"></i> More
+                      </a>
+                    </div>
                   </div>
                 </div>
+                
+                <div class="collapse" tal:attributes="id string:${result/getId}-body">
+                  <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
+                    <div class="row-fluid experiment-result-contents"
+                        tal:condition="python: item.BCCDataGenre == 'DataGenreSpeciesOccurEnv'"
+                        tal:define="itemobj item/getObject;
+                                    item_tools nocall:itemobj/@@dataset_tools;
+                                    md item_tools/metadata|nothing">
+                      <div class="span9 bccvl-table-label">
+                        <h5>Input occurrence records (map)</h5>
+                        <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
+                        <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
+                        <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
+                      </div>
+                      <div class="bccvl-table-controls span3"
+                          tal:define="dlinfo item_tools/get_download_info;
+                                      downloadurl dlinfo/url;">
+                        <a class="fine btn btn-info"
+                          title="Download this file"
+                          href="#downloadurl"
+                          tal:condition="dlinfo/available"
+                          tal:attributes="href downloadurl;">
+                          <i class="icon-download-alt icon-link icon-white"></i>
+                        </a>
+                        <a class="bccvl-occurrence-viz btn btn-primary"
+                          title="Preview this file"
+                          href="#downloadurl"
+                          data-mimetype="application/octet-stream"
+                          data-uuid="a uuid"
+                          tal:attributes="href downloadurl;
+                                          data-uuid item/UID;
+                                          data-mimetype item/format;
+                                          data-cellsize md/cellsize|nothing;
+                                          data-srs md/srs|nothing"
+                          tal:condition="python: item.format not
+                                          in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                          <i class="icon-eye-open icon-link icon-white"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="row-fluid experiment-result-contents"
+                        tal:define="itemobj item/getObject;
+                                    item_tools nocall:itemobj/@@dataset_tools;
+                                    md item_tools/metadata|nothing">
+                      <div class="span9 bccvl-table-label">
+                        <h5 tal:content="item/Description">Dataset short description</h5>
+                        <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
+                        <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
+                        <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
+                        <p><small><span tal:content="item/Title">Item Title</span></small></p>
+                        <!-- <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p> -->
+                        <!-- <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p> -->
+                        <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
+                      </div>
+                      <div class="bccvl-table-controls span3"
+                          tal:define="dlinfo item_tools/get_download_info;
+                                      downloadurl dlinfo/url;">
+                        <a class="fine btn btn-info"
+                          title="Download this file"
+                          href="#downloadurl"
+                          tal:condition="dlinfo/available"
+                          tal:attributes="href downloadurl;">
+                          <i class="icon-download-alt icon-link icon-white"></i>
+                        </a>
+                        <a class="bccvl-auto-viz btn btn-primary"
+                          title="Preview this file"
+                          href="#downloadurl"
+                          data-mimetype="application/octet-stream"
+                          data-uuid="a uuid"
+                          tal:attributes="href downloadurl;
+                                          data-uuid item/UID;
+                                          data-mimetype item/format;
+                                          data-cellsize md/cellsize|nothing;
+                                          data-srs md/srs|nothing;
+                                          class string:${item_tools/get_viz_class} btn btn-primary"
+                          tal:condition="python: item.format not
+                                          in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
+                          <i class="icon-eye-open icon-link icon-white"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </tal:block>
+                </div> <!-- collapse -->
+                
               </div>
-              
-              <div class="collapse" tal:attributes="id string:${result/getId}-body">
-                <tal:block tal:repeat="item python:result.getObject().restrictedTraverse('@@folderListing')(portal_type=('org.bccvl.content.dataset','org.bccvl.content.remotedataset'))">
-                  <div class="row-fluid experiment-result-contents"
-                       tal:condition="python: item.BCCDataGenre == 'DataGenreSpeciesOccurEnv'"
-                       tal:define="itemobj item/getObject;
-                                   item_tools nocall:itemobj/@@dataset_tools;
-                                   md item_tools/metadata|nothing">
-                    <div class="span9 bccvl-table-label">
-                      <h5>Input occurrence records (map)</h5>
-                      <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
-                      <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
-                      <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
-                    </div>
-                    <div class="bccvl-table-controls span3"
-                         tal:define="dlinfo item_tools/get_download_info;
-                                     downloadurl dlinfo/url;">
-                      <a class="fine btn btn-info"
-                         title="Download this file"
-                         href="#downloadurl"
-                         tal:condition="dlinfo/available"
-                         tal:attributes="href downloadurl;">
-                        <i class="icon-download-alt icon-link icon-white"></i>
-                      </a>
-                      <a class="bccvl-occurrence-viz btn btn-primary"
-                         title="Preview this file"
-                         href="#downloadurl"
-                         data-mimetype="application/octet-stream"
-                         data-uuid="a uuid"
-                         tal:attributes="href downloadurl;
-                                         data-uuid item/UID;
-                                         data-mimetype item/format;
-                                         data-cellsize md/cellsize|nothing;
-                                         data-srs md/srs|nothing"
-                         tal:condition="python: item.format not
-                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                        <i class="icon-eye-open icon-link icon-white"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row-fluid experiment-result-contents"
-                       tal:define="itemobj item/getObject;
-                                   item_tools nocall:itemobj/@@dataset_tools;
-                                   md item_tools/metadata|nothing">
-                    <div class="span9 bccvl-table-label">
-                      <h5 tal:content="item/Description">Dataset short description</h5>
-                      <p><small><span tal:condition="md/rows|nothing">rows:<i tal:content="md/rows"></i></span></small></p>
-                      <p><small><span tal:condition="md/resolution|nothing">resolution:<i tal:content="md/resolution"></i></span><small></p>
-                      <p><small><span tal:condition="md/scientificname|nothing"><small>species:<i tal:content="md/scientificname"></i></span></small></p>
-                      <p><small><span tal:content="item/Title">Item Title</span></small></p>
-                      <!-- <p tal:condition="md/width">size:<i tal:content="md/width"></i>x<i tal:content="md/height"></i></p> -->
-                      <!-- <p tal:condition="md/min">min/max:<i tal:content="md/min"></i>/<i tal:content="md/max"></i></p> -->
-                      <!-- <p tal:condition="md/crs">crs:<i tal:content="md/crs"></i></p> -->
-                    </div>
-                    <div class="bccvl-table-controls span3"
-                         tal:define="dlinfo item_tools/get_download_info;
-                                     downloadurl dlinfo/url;">
-                      <a class="fine btn btn-info"
-                         title="Download this file"
-                         href="#downloadurl"
-                         tal:condition="dlinfo/available"
-                         tal:attributes="href downloadurl;">
-                        <i class="icon-download-alt icon-link icon-white"></i>
-                      </a>
-                      <a class="bccvl-auto-viz btn btn-primary"
-                         title="Preview this file"
-                         href="#downloadurl"
-                         data-mimetype="application/octet-stream"
-                         data-uuid="a uuid"
-                         tal:attributes="href downloadurl;
-                                         data-uuid item/UID;
-                                         data-mimetype item/format;
-                                         data-cellsize md/cellsize|nothing;
-                                         data-srs md/srs|nothing;
-                                         class string:${item_tools/get_viz_class} btn btn-primary"
-                         tal:condition="python: item.format not
-                                        in (None, 'None', 'application/octet-stream', 'application/zip','application/x-r-data', 'txt/html', 'text/html')">
-                        <i class="icon-eye-open icon-link icon-white"></i>
-                      </a>
-                    </div>
-                  </div>
-                </tal:block>
-              </div> <!-- collapse -->
-              
-            </div>
+            
+            </tal:block>
           </tal:block>
           
         </div>
