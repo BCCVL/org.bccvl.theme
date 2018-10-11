@@ -1921,6 +1921,18 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                  }
                });
 
+                // "Select constraints by pre-defined region" option
+                //
+                // We need to clear the actual layer because this option doesn't do that
+                // automatically and we also need to ensure that what the user actually sets is what
+                // is encoded into the form and sent to the server (rather than sending the convex
+                // hull polygon by default)
+                $('input[type="radio"]#region_no_offset').change(function() {
+                    var $this = $(this);
+
+                    // Wipe constraints polygon
+                    bccvl_common.removeConstraints($this, map, constraintsLayer);
+                });
 
                $('input[type="radio"]#use_enviro_env').change(function(){
                  bccvl_common.removeConstraints($(this), map, constraintsLayer);
@@ -1981,15 +1993,18 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                $('.btn.remove-polygon').on('click', function(){
                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
 
-
                    // Display the convex-hull polygon around occurrence dataset
                    if (occurrence_convexhull_polygon != null) {
-
-                      bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon,
-                        constraintsLayer, map.getView().getProjection().getCode());
-                      $('input[type="radio"]#use_convex_hull').prop('checked', true);
-                   }
-
+                        bccvl_common.renderPolygonConstraints(map, occurrence_convexhull_polygon,
+                            constraintsLayer, map.getView().getProjection().getCode());
+                        
+                        // Since we've now reset to the original constraints, change the accordion
+                        // to open the convex hull option by setting it checked and triggering the
+                        // change event (which handles the rest of the accordion)
+                        $('input[type="radio"]#use_convex_hull')
+                            .prop('checked', true)
+                            .trigger('change');
+                    }
                });
                $('.btn.draw-geojson').on('click', function(e){
 
