@@ -25,6 +25,7 @@
     <xi:include href="rules/new-experiment-projection.xml" />
     <xi:include href="rules/new-experiment-biodiverse.xml" />
     <xi:include href="rules/new-experiment-speciestrait.xml" />
+    <xi:include href="rules/new-experiment-speciestrait-temporal.xml" />
     <xi:include href="rules/new-experiment-ensemble.xml" />
     <xi:include href="rules/dashboard.xml" />
     <xi:include href="rules/search.xml" />

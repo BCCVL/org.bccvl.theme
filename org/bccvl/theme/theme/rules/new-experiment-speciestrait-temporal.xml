@@ -1,0 +1,62 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!-- NEW SPECIES TRAIT (TEMPORAL) MODEL EXPERIMENT ================================== -->
+    <rules if-path="newSpeciesTraitsTemporal/">
+        <theme href="html/new-experiment-speciestrait-temporal.html" />
+
+        <rules if-not="$is_debug">
+          <!-- load page js without require -->
+          <replace css:theme="#page_js">
+            <script type="text/javascript" src="{$portal_base_url}/++theme++org.bccvl.theme/html/dist/new-experiment-speciestrait.js"></script>
+          </replace>
+        </rules>
+
+        <!-- hook in the new experiment form's attributes -->
+        <copy attributes="name action enctype method" css:theme="form#experimentSetup" css:content="#form" />
+
+        <!-- hook in the submit (save) button -->
+        <copy attributes="name value" css:theme="form#experimentSetup button[type=submit]" css:content="#form-buttons-save" />
+
+        <!-- hook in title field -->
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expname" css:content="#form-widgets-IDublinCore-title" />
+
+        <!-- hook in description field -->
+        <replace theme-children="//textarea[@name='expDescription']" content="//textarea[@id='form-widgets-IDublinCore-description']/text()" />
+        <copy attributes="name value" css:theme="form#experimentSetup .bccvl-expdesc" css:content="#form-widgets-IDublinCore-description" />
+
+
+        <replace css:theme="#formfield-form-widgets-species_traits_dataset"
+                 css:content="#formfield-form-widgets-species_traits_dataset" />
+
+        <!-- hook in the algorithm list -->
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable-species > tbody"
+                css:content-children="#form-widgets-algorithms_species-table"/>
+
+        <replace css:theme-children="#algoConfig-species"
+                 css:content-children="#fieldset-parameters-algorithms_species"/>
+
+        <before css:theme-children="section.bccvl-experimentdetails table.bccvl-algorithmtable-diff > tbody"
+                css:content-children="#form-widgets-algorithms_diff-table"/>
+
+        <replace css:theme-children="#algoConfig-diff"
+                 css:content-children="#fieldset-parameters-algorithms_diff"/>
+
+        <!-- pull in geo constraints field -->
+        <replace css:theme="#formfield-form-widgets-modelling_region"
+                 css:content="#form-widgets-modelling_region"/>"
+
+
+        <replace css:theme="#formfield-form-widgets-scale_down"
+                 css:content="#formfield-form-widgets-scale_down"/>
+
+        <!-- The rest of this is filled in with AJAX -->
+        <replace css:theme="#formfield-form-widgets-environmental_datasets"
+                 css:content="#formfield-form-widgets-environmental_datasets"/>"
+
+
+    </rules>
+
+</rules>
