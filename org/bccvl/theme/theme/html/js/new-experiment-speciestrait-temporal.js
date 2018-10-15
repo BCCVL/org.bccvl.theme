@@ -9,24 +9,7 @@ define(
      'bccvl-widgets', 'openlayers', 'd3', 'zip', 'bccvl-api',
      'new-experiment-common'],
     function($, vizcommon, wiztabs, formvalidator, tablesorter, popover, vizmap, bccvl, ol, d3, zip, bccvlapi, expcommon) {
-
         $(function() {
-
-            console.log('species trait model experiment page behaviour loaded.');
-            
-            // hook up stretchers
-            //stretch.init({ topPad: 60, bottomPad: 10 });
-
-            // check for Firefox to avoid ZIP issue
-            // this issue has been resolved
-            //if(typeof InstallTrigger !== 'undefined'){
-            //    $('#experimentSetup .alert').after('<div class="alert alert-block alert-error fade in">'+
-            //        '<button type="button" class="close" data-dismiss="alert">×</button>'+
-            //        '<h4 class="alert-heading">Features on this page are incompatible with Firefox</h4>'+
-            //        '<p>Currently there are issues preventing the use of Firefox for submitting this experiment type.  The BCCVL support team are working to resolve them, but recommend using <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Google Chrome</a> as your browser for the BCCVL until further notice.</p>'+
-            //    '</div>');
-            //}
-
             // hook up the wizard buttons
             wiztabs.init();
             
@@ -208,7 +191,6 @@ define(
                                     examples.innerHTML += '<p>...</p>'
                                     var input = document.createElement('div');
                                     input.className = 'trait-nom-row';
-                                    console.log(isGLMM);
                                     if(isGLMM){
                                         input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
                                             '<option selected value="ignore">Ignore</option>'+
@@ -282,150 +264,265 @@ define(
                 }
             });
 
-            // submit button:
-
+            // On click of the submission button
             $("button[name='form.buttons.save']").on('click', function(e) {
-                e.preventDefault()
-                // find form
-                var $form = $(e.target.form)
-                // validate form
-                var validator = $form.validate()
-                if (! validator.form()) {
-                    // validation errors .... stop here
-                    return
-                }
-                // find all form values
-                var formvalues = $form.serializeArray()
-                // convert formvalues to object:
-                var params = {
-                    environmental_data: {},
-                    algorithms: {},
-                    columns: {}
-                }
-                var algoparams = {}
-                var env_layers = {}
-                var env_idx_map = {}
-                for (var i=0; i < formvalues.length; i++) {
-                    var param = formvalues[i]
+                e.preventDefault();
 
-                    // list of species 
+                // Find and validate the form associated with the submit button
+                var $form = $(e.target.form);
+                var validator = $form.validate();
+                if (!validator.form()) {
+                    // Validation errors encountered; halt immediately
+                    return;
+                }
+
+                // Serialise the entire form (all tabs)
+                /** @type {{ name: string, value: string }[]} */
+                var formValues = $form.serializeArray();
+
+                /** Parameters to be sent to the job API */
+                var params = {
+                    /**
+                     * Selected layers per environmental dataset
+                     * 
+                     * @type {{[datasetId: string]: string[]}}
+                     */
+                    environmental_data: {},
+
+                    /**
+                     * Parameters for selected algorithms
+                     * 
+                     * @type {{[algorithmId: string]: {[param: string]: string}}}
+                     */
+                    algorithms: {},
+
+                    /** 
+                     * Dataset columns mapped to their trait nomination values
+                     * (e.g. "my_data_species_column" => "species")
+                     * 
+                     * @type {{[columnName: string]: string}}
+                     */
+                    columns: {},
+
+                    /**
+                     * Species list?
+                     * 
+                     * @type {any[] | undefined}
+                     */
+                    species_list: undefined,
+
+                    /** 
+                     * Identifies the input dataset's source and ID?
+                     * 
+                     * @type {object}
+                     */
+                    traits_data: undefined
+                };
+
+                /**
+                 * Temporary object for the copying of algorithm parameters,
+                 * containing possibly configuration parameters for algorithms
+                 * which have not been selected by the user
+                 * 
+                 * @type {{[algorithmId: string]: {[param: string]: string}}}
+                 */
+                var algoparams = {};
+
+                /**
+                 * Stores the selected environment dataset index (as appearing
+                 * on form) mapped to their respective selected layers
+                 * 
+                 * @type {{[datasetIndex: string]: string[]}}
+                 */
+                var env_layers = {};
+
+                /**
+                 * Stores the selected environment dataset index (as appearing
+                 * on form) mapped to their respective dataset IDs
+                 * 
+                 * @type {{[datasetIndex: string]: string}}
+                 */
+                var env_idx_map = {};
+
+                // Go through all form key-value pairs
+                for (var i = 0; i < formValues.length; i++) {
+                    var param = formValues[i];
+
+                    // Assign `g_speciesList` to `params` object once per form
+                    // key-value pair???
                     params.species_list = g_speciesList;
-                                        
-                    // column definition?
+
+                    // Strip `trait-nomination` prefix in form key-value pairs,
+                    // and copy KV pair over to the `columns` object
                     if (param.name.startsWith('trait-nomination_')) {
-                        param.name = param.name.slice('trait-nomination_'.length)
-                        params.columns[param.name] = param.value
-                        continue
+                        param.name = param.name.slice('trait-nomination_'.length);
+                        params.columns[param.name] = param.value;
+                        continue;
                     }
-                    // other?
+
+                    // Strip `form.widgets` prefix from the name of any form
+                    // key-value pairs ahead of below checks
                     if (param.name.startsWith('form.widgets.')) {
-                        param.name = param.name.slice('form.widgets.'.length)
+                        param.name = param.name.slice('form.widgets.'.length);
                     }
-                    // title, description
+
+                    // Title and description are elements generated by Dublin
+                    // and are encoded directly into the object to be sent to
+                    // API
                     if (param.name.startsWith('IDublinCore.')) {
-                        params[param.name.slice('IDublinCore.'.length)] = param.value
-                        continue
+                        // Note this copies the form values to `params`
+                        params[param.name.slice('IDublinCore.'.length)] = param.value;
+                        continue;
                     }
+
+                    // Extract the ID of the dataset and put it into
+                    // `traits_data`
                     if (param.name == "species_traits_dataset:list") {
+                        // Note this copies the form values to `params`
                         params.traits_data = {
                             source: 'bccvl',
-                            id: param.value
-                        }
-                        continue
+                            id: param.value     // ID of selected dataset
+                        };
+                        continue;
                     }
+
+                    // Process environmental dataset selections
                     if (param.name.startsWith('environmental_datasets.')) {
                         var name_parts = param.name.split('.')
-                        //
+                        
+                        // Skip non-item fields
                         if (name_parts[1] != 'item') {
-                            // skip non item fields
-                            continue
+                            continue;
                         }
-                        var idx = name_parts[2]
-                        // environmental_datasets.item.0
-                        // environmental_datasets.item.0.item:list
+
+                        /**
+                         * Environmental dataset index, as encoded in form
+                         * elements
+                         */
+                        var idx = name_parts[2];
+
+                        // The small checkboxes (for dataset layers) have names
+                        // that resemble:
+                        //
+                        //      `environmental_datasets.item.0.item:list`
+                        //
+                        // which are different from the general sections, which
+                        // are named:
+                        //
+                        //      `environmental_datasets.item.0`
+                        //
+                        // Therefore, there the length of the split name is 3,
+                        // we only have the general section:
                         if (name_parts.length == 3) {
-                            // a dataset id
-                            env_idx_map[idx] = param.value
-                            continue
+                            // Save the dataset ID to `env_idx_map`
+                            env_idx_map[idx] = param.value;
+                            continue;
                         }
-                        // a layer id within dataset -> array
-                        if (! env_layers.hasOwnProperty(idx)) {
-                            env_layers[idx] = []
+
+                        // We expect only the dataset layer fields to be present
+                        // from here onwards
+
+                        // Initialise array if not yet present in `env_layers`
+                        if (!env_layers.hasOwnProperty(idx)) {
+                            env_layers[idx] = [];
                         }
-                        env_layers[idx].push(param.value)
-                        continue
+
+                        // Push layer name into this dataset's selected layers
+                        // array
+                        env_layers[idx].push(param.value);
+
+                        continue;
                     }
+
+                    // For the geographic constraint, if there is value set
+                    // under `modelling_region` then we parse the JSON and use
+                    // that as part of the data sent in the API request
                     if (param.name == 'modelling_region' && param.value) {
-                        params[param.name] = JSON.parse(param.value)
-                        continue
+                        // Note this copies the form values to `params`
+                        params[param.name] = JSON.parse(param.value);
+                        continue;
                     }
+
+                    // Collect all selected algorithms (those found on 
+                    // "Algorithms" tab); a mapping object is initialised in
+                    // advance of the algorithm parameter/configuration
+                    //
+                    // Note that this is *separate* from `algoparams` which
+                    // is used as the temporary algorithm parameter mapping
+                    // object and is copied over later
                     if (param.name == 'algorithms_species:list'
                         || param.name == 'algorithms_diff:list') {
-                        // collect selected algorithms
-                        params.algorithms[param.value] = {}
-                        continue
+                        params.algorithms[param.value] = {};
+                        continue;
                     }
 
-                    var name_parts = param.name.split('.')
+                    // At this point we assume that we are only processing
+                    // algorithm parameter/configuration information (e.g. GLMM
+                    // parameters)
+                    //
+                    // These are formatted as:
+                    //      `[algorithm ID].[parameter_name]`
+                    //
+                    // Split the name of the input fields to get the parameter
+                    // values
+                    var name_parts = param.name.split('.');
+
+                    // We expect at least 2 halves for algorithm parameters
                     if (name_parts.length > 1) {
-                        // should be algo params here
-                        if (! algoparams.hasOwnProperty(name_parts[0])) {
-                            algoparams[name_parts[0]] = {}
+                        // Set up algorithm parameter object in `algoparams` if
+                        // not yet present
+                        if (!algoparams.hasOwnProperty(name_parts[0])) {
+                            algoparams[name_parts[0]] = {};
                         }
-                        // strip of ':list' at end of param name
-                        algoparams[name_parts[0]][name_parts[1].replace(/:list$/g, '')] = param.value
+
+                        // Save algorithm parameters into `algoparams`,
+                        // stripping ':list' at end of param name if present
+                        // (e.g. in the case of <select> fields)
+                        algoparams[name_parts[0]][name_parts[1].replace(/:list$/g, '')] = param.value;
                         continue
                     }
 
                 }
-                // assign algo params to selected algorithms
+
+                // Copy algorithm parameters only for *selected* algorithms
                 for (var algoid in params.algorithms) {
-                    params.algorithms[algoid] = algoparams[algoid]
+                    params.algorithms[algoid] = algoparams[algoid];
                 }
-                // build env_ds option
+
+                // For each environment dataset, copy layers only where the 
+                // array of layers actually contains content
                 for (var envds in env_idx_map) {
-                    if (env_layers[envds].length >0) {
-                        params.environmental_data[env_idx_map[envds]] = env_layers[envds]
+                    if (env_layers[envds].length > 0) {
+                        params.environmental_data[env_idx_map[envds]] = env_layers[envds];
                     }
                 }
 
-                // submit ... disable button
-                $(e.target).prop('disabled', true)
-                var submit = bccvlapi.em.submittraits(params)
+                // Disable the submission button while we send the request
+                var $submitButton = $(e.target);
+                $submitButton.prop('disabled', true);
+
+                // Send request to API
+                var submit = bccvlapi.em.submittraits(params);
                 $.when(submit).then(
                     function(data, status, jqxhr) {
-                        // success - redirect to result page
-                        window.location.replace(data.experiment.url)  // simulate redirect rather than click navigate
+                        // Success - redirect to result page
+                        //
+                        // This replaces the current location in the browser's
+                        // history to simulate a redirect, rather than just a
+                        // normal navigation
+                        window.location.replace(data.experiment.url);
                     },
                     function(jqxhr, status, error) {
-                        // on error update form ...
-                        // status=="error"
-                        // error ... http status string
-                        // jqxhr.status == 503
-                        // errors = jqxhr.responseJSON
-                        // ct = jqxhr.getResponseHeader('Content-Type')
-                        // l = jqxhr.getResponseHeader('Content-Length')
+                        // Failure
+                        alert('Experiment submission failed.\n' + JSON.stringify(jqxhr.responseJSON, null, 2));
 
-
-                        // 503 - Service Unavailable ... generic error?
-                        //     {"errors": [{"title": "algorithm_species"}]}
-                        //
-
-                        // 400  - Bad Request
-                        // ... normal parameter error?
-                        alert('Experiment submission failed.\n' + JSON.stringify(jqxhr.responseJSON, null, 2))
-
-                        // reactivate button
-                        $(e.target).prop('disabled', false)
+                        // Re-enable submit button
+                        $submitButton.prop('disabled', false);
                     }
-                )
-
+                );
             });
 
-
-
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
-
 
             $('.bccvl-new-speciestrait-temporal').on('widgetChanged', function(e){
                 // bind widgets to the constraint map
