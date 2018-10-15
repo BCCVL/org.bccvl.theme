@@ -64,6 +64,7 @@ requirejs.config({
         'new-experiment-msdm':        'js/new-experiment-msdm',
         'new-experiment-mme':         'js/new-experiment-mme',
         'new-experiment-speciestrait':'js/new-experiment-speciestrait',
+        'new-experiment-speciestrait-temporal': 'js/new-experiment-speciestrait-temporal',
         'password-reset':             'js/password-reset',
         'search':                     'js/search',
         'training':                   'js/training',

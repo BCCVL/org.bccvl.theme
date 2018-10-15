@@ -10,7 +10,7 @@
         <rules if-not="$is_debug">
           <!-- load page js without require -->
           <replace css:theme="#page_js">
-            <script type="text/javascript" src="{$portal_base_url}/++theme++org.bccvl.theme/html/dist/new-experiment-speciestrait.js"></script>
+            <script type="text/javascript" src="{$portal_base_url}/++theme++org.bccvl.theme/html/dist/new-experiment-speciestrait-temporal.js"></script>
           </replace>
         </rules>
 

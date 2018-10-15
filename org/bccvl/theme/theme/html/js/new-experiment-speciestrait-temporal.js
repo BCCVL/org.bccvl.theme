@@ -259,7 +259,7 @@ define(
                     });
             }
 
-            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+            $('.bccvl-new-speciestrait-temporal').on('widgetChanged', function(e){
                 if (e.target.id === 'form-widgets-species_traits_dataset' && traitsTable.modal.basket.uuids.length > 0) {
                     initTraitsNominationUI(e.target.id, traitsTable.modal.basket.uuids); 
                 } else if (isRerun){
@@ -270,7 +270,7 @@ define(
             });
             
             
-            $('.bccvl-new-speciestrait').on('click', '#form-widgets-algorithms_species-2', function(){
+            $('.bccvl-new-speciestrait-temporal').on('click', '#form-widgets-algorithms_species-2', function(){
                 if($(this).prop('checked')){
                     $('select.trait-nom option.glmm').prop('disabled', false);
                 } else {
@@ -427,7 +427,7 @@ define(
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-modelling_region')
 
 
-            $('.bccvl-new-speciestrait').on('widgetChanged', function(e){
+            $('.bccvl-new-speciestrait-temporal').on('widgetChanged', function(e){
                 // bind widgets to the constraint map
 
                 // FIXME: the find is too generic (in case we add bboxes everywhere)
@@ -437,9 +437,9 @@ define(
 
             })
             
-            $('.bccvl-new-speciestrait').trigger('widgetChanged');
+            $('.bccvl-new-speciestrait-temporal').trigger('widgetChanged');
             
-            $('.bccvl-new-speciestrait').on('change', 'select.trait-nom', function(e){
+            $('.bccvl-new-speciestrait-temporal').on('change', 'select.trait-nom', function(e){
                 // find form
                 var $form = $(e.target.form)
                 // validate form

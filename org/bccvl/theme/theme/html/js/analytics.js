@@ -84,7 +84,11 @@ $(function(){
     });
     $('section.bccvl-new-speciestrait .bccvl-wizardtabs a[data-toggle="tab"]').on('shown', function(e){
         var label = $(e.target).text()+' - '+$(e.relatedTarget).text();
-        _gaq.push(['_trackEvent', 'New Species Trait Experiment', 'Tab Change', label ]);
+        _gaq.push(['_trackEvent', 'New Species Trait (Spatial) Experiment', 'Tab Change', label ]);
+    });
+    $('section.bccvl-new-speciestrait-temporal .bccvl-wizardtabs a[data-toggle="tab"]').on('shown', function(e){
+        var label = $(e.target).text()+' - '+$(e.relatedTarget).text();
+        _gaq.push(['_trackEvent', 'New Species Trait (Temporal) Experiment', 'Tab Change', label ]);
     });
     $('section.bccvl-new-ensemble .bccvl-wizardtabs a[data-toggle="tab"]').on('shown', function(e){
         var label = $(e.target).text()+' - '+$(e.relatedTarget).text();
@@ -104,7 +108,10 @@ $(function(){
         _gaq.push(['_trackEvent', 'New Biodiverse Experiment', 'Submit' ]);
     });
     $('section.bccvl-new-speciestrait').on('click', 'button.bccvllinks-experiment-start', function(){
-        _gaq.push(['_trackEvent', 'New Species Trait Experiment', 'Submit' ]);
+        _gaq.push(['_trackEvent', 'New Species Trait (Spatial) Experiment', 'Submit' ]);
+    });
+    $('section.bccvl-new-speciestrait-temporal').on('click', 'button.bccvllinks-experiment-start', function(){
+        _gaq.push(['_trackEvent', 'New Species Trait (Temporal) Experiment', 'Submit' ]);
     });
     $('section.bccvl-new-ensemble').on('click', 'button.bccvllinks-experiment-start', function(){
         _gaq.push(['_trackEvent', 'New Ensemble Experiment', 'Submit' ]);
@@ -120,7 +127,10 @@ $(function(){
         _gaq.push(['_trackEvent', 'New Biodiverse Experiment', 'Validation Error' ]);
     });
     $('section.bccvl-new-speciestrait').prev('section.bccvl-flashmessages').on('validationError', function(){
-        _gaq.push(['_trackEvent', 'New Species Trait Experiment', 'Validation Error' ]);
+        _gaq.push(['_trackEvent', 'New Species Trait (Spatial) Experiment', 'Validation Error' ]);
+    });
+    $('section.bccvl-new-speciestrait-temporal').prev('section.bccvl-flashmessages').on('validationError', function(){
+        _gaq.push(['_trackEvent', 'New Species Trait (Temporal) Experiment', 'Validation Error' ]);
     });
     $('section.bccvl-new-ensemble').prev('section.bccvl-flashmessages').on('validationError', function(){
         _gaq.push(['_trackEvent', 'New Ensemble Experiment', 'Validation Error' ]);

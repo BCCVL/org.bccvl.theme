@@ -48,7 +48,11 @@
       </div>
       <div class="new-experiment-button experiment-stm">
         <a class=" bccvllinks-experiment-speciestrait-new"
-           tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait Modelling Experiment</a>
+           tal:attributes="href python:actions['org.bccvl.content.speciestraitsexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait (Spatial) Modelling Experiment</a>
+      </div>
+      <div class="new-experiment-button experiment-stm-temporal">
+        <a class=" bccvllinks-experiment-speciestrait-temporal-new"
+           tal:attributes="href python:actions['org.bccvl.content.speciestraitstemporalexperiment']['action']"><span><i class="fa fa-plus"></i> New</span> Species Trait (Temporal) Modelling Experiment</a>
       </div>
       
       <h4 class="new-experiment-type-heading">SECONDARY EXPERIMENTS &nbsp;<i data-toggle="tooltip" data-placement="right" title="Secondary experiments allow you to build on your existing models. Before running a secondary experiment you must first run at least one primary experiment to be used as input." class="fa fa-info-circle"></i></h4>

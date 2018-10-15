@@ -25,6 +25,7 @@ module.exports = {
     'new-experiment-projection': './js/new-experiment-projection.js',
     'new-experiment-sdm': './js/new-experiment-sdm.js',
     'new-experiment-speciestrait': './js/new-experiment-speciestrait.js',
+    'new-experiment-speciestrait-temporal': './js/new-experiment-speciestrait-temporal.js',
     'pasword-reset': './js/password-reset.js',
     'search': './js/search.js',
     'training': './js/training.js',
