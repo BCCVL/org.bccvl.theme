@@ -44,7 +44,12 @@ define(
                     $('#nomination-table').empty();
                     //var target = document.getElementById(target);
                     var target = $('#nomination-table')[0];
-                    var isGLMM = $('#form-widgets-algorithms_species-2').prop('checked');
+
+                    // Determine if the GLMM option is selected in the
+                    // Algorithms tab by picking up if the checkbox that
+                    // contains the name is checked
+                    var isGLMM = $("input[data-friendlyname$='Generalized Linear Mixed Model']").is(":checked");
+
                     $.each(uuids, function(i, uuid){
                         // get file urls using uuid from widget basket
                         bccvlapi.dm.metadata(uuid).then(function(data, status, jqXHR) {
@@ -189,14 +194,23 @@ define(
                                         examples.innerHTML += '<p>'+v+'</p>'
                                     });
                                     examples.innerHTML += '<p>...</p>'
+
+                                    // Each column gets its own <select> menu to nominate the column
+                                    // as a certain type of column (e.g. that it represents the
+                                    // latitude data)
+                                    //
+                                    // At the moment for the temporal STM, we are requesting a
+                                    // `Date` column but this may change in future to be split into
+                                    // a day/month/year set of three
                                     var input = document.createElement('div');
                                     input.className = 'trait-nom-row';
                                     if(isGLMM){
-                                        input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                        input.innerHTML = '<select class="trait-temporal-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
                                             '<option selected value="ignore">Ignore</option>'+
                                             '<option value="lat">Latitude</option>'+
                                             '<option value="lon">Longitude</option>'+
                                             '<option value="species">Species Name</option>'+
+                                            '<option value="date">Date</option>'+
                                             '<option value="trait_con">Trait (continuous)</option>'+
                                             '<option value="trait_ord">Trait (ordinal)</option>'+
                                             '<option value="trait_nom">Trait (nominal)</option>'+
@@ -206,11 +220,12 @@ define(
                                             '<option value="random_cat" class="glmm">Random Factor (categorical, GLMM only)</option>'+
                                             '</select>';
                                     } else {
-                                         input.innerHTML = '<select class="trait-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
+                                         input.innerHTML = '<select class="trait-temporal-nom required" name="trait-nomination_'+col.name+'" id="trait-nomination_'+col.name+'">'+
                                             '<option selected value="ignore">Ignore</option>'+
                                             '<option value="lat">Latitude</option>'+
                                             '<option value="lon">Longitude</option>'+
                                             '<option value="species">Species Name</option>'+
+                                            '<option value="date">Date</option>'+
                                             '<option value="trait_con">Trait (continuous)</option>'+
                                             '<option value="trait_ord">Trait (ordinal)</option>'+
                                             '<option value="trait_nom">Trait (nominal)</option>'+
@@ -254,13 +269,13 @@ define(
             
             $('.bccvl-new-speciestrait-temporal').on('click', '#form-widgets-algorithms_species-2', function(){
                 if($(this).prop('checked')){
-                    $('select.trait-nom option.glmm').prop('disabled', false);
+                    $('select.trait-temporal-nom option.glmm').prop('disabled', false);
                 } else {
-                    $('select.trait-nom option.glmm').prop('disabled', true);
+                    $('select.trait-temporal-nom option.glmm').prop('disabled', true);
                 }
-                if ($(this).parents('form').find('select.trait-nom').length < 0){
+                if ($(this).parents('form').find('select.trait-temporal-nom').length < 0){
                     validator = $(this).parents('form').validate();
-                    validator.element('select.trait-nom');
+                    validator.element('select.trait-temporal-nom');
                 }
             });
 
@@ -536,12 +551,12 @@ define(
             
             $('.bccvl-new-speciestrait-temporal').trigger('widgetChanged');
             
-            $('.bccvl-new-speciestrait-temporal').on('change', 'select.trait-nom', function(e){
+            $('.bccvl-new-speciestrait-temporal').on('change', 'select.trait-temporal-nom', function(e){
                 // find form
                 var $form = $(e.target.form)
                 // validate form
                 var validator = $form.validate()
-                $('select.trait-nom').each(function(el){
+                $('select.trait-temporal-nom').each(function(el){
                     validator.element($(this));
                 });
                 

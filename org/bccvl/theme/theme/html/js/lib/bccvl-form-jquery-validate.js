@@ -28,75 +28,42 @@ define(
           return this.optional( element ) || /[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?/.test( value );
         }, 'Please enter a valid number using decimal or scientific notation.');
 
-        $.validator.addMethod("requireNFromClass", function(value, element, options) {
-
+        // Functions for `requireNFromClass*` validation rules
+        /**
+         * @param {string | undefined} value 
+         * @param {Element} element 
+         * @param {[number, string, string, string]} options 
+         */
+        var requireNFromClassValidator = function(value, element, options) {
             var numReq =  options[0];
             var selector = options[1];
             var desiredVal = options[2];
 
             var selection = [];
 
-            $(selector, element.form).filter(function(){
+            $(selector, element.form).filter(function() {
                 if ($(this).val()){
                     selection.push($(this).val());
                 }
             });
 
-            return $.grep(selection, function(v){
-                        return v === desiredVal
-                    }).length == numReq;
+            return $.grep(selection, function(v) { return v === desiredVal; }).length == numReq;
+        };
 
-        }, function(params, element) {
+        /**
+         * @param {[number, string, string, string]} params
+         * @param {Element} element 
+         */
+        var requireNFromClassMessage = function(params, element) {
             return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
-        });
+        };
 
         // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
         // So this is just a duplicate method of the above so that it can be called twice.
-        $.validator.addMethod("requireNFromClassTwo", function(value, element, options) {
-
-            var numReq =  options[0];
-            var selector = options[1];
-            var desiredVal = options[2];
-
-            var selection = [];
-
-            $(selector, element.form).filter(function(){
-                if ($(this).val()){
-                    selection.push($(this).val());
-                }
-            });
-
-            return $.grep(selection, function(v){
-                        return v === desiredVal
-                    }).length == numReq;
-
-        }, function(params, element) {
-            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
-        });
-
-         // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
-        // So this is just a duplicate method of the above so that it can be called twice.
-        $.validator.addMethod("requireNFromClassThree", function(value, element, options) {
-
-            var numReq =  options[0];
-            var selector = options[1];
-            var desiredVal = options[2];
-
-            var selection = [];
-
-            $(selector, element.form).filter(function(){
-                if ($(this).val()){
-                    selection.push($(this).val());
-                }
-            });
-
-            return $.grep(selection, function(v){
-                        return v === desiredVal
-                    }).length == numReq;
-
-        }, function(params, element) {
-            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
-        });
+        $.validator.addMethod("requireNFromClass", requireNFromClassValidator, requireNFromClassMessage);
+        $.validator.addMethod("requireNFromClassTwo", requireNFromClassValidator, requireNFromClassMessage);
+        $.validator.addMethod("requireNFromClassThree", requireNFromClassValidator, requireNFromClassMessage);
+        $.validator.addMethod("requireNFromClassFour", requireNFromClassValidator, requireNFromClassMessage);
 
         $.validator.addMethod("noLongerRequireEnv", function(value, element, options) {
 
@@ -305,6 +272,18 @@ define(
                 "requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
                 "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"],
                 "noLongerRequireEnv": [1, ".trait-nom", ["env_var_con", "env_var_cat"]]
+            },
+            "trait-temporal-nom": {
+                "requireNFromClass": [1, ".trait-temporal-nom", "lon", "Longitude"],
+                "requireNFromClassTwo": [1, ".trait-temporal-nom", "lat", "Latitude" ],
+                "requireNFromClassThree": [1, ".trait-temporal-nom", "species", "Species Name" ],
+
+                // Check that we at least have a `Date` column nominated
+                // Note that this only covers a single "date" field, and not split columns for day/month/year
+                "requireNFromClassFour": [1, ".trait-temporal-nom", "date", "Date"],
+
+                "requireAtLeastNOfFromClass": [1, ".trait-temporal-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"],
+                "noLongerRequireEnv": [1, ".trait-temporal-nom", ["env_var_con", "env_var_cat"]]
             },
             "comma-alpha-numeric": {
                 "commaAlphaNumeric": true
