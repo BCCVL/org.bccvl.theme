@@ -331,7 +331,12 @@ define(
                      * 
                      * @type {object}
                      */
-                    traits_data: undefined
+                    traits_data: undefined,
+
+                    /*
+                     * Indicate this is a temporal STM
+                     */
+                    temporal_stm: true
                 };
 
                 /**
