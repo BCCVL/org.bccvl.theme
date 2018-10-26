@@ -26,7 +26,7 @@
         <h5 class="results-title">Data Exploration</h5>
         <tal:block tal:repeat="result context/@@folderListing">
           <tal:block tal:define="function result/job_params/function|result/job_params/algorithm|nothing"
-                     tal:condition="python: function == 'exploration_plot'">
+                     tal:condition="python: function in ('exploration_plot', 'exploration_plot_temporal')">
             <div class="bccvl-experimenttable-accordion accordion-group">
               <div class="experiment-accordion-heading" tal:attributes="data-target string:#${result/getId}-body;
                                     data-uuid result/UID"
