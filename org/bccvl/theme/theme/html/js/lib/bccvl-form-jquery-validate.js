@@ -74,30 +74,6 @@ define(
             return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
         });
 
-         // This is dumb AF, but apparently you can't register the same rule with different parameters for the same field.
-        // So this is just a duplicate method of the above so that it can be called twice.
-        $.validator.addMethod("requireNFromClassThree", function(value, element, options) {
-
-            var numReq =  options[0];
-            var selector = options[1];
-            var desiredVal = options[2];
-
-            var selection = [];
-
-            $(selector, element.form).filter(function(){
-                if ($(this).val()){
-                    selection.push($(this).val());
-                }
-            });
-
-            return $.grep(selection, function(v){
-                        return v === desiredVal
-                    }).length == numReq;
-
-        }, function(params, element) {
-            return "This group requires exactly "+params[0]+" "+params[3]+" fields to be nominated."
-        });
-
         $.validator.addMethod("noLongerRequireEnv", function(value, element, options) {
 
             var numReq =  options[0];
@@ -302,7 +278,7 @@ define(
             "trait-nom": {
                 "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
                 "requireNFromClassTwo": [1, ".trait-nom", "lat", "Latitude" ],
-                "requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
+                //"requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
                 "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"],
                 "noLongerRequireEnv": [1, ".trait-nom", ["env_var_con", "env_var_cat"]]
             },
