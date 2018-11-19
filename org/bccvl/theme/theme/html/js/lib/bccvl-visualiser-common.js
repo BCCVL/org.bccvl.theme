@@ -300,14 +300,45 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
            },
 
             /**
+             * Attempts to return the preferred colour map ID for the given
+             * layer definition object
+             * 
+             * @param {object} layerDefinition Layer definition object
+             * 
+             * @returns {string | undefined} Preferred colourmap identifier
+             */
+            getPreferredColourMap: function(layerDefinition) {
+                // This function acts mostly as a shim on top of existing code
+                // to translate newer, better structured objects on top of
+                // older behaviour that depended on the "standard range"
+                // property of style objects in order to generate colourmaps
+                // (`generateColorArr`) by generating a colourmap identifier
+                // intended to be used as the second parameter to
+                // `generateColorArr` to override that behaviour.
+                //
+                // This function, therefore, only supports a limited set of
+                // newer layer definitions not covered by existing code.
+                
+                // Use the legend property to generate preferred colourmap
+                // identifier
+                switch (layerDefinition.legend) {
+                    case 'trait-projection':
+                        return 'trait-projection';
+                }
+
+                return undefined;
+            },
+
+            /**
              * Generates colour mapping arrays depending on the properties of the
              * given style object
              * 
              * @param {object} styleObj Style object
+             * @param {string} [preferredColourMap] Preferred colour map to use
              * 
              * @returns {string[]} Array of hex colour strings
              */
-            generateColorArr: function(styleObj) {
+            generateColorArr: function(styleObj, preferredColourMap) {
                 /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
                 var standard_range = styleObj.standard_range;
 
@@ -326,9 +357,12 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                 var steps = styleObj.steps;
 
+                // We give preference to the `preferredColourMap` first, where
+                // defined, to generate the colourmap
+                //
                 // Depending on the "standard range" value that is extracted from
                 // the style object, we return different colourmap arrays
-                switch (standard_range) {
+                switch (preferredColourMap || standard_range) {
                     // rainfall BOM standard colours
                     // [white - yellow - green - deep green]
                     case 'rainfall':
@@ -380,6 +414,11 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                     case 'boolean':
                         //     [        0,         1,]
                         return ['#4db748', '#4591cb'];
+
+                    // STM experiment, Data for trait projection to climate
+                    // [white - deep blue]
+                    case 'trait-projection':
+                        return ['#ffffff','#f3f3ff','#e8e7ff','#dcdbff','#d1cfff','#c5c3ff','#b7b6ff','#a9a8ff','#9a9bff','#8c8dff','#7e80ff','#7273ff','#6666ff','#5959ff','#4d4cff','#413fff','#3432ff','#2726ff','#1a19ff','#0d0dff','#0000ff'];
                 }
 
                 // Special cases and default follows
@@ -601,7 +640,10 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                    }
                    xmlStylesheet = '<StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>' + layername + '</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:Opacity>0.9</se:Opacity><se:ColorMap><se:Categorize fallbackValue="#78c818"><se:LookupValue>Rasterdata</se:LookupValue>';
                    var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-                   var colorArr = bccvl_common.generateColorArr(layerdef.style);
+
+                   var preferredColourMap = bccvl_common.getPreferredColourMap(layerdef);
+                   var colorArr = bccvl_common.generateColorArr(layerdef.style, preferredColourMap);
+
                    var steps = layerdef.style.steps;
 
                    if (layerdef.style.standard_range == 'boolean') {
@@ -891,7 +933,10 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                // Get hex color range and map values
                var rangeArr = bccvl_common.generateRangeArr(layerdef.style);
-               var colorArr = bccvl_common.generateColorArr(layerdef.style);
+
+               var preferredColourMap = bccvl_common.getPreferredColourMap(layerdef);
+               var colorArr = bccvl_common.generateColorArr(layerdef.style, preferredColourMap);
+
                var standard_range = layerdef.style.standard_range;
                var steps = layerdef.style.steps;
                // determine step size for legend
@@ -1568,6 +1613,11 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
 
                                         case 'DataGenreENDW_RICHNESS':
                                             layerdef.title = "Species Richness";
+                                            break;
+
+                                        // STM experiment, Data for trait projection to climate
+                                        case 'DataGenreSTResult':
+                                            layerdef.legend = 'trait-projection';
                                             break;
                                     }
                                } else {
