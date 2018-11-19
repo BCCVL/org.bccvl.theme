@@ -299,225 +299,267 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                return color;
            },
 
-           generateColorArr: function(styleObj) {
+            /**
+             * Generates colour mapping arrays depending on the properties of the
+             * given style object
+             * 
+             * @param {object} styleObj Style object
+             * 
+             * @returns {string[]} Array of hex colour strings
+             */
+            generateColorArr: function(styleObj) {
+                /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
+                var standard_range = styleObj.standard_range;
 
-               /*  Generate array of hexidecimal colour values, note the extra value on top of threshold range. */
-               var standard_range = styleObj.standard_range;
-               var startpoint = styleObj.startpoint;
-               var midpoint = styleObj.midpoint;
-               var endpoint = styleObj.endpoint;
+                var startpoint = styleObj.startpoint;
+                var midpoint = styleObj.midpoint;
+                var endpoint = styleObj.endpoint;
 
-               // convert to five-point scheme, this is currently only in use for default/no metadata datasets
-               if (typeof styleObj.secondpoint != 'undefined' || typeof styleObj.fourthpoint != 'undefined' ) {
-                   var secondpoint = styleObj.secondpoint;
-                   var fourthpoint = styleObj.fourthpoint;
-               } else {
-                   var secondpoint = null;
-                   var fourthpoint = null;
-               }
+                // convert to five-point scheme, this is currently only in use for default/no metadata datasets
+                if (typeof styleObj.secondpoint != 'undefined' || typeof styleObj.fourthpoint != 'undefined' ) {
+                    var secondpoint = styleObj.secondpoint;
+                    var fourthpoint = styleObj.fourthpoint;
+                } else {
+                    var secondpoint = null;
+                    var fourthpoint = null;
+                }
 
+                var steps = styleObj.steps;
 
-               var steps = styleObj.steps;
-               if (standard_range == 'rainfall'){
-                   // rainfall BOM standard colours
-                   var colorArr = ['#FFFFFF','#fffee8','#fefdd1','#f6f8ab','#daeca2','#c1e3a3','#a8dba4','#8cd1a4','#6fc9a5','#45c1a4','#00b4a5','#00999a','#017b7d','#005b5c'];
-               } else if (standard_range == 'monrainfall'){
-                   // monthly rainfall colours
-                   var colorArr = ['#FFFFFF','#f0fcff','#d9f8ff','#bff3ff','#a3edff','#86e5ff','#6fdbff','#5bccfb','#4eb8f5','#439eec','#3b81e2','#3562d8','#3146ce','#2d2ec6'];
-               } else if (standard_range == 'temperature') {
-                   // temperature BOM standard colours
-                   // rangeArr =  [      <-6,        -6,       -3,       0,         3,        6,        9,       12,       15,       18,       21,      24,       27,        30,       33,       36,       39,       42,      45 ];
-                   var colorArr = ['#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e', '#6d4218'];
-               } else if (standard_range == 'suitability' && startpoint == null) {
-                   // apply standard suitability coloring only if we don't have a color range set up
-                   // FIXME: generate default color range for suitabilities automatically as we do below if possible
-                   // basic prob spectrum
-                   var colorArr = ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
-               } else if (standard_range == 'categorical' || standard_range == 'misc_categorical') {
-                   var colorArr = [];
-                   for (var i = 0; i < (steps+1); i++) {
-                       colorArr.push('#'+bccvl_common.genColor(i+1));
-                   }
-               } else if (standard_range == 'occurrence') {
-                   var colorArr = ['#e74c3c'];
-               } else if (standard_range == 'absence') {
-                   var colorArr = ['#3498db'];
-               } else if (standard_range == 'range-change') {
-                   var colorArr = ['#FFFFFF', '#f08013', '#FFFFFF', '#164dca', '#41c127'];
-               } else if (standard_range == 'probability-difference') {
-                   // rangeArr =  [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
-                   var colorArr = ['#B41414', '#C34343', '#D27272', '#E1A1A1', '#F0D0D0', '#FFFFFF', '#e7f2fb', '#CEE6FA', '#9DCDF5', '#6CB4F0', '#3B9BEB', '#0A82E6'];
-               } else if (standard_range == 'pH') {
-                   // rangeArr =  [        0,         1,         2,         3,         4,         5,         6,         7,         8,         9,        10,        11,        12,        13,        14]
-                   var colorArr = ['#ee1c25', '#f26722', '#f8c611', '#f4ec1b', '#b4d433', '#83c240', '#4db748', '#33a949', '#21b569', '#09bab4', '#4591cb', '#3853a4', '#5952a2', '#62469d', '#462c83'];
-               } else if (standard_range == 'boolean') {
-                   // rangeArr =  [        0,         1,]
-                   var colorArr = ['#4db748', '#4591cb'];
-               } else if (steps == 1){
-                   //generic single value
-                   var colorArr = ['#fd3d00'];
-               } else {
+                // Depending on the "standard range" value that is extracted from
+                // the style object, we return different colourmap arrays
+                switch (standard_range) {
+                    // rainfall BOM standard colours
+                    // [white - yellow - green - deep green]
+                    case 'rainfall':
+                        return ['#FFFFFF','#fffee8','#fefdd1','#f6f8ab','#daeca2','#c1e3a3','#a8dba4','#8cd1a4','#6fc9a5','#45c1a4','#00b4a5','#00999a','#017b7d','#005b5c'];
 
-                   // utility functions to convert RGB values into hex values for SLD styling.
-                   function byte2Hex(n) {
-                       var nybHexString = "0123456789ABCDEF";
-                       return String(nybHexString.substr((n >> 4) & 0x0F,1)) + nybHexString.substr(n & 0x0F,1);
-                   }
-                   function RGB2Color(r,g,b) {
-                       return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
-                   }
+                    // monthly rainfall colours
+                    // [white - blue - purple]
+                    case 'monrainfall':
+                        return ['#FFFFFF','#f0fcff','#d9f8ff','#bff3ff','#a3edff','#86e5ff','#6fdbff','#5bccfb','#4eb8f5','#439eec','#3b81e2','#3562d8','#3146ce','#2d2ec6'];
 
-                   var colorArr = [];
+                    // temperature BOM standard colours
+                    // [purple, pink, grey, blue, green, yellow, red, brown]
+                    case 'temperature':
+                        //     [      <-6,        -6,       -3,       0,        3,        6,        9,       12,       15,       18,       21,       24,       27,       30,       33,       36,       39,       42,       45 ];
+                        return ['#990099','#fe00fe','#ffb4ff','#cccccc','#6767fe','#33ccff','#99fefe','#00cc00','#67ff67','#ccfecc','#fefecc','#ffff34','#ffcc66','#ffcccc','#ff9999','#ff3333','#cc0000','#895b2e', '#6d4218'];
 
-                   if (midpoint != null && secondpoint != null && fourthpoint != null){
+                    // [generated colour for each step]
+                    case 'categorical':
+                    case 'misc_categorical':
+                        var colorArr = [];
+                        for (var i = 0; i < (steps+1); i++) {
+                            colorArr.push('#'+bccvl_common.genColor(i+1));
+                        }
+                        return colorArr;
 
-                       // first section
-                       for (var i = 0; i < (steps/4); i++) {
-                           // red
-                           var redInt = (startpoint.r - secondpoint.r)/(steps/4);
-                           var redVal = startpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (startpoint.g - secondpoint.g)/(steps/4);
-                           var greenVal = startpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (startpoint.b - secondpoint.b)/(steps/4);
-                           var blueVal = startpoint.b - (blueInt*i);
+                    // [orange red]
+                    case 'occurrence':
+                        return ['#e74c3c'];
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                    // [blue]
+                    case 'absence':
+                        return ['#3498db'];
 
-                       // second section
-                       for (var i = 0; i < (steps/4); i++) {
-                           // red
-                           var redInt = (secondpoint.r - midpoint.r)/(steps/4);
-                           var redVal = secondpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (secondpoint.g - midpoint.g)/(steps/4);
-                           var greenVal = secondpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (secondpoint.b - midpoint.b)/(steps/4);
-                           var blueVal = secondpoint.b - (blueInt*i);
+                    // [white, orange, white, blue, green]
+                    case 'range-change':
+                        return ['#FFFFFF', '#f08013', '#FFFFFF', '#164dca', '#41c127'];
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                    // [deep red - white - blue]
+                    case 'probability-difference':
+                        //     [     -1 ,    -0.8,       -0.6,     -0.4,       -0.2,       0,        0.2,       0.4,       0.6,       0.8,       1     ]
+                        return ['#B41414', '#C34343', '#D27272', '#E1A1A1', '#F0D0D0', '#FFFFFF', '#e7f2fb', '#CEE6FA', '#9DCDF5', '#6CB4F0', '#3B9BEB', '#0A82E6'];
 
-                       // third section
-                       for (var i = 0; i < (steps/4); i++) {
-                           // red
-                           var redInt = (midpoint.r - fourthpoint.r)/(steps/4);
-                           var redVal = midpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (midpoint.g - fourthpoint.g)/(steps/4);
-                           var greenVal = midpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (midpoint.b - fourthpoint.b)/(steps/4);
-                           var blueVal = midpoint.b - (blueInt*i);
+                    // [red - yellow - green - blue - purple]
+                    case 'pH':
+                        //     [        0,         1,         2,         3,         4,         5,         6,         7,         8,         9,        10,        11,        12,        13,        14]
+                        return ['#ee1c25', '#f26722', '#f8c611', '#f4ec1b', '#b4d433', '#83c240', '#4db748', '#33a949', '#21b569', '#09bab4', '#4591cb', '#3853a4', '#5952a2', '#62469d', '#462c83'];
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                    // [green, blue]
+                    case 'boolean':
+                        //     [        0,         1,]
+                        return ['#4db748', '#4591cb'];
+                }
 
-                       // fourth section
-                       for (var i = 0; i < ((steps/4)+1); i++) {
-                           // red
-                           var redInt = (fourthpoint.r - endpoint.r)/(steps/4);
-                           var redVal = fourthpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (fourthpoint.g - endpoint.g)/(steps/4);
-                           var greenVal = fourthpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (fourthpoint.b - endpoint.b)/(steps/4);
-                           var blueVal = fourthpoint.b - (blueInt*i);
+                // Special cases and default follows
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                // apply standard suitability coloring only if we don't have a color range set up
+                // FIXME: generate default color range for suitabilities automatically as we do below if possible
+                // basic prob spectrum
+                if (standard_range == 'suitability' && startpoint == null) {
+                    // [white - red]
+                    return ['#FFFFFF','#fef8f8','#fdefef','#fce4e4','#fbd8d8','#facbcb','#f9bdbd','#f7aeae','#f69f9f','#f48f8f','#f28080','#f17070','#ef6060','#ee5151','#ec4242','#eb3434','#ea2727','#e91b1b','#e81010','#e70707','#d80707'];
+                }
 
-                   } else if (midpoint != null){
+                if (steps == 1){
+                    //generic single value
+                    // [red]
+                    return ['#fd3d00'];
+                }
 
-                       // White to red spectrum fallback
-                       if (startpoint==undefined) {
-                           var startpoint = {};
-                           startpoint.r = 255;
-                           startpoint.g = 251;
-                           startpoint.b = 193;
-                       }
-                       if (midpoint==undefined) {
-                           var midpoint = {};
-                           midpoint.r = 255;
-                           midpoint.g = 77;
-                           midpoint.b = 30;
-                       }
-                       if (endpoint==undefined) {
-                           var endpoint = {};
-                           endpoint.r = 230;
-                           endpoint.g = 0;
-                           endpoint.b = 0;
-                       }
+                // Fallback method that generates a default colourmap
 
-                       // otherwise use supplied
+                // utility functions to convert RGB values into hex values for SLD styling.
+                function byte2Hex(n) {
+                    var nybHexString = "0123456789ABCDEF";
+                    return String(nybHexString.substr((n >> 4) & 0x0F,1)) + nybHexString.substr(n & 0x0F,1);
+                }
+                function RGB2Color(r,g,b) {
+                    return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
+                }
 
-                       // first half
-                       for (var i = 0; i < ((steps/2)+1); i++) {
-                           // red
-                           var redInt = (startpoint.r - midpoint.r)/(steps/2);
-                           var redVal = startpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (startpoint.g - midpoint.g)/(steps/2);
-                           var greenVal = startpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (startpoint.b - midpoint.b)/(steps/2);
-                           var blueVal = startpoint.b - (blueInt*i);
+                var colorArr = [];
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                if (midpoint != null && secondpoint != null && fourthpoint != null){
 
-                       // second half
-                       for (var i = 0; i < ((steps/2)+1); i++) {
-                           // red
-                           var redInt = (midpoint.r - endpoint.r)/(steps/2);
-                           var redVal = midpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (midpoint.g - endpoint.g)/(steps/2);
-                           var greenVal = midpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (midpoint.b - endpoint.b)/(steps/2);
-                           var blueVal = midpoint.b - (blueInt*i);
+                    // first section
+                    for (var i = 0; i < (steps/4); i++) {
+                        // red
+                        var redInt = (startpoint.r - secondpoint.r)/(steps/4);
+                        var redVal = startpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (startpoint.g - secondpoint.g)/(steps/4);
+                        var greenVal = startpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (startpoint.b - secondpoint.b)/(steps/4);
+                        var blueVal = startpoint.b - (blueInt*i);
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
 
-                   } else {
+                    // second section
+                    for (var i = 0; i < (steps/4); i++) {
+                        // red
+                        var redInt = (secondpoint.r - midpoint.r)/(steps/4);
+                        var redVal = secondpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (secondpoint.g - midpoint.g)/(steps/4);
+                        var greenVal = secondpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (secondpoint.b - midpoint.b)/(steps/4);
+                        var blueVal = secondpoint.b - (blueInt*i);
 
-                       // White to red spectrum
-                       if (startpoint==undefined) {
-                           var startpoint = {};
-                           startpoint.r = 255;
-                           startpoint.g = 255;
-                           startpoint.b = 255;
-                       }
-                       if (endpoint==undefined) {
-                           var endpoint = {};
-                           endpoint.r = 230;
-                           endpoint.g = 0;
-                           endpoint.b = 0;
-                       }
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
 
-                       for (var i = 0; i < (steps+2); i++) {
-                           // red
-                           var redInt = (startpoint.r - endpoint.r)/steps;
-                           var redVal = startpoint.r - (redInt*i);
-                           // green
-                           var greenInt = (startpoint.g - endpoint.g)/steps;
-                           var greenVal = startpoint.g - (greenInt*i);
-                           // blue
-                           var blueInt = (startpoint.b - endpoint.b)/steps;
-                           var blueVal = startpoint.b - (blueInt*i);
+                    // third section
+                    for (var i = 0; i < (steps/4); i++) {
+                        // red
+                        var redInt = (midpoint.r - fourthpoint.r)/(steps/4);
+                        var redVal = midpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (midpoint.g - fourthpoint.g)/(steps/4);
+                        var greenVal = midpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (midpoint.b - fourthpoint.b)/(steps/4);
+                        var blueVal = midpoint.b - (blueInt*i);
 
-                           colorArr.push(RGB2Color(redVal,greenVal,blueVal));
-                       }
-                   }
-               }
-               return colorArr;
-           },
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
+
+                    // fourth section
+                    for (var i = 0; i < ((steps/4)+1); i++) {
+                        // red
+                        var redInt = (fourthpoint.r - endpoint.r)/(steps/4);
+                        var redVal = fourthpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (fourthpoint.g - endpoint.g)/(steps/4);
+                        var greenVal = fourthpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (fourthpoint.b - endpoint.b)/(steps/4);
+                        var blueVal = fourthpoint.b - (blueInt*i);
+
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
+
+                } else if (midpoint != null){
+
+                    // White to red spectrum fallback
+                    if (startpoint==undefined) {
+                        var startpoint = {};
+                        startpoint.r = 255;
+                        startpoint.g = 251;
+                        startpoint.b = 193;
+                    }
+                    if (midpoint==undefined) {
+                        var midpoint = {};
+                        midpoint.r = 255;
+                        midpoint.g = 77;
+                        midpoint.b = 30;
+                    }
+                    if (endpoint==undefined) {
+                        var endpoint = {};
+                        endpoint.r = 230;
+                        endpoint.g = 0;
+                        endpoint.b = 0;
+                    }
+
+                    // otherwise use supplied
+
+                    // first half
+                    for (var i = 0; i < ((steps/2)+1); i++) {
+                        // red
+                        var redInt = (startpoint.r - midpoint.r)/(steps/2);
+                        var redVal = startpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (startpoint.g - midpoint.g)/(steps/2);
+                        var greenVal = startpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (startpoint.b - midpoint.b)/(steps/2);
+                        var blueVal = startpoint.b - (blueInt*i);
+
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
+
+                    // second half
+                    for (var i = 0; i < ((steps/2)+1); i++) {
+                        // red
+                        var redInt = (midpoint.r - endpoint.r)/(steps/2);
+                        var redVal = midpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (midpoint.g - endpoint.g)/(steps/2);
+                        var greenVal = midpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (midpoint.b - endpoint.b)/(steps/2);
+                        var blueVal = midpoint.b - (blueInt*i);
+
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
+
+                } else {
+
+                    // White to red spectrum
+                    if (startpoint==undefined) {
+                        var startpoint = {};
+                        startpoint.r = 255;
+                        startpoint.g = 255;
+                        startpoint.b = 255;
+                    }
+                    if (endpoint==undefined) {
+                        var endpoint = {};
+                        endpoint.r = 230;
+                        endpoint.g = 0;
+                        endpoint.b = 0;
+                    }
+
+                    for (var i = 0; i < (steps+2); i++) {
+                        // red
+                        var redInt = (startpoint.r - endpoint.r)/steps;
+                        var redVal = startpoint.r - (redInt*i);
+                        // green
+                        var greenInt = (startpoint.g - endpoint.g)/steps;
+                        var greenVal = startpoint.g - (greenInt*i);
+                        // blue
+                        var blueInt = (startpoint.b - endpoint.b)/steps;
+                        var blueVal = startpoint.b - (blueInt*i);
+
+                        colorArr.push(RGB2Color(redVal,greenVal,blueVal));
+                    }
+                }
+            
+                return colorArr;
+            },
 
            getStandardRange: function(layerdef) {
                var standard_range;
@@ -1509,15 +1551,25 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                                        'tooltip': '',
                                        'filename': layer.filename
                                    };
-                                   if (data.genre == 'DataGenreCP' || data.genre == 'DataGenreCP_ENVLOP' || data.genre == 'DataGenreFP' || data.genre == 'DataGenreFP_ENVLOP') {
-                                       layerdef.legend = 'suitability';
-                                       layerdef.unit = ' ';
-                                       layerdef.unitfull = 'Environmental suitability';
-                                       layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
-                                   }
-                                   else if (data.genre == 'DataGenreENDW_RICHNESS') {
-                                        layerdef.title = "Species Richness";
-                                   }
+
+                                    // We appear to try and fill in some gaps by patching over the
+                                    // default layer definition object when we don't find it in the
+                                    // vocabulary by detecting certain types of data (`data.genre`)
+                                    switch (data.genre) {
+                                        case 'DataGenreCP':
+                                        case 'DataGenreCP_ENVLOP':
+                                        case 'DataGenreFP':
+                                        case 'DataGenreFP_ENVLOP':
+                                            layerdef.legend = 'suitability';
+                                            layerdef.unit = ' ';
+                                            layerdef.unitfull = 'Environmental suitability';
+                                            layerdef.tooltip = 'This value describes the environmental suitability of a species presence in a given location.';
+                                            break;
+
+                                        case 'DataGenreENDW_RICHNESS':
+                                            layerdef.title = "Species Richness";
+                                            break;
+                                    }
                                } else {
                                    // make a copy of the original object
                                    layerdef = $.extend({}, layerdef);
