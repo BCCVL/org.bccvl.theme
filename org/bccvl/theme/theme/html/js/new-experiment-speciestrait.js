@@ -77,7 +77,7 @@ define(
                             // set up dom node
                             var text = document.createElement('div');
                             text.className = 'row-fluid';
-                            text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p></div>'
+                            text.innerHTML += '<div class="span12"><p>You can select which traits and/or environmental variables should be used in the analyses by using the drop down menus below. Note that at least one trait variable must be nominated. Environmental variables are optional here, as BCCVL-provided environmental data can be selected in the next tab.</p><p>NB. If your dataset contains multiple species you can run:</p><ol><li>An analysis based on species level trait data (average trait values per species) by making sure the Species column is set to Ignore (or used as a random factor in GLMM).</li><li>An analysis per species based on individual trait measurements by selecting a Species column. This will run each analyses on each species separately.</li></ol></div>'
                             target.appendChild(text);
                             var errorDiv = document.createElement('div');
                             errorDiv.setAttribute('id', 'errorMessages');
