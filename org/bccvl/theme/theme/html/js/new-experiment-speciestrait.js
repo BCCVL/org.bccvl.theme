@@ -239,8 +239,9 @@ define(
                                             '</select>';
                                     }
 
+                                    var colname = col.name.toLowerCase();
                                     $(input).find('select option').each(function(){
-                                        if (col.name.toLowerCase() === $(this).val().toLowerCase()){
+                                        if (colname != "species" && colname === $(this).val().toLowerCase()){
                                             $(this).prop('selected', true);
                                         }
                                     });

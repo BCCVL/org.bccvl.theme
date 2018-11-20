@@ -278,7 +278,6 @@ define(
             "trait-nom": {
                 "requireNFromClass": [1, ".trait-nom", "lon", "Longitude"],
                 "requireNFromClassTwo": [1, ".trait-nom", "lat", "Latitude" ],
-                //"requireNFromClassThree": [1, ".trait-nom", "species", "Species Name" ],
                 "requireAtLeastNOfFromClass": [1, ".trait-nom", ["trait_con", "trait_ord", "trait_nom"], "Trait"],
                 "noLongerRequireEnv": [1, ".trait-nom", ["env_var_con", "env_var_cat"]]
             },
