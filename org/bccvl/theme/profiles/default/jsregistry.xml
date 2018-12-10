@@ -21,7 +21,7 @@
                 insert-after="++theme++org.bccvl.theme/html/lib/bootstrap/js/bootstrap.min.js"
                 />
 
-    <javascript id="++theme++org.bccvl.theme/html/lib/freshdesk/live-chat.js"
+    <javascript id="++theme++org.bccvl.theme/html/lib/freshchat/freshchat.js"
                 bundle="bccvl" compression="none"
                 insert-bottom=""
                 />
