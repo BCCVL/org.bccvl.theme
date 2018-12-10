@@ -516,12 +516,7 @@ define(
 
         });
 
-        // Re-run validation when map selection made for constraint areas
-        //
-        // The click event handler here has been namespaced under
-        // `.bccvl-form-jquery-validate` so that it can be manipulated without
-        // conflicting with other handlers
-        $(".btn.draw-geojson").on("click.bccvl-form-jquery-validate", function(e) {
+        function validateConstraintAreaForm() {
             // Look for constraint method input fields
             var $constraintMethod = $(this).closest(".constraint-method");
 
@@ -541,7 +536,12 @@ define(
             setTimeout(function() {
                 $constraintsType.valid();
             }, 0);
-        });
+        }
+
+        // Re-run validation for constraint areas
+        // Note that the events have been namespaced
+        $(".btn.draw-geojson").on("click.bccvl-form-jquery-validate", validateConstraintAreaForm);
+        $("#upload-shape input").on("change.bccvl-form-jquery-validate", validateConstraintAreaForm);
 
         // document ready
         });
