@@ -238,10 +238,54 @@ define(
             return true;
         }
 
+        /**
+         * Checks that the shapefile option for constraint area is actually
+         * properly filled out.
+         * 
+         * The "constraint area: shapefile" validator should be applied
+         * to `<input type="radio" name="constraints_type">` elements.
+         * 
+         * Note that this validator does assume the DOM structure of the form,
+         * and thus will probably need to be modified when the widgets that
+         * generate the form change
+         * 
+         * @param {string | undefined} value
+         * @param {Element} element
+         */
+        function constraintArea_shapefile(value, element) {
+            // This validation rule only applies when the type is "upload
+            // shapefile" which is defined as "upload_shp_file"
+            if (value !== "upload_shp_file") {
+                return true;
+            }
+
+            // Validation rule doesn't seem to get the actual checked element,
+            // so we need to traverse DOM to find this
+            var $checkedEl =
+                $("input[name='constraints_type']:checked", $(element).closest(".constraint-method").parent());
+
+            // Check that the shapefile input element has a file in there
+            var $fileInputEl = $checkedEl.siblings("#upload-shape").find("input");
+            var file = $fileInputEl[0].files[0];
+
+            if (!file || file.size === 0) {
+                return false;
+            }
+
+            // If everything passes, then we say that it's okay
+            return true;
+        }
+
         $.validator.addMethod(
             "constraintArea_predefinedRegion", 
             constraintArea_predefinedRegion, 
             "Please select a pre-defined region and click 'Add To Map' to confirm."
+        );
+
+        $.validator.addMethod(
+            "constraintArea_shapefile", 
+            constraintArea_shapefile, 
+            "Please select a shapefile."
         );
 
         // add common class rules
@@ -402,7 +446,10 @@ define(
                 }
             },
             rules: {
-                "constraints_type": "constraintArea_predefinedRegion"
+                "constraints_type": {
+                    "constraintArea_predefinedRegion": true,
+                    "constraintArea_shapefile": true
+                }
             }
         });
 
@@ -469,12 +516,7 @@ define(
 
         });
 
-        // Re-run validation when map selection made for constraint areas
-        //
-        // The click event handler here has been namespaced under
-        // `.bccvl-form-jquery-validate` so that it can be manipulated without
-        // conflicting with other handlers
-        $(".btn.draw-geojson").on("click.bccvl-form-jquery-validate", function(e) {
+        function validateConstraintAreaForm() {
             // Look for constraint method input fields
             var $constraintMethod = $(this).closest(".constraint-method");
 
@@ -494,7 +536,12 @@ define(
             setTimeout(function() {
                 $constraintsType.valid();
             }, 0);
-        });
+        }
+
+        // Re-run validation for constraint areas
+        // Note that the events have been namespaced
+        $(".btn.draw-geojson").on("click.bccvl-form-jquery-validate", validateConstraintAreaForm);
+        $("#upload-shape input").on("change.bccvl-form-jquery-validate", validateConstraintAreaForm);
 
         // document ready
         });
