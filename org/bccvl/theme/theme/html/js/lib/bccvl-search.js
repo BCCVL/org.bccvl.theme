@@ -297,44 +297,6 @@ define(
                         timeout: 60000
                     });
                 },
-                importGenusDatasets: function(searchString, excluded) {
-                    var $resultTable = $('.bccvl-search-results');
-                    var genusKey = $resultTable.data('data-genusKey');
-
-                    var find_species_to_import = function(index, pageSize) {
-                        var  surl = providers.obis.search.searchSpeciesUrl(genusKey, index, pageSize);
-                        $('.bccvl-results-spinner').css('display', 'block');
-                        return $.ajax({
-                            dataType: 'json',
-                            url: surl,
-                            timeout: 60000
-                        }).then(
-                            function(data) {
-                                if (providers.obis.search.statusError(data)){
-                                    providers.obis.autocomplete.noResultsFound(unexpectedErrorMsg('obis'));
-                                    return
-                                }
-                                // Import all the species datasets
-                                var results = providers.obis.search.parseSearchChildrenData(data, searchString, excluded, genusKey);
-                                if (results.length <= 0 && index == 0) {
-                                    // if no more records and index==0
-                                    providers.obis.autocomplete.noResultsFound();
-                                } else {
-                                    $.when.apply($, importSpeciesDatasets(results)).then(
-                                        function() {
-                                            // import success
-                                            location.href = portal_url + '/datasets';
-                                        }
-                                   );
-                                }
-                            },
-                            displayErrorMessage
-                        )
-                    }
-
-                    find_species_to_import(0, 40)
-
-                },                
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
         };
@@ -508,50 +470,6 @@ define(
                         url: surl,
                         timeout: 60000
                     });
-                },
-                // --------------------------------------------------------------
-                importGenusDatasets: function(searchString, excluded) {
-                    var $resultTable = $('.bccvl-search-results');
-                    var genusKey = $resultTable.data('data-genusKey');
-
-                    var find_species_to_import = function(index, pageSize) {
-                        var  surl = providers.gbif.search.searchSpeciesUrl(genusKey, index, pageSize);
-                        return $.ajax({
-                            dataType: 'json',
-                            url: surl,
-                            timeout: 60000
-                        }).then(
-                            function(data) {
-                                if (providers.gbif.search.statusError(data)){
-                                    providers.gbif.autocomplete.noResultsFound(unexpectedErrorMsg('gbif'));
-                                    return
-                                }
-                                // Import all the species datasets
-                                var results = providers.gbif.search.parseSearchData(data, searchString, excluded);
-                                if (results.length <= 0 && data.endOfRecords && index == 0) {
-                                    // if no more records and index==0
-                                    providers.gbif.autocomplete.noResultsFound();
-                                } else {
-                                    $.when.apply($, importSpeciesDatasets(results)).then(
-                                        function() {
-                                            // import success
-                                            if (!data.endOfRecords) {
-                                                // there is more to come
-                                                find_species_to_import(index + pageSize, pageSize)
-                                            } else {
-                                                // we are done ....
-                                                location.href = portal_url + '/datasets';
-                                            }
-                                        }
-                                   );
-                                }
-                            },
-                            displayErrorMessage
-                        )
-                    }
-
-                    find_species_to_import(0, 40)
-
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -743,57 +661,6 @@ define(
                         url: searchUrl,
                         timeout: 60000
                     });
-                },
-                // --------------------------------------------------------------
-                importGenusDatasets: function(searchString, excluded) {
-                    var  surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, 0);
-
-                    $.ajax({
-                        dataType: 'json',                       // ..using JSONP instead
-                        url: surl,
-                        timeout: 60000
-                    }).then(
-                        // genus search success
-                        function(data) {
-                            if (providers.ala.search.statusError(data)){
-                                providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
-                                return data
-                            }
-
-                            // Set pageSize and search for all the species again
-                            var pageSize = providers.ala.search.totalRecords(data);
-                            var surl = providers.ala.search.searchSpeciesUrl('rk_genus', searchString, pageSize);
-
-                            return $.ajax({
-                                dataType: 'json',                       // ..using JSONP instead
-                                url: surl,
-                                timeout: 60000
-                            })
-                        },
-                        displayErrorMessage
-                    ).then(
-                        // import all species for genus
-                        function(data) {
-                            if (providers.ala.search.statusError(data)){
-                                providers.ala.autocomplete.noResultsFound(unexpectedErrorMsg('ala'));
-                                return
-                            }
-                            // Import all the species datasets
-                            var results = providers.ala.search.parseSearchData(data, searchString, excluded);
-                            if (results.length <= 0 && index == 0) {
-                                // if no more records and index==0
-                                providers.ala.autocomplete.noResultsFound();
-                            } else {
-                                $.when.apply($, importSpeciesDatasets(results)).then(
-                                    function() {
-                                        // import success
-                                        location.href = portal_url + '/datasets';
-                                    }
-                               );
-                            }
-                        },
-                        displayErrorMessage
-                    )
                 },
             }
             // - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1234,13 +1101,9 @@ define(
                 // reset the excluded list
                 excludedList = [];
 
-                // For genus, import all species datasets
-                if ($el.attr('data-rank').toLowerCase() == 'genus') {
-                    provider.search.importGenusDatasets($inputField.val(), excludedList);
-                }
-                else {
-                    location.href = $el.attr('href');
-                }
+                // For genus, import as multispecies dataset as well as 
+                // all individual species datasets
+                location.href = $el.attr('href');
             });
 
             // switch on twitter bootstrap autocomplete

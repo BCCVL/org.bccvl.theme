@@ -17,7 +17,7 @@
   }
 }(this, function($) {
 
-    var apiurl = "https://test.api.aekos.org.au/v2/";
+    var apiurl = "https://api.aekos.org.au/v2/";
 
     // Unquote string (utility)
     function unquote(value) {
