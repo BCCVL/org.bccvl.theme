@@ -2079,15 +2079,14 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                  }
                });
 
-               $('input[type="radio"]#upload_shp_file').change(function(){
-                 bccvl_common.removeConstraints($(this), map, constraintsLayer);
+                $('input[type="radio"]#upload_shp_file').change(function() {
+                    // Wipe constraints polygon
+                    bccvl_common.removeConstraints($(this), map, constraintsLayer);
 
-                 if($(this).prop('checked')){
+                    // Clear file input element
+                    $("#upload-shape").find("input").val("");
+                });
 
-                 } else {
-                     $('#upload-shape').find('input').val('');
-                 }
-               });
                $('.btn.draw-polygon').on('click', function(){
                    //map.un('singleclick', bccvl_common.getPointInfo);
                    bccvl_common.drawConstraints($(this), map, constraintsLayer);
@@ -2217,103 +2216,126 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                        $('#' + field_id).val('' + data + '');
                    }
                });
-               
-               var shapefile = null;
-               
-               $('#draw-shapefile').click(function(){
-                   
-                    $('#upload-shape').hide(0, function(){
-                       $('#upload_spinner').show(0);
-                    });
-                    if(shapefile == null) {
-                        alert('You must add a shapefile using the file select dialog.');
-                          $('#upload_spinner').hide(0, function(){
-                             $('#upload-shape').show(0);
-                          });
-                    } else if(shapefile.size > 0) {
-        			    // Check for the various File API support.
-                        if (window.File && window.FileReader && window.FileList && window.Blob) {
 
-                            var reader = new FileReader();
+                /**
+                 * @param {File} shapefile Selected shapefile File object
+                 * @param {(buffer: ArrayBuffer) => void} cb Callback on completed read
+                 */
+                function readShapefile(shapefile, cb) {
+                    var $form = $("#upload-shape");
+                    var $spinner = $("#upload_spinner");
 
-                            reader.onload = function(e) {
-                                var arrayBuffer = reader.result;
-                                
-                                shp(arrayBuffer).then(function(geojson){
-                                    // clear layer
-                                    constraintsLayer.getSource().clear();
-                                    
-                					var features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-                                        featureProjection: 'EPSG:3857'
-                                    });
-                                    
-                                    // loop through all features, calculating group extent (could also transform bbox)
-                                    // add ID and set style to each
-                                    var extent = features[0].getGeometry().getExtent().slice(0);
-                                    $.each(features, function(i,feature){ 
-                                        
-                                        ol.extent.extend(extent,feature.getGeometry().getExtent());
-                                        
-                                        feature.setId('geo_constraints_'+i);
-                                        
-                                        var styles = {
-                                            'MultiPolygon': new ol.style.Style({
-                                                fill: new ol.style.Fill({
-                                                    color: 'rgba(0, 160, 228, 0.1)'
-                                                }),
-                                                stroke: new ol.style.Stroke({
-                                                    color: 'rgba(0, 160, 228, 0.9)',
-                                                    width: 2
-                                                })
-                                            }),
-                                            'Polygon': new ol.style.Style({
-                                                fill: new ol.style.Fill({
-                                                    color: 'rgba(0, 160, 228, 0.1)'
-                                                }),
-                                                stroke: new ol.style.Stroke({
-                                                    color: 'rgba(0, 160, 228, 0.9)',
-                                                    width: 2
-                                                })
-                                            })
-                                        }
-                                        
-                                        feature.setStyle(styles[feature.getGeometry().getType()]);
-                                    });
-                                    
-                                    constraintsLayer.getSource().addFeatures(features);
-                             
-                                    map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
-                                    
-                                    $('#upload_spinner').hide(0, function(){
-                                       $('#upload-shape').show(0);
-                                    });
-                                });
+                    // If environment doesn't have what we need, warn and stop
+                    if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+                        alert("Shapefile unable to be read as File API not fully supported in your browser");
+                        return;
+                    }
+
+                    // Disable input, show spinner while reading
+                    $form.prop("disabled", true);
+                    $spinner.show();
+
+                    // Set up FileReader instance
+                    var reader = new FileReader();
+
+                    reader.onload = function() {
+                        // Reenable input, hide spinner
+                        $form.prop("disabled", false);
+                        $spinner.hide();
+
+                        // Run callback with returned buffer
+                        var buffer = reader.result;
+                        cb(buffer);
+                    }
+
+                    // Read the file now
+                    reader.readAsArrayBuffer(shapefile);
+                }
+
+                /**
+                 * @param {ArrayBuffer} shapefileBuffer Shapefile buffer stream
+                 */
+                function renderShapefileToMap(shapefileBuffer) {
+                    shp(shapefileBuffer).then(function(geojson) {
+                        clearLayersFromMap();
+
+                        var features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+                            featureProjection: 'EPSG:3857'
+                        });
+
+                        // loop through all features, calculating group extent (could also transform bbox)
+                        // add ID and set style to each
+                        var extent = features[0].getGeometry().getExtent().slice(0);
+                        $.each(features, function(i,feature){
+
+                            ol.extent.extend(extent,feature.getGeometry().getExtent());
+
+                            feature.setId('geo_constraints_'+i);
+
+                            var styles = {
+                                'MultiPolygon': new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: 'rgba(0, 160, 228, 0.1)'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'rgba(0, 160, 228, 0.9)',
+                                        width: 2
+                                    })
+                                }),
+                                'Polygon': new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: 'rgba(0, 160, 228, 0.1)'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: 'rgba(0, 160, 228, 0.9)',
+                                        width: 2
+                                    })
+                                })
                             }
-                            
-                            reader.readAsArrayBuffer(shapefile);
-                                                      
-                        } else {
-                          alert('The File APIs are not fully supported in this browser.');
-                          $('#upload_spinner').hide(0, function(){
-                             $('#upload-shape').show(0);
-                          });
-                        }
-        				
-                       
-        			} else {
-        			    alert('You must add a shapefile using the file select dialog.')
-        			}
-               });
-               
-               $("#upload_file").change(function(evt) {
-                   shapefile = evt.target.files[0];
-        	   });
-        	   
-        	   $('#remove-shapefile').click(function(){
-        	       $('#upload_file').val('');
-        	       shapefile = null;
-        	   });
-               
+
+                            feature.setStyle(styles[feature.getGeometry().getType()]);
+                        });
+
+                        constraintsLayer.getSource().addFeatures(features);
+
+                        map.getView().fit(extent, {size: map.getSize(), padding: [50,50,50,50]});
+                    });
+                }
+
+                function clearShapefileInput() {
+                    var $fileInputEl = $("#upload-shape").find("input");
+                    $fileInputEl.val("");
+                }
+
+                function clearLayersFromMap() {
+                    constraintsLayer.getSource().clear();
+                }
+
+                $("#upload_file").change(function(evt) {
+                    // Get the selected file
+                    var shapefile = evt.target.files[0];
+
+                    // If there is actually a file selected, then proceed to
+                    // load the file into the map (which also loads it into the
+                    // experiment configuration object)
+                    if (shapefile && shapefile.size > 0) {
+                        readShapefile(shapefile, function(shapefileBuffer) {
+                            renderShapefileToMap(shapefileBuffer);
+                        });
+                    } else {
+                        // If there was no file or "Cancel" was selected, then
+                        // the map is cleared
+                        clearLayersFromMap();
+                    }
+                });
+
+                $("#remove-shapefile").click(function(){
+                    clearShapefileInput();
+
+                    // Clear map (which also clears it from the experiment
+                    // configuration object)
+                    clearLayersFromMap();
+                });
            },
            /************************************************
             * get a proj4 projection object for wkt or
