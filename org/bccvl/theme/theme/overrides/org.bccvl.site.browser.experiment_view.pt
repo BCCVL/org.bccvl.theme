@@ -238,6 +238,7 @@
                       </div>
                     </div>
                     <div class="row-fluid experiment-result-contents"
+                        tal:condition="python: not md.get('hidden', False)"
                         tal:define="itemobj item/getObject;
                                     item_tools nocall:itemobj/@@dataset_tools;
                                     md item_tools/metadata|nothing">
