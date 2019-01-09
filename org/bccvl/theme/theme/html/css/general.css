@@ -1838,6 +1838,9 @@ span.loading-gif {
     color: #333;
     font-size: 1.5em;
 }
+.bccvl-dataset-collection-modal-body > .collection-description {
+    white-space: pre-wrap;
+}
 
 .filter-bar, .faceted-left-column {
     padding: 1.5em 1.5em 1em 1.5em;
