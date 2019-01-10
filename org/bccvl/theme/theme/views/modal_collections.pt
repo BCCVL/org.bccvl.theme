@@ -8,8 +8,8 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 tal:content="context/title">Collection title</h3>
   </div>
-  <div class="modal-body">
-    <p tal:content="context/description">Collection description</p>
+  <div class="modal-body bccvl-dataset-collection-modal-body">
+    <p tal:content="context/description" class="collection-description">Collection description</p>
     <div tal:condition="context/attribution">
       <strong>Citation and attribution</strong><br/>
       <!-- margin-left:1em; padding-left:1em; -->
