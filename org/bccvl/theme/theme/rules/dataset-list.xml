@@ -33,6 +33,13 @@
 
       <theme href="html/dataset-iframe-list.html" />
 
+      <rules if-not="$is_debug">
+        <!-- For production, load page JS without require -->
+        <replace css:theme="#page_js">
+          <script type="text/javascript" src="{$portal_base_url}/++theme++org.bccvl.theme/html/dist/dataset-list.js"></script>
+        </replace>
+      </rules>
+
       <!-- Search filter -->
       <replace css:theme-children="#datasets-filter" css:content="#left-area"/>
       <!-- faceted version -->
