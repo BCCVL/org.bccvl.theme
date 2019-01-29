@@ -54,11 +54,11 @@
     }
 
     var prechatFormScript = createScript(
-        "https://snippets.freshchat.com/js/fc-pre-chat-form-v2.js",
+        "https://snippets.freshchat.com/js/fc-pre-chat-form-v2.js"
     );
 
     var freshchatScript = createScript(
-        "https://wchat.freshchat.com/js/widget.js",
+        "https://wchat.freshchat.com/js/widget.js"
     );
 
     function injectScripts(scripts) {
