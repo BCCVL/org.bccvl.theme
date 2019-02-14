@@ -76,7 +76,7 @@ define(['jquery', 'openlayers', 'ol3-layerswitcher', 'bccvl-visualiser-common'],
                     var layerdef = newLayer.get('bccvl').layer;
 
                     // set layer title and opacity
-                    if (typeof algorithm != "undefined" || !algorithm) {
+                    if (typeof algorithm != "undefined" && algorithm != "") {
                         container.append('<label>'+layerdef.title+'<br/> (<em>'+algorithm+'</em>)</label>');
                     } else {
                         container.append('<label>'+layerdef.title+'<br/></label>');
