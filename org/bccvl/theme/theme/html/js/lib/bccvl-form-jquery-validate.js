@@ -229,6 +229,15 @@ define(
             // field that encodes the region (`#form-widgets-modelling_region`)
             var regionVal = $("#form-widgets-modelling_region", $selectRegion).val();
 
+            // Fallback for Projection/Climate Change experiment
+            //
+            // If `regionVal` is undefined, then we also check if there is
+            // anything at `#form-widgets-projection_region` which only appears
+            // for a Projection/CC experiment
+            if (!regionVal) {
+                regionVal = $("#form-widgets-projection_region").val();
+            }
+
             // If not present, then it fails validation
             if (!regionVal || regionVal.length === 0) {
                 return false;
