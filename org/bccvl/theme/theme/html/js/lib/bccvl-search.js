@@ -480,7 +480,7 @@ define(
                 autoUrl: function(autocompleteString) {
                     // geoOnly=true  -> only return items that have some geographically mapped records attached
                     // idxType=TAXON -> only items that are actually living things (not collection records, or people, or whatever)
-                    return ('https://bie.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
+                    return ('https://bie-ws.ala.org.au/ws/search/auto.json?geoOnly=true&idxType=TAXON&limit=10&q=' + encodeURIComponent(autocompleteString));
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 parseAutoData: function(rawData) {
@@ -499,7 +499,7 @@ define(
                                 // think are common names, is sometimes long.  Often that's
                                 // because of rediculous 'common names' that have sentences
                                 // in them, for example:
-                                // http://bie.ala.org.au/species/Macropus+fuliginosus#tab_names
+                                // https://bie-ws.ala.org.au/species/Macropus+fuliginosus#tab_names
                                 //
                                 // To de-emphasise the stupider common names, this code
                                 // sorts the common names by length, then re-combines
@@ -559,11 +559,11 @@ define(
                     if (rankSupplied == 'genus') {
                         filter = '(rank:species+OR+rank:genus)';
                     }
-                    return ('https://bie.ala.org.au/ws/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
+                    return ('https://bie-ws.ala.org.au/ws/search.json?fq=' + filter + '&q=' + encodeURIComponent(searchString) + '&start=' + startIndex + '&pageSize=' + pageSize + '&sort=rank');
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 searchSpeciesUrl: function(rank, searchString, pageSize) {
-                    return ('https://bie.ala.org.au/ws/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
+                    return ('https://bie-ws.ala.org.au/ws/search.json?fq=' + rank + ':' + searchString + '&fq=rank:species&q=&pageSize=' + pageSize);
                 },
                 // - - - - - - - - - - - - - - - - - - - - - - - - -
                 statusError: function(data) {
@@ -642,7 +642,7 @@ define(
                                     alaImportArgs += "&common=" + encodeURIComponent(item.commonNameSingle);
                                 }
 
-                                result.actions.viz = 'https://bie.ala.org.au/species/' + encodeURIComponent(item.guid);
+                                result.actions.viz = 'https://bie-ws.ala.org.au/species/' + encodeURIComponent(item.guid);
                                 result.actions.alaimport = document.URL + alaImportArgs;
                             }
                             list.push(result);
