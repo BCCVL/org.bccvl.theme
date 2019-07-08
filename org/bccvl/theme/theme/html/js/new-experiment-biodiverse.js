@@ -16,7 +16,7 @@ define(
             // setup dataset select widgets
             var projection = new bccvl.SelectDict("projection");
             // Biodiverse uses selectize
-            var setThresholds = function(value, item){
+            var setThresholds = function(value){
                 /**
                  * Refers to the expected value to set for all <select> elements
                  * within this experiment block
@@ -32,7 +32,7 @@ define(
 
                 // Go through all remaining <select> elements that are NOT the
                 // master <select> and set the target value
-                $.each(sdmmodel.$widget.find('select'), function(index, elem){
+                $.each(projection.$widget.find('select'), function(index, elem){
                     if (! $(elem).hasClass('master-select')){
                         $(elem)[0].selectize.setValue(targetValue, true);
                     }
@@ -70,6 +70,10 @@ define(
 
                     }
                 });
+
+                // Initialise entire widget (equivalent to one experiment) to
+                // recommended options
+                setThresholds("Use Recommended");
             });
 
             // TODO: move  select-all / select-none into widget?
