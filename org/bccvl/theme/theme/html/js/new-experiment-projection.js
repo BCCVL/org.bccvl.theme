@@ -24,7 +24,7 @@ define(
             new bccvl.SelectList("future_climate_datasets");
 
             // Biodiverse uses selectize
-            var setThresholds = function(value, item){
+            var setThresholds = function(value){
                 /**
                  * Refers to the expected value to set for all <select> elements
                  * within this experiment block
@@ -78,6 +78,10 @@ define(
 
                     }
                 });
+
+                // Initialise entire widget (equivalent to one experiment) to
+                // recommended options
+                setThresholds("Use Recommended");
             });
 
             var constraints = expcommon.init_constraints_map('.constraints-map', $('a[href="#tab-geo"]'), 'form-widgets-projection_region')
