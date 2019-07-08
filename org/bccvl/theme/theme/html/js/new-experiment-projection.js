@@ -25,22 +25,24 @@ define(
 
             // Biodiverse uses selectize
             var setThresholds = function(value, item){
-                var selectIdx;
-                
-                $.each($('.master-select')[0].selectize.currentResults.items, function(i, obj){
-                    if (obj.id === value){
-                        selectIdx = i;
-                    }
-                })
+                /**
+                 * Refers to the expected value to set for all <select> elements
+                 * within this experiment block
+                 * 
+                 * @type {string}
+                 */
+                var targetValue = value;
+
+                // "Use Recommended" is to be mapped to the default (Max TPR+TNR)
+                if (targetValue === "Use Recommended") {
+                    targetValue = "Maximize TPR+TNR";
+                }
+
+                // Go through all remaining <select> elements that are NOT the
+                // master <select> and set the target value
                 $.each(sdmmodel.$widget.find('select'), function(index, elem){
                     if (! $(elem).hasClass('master-select')){
-                        console.log($(elem)[0].selectize);
-                        console.log($(elem)[0].selectize.currentResults);
-                        $.each($(elem)[0].selectize.currentResults.items, function(i, obj){
-                           if (selectIdx == i){
-                               $(elem)[0].selectize.setValue(obj.id, true);
-                           }
-                        });
+                        $(elem)[0].selectize.setValue(targetValue, true);
                     }
                 });
             }
@@ -65,8 +67,8 @@ define(
                         var selectize = $select[0].selectize;
                         
                         selectize.addOption([
-                            { value: "Maximise TPR+TNR", text: "Maximise TPR+TNR" },
-                            { value: "Maximise PPV+NPV", text: "Maximise PPV+NPV" },
+                            { value: "Maximize TPR+TNR", text: "Maximize TPR+TNR" },
+                            { value: "Maximize PPV+NPV", text: "Maximize PPV+NPV" },
                             { value: "Balance all errors", text: "Balance all errors" },
                             { value: "TPR = TNR", text: "TPR = TNR" },
                             { value: "0.5", text: "0.5" }

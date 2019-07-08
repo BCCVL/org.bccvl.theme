@@ -50,8 +50,8 @@
                 <th>Threshold <br/>
                   <select class="master-select" placeholder="Set all ...">
                     <option value="Use Recommended" selected>Use Recommended</option>
-                    <option value="Maximise TPR+TNR">Maximise TPR+TNR</option>
-                    <option value="Maximise PPV+NPV">Maximise PPV+NPV</option>
+                    <option value="Maximize TPR+TNR">Maximize TPR+TNR</option>
+                    <option value="Maximize PPV+NPV">Maximize PPV+NPV</option>
                     <option value="Balance all errors">Balance all errors</option>
                     <option value="TPR = TNR">TPR = TNR</option>
                     <option value="0.5">0.5</option>
