@@ -81,11 +81,11 @@
                   </td>
                   <td tal:condition="is_cc"
                       tal:define="gcm python: subitem['obj'].__parent__.job_params.get('gcm')">
-                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(gcm).title if gcm else ''">GCM</span>
+                    <span tal:content="python: dataset_tools.gcm_title(gcm) if gcm else ''">GCM</span>
                   </td>
                   <td tal:condition="is_cc"
                       tal:define="emsc python: subitem['obj'].__parent__.job_params.get('emsc')">
-                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(emsc).title if emsc else ''">EMSC</span>
+                    <span tal:content="python: dataset_tools.emsc_title(emsc) if emsc else ''">EMSC</span>
                   </td>
                   <td tal:condition="is_cc">
                     <span tal:content="python: subitem['obj'].__parent__.job_params.get('year', '')">Year</span>

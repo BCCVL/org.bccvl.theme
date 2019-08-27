@@ -106,10 +106,10 @@
                     <span tal:content="python: subitem['obj'].__parent__.job_params['function']">Algorithm id</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.gcm_vocab.getTerm(subitem['obj'].__parent__.job_params['gcm']).title">GCM</span>
+                    <span tal:content="python: dataset_tools.gcm_title(subitem['obj'].__parent__.job_params['gcm'])">GCM</span>
                   </td>
                   <td tal:condition="is_cc">
-                    <span tal:content="python: dataset_tools.emsc_vocab.getTerm(subitem['obj'].__parent__.job_params['emsc']).title">EMSC</span>
+                    <span tal:content="python: dataset_tools.emsc_title(subitem['obj'].__parent__.job_params['emsc'])">EMSC</span>
                   </td>
                   <td tal:condition="is_cc"
                       tal:define="year python: subitem['obj'].__parent__.job_params.get('year');
