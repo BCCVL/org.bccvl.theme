@@ -348,8 +348,23 @@ div.loader {
     display:inline-block;
 }
 .aaf-icon-lge {
-    width:125px;
+    width:95px;
     height:100px;
+    background-size:contain;
+}
+.edugain-icon {
+    background-image:url('++theme++org.bccvl.theme/html/images/edugain-logo.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    display:inline-block;
+}
+.edugain-icon-lge {
+    width:150px;
+    height:100px;
+    background-size:contain;
+}
+.aaf-icon+.edugain-icon {
+    margin-left: 2em;
 }
 .bccvl-main {
     padding-bottom:2em;
