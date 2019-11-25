@@ -1425,8 +1425,8 @@ define(['jquery', 'openlayers', 'proj4', 'ol3-layerswitcher', 'bccvl-visualiser-
                            type: 'base',
                            visible: false,
                            source: new ol.source.TileWMS({
-                            url: 'https://spatial.ala.org.au/geoserver/gwc/service/wms/reflect',
-                            params: {'LAYERS': 'ALA:world', 'FORMAT': 'image/jpeg', 'VERSION':'1.1.1', 'SRS':'EPSG:3857'}
+                            url: 'https://spatial.ala.org.au/geoserver/gwc/service/wms',
+                            params: {'LAYERS': 'ALA:world', 'FORMAT': 'image/png', 'VERSION':'1.1.0', 'SRS':'EPSG:3857'}
                           })
                        }),
                        new ol.layer.Tile({
